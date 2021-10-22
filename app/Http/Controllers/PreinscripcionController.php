@@ -27,7 +27,7 @@ class PreinscripcionController extends Controller
         $error = '';
         
         
-        if($carrera->estado == 1){
+        if($carrera->estado == 1 || $carrera->vacunas == 'todas'){
             $carrera = null;
             $error = 'Página deshabilitada';
         }
