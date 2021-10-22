@@ -44,16 +44,17 @@
 									{{ $materia->nombre }} <b>({{count($materia->mesa_inscriptos)}})</b>
 								</td>
 								@if($instancia->tipo == 0)
+								@if($materia->mesas)
 								<td>
-									@if($materia->mesas && count($materia->mesas) == 0)
+									@if(count($materia->mesas) == 0)
 									<strong>
 										Sin configurar
 									</strong>
-									@elseif($materia->mesas && count($materia->mesas) > 0)
+									@elseif(count($materia->mesas) > 0)
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && $mesa->fecha)
 									<strong>
-										{{date_format(new DateTime($mesa->fecha), 'Y-m-d H:i:s')}}
+										{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 									</strong>
 									@elseif($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<strong>
@@ -67,6 +68,7 @@
 									@endforeach
 									@endif
 								</td>
+								@endif
 								@endif
 								<td>
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
@@ -130,6 +132,7 @@
 								<td>{{ $materia->nombre }} <b>({{count($materia->mesa_inscriptos)}})</b></td>
 								@if($instancia->tipo == 0)
 								<td>
+									@if($materia->mesas)
 									@if(count($materia->mesas) == 0)
 									<strong>
 										Sin configurar
@@ -147,11 +150,13 @@
 									@endif
 									@endforeach
 									@endif
+									@endif
 								</td>
 								@endif
 								<td>
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@if($instancia->tipo == 0)
+									@if($materia->mesas)
 									@if(count($materia->mesas)==0)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@else
@@ -160,6 +165,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@endif
 									@endforeach
+									@endif
 									@endif
 									<div class="modal fade" id="exampleModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">
@@ -208,6 +214,7 @@
 							<tr>
 								<td>{{ $materia->nombre }} <b>({{count($materia->mesa_inscriptos)}})</b></td>
 								@if($instancia->tipo == 0)
+								@if($materia->mesas)
 								<td>
 									@if(count($materia->mesas) == 0)
 									<strong>
@@ -228,9 +235,11 @@
 									@endif
 								</td>
 								@endif
+								@endif
 								<td>
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@if($instancia->tipo == 0)
+									@if($materia->mesas)
 									@if(count($materia->mesas)==0)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@else
@@ -239,6 +248,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@endif
 									@endforeach
+									@endif
 									@endif
 									<div class="modal fade" id="exampleModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">

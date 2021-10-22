@@ -9,7 +9,7 @@ use App\Models\MesaAlumno;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class AlumnoMesaController extends Controller
 {
@@ -43,7 +43,7 @@ class AlumnoMesaController extends Controller
            if($instancia->tipo == 0){
                 $insc = MesaAlumno::where([
                     'dni' => $alumno['dni'],
-                ])->get();
+                ])->whereNotNull('mesa_id')->get();
                 $inscripciones = [];
                 foreach($insc as $inscripcion){
                     if($inscripcion->mesa->instancia_id == $instancia->id){
@@ -85,11 +85,23 @@ class AlumnoMesaController extends Controller
         $alumno = session('alumno');
         $instancia = session('instancia');
         $datos = $request->all();
-        $mesas_alumnos = MesaAlumno::where([
-            'dni' => $alumno['dni'],
-            'instancia_id' => $instancia->id
-        ])->get();
 
+        if($instancia->tipo == 1){
+            $mesas_alumnos = MesaAlumno::where([
+                'dni' => $alumno['dni'],
+                'instancia_id' => $instancia->id
+            ])->get();
+        }else{
+            $insc = MesaAlumno::where([
+                'dni' => $alumno['dni'],
+            ])->whereNotNull('mesa_id')->get();
+            $mesas_alumnos = [];
+            foreach($insc as $inscripcion){
+                if($inscripcion->mesa->instancia_id == $instancia->id){
+                    array_push($mesas_alumnos,$inscripcion);
+                }
+            }
+        }
         if((count($mesas_alumnos) + count($datos) - 1) > $instancia->limite){
              return redirect()->route('mesa.mate')->with([
                 'error_mesa' => 'Solo te puedes inscribir a '.$instancia->limite.' materias.'
@@ -98,10 +110,18 @@ class AlumnoMesaController extends Controller
             unset($datos['_token']);
             foreach($datos as $dato){
                 foreach($mesas_alumnos as $inscripcion){
-                    if($inscripcion->materia_id == $dato){
-                        return redirect()->route('mesa.mate')->with([
-                            'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
-                        ]);
+                    if($instancia->tipo == 1){
+                        if($inscripcion->materia_id == $dato){
+                            return redirect()->route('mesa.mate')->with([
+                                'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
+                            ]);
+                        }
+                    }else{
+                        if($inscripcion['mesa_id'] == $dato){
+                            return redirect()->route('mesa.mate')->with([
+                                'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
+                            ]);
+                        }
                     }
                 }
                 $inscripcion = new MesaAlumno();
@@ -120,7 +140,7 @@ class AlumnoMesaController extends Controller
             }
             Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos,$instancia,$alumno));
             return redirect()->route('mesa.mate')->with([
-                'inscripcion_success'=>'Ya estas inscripto correctamente y se ha enviado un comprobante a tu correo electr��nico.'
+                'inscripcion_success'=>'Ya estas inscripto correctamente y se ha enviado un comprobante a tu correo electrónico.'
             ]);
         }   
     }

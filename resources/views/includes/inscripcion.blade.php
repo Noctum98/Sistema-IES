@@ -391,7 +391,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<input type="submit" value="Inscribirse" class="btn btn-success">
+		<input type="submit" value="Inscribirse" class="btn btn-success" id="loading">
 	</div>
 
 </form>

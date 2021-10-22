@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
 use App\Http\Controllers\UserController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\MesaController;
 
 
 /*
@@ -229,6 +231,7 @@ Route::prefix('mesas')->group(function(){
 
     Route::post('/seleccionar/{id}',[InstanciaController::class,'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{id}',[MesaController::class,'crear'])->name('crear_mesa');
+    Route::get('/borrar/{id}',[InstanciaController::class,'borrar'])->name('borrar_datos');
     Route::post('/crear_instancia',[InstanciaController::class,'crear'])->name('crear_instancia');
     Route::post('/editar_instancia/{id}',[InstanciaController::class,'editar'])->name('editar_instancia');
     Route::get('/estado/{estado}/{id}',[InstanciaController::class,'cambiar_estado']);

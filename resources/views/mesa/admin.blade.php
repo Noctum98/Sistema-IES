@@ -10,7 +10,11 @@
 		  Crear Instancia
 		</button>
 		@endif
-
+		@if(@session('mensaje'))
+		<div class="alert alert-success mt-3">
+			{{@session('mensaje')}}
+		</div>
+		@endif
 		<!-- Modal -->
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
@@ -68,9 +72,9 @@
 				<button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#edit{{$instancia->id}}">
 				  Editar Mesa
 				</button>
-				<button type="button" class="btn-sm btn-danger">
+				<a href="{{route('borrar_datos',['id'=>$instancia->id])}}" type="button" class="btn-sm btn-danger" >
 				  Borrar datos
-				</button>
+				</a>
 				@endif
 		      </td>
 		      <td>

@@ -49,10 +49,14 @@
 	<div class="row">
 		<div class="detalle-pre">
 			<br>
-			<p>Te has bajado de la mesa de {{$inscripcion->materia->nombre}}</p>
+			<p>Te has bajado de la mesa de {{ $instancia->tipo == 0 ? $inscripcion->mesa->materia->nombre : $inscripcion->materia->nombre}}</p>
 			<p>Para bajarte de alguna mesa, ve al siguiente enlace</p>
 			<br>
+			@if($instancia->tipo == 1)
 			<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->materia->carrera->sede->id])}}" class="btn">Mis incripciones</a>
+			@else
+			<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->mesa->materia->carrera->sede->id])}}" class="btn">Mis incripciones</a>
+			@endif
 		</div>
 	</div>		
 </div>

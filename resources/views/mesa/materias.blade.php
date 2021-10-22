@@ -80,7 +80,7 @@
 											</td>
 											<td>
 												<span class="font-weight-bold">
-													{{$mesa->fecha}}
+													{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 												</span>
 											</td>
 											<td>
@@ -120,7 +120,7 @@
 										@endforeach
 									</tbody>
 								</table>
-								<input type="submit" value="Inscribirse" class="btn btn-primary">
+								<input type="submit" value="Inscribirse" class="btn btn-primary" id="loading">
 							</form>
 						</div>
 					</div>
@@ -145,7 +145,7 @@
 						{{
 							$instancia->tipo != 0 ?
 							$inscripcion->materia->nombre :
-							$inscripcion->mesa->materia->nombre
+							$inscripcion['mesa']['materia']['nombre']
 						}}
 						- <a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
 					</li>

@@ -21,4 +21,7 @@ class Materia extends Model
     public function mesa_inscriptos(){
         return $this->hasMany('App\Models\MesaAlumno');
     }
+    public function mesas(){
+        return $this->hasMany('App\Models\Mesa');
+    }
 }

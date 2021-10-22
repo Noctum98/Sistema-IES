@@ -5,11 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mesa extends Model
+class Backup extends Model
 {
     use HasFactory;
-
-    public function materia(){
-        return $this->belongsTo('App\Models\Materia','materia_id');
-    }
+    protected $table = 'backups';
 }

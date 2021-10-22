@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Instancia;
 use App\Models\Sede;
@@ -79,8 +80,18 @@ class InstanciaController extends Controller
         return redirect()->route('mesa.admin');
     }
     public function borrar($id){
-        $mesa_alumnos = MesaAlumno::orderBy('materia_id','DESC');
+        $instancia = Instancia::find($id);
+        if($instancia->tipo == 0){
+            Mesa::where('instancia_id',$id)->delete();
+            DB::statement("ALTER TABLE mesas AUTO_INCREMENT = 1");
+        }
+        $mesa_alumnos = MesaAlumno::orderBy('materia_id','DESC')->where([
+            'instancia_id' => $id
+        ])->delete();
 
+        return redirect()->route('mesa.admin')->with([
+            'mensaje' => 'Datos borrados correctamente'
+        ]);
     }
     public function cambiar_estado($estado,$id){
         $instancia = Instancia::find($id);
@@ -112,5 +123,4 @@ class InstanciaController extends Controller
             'id'=>$sede->id
         ]);
     }
-
 }

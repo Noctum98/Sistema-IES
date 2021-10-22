@@ -450,7 +450,7 @@
 								@enderror
 							</div>
 						</div>
-						<input type="submit" value="Actualizar datos" class="btn btn-success">
+						<input type="submit" value="Actualizar datos" class="btn btn-success" id="loading">
 					</form>
 				</div>
 			</div>	
