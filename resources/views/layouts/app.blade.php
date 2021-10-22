@@ -175,7 +175,7 @@
                   <li class="nav-item text-light">
                     <a class="nav-link" href="#">
                       <span data-feather="file-text"></span>
-                      Current month
+                      Editando prueba 2
                     </a>
                   </li>
                   <li class="nav-item">
