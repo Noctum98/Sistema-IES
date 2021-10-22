@@ -24,15 +24,18 @@ class PreinscripcionController extends Controller
     // Vistas
     public function vista_preinscripcion($id){
         $carrera = Carrera::find($id);
+        $error = '';
         
         
         if($carrera->estado == 1){
             $carrera = null;
+            $error = 'Página deshabilitada';
         }
         
 
         return view('alumno.pre_enroll',[
-            'carrera'   =>  $carrera
+            'carrera'   =>  $carrera,
+            'error'     =>  $error
         ]);
     }
     public function vista_editar($timecheck,$id){

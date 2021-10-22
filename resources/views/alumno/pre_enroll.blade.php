@@ -17,7 +17,7 @@
 					@include('includes.inscripcion')
 				</div>
 				@else
-				<h2 class="h1">Error 404 Not Found</h2>
+				<h2 class="h1">{{$error}}</h2>
 				@endif
 			</div>	
 		</div>
