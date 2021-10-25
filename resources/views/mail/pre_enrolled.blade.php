@@ -50,7 +50,7 @@
     </div>
     
 	<h1 class="h1 pt-4">
-		Preinscripción: {{ $preinscripcion->nombres.' '.$preinscripcion->apellidos }}
+		{{$titulo}}
 	</h1>
 	<hr>
 	<div class="row">

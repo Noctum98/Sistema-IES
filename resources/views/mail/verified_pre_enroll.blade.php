@@ -43,16 +43,16 @@
     </div>
     
 	<h1 class="h1 pt-4">
-		PreinscripciÃ³n: {{ $preinscripcion->nombres.' '.$preinscripcion->apellidos }}
+		{{$titulo}}
 	</h1>
 	<hr>
 	<div class="row">
 		<div class="detalle-pre">
 			<br>
 			<p>
-				Tu preinscripci¨®n esta completa, podr¨¢s ingresar al Aula Virtual de Ingreso en <a href=" https://www.entornovirtual.mendoza.edu.ar/course/view.php?id=2059">este enlace</a> dentro de 72hs.</a>.
+				{{$pie}}<a href=" https://www.entornovirtual.mendoza.edu.ar/course/view.php?id=2059">este enlace</a> dentro de 72hs.</a>.
 			</p>
-			<p>Su ususario y clave ser¨¢n su dni sin puntos.</p>
+			<p>{{$subtitulo}}</p>
 			<br>
 		</div>
 	</div>		

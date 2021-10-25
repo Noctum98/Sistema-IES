@@ -12,4 +12,8 @@ class Mesa extends Model
     public function materia(){
         return $this->belongsTo('App\Models\Materia','materia_id');
     }
+
+    public function mesa_inscriptos(){
+        return $this->hasMany('App\Models\MesaAlumno');
+    }
 }

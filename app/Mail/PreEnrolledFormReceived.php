@@ -29,8 +29,10 @@ class PreEnrolledFormReceived extends Mailable
      */
     public function build()
     {
+        $titulo = 'Preinscripción: '.$this->preinscripcion->nombres.' '.$this->preinscripcion->apellidos;
         return $this->view('mail.pre_enrolled',[
-            'preinscripcion' => $this->preinscripcion
+            'preinscripcion' => $this->preinscripcion,
+            'titulo'         => $titulo
         ]);
     }
 }

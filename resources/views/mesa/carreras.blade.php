@@ -41,7 +41,17 @@
 							@if($materia->año == 1)
 							<tr>
 								<td>
-									{{ $materia->nombre }} <b>({{count($materia->mesa_inscriptos)}})</b>
+									{{ $materia->nombre }} 
+									@if($instancia->tipo == 1)
+									@foreach($materia->mesas as $mesa)
+										@if($mesa->instancia_id == $instancia->id)
+										<b>({{count($materia->mesa->mesa_inscriptos)}})</b>
+										@endif
+									@endforeach
+									@else
+									<b>({{count($materia->mesa_inscriptos)}})</b>
+									@endif
+									
 								</td>
 								@if($instancia->tipo == 0)
 								@if($materia->mesas)

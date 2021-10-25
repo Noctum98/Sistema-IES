@@ -11,8 +11,8 @@ use App\Models\Preinscripcion;
 use App\Mail\PreEnrolledFormReceived;
 use App\Mail\FileErrorForm;
 use App\Mail\VerifiedPreEnroll;
-use Mail;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 
@@ -27,7 +27,7 @@ class PreinscripcionController extends Controller
         $error = '';
         
         
-        if($carrera->estado == 1 || $carrera->vacunas == 'todas'){
+        if(($carrera->estado == 1 || $carrera->vacunas == 'todas') && !Auth::user()){
             $carrera = null;
             $error = 'Página deshabilitada';
         }
