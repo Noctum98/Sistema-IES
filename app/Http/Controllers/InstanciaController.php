@@ -36,11 +36,6 @@ class InstanciaController extends Controller
     public function vista_carreras($id){
         $sede = Sede::find($id);
         $instancia = session('instancia');
-
-        $mesas = Mesa::where([
-            'instancia_id'=>$instancia->id,
-            
-        ])->get();
     
         return view('mesa.carreras',[
             'sede'  =>  $sede,
@@ -103,15 +98,25 @@ class InstanciaController extends Controller
         ]);
     }
     public function descargar_excel($id){
-        $inscripciones = MesaAlumno::where([
-            'materia_id' => $id,
-            'instancia_id' => session('instancia')->id
-        ])->get();
-        $materia = Materia::find($id);
+        $instancia = session('instancia');
+
+        if($instancia->tipo == 0){
+            $inscripciones = MesaAlumno::where([
+                'mesa_id' => $id
+            ])->get();
+
+            $materia = Materia::find($id);
+        }else{
+            $inscripciones = MesaAlumno::where([
+                'materia_id' => $id,
+                'instancia_id' => session('instancia')->id
+            ])->get();
+            $materia = Materia::find($id);
+        }
 
         return Excel::download(
             new mesaAlumnosExport($inscripciones),
-            'Inscripciones '.session('instancia')->nombre.'-'.$materia->nombre.'.xlsx'
+            'Inscripciones '.session('instancia')->nombre.'.xlsx'
         );
     }
     public function seleccionar_sede(Request $request,$id){

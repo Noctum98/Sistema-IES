@@ -16,7 +16,12 @@
 		      <td>{{ $inscripcion->dni }}</td>
 		      <td>{{ $inscripcion->correo }}</td>
 		      <td>{{ $inscripcion->telefono }}</td>
-		      <td>{{$inscripcion->materia->nombre}}</td>
+			  @if($inscripcion->mesa)
+			  <td>{{$inscripcion->mesa->materia->nombre}}</td>
+			  @else
+			  <td>{{$inscripcion->materia->nombre}}</td>
+			  @endif
+		      
 		      <td>{{$inscripcion->created_at->format('d-m-Y')}}</td>
 		    </tr>
 		@endforeach

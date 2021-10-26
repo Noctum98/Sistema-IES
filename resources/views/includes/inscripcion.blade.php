@@ -166,6 +166,7 @@
 			    <strong>{{ $message }}</strong>
 			</span>
 		@enderror
+		<!----
 		<span class="text-danger">
 			*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, clickea sobre 
 			la siguiente casilla para inscribirte por articulo 7mo.
@@ -176,6 +177,7 @@
 		    Inscripción Articulo 7mo
 		  </label>
 		</div>
+		----->
 	</div>
 	<div class="form-group">
 		<label for="escolaridad">Título Secundario:</label>
@@ -336,59 +338,6 @@
 			    <strong>{{ $message }}</strong>
 			</span>
 		@enderror
-	</div>
-	<div id="7mo" style="display: none;">
-		<br>
-		<h4>Artículo 7mo</h4>
-		<hr>
-		<div class="form-group">
-			<label for="primario">
-				Título de Nivel Primario (Adjunta aquí el título  o certificación de finalización del mismo. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes) 
-			</label>
-			<input type="file" id="primario" name="primario" class="@error('primario') is-invalid @enderror" value="{{ old('primario') }}" >
-
-			@error('primario')
-				<span class="invalid-feedback" role="alert">
-				    <strong>{{ $message }}</strong>
-				</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="ctrabajo">
-				Certificado de Trabajo con firma y sello de quien lo emite  (Debe ser legible y claro los datos que figuran en el documento digital que adjunte. Se puede adjuntar una foto, un escaneo color)  
-			</label>
-			<input type="file" id="ctrabajo" name="ctrabajo" class="@error('ctrabajo') is-invalid @enderror" value="{{ old('ctrabajo') }}" >
-
-			@error('ctrabajo')
-				<span class="invalid-feedback" role="alert">
-				    <strong>{{ $message }}</strong>
-				</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="curriculum">
-				Currículum  Vitae (en formato  PDF)  
-			</label>
-			<input type="file" id="curriculum" name="curriculum" class="@error('curriculum') is-invalid @enderror" value="{{ old('curriculum') }}" >
-
-			@error('curriculum')
-				<span class="invalid-feedback" role="alert">
-				    <strong>{{ $message }}</strong>
-				</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="nota">
-				Nota al Rector (en  PDF)   
-			</label>
-			<input type="file" id="nota" name="nota" class="@error('nota') is-invalid @enderror" value="{{ old('nota') }}" >
-
-			@error('nota')
-				<span class="invalid-feedback" role="alert">
-				    <strong>{{ $message }}</strong>
-				</span>
-			@enderror
-		</div>
 	</div>
 	<div class="form-group">
 		<input type="submit" value="Inscribirse" class="btn btn-success" id="loading">

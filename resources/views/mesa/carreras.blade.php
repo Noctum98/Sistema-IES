@@ -10,6 +10,7 @@
 		{{@session('message')}}
 	</div>
 	@endif
+	{{$instancia->id}}
 	<div id="accordion">
 		@foreach($sede->carreras as $carrera)
 		<div class="card">
@@ -42,11 +43,9 @@
 							<tr>
 								<td>
 									{{ $materia->nombre }} 
-									@if($instancia->tipo == 1)
+									@if($instancia->tipo == 0)
 									@foreach($materia->mesas as $mesa)
-										@if($mesa->instancia_id == $instancia->id)
-										<b>({{count($materia->mesa->mesa_inscriptos)}})</b>
-										@endif
+										<b>({{count($mesa->mesa_inscriptos)}})</b>
 									@endforeach
 									@else
 									<b>({{count($materia->mesa_inscriptos)}})</b>
@@ -81,8 +80,12 @@
 								@endif
 								@endif
 								<td>
-									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
+									
 									@if($instancia->tipo == 0)
+										@foreach($materia->mesas as $mesa)
+										<a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
+										@endforeach
+									
 									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@elseif($materia->mesas && count($materia->mesas)>0)
@@ -91,7 +94,13 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@endif
 									@endforeach
+									@else
+									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
+
+
+
+
 									<div class="modal fade" id="exampleModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">
 											<div class="modal-content">
