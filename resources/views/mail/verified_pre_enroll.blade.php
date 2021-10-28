@@ -50,7 +50,7 @@
 		<div class="detalle-pre">
 			<br>
 			<p>
-				{{$pie}}<a href=" https://www.entornovirtual.mendoza.edu.ar/course/view.php?id=2059">este enlace</a> dentro de 72hs.</a>.
+				{{$pie}}
 			</p>
 			<p>{{$subtitulo}}</p>
 			<br>
