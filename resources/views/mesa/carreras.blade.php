@@ -10,7 +10,6 @@
 		{{@session('message')}}
 	</div>
 	@endif
-	{{$instancia->id}}
 	<div id="accordion">
 		@foreach($sede->carreras as $carrera)
 		<div class="card">
@@ -32,7 +31,7 @@
 							<tr>
 								<th scope="col">Primer Año</th>
 								@if($instancia->tipo == 0)
-								<th scope="col">Cierre</th>
+								<th scope="col">Fecha de la mesa</th>
 								@endif
 								<th scope="col">Acción</th>
 							</tr>
@@ -42,15 +41,15 @@
 							@if($materia->año == 1)
 							<tr>
 								<td>
-									{{ $materia->nombre }} 
+									{{ $materia->nombre }}
 									@if($instancia->tipo == 0)
 									@foreach($materia->mesas as $mesa)
-										<b>({{count($mesa->mesa_inscriptos)}})</b>
+									<b>({{count($mesa->mesa_inscriptos)}})</b>
 									@endforeach
 									@else
 									<b>({{count($materia->mesa_inscriptos)}})</b>
 									@endif
-									
+
 								</td>
 								@if($instancia->tipo == 0)
 								@if($materia->mesas)
@@ -80,12 +79,12 @@
 								@endif
 								@endif
 								<td>
-									
+
 									@if($instancia->tipo == 0)
-										@foreach($materia->mesas as $mesa)
-										<a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
-										@endforeach
-									
+									@foreach($materia->mesas as $mesa)
+									<a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
+									@endforeach
+
 									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@elseif($materia->mesas && count($materia->mesas)>0)
@@ -116,7 +115,7 @@
 													<form method="POST" action="{{route('crear_mesa',['id'=>$materia->id])}}">
 														@csrf
 														<div class="form-group">
-															<label for="fecha">Fecha y Hora de cierre:</label>
+															<label for="fecha">Fecha y Hora:</label>
 															<input type="datetime-local" name="fecha" class="form-control" required>
 															<input type="submit" value="Configurar" class="btn btn-sm btn-success mt-2">
 														</div>
@@ -130,7 +129,7 @@
 							</tr>
 							@endif
 							@endforeach
-	
+
 						</tbody>
 					</table>
 					@endif
@@ -148,44 +147,66 @@
 							@foreach($carrera->materias as $materia)
 							@if($materia->año == 2)
 							<tr>
-								<td>{{ $materia->nombre }} <b>({{count($materia->mesa_inscriptos)}})</b></td>
-								@if($instancia->tipo == 0)
 								<td>
-									@if($materia->mesas)
+									{{ $materia->nombre }}
+									@if($instancia->tipo == 0)
+									@foreach($materia->mesas as $mesa)
+									<b>({{count($mesa->mesa_inscriptos)}})</b>
+									@endforeach
+									@else
+									<b>({{count($materia->mesa_inscriptos)}})</b>
+									@endif
+
+								</td>
+								@if($instancia->tipo == 0)
+								@if($materia->mesas)
+								<td>
 									@if(count($materia->mesas) == 0)
 									<strong>
 										Sin configurar
 									</strong>
-									@else
+									@elseif(count($materia->mesas) > 0)
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && $mesa->fecha)
 									<strong>
-										{{date_format(new DateTime($mesa->fecha), 'Y-m-d H:i:s')}}
+										{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 									</strong>
 									@elseif($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<strong>
 										Sin configurar
 									</strong>
+									@else
+									<strong>
+										Sin configurar
+									</strong>
 									@endif
 									@endforeach
 									@endif
-									@endif
 								</td>
 								@endif
+								@endif
 								<td>
-									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
+
 									@if($instancia->tipo == 0)
-									@if($materia->mesas)
-									@if(count($materia->mesas)==0)
+									@foreach($materia->mesas as $mesa)
+									<a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
+									@endforeach
+
+									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
-									@else
+									@elseif($materia->mesas && count($materia->mesas)>0)
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@endif
 									@endforeach
+									@else
+									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
-									@endif
+
+
+
+
 									<div class="modal fade" id="exampleModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">
 											<div class="modal-content">
@@ -201,7 +222,7 @@
 													<form method="POST" action="{{route('crear_mesa',['id'=>$materia->id])}}">
 														@csrf
 														<div class="form-group">
-															<label for="fecha">Fecha y Hora de cierre:</label>
+															<label for="fecha">Fecha y Hora:</label>
 															<input type="datetime-local" name="fecha" class="form-control" required>
 															<input type="submit" value="Configurar" class="btn btn-sm btn-success mt-2">
 														</div>
@@ -215,6 +236,7 @@
 							</tr>
 							@endif
 							@endforeach
+
 						</tbody>
 					</table>
 					<table class="table">
@@ -231,7 +253,17 @@
 							@foreach($carrera->materias as $materia)
 							@if($materia->año == 3)
 							<tr>
-								<td>{{ $materia->nombre }} <b>({{count($materia->mesa_inscriptos)}})</b></td>
+								<td>
+									{{ $materia->nombre }}
+									@if($instancia->tipo == 0)
+									@foreach($materia->mesas as $mesa)
+									<b>({{count($mesa->mesa_inscriptos)}})</b>
+									@endforeach
+									@else
+									<b>({{count($materia->mesa_inscriptos)}})</b>
+									@endif
+
+								</td>
 								@if($instancia->tipo == 0)
 								@if($materia->mesas)
 								<td>
@@ -239,13 +271,17 @@
 									<strong>
 										Sin configurar
 									</strong>
-									@else
+									@elseif(count($materia->mesas) > 0)
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && $mesa->fecha)
 									<strong>
-										{{date_format(new DateTime($mesa->fecha), 'Y-m-d H:i:s')}}
+										{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 									</strong>
 									@elseif($mesa->instancia_id == $instancia->id && !$mesa->fecha)
+									<strong>
+										Sin configurar
+									</strong>
+									@else
 									<strong>
 										Sin configurar
 									</strong>
@@ -256,19 +292,27 @@
 								@endif
 								@endif
 								<td>
-									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
+
 									@if($instancia->tipo == 0)
-									@if($materia->mesas)
-									@if(count($materia->mesas)==0)
+									@foreach($materia->mesas as $mesa)
+									<a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
+									@endforeach
+
+									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
-									@else
+									@elseif($materia->mesas && count($materia->mesas)>0)
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@endif
 									@endforeach
+									@else
+									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
-									@endif
+
+
+
+
 									<div class="modal fade" id="exampleModal{{$materia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">
 											<div class="modal-content">
@@ -284,7 +328,7 @@
 													<form method="POST" action="{{route('crear_mesa',['id'=>$materia->id])}}">
 														@csrf
 														<div class="form-group">
-															<label for="fecha">Fecha y Hora de cierre:</label>
+															<label for="fecha">Fecha y Hora:</label>
 															<input type="datetime-local" name="fecha" class="form-control" required>
 															<input type="submit" value="Configurar" class="btn btn-sm btn-success mt-2">
 														</div>
@@ -298,6 +342,7 @@
 							</tr>
 							@endif
 							@endforeach
+
 						</tbody>
 					</table>
 				</div>
