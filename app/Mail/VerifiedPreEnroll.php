@@ -30,8 +30,8 @@ class VerifiedPreEnroll extends Mailable
     public function build()
     {
         $titulo = 'Preinscripción: '.$this->preinscripcion->nombres.' '.$this->preinscripcion->apellidos;
-        $pie = 'Tu preinscripción esta completa, y tus datos han sido verificados, en breve se anunciara
-        a traves de la página web cuando estará disponible el aula virtual.';
+        $pie = 'Tu preinscripción esta completa, y tus datos han sido verificados, en breve se anunciará
+        a traves de la página web cuando este disponible el aula virtual.';
         $subtitulo = '';
         return $this->view('mail.verified_pre_enroll',[
             'preinscripcion' => $this->preinscripcion,
