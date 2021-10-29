@@ -74,15 +74,13 @@ class InstanciaController extends Controller
 
         return redirect()->route('mesa.admin');
     }
-    public function borrar($id){
+    public function borrar($id,$solo = null){
         $instancia = Instancia::find($id);
-        if($instancia->tipo == 0){
+        if($instancia->tipo == 0 && !$solo){
             Mesa::where('instancia_id',$id)->delete();
             DB::statement("ALTER TABLE mesas AUTO_INCREMENT = 1");
         }
-        $mesa_alumnos = MesaAlumno::orderBy('materia_id','DESC')->where([
-            'instancia_id' => $id
-        ])->delete();
+        $mesa_alumnos = MesaAlumno::truncate();
 
         return redirect()->route('mesa.admin')->with([
             'mensaje' => 'Datos borrados correctamente'
