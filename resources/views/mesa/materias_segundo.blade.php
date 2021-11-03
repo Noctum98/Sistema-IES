@@ -64,19 +64,6 @@
 										<tr>
 											<td>
 												<div class="form-check">
-													@if($segundo_llamado)
-													@if($mesa->cierre_segundo > time())
-													<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
-													<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
-														{{$materia->nombre}}
-													</label>
-													@else
-													<label class="form-check-label text-secondary" for="{{$materia->id}}">
-														{{$materia->nombre}}
-													</label>
-
-													@endif
-													@else
 													@if($mesa->cierre > time())
 													<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
 													<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
@@ -88,33 +75,15 @@
 													</label>
 
 													@endif
-													@endif
 												</div>
 
 											</td>
 											<td>
-												@if($segundo_llamado)
-												<span class="font-weight-bold">
-													{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
-												</span>
-												@else
 												<span class="font-weight-bold">
 													{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 												</span>
-												@endif
 											</td>
 											<td>
-												@if($segundo_llamado)
-												@if($mesa->cierre_segundo > time())
-												<span class="text-success font-weight-bold">
-													Abierta
-												</span>
-												@else
-												<span class="text-secondary font-weight-bold">
-													Cerrada
-												</span>
-												@endif
-												@else
 												@if($mesa->cierre > time())
 												<span class="text-success font-weight-bold">
 													Abierta
@@ -123,7 +92,6 @@
 												<span class="text-secondary font-weight-bold">
 													Cerrada
 												</span>
-												@endif
 												@endif
 											</td>
 											<td class="{{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}} {{$materia->año == 3 ? 'text-secondary' : ''}}">
@@ -179,12 +147,7 @@
 							$inscripcion->materia->nombre :
 							$inscripcion['mesa']['materia']['nombre']
 						}}
-						- 
-						@if($instancia->tipo == 1)
-						<a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
-						@else
-						<a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
-						@endif
+						- <a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
 					</li>
 					@endforeach
 				</ul>

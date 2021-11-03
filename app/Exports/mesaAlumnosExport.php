@@ -18,7 +18,7 @@ class mesaAlumnosExport implements FromView
 
     public function view(): View{
         return view('excel.mesas',[
-            'inscripciones' => $this->inscripciones
+            'inscripciones' => $this->inscripciones,
         ]);
     }
 }

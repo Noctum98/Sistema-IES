@@ -54,6 +54,9 @@ class InstanciaController extends Controller
         $instancia->nombre = $request->input('nombre');
         $instancia->tipo = $request->input('tipo');
         $instancia->limite = $request->input('limite');
+        if($instancia->tipo == 0){
+            $instancia->segundo_llamado = $request->input('segundo_llamado');
+        }
         $instancia->estado = 'inactiva';
         $instancia->save();
 
@@ -64,12 +67,15 @@ class InstanciaController extends Controller
         $validate = $this->validate($request,[
             'nombre'    =>  ['required'],
             'limite'    =>  ['required','numeric'],
-            'tipo'      =>  ['required','numeric']
+            'tipo'      =>  ['required','numeric'],
         ]);
         $instancia = Instancia::find($id);
         $instancia->nombre = $request->input('nombre');
         $instancia->tipo = $request->input('tipo');
         $instancia->limite = $request->input('limite');
+        if($instancia->tipo == 0){
+            $instancia->segundo_llamado = $request->input('segundo_llamado');
+        }
         $instancia->update();
 
         return redirect()->route('mesa.admin');
@@ -97,13 +103,20 @@ class InstanciaController extends Controller
     }
     public function descargar_excel($id){
         $instancia = session('instancia');
+        
+        if(time() > strtotime($instancia->segundo_llamado)){
+            $llamado = 'Segundo llamado';
+        }else{
+            $llamado = 'Primer llamado';
+        }
 
         if($instancia->tipo == 0){
             $inscripciones = MesaAlumno::where([
                 'mesa_id' => $id
             ])->get();
 
-            $materia = Materia::find($id);
+            $mesa = Mesa::find($id);
+            $materia = $mesa->materia;
         }else{
             $inscripciones = MesaAlumno::where([
                 'materia_id' => $id,
@@ -113,8 +126,8 @@ class InstanciaController extends Controller
         }
 
         return Excel::download(
-            new mesaAlumnosExport($inscripciones),
-            'Inscripciones '.session('instancia')->nombre.'.xlsx'
+            new mesaAlumnosExport($inscripciones,$materia),
+            'Inscripciones '.session('instancia')->nombre.'-'.$materia->nombre.'('.$llamado.').xlsx'
         );
     }
     public function seleccionar_sede(Request $request,$id){

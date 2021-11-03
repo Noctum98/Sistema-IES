@@ -43,6 +43,10 @@
 		        		<label for="limite">Limite</label>
 		        		<input type="number" name="limite" class="form-control" required>
 		        	</div>
+					<div class="form-group">
+		        		<label for="limite">Segundo llamado</label>
+		        		<input type="date" name="segundo_llamado" class="form-control">
+		        	</div>
 		        	<input type="submit" class="btn btn-success" value="Crear">
 		        </form>
 		      </div>
@@ -148,6 +152,10 @@
 			        		<label for="limite">Limite</label>
 			        		<input type="number" name="limite" class="form-control" value="{{$instancia->limite}}" required>
 			        	</div>
+						<div class="form-group">
+							<label for="limite">Segundo llamado</label>
+							<input type="date" name="segundo_llamado" class="form-control" value="{{$instancia->segundo_llamado}}">
+		        		</div>
 			        	<input type="submit" class="btn btn-success" value="Editar">
 			        </form>
 			      </div>
