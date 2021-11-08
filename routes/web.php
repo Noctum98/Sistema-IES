@@ -240,4 +240,5 @@ Route::prefix('mesas')->group(function(){
     Route::get('/bajar_mesa/{id}',[AlumnoMesaController::class,'bajar_mesa'])->name('mesa.baja');
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}',[AlumnoMesaController::class,'email_session'])->name('edit.mesa');
     Route::get('/descargar_excel/{id}',[InstanciaController::class,'descargar_excel'])->name('mesa.descargar');
+    Route::get('/descargar_tribunal/{id}',[InstanciaController::class,'descargar_tribunal'])->name('mesa.tribunal');
 });
