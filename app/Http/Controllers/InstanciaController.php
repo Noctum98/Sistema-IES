@@ -146,16 +146,17 @@ class InstanciaController extends Controller
         $carrera = Carrera::find($carrera);
         $instancia = session('instancia');
 
-        if(time() > strtotime($instancia->segundo_llamado)){
+        if (time() > strtotime($instancia->segundo_llamado)) {
             $llamado = "Segundo llamado";
-        }else{
+        } else {
             $llamado = "Primer llamado";
         }
 
-        if($carrera){
-            $excel = Excel::download(new excelTribunalExport($carrera),
-            'Mesas '.$carrera->nombre.'-'.$carrera->sede->nombre.'('.$llamado.').xlsx'
-        );
+        if ($carrera) {
+            $excel = Excel::download(
+                new excelTribunalExport($carrera),
+                'Mesas ' . $carrera->nombre . '-' . $carrera->sede->nombre . '(' . $llamado . ').xlsx'
+            );
         }
 
         //Prueba

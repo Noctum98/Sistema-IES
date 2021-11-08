@@ -17,7 +17,12 @@
 				<h5 class="mb-0">
 					<h6 style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold">
 
-						{{$carrera->nombre}}
+						{{$carrera->nombre}} - 
+						@if($carrera->nombre != 'Enfermería Profesional')
+							Res: {{$carrera->resolucion}}
+						@else
+							Turno {{ucwords($carrera->turno)}}
+						@endif
 
 					</h6>
 				</h5>
