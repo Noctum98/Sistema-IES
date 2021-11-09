@@ -24,6 +24,11 @@
 				{{@session('error_materia')}}
 			</div>
 			@endif
+			@if(@session('error_baja'))
+			<div class="alert alert-danger">
+				{{@session('error_baja')}}
+			</div>
+			@endif
 
 			@if(isset($carreras))
 			@foreach($carreras as $carrera)
@@ -40,7 +45,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<h6>Recuerda la inscripción de la mesa estará abierta hasta 48hs antes de la fecha.</h6>
+							<h6>Recuerda la inscripción de la mesa estará abierta hasta 48hs antes de la fecha y hora de la misma.</h6>
 							<form method="POST" action="{{route('insc_mesa')}}">
 								@csrf
 								<table class="table mt-4">

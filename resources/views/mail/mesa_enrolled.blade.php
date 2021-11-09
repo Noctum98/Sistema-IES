@@ -57,7 +57,7 @@
 			</ul>
 			<p>Para bajarte de alguna mesa, ve al siguiente enlace</p>
 			<br>
-			<a href="{{route('edit.mesa',['dni'=>$alumno['dni'],'id'=>$instancia->id,'sede_id'=>$alumno['sede']])}}" class="btn">Mis incripciones</a>
+			<a href="{{route('edit.mesa',['dni'=>$alumno['dni'],'id'=>$instancia->id,'sede_id'=>$alumno['sede']])}}" class="btn">Mis inscripciones</a>
 		</div>
 	</div>		
 </div>

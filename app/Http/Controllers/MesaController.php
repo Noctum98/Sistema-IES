@@ -30,13 +30,17 @@ class MesaController extends Controller
         $mesa->segundo_vocal = $request->input('segundo_vocal');
         $mesa->fecha = $request->input('fecha');
         $mesa->fecha_segundo = $request->input('fecha_segundo');
-        if (date('D', strtotime($mesa->fecha)) == 'Mon') {
-            $mesa->cierre = strtotime($mesa->fecha . "-3 days");
+        $mesa->presidente_segundo = $request->input('presidente_segundo');
+        $mesa->primer_vocal_segundo = $request->input('primer_vocal_segundo');
+        $mesa->segundo_vocal_segundo = $request->input('segundo_vocal_segundo');
+
+        if (date('D', strtotime($mesa->fecha)) == 'Mon' || date('D', strtotime($mesa->fecha)) == 'Tue') {
+            $mesa->cierre = strtotime($mesa->fecha . "-4 days");
         } else {
             $mesa->cierre = strtotime($mesa->fecha . "-2 days");
         }
-        if (date('D', strtotime($mesa->fecha_segundo)) == 'Mon') {
-            $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-3 days");
+        if (date('D', strtotime($mesa->fecha_segundo)) == 'Mon' || date('D', strtotime($mesa->fecha_segundo)) == 'Tue') {
+            $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-4 days");
         } else {
             $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-2 days");
         }

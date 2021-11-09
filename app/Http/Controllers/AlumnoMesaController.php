@@ -158,15 +158,37 @@ class AlumnoMesaController extends Controller
 
     public function bajar_mesa($id)
     {
+        $instancia = session('instancia');
         $inscripcion = MesaAlumno::find($id);
-        Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
-        $inscripcion->delete();
+
+        if($instancia->tipo == 0){
+            if(time() > strtotime($instancia->segundo_llamado)){
+                if(time() > $inscripcion->mesa->cierre_segundo){
+                    return redirect()->route('mesa.mate')->with([
+                        'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
+                    ]);
+                }else{
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    $inscripcion->delete();
+                }
+            }else{
+                if(time() > $inscripcion->mesa->cierre){
+                    return redirect()->route('mesa.mate')->with([
+                        'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
+                    ]);
+                }else{
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    $inscripcion->delete();
+                }
+            }
+        }
 
         return redirect()->route('mesa.mate');
     }
     public function email_session($dni, $instancia_id, $sede_id)
     {
         $instancia = Instancia::find($instancia_id);
+        session(['instancia' => $instancia]);
 
         if ($instancia->tipo == 1) {
             $inscripciones = MesaAlumno::where([

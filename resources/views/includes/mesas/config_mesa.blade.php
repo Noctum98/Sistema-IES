@@ -17,20 +17,32 @@
                         <input type="datetime-local" name="fecha" class="form-control" required>
                     </div>
                     <div class="form-group">
+                        <label for="presidente">Presidente (Primer llamado):</label>
+                        <input type="text" name="presidente" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="primer_vocal">Primer Vocal (Primer llamado):</label>
+                        <input type="text" name="primer_vocal" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="segundo_vocal">Segundo Vocal (Primer llamado):</label>
+                        <input type="text" name="segundo_vocal" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label for="fecha_segundo">Fecha y Hora (Segundo llamado):</label>
                         <input type="datetime-local" name="fecha_segundo" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="presidente">Presidente:</label>
-                        <input type="text" name="presidente" class="form-control" required>
+                        <label for="presidente">Presidente (Segundo llamado):</label>
+                        <input type="text" name="presidente_segundo" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="primer_vocal">Primer Vocal:</label>
-                        <input type="primer_vocal" name="primer_vocal" class="form-control" required>
+                        <label for="primer_vocal">Primer Vocal (Segundo llamado):</label>
+                        <input type="text" name="primer_vocal_segundo" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="segundo_vocal">Segundo Vocal:</label>
-                        <input type="segundo_vocal" name="segundo_vocal" class="form-control" required>
+                        <label for="segundo_vocal">Segundo Vocal (Segundo llamado):</label>
+                        <input type="text" name="segundo_vocal_segundo" class="form-control" required>
                     </div>
                     <input type="submit" value="Configurar" class="btn btn-sm btn-success mt-2">
                 </form>
