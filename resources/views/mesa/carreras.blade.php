@@ -125,6 +125,9 @@
 									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@elseif($materia->mesas && count($materia->mesas)>0)
+
+									@include('includes.mesas.edit_mesa')
+
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
@@ -134,7 +137,6 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
-				
 									@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
@@ -231,6 +233,9 @@
 									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@elseif($materia->mesas && count($materia->mesas)>0)
+
+									@include('includes.mesas.edit_mesa')
+
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
@@ -240,7 +245,6 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
-						
 								@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 								@endif
@@ -336,6 +340,9 @@
 									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 									@elseif($materia->mesas && count($materia->mesas)>0)
+
+									@include('includes.mesas.edit_mesa')
+									
 									@foreach($materia->mesas as $mesa)
 									@if($mesa->instancia_id == $instancia->id && !$mesa->fecha)
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
@@ -345,6 +352,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
+
 									@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 								@endif
