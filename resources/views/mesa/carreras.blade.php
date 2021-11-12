@@ -134,9 +134,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
-									@if($mesa)
-									@include('includes.mesas.edit_mesa')
-									@endif
+				
 									@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
@@ -242,9 +240,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
-									@if($mesa)
-									@include('includes.mesas.edit_mesa')
-									@endif
+						
 								@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 								@endif
@@ -349,9 +345,6 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
-									@if($mesa)
-									@include('includes.mesas.edit_mesa')
-									@endif
 									@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 								@endif
