@@ -44,7 +44,7 @@
                         <label for="segundo_vocal">Segundo Vocal (Segundo llamado):</label>
                         <input type="text" name="segundo_vocal_segundo" class="form-control">
                     </div>
-                    <input type="submit" value="Configurar" id="loading" class="btn btn-success mt-2">
+                    <input type="submit" value="Configurar" class="btn btn-success mt-2" id="loading">
                 </form>
             </div>
         </div>
