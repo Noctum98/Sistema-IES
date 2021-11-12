@@ -55,6 +55,7 @@
 											@if($instancia->tipo == 0)
 											<th scope="col">Fecha y hora</th>
 											<th scope="col">Inscripción</th>
+											<th scope="col">LLamado</th>
 											@endif
 											<th scope="col">Año</th>
 										</tr>
@@ -69,55 +70,40 @@
 										<tr>
 											<td>
 												<div class="form-check">
-													@if($segundo_llamado)
-													@if($mesa->cierre_segundo > time())
-													<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
-													<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
-														{{$materia->nombre}}
-													</label>
-													@else
-													<label class="form-check-label text-secondary" for="{{$materia->id}}">
-														{{$materia->nombre}}
-													</label>
 
-													@endif
-													@else
-													@if($mesa->cierre > time())
-													<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
-													<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
-														{{$materia->nombre}}
-													</label>
-													@else
-													<label class="form-check-label text-secondary" for="{{$materia->id}}">
-														{{$materia->nombre}}
-													</label>
-
-													@endif
+													@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
+														<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
+														<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
+															{{$materia->nombre}}
+														</label>
+													@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) || time() > $mesa->cierre_segundo))
+														<label class="form-check-label text-secondary" for="{{$materia->id}}">
+															{{$materia->nombre}}
+														</label>
 													@endif
 												</div>
 
 											</td>
 											<td>
-												@if($segundo_llamado)
-												<span class="font-weight-bold">
-													{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
-												</span>
-												@else
-												<span class="font-weight-bold">
-													{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
-												</span>
-												@endif
+												@if(time() <= strtotime($mesa->fecha))
+													<span class="font-weight-bold">
+														{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
+													</span>
+													@else
+													<span class="font-weight-bold">
+														{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
+													</span>
+													@endif
 											</td>
 											<td>
-												@if($segundo_llamado)
-												@if($mesa->cierre_segundo > time())
-												<span class="text-success font-weight-bold">
-													Abierta
-												</span>
+												@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
+													<span class="text-success font-weight-bold">
+														Abierta
+													</span>
 												@else
-												<span class="text-secondary font-weight-bold">
-													Cerrada
-												</span>
+													<span class="text-secondary font-weight-bold">
+														Cerrada
+													</span>
 												@endif
 												@else
 												@if($mesa->cierre > time())
@@ -125,17 +111,24 @@
 													Abierta
 												</span>
 												@else
-												<span class="text-secondary font-weight-bold">
-													Cerrada
-												</span>
+													<span class="text-secondary font-weight-bold">
+														Cerrada
+													</span>
 												@endif
+												@endif
+											</td>
+											<td>
+												@if(time() <= strtotime($mesa->fecha) || !$mesa->fecha_segundo)
+													<span class="font-weight-bold">1ero</span>
+												@elseif(time() > strtotime($mesa->fecha) && $mesa->fecha_segundo)
+													<span class="font-weight-bold">2do</span>
 												@endif
 											</td>
 											<td class="{{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}} {{$materia->año == 3 ? 'text-secondary' : ''}}">
 												{{$materia->año}} °
 											</td>
 										</tr>
-										@endif
+
 										@endforeach
 										@endif
 										@else
@@ -184,10 +177,15 @@
 							$inscripcion->materia->nombre :
 							$inscripcion['mesa']['materia']['nombre']
 						}}
-						- 
+						-
 						@if($instancia->tipo == 1)
 						<a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
 						@else
+						@if(!$inscripcion['segundo_llamado'])
+							<span class="font-weight-bold">1er llamado- </>
+						@else
+							<span class="font-weight-bold">2do llamado- </>
+						@endif
 						<a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
 						@endif
 					</li>

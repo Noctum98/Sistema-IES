@@ -6,6 +6,7 @@ use App\Models\Instancia;
 use App\Models\Sede;
 use App\Models\Carrera;
 use App\Models\MesaAlumno;
+use App\Models\Mesa;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
@@ -37,16 +38,12 @@ class AlumnoMesaController extends Controller
         $alumno = session('alumno');
         $instancia = session('instancia');
         $carreras = Carrera::where('sede_id', $alumno['sede'])->get();
-        $segundo_llamado = false;
 
         if ($instancia->estado == 'inactiva') {
             return view('error.mesa_closed');
         } else {
 
             if ($instancia->tipo == 0) {
-                if (time() > strtotime($instancia->segundo_llamado)) {
-                    $segundo_llamado = true;
-                }
                 $insc = MesaAlumno::where([
                     'dni' => $alumno['dni'],
                 ])->whereNotNull('mesa_id')->get();
@@ -68,8 +65,7 @@ class AlumnoMesaController extends Controller
             return view('mesa.materias', [
                 'carreras'  =>  $carreras,
                 'inscripciones' => $inscripciones,
-                'instancia' => $instancia,
-                'segundo_llamado'   => $segundo_llamado
+                'instancia' => $instancia
             ]);
         }
     }
@@ -142,6 +138,12 @@ class AlumnoMesaController extends Controller
                 $inscripcion->correo = $alumno['email'] ? $alumno['email'] : $alumno['correo'];
                 $inscripcion->telefono = $alumno['telefono'];
                 if ($instancia->tipo == 0) {
+                    $mesa = Mesa::find($dato);
+                    if(time() > strtotime($mesa->fecha)){
+                        $inscripcion->segundo_llamado = true;
+                    }else{
+                        $inscripcion->segundo_llamdo = false;
+                    }
                     $inscripcion->mesa_id = (int) $dato;
                 } else {
                     $inscripcion->materia_id = (int) $dato;
@@ -162,7 +164,7 @@ class AlumnoMesaController extends Controller
         $inscripcion = MesaAlumno::find($id);
 
         if($instancia->tipo == 0){
-            if(time() > strtotime($instancia->segundo_llamado)){
+            if(time() > strtotime($inscripcion->mesa->fecha)){
                 if(time() > $inscripcion->mesa->cierre_segundo){
                     return redirect()->route('mesa.mate')->with([
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'

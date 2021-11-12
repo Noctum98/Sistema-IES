@@ -10,6 +10,11 @@
 		{{@session('message')}}
 	</div>
 	@endif
+	@if(@session('message_edit'))
+	<div class="alert alert-primary">
+		{{@session('message_edit')}}
+	</div>
+	@endif
 	<div id="accordion">
 		@foreach($sede->carreras as $carrera)
 		<div class="card">
@@ -114,6 +119,7 @@
 									@if($instancia->tipo == 0)
 									@foreach($materia->mesas as $mesa)
 									<a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
+									<a href="#" class="btn-sm btn-primary" data-toggle="modal" data-target="#editModal{{$materia->id}}">Editar mesa</a>
 									@endforeach
 
 									@if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
@@ -128,6 +134,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
+									@include('includes.mesas.edit_mesa')
 									@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
@@ -233,6 +240,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
+									@include('includes.mesas.edit_mesa')
 								@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 								@endif
@@ -337,6 +345,7 @@
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 									@endif
 									@include('includes.mesas.config_mesa')
+									@include('includes.mesas.edit_mesa')
 									@else
 									<a href="{{route('mesa.descargar',['id'=>$materia->id])}}" class="btn-sm btn-success">Descargar excel</a>
 								@endif

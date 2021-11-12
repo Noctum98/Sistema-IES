@@ -26,8 +26,8 @@
 		<td>{{ $mesa['presidente'] }}</td>
         <td>{{ $mesa['primer_vocal'] }}</td>
         <td>{{ $mesa['segundo_vocal'] }}</td>
-        <td>{{  date_format(new DateTime( $mesa['fecha_segundo'] ), 'd-m-Y') }}</td>
-        <td>{{  date_format(new DateTime( $mesa['fecha_segundo'] ), 'H:i') }}</td>
+        <td>{{ $mesa['fecha_segundo'] ? date_format(new DateTime( $mesa['fecha_segundo'] ), 'd-m-Y') : '' }}</td>
+        <td>{{ $mesa['fecha_segundo'] ? date_format(new DateTime( $mesa['fecha_segundo'] ), 'H:i') : ''}}</td>
 		<td>{{ $mesa['presidente_segundo'] }}</td>
         <td>{{ $mesa['primer_vocal_segundo'] }}</td>
         <td>{{ $mesa['segundo_vocal_segundo'] }}</td>

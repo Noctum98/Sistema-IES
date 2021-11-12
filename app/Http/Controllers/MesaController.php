@@ -13,11 +13,16 @@ class MesaController extends Controller
     {
         $validate = $this->validate($request, [
             'fecha' => ['required'],
-            'fecha_segundo' => ['required'],
             'presidente'    => ['required', 'string'],
             'primer_vocal'  => ['required', 'string'],
             'segundo_vocal' => ['required', 'string']
         ]);
+
+        $mesa_verified = Mesa::where('materia_id',$id)->first();
+
+        if($mesa_verified){
+            return redirect()->route('mesa.carreras');
+        }
 
         $materia = Materia::find($id);
         $instancia = session('instancia');
@@ -25,6 +30,45 @@ class MesaController extends Controller
         $mesa = new Mesa();
         $mesa->instancia_id = $instancia->id;
         $mesa->materia_id = $materia->id;
+        $mesa->presidente = $request->input('presidente');
+        $mesa->primer_vocal = $request->input('primer_vocal');
+        $mesa->segundo_vocal = $request->input('segundo_vocal');
+        $mesa->fecha = $request->input('fecha');
+        $mesa->fecha_segundo = $request->input('fecha_segundo') ? $request->input('fecha_segundo'): null;
+        $mesa->presidente_segundo = $request->input('presidente_segundo') ? $request->input('presidente_segundo'): null;
+        $mesa->primer_vocal_segundo = $request->input('primer_vocal_segundo') ? $request->input('primer_vocal_segundo') : null;
+        $mesa->segundo_vocal_segundo = $request->input('segundo_vocal_segundo') ? $request->input('segundo_vocal_segundo') : null;
+
+        if (date('D', strtotime($mesa->fecha)) == 'Mon' || date('D', strtotime($mesa->fecha)) == 'Tue') {
+            $mesa->cierre = strtotime($mesa->fecha . "-4 days");
+        } else {
+            $mesa->cierre = strtotime($mesa->fecha . "-2 days");
+        }
+        if ($request->input('fecha_segundo') && date('D', strtotime($mesa->fecha_segundo)) == 'Mon' || date('D', strtotime($mesa->fecha_segundo)) == 'Tue') {
+            $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-4 days");
+        } else {
+            $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-2 days");
+        }
+        $mesa->save();
+
+        return redirect()->route('mesa.carreras', [
+            'id' => $materia->carrera->sede->id
+        ])->with([
+            'message' => 'Mesa ' . $materia->nombre . ' configurada correctamente'
+        ]);
+    }
+
+    public function editar(Request $request, $id){
+
+        $validate = $this->validate($request, [
+            'fecha' => ['required'],
+            'presidente'    => ['required', 'string'],
+            'primer_vocal'  => ['required', 'string'],
+            'segundo_vocal' => ['required', 'string']
+        ]);
+
+        $mesa = Mesa::where('materia_id',$id)->first();
+
         $mesa->presidente = $request->input('presidente');
         $mesa->primer_vocal = $request->input('primer_vocal');
         $mesa->segundo_vocal = $request->input('segundo_vocal');
@@ -44,12 +88,12 @@ class MesaController extends Controller
         } else {
             $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-2 days");
         }
-        $mesa->save();
+        $mesa->update();
 
         return redirect()->route('mesa.carreras', [
-            'id' => $materia->carrera->sede->id
+            'id' => $mesa->materia->carrera->sede->id
         ])->with([
-            'message' => 'Mesa ' . $materia->nombre . ' configurada correctamente'
+            'message_edit' => 'Mesa ' . $mesa->materia->nombre . ' editada correctamente'
         ]);
     }
 }

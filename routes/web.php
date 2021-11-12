@@ -231,6 +231,7 @@ Route::prefix('mesas')->group(function(){
 
     Route::post('/seleccionar/{id}',[InstanciaController::class,'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{id}',[MesaController::class,'crear'])->name('crear_mesa');
+    Route::post('/editar/{id}',[MesaController::class,'editar'])->name('editar_mesa');
     Route::get('/borrar/{id}/{solo?}',[InstanciaController::class,'borrar'])->name('borrar_datos');
     Route::post('/crear_instancia',[InstanciaController::class,'crear'])->name('crear_instancia');
     Route::post('/editar_instancia/{id}',[InstanciaController::class,'editar'])->name('editar_instancia');
