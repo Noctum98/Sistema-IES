@@ -116,21 +116,9 @@ class AlumnoMesaController extends Controller
         } else {
             unset($datos['_token']);
             foreach ($datos as $dato) {
-                foreach ($mesas_alumnos as $inscripcion) {
-                    if ($instancia->tipo == 1) {
-                        if ($inscripcion->materia_id == $dato) {
-                            return redirect()->route('mesa.mate')->with([
-                                'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
-                            ]);
-                        }
-                    } else {
-                        if ($inscripcion['mesa_id'] == $dato) {
-                            return redirect()->route('mesa.mate')->with([
-                                'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
-                            ]);
-                        }
-                    }
-                }
+
+                $this->comprobacionInscripcion($mesas_alumnos, $instancia, $dato);
+
                 $inscripcion = new MesaAlumno();
                 $inscripcion->nombres = $alumno['nombres'];
                 $inscripcion->apellidos = $alumno['apellidos'];
@@ -139,10 +127,10 @@ class AlumnoMesaController extends Controller
                 $inscripcion->telefono = $alumno['telefono'];
                 if ($instancia->tipo == 0) {
                     $mesa = Mesa::find($dato);
-                    if(time() > strtotime($mesa->fecha)){
+                    if (time() > strtotime($mesa->fecha)) {
                         $inscripcion->segundo_llamado = true;
-                    }else{
-                        $inscripcion->segundo_llamdo = false;
+                    } else {
+                        $inscripcion->segundo_llamado = false;
                     }
                     $inscripcion->mesa_id = (int) $dato;
                 } else {
@@ -151,7 +139,7 @@ class AlumnoMesaController extends Controller
                 }
                 $inscripcion->save();
             }
-            Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia, $alumno));
+            //Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia, $alumno));
             return redirect()->route('mesa.mate')->with([
                 'inscripcion_success' => 'Ya estas inscripto correctamente y se ha enviado un comprobante a tu correo electrónico.'
             ]);
@@ -163,22 +151,22 @@ class AlumnoMesaController extends Controller
         $instancia = session('instancia');
         $inscripcion = MesaAlumno::find($id);
 
-        if($instancia->tipo == 0){
-            if(time() > strtotime($inscripcion->mesa->fecha)){
-                if(time() > $inscripcion->mesa->cierre_segundo){
+        if ($instancia->tipo == 0) {
+            if (time() > strtotime($inscripcion->mesa->fecha)) {
+                if (time() > $inscripcion->mesa->cierre_segundo) {
                     return redirect()->route('mesa.mate')->with([
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
                     ]);
-                }else{
+                } else {
                     Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                     $inscripcion->delete();
                 }
-            }else{
-                if(time() > $inscripcion->mesa->cierre){
+            } else {
+                if (time() > $inscripcion->mesa->cierre) {
                     return redirect()->route('mesa.mate')->with([
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
                     ]);
-                }else{
+                } else {
                     Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                     $inscripcion->delete();
                 }
@@ -228,6 +216,27 @@ class AlumnoMesaController extends Controller
                 'alumno'    => $datos
             ]);
             return redirect()->route('mesa.mate');
+        }
+    }
+
+    // Funciones privadas
+
+    private function comprobacionInscripcion($mesas_alumnos, $instancia, $dato)
+    {
+        foreach ($mesas_alumnos as $inscripcion) {
+            if ($instancia->tipo == 1) {
+                if ($inscripcion->materia_id == $dato) {
+                    return redirect()->route('mesa.mate')->with([
+                        'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
+                    ]);
+                }
+            } else {
+                if ($inscripcion['mesa_id'] == $dato) {
+
+                    $inscripcion->delete();
+                    
+                }
+            }
         }
     }
 }

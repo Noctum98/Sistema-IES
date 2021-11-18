@@ -182,11 +182,13 @@
 						<a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
 						@else
 						@if(!$inscripcion['segundo_llamado'])
-							<span class="font-weight-bold">1er llamado- </>
+							<span class="font-weight-bold">1er llamado </span>
 						@else
-							<span class="font-weight-bold">2do llamado- </>
+							<span class="font-weight-bold">2do llamado </span>
 						@endif
-						<a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
+						@if(time() < $inscripcion['mesa']['cierre'] || (time() > strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo']))
+						- <a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
+						@endif
 						@endif
 					</li>
 					@endforeach

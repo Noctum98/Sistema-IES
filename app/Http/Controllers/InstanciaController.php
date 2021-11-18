@@ -115,20 +115,21 @@ class InstanciaController extends Controller
     {
         $instancia = session('instancia');
 
-        if (time() > strtotime($instancia->segundo_llamado)) {
-            $llamado = 'Segundo llamado';
-        } else {
-            $llamado = 'Primer llamado';
-        }
-
         if ($instancia->tipo == 0) {
-            $inscripciones = MesaAlumno::where([
-                'mesa_id' => $id
-            ])->get();
-
             $mesa = Mesa::find($id);
+            if(time() < strtotime($mesa->fecha)){
+                $segundo_llamado = false;
+            }else{
+                $segundo_llamado = true;
+            }
+            $inscripciones = MesaAlumno::where([
+                'mesa_id' => $id,
+                'segundo_llamado' => $segundo_llamado
+            ])->get();
+     
             $materia = $mesa->materia;
         } else {
+  
             $inscripciones = MesaAlumno::where([
                 'materia_id' => $id,
                 'instancia_id' => session('instancia')->id
@@ -138,7 +139,7 @@ class InstanciaController extends Controller
 
         return Excel::download(
             new mesaAlumnosExport($inscripciones, $materia),
-            'Inscripciones ' . session('instancia')->nombre . '-' . $materia->nombre . '(' . $llamado . ').xlsx'
+            'Inscripciones ' . session('instancia')->nombre . '-' . $materia->nombre . '.xlsx'
         );
     }
     public function descargar_tribunal($carrera)
