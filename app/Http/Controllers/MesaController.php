@@ -18,15 +18,20 @@ class MesaController extends Controller
             'segundo_vocal' => ['required', 'string']
         ]);
 
-        $mesa_verified = Mesa::where('materia_id',$id)->first();
-
-        if($mesa_verified){
-            return redirect()->route('mesa.carreras');
-        }
-
         $materia = Materia::find($id);
         $instancia = session('instancia');
 
+        $mesa_verified = Mesa::where([
+            'materia_id' => $id,
+            'instancia_id' => $instancia->id
+        ])->first();
+
+        if($mesa_verified){
+            return redirect()->route('mesa.carreras', [
+                'id' => $materia->carrera->sede->id
+            ]);
+        }
+ 
         $mesa = new Mesa();
         $mesa->instancia_id = $instancia->id;
         $mesa->materia_id = $materia->id;
