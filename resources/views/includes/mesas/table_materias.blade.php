@@ -56,6 +56,7 @@
         @if($instancia->tipo == 0)
         @foreach($materia->mesas as $mesa)
         <a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" class="btn-sm btn-success">Descargar excel</a>
+        <a href="{{route('mesa.descargar',['id'=>$mesa->id])}}" data-toggle="modal" data-target="#editModal{{$materia->id}}" class="btn-sm btn-primary">Editar mesa</a>
         @endforeach
 
         @if(($materia->mesas && count($materia->mesas)==0) || !$materia->mesas)
