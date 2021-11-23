@@ -139,7 +139,7 @@ class AlumnoMesaController extends Controller
                 }
                 $inscripcion->save();
             }
-            //Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia, $alumno));
+            Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia, $alumno));
             return redirect()->route('mesa.mate')->with([
                 'inscripcion_success' => 'Ya estas inscripto correctamente y se ha enviado un comprobante a tu correo electrónico.'
             ]);
