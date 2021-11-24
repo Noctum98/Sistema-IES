@@ -98,7 +98,7 @@
                     </a>
                   </li>
                   @endif
-                  @if(Auth::user()->rol == 'rol_admin' || Auth::user()->rol == 'rol_main_1')
+                  @if(Auth::user()->rol == 'rol_admin' || Auth::user()->rol == 'rol_main_1' || Auth::user()->rol == 'rol_main_2')
                   <li class="nav-item">
                     <a class="nav-link text-light" href="{{ route('mesa.admin') }}">
                       <span data-feather="users"></span>

@@ -19,7 +19,7 @@ use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\MesaController;
-
+use App\Models\Carrera;
 
 /*
 |--------------------------------------------------------------------------
@@ -228,6 +228,7 @@ Route::prefix('mesas')->group(function(){
     Route::get('/administrar',[InstanciaController::class,'vista_admin'])->name('mesa.admin');
     Route::get('/carreras/{id}',[InstanciaController::class,'vista_carreras'])->name('mesa.carreras');
     Route::get('/materias',[AlumnoMesaController::class,'vista_materias'])->name('mesa.mate');
+    Route::get('/inscriptos/{id}',[MesaController::class,'vista_inscripciones'])->name('mesa.inscriptos');
 
     Route::post('/seleccionar/{id}',[InstanciaController::class,'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{id}',[MesaController::class,'crear'])->name('crear_mesa');
@@ -239,7 +240,17 @@ Route::prefix('mesas')->group(function(){
     Route::post('/alumno/crear',[AlumnoMesaController::class,'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion',[AlumnoMesaController::class,'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}',[AlumnoMesaController::class,'bajar_mesa'])->name('mesa.baja');
+    Route::get('/borrar_mesa/{id}',[AlumnoMesaController::class,'borrar_inscripcion'])->name('mesa.borrar');
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}',[AlumnoMesaController::class,'email_session'])->name('edit.mesa');
-    Route::get('/descargar_excel/{id}',[InstanciaController::class,'descargar_excel'])->name('mesa.descargar');
+    Route::get('/descargar_excel/{id}/{llamado}',[InstanciaController::class,'descargar_excel'])->name('mesa.descargar');
     Route::get('/descargar_tribunal/{id}',[InstanciaController::class,'descargar_tribunal'])->name('mesa.tribunal');
+    Route::get('/descargar_total/{id}',[InstanciaController::class,'descargar_total'])->name('mesa.total.descargar');
+
+    //Prueba
+    Route::get('/prueba',function(){
+        return view('excel.total_inscripciones_mesas',[
+            'carreras' =>  Carrera::where('sede_id',7)->get(),
+            'instancia' => session('instancia')
+        ]);
+    });
 });

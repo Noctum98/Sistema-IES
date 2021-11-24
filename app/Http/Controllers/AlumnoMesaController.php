@@ -158,8 +158,8 @@ class AlumnoMesaController extends Controller
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
                     ]);
                 } else {
-                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                     $inscripcion->delete();
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
             } else {
                 if (time() > $inscripcion->mesa->cierre) {
@@ -167,13 +167,28 @@ class AlumnoMesaController extends Controller
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
                     ]);
                 } else {
-                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                     $inscripcion->delete();
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
             }
         }
 
         return redirect()->route('mesa.mate');
+    }
+    public function borrar_inscripcion($id){
+        $instancia = session('instancia');
+        $inscripcion = MesaAlumno::find($id);
+        $mesa_id = $inscripcion->mesa_id;
+        
+
+        if ($instancia->tipo == 0) {
+            $inscripcion->delete();
+            return redirect()->route('mesa.inscriptos',[
+                'id' => $mesa_id
+            ])->with([
+                'baja_exitosa' => 'Se ha borrado la inscripción correctamente'
+            ]);
+        }
     }
     public function email_session($dni, $instancia_id, $sede_id)
     {

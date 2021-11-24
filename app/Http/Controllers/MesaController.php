@@ -8,6 +8,30 @@ use App\Models\Mesa;
 
 class MesaController extends Controller
 {
+    // Vistas
+    public function vista_inscripciones($id){
+        $instancia = session('instancia');
+        $primer_llamado = [];
+        $segundo_llamado = [];
+
+        $mesa = Mesa::where([
+            'id' => $id,
+        ])->first();
+
+        foreach($mesa->mesa_inscriptos as $inscripcion){
+            if($inscripcion->segundo_llamado){
+                array_push($segundo_llamado,$inscripcion);
+            }else{
+                array_push($primer_llamado,$inscripcion);
+            }
+        }
+
+        return view('mesa.inscripciones',[
+            'mesa' => $mesa,
+            'primer_llamado' => $primer_llamado,
+            'segundo_llamado' => $segundo_llamado
+        ]);
+    }
     // Funcionalidades
     public function crear(Request $request, $id)
     {

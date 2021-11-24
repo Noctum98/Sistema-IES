@@ -4,6 +4,11 @@
 	<h2 class="h1">
 		{{$sede->nombre}}
 	</h2>
+	@if(Auth::user()->rol == 'rol_admin' || Auth::user()->rol == 'rol_main_2')
+	<a href="{{route('mesa.total.descargar',['id'=>$sede->id])}}" class="btn btn-success">
+		Descargar inscriptos
+	</a>
+	@endif
 	<hr>
 	@if(@session('message'))
 	<div class="alert alert-success">
@@ -15,6 +20,7 @@
 		{{@session('message_edit')}}
 	</div>
 	@endif
+	
 	<div id="accordion">
 		@foreach($sede->carreras as $carrera)
 		<div class="card">

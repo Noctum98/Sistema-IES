@@ -14,6 +14,7 @@ use App\Models\Mesa;
 use App\Models\Carrera;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
+use App\Exports\totalInscripcionesExport;
 
 class InstanciaController extends Controller
 {
@@ -111,13 +112,13 @@ class InstanciaController extends Controller
             'status' => 'success'
         ]);
     }
-    public function descargar_excel($id)
+    public function descargar_excel($id,$llamado)
     {
         $instancia = session('instancia');
 
         if ($instancia->tipo == 0) {
             $mesa = Mesa::find($id);
-            if(time() < strtotime($mesa->fecha)){
+            if($llamado == 'primero'){
                 $segundo_llamado = false;
             }else{
                 $segundo_llamado = true;
@@ -162,6 +163,15 @@ class InstanciaController extends Controller
 
         //Prueba
         return $excel;
+    }
+    public function descargar_total($sede_id){
+        $carreras = Carrera::where('sede_id',$sede_id)->get();
+        $sede = Sede::find($sede_id);
+
+        return Excel::download(
+            new totalInscripcionesExport($carreras),
+            'Inscripciones mesas de '.$sede->nombre.'.xlsx'
+        );
     }
     public function seleccionar_sede(Request $request, $id)
     {
