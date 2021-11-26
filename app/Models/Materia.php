@@ -24,4 +24,13 @@ class Materia extends Model
     public function mesas(){
         return $this->hasMany('App\Models\Mesa');
     }
+
+    public function mesa($instancia_id,$materia_id){
+        $peticion = Mesa::where([
+            'instancia_id' => $instancia_id,
+            'materia_id'    => $materia_id
+        ])->first();
+
+        return $peticion;
+    }
 }
