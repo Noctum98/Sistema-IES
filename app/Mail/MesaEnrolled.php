@@ -16,9 +16,9 @@ class MesaEnrolled extends Mailable
      *
      * @return void
      */
-    public function __construct($datos,$instancia,$alumno)
+    public function __construct($datos,$instancia,$inscripcion)
     {
-        $this->alumno = $alumno;
+        $this->inscripcion = $inscripcion;
         $this->datos = $datos;
         $this->instancia = $instancia;
         $this->subject("Mesas IESVU 9015");
@@ -31,15 +31,17 @@ class MesaEnrolled extends Mailable
      */
     public function build()
     {
+
         $datos_limpios = [];
         foreach($this->datos as $k => $dato){
             $key = str_replace('_',' ',$k);
             array_push($datos_limpios,$key);
         }
+    
         return $this->view('mail.mesa_enrolled',[
-            'datos' =>  $datos_limpios,
-            'instancia' =>  $this->instancia,
-            'alumno'    =>  $this->alumno
+            'datos'         =>  $datos_limpios,
+            'instancia'     =>  $this->instancia,
+            'inscripcion'   =>  $this->inscripcion
         ]);
     }
 }

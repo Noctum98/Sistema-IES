@@ -20,6 +20,7 @@ use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\MesaController;
 use App\Models\Carrera;
+use App\Models\MesaAlumno;
 
 /*
 |--------------------------------------------------------------------------
@@ -248,9 +249,10 @@ Route::prefix('mesas')->group(function(){
 
     //Prueba
     Route::get('/prueba',function(){
-        return view('excel.total_inscripciones_mesas',[
-            'carreras' =>  Carrera::where('sede_id',7)->get(),
-            'instancia' => session('instancia')
+        return view('mail.mesa_enrolled',[
+            'datos' =>  ['Base de Enfermeria'],
+            'instancia' => session('instancia'),
+            'inscripcion' => MesaAlumno::find(22)
         ]);
     });
 });
