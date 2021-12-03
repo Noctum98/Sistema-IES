@@ -53,9 +53,9 @@
 			<p>Para bajarte de alguna mesa, ve al siguiente enlace</p>
 			<br>
 			@if($instancia->tipo == 1)
-			<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->materia->carrera->sede->id])}}" class="btn">Mis incripciones</a>
+			<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->materia->carrera->sede->id])}}" class="btn">Mis inscripciones</a>
 			@else
-			<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->mesa->materia->carrera->sede->id])}}" class="btn">Mis incripciones</a>
+			<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->mesa->materia->carrera->sede->id])}}" class="btn">Mis inscripciones</a>
 			@endif
 		</div>
 	</div>		
