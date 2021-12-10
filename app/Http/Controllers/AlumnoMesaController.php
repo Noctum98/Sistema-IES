@@ -24,7 +24,9 @@ class AlumnoMesaController extends Controller
         $instancia = Instancia::find($id);
         $sedes = Sede::all();
 
-        if ($instancia->estado == 'inactiva') {
+        if(!$instancia){
+            return view('error.error');
+        }elseif ($instancia->estado == 'inactiva') {
             return view('error.mesa_closed');
         } else {
             session(['instancia' => $instancia]);
