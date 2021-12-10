@@ -39,10 +39,10 @@ class InstanciaController extends Controller
             'sedes' =>  $sedes
         ]);
     }
-    public function vista_carreras($id)
+    public function vista_carreras($sede_id,$instancia_id)
     {
-        $sede = Sede::find($id);
-        $instancia = session('instancia');
+        $sede = Sede::find($sede_id);
+        $instancia = Instancia::find($instancia_id);
 
         return view('mesa.carreras', [
             'sede'  =>  $sede,
@@ -177,10 +177,10 @@ class InstanciaController extends Controller
     {
         $sede = Sede::find($request->input('sedes'));
         $instancia = Instancia::find($id);
-        session(['instancia' => $instancia]);
 
         return redirect()->route('mesa.carreras', [
-            'id' => $sede->id
+            'sede_id' => $sede->id,
+            'instancia_id' => $instancia->id
         ]);
     }
 }

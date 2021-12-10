@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instancia;
 use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
@@ -50,7 +51,7 @@ class MesaController extends Controller
         ]);
     }
     // Funcionalidades
-    public function crear(Request $request, $id)
+    public function crear(Request $request, $materia_id,$instancia_id)
     {
         $validate = $this->validate($request, [
             'fecha' => ['required'],
@@ -59,8 +60,8 @@ class MesaController extends Controller
             'segundo_vocal' => ['required', 'string']
         ]);
 
-        $materia = Materia::find($id);
-        $instancia = session('instancia');
+        $materia = Materia::find($materia_id);
+        $instancia = Instancia::find($instancia_id);
 
         $fecha_dia = date("d-m-Y", strtotime($request['fecha']));
         $fecha_dia_segundo = date("d-m-Y", strtotime($request['fecha_segundo']));
@@ -84,13 +85,14 @@ class MesaController extends Controller
         }
         
         $mesa_verified = Mesa::where([
-            'materia_id' => $id,
+            'materia_id' => $materia->id,
             'instancia_id' => $instancia->id
         ])->first();
 
         if($mesa_verified){
             return redirect()->route('mesa.carreras', [
-                'id' => $materia->carrera->sede->id
+                'sede_id' => $materia->carrera->sede->id,
+                'instancia_id' => $instancia->id
             ]);
         }
  
@@ -119,13 +121,14 @@ class MesaController extends Controller
         $mesa->save();
 
         return redirect()->route('mesa.carreras', [
-            'id' => $materia->carrera->sede->id
+            'sede_id' => $materia->carrera->sede->id,
+            'instancia_id' => $instancia->id
         ])->with([
             'message' => 'Mesa ' . $materia->nombre . ' configurada correctamente'
         ]);
     }
 
-    public function editar(Request $request, $id){
+    public function editar(Request $request, $materia_id,$instancia_id){
 
         $validate = $this->validate($request, [
             'fecha' => ['required'],
@@ -134,7 +137,10 @@ class MesaController extends Controller
             'segundo_vocal' => ['required', 'string']
         ]);
 
-        $mesa = Mesa::where('materia_id',$id)->first();
+        $mesa = Mesa::where([
+            'materia_id' => $materia_id,
+            'instancia_id' => $instancia_id
+        ])->first();
 
         $mesa->presidente = $request->input('presidente');
         $mesa->primer_vocal = $request->input('primer_vocal');
@@ -158,7 +164,8 @@ class MesaController extends Controller
         $mesa->update();
 
         return redirect()->route('mesa.carreras', [
-            'id' => $mesa->materia->carrera->sede->id
+            'sede_id' => $mesa->materia->carrera->sede->id,
+            'instancia_id' => $mesa->instancia_id
         ])->with([
             'message_edit' => 'Mesa ' . $mesa->materia->nombre . ' editada correctamente'
         ]);

@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{route('crear_mesa',['id'=>$materia->id])}}">
+                <form method="POST" action="{{route('crear_mesa',['materia_id'=>$materia->id,'instancia_id'=>$instancia->id])}}">
                     @csrf
                     <div class="form-group">
                         <label for="fecha">Fecha y Hora (Primer llamado):</label>

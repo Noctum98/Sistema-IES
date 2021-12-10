@@ -37,7 +37,7 @@ class MesaEnrolled extends Mailable
             $key = str_replace('_',' ',$k);
             array_push($datos_limpios,$key);
         }
-    
+        
         return $this->view('mail.mesa_enrolled',[
             'datos'         =>  $datos_limpios,
             'instancia'     =>  $this->instancia,

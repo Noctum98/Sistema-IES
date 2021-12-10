@@ -227,13 +227,13 @@ Route::prefix('alumno/parci')->group(function(){
 Route::prefix('mesas')->group(function(){
     Route::get('/inscripcion/{id}',[AlumnoMesaController::class,'vista_home'])->name('mesa.welcome');
     Route::get('/administrar',[InstanciaController::class,'vista_admin'])->name('mesa.admin');
-    Route::get('/carreras/{id}',[InstanciaController::class,'vista_carreras'])->name('mesa.carreras');
+    Route::get('/carreras/{sede_id}/{instancia_id}',[InstanciaController::class,'vista_carreras'])->name('mesa.carreras');
     Route::get('/materias',[AlumnoMesaController::class,'vista_materias'])->name('mesa.mate');
     Route::get('/inscriptos/{id}',[MesaController::class,'vista_inscripciones'])->name('mesa.inscriptos');
 
     Route::post('/seleccionar/{id}',[InstanciaController::class,'seleccionar_sede'])->name('sele.sede');
-    Route::post('/crear/{id}',[MesaController::class,'crear'])->name('crear_mesa');
-    Route::post('/editar/{id}',[MesaController::class,'editar'])->name('editar_mesa');
+    Route::post('/crear/{materia_id}/{instancia_id}',[MesaController::class,'crear'])->name('crear_mesa');
+    Route::post('/editar/{materia_id}/{instancia_id}',[MesaController::class,'editar'])->name('editar_mesa');
     Route::get('/borrar/{id}/{solo?}',[InstanciaController::class,'borrar'])->name('borrar_datos');
     Route::post('/crear_instancia',[InstanciaController::class,'crear'])->name('crear_instancia');
     Route::post('/editar_instancia/{id}',[InstanciaController::class,'editar'])->name('editar_instancia');
