@@ -20,7 +20,11 @@
 		{{@session('message_edit')}}
 	</div>
 	@endif
-	
+	@if(@session('error_fecha'))
+	<div class="alert alert-danger">
+		{{@session('error_fecha')}}
+	</div>
+	@endif
 	<div id="accordion">
 		@foreach($sede->carreras as $carrera)
 		<div class="card">

@@ -89,11 +89,11 @@
 													<span class="font-weight-bold">
 														{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 													</span>
-													@else
+												@else
 													<span class="font-weight-bold">
 														{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
 													</span>
-													@endif
+												@endif
 											</td>
 											<td>
 												@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
@@ -105,17 +105,7 @@
 														Cerrada
 													</span>
 												@endif
-												@else
-												@if($mesa->cierre > time())
-												<span class="text-success font-weight-bold">
-													Abierta
-												</span>
-												@else
-													<span class="text-secondary font-weight-bold">
-														Cerrada
-													</span>
-												@endif
-												@endif
+
 											</td>
 											<td>
 												@if(time() <= strtotime($mesa->fecha) || !$mesa->fecha_segundo)
@@ -128,7 +118,7 @@
 												{{$materia->año}} °
 											</td>
 										</tr>
-
+										@endif
 										@endforeach
 										@endif
 										@else

@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Mail;
 
 class AlumnoMesaController extends Controller
 {
-    public function __construct()
+    private $feriados;
+    public function __construct($feriados)
     {
     }
     // Vistas

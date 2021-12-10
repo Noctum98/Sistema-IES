@@ -8,6 +8,23 @@ use App\Models\Mesa;
 
 class MesaController extends Controller
 {
+    protected $feriados;
+
+    public function __construct()
+    {
+        $this->feriados = [
+            '19-02-2022',
+            '20-02-2022',
+            '26-02-2022',
+            '27-02-2022',
+            '28-02-2022',
+            '01-03-2022',
+            '05-03-2022',
+            '06-03-2022',
+            '12-03-2022',
+            '13-03-2022'
+        ];
+    }
     // Vistas
     public function vista_inscripciones($id){
         $instancia = session('instancia');
@@ -45,6 +62,27 @@ class MesaController extends Controller
         $materia = Materia::find($id);
         $instancia = session('instancia');
 
+        $fecha_dia = date("d-m-Y", strtotime($request['fecha']));
+        $fecha_dia_segundo = date("d-m-Y", strtotime($request['fecha_segundo']));
+        $comp_primer_llamado = in_array($fecha_dia,$this->feriados);
+        $comp_segundo_llamado = in_array($fecha_dia_segundo,$this->feriados);
+
+        if($comp_primer_llamado || $comp_segundo_llamado){
+            if($comp_primer_llamado && $comp_segundo_llamado){
+                $mensaje = "Las fechas ".$fecha_dia." y ".$fecha_dia_segundo." estan bloqueadas introduce otra fecha.";
+            }elseif($comp_primer_llamado && !$comp_segundo_llamado){
+                $mensaje = "La fecha ".$fecha_dia." esta bloqueada, prueba con otra.";
+            }else{
+                $mensaje = "La fecha ".$fecha_dia_segundo." esta bloqueada, prueba con otra.";
+            }
+
+            return redirect()->route('mesa.carreras',[
+                'id' => $materia->carrera->sede->id
+            ])->with([
+                'error_fecha' => $mensaje
+            ]);
+        }
+        
         $mesa_verified = Mesa::where([
             'materia_id' => $id,
             'instancia_id' => $instancia->id
