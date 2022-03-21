@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -13,7 +13,7 @@
 					<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha') }}" required>
 
 					@error('fecha')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -27,7 +27,7 @@
 					</select>
 
 					@error('fecha')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror

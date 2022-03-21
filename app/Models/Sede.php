@@ -12,4 +12,8 @@ class Sede extends Model
     public function carreras(){
         return $this->hasMany('App\Models\Carrera');
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 }

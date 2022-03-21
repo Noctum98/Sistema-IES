@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Carrera;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -17,8 +18,8 @@ class AlumnoController extends Controller
     }
     // Vistas
     public function vista_admin($busqueda = null){
+        $user = Auth::user();
         $alumnos = [];
-        $carreras = [];
 
         if(!empty($busqueda)){
             $alumnos = Alumno::where('dni','LIKE','%'.$busqueda.'%')
@@ -29,12 +30,12 @@ class AlumnoController extends Controller
                             ->orWhere('telefono','LIKE','%'.$busqueda.'%')
                             ->get();
         }else{
-            $carreras = Carrera::all();
+            $sedes = $user->sedes;
         }
 
         return view('alumno.admin',[
             'alumnos' => $alumnos,
-            'carreras'=> $carreras,
+            'sedes'=> $sedes,
             'busqueda'=> $busqueda
         ]);
     }
@@ -60,11 +61,9 @@ class AlumnoController extends Controller
         ]);
     }
     public function vista_alumnos(Request $request,int $carrera_id){
-        $alumnos = Alumno::where('carrera_id',$carrera_id)->get();
         $carrera = Carrera::find($carrera_id);
 
         return view('alumno.alumnos',[
-            'alumnos'   =>  $alumnos,
             'carrera'   =>  $carrera
         ]);
     }

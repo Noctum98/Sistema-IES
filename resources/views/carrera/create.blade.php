@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -14,7 +14,7 @@
 					<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" required>
 
 					@error('nombre')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -28,7 +28,7 @@
 					</select>
 
 					@error('cargo')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -38,7 +38,7 @@
 					<input type="text" id="titulo" name="titulo" class="form-control @error('titulo') is-invalid @enderror" value="{{ old('titulo') }}" required>
 
 					@error('titulo')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -48,7 +48,7 @@
 					<input type="number" id="años" name="años" class="form-control @error('años') is-invalid @enderror" value="{{ old('años') }}" required>
 
 					@error('años')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -58,7 +58,7 @@
 					<input type="text" id="resolucion" name="resolucion" class="form-control @error('resolucion') is-invalid @enderror" value="{{ old('resolucion') }}">
 
 					@error('resolucion')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -68,7 +68,7 @@
 					<input type="text" id="modalidad" name="modalidad" class="form-control @error('modalidad') is-invalid @enderror" value="{{ old('modalidad') }}">
 
 					@error('modalidad')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror

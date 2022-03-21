@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -21,7 +21,7 @@
 							<input type="text" id="nombres" name="nombres" class="form-control @error('nombres') is-invalid @enderror" value="{{ old('nombres') }}" required>
 
 							@error('nombres')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -31,7 +31,7 @@
 							<input type="text" id="apellidos" name="apellidos" class="form-control @error('apellidos') is-invalid @enderror" value="{{ old('apellidos') }}" required>
 
 							@error('apellidos')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -44,7 +44,7 @@
 							</select>
 
 							@error('sexo')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -54,7 +54,7 @@
 							<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{ old('dni') }}" required>
 
 							@error('dni')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -64,7 +64,7 @@
 							<input type="number" id="cuil" name="cuil" class="form-control @error('cuil') is-invalid @enderror" value="{{ old('cuil') }}" required>
 
 							@error('cuil')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -78,7 +78,7 @@
 							</select>
 
 							@error('cargo')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -97,7 +97,7 @@
 							</select>
 
 							@error('cargo')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -107,7 +107,7 @@
 							<input type="text" id="titulo" name="titulo" class="form-control @error('titulo') is-invalid @enderror" value="{{ old('titulo') }}" required>
 
 							@error('titulo')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -117,7 +117,7 @@
 							<input type="number" id="telefono" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}" required>
 
 							@error('telefono')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -127,7 +127,7 @@
 							<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha') }}" required>
 
 							@error('fecha')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror
@@ -140,7 +140,7 @@
 							</select>
 
 							@error('estado')
-								<span class="invalid-feedback" role="alert">
+								<span class="invalid-feedback d-block" role="alert">
 			                        <strong>{{ $message }}</strong>
 			                    </span>
 							@enderror

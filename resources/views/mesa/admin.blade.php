@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -6,7 +6,7 @@
 		</h2>
 		<hr>
 		@if(Auth::user()->rol == 'rol_admin')
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 		  Crear Instancia
 		</button>
 		@endif
@@ -15,44 +15,8 @@
 			{{@session('mensaje')}}
 		</div>
 		@endif
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">Crear Instancia</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <form method="POST" action="{{route('crear_instancia')}}">
-		        	@csrf
-		        	<div class="form-group">
-		        		<label for="nombre">Nombre</label>
-		        		<input type="text" name="nombre" class="form-control" required>
-		        	</div>
-		        	<div class="form-group">
-		        		<label for="nombre">Tipo</label>
-		        		<select name="tipo" class="form-control">
-		        			<option value="0">Común</option>
-		        			<option value="1">Especial</option>
-		        		</select>
-		        	</div>
-		        	<div class="form-group">
-		        		<label for="limite">Limite</label>
-		        		<input type="number" name="limite" class="form-control" required>
-		        	</div>
-					<div class="form-group">
-		        		<label for="limite">Segundo llamado</label>
-		        		<input type="date" name="segundo_llamado" class="form-control">
-		        	</div>
-		        	<input type="submit" class="btn btn-success" value="Crear">
-		        </form>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+		<!-- Modal Crear-->
+		@include('mesa.modals.crear_instancia')
 		@if(count($instancias) != 0)
 		<table class="table mt-4">
 		  <thead class="thead-dark">
@@ -69,15 +33,15 @@
 		      <td><b>{{ $instancia->nombre }}</b></td>
 		      <td><b>{{ $instancia->tipo == 0 ? 'Común' : 'Especial' }}</b></td>
 		      <td>
-		      	<button type="button" class="btn-sm btn-secondary" data-toggle="modal" data-target="#modal{{$instancia->id}}">
+		      	<button type="button" class="btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#modal{{$instancia->id}}">
 				  Ver Inscripciones
 				</button>
 				@if(Auth::user()->rol == 'rol_admin')
-				<button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#edit{{$instancia->id}}">
+				<button type="button" class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit{{$instancia->id}}">
 				  Editar Mesa
 				</button>
 				@if($instancia->tipo == 0)
-					<button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#delete{{$instancia->id}}">
+					<button type="button" class="btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{$instancia->id}}">
 					Borrar datos
 					</button>
 				@else
@@ -97,95 +61,11 @@
 		      </td>
 		    </tr>
 		    <!--Modal Ver-->
-		    <div class="modal fade" id="modal{{$instancia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Elige la sede</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        <form method="POST" action="{{route('sele.sede',['id'=>$instancia->id])}}">
-			        	@csrf
-			        	@foreach($sedes as $sede)
-			        	<div class="form-check">
-						  <input class="form-check-input" type="radio" name="sedes" id="radio{{$sede->id}}" value="{{$sede->id}}">
-						  <label class="form-check-label" for="radio{{$sede->id}}">
-						    {{$sede->nombre}}
-						  </label>
-						</div>
-						@endforeach
-						<br>
-						<input type="submit" value="Ir a la sede" class="btn-sm btn-primary">
-			        </form>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+			@include('mesa.modals.ver_inscripciones')
 			<!--Modal Editar-->
-			<div class="modal fade" id="edit{{$instancia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Elige la sede</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        <form method="POST" action="{{route('editar_instancia',['id'=>$instancia->id])}}">
-			        	@csrf
-			        	<div class="form-group">
-			        		<label for="nombre">Nombre</label>
-			        		<input type="text" name="nombre" class="form-control" value="{{$instancia->nombre}}" required>
-			        	</div>
-			        	<div class="form-group">
-			        		<label for="nombre">Tipo</label>
-			        		<select name="tipo" class="form-control">
-			        			<option value="0" {{$instancia->tipo == 0 ? 'selected="selected"' : ''}}>Común</option>
-			        			<option value="1" {{$instancia->tipo == 1 ? 'selected="selected"' : ''}}>Especial</option>
-			        		</select>
-			        	</div>
-			        	<div class="form-group">
-			        		<label for="limite">Limite</label>
-			        		<input type="number" name="limite" class="form-control" value="{{$instancia->limite}}" required>
-			        	</div>
-						<div class="form-group">
-							<label for="limite">Segundo llamado</label>
-							<input type="date" name="segundo_llamado" class="form-control" value="{{$instancia->segundo_llamado}}">
-		        		</div>
-			        	<input type="submit" class="btn btn-success" value="Editar">
-			        </form>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+			@include('mesa.modals.editar_instancia')
 			<!--Modal Borrar-->
-			<div class="modal fade" id="delete{{$instancia->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Borrar datos</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        <p>¿Desea borrar solo las inscripciones o borrar toda la configuración?</p>
-			      </div>
-				  <div class="modal-footer">
-					<a href="{{route('borrar_datos',['id'=>$instancia->id])}}" class="btn btn-danger">
-						Borrar Todo
-					</a>
-					<a href="{{route('borrar_datos',['id'=>$instancia->id,'solo'=>'1'])}}" class="btn btn-warning">
-						Borrar solo incripciones
-					</a>
-				  </div>
-			    </div>
-			  </div>
-			</div>
+			@include('mesa.modals.borrar_instancia')
 		    @endforeach
 		  </tbody>
 		</table>

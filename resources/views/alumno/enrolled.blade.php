@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 <div class="col-md-12 d-flex flex-column align-items-center mt-4">
 	<div class="col-md-7">

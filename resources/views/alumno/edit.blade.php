@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -24,7 +24,7 @@
 					<input type="file" id="imagen" name="imagen" class="form-control @error('imagen') is-invalid @enderror" value="{{ old('imagen') }}" >
 
 					@error('imagen')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -52,7 +52,7 @@
 					</select>
 
 					@error('año')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -63,7 +63,7 @@
 					<input type="text" id="nombres" name="nombres" class="form-control @error('nombres') is-invalid @enderror" value="{{ $alumno->nombres }}" required>
 
 					@error('nombres')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -73,7 +73,7 @@
 					<input type="text" id="apellidos" name="apellidos" class="form-control @error('apellidos') is-invalid @enderror" value="{{ $alumno->apellidos }}" required>
 
 					@error('apellidos')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -83,7 +83,7 @@
 					<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{$alumno->dni }}" required>
 
 					@error('dni')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -93,7 +93,7 @@
 					<input type="number" id="cuil" name="cuil" class="form-control @error('cuil') is-invalid @enderror" value="{{ $alumno->cuil }}" required>
 
 					@error('cuil')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -103,7 +103,7 @@
 					<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ $alumno->fecha }}" required>
 
 					@error('fecha')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -113,7 +113,7 @@
 					<input type="number" id="edad" name="edad" class="form-control @error('edad') is-invalid @enderror" value="{{ $alumno->edad }}" required>
 
 					@error('edad')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -123,7 +123,7 @@
 					<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $alumno->email }}" email required>
 
 					@error('email')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -133,7 +133,7 @@
 					<input type="text" id="nacionalidad" name="nacionalidad" class="form-control @error('nacionalidad') is-invalid @enderror" value="{{$alumno->nacionalidad }}" placeholder="Argentina, Uruguaya, etc" required>
 
 					@error('nacionalidad')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -143,7 +143,7 @@
 					<input type="text" id="domicilio" name="domicilio" class="form-control @error('domicilio') is-invalid @enderror" value="{{ $alumno->domicilio }}" required>
 
 					@error('domicilio')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -153,7 +153,7 @@
 					<input type="text" id="residencia" name="residencia" class="form-control @error('residencia') is-invalid @enderror" value="{{ $alumno->residencia }}" placeholder="Capital, San Carlos, Tupungato, etc" required>
 
 					@error('residencia')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -163,7 +163,7 @@
 					<input type="number" id="telefono" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{ $alumno->telefono }}" required>
 
 					@error('telefono')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -195,7 +195,7 @@
 					<input type="text" id="escuela_s" name="escuela_s" class="form-control @error('escuela_s') is-invalid @enderror" value="{{ $alumno->escuela_s }}" required>
 
 					@error('escuela_s')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -229,7 +229,7 @@
 					<input type="file" id="dni_archivo" name="dni_archivo" class="form-control @error('dni_archivo') is-invalid @enderror" value="{{ old('dni_archivo') }}">
 
 					@error('dni_archivo')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -244,7 +244,7 @@
 					<input type="file" id="partida_archivo" name="partida_archivo" class="form-control @error('partida_archivo') is-invalid @enderror" value="{{ old('partida_archivo') }}" >
 
 					@error('partida_archivo')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -263,7 +263,7 @@
 					<input type="file" id="titulo_archivo" name="titulo_archivo" class="form-control @error('titulo_archivo') is-invalid @enderror" value="{{ old('titulo_archivo') }}" >
 
 					@error('titulo_archivo')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -278,7 +278,7 @@
 					<input type="file" id="certificado_archivo" name="certificado_archivo" class="form-control @error('certificado_archivo') is-invalid @enderror" value="{{ old('certificado_archivo') }}" >
 
 					@error('certificado_archivo')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror
@@ -293,7 +293,7 @@
 					<input type="file" id="psicofisico" name="psicofisico" class="form-control @error('psicofisico') is-invalid @enderror" value="{{ old('psicofisico') }}" >
 
 					@error('psicofisico')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 						    <strong>{{ $message }}</strong>
 						</span>
 					@enderror

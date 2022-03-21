@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -19,7 +19,7 @@
 					  <div class="card">
 					    <div class="card-header" id="heading{{$dia->id}}">
 					      <h5 class="mb-0">
-					        <h6 style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{$dia->id}}" aria-expanded="false" aria-controls="collapse{{$dia->id}}" class="fecha-titulo font-weight-bold">
+					        <h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$dia->id}}" aria-bs-expanded="false" aria-bs-controls="collapse{{$dia->id}}" class="fecha-titulo font-weight-bold">
 					        	
 					          {{$dia->fecha}}
 
@@ -27,7 +27,7 @@
 					      </h5>
 					    </div>
 
-					    <div id="collapse{{$dia->id}}" class="collapse" aria-labelledby="heading{{$dia->id}}" data-parent="#accordion">
+					    <div id="collapse{{$dia->id}}" class="collapse" aria-bs-labelledby="heading{{$dia->id}}" data-bs-parent="#accordion">
 					      <div class="card-body">
 					        <table class="table">
 							  <thead>

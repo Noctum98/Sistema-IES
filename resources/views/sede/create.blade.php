@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 
 @section('content')
 	<div class="container">
@@ -23,7 +23,7 @@
 				<input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" placeholder="Sede Central" required>
 
 				@error('nombre')
-					<span class="invalid-feedback" role="alert">
+					<span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
 				@enderror
@@ -33,7 +33,7 @@
 				<input type="text" name="ubicacion" class="form-control @error('ubicacion') is-invalid @enderror" value="{{ old('ubicacion') }}" placeholder="Consulta/San Carlos" required>
 
 				@error('ubicacion')
-					<span class="invalid-feedback" role="alert">
+					<span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
 				@enderror

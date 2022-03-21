@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container p-3">
 		<h2 class="h1">
@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="col-md-12">
-			@if(!empty($carreras))
+			@if(!empty($sedes))
 				<table class="table mt-4 col-md-12">
 				  <thead class="thead-dark">
 				    <tr>
@@ -32,17 +32,19 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				  	@foreach ($carreras as $carrera)
-				    <tr>
-				      <td>{{ $carrera->nombre }}</td>
-				      <td>{{ $carrera->resolucion }}</td>
-				      <td>{{ $carrera->sede->nombre }}</td>
-				      <td>
-				      	<a href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id]) }}" class="btn-sm btn-primary">
-				      		Ver alumnos
-				      	</a>
-				      </td>
-				    </tr>
+				  	@foreach ($sedes as $sede)
+						@foreach($sede->carreras as $carrera)
+							<tr>
+							<td>{{ $carrera->nombre }}</td>
+							<td>{{ $carrera->resolucion }}</td>
+							<td>{{ $carrera->sede->nombre }}</td>
+							<td>
+								<a href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id]) }}" class="btn-sm btn-primary">
+									Ver alumnos
+								</a>
+							</td>
+							</tr>
+						@endforeach
 				    @endforeach
 				  </tbody>
 				</table>

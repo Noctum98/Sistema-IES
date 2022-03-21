@@ -114,9 +114,9 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-light active" href="{{ route('sedes.admin') }}">
+                    <a class="nav-link text-light" href="{{ route('sedes.admin') }}">
                       <span data-feather="home"></span>
-                      Sedes <span class="sr-only">(current)</span>
+                      Sedes
                     </a>
                   </li>
                   <li class="nav-item">

@@ -9,6 +9,12 @@ class Proceso extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'alumno_id',
+        'materia_id',
+        'estado'
+    ];
+
     public function materia(){
         return $this->belongsTo('App\Models\Materia','materia_id');
     }

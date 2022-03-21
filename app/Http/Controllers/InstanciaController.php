@@ -15,6 +15,7 @@ use App\Models\Carrera;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
+use Illuminate\Support\Facades\Auth;
 
 class InstanciaController extends Controller
 {
@@ -27,7 +28,7 @@ class InstanciaController extends Controller
     public function vista_admin()
     {
         $instancia = Instancia::all();
-        $sedes = Sede::all();
+        $sedes = Auth::user()->sedes;
         /*
         $sedes = Sede::where('id',7)
         ->orWhere('id',8)

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container p-3">
 		<h2 class="h1">
@@ -17,7 +17,7 @@
 					<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $materia->nombre }}" required>
 
 					@error('nombre')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror
@@ -26,7 +26,7 @@
 					<label for="año">Año:</label>
 					<input type="number" id="año" name="año" class="form-control @error('año') is-invalid @enderror" value="{{ $materia->año }}" required>
 					@error('año')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
 					@enderror

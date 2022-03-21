@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -20,7 +20,7 @@
 					</select>
 
 					@error('coordinador')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 				            <strong>{{ $message }}</strong>
 				        </span>
 					@enderror
@@ -36,7 +36,7 @@
 					</select>
 
 					@error('referente_p')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 				            <strong>{{ $message }}</strong>
 				        </span>
 					@enderror
@@ -52,7 +52,7 @@
 					</select>
 
 					@error('referente_s')
-						<span class="invalid-feedback" role="alert">
+						<span class="invalid-feedback d-block" role="alert">
 				            <strong>{{ $message }}</strong>
 				        </span>
 					@enderror

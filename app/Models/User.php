@@ -44,8 +44,57 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //============================ SEDES ====================================//
+    public function sedes(){
+        return $this->belongsToMany(Sede::class)->withTimestamps();
+    }
+    public function hasSede($sede)
+    {
+
+        if ($this->sedes->where('id', $sede)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+    //============================= ROLES ===================================//
+    public function roles()
+    {
+        return $this->belongsToMany(Rol::class)->withTimestamps();
+    }
+    public function authorizeRoles($roles)
+    {
+        if($this->hasAnyRole($roles)){
+            return true;
+        }else{
+            return false;
+        }   
+        
+    }
     
-    public function sede(){
-        return $this->belongsTo('App\Models\Sede','sede_id');
+    public function hasAnyRole($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRole($roles)) {
+                 return true; 
+            }   
+        }
+        return false;
+    }
+    
+    public function hasRole($role)
+    {
+
+        if ($this->roles->where('nombre', $role)->first()) {
+            return true;
+        }
+        return false;
     }
 }

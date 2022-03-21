@@ -15,4 +15,8 @@ class Carrera extends Model
     public function materias(){
         return $this->hasMany('App\Models\Materia')->orderBy('año');
     }
+    public function alumnos()
+    {
+        return $this->belongsToMany(Alumno::class)->withTimestamps();
+    }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
 		<h2 class="h1">
@@ -13,13 +13,13 @@
 			  <div class="card">
 			    <div class="card-header" id="headingOne">
 			      <h5 class="mb-0">
-			        <h2 style="cursor: pointer;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+			        <h5 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-bs-expanded="true" aria-bs-controls="collapseOne">
 			          Primer Año
-			        </h2>
+			        </h5>
 			      </h5>
 			    </div>
 
-			    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+			    <div id="collapseOne" class="collapse show" aria-bs-labelledby="headingOne" data-bs-parent="#accordion">
 			      <div class="card-body">
 			        <table class="table">
 					  <thead>
@@ -30,17 +30,14 @@
 					    </tr>
 					  </thead>
 					  <tbody>
-					  	@foreach($alumnos as $alumno)
+					  	@foreach($carrera->alumnos as $alumno)
 					  		@if($alumno->año == 1 || $alumno->año == '1')
 						    <tr>
 						      <td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 						      <td>{{ $alumno->dni }}</td>
 						      <td>
-						      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn-sm btn-secondary mr-1">
-						      		Ver datos de alumno
-						      	</a>
-						      	<a href="{{ route('proceso.inscribir',['id'=>$alumno->id]) }}" class="btn-sm btn-primary">
-						      		Inscribir en materias
+						      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary mr-1">
+						      		Ver datos
 						      	</a>
 						      </td>
 						    </tr>
@@ -54,12 +51,12 @@
 			  <div class="card">
 			    <div class="card-header" id="headingTwo">
 			      <h5 class="mb-0">
-			        <h2 style="cursor:pointer;" class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+			        <h5 style="cursor:pointer;" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-bs-expanded="false" aria-bs-controls="collapseTwo">
 			          Segundo Año
-			        </h2>
+			        </h5>
 			      </h5>
 			    </div>
-			    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+			    <div id="collapseTwo" class="collapse" aria-bs-labelledby="headingTwo" data-bs-parent="#accordion">
 			      <div class="card-body">
 			        <table class="table">
 					  <thead>
@@ -70,7 +67,7 @@
 					    </tr>
 					  </thead>
 					  <tbody>
-					  	@foreach($alumnos as $alumno)
+					  	@foreach($carrera->alumnos as $alumno)
 					  		@if($alumno->año == 2 || $alumno->año == '2')
 						    <tr>
 						      <td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
@@ -91,12 +88,12 @@
 			  <div class="card">
 			    <div class="card-header" id="headingThree">
 			      <h5 class="mb-0">
-			        <h2 style="cursor:pointer" class="collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+			        <h5 style="cursor:pointer" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-bs-expanded="false" aria-bs-controls="collapseThree">
 			          Tercer Año
-			        </h2>
+			        </h5>
 			      </h5>
 			    </div>
-			    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+			    <div id="collapseThree" class="collapse" aria-bs-labelledby="headingThree" data-bs-parent="#accordion">
 			      <div class="card-body">
 			        <table class="table">
 					  <thead>
@@ -107,7 +104,7 @@
 					    </tr>
 					  </thead>
 					  <tbody>
-					  	@foreach($alumnos as $alumno)
+					  	@foreach($carrera->alumnos as $alumno)
 					  		@if($alumno->año == 3 || $alumno->año == '3')
 						    <tr>
 						      <td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>

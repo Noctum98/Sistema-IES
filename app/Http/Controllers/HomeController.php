@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\AuthorizerService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -11,7 +13,9 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    protected $roles;
+    public function __construct(
+    )
     {
         $this->middleware('auth');
     }
@@ -21,8 +25,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        if(!session('roles')){
+            session(['roles'=>true]);
+            foreach(Auth::user()->roles as $rol){
+                session([$rol->nombre=>$rol]);
+            }
+        }
         return view('home');
     }
 }

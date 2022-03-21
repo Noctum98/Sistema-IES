@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 <div class="container">
 	<h2 class="h1">
@@ -32,15 +32,15 @@
 
 			@if(isset($carreras))
 			@foreach($carreras as $carrera)
-			<a type="button" href="#" class="list-group-item list-group-item-action mt-3" data-toggle="modal" data-target="#exampleModal{{$carrera->id}}">
-				{{$carrera->nombre}} {{ $carrera->nombre == 'Enfermería Profesional' ? '('.ucwords($carrera->turno).')': '' }}
+			<a type="button" href="#" class="list-group-item list-group-item-action mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{$carrera->id}}">
+				{{$carrera->nombre.' - Res: '.$carrera->resolucion}} {{ $carrera->nombre == 'Enfermería Profesional' ? '('.ucwords($carrera->turno).')': '' }}
 			</a>
 			<div class="modal fade" id="exampleModal{{$carrera->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLabel">{{$carrera->nombre}}</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
@@ -72,15 +72,15 @@
 												<div class="form-check">
 
 													@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
-														<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
-														<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
-															{{$materia->nombre}}
-														</label>
-													@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) || time() > $mesa->cierre_segundo))
-														<label class="form-check-label text-secondary" for="{{$materia->id}}">
-															{{$materia->nombre}}
-														</label>
-													@endif
+															<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
+															<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
+																{{$materia->nombre}}
+															</label>
+															@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) || time() > $mesa->cierre_segundo))
+																<label class="form-check-label text-secondary" for="{{$materia->id}}">
+																	{{$materia->nombre}}
+																</label>
+																@endif
 												</div>
 
 											</td>
@@ -89,30 +89,30 @@
 													<span class="font-weight-bold">
 														{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 													</span>
-												@else
+													@else
 													<span class="font-weight-bold">
 														{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
 													</span>
-												@endif
+													@endif
 											</td>
 											<td>
 												@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
-													<span class="text-success font-weight-bold">
-														Abierta
-													</span>
-												@else
-													<span class="text-secondary font-weight-bold">
-														Cerrada
-													</span>
-												@endif
+														<span class="text-success font-weight-bold">
+															Abierta
+														</span>
+														@else
+														<span class="text-secondary font-weight-bold">
+															Cerrada
+														</span>
+														@endif
 
 											</td>
 											<td>
 												@if(time() <= strtotime($mesa->fecha) || !$mesa->fecha_segundo)
 													<span class="font-weight-bold">1ero</span>
-												@elseif(time() > strtotime($mesa->fecha) && $mesa->fecha_segundo)
+													@elseif(time() > strtotime($mesa->fecha) && $mesa->fecha_segundo)
 													<span class="font-weight-bold">2do</span>
-												@endif
+													@endif
 											</td>
 											<td class="{{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}} {{$materia->año == 3 ? 'text-secondary' : ''}}">
 												{{$materia->año}} °
@@ -172,14 +172,13 @@
 						<a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
 						@else
 						@if(!$inscripcion['segundo_llamado'])
-							<span class="font-weight-bold">1er llamado </span>
+						<span class="font-weight-bold">1er llamado </span>
 						@else
-							<span class="font-weight-bold">2do llamado </span>
+						<span class="font-weight-bold">2do llamado </span>
 						@endif
-						@if(time() < $inscripcion['mesa']['cierre'] || (time() > strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo']))
-						- <a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
-						@endif
-						@endif
+						@if(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo'])) - <a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
+								@endif
+								@endif
 					</li>
 					@endforeach
 				</ul>

@@ -28,7 +28,6 @@ class MesaController extends Controller
     }
     // Vistas
     public function vista_inscripciones($id){
-        $instancia = session('instancia');
         $primer_llamado = [];
         $segundo_llamado = [];
 
@@ -54,7 +53,7 @@ class MesaController extends Controller
     public function crear(Request $request, $materia_id,$instancia_id)
     {
         $validate = $this->validate($request, [
-            'fecha' => ['required'],
+            'fecha'         => ['required'],
             'presidente'    => ['required', 'string'],
             'primer_vocal'  => ['required', 'string'],
             'segundo_vocal' => ['required', 'string']
@@ -78,7 +77,8 @@ class MesaController extends Controller
             }
 
             return redirect()->route('mesa.carreras',[
-                'id' => $materia->carrera->sede->id
+                'sede_id' => $materia->carrera->sede->id,
+                'instancia_id' => $instancia->id
             ])->with([
                 'error_fecha' => $mensaje
             ]);
