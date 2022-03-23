@@ -22,7 +22,7 @@ class PreinscripcionController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-seccionAlumnos',['only'=>['vista_admin','vista_all']]);
+        $this->middleware('app.roles:admin-areaSocial',['only'=>['vista_admin','vista_all']]);
     }
     // Vistas
     public function vista_preinscripcion($id)
