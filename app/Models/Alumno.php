@@ -32,6 +32,7 @@ class Alumno extends Model
         'manzana',
         'casa',
         'residencia' ,
+        'provincia',
         'localidad',
         'codigo_postal' ,
         'estado_civil' ,

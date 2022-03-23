@@ -9,7 +9,8 @@ use App\Models\Rol;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -40,7 +41,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('app.admin');
+        
     }
 
     /**
@@ -79,5 +80,16 @@ class RegisterController extends Controller
         ]);
 
         $user->roles()->attach(Rol::where('nombre', 'default')->first());
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect('/register')->with([
+            'message_success' => 'Usuario creado'
+        ]);
     }
 }

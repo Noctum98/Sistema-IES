@@ -161,6 +161,17 @@ class UserController extends Controller
             'password' => Hash::make($alumno->dni)
         ];
 
+        $user_exists = User::where('email',$alumno->email)
+        ->orWhere('username',$alumno->dni)->first();
+
+        if($user_exists)
+        {
+            return redirect()->route('alumno.detalle',[
+                'id' => $alumno->id
+            ])->with([
+                'mensaje_error' => 'Ya existe un usuario con este email o username'
+            ]); 
+        }
 
         $user = User::create($data);
         $user->roles()->attach(Rol::where('nombre', 'alumno')->first());

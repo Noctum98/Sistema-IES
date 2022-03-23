@@ -55,9 +55,9 @@
 				<li>
 					<h2>Datos de Domicilio</h3>
 				</li>
-				<li><strong>Nacionalidad:</strong> {{ $alumno->nacionalidad }}</li>
-				<li><strong>Provincia:</strong> {{ $alumno->provincia }}</li>
-				<li><strong>Localidad:</strong> {{ $alumno->localidad }}</li>
+				<li><strong>Nacionalidad:</strong> {{ ucwords($alumno->nacionalidad) }}</li>
+				<li><strong>Provincia:</strong> {{ ucwords($alumno->provincia) }}</li>
+				<li><strong>Localidad:</strong> {{ ucwords($alumno->localidad) }}</li>
 				<li><strong>Calle: </strong> {{ $alumno->calle }}</li>
 				<li><strong>N° de calle: </strong> {{ $alumno->n_calle }}</li>
 				<li><strong>Barrio: </strong> {{ $alumno->barrio }}</li>
