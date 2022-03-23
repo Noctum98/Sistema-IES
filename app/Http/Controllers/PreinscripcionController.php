@@ -22,21 +22,23 @@ class PreinscripcionController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
+        $this->middleware('app.roles:admin-seccionAlumnos',['only'=>['vista_admin','vista_all']]);
     }
     // Vistas
     public function vista_preinscripcion($id)
     {
         $carrera = Carrera::find($id);
         $error = '';
-
-
-        if (($carrera->estado == 1 || $carrera->vacunas == 'todas') && !Auth::user()) {
+        $carreras_abiertas = [1,2,5,15];
+        
+        
+        if(($carrera->estado == 1 || !in_array($carrera->id,$carreras_abiertas) || $carrera->vacunas == 'todas') && !Auth::user()){
             $carrera = null;
             $error = 'Página deshabilitada';
         }
+        
 
-
-        return view('alumno.pre_enroll', [
+        return view('alumno.pre_enroll',[
             'carrera'   =>  $carrera,
             'error'     =>  $error
         ]);

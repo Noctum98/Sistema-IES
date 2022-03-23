@@ -127,19 +127,19 @@
 					Marcar como verificado
 				</a>
 				@endif
-				<a href="#" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+				<a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
 					Marcar como erróneo
 				</a>
 				<a href="{{route('pre.editar',['timecheck'=>$alumno->timecheck,'id'=>$alumno->id])}}" class="btn btn-warning" >
 					Editar datos
 				</a>
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-bs-labelledby="exampleModalLabel" aria-bs-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <h5 class="modal-title" id="exampleModalLabel">Indica el archivo erroneo</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
+				        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+				          <span aria-bs-hidden="true">&times;</span>
 				        </button>
 				      </div>
 				      <form action="{{route('pre.error',['id'=>$alumno->id])}}" method="POST">
