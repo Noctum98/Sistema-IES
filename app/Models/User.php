@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -45,6 +46,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function alumnos()
+    {
+        return $this->belongsToMany(Alumno::class)->withTimestamps();
+    }
+
+    public function alumno()
+    {
+        $alumno = Alumno::where('user_id', Auth::user()->id)->first();
+        if ($alumno) {
+            return $alumno->id;
+        }
+        return false;
+    }
     //============================ SEDES ====================================//
     public function sedes(){
         return $this->belongsToMany(Sede::class)->withTimestamps();

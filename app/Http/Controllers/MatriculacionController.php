@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CheckEmail;
+use App\Mail\MatriculacionSuccessEmail;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
@@ -20,6 +21,8 @@ class MatriculacionController extends Controller
         ServicesProcesoService $procesoService
     ) {
         $this->procesoService = $procesoService;
+        $this->middleware('app.auth',['only'=>['edit','update']]);
+        $this->middleware('app.roles:admin-coordinador',['only'=>['edit','update']]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)
@@ -62,7 +65,13 @@ class MatriculacionController extends Controller
             'discapacidad_motriz'   => ['required'],
             'acompañamiento_motriz' => ['required'],
             'discapacidad_intelectual' => ['required'],
-            'matriculacion' => ['required']
+            'matriculacion' => ['required'],
+            'regularidad' => ['required'],
+            'escuela_s' => ['required'],
+            'escolaridad' => ['required'],
+            'titulo_s' => ['required'],
+            'privacidad' => ['required'],
+            'poblacion_indigena' => ['required']
         ]);
 
         $mail_check = MailCheck::where([
@@ -109,11 +118,15 @@ class MatriculacionController extends Controller
                 'año'   => $año
             ]);
 
-            $this->procesoService->inscribir($alumno->id, $request['materias']);
+            if(isset($request['materias'])){
+                $this->procesoService->inscribir($alumno->id, $request['materias']);
+            }
+
+            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
+
 
             $mensaje = "Felicidades te has matriculado correctamente a ".$carrera->nombre." ".$carrera->sede->nombre;
         }
-
 
 
         return view('matriculacion.card_finalizada', [

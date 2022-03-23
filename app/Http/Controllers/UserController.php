@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MatriculacionUser;
 use App\Models\Alumno;
 use App\Models\User;
 use App\Models\Rol;
@@ -14,12 +15,13 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Sede;
 use App\Models\SedeUser;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('app.roles:admin-usuarios');
+        $this->middleware('app.roles:admin-usuarios',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
 
     }
     // Controlador de administación de usuarios
@@ -165,6 +167,8 @@ class UserController extends Controller
 
         $alumno->user_id = $user->id;
         $alumno->update();
+
+        Mail::to($alumno->email)->send(new MatriculacionUser($alumno));
 
         return redirect()->route('alumno.detalle',[
             'id' => $alumno->id

@@ -77,6 +77,17 @@ class Alumno extends Model
         }
         return false;
     }
+
+    public function procesoCarrera($carrera_id,$alumno_id)
+    {
+        $procesoCarrera = AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'alumno_id' => $alumno_id
+        ])->first();
+
+        return $procesoCarrera;
+    }
+
     public function hasProceso($materia_id)
     {
         if($this->procesos->where('materia_id',$materia_id)->first())

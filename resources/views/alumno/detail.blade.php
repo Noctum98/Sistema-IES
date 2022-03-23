@@ -7,44 +7,37 @@
 	<hr>
 	<div class="col-md-12">
 		@if(@session('mensaje_exitoso'))
-			<div class="alert alert-success">
-				{{ @session('mensaje_exitoso') }}
-			</div>
+		<div class="alert alert-success">
+			{{ @session('mensaje_exitoso') }}
+		</div>
 		@endif
 		@if(@session('mensaje_procesos'))
-			<div class="alert alert-warning">
-				{{ @session('mensaje_procesos') }}
-			</div>
+		<div class="alert alert-warning">
+			{{ @session('mensaje_procesos') }}
+		</div>
 		@endif
 		@if(@session('mensaje_editado'))
-			<div class="alert alert-success">
-				{{ @session('mensaje_editado') }}
-			</div>
+		<div class="alert alert-success">
+			{{ @session('mensaje_editado') }}
+		</div>
 		@endif
 		@if(@session('mensaje_error'))
-			<div class="alert alert-danger">
-				{{ @session('mensaje_error') }}
-			</div>
-		@endif
-		<div class="row">
-			<div class="imagen-alumno ml-4 mb-3 col-md-2">
-				@if(!$alumno->imagen)
-				<img src="{{ asset('images/alumno-default.png') }}" alt="default-profile" class="col-md-12">
-				@else
-				<img src="{{ route('ver_imagen',['foto'=>$alumno->imagen]) }}" class="col-md-12">
-				@endif
-			</div>
-			<div class="datos-alumno">
-				<ul>
-					<li><strong>Nombre:</strong> {{ $alumno->nombres }}</li>
-					<li><strong>Apellidos:</strong> {{ $alumno->apellidos }}</li>
-					<li><strong>Edad:</strong> {{ $alumno->edad }} años</li>
-					<li><strong>Teléfono Celular:</strong> {{ $alumno->telefono }}</li>
-					<li><strong>Teléfono Fijo:</strong> {{ $alumno->telefono_fijo }}</li>
-
-				</ul>
-			</div>
+		<div class="alert alert-danger">
+			{{ @session('mensaje_error') }}
 		</div>
+		@endif
+
+		<div class="m-0 p-0 col-md-12">
+			<ul>
+				<li><strong>Nombre:</strong> {{ $alumno->nombres }}</li>
+				<li><strong>Apellidos:</strong> {{ $alumno->apellidos }}</li>
+				<li><strong>Edad:</strong> {{ $alumno->edad }} años</li>
+				<li><strong>Teléfono Celular:</strong> {{ $alumno->telefono }}</li>
+				<li><strong>Teléfono Fijo:</strong> {{ $alumno->telefono_fijo }}</li>
+
+			</ul>
+		</div>
+
 		<br>
 		<div class="row col-md-12">
 			<ul class="datos-generales col-md-6">
@@ -84,11 +77,11 @@
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
 				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->condicion_s ? 'Si' : 'No' }}</li>
 				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal }}</li>
-				<li><strong>Materias que adeuda de secundario: </strong> 
+				<li><strong>Materias que adeuda de secundario: </strong>
 					@if(!$alumno->materias_s)
-						Ninguna
+					Ninguna
 					@else
-						{{ str_replace(';',' - ',$alumno->materias_s) }}
+					{{ str_replace(';',' - ',$alumno->materias_s) }}
 					@endif
 				</li>
 				<li><strong>Presento título secundario:</strong> {{$alumno->titulo_s ? 'Si' : 'No'}} </li>
@@ -106,8 +99,8 @@
 					_ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }}
 
 					@if(Auth::user()->hasRole('coordinador'))
-						<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
-						@include('alumno.modals.carreras_matriculacion')
+					<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
+					@include('alumno.modals.carreras_matriculacion')
 					@endif
 					@endforeach
 				</li>
@@ -120,9 +113,9 @@
 		@if(Auth::user()->hasRole('coordinador'))
 		<div class="row col-md-6">
 			@if(!$alumno->user_id)
-				<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-5 mt-4 btn btn-success">
-					Crear Usuario
-				</a>
+			<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-5 mt-4 btn btn-success">
+				Crear Usuario
+			</a>
 			@endif
 			<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="col-md-5 ml-2 mt-4 btn btn-warning">
 				Corregir datos
