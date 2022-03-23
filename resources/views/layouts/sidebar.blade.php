@@ -54,8 +54,9 @@
                     </nav>
                 </div>
                 @endif
-                <div class="sb-sidenav-menu-heading">Alumno</div>
+                
                 @if(Session::has('alumno'))
+                <div class="sb-sidenav-menu-heading">Alumno</div>
                 <a class="nav-link" href="{{ route('alumno.detalle',Auth::user()->alumno()) }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                     Mi matrícula
