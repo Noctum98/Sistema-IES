@@ -10,7 +10,7 @@
 				@csrf
 				<div class="form-group">
 					<label for="nombre">Parcial N°:</label>
-					<input type="number" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" required>
+					<input type="number" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" required />
 
 					@error('nombre')
 						<span class="invalid-feedback d-block" role="alert">
@@ -20,7 +20,7 @@
 				</div>
 				<div class="form-group">
 					<label for="fecha">Fecha en que se subió el trabajo:</label>
-					<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha') }}" required>
+					<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha') }}" required />
 
 					@error('fecha')
 						<span class="invalid-feedback d-block" role="alert">

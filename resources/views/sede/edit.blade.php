@@ -19,7 +19,7 @@
 			 @csrf
 			<div class="form-group">
 				<label for="nombre">Nombre de la Sede</label>
-				<input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $sede->nombre }}" required>
+				<input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $sede->nombre }}" required />
 
 				@error('nombre')
 					<span class="invalid-feedback d-block" role="alert">
@@ -29,7 +29,7 @@
 			</div>
 			<div class="form-group">
 				<label for="ubicacion">Ubicación de la Sede</label>
-				<input type="text" name="ubicacion" class="form-control @error('ubicacion') is-invalid @enderror" value="{{ $sede->ubicacion }}" placeholder="Consulta/San Carlos" required>
+				<input type="text" name="ubicacion" class="form-control @error('ubicacion') is-invalid @enderror" value="{{ $sede->ubicacion }}" placeholder="Consulta/San Carlos" required />
 
 				@error('ubicacion')
 					<span class="invalid-feedback d-block" role="alert">

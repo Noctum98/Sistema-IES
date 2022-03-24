@@ -7,32 +7,32 @@
         <div class="mt-4 row">
             <div class="form-group col-md-6">
                 <label for="nombre">Nombres</label>
-                <input type="text" name="nombres" id="nombres" value=" {{ isset($matriculacion) ? $matriculacion->nombres : null }} " class="form-control" required>
+                <input type="text" name="nombres" id="nombres" value=" {{ isset($matriculacion) ? $matriculacion->nombres : old('nombres') }} " class="form-control" required />
             </div>
             <div class="form-group col-md-6">
                 <label for="apellidos">Apellidos</label>
-                <input type="text" name="apellidos" id="apellidos" value=" {{ isset($matriculacion) ? $matriculacion->apellidos : null }} " class="form-control" required>
+                <input type="text" name="apellidos" id="apellidos" value=" {{ isset($matriculacion) ? $matriculacion->apellidos : old('apellidos') }} " class="form-control" required />
             </div>
             <div class="form-group col-md-6">
                 <label for="dni">D.N.I o Pasaporte</label>
-                <input type="number" name="dni" id="dni" value="{{ isset($matriculacion) ? $matriculacion->dni : null }}" class="form-control" required>
+                <input type="number" name="dni" id="dni" value="{{ isset($matriculacion) ? $matriculacion->dni : old('dni') }}" class="form-control" required />
             </div>
             <div class="form-group col-md-6">
                 <label for="cuil">CUIL</label>
-                <input type="text" name="cuil" id="cuil" value="{{ isset($matriculacion) ? $matriculacion->cuil : null }} " class="form-control" required>
+                <input type="text" name="cuil" id="cuil" value="{{ isset($matriculacion) ? $matriculacion->cuil : old('cuil') }} " class="form-control" required />
             </div>
             <div class="form-group col-md-6">
                 <label for="fecha">Fecha de Nacimiento</label>
                 @if(!isset($matriculacion))
-                <input type="date" name="fecha" id="fecha" class="form-control" required>
+                <input type="date" name="fecha" id="fecha" class="form-control" required />
                 @else
-                <input type="text" name="fecha" id="fecha" value="{{ $matriculacion->fecha }}" class="form-control" required>
+                <input type="text" name="fecha" id="fecha" value="{{ $matriculacion->fecha }}" class="form-control" required />
 
                 @endif
             </div>
             <div class="form-group col-md-6">
                 <label for="edad">Edad</label>
-                <input type="text" name="edad" id="edad" value=" {{ isset($matriculacion) ? $matriculacion->edad : null }} " class="form-control" required>
+                <input type="text" name="edad" id="edad" value=" {{ isset($matriculacion) ? $matriculacion->edad : old('edad') }} " class="form-control" required />
             </div>
             <div class="form-group col-md-6">
                 <label for="nacionalidad">Nacionalidad</label>

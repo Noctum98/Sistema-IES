@@ -15,7 +15,7 @@
 						@csrf
 						<div class="form-group">
 							<label for="nombres">Nombres (como figura en el documento):</label>
-							<input type="text" id="nombres" name="nombres" class="form-control @error('nombres') is-invalid @enderror" value="{{$preinscripcion->nombres}}" required>
+							<input type="text" id="nombres" name="nombres" class="form-control @error('nombres') is-invalid @enderror" value="{{$preinscripcion->nombres}}" required />
 
 							@error('nombres')
 								<span class="invalid-feedback d-block" role="alert">
@@ -25,7 +25,7 @@
 						</div>
 						<div class="form-group">
 							<label for="apellidos">Apellidos (como figura en el documento):</label>
-							<input type="text" id="apellidos" name="apellidos" class="form-control @error('apellidos') is-invalid @enderror" value="{{$preinscripcion->apellidos}}" required>
+							<input type="text" id="apellidos" name="apellidos" class="form-control @error('apellidos') is-invalid @enderror" value="{{$preinscripcion->apellidos}}" required />
 
 							@error('apellidos')
 								<span class="invalid-feedback d-block" role="alert">
@@ -35,7 +35,7 @@
 						</div>
 						<div class="form-group">
 							<label for="dni">D.N.I (Sin puntos):</label>
-							<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{$preinscripcion->dni}}" required>
+							<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{$preinscripcion->dni}}" required />
 
 							@error('dni')
 								<span class="invalid-feedback d-block" role="alert">
@@ -45,7 +45,7 @@
 						</div>
 						<div class="form-group">
 							<label for="cuil">N° de CUIL (Sin guiones ni puntos):</label>
-							<input type="number" id="cuil" name="cuil" class="form-control @error('cuil') is-invalid @enderror" value="{{ $preinscripcion->cuil }}" required>
+							<input type="number" id="cuil" name="cuil" class="form-control @error('cuil') is-invalid @enderror" value="{{ $preinscripcion->cuil }}" required />
 
 							@error('cuil')
 								<span class="invalid-feedback d-block" role="alert">
@@ -56,7 +56,7 @@
 						<div class="form-group">
 						<div class="form-group">
 							<label for="fecha">Fecha de Nacimiento:</label>
-							<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ $preinscripcion->fecha }}" required>
+							<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ $preinscripcion->fecha }}" required />
 
 							@error('fecha')
 								<span class="invalid-feedback d-block" role="alert">
@@ -65,7 +65,7 @@
 							@enderror
 						</div>
 							<label for="edad">Edad:</label>
-							<input type="number" id="edad" name="edad" class="form-control @error('edad') is-invalid @enderror" value="{{$preinscripcion->edad}}" required>
+							<input type="number" id="edad" name="edad" class="form-control @error('edad') is-invalid @enderror" value="{{$preinscripcion->edad}}" required />
 
 							@error('edad')
 								<span class="invalid-feedback d-block" role="alert">
@@ -75,7 +75,7 @@
 						</div>
 						<div class="form-group">
 							<label for="email">Email:</label>
-							<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{$preinscripcion->email}}" email required>
+							<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{$preinscripcion->email}}" email required />
 
 							@error('email')
 								<span class="invalid-feedback d-block" role="alert">
@@ -120,7 +120,7 @@
 						</div>
 						<div class="form-group">
 							<label for="domicilio">Domicilio:</label>
-							<input type="text" id="domicilio" name="domicilio" class="form-control @error('domicilio') is-invalid @enderror" value="{{$preinscripcion->domicilio}}" required>
+							<input type="text" id="domicilio" name="domicilio" class="form-control @error('domicilio') is-invalid @enderror" value="{{$preinscripcion->domicilio}}" required />
 
 							@error('domicilio')
 								<span class="invalid-feedback d-block" role="alert">
@@ -195,7 +195,7 @@
 						</div>
 						<div class="form-group">
 							<label for="telefono">Teléfono:</label>
-							<input type="number" id="telefono" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{$preinscripcion->telefono}}" required>
+							<input type="number" id="telefono" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{$preinscripcion->telefono}}" required />
 
 							@error('telefono')
 								<span class="invalid-feedback d-block" role="alert">
@@ -248,7 +248,7 @@
 						</div>
 						<div class="form-group">
 							<label for="escuela_s">Nombre de escuela donde egresó: (Número y Nombre):</label>
-							<input type="text" id="escuela_s" name="escuela_s" class="form-control @error('escuela_s') is-invalid @enderror" value="{{ $preinscripcion->escuela_s }}" required>
+							<input type="text" id="escuela_s" name="escuela_s" class="form-control @error('escuela_s') is-invalid @enderror" value="{{ $preinscripcion->escuela_s }}" required />
 
 							@error('escuela_s')
 								<span class="invalid-feedback d-block" role="alert">

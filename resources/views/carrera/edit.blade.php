@@ -18,7 +18,7 @@
 					<div class="d-flex flex-column col-md-6">
 						<div class="form-group">
 							<label for="nombre">Nombre de la carrera:</label>
-							<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $carrera->nombre }}" required>
+							<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $carrera->nombre }}" required />
 
 							@error('nombre')
 								<span class="invalid-feedback d-block" role="alert">
@@ -47,7 +47,7 @@
 						</div>
 						<div class="form-group">
 							<label for="titulo">Nombre del título:</label>
-							<input type="text" id="titulo" name="titulo" class="form-control @error('titulo') is-invalid @enderror" value="{{ $carrera->titulo }}" required>
+							<input type="text" id="titulo" name="titulo" class="form-control @error('titulo') is-invalid @enderror" value="{{ $carrera->titulo }}" required />
 
 							@error('titulo')
 								<span class="invalid-feedback d-block" role="alert">
@@ -57,7 +57,7 @@
 						</div>
 						<div class="form-group">
 							<label for="años">Años de duración:</label>
-							<input type="number" id="años" name="años" class="form-control @error('años') is-invalid @enderror" value="{{ $carrera->años }}" required>
+							<input type="number" id="años" name="años" class="form-control @error('años') is-invalid @enderror" value="{{ $carrera->años }}" required />
 
 							@error('años')
 								<span class="invalid-feedback d-block" role="alert">

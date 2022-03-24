@@ -14,19 +14,19 @@
                     @csrf
                     <div class="form-group">
                         <label for="fecha">Fecha y Hora (Primer llamado):</label>
-                        <input type="datetime-local" name="fecha" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->fecha }}" required>
+                        <input type="datetime-local" name="fecha" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->fecha }}" required />
                     </div>
                     <div class="form-group">
                         <label for="presidente">Presidente (Primer llamado):</label>
-                        <input type="text" name="presidente" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->presidente }}" required>
+                        <input type="text" name="presidente" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->presidente }}" required />
                     </div>
                     <div class="form-group">
                         <label for="primer_vocal">Primer Vocal (Primer llamado):</label>
-                        <input type="text" name="primer_vocal" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->primer_vocal }}" required>
+                        <input type="text" name="primer_vocal" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->primer_vocal }}" required />
                     </div>
                     <div class="form-group">
                         <label for="segundo_vocal">Segundo Vocal (Primer llamado):</label>
-                        <input type="text" name="segundo_vocal" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->segundo_vocal }}" required>
+                        <input type="text" name="segundo_vocal" class="form-control" value="{{ $materia->mesa($instancia->id,$materia->id)->segundo_vocal }}" required />
                     </div>
                     <div class="form-group">
                         <label for="fecha_segundo">Fecha y Hora (Segundo llamado):</label>

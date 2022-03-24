@@ -14,7 +14,7 @@
 				@csrf
 				<div class="form-group">
 					<label for="nombre">Nombre:</label>
-					<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $materia->nombre }}" required>
+					<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $materia->nombre }}" required />
 
 					@error('nombre')
 						<span class="invalid-feedback d-block" role="alert">
@@ -24,7 +24,7 @@
 				</div>
 				<div class="form-group">
 					<label for="año">Año:</label>
-					<input type="number" id="año" name="año" class="form-control @error('año') is-invalid @enderror" value="{{ $materia->año }}" required>
+					<input type="number" id="año" name="año" class="form-control @error('año') is-invalid @enderror" value="{{ $materia->año }}" required />
 					@error('año')
 						<span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>

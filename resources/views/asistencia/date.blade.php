@@ -10,7 +10,7 @@
 				@csrf
 				<div class="form-group">
 					<label for="fecha">Fecha:</label>
-					<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha') }}" required>
+					<input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ old('fecha') }}" required />
 
 					@error('fecha')
 						<span class="invalid-feedback d-block" role="alert">

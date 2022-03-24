@@ -75,7 +75,7 @@
 			@csrf
 			<div class="form-group">
 				<label for="password">Nueva contraseña:</label>
-				<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+				<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required />
 
 				@error('password')
 				<span class="invalid-feedback d-block" role="alert">
@@ -85,7 +85,7 @@
 			</div>
 			<div class="form-group">
 				<label for="password_confirmation">Confirmar contraseña:</label>
-				<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+				<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required />
 			</div>
 			<input type="submit" value="Cambiar contraseña" class="btn btn-secondary">
 		</form>

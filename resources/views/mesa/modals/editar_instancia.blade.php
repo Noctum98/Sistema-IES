@@ -12,7 +12,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" value="{{$instancia->nombre}}" required>
+                        <input type="text" name="nombre" class="form-control" value="{{$instancia->nombre}}" required />
                     </div>
                     <div class="form-group">
                         <label for="nombre">Tipo</label>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group">
                         <label for="limite">Limite</label>
-                        <input type="number" name="limite" class="form-control" value="{{$instancia->limite}}" required>
+                        <input type="number" name="limite" class="form-control" value="{{$instancia->limite}}" required />
                     </div>
                     <div class="form-group">
                         <label for="limite">Segundo llamado</label>

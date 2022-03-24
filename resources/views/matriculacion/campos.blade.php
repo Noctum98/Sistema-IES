@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="email">Correo Electrónico</label>
-    <input type="email" name="email" id="email" class="form-control" value="{{ isset($matriculacion) && $matriculacion->email ? $matriculacion->email: '' }}" required>
+    <input type="email" name="email" id="email" class="form-control" value="{{ isset($matriculacion) && $matriculacion->email ? $matriculacion->email: '' }}" required />
 
     @error('email')
         <span class="invalid-feedback d-block" role="alert">
