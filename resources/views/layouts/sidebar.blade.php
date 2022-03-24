@@ -21,6 +21,12 @@
                     Sedes
                 </a>
                 @endif
+                @if(Session::has('carreras'))
+                    <a class="nav-link" href="{{ route('carrera.admin') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-city"></i></div>
+                        Carreras
+                    </a>
+                @endif
                 @if(Session::has('mesas'))
                 <a class="nav-link" href="{{ route('mesa.admin') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>

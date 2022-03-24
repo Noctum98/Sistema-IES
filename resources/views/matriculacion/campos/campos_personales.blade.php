@@ -47,7 +47,7 @@
                     <option value="estudiante" {{ isset($matriculacion) && $matriculacion->ocupacion == 'estudiante' }}>Estudiante</option>
                     <option value="jubilado" {{ isset($matriculacion) && $matriculacion->ocupacion == 'jubilado' }}>Jubilado / a</option>
                     <option value="obrero" {{ isset($matriculacion) && $matriculacion->ocupacion == 'obrero' }}>Obrero Rural</option>
-                    <option value="patron" {{ isset($matriculacion) && $matriculacion->ocupacion == 'patron' }}>Patron</option>
+                    <option value="patron" {{ isset($matriculacion) && $matriculacion->ocupacion == 'patron' }}>Patrón</option>
                     <option value="pensionado" {{ isset($matriculacion) && $matriculacion->ocupacion == 'pensionado' }}>Pensionado / a</option>
                     <option value="profesional" {{ isset($matriculacion) && $matriculacion->ocupacion == 'profesional' }}>Profesional</option>
                     <option value="por su cuenta" {{ isset($matriculacion) && $matriculacion->ocupacion == 'por su cuenta' }}>Trabaja por su cuenta</option>
@@ -61,7 +61,7 @@
                 @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="g_sanguineo">Grupo Sanguineo</label>
+                <label for="g_sanguineo">Grupo Sanguíneo</label>
                 <select name="g_sanguineo" id="g_sanguineo" class="form-select">
                     <option value="ab+" {{ isset($matriculacion) && $matriculacion->g_sanguineo == 'ab+' }}>AB +</option>
                     <option value="ab-" {{ isset($matriculacion) && $matriculacion->g_sanguineo == 'ab-' }}>AB -</option>
@@ -86,11 +86,11 @@
 
             </div>
             <div class="form-group col-md-6">
-                <label for="articulo_septimo">Ingreso por Articulo 7mo</label>
+                <label for="articulo_septimo">Ingreso por Artículo 7mo</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="articulo_septimo" id="articulo_septimo-si" value="1" {{ isset($matriculacion) && $matriculacion->articulo_septimo == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="articulo_septimo-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -105,7 +105,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="escolaridad" id="escolaridad-si" value="1" {{ isset($matriculacion) && $matriculacion->escolaridad == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="escolaridad-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="form-group col-md-12">
-                <label for="materias_s">Materias que adeuda de Escuela Media (Separadas por punto y coma)</label>
+                <label for="materias_s">Materias que adeuda de Escuela Media (separadas por punto y coma)</label>
                 <input type="text" name="materias_s" id="materias_s" value=" {{ isset($matriculacion) ? $matriculacion->materias_s : old('materias_s') }} " class="form-control">
 
             </div>
@@ -126,7 +126,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="titulo_s" id="titulo_s-si" value="1" {{ isset($matriculacion) && $matriculacion->titulo_s == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="titulo_s-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -141,7 +141,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="privacidad" id="privacidad-si" value="1" {{ isset($matriculacion) && $matriculacion->privacidad == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="privacidad-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -153,11 +153,11 @@
             </div>
 
             <div class="form-group col-md-12">
-                <label for="poblacion_indigena">Estudiante de Población Indigena</label>
+                <label for="poblacion_indigena">Estudiante de Población Indígena</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="poblacion_indigena" id="poblacion_indigena-si" value="1" {{ isset($matriculacion) && $matriculacion->poblacion_indigena == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="poblacion_indigena-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">

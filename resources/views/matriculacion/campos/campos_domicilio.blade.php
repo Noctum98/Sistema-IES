@@ -36,7 +36,7 @@
                 @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="n_calle">Numero de Calle</label>
+                <label for="n_calle">Número</label>
                 <input type="text" name="n_calle" id="n_calle" value=" {{ isset($matriculacion) ? $matriculacion->n_calle : old('n_calle') }} " class="form-control" required>
 
                 @error('n_calle')
@@ -76,7 +76,7 @@
                 @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="codigo_postal">Codigo Postal</label>
+                <label for="codigo_postal">Código Postal</label>
                 <input type="text" name="codigo_postal" id="codigo_postal" value=" {{ isset($matriculacion) ? $matriculacion->codigo_postal : old('codigo_postal') }} " class="form-control" required>
 
                 @error('codigo_postal')

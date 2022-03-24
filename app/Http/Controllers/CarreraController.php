@@ -11,7 +11,8 @@ class CarreraController extends Controller
 {
     function __construct()
     {
-        $this->middleware('app.admin');
+        $this->middleware('app.auth');
+        $this->middleware('app.roles:admin');
     }
     // Vistas
 

@@ -14,7 +14,7 @@
                 <input type="text" name="apellidos" id="apellidos" value=" {{ isset($matriculacion) ? $matriculacion->apellidos : null }} " class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-                <label for="dni">D.N.I</label>
+                <label for="dni">D.N.I o Pasaporte</label>
                 <input type="number" name="dni" id="dni" value="{{ isset($matriculacion) ? $matriculacion->dni : null }}" class="form-control" required>
             </div>
             <div class="form-group col-md-6">

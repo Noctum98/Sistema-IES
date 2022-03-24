@@ -5,11 +5,11 @@
 
         <div class="mt-4 row">
             <div class="form-group col-md-6">
-                <label for="discapacidad_mental">Discapacidad Mental</label>
+                <label for="discapacidad_mental">Discapacidad mental</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="discapacidad_mental" id="discapacidad_mental-si" value="1" {{ isset($matriculacion) && $matriculacion->discapacidad_mental == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="discapacidad_mental-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -20,11 +20,11 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label for="discapacidad_visual">Discapacidad Visual</label>
+                <label for="discapacidad_visual">Discapacidad visual</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="discapacidad_visual" id="discapacidad_visual-si" value="1" {{ isset($matriculacion) && $matriculacion->discapacidad_visual == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="discapacidad_visual-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -35,11 +35,11 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label for="discapacidad_motriz">Discapacidad Motriz</label>
+                <label for="discapacidad_motriz">Discapacidad motriz</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="discapacidad_motriz" id="discapacidad_motriz-si" value="1" {{ isset($matriculacion) && $matriculacion->discapacidad_motriz == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="discapacidad_motriz-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -50,11 +50,11 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label for="acompañamiento_motriz">Acompañamiento por discapacidad Motriz</label>
+                <label for="acompañamiento_motriz">Acompañamiento por discapacidad motriz</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-si" value="0" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="acompañamiento_motriz-si">
-                        SI
+                        SÍ
                     </label>
                 </div>
                 <div class="form-check">
@@ -65,12 +65,12 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label for="discapacidad_intelectual">Discapacidad Intelectual</label>
+                <label for="discapacidad_intelectual">Discapacidad intelectual</label>
                 <select name="discapacidad_intelectual" id="discapacidad_intelectual" class="form-select">
                     <option value="ninguna" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'ninguna' ? 'selected="selected"' : '' }}>Ninguna</option>
-                    <option value="nivel leve" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'nivel leve' ? 'selected="selected"' : '' }}>Nivel Leve</option>
-                    <option value="nivel moderado" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'nivel moderado' ? 'selected="selected"' : '' }}>Nivel Moderado</option>
-                    <option value="nivel profundo" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'nivel profundo' ? 'selected="selected"' : '' }}>Nivel Profundo</option>
+                    <option value="nivel leve" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'nivel leve' ? 'selected="selected"' : '' }}>Nivel leve</option>
+                    <option value="nivel moderado" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'nivel moderado' ? 'selected="selected"' : '' }}>Nivel moderado</option>
+                    <option value="nivel profundo" {{ isset($matriculacion) && $matriculacion->discapacidad_intelectual == 'nivel profundo' ? 'selected="selected"' : '' }}>Nivel profundo</option>
                 </select>
 
                 @error('discapacidad_intelectual')
@@ -80,12 +80,12 @@
                 @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="discapacidad_auditiva">Discapacidad Auditiva</label>
+                <label for="discapacidad_auditiva">Discapacidad auditiva</label>
                 <select name="discapacidad_auditiva" id="discapacidad_auditiva" class="form-select">
-                    <option value="hipocausia leve" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia leve' ? 'selected="selected"' : '' }}>Hipocausia Leve</option>
-                    <option value="hipocausia moderada" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia moderada' ? 'selected="selected"' : '' }}>Hipocausia Moderada</option>
-                    <option value="hipocausia severa" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia severa' ? 'selected="selected"' : '' }}>Hipocausia Severa</option>
-                    <option value="hipocausia profunda" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia profunda' ? 'selected="selected"' : '' }}>Hipocausia Profunda</option>
+                    <option value="hipocausia leve" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia leve' ? 'selected="selected"' : '' }}>Hipocausia leve</option>
+                    <option value="hipocausia moderada" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia moderada' ? 'selected="selected"' : '' }}>Hipocausia moderada</option>
+                    <option value="hipocausia severa" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia severa' ? 'selected="selected"' : '' }}>Hipocausia severa</option>
+                    <option value="hipocausia profunda" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'hipocausia profunda' ? 'selected="selected"' : '' }}>Hipocausia profunda</option>
                     <option value="sordera" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'sordera' ? 'selected="selected"' : '' }}>Sordera</option>
                     <option value="ninguna" {{ isset($matriculacion) && $matriculacion->discapacidad_auditiva == 'ninguna' ? 'selected="selected"' : '' }}>Ninguna</option>
                 </select>
@@ -122,7 +122,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="1" id="matriculacion" name="matriculacion" {{ isset($matriculacion) && $matriculacion->matriculacion == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="matriculacion">
-                        Acepto la matriculacion
+                        Acepto la matriculación
                     </label>
                 </div>
             </div>
