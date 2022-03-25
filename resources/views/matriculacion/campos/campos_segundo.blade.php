@@ -23,25 +23,25 @@
         </p>
         <h5>INSCRIPCIÓN A SEGUNDO AÑO</h5>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="regular_segundo" value="regular_segundo">
+            <input class="form-check-input" type="radio" name="regularidad" id="regular_segundo" value="regular_segundo" {{ old('regularidad') == 'regular_segundo' ? 'checked' : '' }}>
             <label class="form-check-label" for="regular_segundo">
                 REGULAR
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="condicional_segundo" value="condicional_segundo">
+            <input class="form-check-input" type="radio" name="regularidad" id="condicional_segundo" value="condicional_segundo" {{ old('regularidad') == 'condicional_segundo' ? 'checked' : '' }}>
             <label class="form-check-label" for="condicional_segundo">
                 CONDICIONAL
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="recursante_segundo" value="recursante_segundo">
+            <input class="form-check-input" type="radio" name="regularidad" id="recursante_segundo" value="recursante_segundo" {{ old('regularidad') == 'recursante_segundo' ? 'checked' : '' }}>
             <label class="form-check-label" for="recursante_segundo">
                 RECURSANTE
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="recursante_diferenciado_segundo" value="recursante_diferenciado_segundo">
+            <input class="form-check-input" type="radio" name="regularidad" id="recursante_diferenciado_segundo" value="recursante_diferenciado_segundo" {{ old('regularidad') == 'recursante_diferenciado_segundo' ? 'checked' : '' }}>
             <label class="form-check-label" for="recursante_diferenciado_segundo">
                 RECURSANTE CON TRAYECTORIA DIFERENCIADA DE CURSADO EN TERCER AÑO
             </label>

@@ -17,19 +17,19 @@
         <p>Usted deberá consignar los espacios curriculares / módulos de tercer año que debe recursar.</p>
         <h5>INSCRIPCIÓN A TERCER AÑO</h5>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="regular_tercero" value="regular_tercero">
+            <input class="form-check-input" type="radio" name="regularidad" id="regular_tercero" value="regular_tercero" {{ old('regularidad') == 'regular_tercero' ? 'checked' : '' }}>
             <label class="form-check-label" for="regular_tercero">
                 REGULAR
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="condicional_tercero" value="condicional_tercero">
+            <input class="form-check-input" type="radio" name="regularidad" id="condicional_tercero" value="condicional_tercero" {{ old('regularidad') == 'condicional_tercero' ? 'checked' : '' }}>
             <label class="form-check-label" for="condicional_tercero">
                 CONDICIONAL
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="recursante_tercero" value="recursante_tercero">
+            <input class="form-check-input" type="radio" name="regularidad" id="recursante_tercero" value="recursante_tercero" {{ old('regularidad') == 'recursante_tercero' ? 'checked' : '' }}>
             <label class="form-check-label" for="recursante_tercero">
                 RECURSANTE
             </label>

@@ -8,23 +8,53 @@
             <div class="form-group col-md-6">
                 <label for="nombre">Nombres</label>
                 <input type="text" name="nombres" id="nombres" value=" {{ isset($matriculacion) ? $matriculacion->nombres : old('nombres') }} " class="form-control" required />
+
+                @error('nombres')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="apellidos">Apellidos</label>
                 <input type="text" name="apellidos" id="apellidos" value=" {{ isset($matriculacion) ? $matriculacion->apellidos : old('apellidos') }} " class="form-control" required />
+
+                @error('apellidos')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="dni">D.N.I o Pasaporte</label>
                 <input type="number" name="dni" id="dni" value="{{ isset($matriculacion) ? $matriculacion->dni : old('dni') }}" class="form-control" required />
+
+                @error('dni')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="cuil">CUIL</label>
                 <input type="text" name="cuil" id="cuil" value="{{ isset($matriculacion) ? $matriculacion->cuil : old('cuil') }} " class="form-control" required />
+
+                @error('cuil')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="fecha">Fecha de Nacimiento</label>
                 @if(!isset($matriculacion))
-                <input type="date" name="fecha" id="fecha" class="form-control" required />
+                <input type="date" name="fecha" id="fecha" class="form-control" value="{{ old('fecha') }}" required />
+
+                @error('fecha')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 @else
                 <input type="text" name="fecha" id="fecha" value="{{ $matriculacion->fecha }}" class="form-control" required />
 
@@ -33,6 +63,12 @@
             <div class="form-group col-md-6">
                 <label for="edad">Edad</label>
                 <input type="text" name="edad" id="edad" value=" {{ isset($matriculacion) ? $matriculacion->edad : old('edad') }} " class="form-control" required />
+
+                @error('edad')
+                <span class="invalid-feedback d-block" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="nacionalidad">Nacionalidad</label>
@@ -54,7 +90,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="otra">Otra nacionalidad</label>
-                <input type="text" name="nacionalidad_otra" id="otra" value=" {{ isset($matriculacion) ? $matriculacion->nacionalidad_otra : null }} " class="form-control">
+                <input type="text" name="nacionalidad_otra" id="otra" value=" {{ isset($matriculacion) ? $matriculacion->nacionalidad_otra : old('nacionalidad_otra') }} " class="form-control">
             </div>
             <div class="form-group col-md-6">
                 <label for="genero">Género</label>

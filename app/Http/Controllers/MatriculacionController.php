@@ -59,8 +59,11 @@ class MatriculacionController extends Controller
             'nombres'               => ['required'],
             'apellidos'             => ['required'],
             'dni'                   => ['required'],
+            'edad'                  => ['required'],
             'email'                 => ['required', 'email'],
             'telefono'              => ['required'],
+            'provincia'             => ['required'],
+            'localidad'             => ['required'],
             'discapacidad_mental'   => ['required'],
             'discapacidad_visual'   => ['required'],
             'discapacidad_motriz'   => ['required'],
@@ -169,7 +172,7 @@ class MatriculacionController extends Controller
     public function send_email(Request $request,$carrera_id,$año)
     {
         $validate = $this->validate($request,[
-            'email' => ['required']
+            'email' => ['required','email']
         ]);
 
         $mail_check = MailCheck::where('email',$request['email'])->first();

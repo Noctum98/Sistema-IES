@@ -27,25 +27,25 @@
         </p>
         <h5>INSCRIPCIÓN A PRIMER AÑO</h5>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="regular_primero" value="regular_primero">
+            <input class="form-check-input" type="radio" name="regularidad" id="regular_primero" value="regular_primero" {{ old('regularidad') == 'regular_primero' ? 'checked' : '' }} />
             <label class="form-check-label" for="regular_primero">
                 REGULAR
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="condicional_primero" value="condicional_primero">
+            <input class="form-check-input" type="radio" name="regularidad" id="condicional_primero" value="condicional_primero" {{ old('regularidad') == 'condicional_primero' ? 'checked' : '' }}>
             <label class="form-check-label" for="condicional_primero">
                 CONDICIONAL
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="recursante_primero" value="recursante_primero">
+            <input class="form-check-input" type="radio" name="regularidad" id="recursante_primero" value="recursante_primero" {{ old('regularidad') == 'recursante_primero' ? 'checked' : '' }}>
             <label class="form-check-label" for="recursante_primero">
                 RECURSANTE
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="regularidad" id="recursante_diferenciado_primero" value="recursante_diferenciado_primero">
+            <input class="form-check-input" type="radio" name="regularidad" id="recursante_diferenciado_primero" value="recursante_diferenciado_primero" {{ old('regularidad') == 'recursante_diferenciado_primero' ? 'checked' : '' }}>
             <label class="form-check-label" for="recursante_diferenciado_primero">
                 RECURSANTE CON TRAYECTORIA DIFERENCIADA DE CURSADO EN SEGUNDO AÑO
             </label>

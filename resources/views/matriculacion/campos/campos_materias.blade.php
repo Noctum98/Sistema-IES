@@ -16,7 +16,7 @@
     @foreach($carrera->materias as $materia)
     @if($materia->año == 1)
     <div class="form-check">
-        <input class="form-check-input materias-primero" type="checkbox" value="{{ $materia->id }}" id="{{ $materia->id }}" name="materias[]">
+        <input class="form-check-input materias-primero" type="checkbox" value="{{ $materia->id }}" id="{{ $materia->id }}" name="materias[]" {{ old('materias') && in_array($materia->id,old('materias')) ? 'checked' : '' }}>
         <label class="form-check-label" for="{{ $materia->id }}">
             {{ $materia->nombre }}
         </label>
@@ -44,7 +44,7 @@
     @foreach($carrera->materias as $materia)
     @if($materia->año == 2)
     <div class="form-check">
-        <input class="form-check-input materias-segundo" type="checkbox" value="{{ $materia->id }}" id="{{ $materia->id }}" name="materias[]">
+        <input class="form-check-input materias-segundo" type="checkbox" value="{{ $materia->id }}" id="{{ $materia->id }}" name="materias[]" {{ old('materias') && in_array($materia->id,old('materias')) ? 'checked' : '' }}>
         <label class="form-check-label" for="{{ $materia->id }}">
             {{ $materia->nombre }}
         </label>
@@ -70,7 +70,7 @@
     @foreach($carrera->materias as $materia)
     @if($materia->año == 3)
     <div class="form-check">
-        <input class="form-check-input materias-tercero" type="checkbox" value="{{ $materia->id }}" id="{{ $materia->id }}" name="materias[]">
+        <input class="form-check-input materias-tercero" type="checkbox" value="{{ $materia->id }}" id="{{ $materia->id }}" name="materias[]" {{ old('materias') && in_array($materia->id,old('materias')) ? 'checked' : '' }}>
         <label class="form-check-label" for="{{ $materia->id }}">
             {{ $materia->nombre }}
         </label>
