@@ -1,4 +1,4 @@
-@extends('layouts.app-prueba')
+@extends('layouts.app')
 @section('content')
 <div class="container col-md-8">
     <h2 class="h1 mb-4">
