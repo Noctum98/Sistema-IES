@@ -82,7 +82,7 @@
             @if($año == 1)
             <div class="form-group col-md-6">
                 <label for="escuela_s">Escuela Secundaria</label>
-                <input type="text" name="escuela_s" id="escuela_s" value=" {{ isset($matriculacion) ? $matriculacion->escuela_s : old('escuela_s') }} " class="form-control" />
+                <input type="text" name="escuela_s" id="escuela_s" value=" {{ isset($matriculacion) ? $matriculacion->escuela_s : old('escuela_s') }} " class="form-control" required/>
 
                 @error('escuela_s')
                 <span class="invalid-feedback d-block" role="alert">

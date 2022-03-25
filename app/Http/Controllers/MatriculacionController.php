@@ -72,9 +72,6 @@ class MatriculacionController extends Controller
             'codigo_postal' => ['required'],
             'matriculacion' => ['required'],
             'regularidad' => ['required'],
-            'escuela_s' => ['required'],
-            'escolaridad' => ['required'],
-            'titulo_s' => ['required'],
             'privacidad' => ['required'],
             'poblacion_indigena' => ['required']
         ]);
