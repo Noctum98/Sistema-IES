@@ -73,8 +73,8 @@
 						      <td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 						      <td>{{ $alumno->dni }}</td>
 						      <td>
-						      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn-sm btn-secondary">
-						      		Ver datos de alumno
+						      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
+						      		Ver datos
 						      	</a>
 						      </td>
 						    </tr>
@@ -110,8 +110,8 @@
 						      <td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 						      <td>{{ $alumno->dni }}</td>
 						      <td>
-						      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn-sm btn-secondary">
-						      		Ver datos de alumno
+						      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
+						      		Ver datos
 						      	</a>
 						      </td>
 						    </tr>

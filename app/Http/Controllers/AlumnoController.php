@@ -22,13 +22,12 @@ class AlumnoController extends Controller
     public function vista_admin($busqueda = null){
         $user = Auth::user();
         $alumnos = [];
+        $sedes = null;
 
         if(!empty($busqueda)){
             $alumnos = Alumno::where('dni','LIKE','%'.$busqueda.'%')
                             ->orWhere('nombres','LIKE','%'.$busqueda.'%')
                             ->orWhere('apellidos','LIKE','%'.$busqueda.'%')
-                            ->orWhere('residencia','LIKE','%'.$busqueda.'%')
-                            ->orWhere('nombres','LIKE','%'.$busqueda.'%')
                             ->orWhere('telefono','LIKE','%'.$busqueda.'%')
                             ->get();
         }else{

@@ -8,6 +8,7 @@ use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
 use App\Models\MailCheck;
+use App\Models\Proceso;
 use App\Services\ProcesoService as ServicesProcesoService;
 use Illuminate\Http\Request;
 use ProcesoService;
@@ -162,6 +163,35 @@ class MatriculacionController extends Controller
         ])->with([
             'mensaje_editado' => 'Datos editados correctamente'
         ]);
+    }
+
+    public function delete($id,$carrera_id){
+        $alumno = Alumno::find($id);
+        $carrera = Carrera::find($id);
+
+        $procesos = Proceso::where('alumno_id',$alumno->id)->get();
+
+        foreach($procesos as $proceso)
+        {
+            if($proceso->materia->carrera_id == $carrera->id)
+            {
+                $proceso->delete();
+            }
+        }
+
+        AlumnoCarrera::where([
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id
+        ])->delete();
+        
+        $alumno->delete();
+
+        return redirect('alumno.alumnos',[
+            'carrera' => $carrera
+        ])->with([
+            'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
+        ]);
+
     }
 
 

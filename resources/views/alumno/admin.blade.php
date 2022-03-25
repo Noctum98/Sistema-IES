@@ -8,7 +8,7 @@
 		<hr>
 		<div class="col-md-6 row">
 			<div class="col-md-6 mr-2 border-right">
-				<form method="GET" action="#" id="buscador">
+				<form method="GET" action="#" id="buscador-alumnos">
 					<div class="row pr-2">
 						<input type="text" id="busqueda" class="form-control" placeholder="Buscar alumno">
 					</div>
@@ -55,7 +55,6 @@
 				    <tr>
 				      <th scope="col">Nombre</th>
 				      <th scope="col">DNI</th>
-				      <th scope="col">Carrera</th>
 				      <th scope="col">Acción</th>
 				    </tr>
 				  </thead>
@@ -64,9 +63,8 @@
 				    <tr>
 				      <td>{{ $alumno->nombres.' '.$alumno->apellidos }}</td>
 				      <td>{{ $alumno->dni }}</td>
-				      <td>{{ $alumno->carrera->nombre }}</td>
 				      <td>
-				      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn-sm btn-primary">
+				      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-primary">
 				      		Ver datos
 				      	</a>
 				      </td>
