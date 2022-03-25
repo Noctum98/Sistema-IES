@@ -37,6 +37,8 @@
 					@endforeach
 				</li>
 				<li><strong>Situación:</strong>{{ str_replace('_',' ',ucwords($alumno->regularidad)) }}</li>
+
+				@if($alumno->año == 1)
 				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
 				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->condicion_s ? 'Si' : 'No' }}</li>
@@ -48,6 +50,7 @@
 					@endif
 				</li>
 				<li><strong>Presento título secundario:</strong> {{$alumno->titulo_s ? 'Si' : 'No'}} </li>
+				@endif
 			</ul>
 		</div>
 		<div class="">
