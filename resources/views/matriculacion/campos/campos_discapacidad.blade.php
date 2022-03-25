@@ -101,7 +101,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="pase" id="no" value="no" {{ isset($matriculacion) && $matriculacion->pase == 'no' || old('pase') == 'no' ? 'checked' : '' }}>
                     <label class="form-check-label" for="no">
-                       NO
+                        NO
                     </label>
                 </div>
                 <div class="form-check">
@@ -124,6 +124,12 @@
                     <label class="form-check-label" for="matriculacion">
                         Acepto la matriculación
                     </label>
+
+                    @error('matriculacion')
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
             </div>
         </div>
