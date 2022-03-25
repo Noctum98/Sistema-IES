@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-prueba')
 @section('content')
 <div class="container col-md-8">
     <h2 class="h1 mb-4">
@@ -32,7 +32,7 @@
         <input type="submit" value="Siguiente" class="btn btn-primary mt-3 col-md-12">
     </form>
     @else
-    @include('matriculacion.check_email')
+        @include('matriculacion.check_email')
     @endif
 
 

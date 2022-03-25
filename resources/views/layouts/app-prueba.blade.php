@@ -85,7 +85,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     @if(!Auth::user())
     <script>
-        document.getElementById('body').classList.add('sb-sidenav-toggled');
+        if($( window ).width() > 1000){
+            $('#layoutSidenav_content').css('padding-left',0);
+        };
     </script>
     @endif
 </body>
