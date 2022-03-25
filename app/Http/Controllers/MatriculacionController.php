@@ -97,7 +97,6 @@ class MatriculacionController extends Controller
 
         $request['año'] = $año;
 
-        // dd($request->all());
         $alumno = Alumno::where([
             'dni' => $request['dni'],
             'cuil' => $request['cuil']
