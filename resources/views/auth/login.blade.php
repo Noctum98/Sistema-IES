@@ -17,9 +17,9 @@
                                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
                                 @error('username')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -31,9 +31,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                 @error('password')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -46,6 +46,7 @@
                                     <label class="form-check-label" for="remember">
                                         Recordarme
                                     </label>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -55,14 +56,14 @@
                                 <button type="submit" class="btn btn-primary">
                                     Iniciar Sesión
                                 </button>
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    Recuperar contraseña
+                                </a>
 
-                                <!--
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
+
                                 @endif
-                                -->
+
                             </div>
                         </div>
                     </form>
@@ -72,4 +73,3 @@
     </div>
 </div>
 @endsection
-

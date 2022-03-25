@@ -50,9 +50,9 @@
 		<div class="detalle-pre">
 			<br>
 			<p>Te  has matriculado correctamente a {{ $carrera->nombre." ".$carrera->sede->nombre }}</p>
-			<p>No te olvides de imprimir el archivo pdf y llevarlo a sección alumnos.</p>
+			<p>No te olvides de completar la encuesta socioeconomica que está en el sitio web y también imprimir el siguiente archivo pdf y llevarlo a sección alumnos.</p>
 			<br>
-			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="btn">IMPRIMIR PDF</a>
+			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="btn">DESCARGAR PDF</a>
 		</div>
 	</div>		
 </div>

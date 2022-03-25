@@ -8,7 +8,7 @@
         </div>
         <div class="card-body ">
             <h5 class="card-title">{{ $mensaje }}</h5>
-            <p class="card-text">Se enviara un correo electronico a tu email con los datos de la matriculación y el pdf que deberás presentar a sección alumnos.</p>
+            <p class="card-text">Se enviará un correo electronico a tu email con los datos de la matriculación y el pdf que deberás presentar a sección alumnos.</p>
         </div>
     </div>
 </div>
