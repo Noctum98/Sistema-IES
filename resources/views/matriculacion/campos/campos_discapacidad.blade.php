@@ -13,7 +13,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="discapacidad_mental" id="discapacidad_mental-no" value="0" {{ isset($matriculacion) && $matriculacion->discapacidad_mental == 0 || !old('discapacidad_mental') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="discapacidad_mental" id="discapacidad_mental-no" value="0" {{ isset($matriculacion) && $matriculacion->discapacidad_mental == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="discapacidad_mental-no">
                         NO
                     </label>
@@ -28,7 +28,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="discapacidad_visual" id="discapacidad_visual-no" value="0" {{ isset($matriculacion) && $matriculacion->discapacidad_visual == 0 || !old('discapacidad_visual') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="discapacidad_visual" id="discapacidad_visual-no" value="0" {{ isset($matriculacion) && $matriculacion->discapacidad_visual == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="discapacidad_visual-no">
                         NO
                     </label>
@@ -43,7 +43,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="discapacidad_motriz" id="discapacidad_motriz-no" value="0" {{ isset($matriculacion) && $matriculacion->discapacidad_motriz == 0 || !old('discapacidad_motriz') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="discapacidad_motriz" id="discapacidad_motriz-no" value="0" {{ isset($matriculacion) && $matriculacion->discapacidad_motriz == 0  ? 'checked' : '' }}>
                     <label class="form-check-label" for="discapacidad_motriz-no">
                         NO
                     </label>
@@ -58,7 +58,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-no" value="0" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 1 || !old('acompañamiento_motriz') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-no" value="0" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="acompañamiento_motriz-no">
                         NO
                     </label>

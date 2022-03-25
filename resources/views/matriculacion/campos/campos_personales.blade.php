@@ -99,7 +99,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="articulo_septimo" id="articulo_septimo-no" value="0" {{ isset($matriculacion) && $matriculacion->articulo_septimo == 0 || !old('articulo_septimo') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="articulo_septimo" id="articulo_septimo-no" value="0" {{ isset($matriculacion) && $matriculacion->articulo_septimo == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="articulo_septimo-no">
                         NO
                     </label>
@@ -114,7 +114,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="escolaridad" id="escolaridad-no" value="0" {{ isset($matriculacion) && $matriculacion->escolaridad == 0 || !old('escolaridad') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="escolaridad" id="escolaridad-no" value="0" {{ isset($matriculacion) && $matriculacion->escolaridad == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="escolaridad-no">
                         NO
                     </label>
@@ -135,7 +135,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="titulo_s" id="titulo_s-no" value="0" {{ isset($matriculacion) && $matriculacion->titulo_s == 0 || !old('titulo_s') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="titulo_s" id="titulo_s-no" value="0" {{ isset($matriculacion) && $matriculacion->titulo_s == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="titulo_s-no">
                         NO
                     </label>
@@ -150,7 +150,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="privacidad" id="privacidad-no" value="0" {{ isset($matriculacion) && $matriculacion->privacidad == 0 || !old('privacidad') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="privacidad" id="privacidad-no" value="0" {{ isset($matriculacion) && $matriculacion->privacidad == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="privacidad-no">
                         NO
                     </label>
@@ -166,7 +166,7 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="poblacion_indigena" id="poblacion_indigena-no" value="0" {{ isset($matriculacion) && $matriculacion->poblacion_indigena == 0 || !old('poblacion_indigena') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="poblacion_indigena" id="poblacion_indigena-no" value="0" {{ isset($matriculacion) && $matriculacion->poblacion_indigena == 0  ? 'checked' : '' }}>
                     <label class="form-check-label" for="poblacion_indigena-no">
                         NO
                     </label>

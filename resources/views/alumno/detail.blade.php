@@ -73,10 +73,10 @@
 				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil) }}</li>
 				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion) }}</li>
 				<li><strong>Grupo Sanguineo: </strong> {{ ucwords($alumno->g_sanguineo) }}</li>
+				@if($alumno->año == 1)
 				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
 				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->condicion_s ? 'Si' : 'No' }}</li>
-				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal }}</li>
 				<li><strong>Materias que adeuda de secundario: </strong>
 					@if(!$alumno->materias_s)
 					Ninguna
@@ -85,6 +85,8 @@
 					@endif
 				</li>
 				<li><strong>Presento título secundario:</strong> {{$alumno->titulo_s ? 'Si' : 'No'}} </li>
+				@endif
+				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal }}</li>
 				<li><strong>Estudiante de población indigena:</strong> {{$alumno->poblacion_indigena ? 'Si' : 'No'}} </li>
 				<li><strong>Privación de libertad o en regímenes semi-abiertos:</strong> {{$alumno->privacidad ? 'Si' : 'No'}} </li>
 			</ul>
@@ -97,7 +99,9 @@
 					<br>
 					@foreach($alumno->carreras as $carrera)
 					_ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }}
-
+					<br>
+					Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
+					<br>
 					@if(Auth::user()->hasRole('coordinador'))
 					<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
 					@include('alumno.modals.carreras_matriculacion')

@@ -52,7 +52,8 @@ class Alumno extends Model
         'discapacidad_motriz' ,
         'acompañamiento_motriz' ,
         'matriculacion' ,
-        'pase' 
+        'pase' ,
+        'titulo_s'
     ];
 
     use HasFactory;

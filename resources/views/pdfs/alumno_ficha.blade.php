@@ -41,7 +41,7 @@
 				@if($alumno->año == 1)
 				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
-				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->condicion_s ? 'Si' : 'No' }}</li>
+				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->escolaridad ? 'Si' : 'No' }}</li>
 				<li><strong>Materias que adeuda de secundario: </strong> 
 					@if(!$alumno->materias_s)
 						Ninguna
