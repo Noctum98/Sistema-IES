@@ -12,12 +12,15 @@
 		</a>
 		<a href="{{route('pre.articulo')}}" class="ml-2 btn btn-secondary">Articulo 7mo</a>
 	</div>
-	<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="#" id="buscador">
-		<div class="input-group mt-3" >
-			<input class="form-control ml-3" type="text" id="busqueda" placeholder="Buscar preinscripcion" aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-			<button class="btn btn-primary"  type="button"><i class="fas fa-search"></i></button>
-		</div>
-	</form>
+	<div id="buscador-alumnos">
+		<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="#" id="buscador">
+			<div class="input-group mt-3" >
+				<input class="form-control ml-3" type="text" id="busqueda" placeholder="Buscar preinscripcion" aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+				<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+			</div>
+		</form>
+	</div>
+
 
 	@if(!empty($carreras))
 	<table class="table mt-4">
