@@ -61,7 +61,7 @@ class MatriculacionController extends Controller
             'nombres'               => ['required'],
             'apellidos'             => ['required'],
             'dni'                   => ['required'],
-            'edad'                  => ['required'],
+            'edad'                  => ['required','numeric'],
             'email'                 => ['required', 'email'],
             'telefono'              => ['required'],
             'provincia'             => ['required'],
