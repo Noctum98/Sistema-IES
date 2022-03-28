@@ -7,17 +7,12 @@
 		<p>Agrega, edita o busca alumnos y su información</p>
 		<hr>
 		<div class="col-md-6 row">
-			<div class="col-md-6 mr-2 border-right">
+			<div class="col-md-6 mr-2">
 				<form method="GET" action="#" id="buscador-alumnos">
 					<div class="row pr-2">
 						<input type="text" id="busqueda" class="form-control" placeholder="Buscar alumno">
 					</div>
 				</form>
-			</div>
-			<div class="col-md-5 p-0 m-0">
-				<a href="{{ route('alumno.elegir') }}" class="mb-3 btn btn-success">
-					Agregar alumno
-				</a>
 			</div>
 		</div>
 		<div class="col-md-12">

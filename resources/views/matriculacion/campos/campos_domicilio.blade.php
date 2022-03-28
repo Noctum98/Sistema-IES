@@ -37,7 +37,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="n_calle">Número</label>
-                <input type="text" name="n_calle" id="n_calle" value=" {{ isset($matriculacion) ? $matriculacion->n_calle : old('n_calle') }} " class="form-control" required />
+                <input type="text" name="n_calle" id="n_calle" value=" {{ isset($matriculacion) ? $matriculacion->n_calle : old('n_calle') }} " class="form-control"/>
 
                 @error('n_calle')
                 <span class="invalid-feedback d-block" role="alert">

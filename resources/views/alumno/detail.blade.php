@@ -102,10 +102,23 @@
 					<br>
 					Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
 					<br>
+
+					<div class="row">
 					@if(Auth::user()->hasRole('coordinador'))
-					<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
+					<button class="btn btn-sm btn-primary col-md-6" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
 					@include('alumno.modals.carreras_matriculacion')
 					@endif
+				
+					@if(Auth::user()->hasRole('regente'))
+					<form class="col-md-6" action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" method="POST">
+						{{ method_field('DELETE') }}
+						<button type="submit" class="btn btn-sm btn-danger">Eliminar Matriculación</button>
+
+					</form>
+					@endif
+					</div>
+
+
 					@endforeach
 				</li>
 

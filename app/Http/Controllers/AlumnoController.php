@@ -61,7 +61,7 @@ class AlumnoController extends Controller
             'carreras'  =>  $carreras
         ]);
     }
-    public function vista_alumnos(Request $request,int $carrera_id){
+    public function vista_alumnos(Request $request,$carrera_id){
         $carrera = Carrera::find($carrera_id);
 
         return view('alumno.alumnos',[

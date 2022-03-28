@@ -257,6 +257,7 @@ Route::prefix('mesas')->group(function () {
 Route::prefix('matriculacion')->group(function(){
     Route::get('/carrera/{id}/{year}/{timecheck?}', [MatriculacionController::class,'create'])->name('matriculacion.create');
     Route::get('/editar/{alumno_id}/{carrera_id}',[MatriculacionController::class,'edit'])->name('matriculacion.edit');
+    Route::delete('/delete/{id}/{carrera_id}',[MatriculacionController::class,'delete'])->name('matriculacion.delete');
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}',[MatriculacionController::class,'email_check'])->name('matriculacion.checked');
     Route::get('finalizada',function(){
         return view('matriculacion.card_email_check');

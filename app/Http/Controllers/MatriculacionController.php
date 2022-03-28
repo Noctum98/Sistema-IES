@@ -167,7 +167,7 @@ class MatriculacionController extends Controller
 
     public function delete($id,$carrera_id){
         $alumno = Alumno::find($id);
-        $carrera = Carrera::find($id);
+        $carrera = Carrera::find($carrera_id);
 
         $procesos = Proceso::where('alumno_id',$alumno->id)->get();
 
@@ -186,8 +186,8 @@ class MatriculacionController extends Controller
         
         $alumno->delete();
 
-        return redirect('alumno.alumnos',[
-            'carrera' => $carrera
+        return redirect('alumno.carrera',[
+            'carrera_id' => $carrera->id
         ])->with([
             'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
         ]);
