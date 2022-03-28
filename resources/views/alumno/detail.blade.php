@@ -112,7 +112,7 @@
 					@if(Auth::user()->hasRole('regente'))
 					<form class="col-md-6" action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" method="POST">
 						{{ method_field('DELETE') }}
-						<button type="submit" class="btn btn-sm btn-danger">Eliminar Matriculación</button>
+						<button type="submit" class="btn btn-sm btn-danger">Eliminar matriculación</button>
 
 					</form>
 					@endif

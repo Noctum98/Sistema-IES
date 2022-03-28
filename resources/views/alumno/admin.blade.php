@@ -30,7 +30,7 @@
 				  	@foreach ($sedes as $sede)
 						@foreach($sede->carreras as $carrera)
 							<tr>
-							<td>{{ $carrera->nombre }}</td>
+							<td>{{ $carrera->nombre.' ('.ucwords($carrera->turno).')' }}</td>
 							<td>{{ $carrera->resolucion }}</td>
 							<td>{{ $carrera->sede->nombre }}</td>
 							<td>

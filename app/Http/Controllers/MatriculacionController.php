@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CheckEmail;
+use App\Mail\MatriculacionDeleted;
 use App\Mail\MatriculacionSuccessEmail;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
@@ -184,6 +185,8 @@ class MatriculacionController extends Controller
             'carrera_id' => $carrera->id
         ])->delete();
         
+        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno,$carrera));
+
         $alumno->delete();
 
         return redirect()->route('alumno.carrera',[

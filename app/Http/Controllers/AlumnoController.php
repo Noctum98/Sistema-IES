@@ -29,6 +29,7 @@ class AlumnoController extends Controller
                             ->orWhere('nombres','LIKE','%'.$busqueda.'%')
                             ->orWhere('apellidos','LIKE','%'.$busqueda.'%')
                             ->orWhere('telefono','LIKE','%'.$busqueda.'%')
+                            ->select('nombres','apellidos','id','dni')
                             ->get();
         }else{
             $sedes = $user->sedes;
