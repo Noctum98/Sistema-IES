@@ -186,8 +186,8 @@ class MatriculacionController extends Controller
         
         $alumno->delete();
 
-        return redirect('alumno.carrera',[
-            'carrera_id' => $carrera->id
+        return redirect()->route('alumno.carrera',[
+            'carrera_id' => $carrera_id
         ])->with([
             'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
         ]);

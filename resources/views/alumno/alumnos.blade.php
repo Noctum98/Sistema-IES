@@ -9,6 +9,11 @@
 		</p>
 		<hr>
 			<div class="col-md-11">
+			@if(@session('alumno_deleted'))
+				<div class="alert alert-warning">
+					{{ @session('alumno_deleted') }}
+				</div>
+			@endif
 			<div id="accordion">
 			  <div class="card">
 			    <div class="card-header" id="headingOne">
