@@ -31,12 +31,6 @@ class MatriculacionController extends Controller
         $carrera = Carrera::find($carrera_id);
         $email_checked = $timecheck;
 
-        if($year == 1){
-            return view('error.disabled_time',[
-                'mensaje' => 'La matriculación a 1er año estará habilitada el día 28/03/2022'
-            ]);
-        }
-
         return view('matriculacion.create', [
             'carrera' => $carrera,
             'año' => $year,
