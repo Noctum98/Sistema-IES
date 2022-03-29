@@ -88,10 +88,12 @@
                     <option value="asia" {{ isset($matriculacion) && $matriculacion->nacionalidad == 'asia' ? 'selected="selected"' : '' }}>Asia</option>
                 </select>
             </div>
+            <!-------
             <div class="form-group col-md-6">
                 <label for="otra">Otra nacionalidad</label>
                 <input type="text" name="nacionalidad_otra" id="otra" value=" {{ isset($matriculacion) ? $matriculacion->nacionalidad_otra : old('nacionalidad_otra') }} " class="form-control">
             </div>
+            ---------->
             <div class="form-group col-md-6">
                 <label for="genero">Género</label>
                 <select name="genero" id="genero" class="form-select">

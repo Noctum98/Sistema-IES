@@ -29,7 +29,7 @@
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
-        <input type="submit" value="Siguiente" class="btn btn-primary mt-3 col-md-12">
+        <input type="submit" value="Matricularme" class="btn btn-primary mt-3 col-md-12">
     </form>
     @else
         @include('matriculacion.check_email')

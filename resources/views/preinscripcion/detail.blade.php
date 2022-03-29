@@ -58,7 +58,7 @@
 				</ul>
 				<ul class="datos-academicos">
 					<li><h2>Datos Académicos</h3></li>
-					<li><strong>Carrera:</strong> {{ $alumno->carrera->nombre }}</li>
+					<li><strong>Carrera:</strong> {{ $alumno->carrera->nombre.' - '.$alumno->carrera->sede->nombre }}</li>
 					<li><strong>Título secundario:</strong> 
 						{{ ucwords($alumno->escolaridad) }}
 					</li>
