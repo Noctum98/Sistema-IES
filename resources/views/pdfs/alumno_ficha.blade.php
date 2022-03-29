@@ -9,44 +9,49 @@
 			<div class="datos-alumno">
 				<ul class="col-md-6">
 					<h2>Datos de Personales</h3>
-					<li><strong>Nombre:</strong> {{ $alumno->nombres }}</li>
-					<li><strong>Apellidos:</strong> {{ $alumno->apellidos }}</li>
-					<li><strong>Edad:</strong> {{ $alumno->edad }} años</li>
-					<li><strong>Telefono:</strong> {{ $alumno->telefono }}</li>
-					<li><strong>Email:</strong> {{ $alumno->email }}</li>
-					<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha }}</li>
-					<li><strong>N° de documento: </strong> {{ $alumno->dni }}</li>
-					<li><strong>CUIL: </strong> {{ $alumno->cuil }}</li>
-					<li><strong>Género: </strong> {{ ucwords($alumno->genero) }}</li>
+						<li><strong>Nombre:</strong> {{ $alumno->nombres }}</li>
+						<li><strong>Apellidos:</strong> {{ $alumno->apellidos }}</li>
+						<li><strong>Edad:</strong> {{ $alumno->edad }} años</li>
+						<li><strong>Telefono:</strong> {{ $alumno->telefono }}</li>
+						<li><strong>Email:</strong> {{ $alumno->email }}</li>
+						<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha }}</li>
+						<li><strong>N° de documento: </strong> {{ $alumno->dni }}</li>
+						<li><strong>CUIL: </strong> {{ $alumno->cuil }}</li>
+						<li><strong>Género: </strong> {{ ucwords($alumno->genero) }}</li>
 				</ul>
 			</div>
 		</div>
-		<br>
 		<div class="">
 			<ul class="datos-academicos col-md-6">
 				<li>
 					<h2>Datos de Inscripción</h3>
 				</li>
+				<li><strong>Situación:</strong>{{ str_replace('_',' ',ucwords($alumno->regularidad)) }}</li>
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>
 					@foreach($alumno->carreras as $carrera)
-					_ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }} 
+					_ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }}
 					<br>
 					Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
 					@endforeach
 				</li>
-				<li><strong>Situación:</strong>{{ str_replace('_',' ',ucwords($alumno->regularidad)) }}</li>
+				<li> <strong>Materias:</strong>
+					<br>
+					@foreach($alumno->procesos as $proceso)
+						<p>{{$proceso->materia->nombre}}</p>
+					@endforeach
+				</li>
 
 				@if($alumno->año == 1)
 				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
 				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->escolaridad ? 'Si' : 'No' }}</li>
-				<li><strong>Materias que adeuda de secundario: </strong> 
+				<li><strong>Materias que adeuda de secundario: </strong>
 					@if(!$alumno->materias_s)
-						Ninguna
+					Ninguna
 					@else
-						{{ str_replace(';',' - ',$alumno->materias_s) }}
+					{{ str_replace(';',' - ',$alumno->materias_s) }}
 					@endif
 				</li>
 				<li><strong>Presento título secundario:</strong> {{$alumno->titulo_s ? 'Si' : 'No'}} </li>

@@ -21,6 +21,7 @@ use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\RolController;
+use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\MesaAlumno;
 
@@ -268,7 +269,10 @@ Route::prefix('matriculacion')->group(function(){
 });
 
 
-//Prueba
+/*
 Route::get('/prueba', function () {
-    return view('layouts.app-prueba');
+    return view('pdfs.alumno_ficha',[
+        'alumno' => Alumno::find(35)
+    ]);
 });
+*/

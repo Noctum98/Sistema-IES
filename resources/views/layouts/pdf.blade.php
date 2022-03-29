@@ -14,14 +14,7 @@
             font-size: 15px;
             list-style: none;
         }
-        .col-md-12{
-            flex:0 0 100%;
-            max-width:100%;
-        }
-        .col-md-6{
-            flex:0 0 50%;
-            max-width:50%;
-        }
+        
     </style>
 </head>
 <body>
