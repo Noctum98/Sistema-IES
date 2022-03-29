@@ -20,6 +20,7 @@ class MatriculacionSuccessEmail extends Mailable
     {
         $this->alumno = $alumno;
         $this->carrera = $carrera;
+        $this->url = config('app.APP_URL');
         $this->subject("Matriculación IESVU 9015");
     }
 
@@ -32,7 +33,8 @@ class MatriculacionSuccessEmail extends Mailable
     {
         return $this->view('mail.matriculacion_success',[
             'alumno' => $this->alumno,
-            'carrera' => $this->carrera
+            'carrera' => $this->carrera,
+            'url'   => $this->url
         ]);
     }
 }
