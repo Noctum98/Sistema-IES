@@ -21,7 +21,6 @@
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">Rol</th>
 					<th scope="col">Sede</th>
 					<th scope="col">Acción</th>
 				</tr>
@@ -31,7 +30,6 @@
 				<tr>
 					<th scope="row">{{ $user->id }}</th>
 					<td>{{ $user->nombre.' '.$user->apellido }}</td>
-					<td>{{ $user->rol == 'rol_admin' ? 'Administrador' : 'Usuario' }}</td>
 					<td>{{ $user->sede_id ? $user->sede->nombre : 'Ninguna'}}</td>
 					<td>
 

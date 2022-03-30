@@ -104,12 +104,12 @@
 					<br>
 
 					<div class="row">
-					@if(Auth::user()->hasRole('coordinador'))
+					@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
 					<button class="btn btn-sm btn-primary col-md-6" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
 					@include('alumno.modals.carreras_matriculacion')
 					@endif
 				
-					@if(Auth::user()->hasRole('regente'))
+					@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador'))
 					<form class="col-md-6" action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" method="POST">
 						{{ method_field('DELETE') }}
 						<button type="submit" class="btn btn-sm btn-danger">Eliminar matriculación</button>
@@ -127,7 +127,7 @@
 
 		</div>
 
-		@if(Auth::user()->hasRole('coordinador'))
+		@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
 		<div class="row col-md-6">
 			@if(!$alumno->user_id)
 			<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-5 mt-4 btn btn-success">

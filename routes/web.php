@@ -18,6 +18,7 @@ use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\RolController;
@@ -266,6 +267,10 @@ Route::prefix('matriculacion')->group(function(){
     Route::post('/carrera/{id}/{year}',[MatriculacionController::class,'store'])->name('matriculacion.store');
     Route::put('/carrera/{id}',[MatriculacionController::class,'update'])->name('matriculacion.update');
     Route::post('/verificar/{carrera_id}/{year}',[MatriculacionController::class,'send_email'])->name('matriculacion.verificar');
+});
+
+Route::prefix('excel')->group(function(){
+    Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_año'])->name('excel.alumnosAño');
 });
 
 

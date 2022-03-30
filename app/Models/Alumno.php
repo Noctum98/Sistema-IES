@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
+use Illuminate\Support\Facades\DB;
 
 class Alumno extends Model
 {
@@ -70,7 +71,6 @@ class Alumno extends Model
         return $this->hasMany('App\Models\AlumnoAsistencia');
     }
 
-
     public function hasCarrera($carrera_id)
     {
 
@@ -99,4 +99,20 @@ class Alumno extends Model
         return false;
     }
 
+    // Functiones Estáticas
+
+    public static function alumnosAño($year,$carrera_id)
+    {
+        return Alumno::select(
+            'alumnos.nombres',
+            'alumnos.apellidos',
+            'alumnos.dni',
+            'alumnos.email',
+            'alumnos.telefono',
+            'alumnos.regularidad'
+        )
+        ->join('alumno_carrera','alumno_carrera.alumno_id','alumnos.id')
+        ->where('alumno_carrera.año',$year)
+        ->get();
+    }
 }

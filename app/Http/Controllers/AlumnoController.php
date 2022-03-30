@@ -109,6 +109,5 @@ class AlumnoController extends Controller
         }else{
             return view('error.error');
         }
-
     }
 }
