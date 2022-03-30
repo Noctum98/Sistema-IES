@@ -34,8 +34,8 @@
 							<td>{{ $carrera->resolucion }}</td>
 							<td>{{ $carrera->sede->nombre }}</td>
 							<td>
-								<a href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id]) }}" class="btn-sm btn-primary">
-									Ver alumnos
+								<a href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id]) }}" class="btn btn-sm btn-primary">
+									Ver
 								</a>
 							</td>
 							</tr>
@@ -59,7 +59,7 @@
 				      <td>{{ $alumno->nombres.' '.$alumno->apellidos }}</td>
 				      <td>{{ $alumno->dni }}</td>
 				      <td>
-				      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-primary">
+				      	<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
 				      		Ver datos
 				      	</a>
 				      </td>

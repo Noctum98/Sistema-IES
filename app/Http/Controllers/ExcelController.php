@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AlumnosAñoExport;
+use App\Exports\AlumnosYearExport;
 use Illuminate\Http\Request;
 use App\Models\Alumno;
 use App\Models\Carrera;
@@ -15,12 +15,12 @@ class ExcelController extends Controller
         $this->middleware('app.auth');
     }
 
-    public function alumnos_año($carrera_id,$year)
+    public function alumnos_year($carrera_id,$year)
     {
         $alumnos = Alumno::alumnosAño($year,$carrera_id);
 
         $carrera = Carrera::find($carrera_id)->select('nombre')->first();
 
-        return Excel::download(new AlumnosAñoExport($alumnos),'Planilla de Alumnos de '.$carrera->nombre.' - Año '.$year.'.xlsx');
+        return Excel::download(new AlumnosYearExport($alumnos),'Planilla de Alumnos de '.$carrera->nombre.' - Año '.$year.'.xlsx');
     }
 }

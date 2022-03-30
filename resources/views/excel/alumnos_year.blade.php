@@ -15,7 +15,7 @@
 			<td>{{ $alumno->dni }}</td>
 			<td>{{ $alumno->email }}</td>
 			<td>{{ $alumno->telefono }}</td>
-			<td>{{ ucwords($alumno->regularidad) }}</td>
+			<td>{{ explode("_",ucwords($alumno->regularidad))[0] }}</td>
 		@endforeach
 	</tbody>
 </table>

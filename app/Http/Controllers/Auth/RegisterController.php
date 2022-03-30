@@ -41,7 +41,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        
+        $this->middleware('app.auth');
+        $this->middleware('app.roles:admin');
     }
 
     /**

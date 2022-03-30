@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class AlumnosAñoExport implements FromView
+class AlumnosYearExport implements FromView
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -18,7 +18,7 @@ class AlumnosAñoExport implements FromView
 
     public function view(): View
     {
-        return view('excel.alumnos_año',[
+        return view('excel.alumnos_year',[
             'alumnos' => $this->alumnos
         ]);
     }

@@ -94,6 +94,7 @@
 				<li>
 					<h2>Datos de Inscripción</h3>
 				</li>
+				<li> <strong>Condición:</strong>{{ $alumno->regularidad }} </li>
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>

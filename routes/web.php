@@ -270,7 +270,7 @@ Route::prefix('matriculacion')->group(function(){
 });
 
 Route::prefix('excel')->group(function(){
-    Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_año'])->name('excel.alumnosAño');
+    Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
 });
 
 
