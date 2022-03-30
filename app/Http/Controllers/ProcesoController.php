@@ -13,7 +13,7 @@ class ProcesoController extends Controller
     function __construct()
     {
         $this->middleware('app.admin');
-        $this->middleware('app.roles:admin-coordinador');
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
 
     }
     // Vistas

@@ -24,7 +24,7 @@ class MatriculacionController extends Controller
     ) {
         $this->procesoService = $procesoService;
         $this->middleware('app.auth',['only'=>['edit','update']]);
-        $this->middleware('app.roles:admin-coordinador',['only'=>['edit','update']]);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)

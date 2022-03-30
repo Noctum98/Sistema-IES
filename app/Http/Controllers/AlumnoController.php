@@ -16,7 +16,7 @@ class AlumnoController extends Controller
 {
     public function __construct(){
         $this->middleware('app.auth',['except'=>['descargar_archivo','descargar_ficha']]);
-        $this->middleware('app.roles:admin-coordinador',['only'=>['vista_admin','vista_alumnos','vista_elegir']]);
+        $this->middleware('app.roles:admin-coordinador-regente-seccionAlumnos',['only'=>['vista_admin','vista_alumnos','vista_elegir']]);
     }
     // Vistas
     public function vista_admin($busqueda = null){
