@@ -21,7 +21,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('app.roles:admin-usuarios',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
+        $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
 
     }
     // Controlador de administación de usuarios

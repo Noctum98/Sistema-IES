@@ -4,6 +4,11 @@
     <h2 class="h1 mb-4">
         Matriculación a {{ $carrera->sede->nombre }} - {{ $carrera->nombre }}: {{ ucwords($carrera->turno) }}
     </h2>
+    @if(@session('alumno_deleted'))
+		<div class="alert alert-warning">
+			{{ @session('alumno_deleted') }}
+		</div>
+	@endif
     <p>
         <b>ATENCIÓN:</b> el siguiente formulario reviste carácter de Declaración Jurada. Los datos que usted brinde serán utilizados para la carga del Sistema de Gestión Mendoza (GEM) de la Dirección General de Escuelas. Por lo cual le solicitamos que al momento de la carga consigne la información sin errores y teniendo en cuenta la documentación respaldatoria.
     </p>

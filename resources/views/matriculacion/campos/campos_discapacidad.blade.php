@@ -52,13 +52,13 @@
             <div class="form-group col-md-6">
                 <label for="acompañamiento_motriz">Acompañamiento por discapacidad motriz</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-si" value="1" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 0 || old('acompañamiento_motriz') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-si" value="1" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 1 || old('acompañamiento_motriz') ? 'checked' : '' }}>
                     <label class="form-check-label" for="acompañamiento_motriz-si">
                         SÍ
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-no" value="0" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="acompañamiento_motriz" id="acompañamiento_motriz-no" value="0" {{ isset($matriculacion) && $matriculacion->acompañamiento_motriz == 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="acompañamiento_motriz-no">
                         NO
                     </label>
@@ -117,6 +117,7 @@
                     </label>
                 </div>
             </div>
+            @if(!isset($matriculacion))
             <div class="form-group col-md-12">
                 <label for="pase">SOLICITUD DE MATRICULACIÓN</label>
                 <div class="form-check">
@@ -132,6 +133,7 @@
                     @enderror
                 </div>
             </div>
+            @endif
         </div>
 
     </div>

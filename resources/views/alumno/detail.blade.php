@@ -16,11 +16,6 @@
 			{{ @session('mensaje_procesos') }}
 		</div>
 		@endif
-		@if(@session('mensaje_editado'))
-		<div class="alert alert-success">
-			{{ @session('mensaje_editado') }}
-		</div>
-		@endif
 		@if(@session('mensaje_error'))
 		<div class="alert alert-danger">
 			{{ @session('mensaje_error') }}

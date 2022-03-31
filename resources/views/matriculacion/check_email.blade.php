@@ -4,6 +4,11 @@
     <h2 class="h1 mb-4">
         Matriculación a {{ $carrera->sede->nombre }} - {{ $carrera->nombre }}: {{ ucwords($carrera->turno) }}
     </h2>
+    @if(@session('alumno_deleted'))
+		<div class="alert alert-warning">
+			{{ @session('alumno_deleted') }}
+		</div>
+	@endif
     @if(@session('email_error'))
     <div class="d-block alert alert-danger">
         {{ @session('email_error') }}

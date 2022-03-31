@@ -12,8 +12,10 @@ use App\Models\MailCheck;
 use App\Models\Proceso;
 use App\Services\ProcesoService as ServicesProcesoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use ProcesoService;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class MatriculacionController extends Controller
 {
@@ -23,8 +25,8 @@ class MatriculacionController extends Controller
         ServicesProcesoService $procesoService
     ) {
         $this->procesoService = $procesoService;
-        $this->middleware('app.auth',['only'=>['edit','update']]);
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
+        // $this->middleware('app.auth',['only'=>['edit','update']]);
+        // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)
@@ -39,19 +41,25 @@ class MatriculacionController extends Controller
         ]);
     }
 
-    public function edit($alumno_id,$carrera_id)
+    public function edit($alumno_id, $carrera_id, $año = null)
     {
         $alumno = Alumno::find($alumno_id);
         $carrera = Carrera::find($carrera_id);
-        $alumno_carrera = AlumnoCarrera::where([
-            'alumno_id' => $alumno_id,
-            'carrera_id'=> $carrera_id
-        ])->first();
 
-        return view('matriculacion.edit',[
+        if (!$año) {
+            $alumno_carrera = AlumnoCarrera::where([
+                'alumno_id' => $alumno_id,
+                'carrera_id' => $carrera_id
+            ])->first();
+
+            $año = $alumno_carrera->año;
+        }
+
+
+        return view('matriculacion.edit', [
             'matriculacion' => $alumno,
             'carrera' => $carrera,
-            'año'   => $alumno_carrera->año
+            'año'     => $año
         ]);
     }
 
@@ -61,7 +69,7 @@ class MatriculacionController extends Controller
             'nombres'               => ['required'],
             'apellidos'             => ['required'],
             'dni'                   => ['required'],
-            'edad'                  => ['required','numeric'],
+            'edad'                  => ['required', 'numeric'],
             'email'                 => ['required', 'email'],
             'telefono'              => ['required'],
             'provincia'             => ['required'],
@@ -79,13 +87,12 @@ class MatriculacionController extends Controller
         ]);
 
         $mail_check = MailCheck::where([
-            'email'=>$request['email'],
+            'email' => $request['email'],
             'checked' => true
         ])->first();
 
-        if(!$mail_check)
-        {
-            return redirect()->route('matriculacion.create',[
+        if (!$mail_check) {
+            return redirect()->route('matriculacion.create', [
                 'id' => $carrera_id,
                 'year' => $año,
                 'timecheck' => false
@@ -106,12 +113,9 @@ class MatriculacionController extends Controller
             $alumno = Alumno::create($request->all());
         }
 
-        if ($alumno->hasCarrera($carrera_id)) 
-        {
+        if ($alumno->hasCarrera($carrera_id)) {
             $mensaje = "Ya estas inscripto a esta carrera.";
-        } 
-        else 
-        {
+        } else {
             $carrera = Carrera::find($carrera_id);
 
 
@@ -121,14 +125,14 @@ class MatriculacionController extends Controller
                 'año'   => $año
             ]);
 
-            if(isset($request['materias'])){
+            if (isset($request['materias'])) {
                 $this->procesoService->inscribir($alumno->id, $request['materias']);
             }
 
             Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
 
 
-            $mensaje = "Felicidades te has matriculado correctamente a ".$carrera->nombre." ".$carrera->sede->nombre;
+            $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
         }
 
 
@@ -138,7 +142,7 @@ class MatriculacionController extends Controller
         ]);
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id, $carrera_id = null, $año = null)
     {
         $validate = $this->validate($request, [
             'nombres'               => ['required'],
@@ -150,32 +154,31 @@ class MatriculacionController extends Controller
             'discapacidad_motriz'   => ['required'],
             'acompañamiento_motriz' => ['required'],
             'discapacidad_intelectual' => ['required'],
-            'matriculacion' => ['required'],
-            'telefono' => ['required','numeric'],
-            'telefono_fijo' => ['numeric']
+            'telefono' => ['required', 'numeric'],
         ]);
 
         $alumno = Alumno::find($id);
 
         $alumno->update($request->all());
 
-        return redirect()->route('alumno.detalle',[
-            'id' => $alumno->id
+        return redirect()->route('matriculacion.edit', [
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera_id,
+            'year'      => $año
         ])->with([
             'mensaje_editado' => 'Datos editados correctamente'
         ]);
     }
 
-    public function delete($id,$carrera_id){
+    public function delete($id, $carrera_id, $año = null)
+    {
         $alumno = Alumno::find($id);
         $carrera = Carrera::find($carrera_id);
 
-        $procesos = Proceso::where('alumno_id',$alumno->id)->get();
+        $procesos = Proceso::where('alumno_id', $alumno->id)->get();
 
-        foreach($procesos as $proceso)
-        {
-            if($proceso->materia->carrera_id == $carrera->id)
-            {
+        foreach ($procesos as $proceso) {
+            if ($proceso->materia->carrera_id == $carrera->id) {
                 $proceso->delete();
             }
         }
@@ -184,60 +187,83 @@ class MatriculacionController extends Controller
             'alumno_id' => $alumno->id,
             'carrera_id' => $carrera->id
         ])->delete();
-        
-        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno,$carrera));
 
-        $alumno->delete();
+        // Log::info($alumno->carreras);
+        if (!$alumno->carreras || count($alumno->carreras) == 0) {
 
-        return redirect()->route('alumno.carrera',[
+            $alumno->delete();
+
+            if (!Auth::user()) 
+            {
+                return redirect()->route('matriculacion.create', [
+                    'id' => $carrera->id,
+                    'year' => $año
+                ])->with(['alumno_deleted' => 'Matriculación eliminada']);
+            }
+
+        } 
+        elseif (count($alumno->carreras) > 0 && !Auth::user()) 
+        {
+            return redirect()->route('matriculacion.edit', [
+                'alumno_id' => $alumno->id,
+                'carrera_id' => $carrera_id,
+                'year'      => $año
+            ])->with(['alumno_deleted' => 'Matriculación eliminada']);
+        }
+
+        return redirect()->route('alumno.carrera', [
             'carrera_id' => $carrera_id
         ])->with([
             'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
         ]);
-
     }
 
 
-    public function send_email(Request $request,$carrera_id,$año)
+    public function send_email(Request $request, $carrera_id, $año)
     {
-        $validate = $this->validate($request,[
-            'email' => ['required','email']
+        $validate = $this->validate($request, [
+            'email' => ['required', 'email']
         ]);
 
-        $mail_check = MailCheck::where('email',$request['email'])->first();
+        $mail_check = MailCheck::where('email', $request['email'])->first();
 
-        if($mail_check && $mail_check->checked)
-        {
-            return redirect()->route('matriculacion.create', [
-                'id' => $carrera_id,
-                'year' => $año,
-                'timecheck' => true
-            ]);
-        }
-        elseif ($mail_check && !$mail_check->checked)
-        {
-            Mail::to($request['email'])->send(new CheckEmail($mail_check,$carrera_id,$año));
-        }
-        else
-        {
+        if ($mail_check && $mail_check->checked) {
+            $alumno = Alumno::where('email', $mail_check->email)->first();
+
+            if ($alumno) {
+                return redirect()->route('matriculacion.edit', [
+                    'carrera_id' => $carrera_id,
+                    'alumno_id'  => $alumno->id,
+                    'year'        => $año
+                ]);
+            } else {
+                return redirect()->route('matriculacion.create', [
+                    'id' => $carrera_id,
+                    'year' => $año,
+                    'timecheck' => true
+                ]);
+            }
+        } elseif ($mail_check && !$mail_check->checked) {
+            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+        } else {
             $request['timecheck'] = time();
             $mail_check = MailCheck::create($request->all());
-    
-            Mail::to($request['email'])->send(new CheckEmail($mail_check,$carrera_id,$año));
+
+            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         }
 
         return view('matriculacion.card_email_check');
     }
 
-    public function email_check($timecheck,$carrera_id,$año)
+    public function email_check($timecheck, $carrera_id, $año)
     {
-        $mail_check = MailCheck::where('timecheck',$timecheck)->first();
+        $mail_check = MailCheck::where('timecheck', $timecheck)->first();
 
         $mail_check->checked = true;
 
         $mail_check->update();
 
-        return redirect()->route('matriculacion.create',[
+        return redirect()->route('matriculacion.create', [
             'id' => $carrera_id,
             'year' => $año,
             'timecheck' => $timecheck
