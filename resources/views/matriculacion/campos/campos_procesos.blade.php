@@ -1,7 +1,7 @@
 <div class="card mt-3 mb-3">
     <h5 class="card-header">INFORMACIÓN INSCRIPCIÓN</h5>
     <div class="card-body">
-        <h6>Recuerda, si eliminas todas las matriculaciónes, deberás volver a matricularte correctamente.</h6>
+        <h6>Recuerda, si eliminas todas las matriculaciones, deberás volver a matricularte correctamente.</h6>
         <a href="{{ route('descargar_ficha',$matriculacion->id) }}" class="mt-2 btn btn-sm btn-success">Descargar PDF</a>
         <br><br>
         <strong>Inscripto a:</strong>
