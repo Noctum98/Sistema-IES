@@ -13,7 +13,7 @@
 		<div class="alert alert-warning">
 			{{ @session('alumno_deleted') }}
 		</div>
-		@endifz
+		@endif
 		<div class="col-md-6 row mb-3">
 			<div class="col-md-6 mr-2">
 				<form method="GET" action="#" id="buscador-alumnos">
