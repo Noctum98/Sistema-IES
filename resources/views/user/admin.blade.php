@@ -21,7 +21,6 @@
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">Sede</th>
 					<th scope="col">Acción</th>
 				</tr>
 			</thead>
@@ -30,7 +29,6 @@
 				<tr>
 					<th scope="row">{{ $user->id }}</th>
 					<td>{{ $user->nombre.' '.$user->apellido }}</td>
-					<td>{{ $user->sede_id ? $user->sede->nombre : 'Ninguna'}}</td>
 					<td>
 
 						<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rolesModal{{$user->id}}">

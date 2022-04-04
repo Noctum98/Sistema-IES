@@ -72,6 +72,13 @@ class AlumnoController extends Controller
     public function vista_detalle(int $id){
         $alumno = Alumno::find($id);
 
+        if(!$alumno)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'El alumno no existe'
+            ]);
+        }
+
         return view('alumno.detail',[
             'alumno'    =>  $alumno
         ]);

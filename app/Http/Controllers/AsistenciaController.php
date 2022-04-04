@@ -8,16 +8,18 @@ use App\Models\Materia;
 use App\Models\Asistencia;
 use App\Models\AlumnoAsistencia;
 use App\Models\Proceso;
+use Illuminate\Support\Facades\Auth;
 
 class AsistenciaController extends Controller
 {
     function __construct()
     {
         $this->middleware('app.admin');
+        $this->middleware('app.roles:admin-profesor');
     }
     // Vistas
     public function vista_carreras(){
-        $carreras = Carrera::all();
+        $carreras = Auth::user()->sedes;
         $ruta = 'asis.admin';
 
         return view('asistencia.home',[

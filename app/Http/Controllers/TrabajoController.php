@@ -7,7 +7,7 @@ use App\Models\Carrera;
 use App\Models\Trabajo;
 use App\Models\Materia;
 use App\Models\Proceso;
-
+use Illuminate\Support\Facades\Auth;
 
 class TrabajoController extends Controller
 {
@@ -17,11 +17,11 @@ class TrabajoController extends Controller
     }
     // Vistas
     public function vista_carreras(){
-        $carreras = Carrera::orderBy('sede_id','asc')->get();
+        $sedes = Auth::user()->sedes;
         $ruta = 'trab.admin';
 
         return view('trabajo.home',[
-            'carreras'  =>  $carreras,
+            'sedes'  =>  $sedes,
             'ruta'      =>  $ruta
         ]);
     }

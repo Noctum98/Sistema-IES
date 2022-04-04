@@ -6,6 +6,11 @@
 		</h2>
 		<p>Agrega, edita o busca alumnos y su información</p>
 		<hr>
+		@if(@session('alumno_notIsset'))
+		<div class="alert alert-warning">
+			{{ @session('alumno_notIsset') }}
+		</div>
+		@endif
 		<div class="col-md-6 row">
 			<div class="col-md-6 mr-2">
 				<form method="GET" action="#" id="buscador-alumnos">
