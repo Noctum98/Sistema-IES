@@ -86,4 +86,11 @@ class MateriaController extends Controller
             'message'   =>  'Materia editada correctamente!'
         ]);
     }
+
+    public function selectMaterias($id)
+    {
+        $materias = Materia::select('nombre','id')->where('carrera_id',$id)->get();
+
+        return response()->json($materias,200);
+    }
 }

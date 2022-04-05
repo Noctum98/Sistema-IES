@@ -73,7 +73,17 @@ class User extends Authenticatable
         }
         return false;
     }
+    //============================ CARRERAS ====================================//
+    public function carreras()
+    {
+        return $this->belongsToMany(Carrera::class)->withTimestamps();
+    }
 
+    //============================ MATERIAS ====================================//
+    public function materias()
+    {
+        return $this->belongsToMany(Materia::class)->withTimestamps();
+    }
     //============================= ROLES ===================================//
     public function roles()
     {

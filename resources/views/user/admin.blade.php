@@ -6,6 +6,16 @@
 	</h2>
 	<hr>
 	<div class="col-md-12">
+		@if(@session('carrera_success'))
+		<div class="alert alert-success">
+			{{ @session('carrera_success') }}
+		</div>
+		@endif
+		@if(@session('error_sede'))
+		<div class="alert alert-warning">
+			{{ @session('error_sede') }}
+		</div>
+		@endif
 		@if(@session('error_rol'))
 		<div class="alert alert-danger">
 			{{ @session('error_rol') }}
@@ -37,8 +47,12 @@
 						<button type="button" class="ml-2 btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}">
 							Asignar Sedes
 						</button>
+						<button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#materiasModal{{$user->id}}">
+							Asignar Carreras/Materias
+						</button>
 						@include('user.modals.admin_sedes')
 						@include('user.modals.admin_roles')
+						@include('user.modals.admin_carreras_materias')
 					</td>
 				</tr>
 				@endforeach
@@ -46,4 +60,8 @@
 		</table>
 	</div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/user/carreras.js') }}"></script>
 @endsection

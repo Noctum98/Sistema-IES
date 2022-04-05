@@ -34,6 +34,7 @@ class MatriculacionController extends Controller
         $carrera = Carrera::find($carrera_id);
         $email_checked = $timecheck;
 
+        /*
         $mensaje = "Página deshabilitada";
 
 
@@ -43,7 +44,7 @@ class MatriculacionController extends Controller
                 'mensaje' => $mensaje
             ]);
         }
-
+        */
         return view('matriculacion.create', [
             'carrera' => $carrera,
             'año' => $year,

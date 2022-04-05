@@ -72,6 +72,7 @@ Route::prefix('usuarios')->group(function () {
     Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
     Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
     Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
+    Route::post('set_CarreraMaterias/{id}',[UserController::class,'setMateriasUser'])->name('set_materias_carreras');
     Route::get('crear_alumno_usuario/{id}',[UserController::class,'crear_usuario_alumno'])->name('crear_usuario_alumno');
 });
 
@@ -118,6 +119,7 @@ Route::prefix('carreras/materias')->group(function () {
     Route::post('crear-materia/{carrera_id}', [MateriaController::class, 'crear'])->name('crear_materia');
     Route::post('editar-materia/{id}', [MateriaController::class, 'editar'])->name('editar_materia');
 });
+Route::get('/selectMateriasCarrera/{id}',[MateriaController::class,'selectMaterias']);
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {

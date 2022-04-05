@@ -14,6 +14,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Sede;
+use App\Models\Carrera;
+use App\Models\Materia;
 use App\Models\SedeUser;
 use Illuminate\Support\Facades\Mail;
 
@@ -29,9 +31,9 @@ class UserController extends Controller
     public function vista_admin()
     {
         $users = User::all();
-        $sedes = Sede::all();
-        $roles_primarios = Rol::where('tipo', 0)->get();
-        $roles_secundarios = Rol::where('tipo', 1)->get();
+        $sedes = Sede::select('nombre','id')->get();
+        $roles_primarios = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
+        $roles_secundarios = Rol::select('nombre','id','descripcion')->where('tipo', 1)->get();
 
         return view('user.admin', [
             'users' => $users,
@@ -138,6 +140,24 @@ class UserController extends Controller
         return redirect()->route('usuarios.admin')->with([
             'message' => 'Sede cambiada!'
         ]);
+    }
+
+    public function setMateriasUser(Request $request,$user_id)
+    {
+        $user = User::find($user_id);
+        $carrera = Carrera::find($request['carrera']);
+        $materia = Materia::find($request['materia']);
+
+        if($user->hasSede($carrera->sede_id))
+        {
+            $user->carreras()->attach($carrera);
+            $user->materias()->attach($materia);
+
+        }else{
+            return redirect()->route('usuarios.admin')->with(['error_sede'=>'El usuario no pertenece a esa sede']);
+        }
+
+        return redirect()->route('usuarios.admin')->with(['carrera_success'=>'Se han añadido la materia y carrera al usuario']);
     }
 
     public function crear_usuario_alumno($alumno_id)
