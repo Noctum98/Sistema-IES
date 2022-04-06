@@ -105,7 +105,7 @@ class MateriaController extends Controller
         ->join('alumnos','alumnos.id','procesos.alumno_id')
         ->join('materias','materias.id','procesos.materia_id')
         ->where('materias.id',$id)
-        ->orderBy('alumnos.apellidos','desc')
+        ->orderBy('alumnos.apellidos','asc')
         ->get();
 
         Log::info($procesos);
