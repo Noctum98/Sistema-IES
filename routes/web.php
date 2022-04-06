@@ -22,6 +22,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\RolController;
+use Illuminate\Support\Facades\Artisan;
 use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\MesaAlumno;
@@ -277,6 +278,13 @@ Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
 });
 
+Route::get('/clear-cache', function () {
+    echo Artisan::call('config:clear');
+    echo Artisan::call('config:cache');
+    echo Artisan::call('view:clear');
+    echo Artisan::call('cache:clear');
+    echo Artisan::call('route:clear');
+ });
 
 /*
 Route::get('/prueba', function () {

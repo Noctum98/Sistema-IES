@@ -114,7 +114,7 @@ class MateriaController extends Controller
         $materia = Materia::find($id);
 
         if($procesos){
-            return Excel::download(new AlumnosMateriaExport($procesos),
+            return Excel::download(new AlumnosMateriaExport($pprocesos),
             'Alumnos ' .$materia->nombre . '.xlsx');
         }else{
             return redirect()->route('materia.admin',$materia->carrera->id)->with([
