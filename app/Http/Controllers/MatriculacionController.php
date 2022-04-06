@@ -194,6 +194,8 @@ class MatriculacionController extends Controller
             }
         }
 
+        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno,$carrera));
+
         AlumnoCarrera::where([
             'alumno_id' => $alumno->id,
             'carrera_id' => $carrera->id

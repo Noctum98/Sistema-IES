@@ -23,14 +23,14 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
+        //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
 
     }
     // Controlador de administación de usuarios
 
     public function vista_admin()
     {
-        $users = User::all();
+        $users = User::usersPersonal();
         $sedes = Sede::select('nombre','id')->get();
         $roles_primarios = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
         $roles_secundarios = Rol::select('nombre','id','descripcion')->where('tipo', 1)->get();
@@ -40,6 +40,15 @@ class UserController extends Controller
             'sedes' => $sedes,
             'roles_primarios' => $roles_primarios,
             'roles_secundarios' => $roles_secundarios
+        ]);
+    }
+
+    public function vista_detalle($id)
+    {
+        $user = User::find($id);
+
+        return view('user.detail',[
+            'user' => $user
         ]);
     }
 

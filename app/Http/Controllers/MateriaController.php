@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AlumnosMateriaExport;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Personal;
 use App\Models\Materia;
+use App\Models\Proceso;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MateriaController extends Controller
 {
     function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
     }
     // Vistas
 
@@ -92,5 +96,32 @@ class MateriaController extends Controller
         $materias = Materia::select('nombre','id')->where('carrera_id',$id)->get();
 
         return response()->json($materias,200);
+    }
+
+    public function descargar_planilla($id)
+    {
+        $procesos = Proceso::where('materia_id',$id)->get();
+        $pprocesos = Proceso::select('procesos.*','alumnos.*')
+        ->join('alumnos','alumnos.id','procesos.alumno_id')
+        ->join('materias','materias.id','procesos.materia_id')
+        ->where('materias.id',$id)
+        ->orderBy('alumnos.apellidos','desc')
+        ->get();
+
+        Log::info($procesos);
+        Log::info($pprocesos);
+
+        $materia = Materia::find($id);
+
+        if($procesos){
+            return Excel::download(new AlumnosMateriaExport($procesos),
+            'Alumnos ' .$materia->nombre . '.xlsx');
+        }else{
+            return redirect()->route('materia.admin',$materia->carrera->id)->with([
+                'error_procesos' => 'No hay alumnos en esa materia'
+            ]);
+        }
+
+        
     }
 }

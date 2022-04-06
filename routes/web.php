@@ -66,6 +66,7 @@ Route::prefix('sedes')->group(function () {
 Route::prefix('usuarios')->group(function () {
     Route::get('administar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
+    Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
 
     // Funcionalidades
     Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
@@ -118,6 +119,7 @@ Route::prefix('carreras/materias')->group(function () {
     // Acciones
     Route::post('crear-materia/{carrera_id}', [MateriaController::class, 'crear'])->name('crear_materia');
     Route::post('editar-materia/{id}', [MateriaController::class, 'editar'])->name('editar_materia');
+    Route::get('descargar_excel_alumnos/{id}',[MateriaController::class,'descargar_planilla'])->name('descargar_planilla');
 });
 Route::get('/selectMateriasCarrera/{id}',[MateriaController::class,'selectMaterias']);
 

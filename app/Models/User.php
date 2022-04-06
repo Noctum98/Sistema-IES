@@ -48,6 +48,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function usersPersonal()
+    {
+        $users = User::whereDoesntHave('roles', function ($query) {
+            return $query->where('nombre', 'alumno');
+        })->get();
+
+        return $users;
+    }
     public function alumnos()
     {
         return $this->belongsToMany(Alumno::class)->withTimestamps();
@@ -98,7 +106,6 @@ class User extends Authenticatable
         }   
         
     }
-    
     public function hasAnyRole($roles)
     {
         if (is_array($roles)) {

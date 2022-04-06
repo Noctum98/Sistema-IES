@@ -6,20 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\Sede;
 use App\Models\Personal;
 use App\Models\Carrera;
+use Illuminate\Support\Facades\Auth;
 
 class CarreraController extends Controller
 {
     function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
     }
     // Vistas
 
     public function vista_admin(){
-        $carreras = Carrera::orderBy('sede_id')->get();
+        $user = Auth::user();
+        $sedes = $user->sedes;
         return view('carrera.admin',[
-            'carreras'  => $carreras
+            'sedes'  => $sedes
         ]);
     }
     public function vista_crear(){

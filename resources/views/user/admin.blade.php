@@ -38,7 +38,7 @@
 				@foreach ($users as $user)
 				<tr>
 					<th scope="row">{{ $user->id }}</th>
-					<td>{{ $user->nombre.' '.$user->apellido }}</td>
+					<td><a href="{{ route('usuarios.detalle',$user->id) }}">{{ $user->nombre.' '.$user->apellido }}</a></td>
 					<td>
 
 						<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rolesModal{{$user->id}}">
