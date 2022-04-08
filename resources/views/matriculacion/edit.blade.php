@@ -14,7 +14,7 @@
         {{ @session('alumno_deleted') }}
     </div>
     @endif
-    @if(isset($matriculacion))
+    @if(isset($matriculacion) && !Auth::user())
     @include('matriculacion.campos.campos_procesos')
     @endif
     <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">

@@ -50,10 +50,15 @@
 		<div class="detalle-pre">
 			<br>
 			<p>Se ha eliminado tu matriculación de {{ $carrera->nombre." ".$carrera->sede->nombre }}</p>
-			<p>
-                En caso de no haberte matriculado correctamente en tu unidad academica, vuelve a realizar la matriculación correctamente, si tu caso no es el anterior 
-                consulta a Sección Alumnos.
-            </p>
+			<p><strong>MOTIVOS:</strong></p>
+			@if($errores)
+				@foreach($errores as $error)
+					<p>- Error en {{ $error }}</p>
+				@endforeach
+			@endif
+			@if($motivo)
+			<p>	{{ $motivo }}</p>
+			@endif
 		</div>
 	</div>		
 </div>

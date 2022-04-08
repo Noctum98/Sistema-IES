@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Log;
 use ProcesoService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
-
 class MatriculacionController extends Controller
 {
     protected $procesoService;
@@ -25,6 +24,9 @@ class MatriculacionController extends Controller
         ServicesProcesoService $procesoService
     ) {
         $this->procesoService = $procesoService;
+        $this->middleware('app.auth',['only'=>['create','edit']]);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit']]);
+
         // $this->middleware('app.auth',['only'=>['edit','update']]);
         // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
     }
@@ -33,18 +35,7 @@ class MatriculacionController extends Controller
     {
         $carrera = Carrera::find($carrera_id);
         $email_checked = $timecheck;
-
-        /*
-        $mensaje = "Página deshabilitada";
-
-
-        if($carrera->id != 17)
-        {
-            return view('error.disabled_time',[
-                'mensaje' => $mensaje
-            ]);
-        }
-        */
+        
         return view('matriculacion.create', [
             'carrera' => $carrera,
             'año' => $year,
@@ -85,10 +76,10 @@ class MatriculacionController extends Controller
             'telefono'              => ['required'],
             'provincia'             => ['required'],
             'localidad'             => ['required'],
-            'discapacidad_mental'   => ['required'],
-            'discapacidad_visual'   => ['required'],
-            'discapacidad_motriz'   => ['required'],
-            'acompañamiento_motriz' => ['required'],
+            'discapacidad_mental'      => ['required'],
+            'discapacidad_visual'      => ['required'],
+            'discapacidad_motriz'      => ['required'],
+            'acompañamiento_motriz'    => ['required'],
             'discapacidad_intelectual' => ['required'],
             'codigo_postal' => ['required'],
             'matriculacion' => ['required'],
@@ -181,12 +172,14 @@ class MatriculacionController extends Controller
         ]);
     }
 
-    public function delete($id, $carrera_id, $año = null)
+    public function delete(Request $request,$id, $carrera_id, $año = null)
     {
         $alumno = Alumno::find($id);
         $carrera = Carrera::find($carrera_id);
 
         $procesos = Proceso::where('alumno_id', $alumno->id)->get();
+
+        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno,$carrera,$request));
 
         foreach ($procesos as $proceso) {
             if ($proceso->materia->carrera_id == $carrera->id) {
@@ -194,14 +187,11 @@ class MatriculacionController extends Controller
             }
         }
 
-        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno,$carrera));
-
         AlumnoCarrera::where([
             'alumno_id' => $alumno->id,
             'carrera_id' => $carrera->id
         ])->delete();
 
-        // Log::info($alumno->carreras);
         if (!$alumno->carreras || count($alumno->carreras) == 0) {
 
             $alumno->delete();

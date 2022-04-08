@@ -74,9 +74,10 @@ Route::prefix('usuarios')->group(function () {
     Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
     Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
     Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
-    Route::post('set_CarreraMaterias/{id}',[UserController::class,'setMateriasUser'])->name('set_materias_carreras');
+    Route::post('set_CarreraMaterias/{id}',[UserMateriaController::class,'store'])->name('set_materias_carreras');
     Route::get('crear_alumno_usuario/{id}',[UserController::class,'crear_usuario_alumno'])->name('crear_usuario_alumno');
 });
+
 
 //Ruta de Roles
 Route::resource('roles',RolController::class);

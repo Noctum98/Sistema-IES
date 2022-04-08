@@ -1,7 +1,7 @@
 <table>
 	<thead>
 		<tr>
-			<th scope="col">Nombre y Apellido</th>
+			<th scope="col">Apellido y Nombre</th>
 			<th scope="col">D.N.I</th>
 			<th scope="col">Email</th>
 			<th scope="col">Teléfono</th>
@@ -11,7 +11,7 @@
 	<tbody>
 		@foreach ($alumnos as $alumno)
 		<tr>
-			<td>{{ $alumno->nombres.' '.$alumno->apellidos }}</td>
+			<td>{{ ucwords($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
 			<td>{{ $alumno->dni }}</td>
 			<td>{{ $alumno->email }}</td>
 			<td>{{ $alumno->telefono }}</td>

@@ -114,6 +114,7 @@ class Alumno extends Model
         ->join('alumno_carrera','alumno_carrera.alumno_id','alumnos.id')
         ->where('alumno_carrera.año',$year)
         ->where('alumno_carrera.carrera_id',$carrera_id)
+        ->orderBy('alumnos.apellidos','asc')
         ->get();
     }
 }

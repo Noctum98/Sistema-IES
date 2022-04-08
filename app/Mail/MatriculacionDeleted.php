@@ -16,10 +16,12 @@ class MatriculacionDeleted extends Mailable
      *
      * @return void
      */
-    public function __construct($alumno,$carrera)
+    public function __construct($alumno,$carrera,$request)
     {
         $this->alumno = $alumno;
         $this->carrera = $carrera;
+        $this->errores = $request['errores'];
+        $this->motivo = $request['motivo'];
         $this->subject('Matriculación Eliminada IES 9015');
     }
 
@@ -31,8 +33,11 @@ class MatriculacionDeleted extends Mailable
     public function build()
     {
         return $this->view('mail.matriculacion_deleted',[
-            'alumno' => $this->alumno,
-            'carrera' => $this->carrera
+            'alumno'  => $this->alumno,
+            'carrera' => $this->carrera,
+            'motivo'  => $this->motivo,
+            'errores' => $this->errores,
+            'motivo'  => $this->motivo
         ]);
     }
 }

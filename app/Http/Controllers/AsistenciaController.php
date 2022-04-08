@@ -19,7 +19,7 @@ class AsistenciaController extends Controller
     }
     // Vistas
     public function vista_carreras(){
-        $carreras = Auth::user()->sedes;
+        $carreras = Auth::user()->carreras;
         $ruta = 'asis.admin';
 
         return view('asistencia.home',[

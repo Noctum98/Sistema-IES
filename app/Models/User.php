@@ -87,10 +87,28 @@ class User extends Authenticatable
         return $this->belongsToMany(Carrera::class)->withTimestamps();
     }
 
+    public function hasCarrera($carrera_id)
+    {
+
+        if ($this->carreras->where('id', $carrera_id)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+
     //============================ MATERIAS ====================================//
     public function materias()
     {
         return $this->belongsToMany(Materia::class)->withTimestamps();
+    }
+    public function hasMateria($materia_id)
+    {
+
+        if ($this->materias->where('id', $materia_id)->first()) {
+            return true;
+        }
+        return false;
     }
     //============================= ROLES ===================================//
     public function roles()

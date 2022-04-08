@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Asistencia extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'materia_id',
+        'alumno_id',
+        'porcentaje_final'
+    ];
 
     public function materia(){
         return $this->belongsTo('App\Models\Materia','materia_id');
     }
-    public function asistencias(){
-        return $this->hasMany('App\Models\AlumnoAsistencia');
+
+    public function alumno(){
+        return $this->belongsTo('App\Models\Alumno','alumno_id');
     }
+ 
 }

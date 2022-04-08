@@ -67,11 +67,11 @@
 				</li>
 				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil) }}</li>
 				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion) }}</li>
-				<li><strong>Grupo Sanguineo: </strong> {{ ucwords($alumno->g_sanguineo) }}</li>
+				<li><strong>Grupo Sanguineo: </strong> {{ strtoupper($alumno->g_sanguineo) }}</li>
 				@if($alumno->año == 1)
 				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
-				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->condicion_s ? 'Si' : 'No' }}</li>
+				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->escolaridad ? 'Si' : 'No' }}</li>
 				<li><strong>Materias que adeuda de secundario: </strong>
 					@if(!$alumno->materias_s)
 					Ninguna
@@ -89,7 +89,7 @@
 				<li>
 					<h2>Datos de Inscripción</h3>
 				</li>
-				<li> <strong>Condición:</strong>{{ $alumno->regularidad }} </li>
+				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0] }} </li>
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>
@@ -100,18 +100,15 @@
 					<br>
 
 					<div class="row">
-					@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
-					<button class="btn btn-sm btn-primary col-md-6" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias inscriptas</button>
-					@include('alumno.modals.carreras_matriculacion')
-					@endif
-				
-					@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador'))
-					<form class="col-md-6" action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" method="POST">
-						{{ method_field('DELETE') }}
-						<button type="submit" class="btn btn-sm btn-danger">Eliminar matriculación</button>
+						@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
+						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
+						@include('alumno.modals.carreras_matriculacion')
+						@endif
 
-					</form>
-					@endif
+						@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador'))
+						<button class="btn btn-sm btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar</button>
+						@include('alumno.modals.correo_eliminar')
+						@endif
 					</div>
 
 
@@ -122,19 +119,21 @@
 
 
 		</div>
+		<div class="d-inline col-md-12">
+			@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
 
-		@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
-		<div class="row col-md-6">
-			@if(!$alumno->user_id)
-			<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-5 mt-4 btn btn-success">
-				Crear Usuario
-			</a>
+				@if(!$alumno->user_id)
+				<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-2 mt-4 btn btn-sm btn-success">
+					Crear Usuario
+				</a>
+				@endif
+				<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="col-md-2 ml-2 mr-2 mt-4 btn btn-sm btn-warning">
+					Corregir datos
+				</a>
+
 			@endif
-			<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="col-md-5 ml-2 mt-4 btn btn-warning">
-				Corregir datos
-			</a>
+			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-secondary">Descargar PDF</a>
 		</div>
-		@endif
 	</div>
 </div>
 @endsection
