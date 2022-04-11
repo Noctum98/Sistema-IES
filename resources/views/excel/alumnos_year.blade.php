@@ -16,6 +16,20 @@
 			<td>{{ $alumno->email }}</td>
 			<td>{{ $alumno->telefono }}</td>
 			<td>{{ explode("_",ucwords($alumno->regularidad))[0] }}</td>
+		</tr>
 		@endforeach
+		<tr></tr>
+		<tr>
+			<td>Hombres</td>
+			<td>{{ $generos['hombres'] }}</td>
+		</tr>
+		<tr>
+			<td>Mujeres</td>
+			<td>{{ $generos['mujeres'] }}</td>
+		</tr>
+		<tr>
+			<td>Otro</td>
+			<td>{{ $generos['otro'] }}</td>
+		</tr>
 	</tbody>
 </table>

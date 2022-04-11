@@ -1,58 +1,46 @@
 @extends('layouts.app-prueba')
 @section('content')
-	<div class="container">
-		<h2 class="h1">
-			Administrar asistencias {{ $materia->nombre }}
-		</h2>
-		<hr>
-		<div class="col-md-8">
-			<a href="{{ route('asis.fecha',['id'=>$materia->id]) }}" class="btn btn-primary">
-				Tomar asistencia
-			</a>
-			<a href="{{ route('cerrar_asis',['id'=>$materia->id]) }}" class="btn btn-secondary">
-				Cerrar planilla
-			</a>
-			<br>
-			<br>
-				<div id="accordion">
-					@foreach($asistencias as $dia)
-					  <div class="card">
-					    <div class="card-header" id="heading{{$dia->id}}">
-					      <h5 class="mb-0">
-					        <h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$dia->id}}" aria-bs-expanded="false" aria-bs-controls="collapse{{$dia->id}}" class="fecha-titulo font-weight-bold">
-					        	
-					          {{$dia->fecha}}
+<div class="container">
+	<h2 class="h1">
+		Administrar asistencias {{ $materia->nombre }}
+	</h2>
+	<hr>
+	<div class="col-md-12">
 
-					        </h6>
-					      </h5>
-					    </div>
+		<br>
+		<br>
+		<div id="accordion">
 
-					    <div id="collapse{{$dia->id}}" class="collapse" aria-bs-labelledby="heading{{$dia->id}}" data-bs-parent="#accordion">
-					      <div class="card-body">
-					        <table class="table">
-							  <thead>
-							    <th>Nombre y Apellido</th>
-								<th>Estado</th>
-							  </thead>
-							  <tbody>
-							  	@foreach($dia->asistencias as $asistencia)
-							  	<tr>
-							  		<td><strong>
-							  			{{ $asistencia->alumno->nombres.' '.$asistencia->alumno->apellidos }}
-							  		</strong></td>
-							  		<td class="font-weight-bold {{$asistencia->estado == 'presente' ? 'text-success' : 'text-danger'}}">
-							  			{{ ucwords($asistencia->estado) }}
-							  		</td>
-							  	</tr>
-							  	@endforeach
-							  </tbody>
-							</table>
-							<a href="" class="btn btn-sm btn-warning">Editar asistencias</a>
-					      </div>
-					    </div>
+
+			<table class="table">
+				<thead class="thead-dark">
+					<th>Nombre y Apellido</th>
+					<th>Porcentaje</th>
+					<th>Cargar</th>
+				</thead>
+				<tbody>
+					@foreach($procesos as $proceso)
+					<tr>
+						<td>
+							{{ $proceso->alumno->nombres.' '.$proceso->alumno->apellidos }}
+						</td>
+						<td class="font-weight-bold">
+							<form action="" class="col-md-3 m0 p-0 asis-alumnos" id="{{ $proceso->id }}">
+								<input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}" required>
+						</td>
+						<td>
+							<button class="btn btn-sm btn-outline-success">Cargar</button>
+						</form>
+						</td>
+					</tr>
 					@endforeach
-			  </div>
+				</tbody>
+			</table>
 		</div>
-		
 	</div>
+
+</div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/asistencia/create.js') }}"></script>
 @endsection

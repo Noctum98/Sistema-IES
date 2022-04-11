@@ -10,7 +10,7 @@ class Asistencia extends Model
     use HasFactory;
     protected $fillable = [
         'materia_id',
-        'alumno_id',
+        'proceso_id',
         'porcentaje_final'
     ];
 
@@ -18,8 +18,8 @@ class Asistencia extends Model
         return $this->belongsTo('App\Models\Materia','materia_id');
     }
 
-    public function alumno(){
-        return $this->belongsTo('App\Models\Alumno','alumno_id');
+    public function proceso(){
+        return $this->belongsTo('App\Models\Proceso','proceso_id');
     }
  
 }

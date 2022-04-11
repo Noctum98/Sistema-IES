@@ -30,11 +30,11 @@ class AsistenciaController extends Controller
 
     public function vista_admin(int $id){
         $materia = Materia::find($id);
-        $asistecias = Asistencia::where('materia_id',$id)->get();
+        $procesos = Proceso::where('materia_id',$id)->get();
 
         return view('asistencia.admin',[
             'materia'       =>  $materia,
-            'asistencias'   =>  $asistecias
+            'procesos'   =>  $procesos
         ]);
     }
     public function vista_fecha(int $id){

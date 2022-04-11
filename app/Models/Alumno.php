@@ -109,7 +109,8 @@ class Alumno extends Model
             'alumnos.dni',
             'alumnos.email',
             'alumnos.telefono',
-            'alumnos.regularidad'
+            'alumnos.regularidad',
+            'alumnos.genero'
         )
         ->join('alumno_carrera','alumno_carrera.alumno_id','alumnos.id')
         ->where('alumno_carrera.año',$year)

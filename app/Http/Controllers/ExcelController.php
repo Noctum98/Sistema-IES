@@ -18,9 +18,29 @@ class ExcelController extends Controller
     public function alumnos_year($carrera_id,$year)
     {
         $alumnos = Alumno::alumnosAño($year,$carrera_id);
+        $generos = [
+            'hombres'   => 0,
+            'mujeres'   => 0,
+            'otro'      => 0
+        ];
 
-        $carrera = Carrera::find($carrera_id)->select('nombre')->first();
+        foreach($alumnos as $alumno)
+        {
+            if($alumno->genero == 'masculino')
+            {
+                $generos['hombres']++;
 
-        return Excel::download(new AlumnosYearExport($alumnos),'Planilla de Alumnos de '.$carrera->nombre.' - Año '.$year.'.xlsx');
+            }elseif($alumno->genero == 'femenino')
+            {
+                $generos['mujeres']++;
+                
+            }else{
+                $generos['otro']++;
+            }
+        }
+
+        $carrera = Carrera::where('id',$carrera_id)->select('nombre')->first();
+        
+        return Excel::download(new AlumnosYearExport($alumnos,$generos),'Planilla de Alumnos de '.$carrera->nombre.' - Año '.$year.'.xlsx');
     }
 }

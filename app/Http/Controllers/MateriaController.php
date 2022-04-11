@@ -100,7 +100,6 @@ class MateriaController extends Controller
 
     public function descargar_planilla($id)
     {
-        $procesos = Proceso::where('materia_id',$id)->get();
         $pprocesos = Proceso::select('procesos.*','alumnos.*')
         ->join('alumnos','alumnos.id','procesos.alumno_id')
         ->join('materias','materias.id','procesos.materia_id')
@@ -108,12 +107,9 @@ class MateriaController extends Controller
         ->orderBy('alumnos.apellidos','asc')
         ->get();
 
-        Log::info($procesos);
-        Log::info($pprocesos);
-
         $materia = Materia::find($id);
 
-        if($procesos){
+        if($pprocesos){
             return Excel::download(new AlumnosMateriaExport($pprocesos),
             'Alumnos ' .$materia->nombre . '.xlsx');
         }else{
