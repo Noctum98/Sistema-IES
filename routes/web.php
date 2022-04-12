@@ -13,6 +13,7 @@ use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\TrabajoController;
 use App\Http\Controllers\ParcialController;
 use App\Http\Controllers\AlumnoAsistenciaController;
+use App\Http\Controllers\AlumnoCarreraController;
 use App\Http\Controllers\AlumnoTrabajoController;
 use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
@@ -141,6 +142,10 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{disco}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+});
+
+Route::prefix('alumno/carrera')->group(function(){
+    Route::post('/changeYear/{alumno_id}/{carrera_id}',[AlumnoCarreraController::class,'changeAño'])->name('alumnoCarrera.year');
 });
 
 // Rutas de preinscripciones

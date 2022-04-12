@@ -89,7 +89,7 @@
 				<li>
 					<h2>Datos de Inscripción</h3>
 				</li>
-				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0] }} </li>
+				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }} </li>
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>
@@ -103,6 +103,9 @@
 						@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
 						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
 						@include('alumno.modals.carreras_matriculacion')
+
+						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año</button>
+						@include('alumno.modals.carreras_year')
 						@endif
 
 						@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador'))

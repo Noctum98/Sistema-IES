@@ -46,7 +46,7 @@
 							</thead>
 							<tbody>
 								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->año == 1 || $alumno->año == '1')
+								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 1)
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
@@ -84,7 +84,7 @@
 							</thead>
 							<tbody>
 								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->año == 2 || $alumno->año == '2')
+								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 2)
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
@@ -122,7 +122,7 @@
 							</thead>
 							<tbody>
 								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->año == 3 || $alumno->año == '3')
+								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 3)
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
