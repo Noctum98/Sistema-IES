@@ -25,7 +25,7 @@
 							{{ $proceso->alumno->nombres.' '.$proceso->alumno->apellidos }}
 						</td>
 						<td class="font-weight-bold">
-							<form action="" class="col-md-3 m0 p-0 asis-alumnos" id="{{ $proceso->id }}">
+							<form action="" class="col-md-3 m0 p-0 asis-alumnos" id="{{ $proceso->id }}" method="POST">
 								<input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}" required>
 						</td>
 						<td>

@@ -14,7 +14,6 @@ class ProcesoController extends Controller
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
-
     }
     // Vistas
     public function vista_inscribir($id)
@@ -53,29 +52,35 @@ class ProcesoController extends Controller
     public function administrar(Request $request, $id)
     {
         $alumno = Alumno::find($id);
-        $procesos = $request->materias;
+        $procesos = $request['materias'];
+
+        //dd($request['materias']);
 
         foreach ($alumno->procesos as $proceso) {
-            if (!in_array($proceso->materia_id, $procesos)) {
+
+            if (!$procesos || !in_array($proceso->materia_id, $procesos)) {
                 $proceso->delete();
             }
         }
 
-        // Si el rol que viene en el form ya lo tiene no lo crea y pasa al siguiente
-        foreach ($procesos as $key => $proceso) {
-            if ($alumno->hasProceso($proceso)) {
-                $proceso = null;
-            }
-            if ($proceso) {
-                Proceso::create([
-                    'alumno_id' => $alumno->id,
-                    'estado'    => 'en curso',
-                    'materia_id' => $proceso
-                ]);
+        if ($procesos) {
+            // Si el rol que viene en el form ya lo tiene no lo crea y pasa al siguiente
+            foreach ($procesos as $key => $proceso) {
+                if ($alumno->hasProceso($proceso)) {
+                    $proceso = null;
+                }
+                if ($proceso) {
+                    Proceso::create([
+                        'alumno_id' => $alumno->id,
+                        'estado'    => 'en curso',
+                        'materia_id' => $proceso
+                    ]);
+                }
             }
         }
 
-        return redirect()->route('alumno.detalle',[
+
+        return redirect()->route('alumno.detalle', [
             'id' => $alumno->id
         ])->with([
             'mensaje_procesos' => 'Se han actualizado los procesos'

@@ -195,7 +195,7 @@ Route::prefix('asistencias')->group(function () {
 
 
     // Acciones
-    Route::post('crear_asistencia/{id}', [AsistenciaController::class, 'crear'])->name('crear_asis');
+    Route::post('/crear_asistencia', [AsistenciaController::class, 'crear'])->name('crear_asis');
     Route::get('cerrar/{id}', [AsistenciaController::class, 'cerrar_planilla'])->name('cerrar_asis');
 });
 

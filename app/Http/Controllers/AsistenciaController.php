@@ -14,8 +14,8 @@ class AsistenciaController extends Controller
 {
     function __construct()
     {
-        $this->middleware('app.admin');
-        $this->middleware('app.roles:admin-profesor');
+        // $this->middleware('app.admin');
+        // $this->middleware('app.roles:admin-profesor');
     }
     // Vistas
     public function vista_carreras(){
@@ -66,22 +66,14 @@ class AsistenciaController extends Controller
 
     // Funcionalidades
 
-    public function crear(Request $request,int $materia_id){
+    public function crear(Request $request){
         $validate = $this->validate($request,[
-            'fecha'             =>  ['required','string'],
-            'presencialidad'    =>  ['required','alpha']
+            'porcentaje_final'             =>  ['required','numeric'],
         ]);
 
-        $asistencia = new Asistencia();
-        $asistencia->materia_id = (int) $materia_id;
-        $asistencia->fecha = $request->input('fecha');
-        $asistencia->presencialidad = $request->input('presencialidad');
+        $asistencia = Asistencia::create($request->all());
 
-        $asistencia->save();
-
-        return redirect()->route('asis.crear',[
-            'id'    =>  $asistencia->id  
-        ]);
+        return response()->json('Asistencia creada con éxito!',200);
     }
 
     public function cerrar_planilla(int $id){
