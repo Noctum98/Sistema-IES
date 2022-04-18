@@ -24,8 +24,8 @@ class MatriculacionController extends Controller
         ServicesProcesoService $procesoService
     ) {
         $this->procesoService = $procesoService;
-        $this->middleware('app.auth',['only'=>['create','edit']]);
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit']]);
+        // $this->middleware('app.auth',['only'=>['create','edit']]);
+        // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit']]);
 
         // $this->middleware('app.auth',['only'=>['edit','update']]);
         // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
