@@ -23,6 +23,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\UserMateriaController;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Alumno;
 use App\Models\Carrera;

@@ -71,11 +71,29 @@ class AsistenciaController extends Controller
             'porcentaje_final'             =>  ['required','numeric'],
         ]);
 
-        $asistencia = Asistencia::create($request->all());
+        $issetAsistencia = Asistencia::where('proceso_id',$request['proceso_id'])->first();
 
-        return response()->json('Asistencia creada con éxito!',200);
+        if($issetAsistencia){
+            $issetAsistencia->porcentaje_final = $request['porcentaje_final'];
+            $issetAsistencia->update();
+            $asistencia = $issetAsistencia;
+        }else{
+            $asistencia = Asistencia::create($request->all());
+        }
+
+        return response()->json([
+            'message' => 'Asistencia creada con éxito!',
+            'asistencia' => $asistencia 
+        ],200);
     }
 
+    public function crear_7030(Request $request)
+    {
+        $validate = $this->validate($request,[
+            'porcentaje_virtual'           =>  ['required','numeric','max:30'],
+            'porcentaje_presencial'             =>  ['required','numeric','max:70']
+        ]);
+    }
     public function cerrar_planilla(int $id){
         $procesos = Proceso::where('materia_id',$id)->get();
         $asistencias = Asistencia::where([

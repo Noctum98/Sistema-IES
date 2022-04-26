@@ -9,6 +9,19 @@ class Carrera extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'sede_id',
+        'nombre',
+        'titulo',
+        'años',
+        'resolucion',
+        'modalidad',
+        'turno',
+        'vacunas',
+        'estado',
+        'tipo'
+    ];
+
     public function sede(){
         return $this->belongsTo('App\Models\Sede','sede_id');
     }

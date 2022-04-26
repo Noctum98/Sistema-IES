@@ -101,19 +101,10 @@ class CarreraController extends Controller
             'modalidad' =>  ['required','alpha'],
             'vacunas'   =>  ['required','alpha']
         ]);
-    
+
+        $request['estado'] = $request['estado'] ? 1 : null;
         $carrera = Carrera::find($id);
-        $carrera->sede_id = $request->input('sede_id');
-        $carrera->nombre    =   $request->input('nombre');
-        $carrera->titulo    =   $request->input('titulo');
-        $carrera->años      =   $request->input('años');
-        $carrera->modalidad =   $request->input('modalidad');
-        $carrera->vacunas   =   $request->input('vacunas');
-        $carrera->estado    =   $request->input('estado') == '1' ? 1 : null;
-        $carrera->coordinador   =   $request->input('coordinador');
-        $carrera->referente_p   =   $request->input('referente_p');
-        $carrera->referente_s   =   $request->input('referente_s');
-        $carrera->update();
+        $carrera->update($request->all());
         
         return redirect()->route('carrera.editar',['id'=>$carrera->id])->with([
             'message'   =>      'Datos editados correctamente!'
