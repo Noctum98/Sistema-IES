@@ -87,7 +87,7 @@ class MatriculacionController extends Controller
             'privacidad' => ['required'],
             'poblacion_indigena' => ['required']
         ]);
-
+        
         $mail_check = MailCheck::where([
             'email' => $request['email'],
             'checked' => true

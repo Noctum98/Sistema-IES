@@ -11,7 +11,9 @@ class Asistencia extends Model
     protected $fillable = [
         'materia_id',
         'proceso_id',
-        'porcentaje_final'
+        'porcentaje_final',
+        'porcentaje_presencial',
+        'porcentaje_virtual'
     ];
 
     public function materia(){

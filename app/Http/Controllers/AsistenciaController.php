@@ -9,6 +9,7 @@ use App\Models\Asistencia;
 use App\Models\AlumnoAsistencia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AsistenciaController extends Controller
 {
@@ -19,11 +20,11 @@ class AsistenciaController extends Controller
     }
     // Vistas
     public function vista_carreras(){
-        $carreras = Auth::user()->carreras;
+        $materias = Auth::user()->materias;
         $ruta = 'asis.admin';
 
         return view('asistencia.home',[
-            'carreras'  =>  $carreras,
+            'materias'  =>  $materias,
             'ruta'      =>  $ruta
         ]);
     }
@@ -89,10 +90,39 @@ class AsistenciaController extends Controller
 
     public function crear_7030(Request $request)
     {
-        $validate = $this->validate($request,[
+        $validate = Validator::make($request->all(),[
             'porcentaje_virtual'           =>  ['required','numeric','max:30'],
             'porcentaje_presencial'             =>  ['required','numeric','max:70']
         ]);
+
+        if(!$validate->fails())
+        {
+            $issetAsistencia = Asistencia::where('proceso_id',$request['proceso_id'])->first();
+
+            $request['porcentaje_final'] = (int) $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
+    
+            if($issetAsistencia){
+                $issetAsistencia->update($request->all());
+                $asistencia = $issetAsistencia;
+            }else{
+                $asistencia = Asistencia::create($request->all());
+            }
+            
+            $response = [
+                'message' => 'Asistencia creada con éxito!',
+                'asistencia' => $asistencia            
+            ];
+
+        }else{
+            $response = [
+                'message' => 'Error',
+                'errors' => $validate->errors()
+            ];
+        }
+
+       
+        return response()->json($response,200);
+        
     }
     public function cerrar_planilla(int $id){
         $procesos = Proceso::where('materia_id',$id)->get();

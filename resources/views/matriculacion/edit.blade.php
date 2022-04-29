@@ -16,10 +16,6 @@
     @endif
     @if(isset($matriculacion) && !Auth::user())
     @include('matriculacion.campos.campos_procesos')
-    @endif
-    <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">
-        {{ method_field('PUT') }}
-
         @if($matriculacion->procesoCarrera($carrera->id,$matriculacion->id)->año == 1)
         <div class="form-group">
             <label for="regularidad">Condición</label>
@@ -51,6 +47,12 @@
             </select>
         </div>
         @endif
+    @endif
+    
+    <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">
+        {{ method_field('PUT') }}
+
+
 
         @include('matriculacion.campos')
         <hr>

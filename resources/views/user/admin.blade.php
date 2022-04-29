@@ -25,6 +25,11 @@
 			{{ @session('message') }}
 		</div>
 		@endif
+		@if(@session('user_deleted'))
+		<div class="alert alert-success">
+			{{ @session('user_deleted') }}
+		</div>
+		@endif
 		<a href="{{ route('roles.index') }}" class="btn btn-warning">Administrar Roles</a>
 		<table class="table mt-4">
 			<thead class="thead-dark">
@@ -50,6 +55,13 @@
 						<button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#materiasModal{{$user->id}}">
 							Asignar Carreras/Materias
 						</button>
+
+						<form action="{{ route('usuario.eliminar',$user->id) }}" method="POST" class="d-inline">
+						{{ method_field('DELETE') }}
+						<button type="submit" class="ml-2 btn btn-sm btn-danger" >
+							Eliminar
+						</button>
+						</form>
 						@include('user.modals.admin_sedes')
 						@include('user.modals.admin_roles')
 						@include('user.modals.admin_carreras_materias')

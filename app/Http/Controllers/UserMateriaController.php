@@ -37,4 +37,14 @@ class UserMateriaController extends Controller
 
         return redirect()->route('usuarios.admin')->with(['carrera_success'=>'Se han añadido la materia y carrera al usuario']);
     }
+
+    public function delete($id,$materia_id)
+    {
+        $user = User::find($id);
+        $user->materias()->detach(Materia::where('id',$materia_id)->first());
+
+        return redirect()->route('usuarios.detalle',[
+            'id' => $user->id
+        ]);
+    }
 }

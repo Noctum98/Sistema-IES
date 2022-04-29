@@ -3,6 +3,7 @@
         <th>Nombre y Apellido</th>
         <th>Porcentaje</th>
         <th>Cargar</th>
+        <th>Acción</th>
     </thead>
     <tbody>
         @foreach($procesos as $proceso)
@@ -19,6 +20,9 @@
                 <form action="" class="col-md-3 m0 p-0 asis-alumnos" id="{{ $proceso->id }}" method="POST">
                     <input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}" required>
                 </form>
+            </td>
+            <td>
+                <input type="submit" value="Cargar" class="btn btn-sm btn-outline-success">
             </td>
         </tr>
         @endforeach

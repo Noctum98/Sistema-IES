@@ -9,9 +9,11 @@
 
 		<br>
 		@if($materia->carrera->tipo == 'tradicional')
-		@include('asistencia.tables.table_tradicional')
+			@include('asistencia.tables.table_tradicional')
 		@elseif($materia->carrera->tipo == 'tradicional2')
-		@include('asistencia.tables.table_tradicional_7030')
+			@include('asistencia.tables.table_tradicional_7030')
+		@elseif($materia->carrera->tipo == 'modular')
+			@include('asistencia.tables.table_modular')
 		@endif
 
 	</div>

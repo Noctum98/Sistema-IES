@@ -81,6 +81,21 @@ class UserController extends Controller
             'datos_editados' => 'Los datos personales han sido actualizados'
         ]);;
     }
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        $user->roles()->detach();
+        $user->sedes()->detach();
+        $user->materias()->detach();
+        $user->carreras()->detach();
+        $user->alumnos()->detach();
+        $user->delete();
+
+        return redirect()->route('usuarios.admin')->with([
+            'user_deleted' => 'El usuario eliminado exitosamente'
+        ]);
+    }
     public function cambiar_contra(Request $request)
     {
         $user = Auth::user();

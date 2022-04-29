@@ -1,3 +1,6 @@
+<div id="alerts">
+
+</div>
 <table class="table">
     <thead class="thead-dark">
         <th>Nombre y Apellido</th>
@@ -19,10 +22,10 @@
             </td>
             <td>
                 <form action="" class="col-md-3 m0 p-0 asis-alumnos float-right form-tradicional_7030" id="{{ $proceso->id }}" method="POST">
-                    <input type="number" class="form-control" id="asis-presencial-{{ $proceso->id }}" required>
+                    <input type="number" class="form-control" id="asis-presencial-{{ $proceso->id }}" value="{{ $proceso->asistencia($proceso->id) ? $proceso->asistencia($proceso->id)->porcentaje_presencial: ''  }}" required>
             </td>
             <td>
-                    <input type="number" class="form-control float-right col-md-3" id="asis-virtual-{{ $proceso->id }}" required>
+                    <input type="number" class="form-control float-right col-md-3" value="{{ $proceso->asistencia($proceso->id) ? $proceso->asistencia($proceso->id)->porcentaje_virtual: '' }}" id="asis-virtual-{{ $proceso->id }}" required>
                
             </td>
             <td>

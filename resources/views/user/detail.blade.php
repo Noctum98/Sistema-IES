@@ -27,9 +27,13 @@
             <h5>Materias</h5>
             <ul class="m-0 p-0">
                 @foreach($user->materias as $materia)
-                <li>
+                <li class="mt-3">
                     {{ $materia->nombre.' - '.$materia->carrera->nombre.' - '.$materia->carrera->sede->nombre }} -
-                    <a href="" class="text-danger">Eliminar</a>
+                    <form action="{{ route('delete_materias_carreras',['user_id'=> $user->id,'materia_id'=>$materia->id]) }}" method="POST" class="d-inline">
+                        {{ method_field('DELETE') }}
+                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger">
+                    </form>
+
                 </li>
                 @endforeach
             </ul>

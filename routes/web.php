@@ -73,6 +73,7 @@ Route::prefix('usuarios')->group(function () {
 
     // Funcionalidades
     Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
+    Route::delete('/{id}',[UserController::class,'delete'])->name('usuario.eliminar');
     Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
     Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
     Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
@@ -80,6 +81,10 @@ Route::prefix('usuarios')->group(function () {
     Route::get('crear_alumno_usuario/{id}',[UserController::class,'crear_usuario_alumno'])->name('crear_usuario_alumno');
 });
 
+Route::prefix('usuario_materia')->group(function () {
+    Route::delete('delete/{user_id}/{materia_id}',[UserMateriaController::class,'delete'])->name('delete_materias_carreras');
+
+});
 
 //Ruta de Roles
 Route::resource('roles',RolController::class);
@@ -197,6 +202,7 @@ Route::prefix('asistencias')->group(function () {
 
     // Acciones
     Route::post('/crear_asistencia', [AsistenciaController::class, 'crear'])->name('crear_asis');
+    Route::post('/crearAsistenciaSetentaTreinta', [AsistenciaController::class, 'crear_7030']);
     Route::get('cerrar/{id}', [AsistenciaController::class, 'cerrar_planilla'])->name('cerrar_asis');
 });
 
