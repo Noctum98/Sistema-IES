@@ -16,4 +16,14 @@ class MesaAlumno extends Model
     public function mesa(){
         return $this->belongsTo('App\Models\Mesa','mesa_id');
     }
+
+
+    // Funciones adicionales
+
+    public function alumnoByDni($dni)
+    {
+        $alumno = Alumno::where('dni',$dni)->first();
+
+        return $alumno;
+    }
 }

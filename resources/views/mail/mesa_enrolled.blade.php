@@ -64,8 +64,13 @@
 				</ul>
 				<p>Datos del estudiante:</p>
 				<ul>
+					@if($inscripcion->mesa)
 					<li>Sede: {{ $inscripcion->mesa->materia->carrera->sede->nombre }}</li>
 					<li>Carrera: {{ $inscripcion->mesa->materia->carrera->nombre }}</li>
+					@else
+					<li>Sede: {{ $inscripcion->materia->carrera->sede->nombre }}</li>
+					<li>Carrera: {{ $inscripcion->materia->carrera->nombre }}</li>
+					@endif
 					<li>Nombres: {{$inscripcion->nombres}}</li>
 					<li>Apellidos: {{$inscripcion->apellidos}}</li>
 					<li>Correo: {{ $inscripcion->correo }}</li>
@@ -78,7 +83,12 @@
 				<p>Para bajarte de alguna mesa, ve al siguiente enlace</p>
 				<br>
 
+				@if($instancia->tipo == 0)
 				<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->mesa->materia->carrera->sede_id])}}" class="btn">Mis inscripciones</a>
+				@else
+				<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->materia->carrera->sede_id])}}" class="btn">Mis inscripciones</a>
+
+				@endif
 
 			</div>
 		</div>

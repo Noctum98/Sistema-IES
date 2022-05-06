@@ -65,7 +65,7 @@ class User extends Authenticatable
     {
         $alumno = Alumno::where('user_id', Auth::user()->id)->first();
         if ($alumno) {
-            return $alumno->id;
+            return $alumno;
         }
         return false;
     }

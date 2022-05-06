@@ -3,9 +3,10 @@
 @section('content')
 	<div class="container">
 		<h1>Seccion de Sedes</h1>
-		@if(Auth::user() && Auth::user()->rol == 'rol_admin')
+		<hr>
+		@if(Session::has('admin'))
 			<div class="row">
-				<a href="{{ route('sedes.crear') }}" class="btn btn-success">
+				<a href="{{ route('sedes.crear') }}" class="btn btn-success col-md-2">
 					Administrar Sedes
 				</a>
 			</div>

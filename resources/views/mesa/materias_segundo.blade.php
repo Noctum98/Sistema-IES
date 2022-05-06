@@ -147,7 +147,10 @@
 							$inscripcion->materia->nombre :
 							$inscripcion['mesa']['materia']['nombre']
 						}}
-						- <a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
+						-
+						<form action="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$inscripcion->instancia_id])}}" method="POST">
+							<button class="btn btn-sm btn-danger">Bajarme</a>
+						</form> 
 					</li>
 					@endforeach
 				</ul>

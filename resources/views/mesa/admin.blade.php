@@ -45,7 +45,7 @@
 					Borrar datos
 					</button>
 				@else
-					<a href="{{route('borrar_datos',['id'=>$instancia->id])}}" type="button" class="btn-sm btn-danger" >
+					<a href="{{route('borrar_datos',['id'=>$instancia->id])}}" type="button" class="btn btn-sm btn-danger" >
 					Borrar datos
 					</a>
 				@endif

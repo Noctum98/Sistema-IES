@@ -46,7 +46,7 @@
 						</div>
 						<div class="modal-body">
 							<h6>Recuerda la inscripción de la mesa estará abierta hasta 48hs antes de la fecha y hora de la misma.</h6>
-							<form method="POST" action="{{route('insc_mesa')}}">
+							<form method="POST" action="{{route('insc_mesa',['instancia_id'=>$instancia->id])}}">
 								@csrf
 								<table class="table mt-4">
 									<thead class="thead-white">
@@ -169,16 +169,22 @@
 						}}
 						-
 						@if($instancia->tipo == 1)
-						<a href="{{route('mesa.baja',['id'=>$inscripcion->id])}}" class="text-danger">Bajarme</a>
+						@if($inscripcion->estado_baja)
+							<span class="text-secondary">Dada de baja</span>
+						@else
+						
+						<a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
+						@endif
 						@else
 						@if(!$inscripcion['segundo_llamado'])
 						<span class="font-weight-bold">1er llamado </span>
 						@else
 						<span class="font-weight-bold">2do llamado </span>
 						@endif
-						@if(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo'])) - <a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
-								@endif
-								@endif
+						@if(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo']))
+						 - <a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
+						@endif
+						@endif
 					</li>
 					@endforeach
 				</ul>

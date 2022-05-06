@@ -22,10 +22,10 @@
                 </a>
                 @endif
                 @if(Session::has('carreras'))
-                    <a class="nav-link" href="{{ route('carrera.admin') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-city"></i></div>
-                        Carreras
-                    </a>
+                <a class="nav-link" href="{{ route('carrera.admin') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-city"></i></div>
+                    Carreras
+                </a>
                 @endif
                 @if(Session::has('mesas'))
                 <a class="nav-link" href="{{ route('mesa.admin') }}">
@@ -60,12 +60,19 @@
                     </nav>
                 </div>
                 @endif
-                
+
                 @if(Session::has('alumno'))
                 <div class="sb-sidenav-menu-heading">Alumno</div>
                 <a class="nav-link" href="{{ route('alumno.detalle',Auth::user()->alumno()) }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                     Mi matrícula
+                </a>
+                @endif
+
+                @if(Session::has('admin') || Session::has('alumno'))
+                <a class="nav-link" href="{{ route('mesa.instancias') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                    Mesas
                 </a>
                 @endif
             </div>

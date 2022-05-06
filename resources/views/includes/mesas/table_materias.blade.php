@@ -29,22 +29,27 @@
     </td>
     <td>
         @if($instancia->tipo == 0)
-        @if($materia->mesas)
-        @if($materia->mesa($instancia->id,$materia->id))
-        <a href="{{route('mesa.inscriptos',['id'=>$materia->mesa($instancia->id,$materia->id)->id])}}" class="btn-sm btn-secondary">Ver inscriptos</a>
-        @if(Auth::user()->rol == 'rol_admin')
-        <a href="{{route('mesa.inscriptos',['id'=>$materia->mesa($instancia->id,$materia->id)->id])}}" data-toggle="modal" data-target="#editModal{{$materia->id}}" class="btn-sm btn-primary">Editar mesa</a>
-        @endif
-        @include('includes.mesas.edit_mesa')
-        @else
-        <a href="{{route('mesa.inscriptos',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
-        @endif
-        @endif
-        @include('includes.mesas.config_mesa')
+            @if($materia->mesas)
+            @if($materia->mesa($instancia->id,$materia->id))
+            <a href="{{route('mesa.inscriptos',['id'=>$materia->mesa($instancia->id,$materia->id)->id])}}" class="btn-sm btn-secondary">Ver inscriptos</a>
+            @if(Session::has('admin'))
+            <a href="{{route('mesa.inscriptos',['id'=>$materia->mesa($instancia->id,$materia->id)->id])}}" data-toggle="modal" data-target="#editModal{{$materia->id}}" class="btn-sm btn-primary">Editar mesa</a>
+            @endif
+            @include('includes.mesas.edit_mesa')
+            @else
+            <a href="{{route('mesa.inscriptos',['id'=>$materia->id])}}" class="btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
+            @endif
+            @endif
+            @include('includes.mesas.config_mesa')
         @else
         <a href="{{route('mesa.inscriptos',['id'=>$mesa->id])}}" class="btn-sm btn-secondary">Ver inscriptos</a>
         @endif
     </td>
     @endif
+    <td>
+    
+        <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
+
+    </td>
 </tr>
 </tr>
