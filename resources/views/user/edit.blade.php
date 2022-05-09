@@ -16,7 +16,7 @@
 	</div>
 	@endif
 	<div class="row">
-		<form class="col-md-4" method="POST" action="{{route('editar_usuario')}}">
+		<form class="col-md-4 mb-4" method="POST" action="{{route('editar_usuario')}}">
 			@csrf
 			<div class="form-group">
 				<label for="username">Nombre de Usuario:</label>
@@ -70,7 +70,10 @@
 
 			<input type="submit" value="Editar datos" class="btn btn-secondary">
 		</form>
-		<form class="col-md-4 ml-3" method="POST" action="{{route('cambiar_contra')}}">
+		
+		<h3>Cambiar contraseña</h3>
+		<hr>
+		<form class="col-md-4" method="POST" action="{{route('cambiar_contra')}}">
 
 			@csrf
 			<div class="form-group">
@@ -87,7 +90,7 @@
 				<label for="password_confirmation">Confirmar contraseña:</label>
 				<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required />
 			</div>
-			<input type="submit" value="Cambiar contraseña" class="btn btn-secondary">
+			<input type="submit" value="Cambiar" class="btn btn-secondary">
 		</form>
 	</div>
 
