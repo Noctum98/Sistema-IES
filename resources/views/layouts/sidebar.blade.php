@@ -2,8 +2,9 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
+            <div class="sb-sidenav-menu-heading">Administración</div>
+
                 @if(Session::has('admin'))
-                <div class="sb-sidenav-menu-heading">Administración</div>
                 <a class="nav-link" href="{{ route('usuarios.admin') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                     Usuarios
@@ -67,11 +68,8 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                     Mi matrícula
                 </a>
-                @endif
-
-                @if(Session::has('admin') || Session::has('alumno'))
                 <a class="nav-link" href="{{ route('mesa.instancias') }}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                     Mesas
                 </a>
                 @endif

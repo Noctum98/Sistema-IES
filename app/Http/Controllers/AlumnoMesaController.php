@@ -20,6 +20,7 @@ class AlumnoMesaController extends Controller
     
     public function __construct()
     {
+        $this->middleware('app.auth');
     }
     // Vistas
     public function vista_home($id)
@@ -86,8 +87,10 @@ class AlumnoMesaController extends Controller
         }
     }
 
-    public function vista_inscriptos($materia_id)
+    public function vista_inscriptos($materia_id,$instancia_id=null)
     {
+        $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
+
         $inscripciones = MesaAlumno::select('nombres','apellidos','id','dni','alumno_id','instancia_id')->where([
             'materia_id'=>$materia_id,
             'estado_baja' => 0
@@ -98,12 +101,12 @@ class AlumnoMesaController extends Controller
         ])->get();
 
         //dd($inscripciones);
-        $materia = Materia::select('nombre')->where('id',$materia_id)->first();
-
+        $materia = Materia::select('nombre','id')->where('id',$materia_id)->first();
         return view('mesa.inscripciones_especial',[
             'inscripciones' => $inscripciones,
             'inscripciones_baja' => $inscripciones_baja,
-            'materia' => $materia
+            'materia' => $materia,
+            'instancia' => $instancia
         ]);
     }
 
@@ -204,6 +207,7 @@ class AlumnoMesaController extends Controller
            
         
             Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia,$inscripcion));
+
             return redirect()->route('mesa.mate',[
                 'instancia_id' => $instancia->id
             ])->with([
@@ -225,7 +229,7 @@ class AlumnoMesaController extends Controller
                     ]);
                 } else {
                     $inscripcion->delete();
-                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
             } else {
                 if (time() > $inscripcion->mesa->cierre) {
@@ -234,7 +238,7 @@ class AlumnoMesaController extends Controller
                     ]);
                 } else {
                     $inscripcion->delete();
-                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
             }
         }else{
@@ -246,14 +250,18 @@ class AlumnoMesaController extends Controller
             'instancia_id' => $instancia->id
         ]);
     }
-    public function borrar_inscripcion(Request $request,$id){
-        $instancia = session('instancia');
+    public function borrar_inscripcion(Request $request,$id,$instancia_id){
+        $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $inscripcion = MesaAlumno::find($id);
         $mesa_id = $inscripcion->mesa_id;
         
-        if(isset($request['motivos']))
+        if(isset($request['motivos']) || $instancia->tipo == 1)
         {
             Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
+            $inscripcion->estado_baja = true;
+            $inscripcion->update();
+            $ruta = 'mesa.especial.inscriptos';
+            $id = $inscripcion->materia_id;
         }
 
         if ($instancia->tipo == 0) {
@@ -261,10 +269,11 @@ class AlumnoMesaController extends Controller
             
         }
 
-        return redirect()->route('mesa.inscriptos',[
-            'id' => $mesa_id
+        return redirect()->route($ruta,[
+            'id' => $id,
+
         ])->with([
-            'baja_exitosa' => 'Se ha borrado la inscripción correctamente'
+            'baja_exitosa' => 'Se ha dado de baja la inscripción correctamente'
         ]);
     }
     public function email_session($dni, $instancia_id, $sede_id)
