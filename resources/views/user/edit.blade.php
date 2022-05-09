@@ -70,9 +70,10 @@
 
 			<input type="submit" value="Editar datos" class="btn btn-secondary">
 		</form>
-		
-		<h3>Cambiar contraseña</h3>
+	</div>
+	<h3>Cambiar contraseña</h3>
 		<hr>
+		<div class="row">
 		<form class="col-md-4" method="POST" action="{{route('cambiar_contra')}}">
 
 			@csrf
@@ -92,7 +93,7 @@
 			</div>
 			<input type="submit" value="Cambiar" class="btn btn-secondary">
 		</form>
-	</div>
+		</div>
 
 </div>
 @endsection
