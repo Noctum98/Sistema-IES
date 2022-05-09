@@ -10,7 +10,7 @@
             @csrf
 			<div class="form-group">
 				<label for="sede">Sede en la que estudia:</label>
-				<select name="sede" class="form-control">
+				<select name="sede" class="form-select">
 					@foreach($sedes as $sede)
 					<option value="{{$sede->id}}">{{$sede->nombre}}</option>
 					@endforeach

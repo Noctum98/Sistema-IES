@@ -20,7 +20,7 @@ class AlumnoMesaController extends Controller
     
     public function __construct()
     {
-        $this->middleware('app.auth');
+        //$this->middleware('app.auth');
     }
     // Vistas
     public function vista_home($id)
@@ -205,13 +205,18 @@ class AlumnoMesaController extends Controller
                 $inscripcion->save();
             }
            
-        
-            Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia,$inscripcion));
+            $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
+            
+            if(!Auth::user())
+            {
+                Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia,$inscripcion));
+                $mensaje = 'Ya estas inscripto correctamente, se ha enviado un comprobante a tu correo electronico.';
+            }
 
             return redirect()->route('mesa.mate',[
                 'instancia_id' => $instancia->id
             ])->with([
-                'inscripcion_success' => 'Ya estas inscripto correctamente y se ha enviado un comprobante a tu correo electrónico.'
+                'inscripcion_success' => $mensaje
             ]);
         }
     }
