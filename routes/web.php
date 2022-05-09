@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumnoProcesoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -185,6 +186,8 @@ Route::prefix('proceso')->group(function () {
     // Vistas
     Route::get('inscribir/{id}', [ProcesoController::class, 'vista_inscribir'])->name('proceso.inscribir');
     Route::get('detalle/{id}', [ProcesoController::class, 'vista_detalle'])->name('proceso.detalle');
+    // Vista Alumno
+    Route::get('/mis_procesos/{id}',[AlumnoProcesoController::class,'vista_procesos'])->name('proceso.alumno');
 
     // Acciones
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name('inscribir_proceso');
