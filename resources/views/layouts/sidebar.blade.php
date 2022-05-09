@@ -2,8 +2,9 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-            <div class="sb-sidenav-menu-heading">Administración</div>
-
+                @if(!Session::has('alumno'))
+                <div class="sb-sidenav-menu-heading">Administración</div>
+                @endif
                 @if(Session::has('admin'))
                 <a class="nav-link" href="{{ route('usuarios.admin') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
