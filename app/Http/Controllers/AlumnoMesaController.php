@@ -209,7 +209,8 @@ class AlumnoMesaController extends Controller
             
             if(!Auth::user())
             {
-                Mail::to($inscripcion->correo)->send(new MesaEnrolled($datos, $instancia,$inscripcion));
+                //dd($datos);
+                Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia,$inscripcion));
                 $mensaje = 'Ya estas inscripto correctamente, se ha enviado un comprobante a tu correo electronico.';
             }
 
