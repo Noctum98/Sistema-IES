@@ -51,7 +51,6 @@
                         </td>
                         <td>
                             @if($proceso->asistencia($proceso->id))
-{{--                            {{ $proceso->asistencia($proceso->id)->porcentaje_final ?  : 'Sin asignar'}}--}}
                             {{ $proceso->asistencia($proceso->id) ?  : 'Sin asignar'}}
                             @endif
                         </td>
@@ -60,8 +59,5 @@
                 @endforeach
                 </tbody>
             </table>
-            <!---
-
-            ---->
         </div>
 @endsection
