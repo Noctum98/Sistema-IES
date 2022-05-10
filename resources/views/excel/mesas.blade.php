@@ -12,7 +12,7 @@
 	<tbody>
 		@foreach ($inscripciones as $inscripcion)
 		    <tr style="cursor:pointer;">
-		      <td>{{ $inscripcion->nombres.' '.$inscripcion->apellidos }}</td>
+		      <td>{{  strtoupper($inscripcion->apellidos).', '.$inscripcion->nombres  }}</td>
 		      <td>{{ $inscripcion->dni }}</td>
 		      <td>{{ $inscripcion->correo }}</td>
 		      <td>{{ $inscripcion->telefono }}</td>

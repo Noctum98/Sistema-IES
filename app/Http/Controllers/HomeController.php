@@ -33,6 +33,7 @@ class HomeController extends Controller
                 session([$rol->nombre=>$rol]);
             }
         }
+
         return view('home');
     }
 }
