@@ -261,7 +261,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name('mesa.carreras');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
     Route::get('/inscriptos/{id}', [MesaController::class, 'vista_inscripciones'])->name('mesa.inscriptos');
-    Route::get('/especial/inscriptos/{id}',[AlumnoMesaController::class,'vista_inscriptos'])->name('mesa.especial.inscriptos');
+    Route::get('/especial/inscriptos/{id}/{instancia_id?}',[AlumnoMesaController::class,'vista_inscriptos'])->name('mesa.especial.inscriptos');
 
     Route::post('/seleccionar/{id}', [InstanciaController::class, 'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{materia_id}/{instancia_id}', [MesaController::class, 'crear'])->name('crear_mesa');
@@ -273,9 +273,9 @@ Route::prefix('mesas')->group(function () {
     Route::post('/alumno/crear', [AlumnoMesaController::class, 'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
-    Route::get('/borrar_mesa/{id}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name('mesa.borrar');
+    Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name('mesa.borrar');
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}', [AlumnoMesaController::class, 'email_session'])->name('edit.mesa');
-    Route::get('/descargar_excel/{id}/{llamado}', [InstanciaController::class, 'descargar_excel'])->name('mesa.descargar');
+    Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel'])->name('mesa.descargar');
     Route::get('/descargar_tribunal/{id}', [InstanciaController::class, 'descargar_tribunal'])->name('mesa.tribunal');
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
 });

@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$inscripcion->instancia_id]) }}">
+                <form method="POST" action="{{ route('mesa.borrar',['id'=>$inscripcion->id,'instancia_id'=>$inscripcion->instancia_id]) }}">
                     @csrf
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="motivos[]" id="motivo_correlatividad" value="Falta de correlatividad" >

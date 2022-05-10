@@ -12,7 +12,7 @@
     @endif
     @if(count($inscripciones) > 0)
     <div class="row">
-        <a href="" class="btn btn-sm btn-success col-md-2 ml-3">
+        <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 ml-3">
             Descargar Inscriptos
         </a>
     </div>
@@ -38,7 +38,7 @@
                 @endif
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
-                @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos')) 
+                @if(Session::has('admin') || Session::has('coordinador')) 
                 <td>
                     <a  class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja

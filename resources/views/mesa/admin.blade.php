@@ -24,7 +24,9 @@
 		      <th scope="col">Nombre</th>
 		      <th scope="col">Tipo</th>
 		      <th scope="col">Acción</th>
+			  @if(Session::has('admin'))
 		      <th scope="col">Inactiva/Activa</th>
+			  @endif
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -52,13 +54,16 @@
 				
 				@endif
 		      </td>
+			  @if(Session::has('admin'))
 		      <td>
+			  
 		      	<div class="custom-control custom-switch">
 				  <input type="checkbox" class="custom-control-input switchinsta" value="{{$instancia->estado}}" id="{{$instancia->id}}" 
 				  {{$instancia->estado == 'activa' ? 'checked':''}}>
 				  <label class="custom-control-label" for="{{$instancia->id}}"></label>
 				</div>
 		      </td>
+			  @endif
 		    </tr>
 		    <!--Modal Ver-->
 			@include('mesa.modals.ver_inscripciones')

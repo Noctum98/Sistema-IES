@@ -6,6 +6,7 @@
 		</h2>
 		<hr>
 
+		@if(count($instancias) > 0)
 		@foreach($instancias as $instancia)
 
 		<a type="button" href="{{ route('mesa.mate',$instancia->id) }}" class="list-group-item list-group-item-action border-top mt-2 text-primary p-3" >
@@ -13,7 +14,10 @@
                 {{ $instancia->nombre }}
 			</strong>
 		</a>
-        @endforeach
+		@endforeach
+		@else
+			<h3>No hay mesas abiertas</h3>
+		@endif
 		<!---
 
 		---->

@@ -113,9 +113,9 @@ class InstanciaController extends Controller
             'status' => 'success'
         ]);
     }
-    public function descargar_excel($id,$llamado)
+    public function descargar_excel($id,$instancia_id,$llamado=null)
     {
-        $instancia = session('instancia');
+        $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
 
         if ($instancia->tipo == 0) {
             $mesa = Mesa::find($id);
@@ -134,14 +134,15 @@ class InstanciaController extends Controller
   
             $inscripciones = MesaAlumno::where([
                 'materia_id' => $id,
-                'instancia_id' => session('instancia')->id
+                'instancia_id' => $instancia->id,
+                'estado_baja' => false
             ])->get();
             $materia = Materia::find($id);
         }
 
         return Excel::download(
             new mesaAlumnosExport($inscripciones, $materia),
-            'Inscripciones ' . session('instancia')->nombre . '-' . $materia->nombre . '.xlsx'
+            'Inscripciones ' . $instancia->nombre . '-' . $materia->nombre.' - '.$materia->carrera->nombre . '.xlsx'
         );
     }
     public function descargar_tribunal($carrera)
