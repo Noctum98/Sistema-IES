@@ -18,6 +18,7 @@
 		<!-- Modal Crear-->
 		@include('mesa.modals.crear_instancia')
 		@if(count($instancias) != 0)
+		<div class="table-responsive">
 		<table class="table mt-4">
 		  <thead class="thead-dark">
 		    <tr>
@@ -74,6 +75,7 @@
 		    @endforeach
 		  </tbody>
 		</table>
+		</div>
 		@else
 		<p>No existen instancias creadas</p>
 		@endif

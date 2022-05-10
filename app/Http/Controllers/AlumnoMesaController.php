@@ -69,7 +69,7 @@ class AlumnoMesaController extends Controller
                 foreach ($insc as $inscripcion) {
 
                     if ($inscripcion->mesa->instancia_id == $instancia->id) {
-                        array_push($inscripciones, $inscripcion);
+                        $inscripciones[] = $inscripcion;
                     }
                 }
             } else {
