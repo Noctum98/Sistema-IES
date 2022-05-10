@@ -58,7 +58,7 @@
 				<br>
 				<p>Te has inscripto a las materias:</p>
 				<ul>
-					@foreach($datos_limpios as $dato)
+					@foreach($datos as $dato)
 					<li>{{$dato}}</li>
 					@endforeach
 				</ul>

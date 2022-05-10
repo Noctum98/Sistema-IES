@@ -5,7 +5,7 @@
 			Elige la mesa que deseas rendir
 		</h2>
 		<hr>
-		
+
 		@if(count($instancias) > 0)
 		@foreach($instancias as $instancia)
 
@@ -19,7 +19,7 @@
 			<h3>No hay mesas abiertas</h3>
 		@endif
 		<!---
-		
+
 		---->
 	</div>
 @endsection
