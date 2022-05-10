@@ -50,7 +50,10 @@
                             {{ $proceso->final_trabajos ?  : 'Sin asignar'}}
                         </td>
                         <td>
-                            {{ $proceso->final_asistencia ?  : 'Sin asignar'}}
+                            @if($proceso->asistencia($proceso->id))
+{{--                            {{ $proceso->asistencia($proceso->id)->porcentaje_final ?  : 'Sin asignar'}}--}}
+                            {{ $proceso->asistencia($proceso->id) ?  : 'Sin asignar'}}
+                            @endif
                         </td>
                     </tr>
 

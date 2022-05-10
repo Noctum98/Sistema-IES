@@ -36,7 +36,7 @@ class AlumnoProcesoController extends Controller
                 'alumno_notIsset' => 'El alumno no existe'
             ]);
         }
-
+//        dd($alumno->proceso[0]->asitencia);
         return view('proceso.alumno',[
             'alumno' => $alumno
         ]);
