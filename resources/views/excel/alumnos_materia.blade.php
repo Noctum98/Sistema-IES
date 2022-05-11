@@ -1,5 +1,5 @@
 <table>
-	<thead>
+	<thead class="thead-dark">
 		<tr>
 			<th scope="col">Apellido y Nombre</th>
 			<th scope="col">D.N.I</th>

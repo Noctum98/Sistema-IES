@@ -37,7 +37,7 @@
 					<div class="card-body">
 						<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>1]) }}" class="btn btn-sm btn-success mb-2">Descargar Alumnos</a>
 						<table class="table">
-							<thead>
+							<thead class="thead-dark">
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>
@@ -75,7 +75,7 @@
 					<div class="card-body">
 						<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>2]) }}" class="btn btn-sm btn-success mb-2">Descargar Alumnos</a>
 						<table class="table">
-							<thead>
+							<thead class="thead-dark">
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>
@@ -113,7 +113,7 @@
 					<div class="card-body">
 						<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>3]) }}" class="btn btn-sm btn-success mb-2">Descargar Alumnos</a>
 						<table class="table">
-							<thead>
+							<thead class="thead-dark">
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>

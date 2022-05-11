@@ -13,7 +13,7 @@
         <div class="table-responsive">
             <table class="table">
                 <thead class="thead-dark">
-                <tr>
+                    <tr>
                     <th>
                         Materia
                     </th>
@@ -35,11 +35,9 @@
                         Asistencia final
                     </th>
                 </tr>
-
                 </thead>
                 <tbody>
                 @foreach($alumno->procesos as $proceso)
-
                     <tr>
                         <td>
                             {{ $proceso->materia->nombre }}
@@ -66,14 +64,13 @@
                                     {{ $proceso->asistencia($proceso->id)->porcentaje_virtual ? : '-'}} %<sup>
                                         Virtual</sup> <br/>
                                     {{ $proceso->asistencia($proceso->id)->porcentaje_final ? : '-'}} % <sup>Final</sup>
-                                    @else
-                                       - %<sup> Presencial</sup> | - %<sup>Virtual</sup> <br/>
-                                       - % <sup>Final</sup>
+                                @else
+                                    - %<sup> Presencial</sup> | - %<sup>Virtual</sup> <br/>
+                                    - % <sup>Final</sup>
                                 @endif
                             @endif
                         </td>
                     </tr>
-
                 @endforeach
                 </tbody>
             </table>

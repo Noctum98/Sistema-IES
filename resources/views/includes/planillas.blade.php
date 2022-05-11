@@ -13,7 +13,7 @@
 				<div id="collapse{{$carrera->id}}" class="collapse" aria-bs-labelledby="heading{{$carrera->id}}" data-bs-parent="#accordion">
 				    <div class="card-body">
 				        <table class="table">
-						  <thead>
+						  <thead class="thead-dark">
 						    <tr>
 						      <th scope="col">Materia</th>
 						      <th scope="col">Año</th>

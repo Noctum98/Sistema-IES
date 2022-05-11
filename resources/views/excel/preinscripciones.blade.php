@@ -1,5 +1,5 @@
 <table>
-	<thead>
+	<thead class="thead-dark">
 		<tr>
 			<th scope="col">Fecha de Actualización</th>
 			<th scope="col">Nombres</th>
