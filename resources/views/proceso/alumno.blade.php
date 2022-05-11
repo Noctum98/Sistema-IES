@@ -22,13 +22,13 @@
                     </th>
                     <th>
                         <small>
-                        Nota final <br/> Parciales
+                            Nota final <br/> Parciales
                         </small>
                     </th>
                     <th>
                         <small>
-                        Nota final <br/>
-                        T. Prácticos
+                            Nota final <br/>
+                            T. Prácticos
                         </small>
                     </th>
                     <th class="text-right pr-3">
@@ -54,7 +54,23 @@
                             {{ $proceso->final_trabajos ?  : 'Sin asignar'}}
                         </td>
                         <td class="text-right pr-3">
-                            {{ $proceso->asistencia($proceso->id) ? $proceso->asistencia($proceso->id)->porcentaje_final : 'Sin asignar'}} %
+
+                            @if($proceso->materia->carrera->tipo == 'tradicional')
+                                {{ $proceso->asistencia($proceso->id) ? $proceso->asistencia($proceso->id)->porcentaje_final : 'Sin asignar'}}
+                                %
+                            @endif
+                            @if($proceso->materia->carrera->tipo == 'tradicional2')
+                                @if($proceso->asistencia($proceso->id))
+                                    {{ $proceso->asistencia($proceso->id)->porcentaje_presencial ? : '-'}} %<sup>
+                                        Presencial</sup> |
+                                    {{ $proceso->asistencia($proceso->id)->porcentaje_virtual ? : '-'}} %<sup>
+                                        Virtual</sup> <br/>
+                                    {{ $proceso->asistencia($proceso->id)->porcentaje_final ? : '-'}} % <sup>Final</sup>
+                                    @else
+                                       - %<sup> Presencial</sup> | - %<sup>Virtual</sup> <br/>
+                                       - % <sup>Final</sup>
+                                @endif
+                            @endif
                         </td>
                     </tr>
 
