@@ -12,7 +12,7 @@
         <hr>
         <div class="table-responsive">
             <table class="table">
-                <thead>
+                <thead class="thead-dark">
                 <tr>
                     <th>
                         Materia
@@ -21,13 +21,17 @@
                         Estado
                     </th>
                     <th>
+                        <small>
                         Nota final <br/> Parciales
+                        </small>
                     </th>
                     <th>
+                        <small>
                         Nota final <br/>
                         T. Prácticos
+                        </small>
                     </th>
-                    <th>
+                    <th class="text-right pr-3">
                         Asistencia final
                     </th>
                 </tr>
@@ -49,10 +53,8 @@
                         <td>
                             {{ $proceso->final_trabajos ?  : 'Sin asignar'}}
                         </td>
-                        <td>
-                            @if($proceso->asistencia($proceso->id))
-                            {{ $proceso->asistencia($proceso->id) ?  : 'Sin asignar'}}
-                            @endif
+                        <td class="text-right pr-3">
+                            {{ $proceso->asistencia($proceso->id) ? $proceso->asistencia($proceso->id)->porcentaje_final : 'Sin asignar'}} %
                         </td>
                     </tr>
 
