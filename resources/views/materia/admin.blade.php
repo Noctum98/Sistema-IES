@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container p-3">
-	<h2 class="h1">
+	<h2 class="h1 text-info">
 		Plan de estudios de {{ $carrera->nombre }}
 	</h2>
 	<hr>
@@ -15,7 +15,7 @@
 	@endif
 	<div class="col-md-8">
 		@if($carrera->estado != 1)
-		<h3>Primer Año</h3>
+		<h3 class="text-secondary">Primer Año</h3>
 		<table class="table table-hover mt-4">
 			<thead class="thead-dark">
 				<tr>
@@ -41,7 +41,7 @@
 		</table>
 		<hr>
 		@endif
-		<h3>Segundo Año</h3>
+		<h3 class="text-secondary">Segundo Año</h3>
 		<table class="table table-hover mt-4">
 			<thead class="thead-dark">
 				<tr>
@@ -66,7 +66,7 @@
 			</tbody>
 		</table>
 		<hr>
-		<h3>Tercer Año</h3>
+		<h3 class="text-secondary">Tercer Año</h3>
 		<table class="table table-hover mt-4">
 			<thead class="thead-dark">
 				<tr>

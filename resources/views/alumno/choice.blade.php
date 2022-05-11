@@ -1,8 +1,8 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container ">
-		<h2 class="h1">
-			Elige la carrera 
+		<h2 class="h1 text-info">
+			Elige la carrera
 		</h2>
 		<p>Elige la carrera en donde agregar los alumnos</p>
 		<hr>

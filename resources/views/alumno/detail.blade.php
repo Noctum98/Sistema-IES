@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container alumno">
-	<h2 class="h1 text-primary">
+	<h2 class="h1 text-info">
 		Datos de {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
 	</h2>
 	<hr>
@@ -36,7 +36,7 @@
 		<div class="row col-md-12">
 			<ul class="datos-generales col-md-6">
 				<li>
-                    <h2 class="text-secondary"><u>Datos Generales</u></h2>
+                    <h2 class="text-info"><u>Datos Generales</u></h2>
 				</li>
 				<li><strong>Email:</strong> {{ $alumno->email }}</li>
 				<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha }}</li>
@@ -49,7 +49,7 @@
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
-                    <h2 class="text-secondary"><u>Datos Domicilio</u></h2>
+                    <h2 class="text-info"><u>Datos Domicilio</u></h2>
 				</li>
 				<li><strong>Localidad:</strong> {{ $alumno->localidad }}</li>
 				<li><strong>Calle: </strong> {{ $alumno->calle }}</li>
@@ -63,7 +63,7 @@
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
-                    <h2 class="text-secondary"><u>Datos Personales</u></h2>
+                    <h2 class="text-info"><u>Datos Personales</u></h2>
 				</li>
 				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil) }}</li>
 				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion) }}</li>
@@ -88,7 +88,7 @@
 
 			<ul class="datos-academicos col-md-6">
 				<li>
-                    <h2 class="text-secondary"><u>Datos de Inscripción</u></h2>
+                    <h2 class="text-info"><u>Datos de Inscripción</u></h2>
 				</li>
 				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }} </li>
 				<li>

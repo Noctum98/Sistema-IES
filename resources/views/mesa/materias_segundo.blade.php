@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-	<h2 class="h1">
+	<h2 class="h1 text-info">
 		Elige que materia rendir
 	</h2>
 	<p>Selecciona la carrera, luego las materias</p>
@@ -34,13 +34,13 @@
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">{{$carrera->nombre}}</h5>
+							<h5 class="modal-title text-secondary" id="exampleModalLabel">{{$carrera->nombre}}</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<h6>Recuerda la inscripción de la mesa estará abierta hasta 48hs antes de la fecha.</h6>
+							<h6 class="text-secondary"> Recuerda la inscripción de la mesa estará abierta hasta 48hs antes de la fecha.</h6>
 							<form method="POST" action="{{route('insc_mesa')}}">
 								@csrf
 								<table class="table mt-4">
@@ -128,11 +128,11 @@
 			</div>
 			@endforeach
 			@else
-			<h4>Ya no puedes inscribirte a ninguna materia.</h4>
+			<h4 class="text-secondary">Ya no puedes inscribirte a ninguna materia.</h4>
 			@endif
 		</div>
 		<div class="col-md-4 mt-3">
-			<h4>Materias inscriptas</h3>
+			<h4 class="text-secondary">Materias inscriptas</h4>
 				@if(@session('bajar_exitosa'))
 				<div class="alert alert-warning">
 					{{@session('bajar_exitosa')}}
@@ -150,7 +150,7 @@
 						-
 						<form action="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$inscripcion->instancia_id])}}" method="POST">
 							<button class="btn btn-sm btn-danger">Bajarme</a>
-						</form> 
+						</form>
 					</li>
 					@endforeach
 				</ul>

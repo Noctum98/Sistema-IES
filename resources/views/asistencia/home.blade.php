@@ -1,13 +1,13 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Elige la materia para ver la planilla
 		</h2>
 		<hr>
-		
+
 		@foreach($materias as $materia)
-		<h3 class="mb-3 mt-3">
+		<h3 class="mb-3 mt-3 text-secondary">
 		</h3>
 		<a type="button" href="{{ route($ruta,['id'=>$materia->id]) }}" class="list-group-item list-group-item-action border-top mt-2 text-success" >
 			<strong>
@@ -16,7 +16,7 @@
 		</a>
 		@endforeach
 		<!---
-		
+
 		---->
 	</div>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-    <h2 class="h1">
+    <h2 class="h1 text-info">
         Inscripciones en {{$materia->nombre}}
     </h2>
     <hr>
@@ -38,7 +38,7 @@
                 @endif
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
-                @if(Session::has('admin') || Session::has('coordinador')) 
+                @if(Session::has('admin') || Session::has('coordinador'))
                 <td>
                     <a  class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
@@ -57,7 +57,7 @@
     @endif
 
     @if(count($inscripciones_baja) > 0)
-    <h3>Dados de baja</h3>
+    <h3 class="text-secondary">Dados de baja</h3>
 
     <table class="table mt-4">
         <thead class="thead-dark">
@@ -65,9 +65,7 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
-
                 <th scope="col">Fecha</th>
-
             </tr>
         </thead>
         <tbody>

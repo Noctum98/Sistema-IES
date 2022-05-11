@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container p-3">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Editar materia {{ $materia->nombre }}
 		</h2>
 		<div class="col-md-4">
@@ -44,7 +44,7 @@
 								{{ $persona->nombres.' '.$persona->apellidos}}
 								</option>
 							@endif
-							
+
 						@endforeach
 					</select>
 				</div>
@@ -62,7 +62,7 @@
 									{{ $mater->nombre }}
 								</option>
 							@endif
-						
+
 						@endforeach
 					</select>
 				</div>

@@ -1,12 +1,12 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Crear Parcial
 		</h2>
 		<hr>
 		<div class="col-md-6">
-			<form method="POST" action="{{route('crear_parci',['id'=>$materia->id])}}"> 
+			<form method="POST" action="{{route('crear_parci',['id'=>$materia->id])}}">
 				@csrf
 				<div class="form-group">
 					<label for="nombre">Parcial N°:</label>
