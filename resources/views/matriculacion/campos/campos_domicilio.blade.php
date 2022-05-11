@@ -1,7 +1,7 @@
 <div class="card mt-3">
-    <h5 class="card-header">DATOS DOMICILIO</h5>
+    <h5 class="card-header text-secondary">DATOS DOMICILIO</h5>
     <div class="card-body">
-        <h5 class="card-title">
+        <h5 class="card-title text-info">
             Consignar los datos completos de su actual domicilio
         </h5>
         <div class="mt-4 row">

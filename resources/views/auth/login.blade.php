@@ -5,12 +5,15 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Iniciar Sesión</div>
+                <div class="card-header bg-dark">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ asset('images/logo.png') }}" alt="" height="150px">
+                    </div>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
-
-                        <div class="form-group row">
+                        <div class="form-group row pt-4">
                             <label for="username" class="col-md-4 col-form-label text-md-right">Nombre de usuario</label>
 
                             <div class="col-md-6">

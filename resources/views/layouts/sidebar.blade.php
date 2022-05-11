@@ -79,7 +79,7 @@
                         Mesas
                     </a>
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
                         Mis procesos
                     </a>
                 @endif

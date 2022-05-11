@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-    <h2 class="h1">
+    <h2 class="h1 text-info">
         Administrar Roles
     </h2>
     <hr>
@@ -18,8 +18,8 @@
             {{ @session('rol_eliminado') }}
         </div>
     @endif
-    <h4>Roles Principales</h4>
-   
+    <h4 class="text-secondary">Roles Principales</h4>
+
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -44,7 +44,7 @@
         </tbody>
     </table>
     <br>
-    <h4>Roles Secundarios</h4>
+    <h4 class="text-secondary">Roles Secundarios</h4>
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -65,7 +65,7 @@
                     <form action="{{ route('roles.destroy',$rol->id) }}" method="POST" class="col-md-2">
                         {{ method_field('DELETE') }}
                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                    </form>               
+                    </form>
                 </td>
             </tr>
             @endforeach

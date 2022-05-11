@@ -4,7 +4,7 @@
 			<div class="card">
 				<div class="card-header" id="heading{{$carrera->id}}">
 				   	<h5 class="mb-0">
-				        <h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-bs-expanded="false" aria-b-controls="collapse{{$carrera->id}}">
+				        <h6 class="text-secondary" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-bs-expanded="false" aria-b-controls="collapse{{$carrera->id}}">
 				          {{$carrera->nombre.' ('.$carrera->sede->nombre.')'}}
 				        </h6>
 				      </h5>

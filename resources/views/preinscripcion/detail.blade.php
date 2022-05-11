@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container alumno">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Datos de {{ $alumno->nombres.' '.$alumno->apellidos }}
 		</h2>
 		<hr>
@@ -19,7 +19,7 @@
 			<br>
 			<div class="row">
 				<ul class="datos-academicos">
-					<li><h2>Datos Personales</h3></li>
+					<li><h2 class="text-info">Datos Personales</h2></li>
 					<li><strong>Email:</strong> {{ $alumno->email }}</li>
 					<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha }}</li>
 					<li><strong>N° de documento: </strong> {{ $alumno->dni }}</li>
@@ -57,9 +57,9 @@
 					</li>
 				</ul>
 				<ul class="datos-academicos">
-					<li><h2>Datos Académicos</h3></li>
+					<li><h2 class="text-info">Datos Académicos</h2></li>
 					<li><strong>Carrera:</strong> {{ $alumno->carrera->nombre.' - '.$alumno->carrera->sede->nombre }}</li>
-					<li><strong>Título secundario:</strong> 
+					<li><strong>Título secundario:</strong>
 						{{ ucwords($alumno->escolaridad) }}
 					</li>
 					<li><strong>Situación escolar</strong>
@@ -137,14 +137,14 @@
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Indica el archivo erroneo</h5>
+				        <h5 class="modal-title text-secondary" id="exampleModalLabel">Indica el archivo erroneo</h5>
 				        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
 				          <span aria-bs-hidden="true">&times;</span>
 				        </button>
 				      </div>
 				      <form action="{{route('pre.error',['id'=>$alumno->id])}}" method="POST">
 				      @csrf
-				      <div class="modal-body">    		
+				      <div class="modal-body">
 				        <div class="form-check">
 						  <input class="form-check-input" type="checkbox" value="DNI" id="dni_archivo" name="dni_archivo">
 						  <label class="form-check-label" for="dni_archivo">
@@ -168,14 +168,14 @@
 						<div class="form-check">
 						  <input class="form-check-input" type="checkbox" value="certificado de nivel secundario" id="certificado_archivo" name="certificado_archivo">
 						  <label class="form-check-label" for="certificado_archivo">
-						    Cetificado de nivel secundario
+						    Certificado de nivel secundario
 						  </label>
 						</div>
 						@if($alumno->certificado_archivo_2)
 						<div class="form-check">
 						  <input class="form-check-input" type="checkbox" value="certificado de nivel secundario 2do archivo" id="certificado_archivo_2" name="certificado_archivo_2">
 						  <label class="form-check-label" for="certificado_archivo_2">
-						    Cetificado de nivel secundario (Archivo 2)
+						    Certificado de nivel secundario (Archivo 2)
 						  </label>
 						</div>
 						@endif

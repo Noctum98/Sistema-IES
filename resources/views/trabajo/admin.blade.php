@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Trabajos Prácticos de {{ $materia->nombre }}
 		</h2>
 		<hr>
@@ -16,8 +16,8 @@
 					  <div class="card">
 					    <div class="card-header" id="heading{{$trab->id}}">
 					      <h5 class="mb-0">
-					        <h6 style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{$trab->id}}" aria-expanded="false" aria-controls="collapse{{$trab->id}}" class="font-weight-bold">
-					        	
+					        <h6  style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{$trab->id}}" aria-expanded="false" aria-controls="collapse{{$trab->id}}" class="font-weight-bold text-secondary">
+
 					          {{$trab->nombre}}
 
 					        </h6>

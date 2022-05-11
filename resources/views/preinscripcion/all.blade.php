@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Preinscripciones de {{ $carrera->nombre.' ('.$carrera->sede->nombre.'-'.ucwords($carrera->turno).')' }}
 		</h2>
 		<hr>

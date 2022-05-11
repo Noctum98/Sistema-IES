@@ -1,7 +1,7 @@
 <div class="card mt-3">
-    <h5 class="card-header">INFORMACIÓN DISCAPACIDAD</h5>
+    <h5 class="card-header text-secondary">INFORMACIÓN DISCAPACIDAD</h5>
     <div class="card-body">
-        <h5 class="card-title">Los datos que se solicitan están destinados a establecer mecanismos de acompañamiento y seguimiento Institucional. </h5>
+        <h5 class="card-title text-secondary">Los datos que se solicitan están destinados a establecer mecanismos de acompañamiento y seguimiento Institucional. </h5>
 
         <div class="mt-4 row">
             <div class="form-group col-md-6">

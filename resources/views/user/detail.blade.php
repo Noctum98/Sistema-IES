@@ -1,11 +1,11 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-    <h2 class="h1">Usuario {{ $user->nombre.' '.$user->apellido }}</h2>
+    <h2 class="h1 text-info">Usuario {{ $user->nombre.' '.$user->apellido }}</h2>
     <hr>
     <div class="row col-md-12">
         <div class="col-md-6">
-            <h5>Datos</h5>
+            <h5 class="text-secondary">Datos</h5>
 
             <ul class="m-0 p-0">
                 <li><strong>Nombre:</strong> {{ $user->nombre }} </li>
@@ -16,7 +16,7 @@
             </ul>
         </div>
         <div class="col-md-6">
-            <h5>Carreras</h5>
+            <h5 class="text-secondary">Carreras</h5>
             <ul class="m-0 p-0">
                 @foreach($user->carreras as $carrera)
                 <li>{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</li>
@@ -24,7 +24,7 @@
             </ul>
         </div>
         <div class="col-md-12 mt-3">
-            <h5>Materias</h5>
+            <h5 class="text-secondary">Materias</h5>
             <ul class="m-0 p-0">
                 @foreach($user->materias as $materia)
                 <li class="mt-3">

@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Administrar instancias de mesas
 		</h2>
 		<hr>
@@ -18,6 +18,7 @@
 		<!-- Modal Crear-->
 		@include('mesa.modals.crear_instancia')
 		@if(count($instancias) != 0)
+		<div class="table-responsive">
 		<table class="table mt-4">
 		  <thead class="thead-dark">
 		    <tr>
@@ -51,14 +52,14 @@
 					Borrar datos
 					</a>
 				@endif
-				
+
 				@endif
 		      </td>
 			  @if(Session::has('admin'))
 		      <td>
-			  
+
 		      	<div class="custom-control custom-switch">
-				  <input type="checkbox" class="custom-control-input switchinsta" value="{{$instancia->estado}}" id="{{$instancia->id}}" 
+				  <input type="checkbox" class="custom-control-input switchinsta" value="{{$instancia->estado}}" id="{{$instancia->id}}"
 				  {{$instancia->estado == 'activa' ? 'checked':''}}>
 				  <label class="custom-control-label" for="{{$instancia->id}}"></label>
 				</div>
@@ -74,6 +75,7 @@
 		    @endforeach
 		  </tbody>
 		</table>
+		</div>
 		@else
 		<p>No existen instancias creadas</p>
 		@endif

@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Personal encargado de la carrera
 		</h2>
 		<p>Asigna los siguientes cargos para completar la creación de la carrera</p>

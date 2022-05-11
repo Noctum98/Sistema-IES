@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container col-md-8">
-    <h2 class="h1 mb-4">
+    <h2 class="h1 mb-4 text-info">
         Matriculación a {{ $carrera->sede->nombre }} - {{ $carrera->nombre }}: {{ ucwords($carrera->turno) }}
     </h2>
     @if(@session('alumno_deleted'))

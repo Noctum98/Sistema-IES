@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Ficha de {{ $personal->nombres.' '.$personal->apellidos }}
 		</h2>
 		<hr>
@@ -16,10 +16,10 @@
 						Descargar ficha
 					</a>
 				</div>
-				
+
 			</div>
-			
-			
+
+
 		</div>
 	</div>
 @endsection

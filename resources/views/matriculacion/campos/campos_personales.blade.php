@@ -1,5 +1,5 @@
 <div class="card mt-3">
-    <h5 class="card-header">DATOS PERSONALES</h5>
+    <h5 class="card-header text-secondary">DATOS PERSONALES</h5>
     <div class="card-body">
         <div class="mt-4 row">
             <div class="form-group col-md-6">

@@ -11,6 +11,10 @@ class MesaEnrolled extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $inscripcion;
+    public $datos;
+    public $instancia;
+    public $datos_limpios;
     /**
      * Create a new message instance.
      *
@@ -21,6 +25,7 @@ class MesaEnrolled extends Mailable
         $this->inscripcion = $inscripcion;
         $this->datos = $datos;
         $this->instancia = $instancia;
+        $this->datos_limpios = [];
         $this->subject("Mesas IESVU 9015");
     }
 
@@ -32,14 +37,14 @@ class MesaEnrolled extends Mailable
     public function build()
     {
 
-        $datos_limpios = [];
         foreach($this->datos as $k => $dato){
             $key = str_replace('_',' ',$k);
-            array_push($datos_limpios,$key);
+            array_push($this->datos_limpios,$key);
+            
         }
         
         return $this->view('mail.mesa_enrolled',[
-            'datos'         =>  $datos_limpios,
+            'datos_limpios'         =>  $this->datos_limpios,
             'instancia'     =>  $this->instancia,
             'inscripcion'   =>  $this->inscripcion
         ]);

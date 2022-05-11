@@ -1,8 +1,8 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
-			Bienvenido a la {{$instancia->nombre}} 
+		<h2 class="h1 text-info">
+			Bienvenido a la {{$instancia->nombre}}
 		</h2>
 		<p>Ingresa tus datos para continuar.</p>
 		<hr>
