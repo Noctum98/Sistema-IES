@@ -23,5 +23,20 @@ class Asistencia extends Model
     public function proceso(){
         return $this->belongsTo('App\Models\Proceso','proceso_id');
     }
+
+    public function asistencias_modulares()
+    {
+        return $this->hasMany('App\Models\AsistenciaModular');
+    }
+
+    public static function getByAsistenciaCargo($cargo_id,$asistencia_id)
+    {
+        $asistencia_modular = AsistenciaModular::where([
+            'cargo_id'=>$cargo_id,
+            'asistencia_id' => $asistencia_id
+        ])->first();
+
+        return $asistencia_modular;
+    }
  
 }
