@@ -30,19 +30,14 @@
 		@foreach($sede->carreras as $carrera)
 		<div class="card">
 			<div class="card-header" id="heading{{$carrera->id}}">
-				<h5 class="mb-0">
-
 					<h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold text-secondary">
-
 						{{$carrera->nombre}} -
 						@if($carrera->nombre != 'Enfermería Profesional')
 						Res: {{$carrera->resolucion}}
 						@else
 						Turno {{ucwords($carrera->turno)}}
 						@endif
-
 					</h6>
-				</h5>
 			</div>
 
 			<div id="collapse{{$carrera->id}}" class="collapse" aria-labelledby="heading{{$carrera->id}}" data-bs-parent="#accordion">
