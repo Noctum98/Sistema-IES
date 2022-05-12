@@ -107,10 +107,10 @@
 					<div class="form-group">
 						<label for="tipo" >Tipo:</label>
 						<select class="form-select" name="tipo" id="tipo">
-							<option value="tradicional">Tradicional</option>
-							<option value="tradicional2">Tradicional 70/30</option>
-							<option value="modular">Modular</option>
-							<option value="modular2">Modular 70/30</option>
+							<option value="tradicional" {{$carrera->tipo == 'tradicional' ? 'selected="selected"':''}}>Tradicional</option>
+							<option value="tradicional2" {{$carrera->tipo == 'tradicional2' ? 'selected="selected"':''}}>Tradicional 70/30</option>
+							<option value="modular" {{$carrera->tipo == 'modular' ? 'selected="selected"':''}}>Modular</option>
+							<option value="modular2" {{$carrera->tipo == 'modular2' ? 'selected="selected"':''}}>Modular 70/30</option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -130,10 +130,10 @@
 					<div class="form-group">
 						<label for="turno">Estado:</label>
 						<select class="form-control" name="estado" id="estado">
-							<option value=null {{!$carrera->estado ? 'selected="selected"':''}}>
+							<option value=0 {{ !$carrera->estado ? 'selected="selected"':''}}>
 								En curso
 							</option>
-							<option value=1 {{$carrera->estado == 1 ? 'selected="selected"':''}}>
+							<option value= 1 {{$carrera->estado == 1 ? 'selected="selected"':''}}>
 								En cierre
 							</option>
 

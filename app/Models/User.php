@@ -148,7 +148,19 @@ class User extends Authenticatable
         }
         return false;
     }
+    //============================= CARGOS ===================================//
+    public function cargos(){
+        return $this->belongsToMany(Cargo::class)->withTimestamps();
+    }
+    public function hasCargo($cargo)
+    {
 
+        if ($this->sedes->where('id', $cargo)->first()) {
+            return true;
+        }
+        return false;
+    }
+    //=
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
