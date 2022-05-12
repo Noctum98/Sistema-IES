@@ -16,7 +16,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Acción</th>
+                <th scope="col">
+                <i class="fa fa-cog" style="font-size:20px;"></i>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +37,8 @@
 
 
     <h3 class="text-secondary mb-3">Usuarios</h3>
-    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarModulo">Agregar modulo</button></p>
-    @include('cargo.modals.agregar_modulo')
+    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarUser">Agregar usuario</button></p>
+    @include('cargo.modals.agregar_user')
 
     @if(count($cargo->users) == 0)
     <p>No hay usuarios vinculados al cargo.</p>
@@ -47,14 +49,16 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Acción</th>
+                <th scope="col">
+                    <i class="fa fa-cog" style="font-size:20px;"></i>
+                </th>
             </tr>
         </thead>
         <tbody>
             @foreach ($cargo->users as $usuario)
             <tr>
                 <th scope="row">{{ $usuario->id }}</th>
-                <td>{{ $usuario->nombre }}</td>
+                <td>{{ $usuario->nombre.' '.$usuario->apellido }}</td>
                 <td>
                     <a href="{{ route('roles.destroy',$materia->id) }}" type="button" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>

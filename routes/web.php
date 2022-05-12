@@ -197,7 +197,7 @@ Route::prefix('proceso')->group(function () {
 Route::prefix('asistencias')->group(function () {
     // Vistas
     Route::get('carreras', [AsistenciaController::class, 'vista_carreras'])->name('asis.inicio');
-    Route::get('materia/{id}', [AsistenciaController::class, 'vista_admin'])->name('asis.admin');
+    Route::get('materia/{id}/{cargo_id?}', [AsistenciaController::class, 'vista_admin'])->name('asis.admin');
     Route::get('tomar/{id}', [AsistenciaController::class, 'vista_crear'])->name('asis.crear');
     Route::get('fecha/{id}', [AsistenciaController::class, 'vista_fecha'])->name('asis.fecha');
     Route::get('cerrada/{id}', [AsistenciaController::class, 'vista_cerrar'])->name('asis.cerrar');
@@ -206,6 +206,8 @@ Route::prefix('asistencias')->group(function () {
     // Acciones
     Route::post('/crear_asistencia', [AsistenciaController::class, 'crear'])->name('crear_asis');
     Route::post('/crearAsistenciaSetentaTreinta', [AsistenciaController::class, 'crear_7030']);
+    Route::post('/crearAsistenciaModular', [AsistenciaController::class, 'crear_modular']);
+
     Route::get('cerrar/{id}', [AsistenciaController::class, 'cerrar_planilla'])->name('cerrar_asis');
 });
 
@@ -294,6 +296,7 @@ Route::prefix('matriculacion')->group(function(){
 
 Route::resource('cargo',CargoController::class);
 Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
+Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.agregarUser');
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');

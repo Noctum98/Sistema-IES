@@ -12,7 +12,7 @@
 		      <th scope="col">Nombre</th>
 		      <th scope="col">Resolución</th>
 		      <th scope="col">Sede</th>
-		      <th scope="col">Acción</th>
+		      <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 		    </tr>
 		  </thead>
 		  <tbody>

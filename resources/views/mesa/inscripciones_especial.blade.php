@@ -23,7 +23,7 @@
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
                 @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
-                <th scope="col">Acción</th>
+                <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 @endif
             </tr>
         </thead>
