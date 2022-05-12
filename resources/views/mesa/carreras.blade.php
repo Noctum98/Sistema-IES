@@ -4,11 +4,6 @@
 	<h2 class="h1 text-info">
 		{{$sede->nombre}}
 	</h2>
-	@if(Auth::user()->rol == 'rol_admin' || Auth::user()->rol == 'rol_main_2')
-	<a href="{{route('mesa.total.descargar',['id'=>$sede->id])}}" class="btn btn-success">
-		Descargar inscriptos
-	</a>
-	@endif
 	<hr>
 	@if(@session('message'))
 	<div class="alert alert-success">
@@ -42,9 +37,6 @@
 
 			<div id="collapse{{$carrera->id}}" class="collapse" aria-labelledby="heading{{$carrera->id}}" data-bs-parent="#accordion">
 				<div class="card-body">
-					<a href="{{ route('mesa.tribunal',['id'=>$carrera->id]) }}" class="btn btn-secondary mb-3">
-						Descargar grilla de mesas
-					</a>
 					@if($carrera->estado != 1)
 					<table class="table">
 						<thead class="thead-dark">

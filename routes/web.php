@@ -20,6 +20,7 @@ use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserMateriaController;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Alumno;
+use App\Models\Cargo;
 use App\Models\Carrera;
 use App\Models\Instancia;
 use App\Models\MesaAlumno;
@@ -292,6 +294,9 @@ Route::prefix('matriculacion')->group(function(){
     Route::put('/carrera/{id}/{carrera_id?}/{year?}',[MatriculacionController::class,'update'])->name('matriculacion.update');
     Route::post('/verificar/{carrera_id}/{year}',[MatriculacionController::class,'send_email'])->name('matriculacion.verificar');
 });
+
+Route::resource('cargo',CargoController::class);
+Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
