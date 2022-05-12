@@ -27,8 +27,8 @@
 				<li><strong>Nombre:</strong> {{ ucwords($alumno->nombres) }}</li>
 				<li><strong>Apellidos:</strong> {{ ucwords($alumno->apellidos) }}</li>
 				<li><strong>Edad:</strong> {{ $alumno->edad }} años</li>
-				<li><strong>Teléfono Celular:</strong> {{ $alumno->telefono }}</li>
-				<li><strong>Teléfono Fijo:</strong> {{ $alumno->telefono_fijo }}</li>
+				<li><strong>Teléfono Celular:</strong> {{ $alumno->telefono ? : 'Sin Asignar' }}</li>
+				<li><strong>Teléfono Fijo:</strong> {{ $alumno->telefono_fijo ? : 'Sin Asignar' }}</li>
 			</ul>
 		</div>
 
@@ -38,38 +38,37 @@
 				<li>
                     <h2 class="text-info"><u>Datos Generales</u></h2>
 				</li>
-				<li><strong>Email:</strong> {{ $alumno->email }}</li>
-				<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha }}</li>
-				<li><strong>N° de documento: </strong> {{ $alumno->dni }}</li>
-				<li><strong>CUIL: </strong> {{ $alumno->cuil }}</li>
+				<li><strong>Email:</strong> {{ $alumno->email ? : 'Sin Asignar' }}</li>
+				<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha ? : 'Sin Asignar' }}</li>
+				<li><strong>N° de documento: </strong> {{ $alumno->dni ? : 'Sin Asignar' }}</li>
+				<li><strong>CUIL: </strong> {{ $alumno->cuil ? : 'Sin Asignar' }}</li>
 				<li><strong>Edad: </strong> {{ $alumno->edad }} años</li>
-				<li><strong>Género: </strong> {{ ucwords($alumno->genero) }}</li>
-				<li><strong>Nacionalidad: </strong> {{ ucwords($alumno->nacionalidad) }}</li>
+				<li><strong>Género: </strong> {{ ucwords($alumno->genero ? : 'Sin Asignar') }}</li>
+				<li><strong>Nacionalidad: </strong> {{ ucwords($alumno->nacionalidad) ? : 'Sin Asignar' }}</li>
 			</ul>
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
                     <h2 class="text-info"><u>Datos Domicilio</u></h2>
 				</li>
-				<li><strong>Localidad:</strong> {{ $alumno->localidad }}</li>
-				<li><strong>Calle: </strong> {{ $alumno->calle }}</li>
-				<li><strong>N° de calle: </strong> {{ $alumno->n_calle }}</li>
-				<li><strong>Barrio: </strong> {{ $alumno->barrio }}</li>
-				<li><strong>Manzana: </strong> {{ $alumno->manzana }} </li>
-				<li><strong>Casa: </strong> {{ $alumno->casa }}</li>
-				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal }}</li>
-
+				<li><strong>Localidad:</strong> {{ $alumno->localidad ? : 'Sin Asignar' }}</li>
+				<li><strong>Calle: </strong> {{ $alumno->calle ? : 'Sin Asignar' }}</li>
+				<li><strong>N° de calle: </strong> {{ $alumno->n_calle ? : 'Sin Asignar' }}</li>
+				<li><strong>Barrio: </strong> {{ $alumno->barrio ? : 'Sin Asignar' }}</li>
+				<li><strong>Manzana: </strong> {{ $alumno->manzana ? : 'Sin Asignar' }}</li>
+				<li><strong>Casa: </strong> {{ $alumno->casa ? : 'Sin Asignar' }}</li>
+				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal ? : 'Sin Asignar' }}</li>
 			</ul>
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
                     <h2 class="text-info"><u>Datos Personales</u></h2>
 				</li>
-				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil) }}</li>
-				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion) }}</li>
-				<li><strong>Grupo Sanguíneo: </strong> {{ strtoupper($alumno->g_sanguineo) }}</li>
+				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil? :'Sin Asignar') }}</li>
+				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion? :'Sin Asignar') }}</li>
+				<li><strong>Grupo Sanguíneo: </strong> {{ strtoupper($alumno->g_sanguineo? :'Sin Asignar') }}</li>
 				@if($alumno->año == 1)
-				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s }}</li>
+				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s ? : 'Sin Asignar' }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>
 				<li><strong>Finalizo Escuela Secundaria: </strong> {{ $alumno->escolaridad ? 'Si' : 'No' }}</li>
 				<li><strong>Materias que adeuda de secundario: </strong>
@@ -81,7 +80,7 @@
 				</li>
 				<li><strong>Presento título secundario:</strong> {{$alumno->titulo_s ? 'Si' : 'No'}} </li>
 				@endif
-				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal }}</li>
+				<li><strong>Código Postal: </strong> {{ $alumno->codigo_postal ? : 'Sin Asignar' }}</li>
 				<li><strong>Estudiante de población indígena:</strong> {{$alumno->poblacion_indigena ? 'Si' : 'No'}} </li>
 				<li><strong>Privación de libertad o en regímenes semi-abiertos:</strong> {{$alumno->privacidad ? 'Si' : 'No'}} </li>
 			</ul>
