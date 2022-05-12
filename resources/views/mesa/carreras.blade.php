@@ -31,6 +31,7 @@
 		<div class="card">
 			<div class="card-header" id="heading{{$carrera->id}}">
 				<h5 class="mb-0">
+
 					<h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold text-secondary">
 
 						{{$carrera->nombre}} -
@@ -62,6 +63,7 @@
 							</tr>
 						</thead>
 						<tbody>
+
 							@foreach($carrera->materias as $materia)
 							@if($materia->año == 1)
 							@include('includes.mesas.table_materias')
