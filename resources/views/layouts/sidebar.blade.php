@@ -11,6 +11,12 @@
                         Usuarios
                     </a>
                 @endif
+                @if(Session::has('cargos'))
+                <a class="nav-link" href="{{ route('cargo.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
+                    Cargos
+                </a>
+                @endif
                 @if(Session::has('preinscripciones'))
                     <a class="nav-link" href="{{ route('pre.admin') }}">
                         <div class="sb-nav-link-icon"><i class="fas fas fa-poll-h"></i></div>
