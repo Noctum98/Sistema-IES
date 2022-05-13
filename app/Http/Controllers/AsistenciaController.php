@@ -7,6 +7,8 @@ use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\Asistencia;
 use App\Models\AlumnoAsistencia;
+use App\Models\AsistenciaModular;
+use App\Models\Cargo;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -19,47 +21,63 @@ class AsistenciaController extends Controller
         // $this->middleware('app.roles:admin-profesor');
     }
     // Vistas
-    public function vista_carreras(){
+    public function vista_carreras()
+    {
         $materias = Auth::user()->materias;
+        $cargos = Auth::user()->cargos;
         $ruta = 'asis.admin';
 
-        return view('asistencia.home',[
+
+        return view('asistencia.home', [
             'materias'  =>  $materias,
-            'ruta'      =>  $ruta
+            'ruta'      =>  $ruta,
+            'cargos'    =>  $cargos
         ]);
     }
 
-    public function vista_admin(int $id){
+    public function vista_admin(int $id,$cargo_id = null)
+    {
         $materia = Materia::find($id);
-        $procesos = Proceso::where('materia_id',$id)->get();
+        $procesos = Proceso::where('materia_id', $id)->get();
 
-        return view('asistencia.admin',[
+        $datos = [
             'materia'       =>  $materia,
             'procesos'   =>  $procesos
-        ]);
+        ];
+
+        if($cargo_id)
+        {
+            $cargo = Cargo::find($cargo_id);
+            $datos['cargo'] = $cargo;
+        }
+
+        return view('asistencia.admin', $datos);
     }
-    public function vista_fecha(int $id){
+    public function vista_fecha(int $id)
+    {
         $materia = Materia::find($id);
 
-        return view('asistencia.date',[
+        return view('asistencia.date', [
             'materia'   =>  $materia
         ]);
     }
-    public function vista_crear(int $id){
+    public function vista_crear(int $id)
+    {
         $asistencia = Asistencia::find($id);
-        $procesos = Proceso::where('materia_id',$asistencia->materia_id)->get();
+        $procesos = Proceso::where('materia_id', $asistencia->materia_id)->get();
 
-        return view('asistencia.create',[
+        return view('asistencia.create', [
             'procesos'  =>  $procesos,
             'asistencia'   =>  $asistencia
         ]);
     }
 
-    public function vista_cerrar(int $id){
-        $procesos = Proceso::where('materia_id',$id)->get();
-        $asistencias = Asistencia::where('materia_id',$id)->get();
+    public function vista_cerrar(int $id)
+    {
+        $procesos = Proceso::where('materia_id', $id)->get();
+        $asistencias = Asistencia::where('materia_id', $id)->get();
 
-        return view('asistencia.close',[
+        return view('asistencia.close', [
             'procesos'      =>  $procesos,
             'asistencias'   =>  $asistencias
         ]);
@@ -67,100 +85,96 @@ class AsistenciaController extends Controller
 
     // Funcionalidades
 
-    public function crear(Request $request){
-        $validate = $this->validate($request,[
-            'porcentaje_final'             =>  ['required','numeric'],
+    public function crear(Request $request)
+    {
+        $validate = $this->validate($request, [
+            'porcentaje_final'             =>  ['required', 'numeric'],
         ]);
 
-        $issetAsistencia = Asistencia::where('proceso_id',$request['proceso_id'])->first();
+        $issetAsistencia = Asistencia::where('proceso_id', $request['proceso_id'])->first();
 
-        if($issetAsistencia){
+        if ($issetAsistencia) {
             $issetAsistencia->porcentaje_final = $request['porcentaje_final'];
             $issetAsistencia->update();
             $asistencia = $issetAsistencia;
-        }else{
+        } else {
             $asistencia = Asistencia::create($request->all());
         }
 
         return response()->json([
             'message' => 'Asistencia creada con éxito!',
-            'asistencia' => $asistencia 
-        ],200);
+            'asistencia' => $asistencia
+        ], 200);
     }
 
     public function crear_7030(Request $request)
     {
-        $validate = Validator::make($request->all(),[
-            'porcentaje_virtual'           =>  ['required','numeric','max:30'],
-            'porcentaje_presencial'             =>  ['required','numeric','max:70']
+        $validate = Validator::make($request->all(), [
+            'porcentaje_virtual'           =>  ['required', 'numeric', 'max:30'],
+            'porcentaje_presencial'             =>  ['required', 'numeric', 'max:70']
         ]);
 
-        if(!$validate->fails())
-        {
-            $issetAsistencia = Asistencia::where('proceso_id',$request['proceso_id'])->first();
+        if (!$validate->fails()) {
+            $issetAsistencia = Asistencia::where('proceso_id', $request['proceso_id'])->first();
 
             $request['porcentaje_final'] = (int) $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
-    
-            if($issetAsistencia){
+
+            if ($issetAsistencia) {
                 $issetAsistencia->update($request->all());
                 $asistencia = $issetAsistencia;
-            }else{
+            } else {
                 $asistencia = Asistencia::create($request->all());
             }
-            
+
             $response = [
                 'message' => 'Asistencia creada con éxito!',
-                'asistencia' => $asistencia            
+                'asistencia' => $asistencia
             ];
-
-        }else{
+        } else {
             $response = [
                 'message' => 'Error',
                 'errors' => $validate->errors()
             ];
         }
 
-       
-        return response()->json($response,200);
-        
+
+        return response()->json($response, 200);
     }
-    public function cerrar_planilla(int $id){
-        $procesos = Proceso::where('materia_id',$id)->get();
-        $asistencias = Asistencia::where([
-            'materia_id'    =>  $id
-        ])->get();
 
-        foreach ($procesos as $proceso){
+    public function crear_modular(Request $request)
+    {
+        $validate = $this->validate($request, [
+            'porcentaje'             =>  ['required', 'numeric'],
+        ]);
 
-            $presentes = 0;
-            $total = 0;
-            
-            foreach($asistencias as $dia){
-                foreach($dia->asistencias as $asistencia){
-                    if($asistencia->alumno_id == $proceso->alumno_id){
-                        $total++;
-                        if($asistencia->estado == 'presente'){
-                            $presentes++;
-                        }
-                    }
-                }
+        $asistencia = Asistencia::where([
+            'proceso_id' => $request['proceso_id']
+        ])->first();
+
+        if ($asistencia)
+        {
+            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'],$asistencia->id);
+            if ($asistencia_modular)
+            {
+                $asistencia_modular->porcentaje = (int) $request['porcentaje'];
+                $asistencia_modular->update();
+            }else{
+                $request['asistencia_id'] = $asistencia->id;
+                $asistencia_modular = AsistenciaModular::create($request->all());
             }
-            $porcentaje = ($presentes * 100) / $total;
+        }else
+        {
+            $asistencia = Asistencia::create($request->all());
 
-            $proceso->final_asistencia = round($porcentaje,2);
-
-            if($proceso->final_parciales && $proceso->final_trabajos && $proceso->final_asistencia){
-                if($proceso->final_parciales > 6 && $proceso->final_trabajos >= 6 && $porcentaje >= 70){
-                    $proceso->estado = 'regular';
-                }else{
-                    $proceso->estado = 'irregular';
-                }
-            }
-            $proceso->update();
+            $request['asistencia_id'] = $asistencia->id;
+            $asistencia_modular = AsistenciaModular::create($request->all());
         }
 
-        return redirect()->route('asis.cerrar',[
-           'id' =>  $id
-        ]);
+        $response = [
+            'message' => 'Asistencia creada con éxito!',
+            'asistencia' => $asistencia
+        ];
+
+        return response()->json($response,200);
     }
 }

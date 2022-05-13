@@ -27,7 +27,7 @@
 				<th scope="col">Nombre</th>
 				<th scope="col">Turno</th>
 				<th scope="col">Ubicación</th>
-				<th scope="col">Acción</th>
+				<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,7 +55,7 @@
 				<th scope="col">Email</th>
 				<th scope="col">Telefono</th>
 				<th scope="col">Estado</th>
-				<th scope="col">Acción</th>
+				<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 			</tr>
 		</thead>
 

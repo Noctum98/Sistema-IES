@@ -46,7 +46,7 @@
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
 								@endif
-								<th scope="col">Acción</th>
+								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -68,7 +68,7 @@
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
 								@endif
-								<th scope="col">Acción</th>
+								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -88,7 +88,7 @@
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
 								@endif
-								<th scope="col">Acción</th>
+								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
