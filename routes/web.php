@@ -74,6 +74,7 @@ Route::prefix('usuarios')->group(function () {
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
     Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
 
+    
     // Funcionalidades
     Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
     Route::delete('/{id}',[UserController::class,'delete'])->name('usuario.eliminar');

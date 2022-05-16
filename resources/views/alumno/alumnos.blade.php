@@ -41,6 +41,7 @@
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>
+									<th scope="col">Verificado</th>
 									<th scope="col">Accion</th>
 								</tr>
 							</thead>
@@ -50,6 +51,13 @@
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
+									<td>
+										@if($alumno->user_id)
+										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
+										@else
+										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
+										@endif
+									</td>
 									<td>
 										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary mr-1">
 											Ver datos
@@ -79,6 +87,7 @@
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>
+									<th scope="col">Verificado</th>
 									<th scope="col">Accion</th>
 								</tr>
 							</thead>
@@ -88,6 +97,13 @@
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
+									<td>
+										@if($alumno->user_id)
+										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
+										@else
+										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
+										@endif
+									</td>
 									<td>
 										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
 											Ver datos
@@ -117,6 +133,7 @@
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>
+									<th scope="col">Verificado</th>
 									<th scope="col">Accion</th>
 								</tr>
 							</thead>
@@ -126,6 +143,13 @@
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
+									<td>
+										@if($alumno->user_id)
+										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
+										@else
+										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
+										@endif
+									</td>
 									<td>
 										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
 											Ver datos
