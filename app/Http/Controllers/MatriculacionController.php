@@ -70,7 +70,7 @@ class MatriculacionController extends Controller
         $validate = $this->validate($request, [
             'nombres'               => ['required'],
             'apellidos'             => ['required'],
-            'dni'                   => ['required'],
+            'dni'                   => ['required','unique:alumnos'],
             'edad'                  => ['required', 'numeric'],
             'email'                 => ['required', 'email'],
             'telefono'              => ['required'],

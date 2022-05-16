@@ -15,10 +15,17 @@
                         <input type="text" name="nombre" class="form-control" value="{{$instancia->nombre}}" required />
                     </div>
                     <div class="form-group">
-                        <label for="nombre">Tipo</label>
+                        <label for="tipo">Tipo</label>
                         <select name="tipo" class="form-control">
                             <option value="0" {{$instancia->tipo == 0 ? 'selected="selected"' : ''}}>Común</option>
                             <option value="1" {{$instancia->tipo == 1 ? 'selected="selected"' : ''}}>Especial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cierre">Bajas</label>
+                        <select name="cierre" class="form-control">
+                            <option value="1" {{$instancia->cierre == 1 ? 'selected="selected"' : ''}}>Habilitado</option>
+                            <option value="0" {{$instancia->cierre == 0 ? 'selected="selected"' : ''}}>Deshabilitado</option>
                         </select>
                     </div>
                     <div class="form-group">
