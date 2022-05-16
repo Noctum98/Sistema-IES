@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterPorcentajeFinalNullableToAsistencias extends Migration
+class AddCierreToInstanciasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterPorcentajeFinalNullableToAsistencias extends Migration
      */
     public function up()
     {
-        Schema::table('asistencias', function (Blueprint $table) {
-            $table->integer('porcentaje_final')->nullable()->change();
+        Schema::table('instancias', function (Blueprint $table) {
+            $table->boolean('cierre')->default(0)->after('estado')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AlterPorcentajeFinalNullableToAsistencias extends Migration
      */
     public function down()
     {
-        Schema::table('asistencias', function (Blueprint $table) {
+        Schema::table('instancias', function (Blueprint $table) {
             //
         });
     }
