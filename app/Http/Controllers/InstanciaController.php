@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class InstanciaController extends Controller
 {
@@ -28,7 +29,13 @@ class InstanciaController extends Controller
 
     public function vista_admin()
     {
-        $instancia = Instancia::all();
+        $instancia = Instancia::where('tipo',1)->get();
+
+        if(Session::has('admin'))
+        {
+            $instancia = Instancia::all();
+
+        }
         $sedes = Auth::user()->sedes;
         /*
         $sedes = Sede::where('id',7)
@@ -82,9 +89,10 @@ class InstanciaController extends Controller
             'tipo'      =>  ['required', 'numeric'],
         ]);
         $instancia = Instancia::find($id);
-        $instancia->nombre = $request->input('nombre');
-        $instancia->tipo = $request->input('tipo');
-        $instancia->limite = $request->input('limite');
+        $instancia->nombre = $request['nombre'];
+        $instancia->tipo = $request['tipo'];
+        $instancia->limite = $request['limite'];
+        $instancia->cierre = $request['cierre'];
         if ($instancia->tipo == 0) {
             $instancia->segundo_llamado = $request->input('segundo_llamado');
         }

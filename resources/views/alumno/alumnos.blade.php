@@ -50,8 +50,8 @@
 								<tr>
 									<th scope="col">Nombre y Apellido</th>
 									<th scope="col">DNI</th>
-									<th scope="col">Verificado</th>
-									<th scope="col">Accion</th>
+									<th scope="col" class="text-center">Verificado</th>
+									<th scope="col" class="text-center"><i class="fa fa-cogs"></i> </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -60,14 +60,14 @@
 								<tr>
 									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
 									<td>{{ $alumno->dni }}</td>
-									<td>
+									<td class="text-center">
 										@if($alumno->user_id)
-										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
+										<i class='fas fa-user-check' style='font-size:14px;color:green'></i>
 										@else
-										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
+										<i class='fas fa-user-times' style='font-size:14px;color:red'></i>
 										@endif
 									</td>
-									<td>
+									<td class="text-center">
 										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary mr-1">
 											Ver datos
 										</a>

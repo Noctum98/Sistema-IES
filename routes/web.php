@@ -71,9 +71,10 @@ Route::prefix('sedes')->group(function () {
 
 //Ruta de usuario administrador
 Route::prefix('usuarios')->group(function () {
-    Route::get('administar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
+    Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
     Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
+
 
     // Funcionalidades
     Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');

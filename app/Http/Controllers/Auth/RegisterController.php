@@ -80,17 +80,27 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        $user->roles()->attach(Rol::where('nombre', 'default')->first());
+        $role = $data['roles']?? 'default';
+
+        $user->roles()->attach(Rol::where('nombre', $role)->first());
     }
 
     public function register(Request $request)
     {
+
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
 
+
         return redirect('/register')->with([
-            'message_success' => 'Usuario creado'
+            'message_success' => 'Usuario creado',
         ]);
+    }
+
+    public function showRegistrationForm()
+    {
+        $roles = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
+        return view('auth.register',compact('roles'));
     }
 }

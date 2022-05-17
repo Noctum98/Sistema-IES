@@ -31,6 +31,7 @@
 		</div>
 		@endif
 		<a href="{{ route('roles.index') }}" class="btn btn-warning">Administrar Roles</a>
+        <a href="{{ route('register') }}" class="btn btn-warning">Crear usuarios</a>
 		<table class="table mt-4">
 			<thead class="thead-dark">
 				<tr>
