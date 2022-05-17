@@ -56,6 +56,11 @@ class AlumnoMesaController extends Controller
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $carreras = Auth::user() ? $alumno->carreras : Carrera::where('sede_id', $alumno['sede'])->get();
 
+        if($instancia->cierre)
+        {
+            $carreras = null;
+        }
+
         if ($instancia->estado == 'inactiva') {
             return view('error.mesa_closed');
         } else {
