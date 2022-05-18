@@ -4,6 +4,10 @@
 	<h2 class="h1 text-info">
 		Administrar usuarios
 	</h2>
+    <div class="d-flex justify-content-center" style="font-size: 0.8em">
+        {{ $users->links() }}
+    </div>
+
 	<hr>
 	<div class="col-md-12">
 		@if(@session('carrera_success'))
@@ -32,6 +36,8 @@
 		@endif
 		<a href="{{ route('roles.index') }}" class="btn btn-warning">Administrar Roles</a>
         <a href="{{ route('register') }}" class="btn btn-warning">Crear usuarios</a>
+
+
 		<table class="table mt-4">
 			<thead class="thead-dark">
 				<tr>
@@ -72,6 +78,10 @@
 			</tbody>
 		</table>
 	</div>
+
+    <div class="d-flex justify-content-center" style="font-size: 0.8em">
+        {{ $users->links() }}
+    </div>
 </div>
 @endsection
 

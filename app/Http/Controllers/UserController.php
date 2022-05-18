@@ -214,7 +214,7 @@ class UserController extends Controller
                 'id' => $alumno->id
             ])->with([
                 'mensaje_error' => 'Ya existe un usuario con este email o username'
-            ]); 
+            ]);
         }
 
         $user = User::create($data);
