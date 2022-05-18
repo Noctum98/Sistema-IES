@@ -48,16 +48,16 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username'=>['required'],
+            'username' => ['required'],
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
-            'telefono'  => ['required'],
+            'telefono' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -66,21 +66,22 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param array $data
+     * @return User
      */
     protected function create(array $data)
     {
         $user = User::create([
-            'username'=>$data['username'],
+            'username' => $data['username'],
             'nombre' => $data['nombre'],
             'apellido' => $data['apellido'],
-            'telefono'  => $data['telefono'],
+            'telefono' => $data['telefono'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'rol' => $data['roles'][0]?'rol_'.$data['roles'][0] :''
         ]);
 
-        $role = $data['roles']?? 'default';
+        $role = $data['roles'][0] ??'default';
 
         $user->roles()->attach(Rol::where('nombre', $role)->first());
     }
@@ -100,7 +101,8 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        $roles = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
-        return view('auth.register',compact('roles'));
+        $roles = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
+
+        return view('auth.register', compact('roles'));
     }
 }
