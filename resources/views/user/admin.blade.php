@@ -59,8 +59,8 @@
 						<button type="button" class="ml-2 btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}">
 							Asignar Sedes
 						</button>
-						<button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#materiasModal{{$user->id}}">
-							Asignar Carreras/Materias
+						<button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#carrerasModal{{$user->id}}">
+							Asignar Carreras
 						</button>
 
 						<form action="{{ route('usuario.eliminar',$user->id) }}" method="POST" class="d-inline">
@@ -71,7 +71,7 @@
 						</form>
 						@include('user.modals.admin_sedes')
 						@include('user.modals.admin_roles')
-						@include('user.modals.admin_carreras_materias')
+						@include('user.modals.admin_carreras')
 					</td>
 				</tr>
 				@endforeach

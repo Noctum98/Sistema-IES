@@ -43,6 +43,17 @@ class UserController extends Controller
         ]);
     }
 
+    public function vista_listado($rol)
+    {
+        $lista = User::whereHas('roles',function($query) use ($rol){
+            return $query->where('nombre',$rol);
+        })->paginate(20);
+        
+        return view('user.listado',[
+            'lista' => $lista
+        ]);
+    }
+
     public function vista_detalle($id)
     {
         $auth = Auth::user();

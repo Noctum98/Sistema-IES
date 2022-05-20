@@ -25,6 +25,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Alumno;
@@ -74,6 +75,7 @@ Route::prefix('usuarios')->group(function () {
     Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
     Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
+    Route::get('listado/{listado}',[UserController::class,'vista_listado'])->name('usuarios.listado');
 
 
     // Funcionalidades
@@ -82,6 +84,7 @@ Route::prefix('usuarios')->group(function () {
     Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
     Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
     Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
+    Route::post('set_Carrera/{id}',[UserCarreraController::class,'store'])->name('set_carrera');
     Route::post('set_CarreraMaterias/{id}',[UserMateriaController::class,'store'])->name('set_materias_carreras');
     Route::get('crear_alumno_usuario/{id}',[UserController::class,'crear_usuario_alumno'])->name('crear_usuario_alumno');
 });
