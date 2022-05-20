@@ -25,7 +25,7 @@
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
                 @if(Auth::user()->rol == 'rol_admin')
-                <th scope="col">Acción</th>
+                <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 @endif
             </tr>
         </thead>
@@ -66,7 +66,7 @@
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
                 @if(Auth::user()->rol == 'rol_admin')
-                <th scope="col">Acción</th>
+                <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 @endif
             </tr>
         </thead>

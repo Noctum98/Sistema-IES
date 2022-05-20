@@ -27,7 +27,7 @@
 					    <div id="collapse{{$trab->id}}" class="collapse" aria-labelledby="heading{{$trab->id}}" data-parent="#accordion">
 					      <div class="card-body">
 					        <table class="table">
-							  <thead>
+							  <thead class="thead-dark">
 							    <th scope="col">Nombre</th>
 							    <th scope="col">Fecha</th>
 							    <th scope="col">Porcentaje</th>

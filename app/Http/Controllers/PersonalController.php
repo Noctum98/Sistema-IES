@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Models\Sede;
 use App\Models\Personal;
@@ -35,14 +36,16 @@ class PersonalController extends Controller
         return view('personal.edit',[
             'personal'  => $personal,
             'sedes'     => $sedes
-        ]); 
+        ]);
     }
     public function vista_detalle(int $id){
         $personal = Personal::find($id);
+        $sedes = Auth::user()->sedes;
 
         return view('personal.detail',[
-            'personal' => $personal
-        ]); 
+            'personal' => $personal,
+            'sedes' => $sedes
+        ]);
     }
 
     // Funcionalidades

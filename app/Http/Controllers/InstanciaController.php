@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\excelMultipleTribunalExport;
 use App\Exports\excelTribunalExport;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Instancia;
@@ -16,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class InstanciaController extends Controller
 {
@@ -27,7 +29,13 @@ class InstanciaController extends Controller
 
     public function vista_admin()
     {
-        $instancia = Instancia::all();
+        $instancia = Instancia::where('tipo',1)->get();
+
+        if(Session::has('admin'))
+        {
+            $instancia = Instancia::all();
+
+        }
         $sedes = Auth::user()->sedes;
         /*
         $sedes = Sede::where('id',7)
@@ -40,6 +48,7 @@ class InstanciaController extends Controller
             'sedes' =>  $sedes
         ]);
     }
+
     public function vista_carreras($sede_id,$instancia_id)
     {
         $sede = Sede::find($sede_id);
@@ -80,9 +89,10 @@ class InstanciaController extends Controller
             'tipo'      =>  ['required', 'numeric'],
         ]);
         $instancia = Instancia::find($id);
-        $instancia->nombre = $request->input('nombre');
-        $instancia->tipo = $request->input('tipo');
-        $instancia->limite = $request->input('limite');
+        $instancia->nombre = $request['nombre'];
+        $instancia->tipo = $request['tipo'];
+        $instancia->limite = $request['limite'];
+        $instancia->cierre = $request['cierre'];
         if ($instancia->tipo == 0) {
             $instancia->segundo_llamado = $request->input('segundo_llamado');
         }
@@ -90,19 +100,22 @@ class InstanciaController extends Controller
 
         return redirect()->route('mesa.admin');
     }
-    public function borrar($id, $solo = null)
+
+    public function borrar(Instancia $id, $solo = null): RedirectResponse
     {
-        $instancia = Instancia::find($id);
-        if ($instancia->tipo == 0 && !$solo) {
-            Mesa::where('instancia_id', $id)->delete();
-            DB::statement("ALTER TABLE mesas AUTO_INCREMENT = 1");
+        if($id->tipo == 1){
+            $mesaAlumno = MesaAlumno::where('instancia_id', $id->id)->get();
+            foreach ($mesaAlumno as $ma)
+            {
+                $ma->delete();
+            }
         }
-        $mesa_alumnos = MesaAlumno::truncate();
 
         return redirect()->route('mesa.admin')->with([
-            'mensaje' => 'Datos borrados correctamente'
+            'mensaje' => sprintf('Datos de %s fueron borrados correctamente', $id->nombre)
         ]);
     }
+
     public function cambiar_estado($estado, $id)
     {
         $instancia = Instancia::find($id);
@@ -128,10 +141,10 @@ class InstanciaController extends Controller
                 'mesa_id' => $id,
                 'segundo_llamado' => $segundo_llamado
             ])->get();
-     
+
             $materia = $mesa->materia;
         } else {
-  
+
             $inscripciones = MesaAlumno::where([
                 'materia_id' => $id,
                 'instancia_id' => $instancia->id,

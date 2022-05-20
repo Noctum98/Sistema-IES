@@ -4,11 +4,6 @@
 	<h2 class="h1 text-info">
 		{{$sede->nombre}}
 	</h2>
-	@if(Auth::user()->rol == 'rol_admin' || Auth::user()->rol == 'rol_main_2')
-	<a href="{{route('mesa.total.descargar',['id'=>$sede->id])}}" class="btn btn-success">
-		Descargar inscriptos
-	</a>
-	@endif
 	<hr>
 	@if(@session('message'))
 	<div class="alert alert-success">
@@ -30,25 +25,18 @@
 		@foreach($sede->carreras as $carrera)
 		<div class="card">
 			<div class="card-header" id="heading{{$carrera->id}}">
-				<h5 class="mb-0">
 					<h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold text-secondary">
-
 						{{$carrera->nombre}} -
 						@if($carrera->nombre != 'Enfermería Profesional')
 						Res: {{$carrera->resolucion}}
 						@else
 						Turno {{ucwords($carrera->turno)}}
 						@endif
-
 					</h6>
-				</h5>
 			</div>
 
 			<div id="collapse{{$carrera->id}}" class="collapse" aria-labelledby="heading{{$carrera->id}}" data-bs-parent="#accordion">
 				<div class="card-body">
-					<a href="{{ route('mesa.tribunal',['id'=>$carrera->id]) }}" class="btn btn-secondary mb-3">
-						Descargar grilla de mesas
-					</a>
 					@if($carrera->estado != 1)
 					<table class="table">
 						<thead class="thead-dark">
@@ -58,10 +46,11 @@
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
 								@endif
-								<th scope="col">Acción</th>
+								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
+
 							@foreach($carrera->materias as $materia)
 							@if($materia->año == 1)
 							@include('includes.mesas.table_materias')
@@ -79,7 +68,7 @@
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
 								@endif
-								<th scope="col">Acción</th>
+								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -99,7 +88,7 @@
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
 								@endif
-								<th scope="col">Acción</th>
+								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>

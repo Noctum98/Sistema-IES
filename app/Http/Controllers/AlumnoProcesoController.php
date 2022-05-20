@@ -24,9 +24,6 @@ class AlumnoProcesoController extends Controller
     }
     // Vistas
 
-
-
-
     public function vista_procesos(int $id){
         $alumno = Alumno::find($id);
 
@@ -36,7 +33,7 @@ class AlumnoProcesoController extends Controller
                 'alumno_notIsset' => 'El alumno no existe'
             ]);
         }
-//        dd($alumno->proceso[0]->asitencia);
+
         return view('proceso.alumno',[
             'alumno' => $alumno
         ]);

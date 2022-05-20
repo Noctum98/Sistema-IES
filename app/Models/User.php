@@ -52,7 +52,7 @@ class User extends Authenticatable
     {
         $users = User::whereDoesntHave('roles', function ($query) {
             return $query->where('nombre', 'alumno');
-        })->get();
+        })->orderBy('apellido', 'ASC')->paginate(20);
 
         return $users;
     }
@@ -121,8 +121,8 @@ class User extends Authenticatable
             return true;
         }else{
             return false;
-        }   
-        
+        }
+
     }
     public function hasAnyRole($roles)
     {
@@ -134,12 +134,12 @@ class User extends Authenticatable
             }
         } else {
             if ($this->hasRole($roles)) {
-                 return true; 
-            }   
+                 return true;
+            }
         }
         return false;
     }
-    
+
     public function hasRole($role)
     {
 
@@ -148,7 +148,19 @@ class User extends Authenticatable
         }
         return false;
     }
+    //============================= CARGOS ===================================//
+    public function cargos(){
+        return $this->belongsToMany(Cargo::class)->withTimestamps();
+    }
+    public function hasCargo($cargo)
+    {
 
+        if ($this->sedes->where('id', $cargo)->first()) {
+            return true;
+        }
+        return false;
+    }
+    //=
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));

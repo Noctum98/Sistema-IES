@@ -20,6 +20,7 @@ use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserMateriaController;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Alumno;
+use App\Models\Cargo;
 use App\Models\Carrera;
 use App\Models\Instancia;
 use App\Models\MesaAlumno;
@@ -69,9 +71,10 @@ Route::prefix('sedes')->group(function () {
 
 //Ruta de usuario administrador
 Route::prefix('usuarios')->group(function () {
-    Route::get('administar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
+    Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
     Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
+
 
     // Funcionalidades
     Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
@@ -133,6 +136,7 @@ Route::prefix('carreras/materias')->group(function () {
     Route::get('descargar_excel_alumnos/{id}',[MateriaController::class,'descargar_planilla'])->name('descargar_planilla');
 });
 Route::get('/selectMateriasCarrera/{id}',[MateriaController::class,'selectMaterias']);
+Route::get('/selectCargosCarrera/{id}',[CargoController::class,'selectCargos']);
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {
@@ -198,7 +202,7 @@ Route::prefix('proceso')->group(function () {
 Route::prefix('asistencias')->group(function () {
     // Vistas
     Route::get('carreras', [AsistenciaController::class, 'vista_carreras'])->name('asis.inicio');
-    Route::get('materia/{id}', [AsistenciaController::class, 'vista_admin'])->name('asis.admin');
+    Route::get('materia/{id}/{cargo_id?}', [AsistenciaController::class, 'vista_admin'])->name('asis.admin');
     Route::get('tomar/{id}', [AsistenciaController::class, 'vista_crear'])->name('asis.crear');
     Route::get('fecha/{id}', [AsistenciaController::class, 'vista_fecha'])->name('asis.fecha');
     Route::get('cerrada/{id}', [AsistenciaController::class, 'vista_cerrar'])->name('asis.cerrar');
@@ -207,6 +211,8 @@ Route::prefix('asistencias')->group(function () {
     // Acciones
     Route::post('/crear_asistencia', [AsistenciaController::class, 'crear'])->name('crear_asis');
     Route::post('/crearAsistenciaSetentaTreinta', [AsistenciaController::class, 'crear_7030']);
+    Route::post('/crearAsistenciaModular', [AsistenciaController::class, 'crear_modular']);
+
     Route::get('cerrar/{id}', [AsistenciaController::class, 'cerrar_planilla'])->name('cerrar_asis');
 });
 
@@ -292,6 +298,10 @@ Route::prefix('matriculacion')->group(function(){
     Route::put('/carrera/{id}/{carrera_id?}/{year?}',[MatriculacionController::class,'update'])->name('matriculacion.update');
     Route::post('/verificar/{carrera_id}/{year}',[MatriculacionController::class,'send_email'])->name('matriculacion.verificar');
 });
+
+Route::resource('cargo',CargoController::class);
+Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
+Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.agregarUser');
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
