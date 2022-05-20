@@ -42,7 +42,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-coordinador');
     }
 
     /**
@@ -84,18 +84,17 @@ class RegisterController extends Controller
         $role = $data['roles'][0] ??'default';
 
         $user->roles()->attach(Rol::where('nombre', $role)->first());
+        return $user;
     }
 
     public function register(Request $request)
     {
-
         $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-
-        return redirect('/register')->with([
+        $user = $this->create($request->all());
+        event(new Registered($user));
+        return view('user.detail')->with([
             'message_success' => 'Usuario creado',
+            'user' => $user
         ]);
     }
 

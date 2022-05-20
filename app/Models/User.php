@@ -52,7 +52,7 @@ class User extends Authenticatable
     {
         $users = User::whereDoesntHave('roles', function ($query) {
             return $query->where('nombre', 'alumno');
-        })->orderBy('apellido', 'ASC')->simplePaginate(20);
+        })->orderBy('apellido', 'ASC')->paginate(20);
 
         return $users;
     }

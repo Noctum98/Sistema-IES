@@ -136,6 +136,7 @@ Route::prefix('carreras/materias')->group(function () {
     Route::get('descargar_excel_alumnos/{id}',[MateriaController::class,'descargar_planilla'])->name('descargar_planilla');
 });
 Route::get('/selectMateriasCarrera/{id}',[MateriaController::class,'selectMaterias']);
+Route::get('/selectCargosCarrera/{id}',[CargoController::class,'selectCargos']);
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {

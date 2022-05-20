@@ -10,6 +10,7 @@
                     <div class="form-group">
                         <label for="carreras">Carreras</label>
                         <select name="carrera" id="carreras" class="form-select carreras">
+                            <option selected='selected' value=''> - Seleccione Carrera - </option>
                             @foreach($user->sedes as $sede)
                                 @foreach($sede->carreras as $carrera)
                                     <option value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$sede->nombre }}</option>
@@ -18,8 +19,14 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="carreras">Carreras</label>
+                        <label for="materias">Materias</label>
                         <select name="materia" id="materias" class="form-select materias">
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cargos">Cargos</label>
+                        <select name="cargo" id="cargos" class="form-select cargos">
 
                         </select>
                     </div>

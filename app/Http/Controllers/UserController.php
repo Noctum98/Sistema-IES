@@ -45,10 +45,18 @@ class UserController extends Controller
 
     public function vista_detalle($id)
     {
+        $auth = Auth::user();
+
         $user = User::find($id);
+        $sedes = $auth->sedes;
+        $roles_primarios = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
+        $roles_secundarios = Rol::select('nombre','id','descripcion')->where('tipo', 1)->get();
 
         return view('user.detail',[
-            'user' => $user
+            'user' => $user,
+            'sedes' => $sedes,
+            'roles_primarios' => $roles_primarios,
+            'roles_secundarios' => $roles_secundarios
         ]);
     }
 
@@ -79,7 +87,7 @@ class UserController extends Controller
             'user'  =>  $user
         ])->with([
             'datos_editados' => 'Los datos personales han sido actualizados'
-        ]);;
+        ]);
     }
 
     public function delete($id)

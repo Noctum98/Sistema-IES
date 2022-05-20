@@ -5,7 +5,7 @@
                 @if(!Session::has('alumno'))
                 <div class="sb-sidenav-menu-heading">Administración</div>
                 @endif
-                @if(Session::has('admin'))
+                @if(Session::has('admin') or Session::has('coordinador') )
                     <a class="nav-link" href="{{ route('usuarios.admin') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                         Usuarios

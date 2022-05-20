@@ -38,7 +38,24 @@
                 @endforeach
             </ul>
         </div>
+        <div class="colmd-12 mt-3">
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rolesModal{{$user->id}}">
+                Asignar Roles
+            </button>
+            <button type="button" class="ml-2 btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}">
+                Asignar Sedes
+            </button>
+            <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#materiasModal{{$user->id}}">
+                Asignar Carreras/Materias
+            </button>
+            @include('user.modals.admin_sedes')
+            @include('user.modals.admin_roles')
+            @include('user.modals.admin_carreras_materias')
+        </div>
     </div>
 
 </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('js/user/carreras.js') }}"></script>
 @endsection
