@@ -82,12 +82,13 @@ class RegisterController extends Controller
             'telefono' => $data['telefono'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'rol' => $data['roles'][0]?'rol_'.$data['roles'][0] :''
+            'rol' => $data['roles'][0] ? 'rol_'.$data['roles'][0] : '',
         ]);
 
-        $role = $data['roles'][0] ??'default';
+        $role = $data['roles'][0] ?? 'default';
 
         $user->roles()->attach(Rol::where('nombre', $role)->first());
+
         return $user;
     }
 
@@ -96,9 +97,9 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
         event(new Registered($user));
-        return view('usuarios.detalle')->with([
-            'message_success' => 'Usuario creado',
-            'user' => $user
+
+        return redirect()->route('usuarios.detalle',[
+            'id' => $user->id,
         ]);
     }
 
@@ -109,9 +110,10 @@ class RegisterController extends Controller
     {
         $auth = Auth::user();
         $roles = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
-        if($auth->hasAnyRole('coordinador')){
+        if ($auth->hasAnyRole('coordinador')) {
             $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
         }
+
         return view('auth.register', compact('roles'));
     }
 }
