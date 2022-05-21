@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Rol;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
@@ -92,16 +96,22 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
         event(new Registered($user));
-        return view('user.detail')->with([
+        return view('usuarios.detalle')->with([
             'message_success' => 'Usuario creado',
             'user' => $user
         ]);
     }
 
+    /**
+     * @return Application|Factory|View
+     */
     public function showRegistrationForm()
     {
+        $auth = Auth::user();
         $roles = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
-
+        if($auth->hasAnyRole('coordinador')){
+            $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
+        }
         return view('auth.register', compact('roles'));
     }
 }
