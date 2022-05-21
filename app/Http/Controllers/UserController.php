@@ -48,7 +48,7 @@ class UserController extends Controller
         $lista = User::whereHas('roles',function($query) use ($rol){
             return $query->where('nombre',$rol);
         })->paginate(20);
-        
+
         return view('user.listado',[
             'lista' => $lista
         ]);
@@ -61,6 +61,9 @@ class UserController extends Controller
         $user = User::find($id);
         $sedes = $auth->sedes;
         $roles_primarios = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
+        if ($auth->hasAnyRole('coordinador')) {
+            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
+        }
         $roles_secundarios = Rol::select('nombre','id','descripcion')->where('tipo', 1)->get();
 
         return view('user.detail',[

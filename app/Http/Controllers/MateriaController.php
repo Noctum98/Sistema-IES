@@ -93,7 +93,7 @@ class MateriaController extends Controller
 
     public function selectMaterias($id)
     {
-        $materias = Materia::select('nombre','id')->where('carrera_id',$id)->get();
+        $materias = Materia::select('nombre','id')->where('carrera_id',$id)->with('cargos')->get();
 
         return response()->json($materias,200);
     }
@@ -118,6 +118,6 @@ class MateriaController extends Controller
             ]);
         }
 
-        
+
     }
 }

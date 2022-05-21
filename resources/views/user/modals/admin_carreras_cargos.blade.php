@@ -1,16 +1,16 @@
-<div class="modal fade" id="materiasModal{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="cargosModal{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-secondary" id="exampleModalLabel">Administrar Carreras</h5>
+                <h5 class="modal-title text-secondary" id="exampleModalLabel">Administrar Cargos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('set_materias_carreras',$user->id) }}" method="POST">
                     <div class="form-group">
-                        <label for="carreras">Carreras</label>
-                        <select name="carrera" id="carreras" class="form-select carreras">
+                        <label for="carreras-cargo">Cargos</label>
+                        <select name="carrera" id="carreras-cargo" class="form-select carreras-cargo">
                             <option selected='selected' value=''> - Seleccione Carrera -</option>
                             @foreach($user->sedes as $sede)
                                 @foreach($sede->carreras as $carrera)
@@ -21,8 +21,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="materias">Materias</label>
-                        <select name="materia" id="materias" class="form-select materias">
+                        <label for="cargos">Cargos</label>
+                        <select name="cargo" id="cargos" class="form-select cargos">
 
                         </select>
                     </div>
