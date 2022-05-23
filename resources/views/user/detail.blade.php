@@ -48,9 +48,13 @@
             <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#materiasModal{{$user->id}}">
                 Asignar Carreras/Materias
             </button>
+            <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cargosModal{{$user->id}}">
+                Asignar Carreras/Cargos
+            </button>
             @include('user.modals.admin_sedes')
             @include('user.modals.admin_roles')
             @include('user.modals.admin_carreras_materias')
+            @include('user.modals.admin_carreras_cargos')
         </div>
     </div>
 
@@ -58,4 +62,5 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
+    <script src="{{ asset('js/user/cargos.js') }}"></script>
 @endsection
