@@ -4,6 +4,12 @@
     <h2 class="h1 text-info">Lista de Profesores</h2>
     <hr>
     {{ $lista->links() }}
+	<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="#" id="buscadorProfesores">
+		<div class="input-group mt-3">
+			<input class="form-control" type="text" id="busquedaProfesor" placeholder="Buscar personal" aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+			<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+		</div>
+	</form>
     <table class="table mt-4">
 			<thead class="thead-dark">
 				<tr>
@@ -23,4 +29,7 @@
 			</tbody>
 		</table>
 </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/listados/listado.js') }}"></script>
 @endsection

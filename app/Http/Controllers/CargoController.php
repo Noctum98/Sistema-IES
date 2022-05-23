@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\Sede;
 use App\Models\User;
@@ -19,9 +20,11 @@ class CargoController extends Controller
     public function index()
     {
         $cargos = Cargo::all();
+        $carreras = Carrera::all();
 
         return view('cargo.admin',[
-            'cargos' => $cargos
+            'cargos' => $cargos,
+            'carreras' => $carreras
         ]);
     }
 

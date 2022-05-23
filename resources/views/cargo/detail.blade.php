@@ -3,7 +3,7 @@
 <div class="container">
     <h2 class="h1 text-info">Configurar Cargo</h2>
     <hr>
-    <p><i>{{ $cargo->nombre }}</i></p>
+    <p><i>{{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->sede->nombre.' )' }}</i></p>
     <h3 class="text-secondary mb-3">Modulos</h3>
     <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarModulo">Agregar modulo</button></p>
     @include('cargo.modals.agregar_modulo')

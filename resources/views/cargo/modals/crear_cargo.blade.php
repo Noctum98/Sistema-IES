@@ -12,6 +12,14 @@
                         <label for="nombre">Nombre</label>
                         <input type="text" name="nombre" id="nombre" class="form-control" required />
                     </div>
+                    <div class="form-group">
+                        <label for="carrera_id">Carrera</label>
+                        <select name="carrera_id" id="carrera_id" class="form-select">
+                            @foreach($carreras as $carrera)
+                                <option value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

@@ -75,7 +75,7 @@ Route::prefix('usuarios')->group(function () {
     Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
     Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
-    Route::get('listado/{listado}',[UserController::class,'vista_listado'])->name('usuarios.listado');
+    Route::get('listado/{listado}/{busqueda?}',[UserController::class,'vista_listado'])->name('usuarios.listado');
 
 
     // Funcionalidades

@@ -17,14 +17,20 @@ use App\Models\Sede;
 use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\SedeUser;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    public function __construct()
+
+    protected $userService;
+
+    public function __construct(
+        UserService $userService
+    )
     {
         //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
-
+        $this->userService = $userService;
     }
     // Controlador de administación de usuarios
 
@@ -43,11 +49,19 @@ class UserController extends Controller
         ]);
     }
 
-    public function vista_listado($rol)
+    public function vista_listado($rol,$busqueda = null)
     {
-        $lista = User::whereHas('roles',function($query) use ($rol){
-            return $query->where('nombre',$rol);
-        })->paginate(20);
+        if($busqueda)
+        {
+            
+            $lista = $this->userService->buscador($busqueda,$rol);
+
+        }else{
+            $lista = User::whereHas('roles',function($query) use ($rol){
+                return $query->where('nombre',$rol);
+            })->paginate(20);
+        }
+        
         
         return view('user.listado',[
             'lista' => $lista

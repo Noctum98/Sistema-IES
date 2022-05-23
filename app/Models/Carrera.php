@@ -32,4 +32,9 @@ class Carrera extends Model
     {
         return $this->belongsToMany(Alumno::class)->withTimestamps();
     }
+
+    public function cargos()
+    {
+        return $this->hasMany('App\Modes\Cargo');
+    }
 }
