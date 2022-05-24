@@ -32,7 +32,7 @@ class UserController extends Controller
         //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
         $this->userService = $userService;
     }
-    // Controlador de administación de usuarios
+    // Controlador de administration de usuarios
 
     public function vista_admin()
     {
@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         if($busqueda)
         {
-            
+
             $lista = $this->userService->buscador($busqueda,$rol);
 
         }else{
@@ -61,8 +61,8 @@ class UserController extends Controller
                 return $query->where('nombre',$rol);
             })->paginate(20);
         }
-        
-        
+
+
         return view('user.listado',[
             'lista' => $lista
         ]);
@@ -267,5 +267,10 @@ class UserController extends Controller
             'mensaje_exitoso' => 'El usuario para el alumno '.$alumno->nombres.' '.$alumno->apellidos.' se ha creado exitosamente.'
         ]);
 
+    }
+
+    public function getUsuarioByUsernameOrNull($busqueda)
+    {
+        return response()->json($this->userService->buscadorUsuario($busqueda),200);
     }
 }

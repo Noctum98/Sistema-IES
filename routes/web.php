@@ -111,6 +111,18 @@ Route::prefix('personal')->group(function () {
     Route::get('descargar-ficha/{id}', [PersonalController::class, 'descargar_ficha'])->name('descargar_ficha');
 });
 
+// Rutas Cargo
+
+Route::prefix('cargo')->group(function () {
+    Route::get('/', [CargoController::class, 'index'])->name('cargo.admin');
+    Route::get('crear', [CargoController::class, ''])->name('carrera.crear');
+    Route::post('cargo',[CargoController::class,'store'])->name('cargo.store');
+    Route::get('cargo/{id}', [CargoController::class, 'show'])->name('cargo.show');
+    Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
+    Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
+
+});
+
 // Rutas de Carreras
 Route::prefix('carreras')->group(function () {
     // Vistas
@@ -140,6 +152,7 @@ Route::prefix('carreras/materias')->group(function () {
 });
 Route::get('/selectMateriasCarrera/{id}',[MateriaController::class,'selectMaterias']);
 Route::get('/selectCargosCarrera/{id}',[CargoController::class,'selectCargos']);
+Route::get('/buscaUsuarioByUsername/{busqueda}',[UserController::class,'getUsuarioByUsernameOrNull']);
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {
@@ -302,7 +315,7 @@ Route::prefix('matriculacion')->group(function(){
     Route::post('/verificar/{carrera_id}/{year}',[MatriculacionController::class,'send_email'])->name('matriculacion.verificar');
 });
 
-Route::resource('cargo',CargoController::class);
+//Route::resource('cargo',CargoController::class);
 Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.agregarUser');
 

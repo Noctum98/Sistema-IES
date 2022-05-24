@@ -5,7 +5,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Registro de Usuarios') }}</div>
+                    <div class="card-header">{{ __('Registro de Usuarios') }}
+
+                        <span class="aviso"></span>
+                        <span class="spin d-none"><i class="fa fa-spinner fa-spin"></i> Buscando usuario ... </span>
+                    </div>
 
                     <div class="card-body">
                         @if(@session('message_success'))
@@ -132,7 +136,7 @@
                                     @foreach($roles as $rol)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="roles[]"
-                                                   value="{{ $rol->nombre }}" id="rol-{{ $rol->id }}" }}>
+                                                   value="{{ $rol->nombre }}" id="rol-{{ $rol->id }}" >
                                             <label class="form-check-label" for="rol-{{ $rol->id }}">
                                                 {{ $rol->descripcion }}
                                             </label>
@@ -143,7 +147,7 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" id="submit">
                                         {{ __('Registrar') }}
                                     </button>
                                 </div>
@@ -154,4 +158,7 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('js/user/busquedaInput.js') }}"></script>
 @endsection
