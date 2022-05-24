@@ -152,6 +152,7 @@ Route::prefix('carreras/materias')->group(function () {
 });
 Route::get('/selectMateriasCarrera/{id}',[MateriaController::class,'selectMaterias']);
 Route::get('/selectCargosCarrera/{id}',[CargoController::class,'selectCargos']);
+Route::get('/buscaUsuarioByUsername/{busqueda}',[UserController::class,'getUsuarioByUsernameOrNull']);
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {

@@ -14,7 +14,7 @@ class UserService{
             ->orWhere('email', 'LIKE', '%' . $busqueda . '%')
             ->orWhere('telefono', 'LIKE', '%' . $busqueda . '%');
         });
-        
+
         if($rol)
         {
             $lista->whereHas('roles',function($query) use ($rol){
@@ -23,5 +23,13 @@ class UserService{
         }
 
         return $lista->paginate(10);
+    }
+
+
+    public function buscadorUsuario($busqueda)
+    {
+
+        return User::select('id', 'nombre', 'apellido')->where('username', $busqueda)->get();
+
     }
 }
