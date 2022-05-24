@@ -26,7 +26,7 @@
                     </div>
                 @endif
                 @if(Session::has('cargos'))
-                <a class="nav-link" href="{{ route('cargo.index') }}">
+                <a class="nav-link" href="{{ route('cargo.admin') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
                     Cargos
                 </a>

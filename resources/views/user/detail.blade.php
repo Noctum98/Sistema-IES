@@ -18,9 +18,13 @@
         <div class="col-md-6">
             <h5 class="text-secondary">Carreras</h5>
             <ul class="m-0 p-0">
+                @if(count($user->carreras) > 0)
                 @foreach($user->carreras as $carrera)
                 <li>{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</li>
                 @endforeach
+                @else
+                <p>No hay carreras vinculadas al usuario.</p>
+                @endif
             </ul>
         </div>
         <div class="col-md-12 mt-3">
@@ -39,18 +43,20 @@
             </ul>
         </div>
         <div class="colmd-12 mt-3">
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rolesModal{{$user->id}}">
-                Asignar Roles
-            </button>
-            <button type="button" class="ml-2 btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}">
                 Asignar Sedes
             </button>
             <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#materiasModal{{$user->id}}">
-                Asignar Carreras/Materias
+                Asignar Materias (Tradicional)
             </button>
             <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cargosModal{{$user->id}}">
-                Asignar Carreras/Cargos
+                Asignar Cargos (Modular)
             </button>
+            @if(Session::has('admin'))
+            <button type="button" class="ml-2 btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rolesModal{{$user->id}}">
+                Asignar Roles
+            </button>
+            @endif
             @include('user.modals.admin_sedes')
             @include('user.modals.admin_roles')
             @include('user.modals.admin_carreras_materias')
