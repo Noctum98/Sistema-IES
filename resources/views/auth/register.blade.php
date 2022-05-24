@@ -136,7 +136,7 @@
                                     @foreach($roles as $rol)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="roles[]"
-                                                   value="{{ $rol->nombre }}" id="rol-{{ $rol->id }}" }}>
+                                                   value="{{ $rol->nombre }}" id="rol-{{ $rol->id }}" >
                                             <label class="form-check-label" for="rol-{{ $rol->id }}">
                                                 {{ $rol->descripcion }}
                                             </label>
