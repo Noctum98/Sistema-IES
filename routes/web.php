@@ -208,6 +208,7 @@ Route::prefix('asistencias')->group(function () {
     Route::post('/crear_asistencia', [AsistenciaController::class, 'crear'])->name('crear_asis');
     Route::post('/crearAsistenciaSetentaTreinta', [AsistenciaController::class, 'crear_7030']);
     Route::post('/crearAsistenciaModular', [AsistenciaController::class, 'crear_modular']);
+    Route::post('/crearAsistenciaModularSetentaTreinta', [AsistenciaController::class, 'crear_modular_7030']);
 
     Route::get('cerrar/{id}', [AsistenciaController::class, 'cerrar_planilla'])->name('cerrar_asis');
 });
@@ -298,9 +299,13 @@ Route::prefix('matriculacion')->group(function(){
 Route::resource('cargo',CargoController::class);
 Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.agregarUser');
+Route::delete('deleteUser/{cargo_id}',[CargoController::class,'deleteUser'])->name('cargo.delUser');
+Route::delete('deleteMateria/{cargo_id}',[CargoController::class,'deleteModulo'])->name('cargo.delMateria');
+
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
+    Route::get('alumnos/all',[ExcelController::class,'all_alumnos']);
 });
 
 Route::get('/clear-cache', function () {

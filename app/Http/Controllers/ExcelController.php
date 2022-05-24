@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AllAlumnosExport;
 use App\Exports\AlumnosYearExport;
 use Illuminate\Http\Request;
 use App\Models\Alumno;
@@ -42,5 +43,12 @@ class ExcelController extends Controller
         $carrera = Carrera::where('id',$carrera_id)->select('nombre')->first();
         
         return Excel::download(new AlumnosYearExport($alumnos,$generos),'Planilla de Alumnos de '.$carrera->nombre.' - Año '.$year.'.xlsx');
+    }
+
+    public function all_alumnos()
+    {
+        $carreras = Carrera::all();
+
+        return Excel::download(new AllAlumnosExport($carreras),'Planilla de alumnos completa.xlsx');
     }
 }

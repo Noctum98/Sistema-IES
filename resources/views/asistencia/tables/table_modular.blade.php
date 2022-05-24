@@ -14,7 +14,7 @@
                 @if($proceso->asistencia($proceso->id))
                  @if($proceso->asistencia($proceso->id)->getByAsistenciaCargo($cargo->id,$proceso->asistencia($proceso->id)->id))
                 % {{ $proceso->asistencia($proceso->id)->getByAsistenciaCargo($cargo->id,$proceso->asistencia($proceso->id)->id)->porcentaje }}
-                @endif
+                 @endif
                 @endif
             </td>
             <td>
