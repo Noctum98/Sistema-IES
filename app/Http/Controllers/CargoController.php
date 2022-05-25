@@ -16,7 +16,7 @@ class CargoController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
     }
 
     public function index()
@@ -100,12 +100,7 @@ class CargoController extends Controller
 
     public function selectCargos($id)
     {
-//        $cargos = Cargo::select('nombre','id')->where('carrera_id',$id)->get();
-        $cargos = Cargo::select('nombre','id')->get();
-
-
-
-
+        $cargos = Cargo::select('nombre','id')->where('carrera_id',$id)->get();
         return response()->json($cargos,200);
     }
 

@@ -154,8 +154,7 @@ class User extends Authenticatable
     }
     public function hasCargo($cargo)
     {
-
-        if ($this->sedes->where('id', $cargo)->first()) {
+        if ($this->cargos->where('id', $cargo)->first()) {
             return true;
         }
         return false;

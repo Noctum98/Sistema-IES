@@ -12,12 +12,13 @@
                         <label for="carreras">Carreras</label>
                         <select name="carrera" id="carreras" class="form-select carreras">
                             <option selected='selected' value=''> - Seleccione Carrera -</option>
-                            @foreach($user->sedes as $sede)
-                                @foreach($sede->carreras as $carrera)
+                            @foreach($carreras as $carrera)
+                                @if(count($carrera->cargos) <= 0)
                                     <option
-                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$sede->nombre }}</option>
-                                @endforeach
+                                            value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</option>
+                                @endif
                             @endforeach
+
                         </select>
                     </div>
                     <div class="form-group">
