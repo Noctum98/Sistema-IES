@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -86,12 +87,16 @@ Route::prefix('usuarios')->group(function () {
     Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
     Route::post('set_Carrera/{id}',[UserCarreraController::class,'store'])->name('set_carrera');
     Route::post('set_CarreraMaterias/{id}',[UserMateriaController::class,'store'])->name('set_materias_carreras');
+    Route::post('set_CarreraCargo/{id}',[UserCargoController::class,'store'])->name('set_cargos_carreras');
     Route::get('crear_alumno_usuario/{id}',[UserController::class,'crear_usuario_alumno'])->name('crear_usuario_alumno');
 });
 
 Route::prefix('usuario_materia')->group(function () {
     Route::delete('delete/{user_id}/{materia_id}',[UserMateriaController::class,'delete'])->name('delete_materias_carreras');
 
+});
+Route::prefix('usuario_cargo')->group(function () {
+    Route::delete('delete/{user_id}/{cargo_id}',[UserCargoController::class,'delete'])->name('delete_cargo_carreras');
 });
 
 //Ruta de Roles

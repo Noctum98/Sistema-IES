@@ -7,17 +7,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('set_materias_carreras',$user->id) }}" method="POST">
+                <form action="{{ route('set_cargos_carreras',$user->id) }}" method="POST">
                     <div class="form-group">
                         <label for="carreras-cargo">Cargos</label>
                         <select name="carrera" id="carreras-cargo" class="form-select carreras-cargo">
                             <option selected='selected' value=''> - Seleccione Carrera -</option>
-                            @foreach($user->sedes as $sede)
-                                @foreach($sede->carreras as $carrera)
+
+                            @foreach($carreras as $carrera)
+                                @if(count($carrera->cargos) > 0)
                                     <option
-                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$sede->nombre }}</option>
-                                @endforeach
+                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</option>
+                                @endif
                             @endforeach
+
                         </select>
                     </div>
                     <div class="form-group">

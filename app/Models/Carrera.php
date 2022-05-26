@@ -35,6 +35,6 @@ class Carrera extends Model
 
     public function cargos()
     {
-        return $this->hasMany('App\Modes\Cargo');
+        return $this->hasMany(Cargo::class);
     }
 }
