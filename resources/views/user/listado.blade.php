@@ -10,6 +10,8 @@
 			<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
 		</div>
 	</form>
+	<a href="{{ route('register') }}" class="btn btn-warning">Crear usuarios</a>
+
     <table class="table mt-4">
 			<thead class="thead-dark">
 				<tr>

@@ -27,17 +27,17 @@ class UserCargoController extends Controller
             }
 
             if ($user->hasCargo($cargo->id)) {
-                return redirect()->route('usuarios.admin')->with(
+                return redirect()->route('usuarios.detalle',$user->id)->with(
                     ['error_materia' => 'El usuario ya tiene asignado este cargo.']
                 );
             } else {
                 $user->cargos()->attach($cargo);
             }
         } else {
-            return redirect()->route('usuarios.admin')->with(['error_sede' => 'El usuario no pertenece a esa sede']);
+            return redirect()->route('usuarios.detalle',$user->id)->with(['error_sede' => 'El usuario no pertenece a esa sede']);
         }
 
-        return redirect()->route('usuarios.admin')->with(
+        return redirect()->route('usuarios.detalle',$user->id)->with(
             ['carrera_success' => 'Se han añadido el cargo y carrera al usuario']
         );
     }

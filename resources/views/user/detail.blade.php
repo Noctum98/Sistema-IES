@@ -3,6 +3,25 @@
     <div class="container">
         <h2 class="h1 text-info">Usuario {{ $user->nombre.' '.$user->apellido }}</h2>
         <hr>
+        @if(@session('carrera_success'))
+		<div class="alert alert-success">
+			{{ @session('carrera_success') }}
+		</div>
+		@endif
+		@if(@session('error_sede'))
+		<div class="alert alert-warning">
+			{{ @session('error_sede') }}
+		</div>
+		@endif
+		@if(@session('error_rol'))
+		<div class="alert alert-danger">
+			{{ @session('error_rol') }}
+		</div>
+		@elseif(@session('message'))
+		<div class="alert alert-success">
+			{{ @session('message') }}
+		</div>
+		@endif
         <div class="row col-md-12">
             <div class="col-md-6">
                 <h5 class="text-secondary">Datos</h5>
