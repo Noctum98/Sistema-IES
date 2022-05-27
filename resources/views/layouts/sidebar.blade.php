@@ -22,7 +22,9 @@
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('usuarios.listado','profesor') }}">Lista de Profesores</a>
+                            @if(Session::has('admin') || Session::has('regente'))
                             <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de Coordinadores</a>
+                            @endif
                         </nav>
                     </div>
                 @endif
