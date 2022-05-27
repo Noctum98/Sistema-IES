@@ -30,6 +30,6 @@ class Carrera extends Model
     }
     public function alumnos()
     {
-        return $this->belongsToMany(Alumno::class)->withTimestamps();
+        return $this->belongsToMany(Alumno::class)->withTimestamps()->orderBy('apellidos');
     }
 }

@@ -51,7 +51,6 @@ class CargoController extends Controller
 
         return redirect()->route('cargo.index');
     }
-
     public function agregarModulo(Request $request)
     {
         $cargo = Cargo::find($request['cargo_id']);
@@ -65,6 +64,22 @@ class CargoController extends Controller
         $cargo = Cargo::find($request['cargo_id']);
 
         $cargo->users()->attach(User::find($request['user_id']));
+
+        return redirect()->route('cargo.show',$cargo->id);
+    }
+
+    public function deleteUser(Request $request,$cargo_id)
+    {
+        $cargo = Cargo::find($cargo_id);
+        $cargo->users()->detach(User::find($request['user_id']));
+
+        return redirect()->route('cargo.show',$cargo->id);
+    }
+
+    public function deleteModulo(Request $request,$cargo_id)
+    {
+        $cargo = Cargo::find($cargo_id);
+        $cargo->materias()->detach(Materia::find($request['materia_id']));
 
         return redirect()->route('cargo.show',$cargo->id);
     }
