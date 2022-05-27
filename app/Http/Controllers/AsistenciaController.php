@@ -35,7 +35,7 @@ class AsistenciaController extends Controller
         ]);
     }
 
-    public function vista_admin(int $id,$cargo_id = null)
+    public function vista_admin(int $id, $cargo_id = null)
     {
         $materia = Materia::find($id);
         $procesos = Proceso::where('materia_id', $id)->get();
@@ -45,8 +45,7 @@ class AsistenciaController extends Controller
             'procesos'   =>  $procesos
         ];
 
-        if($cargo_id)
-        {
+        if ($cargo_id) {
             $cargo = Cargo::find($cargo_id);
             $datos['cargo'] = $cargo;
         }
@@ -151,19 +150,16 @@ class AsistenciaController extends Controller
             'proceso_id' => $request['proceso_id']
         ])->first();
 
-        if ($asistencia)
-        {
-            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'],$asistencia->id);
-            if ($asistencia_modular)
-            {
+        if ($asistencia) {
+            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'], $asistencia->id);
+            if ($asistencia_modular) {
                 $asistencia_modular->porcentaje = (int) $request['porcentaje'];
                 $asistencia_modular->update();
-            }else{
+            } else {
                 $request['asistencia_id'] = $asistencia->id;
                 $asistencia_modular = AsistenciaModular::create($request->all());
             }
-        }else
-        {
+        } else {
             $asistencia = Asistencia::create($request->all());
 
             $request['asistencia_id'] = $asistencia->id;
@@ -175,6 +171,57 @@ class AsistenciaController extends Controller
             'asistencia' => $asistencia
         ];
 
-        return response()->json($response,200);
+        return response()->json($response, 200);
+    }
+
+    public function crear_modular_7030(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'porcentaje_virtual'           =>  ['required', 'numeric', 'max:30'],
+            'porcentaje_presencial'             =>  ['required', 'numeric', 'max:70']
+        ]);
+
+        if (!$validate->fails()) {
+            $asistencia = Asistencia::where([
+                'proceso_id' => $request['proceso_id']
+            ])->first();
+
+            if ($asistencia) {
+                $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'], $asistencia->id);
+                if ($asistencia_modular) {
+                    $asistencia_modular->porcentaje_virtual = (int) $request['porcenaje_virtual'];
+                    $asistencia_modular->porcentaje_presencial = (int) $request['porcentaje_presencial'];
+                    $asistencia_modular->porcentaje = $asistencia_modular->porcentaje_virtual + $asistencia_modular->porcentaje_presencial;
+                    $asistencia_modular->update();
+                } else {
+                    $request['asistencia_id'] = $asistencia->id;
+                    $request['porcentaje'] = (int) $request['porcentaje_virtual'] + (int) $request['porcentaje_presencial'];
+                    $asistencia_modular = AsistenciaModular::create($request->all());
+                }
+            } else {
+                $asistencia = Asistencia::create([
+                    'proceso_id' => $request['proceso_id']
+                ]);
+
+                $request['asistencia_id'] = $asistencia->id;
+                $request['porcentaje'] = (int) $request['porcentaje_virtual'] + (int) $request['porcentaje_presencial'];
+                $asistencia_modular = AsistenciaModular::create($request->all());
+            }
+
+            $response = [
+                'message' => 'Asistencia creada con éxito!',
+                'code' => 200,
+                'asistencia' => $asistencia_modular
+            ];
+        }else{
+            $response = [
+                'message' => 'Error',
+                'code' => 200,
+                'errors' => $validate->errors()
+            ];
+        }
+
+
+        return response()->json($response, $response['code']);
     }
 }

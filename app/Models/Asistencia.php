@@ -29,11 +29,11 @@ class Asistencia extends Model
         return $this->hasMany('App\Models\AsistenciaModular');
     }
 
-    public static function getByAsistenciaCargo($cargo_id,$asistencia_id)
+    public function getByAsistenciaCargo($cargo_id)
     {
         $asistencia_modular = AsistenciaModular::where([
             'cargo_id'=>$cargo_id,
-            'asistencia_id' => $asistencia_id
+            'asistencia_id' => $this->id
         ])->first();
 
         return $asistencia_modular;
