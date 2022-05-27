@@ -233,7 +233,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('usuarios.admin')->with([
+        return redirect()->route('usuarios.detalle',$user->id)->with([
             'message' => 'Rol cambiado!',
         ]);
     }
@@ -259,7 +259,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('usuarios.admin')->with([
+        return redirect()->route('usuarios.detalle',$user->id)->with([
             'message' => 'Sede cambiada!',
         ]);
     }
@@ -275,10 +275,10 @@ class UserController extends Controller
             $user->materias()->attach($materia);
 
         } else {
-            return redirect()->route('usuarios.admin')->with(['error_sede' => 'El usuario no pertenece a esa sede']);
+            return redirect()->route('usuarios.detalle',$user->id)->with(['error_sede' => 'El usuario no pertenece a esa sede']);
         }
 
-        return redirect()->route('usuarios.admin')->with(
+        return redirect()->route('usuarios.detalle',$user->id)->with(
             ['carrera_success' => 'Se han añadido la materia y carrera al usuario']
         );
     }

@@ -16,7 +16,7 @@ class CargoController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
+        $this->middleware('app.roles:admin-coordinador');
     }
 
     public function index()
@@ -80,7 +80,6 @@ class CargoController extends Controller
             'message'   =>      'Datos editados correctamente!'
         ]);
     }
-
     public function agregarModulo(Request $request)
     {
         $cargo = Cargo::find($request['cargo_id']);
@@ -96,6 +95,23 @@ class CargoController extends Controller
         $cargo->users()->attach(User::find($request['user_id']));
 
         return redirect()->route('cargo.show',$cargo->id);
+    }
+
+
+    public function deleteUser(Request $request,$cargo_id)
+    {
+        $cargo = Cargo::find($cargo_id);
+        $cargo->users()->detach(User::find($request['user_id']));
+
+        return redirect()->route('cargo.show',$cargo->id);
+    }
+
+    public function deleteModulo(Request $request,$cargo_id)
+    {
+        $cargo = Cargo::find($cargo_id);
+        $cargo->materias()->detach(Materia::find($request['materia_id']));
+
+        return redirect()->route('cargo.show', $cargo->id);
     }
 
     public function selectCargos($id)
@@ -116,5 +132,4 @@ class CargoController extends Controller
             'carrera_id' => ['required', 'numeric'],
         ]);
     }
-
 }
