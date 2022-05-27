@@ -150,9 +150,11 @@ class AsistenciaController extends Controller
             'proceso_id' => $request['proceso_id']
         ])->first();
 
-        if ($asistencia) {
-            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'], $asistencia->id);
-            if ($asistencia_modular) {
+        if ($asistencia)
+        {
+            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'],$asistencia->id);
+            if ($asistencia_modular)
+            {
                 $asistencia_modular->porcentaje = (int) $request['porcentaje'];
                 $asistencia_modular->update();
             } else {
