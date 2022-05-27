@@ -24,8 +24,10 @@ class Proceso extends Model
     {
         return $this->belongsTo('App\Models\Alumno','alumno_id');
     }
-    public function asistencia($id)
+    public function asistencia()
     {
-        return Asistencia::where('proceso_id',$id)->first();
+        $asistencia = Asistencia::where('proceso_id',$this->id)->first();
+
+        return $asistencia;
     }
 }

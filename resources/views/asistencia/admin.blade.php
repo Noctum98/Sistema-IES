@@ -13,6 +13,8 @@
 			@include('asistencia.tables.table_tradicional_7030')
 		@elseif($materia->carrera->tipo == 'modular')
 			@include('asistencia.tables.table_modular')
+		@elseif($materia->carrera->tipo == 'modular2')
+			@include('asistencia.tables.table_modular_7030')
 		@endif
 
 	</div>

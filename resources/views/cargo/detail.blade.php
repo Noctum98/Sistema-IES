@@ -17,7 +17,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">
-                <i class="fa fa-cog" style="font-size:20px;"></i>
+                    <i class="fa fa-cog" style="font-size:20px;"></i>
                 </th>
             </tr>
         </thead>
@@ -27,7 +27,11 @@
                 <th scope="row">{{ $materia->id }}</th>
                 <td>{{ $materia->nombre }}</td>
                 <td>
-                    <a href="{{ route('roles.destroy',$materia->id) }}" type="button" class="btn btn-sm btn-danger">Eliminar</a>
+                    <form action="{{ route('cargo.delMateria',$cargo->id) }}" method="POST">
+                        {{ method_field('DELETE') }}
+                        <input type="hidden" name="materia_id" value="{{$materia->id}}">
+                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger">
+                    </form>
                 </td>
             </tr>
             @endforeach
@@ -60,7 +64,11 @@
                 <th scope="row">{{ $usuario->id }}</th>
                 <td>{{ $usuario->nombre.' '.$usuario->apellido }}</td>
                 <td>
-                    <a href="{{ route('roles.destroy',$materia->id) }}" type="button" class="btn btn-sm btn-danger">Eliminar</a>
+                    <form action="{{ route('cargo.delUser',$cargo->id) }}" method="POST">
+                        {{ method_field('DELETE') }}
+                        <input type="hidden" name="user_id" value="{{$usuario->id}}">
+                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger">
+                    </form>
                 </td>
             </tr>
             @endforeach
