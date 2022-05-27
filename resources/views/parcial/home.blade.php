@@ -1,11 +1,11 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Elige la materia para ver los parciales
 		</h2>
 		<hr>
 		@include('includes.planillas')
-		
+
 	</div>
 @endsection

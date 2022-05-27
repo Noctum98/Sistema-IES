@@ -15,7 +15,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">
+                    <th scope="col" class="text-center">
                         <i class="fa fa-cog" style="font-size:20px;"></i>
                     </th>
                 </tr>
@@ -25,8 +25,10 @@
                 <tr>
                     <th scope="row">{{ $cargo->id }}</th>
                     <td>{{ $cargo->nombre }}</td>
-                    <td>
-                        <a href="{{ route('cargo.show',$cargo->id) }}" class="btn btn-sm btn-primary">Configurar</a>
+                    <td class="text-center">
+                        <a href="{{ route('cargo.show',$cargo->id) }}" class="btn btn-sm btn-primary block-inline ">Configurar</a>
+
+                        <a href="{{ route('cargo.edit',$cargo->id) }}" class="btn btn-sm btn-warning ">Editar</a>
                     </td>
                 </tr>
                 @endforeach

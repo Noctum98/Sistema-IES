@@ -1,5 +1,5 @@
 <div class="card mt-3">
-    <h5 class="card-header">DECLARACIÓN JURADA DE SITUACIÓN ACADÉMICA</h5>
+    <h5 class="card-header text-secondary">DECLARACIÓN JURADA DE SITUACIÓN ACADÉMICA</h5>
     <div class="card-body">
         <h5 class="card-title">A continuación, se explica el carácter de inscripción como estudiante por el cual usted deberá optar en la opción INSCRIPCIÓN A PRIMER AÑO. </h5>
         <p class="card-text">

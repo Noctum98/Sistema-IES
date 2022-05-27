@@ -4,9 +4,9 @@
 	<div class="col-md-7">
 		<div class="card">
 		   @if(!isset($delete))
-		  <h5 class="card-header">Preinscripción {{ $preinscripcion->nombres.' '.$preinscripcion->apellidos }}</h5>
+		  <h5 class="card-header text-secondary">Preinscripción {{ $preinscripcion->nombres.' '.$preinscripcion->apellidos }}</h5>
 		  @else
-		  <h5 class="card-header">Baja de preinscripción</h5>
+		  <h5 class="card-header text-secondary">Baja de preinscripción</h5>
 		  @endif
 		  <div class="card-body p-4">
 		    @if(!isset($delete))
@@ -28,7 +28,7 @@
 		</div>
 	</div>
 	</div>
-	
+
 </div>
-	
+
 @endsection

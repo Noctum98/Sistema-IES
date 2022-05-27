@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Elige la mesa que deseas rendir
 		</h2>
 		<hr>
@@ -16,7 +16,7 @@
 		</a>
 		@endforeach
 		@else
-			<h3>No hay mesas abiertas</h3>
+			<h3 class="text-secondary">No hay mesas abiertas</h3>
 		@endif
 		<!---
 

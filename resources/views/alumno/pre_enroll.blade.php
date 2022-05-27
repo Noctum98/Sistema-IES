@@ -4,22 +4,22 @@
 		<div class="col-md-12 d-flex flex-column align-items-center">
 			<div class="col-md-7">
 			    @if($carrera)
-				<h2 class="h1">
-					Preinscripción en {{ $carrera->nombre.' ('.$carrera->sede->nombre.' - Turno '.ucwords($carrera->turno).')' }} 
+				<h2 class="h1 text-info">
+					Preinscripción en {{ $carrera->nombre.' ('.$carrera->sede->nombre.' - Turno '.ucwords($carrera->turno).')' }}
 				</h2>
 				<hr>
 				@if(@session('error_carrera'))
 					<div class="alert alert-danger">
 						{{@session('error_carrera')}}
-					</div>	
+					</div>
 				@endif
 				<div class="col-md-10">
 					@include('includes.inscripcion')
 				</div>
 				@else
-				<h2 class="h1">{{$error}}</h2>
+				<h2 class="h1 text-info">{{$error}}</h2>
 				@endif
-			</div>	
+			</div>
 		</div>
 	</div>
 @endsection

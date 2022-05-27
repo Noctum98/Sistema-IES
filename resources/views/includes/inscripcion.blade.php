@@ -270,7 +270,7 @@
 		@enderror
 	</div>
 	<br>
-	<h4>Documentación a adjuntar</h4>
+	<h4 class="text-secondary">Documentación a adjuntar</h4>
 	<div class="alert alert-warning">
 		Los siguientes campos solo admiten un archivo, en caso de tener que unir dos fotos se recomienda unirlas en un pdf utilizando la herramienta <a href="https://www.ilovepdf.com/" target="_blank">iLovePDF</a>.
 	</div>
@@ -313,7 +313,7 @@
 		@enderror
 	</div>
 	<br>
-	<h4>Trayecto de nivel medio</h4>
+	<h4 class="text-secondary">Trayecto de nivel medio</h4>
 	<hr>
 	<div class="form-group">
 		<label for="certificado_archivo">
@@ -341,7 +341,7 @@
 	</div>
 	<div id="7mo" style="display: none;">
 		<br>
-		<h4>Artículo 7mo</h4>
+		<h4 class="text-secondary">Artículo 7mo</h4>
 		<hr>
 		<div class="form-group">
 			<label for="primario">

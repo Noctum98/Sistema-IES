@@ -19,7 +19,7 @@ class InstertRolProfesor extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Inserta el ROl Profesor';
 
     /**
      * Create a new command instance.

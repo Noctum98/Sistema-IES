@@ -7,10 +7,7 @@ use App\Models\Carrera;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\App;
 
 class AlumnoController extends Controller
 {
@@ -41,18 +38,21 @@ class AlumnoController extends Controller
             'busqueda'=> $busqueda
         ]);
     }
+
     public function vista_elegir(){
         $carreras = Carrera::orderBy('sede_id')->get();
         return view('alumno.choice',[
             'carreras' => $carreras
         ]);
     }
+
     public function vista_crear(int $id){
         $carrera = Carrera::find($id);
         return view('alumno.create',[
             'carrera' => $carrera
         ]);
     }
+
     public function vista_editar(int $id){
         $alumno = Alumno::find($id);
         $carreras = Carrera::all();
@@ -62,6 +62,7 @@ class AlumnoController extends Controller
             'carreras'  =>  $carreras
         ]);
     }
+
     public function vista_alumnos(Request $request,$carrera_id){
         $carrera = Carrera::find($carrera_id);
 
@@ -69,6 +70,7 @@ class AlumnoController extends Controller
             'carrera'   =>  $carrera
         ]);
     }
+
     public function vista_detalle(int $id){
         $alumno = Alumno::find($id);
 
@@ -84,18 +86,19 @@ class AlumnoController extends Controller
         ]);
     }
 
-    public function ver_foto(string $foto){
+    public function ver_foto(string $foto): Response
+    {
         $archivo = Storage::disk('alumno_foto')->get($foto);
 
         return new Response($archivo,200);
     }
     public function descargar_archivo(string $nombre,string $disco){
-        
+
         $exists = Storage::disk($disco)->exists($nombre);
 
         if($exists){
            $archivo = Storage::disk($disco)->path($nombre);
-           return response()->file($archivo); 
+           return response()->file($archivo);
         }else{
             return redirect()->route('alumno.detalle');
         }
@@ -108,10 +111,10 @@ class AlumnoController extends Controller
             $data = [
                 'alumno' => $alumno
             ];
-    
+
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadView('pdfs.alumno_ficha',$data);
-    
+
             return $pdf->download('Ficha '.$alumno->nombres.' '.$alumno->apellidos.'.pdf');
         }else{
             return view('error.error');

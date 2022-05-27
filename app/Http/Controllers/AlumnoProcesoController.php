@@ -24,9 +24,6 @@ class AlumnoProcesoController extends Controller
     }
     // Vistas
 
-
-
-
     public function vista_procesos(int $id){
         $alumno = Alumno::find($id);
 

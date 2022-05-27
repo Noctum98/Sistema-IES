@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\MatriculacionUser;
 use App\Models\Alumno;
+use App\Models\Cargo;
 use App\Models\User;
 use App\Models\Rol;
 use App\Models\RolUser;
@@ -17,38 +18,121 @@ use App\Models\Sede;
 use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\SedeUser;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
 
+    protected $userService;
+
+    public function __construct(
+        UserService $userService
+    ) {
+        //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
+        $this->userService = $userService;
     }
-    // Controlador de administación de usuarios
+
+    // Controlador de administration de usuarios
 
     public function vista_admin()
     {
         $users = User::usersPersonal();
-        $sedes = Sede::select('nombre','id')->get();
-        $roles_primarios = Rol::select('nombre','id','descripcion')->where('tipo', 0)->get();
-        $roles_secundarios = Rol::select('nombre','id','descripcion')->where('tipo', 1)->get();
+        $sedes = Sede::select('nombre', 'id')->get();
+        $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
+        $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();
 
         return view('user.admin', [
             'users' => $users,
             'sedes' => $sedes,
             'roles_primarios' => $roles_primarios,
-            'roles_secundarios' => $roles_secundarios
+            'roles_secundarios' => $roles_secundarios,
+        ]);
+    }
+
+    public function vista_listado($rol, $busqueda = null)
+    {
+        if ($busqueda) {
+
+            $lista = $this->userService->buscador($busqueda, $rol);
+
+        } else {
+            $lista = User::whereHas('roles', function ($query) use ($rol) {
+                return $query->where('nombre', $rol);
+            })->paginate(20);
+        }
+
+
+        return view('user.listado', [
+            'lista' => $lista,
         ]);
     }
 
     public function vista_detalle($id)
     {
+        $auth = Auth::user();
         $user = User::find($id);
 
-        return view('user.detail',[
-            'user' => $user
+        if ($auth->authorizeRoles('admin')) {
+            $sedes = Sede::all();
+        } else {
+            $sedes = $auth->sedes;
+        }
+
+        if ($auth->authorizeRoles('admin')) {
+            $carreras = Carrera::all();
+        } else {
+            $carreras = $auth->carreras;
+            $carreras_id = [];
+            foreach ($carreras as $carrera) {
+                $carreras_id[] = $carrera->id;
+            }
+        }
+
+        if ($auth->authorizeRoles('admin')) {
+            $materias = Materia::all();
+        } else {
+            $materias = Materia::select('materias.id')
+                ->join('carreras', 'carreras.id', 'materias.carrera_id')
+                ->where(function ($query) {
+                    return $query
+                        ->whereNull('carreras.tipo')
+                        ->orWhere('carreras.tipo', '=', 'tradicional')
+                        ->orWhere('carreras.tipo', '=', 'tradicional2');
+                })
+                ->whereIn('carreras.id', $carreras_id)
+                ->orderBy('materias.nombre', 'asc')
+                ->get();
+        }
+        if ($auth->authorizeRoles('admin')) {
+            $cargos = Cargo::all();
+        } else {
+            $cargos = Cargo::select('cargos.id')
+                ->join('carreras', 'carreras.id', 'cargos.carrera_id')
+                ->whereIn('carreras.id', $carreras_id)
+                ->where(function ($query) {
+                    return $query
+                        ->where('carreras.tipo', '=', 'modular')
+                        ->orWhere('carreras.tipo', '=', 'modular2');
+                })
+                ->orderBy('cargos.nombre', 'asc')
+                ->get();
+        }
+
+        $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
+        if ($auth->hasAnyRole('coordinador')) {
+            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
+        }
+        $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();
+
+        return view('user.detail', [
+            'user' => $user,
+            'sedes' => $sedes,
+            'carreras' => $carreras,
+            'cargos' => (bool)count($cargos) > 0,
+            'materias' => (bool)count($materias) > 0,
+            'roles_primarios' => $roles_primarios,
+            'roles_secundarios' => $roles_secundarios,
         ]);
     }
 
@@ -57,7 +141,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         return view('user.edit', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -69,17 +153,17 @@ class UserController extends Controller
             'username' => ['required', Rule::unique('users')->ignore($user->id)],
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
-            'telefono'  => ['required'],
+            'telefono' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
         ]);
 
         $user->update($request->all());
 
         return redirect()->route('usuarios.editar', [
-            'user'  =>  $user
+            'user' => $user,
         ])->with([
-            'datos_editados' => 'Los datos personales han sido actualizados'
-        ]);;
+            'datos_editados' => 'Los datos personales han sido actualizados',
+        ]);
     }
 
     public function delete($id)
@@ -93,9 +177,10 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('usuarios.admin')->with([
-            'user_deleted' => 'El usuario eliminado exitosamente'
+            'user_deleted' => 'El usuario eliminado exitosamente',
         ]);
     }
+
     public function cambiar_contra(Request $request)
     {
         $user = Auth::user();
@@ -109,19 +194,20 @@ class UserController extends Controller
         $user->update();
 
         return redirect()->route('usuarios.editar', [
-            'user'  =>  $user
+            'user' => $user,
         ])->with([
-            'contraseña_nueva'  =>  'La contraseña ha sido actualizada'
+            'contraseña_nueva' => 'La contraseña ha sido actualizada',
         ]);
     }
+
     public function set_roles(Request $request, $id)
     {
         $user = User::find($id);
         $roles = $request->roles;
 
         // Verifico los roles que vienen desmarcados del form para borrarlos
-        foreach($user->roles as $rol_user){
-            if(!in_array($rol_user->nombre,$roles)){
+        foreach ($user->roles as $rol_user) {
+            if (!in_array($rol_user->nombre, $roles)) {
                 $user->roles()->detach(Rol::where(['id' => $rol_user->id])->first());
                 session()->forget($rol_user->nombre);
             }
@@ -129,14 +215,14 @@ class UserController extends Controller
 
         // Si el rol que viene en el form ya lo tiene no lo crea y pasa al siguiente
         foreach ($roles as $key => $rol) {
-            if(!$user->hasRole($rol)){
+            if (!$user->hasRole($rol)) {
                 $user->roles()->attach(Rol::where(['nombre' => $rol])->first());
-                session([$rol=>$rol]);
+                session([$rol => $rol]);
             }
         }
 
-        return redirect()->route('usuarios.admin')->with([
-            'message' => 'Rol cambiado!'
+        return redirect()->route('usuarios.detalle',$user->id)->with([
+            'message' => 'Rol cambiado!',
         ]);
     }
 
@@ -145,15 +231,15 @@ class UserController extends Controller
         $user = User::find($id);
         $sedes = $request->sedes;
 
-        foreach($user->sedes as $sede_user){
-            if(!in_array($sede_user->id,$sedes)){
+        foreach ($user->sedes as $sede_user) {
+            if (!in_array($sede_user->id, $sedes)) {
                 $user->sedes()->detach(Sede::where(['id' => $sede_user->id])->first());
             }
         }
 
         // Si el rol que viene en el form ya lo tiene no lo crea y pasa al siguiente
         foreach ($sedes as $key => $sede) {
-            if($user->hasSede($sede)){
+            if ($user->hasSede($sede)) {
                 $sede = null;
             }
             if ($sede) {
@@ -161,38 +247,39 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('usuarios.admin')->with([
-            'message' => 'Sede cambiada!'
+        return redirect()->route('usuarios.detalle',$user->id)->with([
+            'message' => 'Sede cambiada!',
         ]);
     }
 
-    public function setMateriasUser(Request $request,$user_id)
+    public function setMateriasUser(Request $request, $user_id)
     {
         $user = User::find($user_id);
         $carrera = Carrera::find($request['carrera']);
         $materia = Materia::find($request['materia']);
 
-        if($user->hasSede($carrera->sede_id))
-        {
+        if ($user->hasSede($carrera->sede_id)) {
             $user->carreras()->attach($carrera);
             $user->materias()->attach($materia);
 
-        }else{
-            return redirect()->route('usuarios.admin')->with(['error_sede'=>'El usuario no pertenece a esa sede']);
+        } else {
+            return redirect()->route('usuarios.detalle',$user->id)->with(['error_sede' => 'El usuario no pertenece a esa sede']);
         }
 
-        return redirect()->route('usuarios.admin')->with(['carrera_success'=>'Se han añadido la materia y carrera al usuario']);
+        return redirect()->route('usuarios.detalle',$user->id)->with(
+            ['carrera_success' => 'Se han añadido la materia y carrera al usuario']
+        );
     }
 
     public function crear_usuario_alumno($alumno_id)
     {
         $alumno = Alumno::find($alumno_id);
 
-        if($alumno->user_id){
-            return redirect()->route('alumno.detalle',[
-                'id' => $alumno->id
+        if ($alumno->user_id) {
+            return redirect()->route('alumno.detalle', [
+                'id' => $alumno->id,
             ])->with([
-                'mensaje_error' => 'El alumno, ya tiene un usuario creado'
+                'mensaje_error' => 'El alumno, ya tiene un usuario creado',
             ]);
         }
 
@@ -202,19 +289,18 @@ class UserController extends Controller
             'nombre' => $alumno->nombres,
             'apellido' => $alumno->apellidos,
             'telefono' => $alumno->telefono,
-            'password' => Hash::make($alumno->dni)
+            'password' => Hash::make($alumno->dni),
         ];
 
-        $user_exists = User::where('email',$alumno->email)
-        ->orWhere('username',$alumno->dni)->first();
+        $user_exists = User::where('email', $alumno->email)
+            ->orWhere('username', $alumno->dni)->first();
 
-        if($user_exists)
-        {
-            return redirect()->route('alumno.detalle',[
-                'id' => $alumno->id
+        if ($user_exists) {
+            return redirect()->route('alumno.detalle', [
+                'id' => $alumno->id,
             ])->with([
-                'mensaje_error' => 'Ya existe un usuario con este email o username'
-            ]); 
+                'mensaje_error' => 'Ya existe un usuario con este email o username',
+            ]);
         }
 
         $user = User::create($data);
@@ -225,11 +311,16 @@ class UserController extends Controller
 
         // Mail::to($alumno->email)->send(new MatriculacionUser($alumno));
 
-        return redirect()->route('alumno.detalle',[
-            'id' => $alumno->id
+        return redirect()->route('alumno.detalle', [
+            'id' => $alumno->id,
         ])->with([
-            'mensaje_exitoso' => 'El usuario para el alumno '.$alumno->nombres.' '.$alumno->apellidos.' se ha creado exitosamente.'
+            'mensaje_exitoso' => 'El usuario para el alumno '.$alumno->nombres.' '.$alumno->apellidos.' se ha creado exitosamente.',
         ]);
 
+    }
+
+    public function getUsuarioByUsernameOrNull($busqueda)
+    {
+        return response()->json($this->userService->buscadorUsuario($busqueda), 200);
     }
 }

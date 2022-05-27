@@ -3,25 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class CargoController extends Controller
 {
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-coordinador');
     }
 
     public function index()
     {
         $cargos = Cargo::all();
+        $carreras = Carrera::all();
 
         return view('cargo.admin',[
-            'cargos' => $cargos
+            'cargos' => $cargos,
+            'carreras' => $carreras
         ]);
     }
 
@@ -43,13 +48,37 @@ class CargoController extends Controller
 
     public function store(Request $request)
     {
-        $validate = $this->validate($request,[
-            'nombre' => ['required']
-        ]);
+        $this->getValidate($request);
 
         $cargo = Cargo::create($request->all());
 
-        return redirect()->route('cargo.index');
+        return redirect()->route('cargo.admin');
+    }
+
+    public function vista_editar(Cargo $id){
+        $user = Auth::user();
+        $carreras = $user->carreras;
+
+        return view('cargo.edit',[
+            'cargo'   => $id,
+            'carreras'     => $carreras,
+//            'personal'  => $personal
+        ]);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function editar(Cargo $cargo,Request $request){
+        $this->getValidate($request);
+
+
+        $cargo->carrera_id = $request->input('carrera_id');
+        $cargo->update($request->all());
+
+        return redirect()->route('cargo.show',['id'=>$cargo->id])->with([
+            'message'   =>      'Datos editados correctamente!'
+        ]);
     }
     public function agregarModulo(Request $request)
     {
@@ -67,6 +96,24 @@ class CargoController extends Controller
 
         return redirect()->route('cargo.show',$cargo->id);
     }
+  
+    public function selectCargos($id)
+    {
+        $cargos = Cargo::select('nombre','id')->where('carrera_id',$id)->get();
+        return response()->json($cargos,200);
+    }
+
+    /**
+     * @param Request $request
+     * @return void
+     * @throws ValidationException
+     */
+    protected function getValidate(Request $request): void
+    {
+        $validate = $this->validate($request, [
+            'nombre' => ['required'],
+            'carrera_id' => ['required', 'numeric'],
+        ]);
 
     public function deleteUser(Request $request,$cargo_id)
     {

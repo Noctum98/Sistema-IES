@@ -1,7 +1,7 @@
 <div class="card mt-3">
-    <h5 class="card-header">DECLARACIÓN JURADA DE SITUACIÓN ACADÉMICA</h5>
+    <h5 class="card-header text-secondary">DECLARACIÓN JURADA DE SITUACIÓN ACADÉMICA</h5>
     <div class="card-body">
-        <h5 class="card-title">A continuación se explica el carácter de inscripción como estudiante por el cual usted deberá optar en la opción INSCRIPCIÓN A SEGUNDO AÑO. </h5>
+        <h5 class="card-title text-secondary">A continuación se explica el carácter de inscripción como estudiante por el cual usted deberá optar en la opción INSCRIPCIÓN A SEGUNDO AÑO. </h5>
         <p class="card-text">
         <p> Usted podrá inscribirse como <b>"ESTUDIANTE REGULAR"</b> a Segundo Año, si: </p>
         <p>a- Tiene todos los espacios curriculares/ módulos de primer año regulares.</p>
@@ -21,7 +21,7 @@
         <p>Usted deberá marcar los espacios curriculares / módulos de segundo año a recursar.</p>
         <p>Deberá marcar los espacios curriculares / módulos de tercer año en los cuales se lo autorizó a cursar. </p>
         </p>
-        <h5>INSCRIPCIÓN A SEGUNDO AÑO</h5>
+        <h5 class="text-secondary">INSCRIPCIÓN A SEGUNDO AÑO</h5>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="regularidad" id="regular_segundo" value="regular_segundo" {{ old('regularidad') == 'regular_segundo' ? 'checked' : '' }}>
             <label class="form-check-label" for="regular_segundo">

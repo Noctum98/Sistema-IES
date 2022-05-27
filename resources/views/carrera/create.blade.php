@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Crear carreras
 		</h2>
 		<p>Agrega una carrera a tu institución</p>

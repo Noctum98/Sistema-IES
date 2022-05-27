@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Rol;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
@@ -42,22 +46,22 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-coordinador');
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username'=>['required'],
+            'username' => ['required'],
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
-            'telefono'  => ['required'],
+            'telefono' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -66,31 +70,50 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param array $data
+     * @return User
      */
     protected function create(array $data)
     {
         $user = User::create([
-            'username'=>$data['username'],
+            'username' => $data['username'],
             'nombre' => $data['nombre'],
             'apellido' => $data['apellido'],
-            'telefono'  => $data['telefono'],
+            'telefono' => $data['telefono'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'rol' => $data['roles'][0] ? 'rol_'.$data['roles'][0] : '',
         ]);
 
-        $user->roles()->attach(Rol::where('nombre', 'default')->first());
+        $role = $data['roles'][0] ?? 'default';
+
+        $user->roles()->attach(Rol::where('nombre', $role)->first());
+
+        return $user;
     }
 
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
+        $user = $this->create($request->all());
+        event(new Registered($user));
 
-        event(new Registered($user = $this->create($request->all())));
-
-        return redirect('/register')->with([
-            'message_success' => 'Usuario creado'
+        return redirect()->route('usuarios.detalle',[
+            'id' => $user->id,
         ]);
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function showRegistrationForm()
+    {
+        $auth = Auth::user();
+        $roles = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
+        if ($auth->hasAnyRole('coordinador')) {
+            $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
+        }
+
+        return view('auth.register', compact('roles'));
     }
 }

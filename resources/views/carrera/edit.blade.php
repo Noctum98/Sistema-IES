@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container p-2">
-	<h2 class="h1">
+	<h2 class="h1 text-info">
 		Editar carrera {{ $carrera->nombre }}
 	</h2>
 	<p>Edita los datos y personal encargado de la carrera</p>

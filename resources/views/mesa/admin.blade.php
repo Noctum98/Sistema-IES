@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Administrar instancias de mesas
 		</h2>
 		<hr>
@@ -52,14 +52,14 @@
 					Borrar datos
 					</a>
 				@endif
-				
+
 				@endif
 		      </td>
 			  @if(Session::has('admin'))
 		      <td>
-			  
+
 		      	<div class="custom-control custom-switch">
-				  <input type="checkbox" class="custom-control-input switchinsta" value="{{$instancia->estado}}" id="{{$instancia->id}}" 
+				  <input type="checkbox" class="custom-control-input switchinsta" value="{{$instancia->estado}}" id="{{$instancia->id}}"
 				  {{$instancia->estado == 'activa' ? 'checked':''}}>
 				  <label class="custom-control-label" for="{{$instancia->id}}"></label>
 				</div>

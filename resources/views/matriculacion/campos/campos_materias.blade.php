@@ -1,6 +1,6 @@
 <br>
 <div id="primer_año">
-    <h6>Selecciona las materias a cursar de 1ro</h6>
+    <h6 class="text-secondary">Selecciona las materias a cursar de 1<sup>ro</sup></h6>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" id="ninguna" name="">
         <label class="form-check-label" for="ninguna">
@@ -28,7 +28,7 @@
 <br>
 <div id="segundo_año">
 
-    <h6>Selecciona las materias a cursar de 2do</h6>
+    <h6 class="text-secondary">Selecciona las materias a cursar de 2<sup>do</sup></h6>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" id="ninguna" name="">
         <label class="form-check-label" for="todas-primero">
@@ -54,7 +54,7 @@
 </div>
 <br>
 <div id="tercer_año">
-    <h6>Selecciona las materias a cursar de 3ro</h6>
+    <h6 class="text-secondary">Selecciona las materias a cursar de 3<sup>ro</sup></h6>
     <div class="form-check">
         <input class="form-check-input" type="checkbox" id="ninguna" name="">
         <label class="form-check-label" for="todas-primero">

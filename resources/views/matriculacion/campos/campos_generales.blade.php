@@ -1,7 +1,7 @@
 <div class="card mt-3">
-    <h5 class="card-header">DATOS GENERALES</h5>
+    <h5 class="card-header text-secondary">DATOS GENERALES</h5>
     <div class="card-body">
-        <h5 class="card-title">
+        <h5 class="card-title text-secondary">
             Le recordamos que es necesario que realice la inscripción brindando los datos sin errores y de acuerdo a la documentación que presenta y adjunta en su legajo.
         </h5>
         <div class="mt-4 row">

@@ -42,13 +42,13 @@
             @endif
             @include('includes.mesas.config_mesa')
         @else
-        <a href="{{route('mesa.inscriptos',['id'=>$mesa->id])}}" class="btn-sm btn-secondary">Ver inscriptos</a>
+        <a href="{{route('mesa.inscriptos',['id'=>$mesa->id,'instancia_id'=>$instancia->id])}}" class="btn-sm btn-secondary">Ver inscriptos</a>
         @endif
     </td>
     @endif
     <td>
     
-        <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
+        <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
 
     </td>
 </tr>

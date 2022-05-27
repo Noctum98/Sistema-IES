@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container p-3">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Administrar alumnos
 		</h2>
 		<p>Agrega, edita o busca alumnos y su información</p>
@@ -76,7 +76,7 @@
 					<h5>No existen coincidencias con {{$busqueda}}</h5>
 				@endif
 			@endif
-			
+
 		</div>
 	</div>
 @endsection

@@ -10,7 +10,7 @@ class Cargo extends Model
     use HasFactory;
 
     protected $table = 'cargos';
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre','carrera_id'];
 
     public function users()
     {
@@ -20,5 +20,10 @@ class Cargo extends Model
     public function materias()
     {
         return $this->belongsToMany(Materia::class)->withTimestamps();
+    }
+
+    public function carrera()
+    {
+        return $this->belongsTo('App\Models\Carrera','carrera_id');
     }
 }

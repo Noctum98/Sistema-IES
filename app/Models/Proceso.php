@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Proceso extends Model
 {
@@ -15,10 +16,12 @@ class Proceso extends Model
         'estado'
     ];
 
-    public function materia(){
+    public function materia(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Materia','materia_id');
     }
-    public function alumno(){
+    public function alumno(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Alumno','alumno_id');
     }
     public function asistencia()

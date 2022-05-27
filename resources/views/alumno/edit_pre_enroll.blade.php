@@ -3,7 +3,7 @@
 	<div class="container p-3">
 		<div class="col-md-12 d-flex flex-column align-items-center">
 			<div class="col-md-7">
-				<h2 class="h1">
+				<h2 class="h1 text-info">
 					Preinscripción en {{ $preinscripcion->carrera->nombre }}.
 				</h2>
 				<hr>
@@ -220,7 +220,7 @@
 								</option>
 							</select>
 							<span class="text-danger">
-								*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, clickea sobre 
+								*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, clickea sobre
 								la siguiente casilla para inscribirte por articulo 7mo.
 							</span>
 							<div class="form-check">
@@ -302,7 +302,7 @@
 							</div>
 						</div>
 						<br>
-						<h4>Documentación a adjuntar</h4>
+						<h4 class="text-secondary">Documentación a adjuntar</h4>
 						<hr>
 						<div class="form-group">
 							<label for="dni_archivo">
@@ -353,11 +353,11 @@
 							@enderror
 						</div>
 						<br>
-						<h4>Trayecto de nivel medio</h4>
+						<h4 class="text-secondary">Trayecto de nivel medio</h4>
 						<hr>
 						<div class="form-group">
 							<label for="certificado_archivo">
-								Certificación de Nivel Secundario: 
+								Certificación de Nivel Secundario:
 								@if($preinscripcion->certificado_archivo)
 									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
 								@endif
@@ -372,7 +372,7 @@
 						</div>
 						<div class="form-group">
 							<label for="certificado_archivo_2">
-								Certificación de Nivel Secundario Dorso: 
+								Certificación de Nivel Secundario Dorso:
 								@if($preinscripcion->certificado_archivo_2)
 									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
 								@endif
@@ -387,7 +387,7 @@
 						</div>
 						<div id="7mo" style="display: none;">
 							<br>
-							<h4>Artículo 7mo</h4>
+							<h4 class="text-secondary">Artículo 7mo</h4>
 							<hr>
 							<div class="form-group">
 								<label for="primario">
@@ -424,7 +424,7 @@
 									Currículum  Vitae (en formato  PDF)
 									@if($preinscripcion->curriculum)
 										<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-									@endif  
+									@endif
 								</label>
 								<input type="file" id="curriculum" name="curriculum" class="@error('curriculum') is-invalid @enderror" value="{{ old('curriculum') }}" >
 
@@ -439,7 +439,7 @@
 									Nota a la Rectora (en  PDF)
 									@if($preinscripcion->nota)
 										<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-									@endif  
+									@endif
 								</label>
 								<input type="file" id="nota" name="nota" class="@error('nota') is-invalid @enderror" value="{{ old('nota') }}" >
 
@@ -453,7 +453,7 @@
 						<input type="submit" value="Actualizar datos" class="btn btn-success" id="loading">
 					</form>
 				</div>
-			</div>	
+			</div>
 		</div>
 	</div>
 @endsection

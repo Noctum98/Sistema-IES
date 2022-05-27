@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-     <h2 class="h1">
+     <h2 class="h1 text-info">
         Preinscriptos por articulo séptimo
     </h2>
     <hr>
@@ -14,7 +14,7 @@
 		      <th scope="col">Nombre y Apellido</th>
 		      <th scope="col">D.N.I</th>
 		      <th scope="col">Email</th>
-		      <th scope="col">Telefono</th>
+		      <th scope="col">Teléfono</th>
 		      <th scope="col">Estado</th>
 		      <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 		    </tr>
@@ -45,7 +45,7 @@
 		  </tbody>
 		</table>
 		@endif
-    
+
 </div>
-    
+
 @endsection
