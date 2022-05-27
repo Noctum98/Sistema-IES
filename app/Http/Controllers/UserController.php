@@ -35,9 +35,21 @@ class UserController extends Controller
 
     // Controlador de administration de usuarios
 
-    public function vista_admin()
+    public function vista_admin(Request $request)
     {
-        $users = User::usersPersonal();
+        $search = $request->input('search');
+        if(trim($search) != ''){
+            $auth = Auth::user();
+            $rol = null;
+            if ($auth->authorizeRoles('coordinador')) {
+                $rol = 'profesor';
+            }
+            $users = $this->userService->buscador($search, $rol);
+        }else{
+            $users = User::usersPersonal();
+        }
+
+
         $sedes = Sede::select('nombre', 'id')->get();
         $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
         $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();

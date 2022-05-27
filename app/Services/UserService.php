@@ -22,6 +22,12 @@ class UserService{
             });
         }
 
+
+            $lista->whereDoesntHave('roles', function ($query) {
+                return $query->where('nombre', 'alumno');
+            });
+
+
         return $lista->paginate(10);
     }
 
