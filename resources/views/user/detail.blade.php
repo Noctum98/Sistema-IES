@@ -39,7 +39,7 @@
                 <ul class="m-0 p-0">
                     @if(count($user->carreras) > 0)
                         @foreach($user->carreras as $carrera)
-                            <li>{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</li>
+                            <li>{{ $carrera->nombre.' - '.$carrera->sede->nombre }}<small>{{ $carrera->resolucion}} - </small></li>
                         @endforeach
                     @else
                         <p>No hay carreras vinculadas al usuario.</p>
