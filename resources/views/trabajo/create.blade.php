@@ -1,12 +1,12 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
-			Crear Trabájo Práctico
+		<h2 class="h1 text-info">
+			Crear Trabajo Práctico
 		</h2>
 		<hr>
 		<div class="col-md-6">
-			<form method="POST" action="{{ route('crear_trab',['id'=>$materia->id]) }}"> 
+			<form method="POST" action="{{ route('crear_trab',['id'=>$materia->id]) }}">
 				@csrf
 				<div class="form-group">
 					<label for="nombre">Nombre del trabajo:</label>

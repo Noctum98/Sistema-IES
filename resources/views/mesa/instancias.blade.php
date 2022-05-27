@@ -1,11 +1,11 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Elige la mesa que deseas rendir
 		</h2>
 		<hr>
-		
+
 		@if(count($instancias) > 0)
 		@foreach($instancias as $instancia)
 
@@ -16,10 +16,10 @@
 		</a>
 		@endforeach
 		@else
-			<h3>No hay mesas abiertas</h3>
+			<h3 class="text-secondary">No hay mesas abiertas</h3>
 		@endif
 		<!---
-		
+
 		---->
 	</div>
 @endsection

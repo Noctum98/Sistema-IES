@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Administrar Personal
 		</h2>
 		<a href="{{ route('personal.crear') }}" class="btn btn-success">

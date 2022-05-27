@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Inscribir a {{ $alumno->nombres.' '.$alumno->apellidos }}
 		</h2>
 		<hr>
@@ -11,7 +11,7 @@
 					{{ @session('message') }}
 				</div>
 			@endif
-			<h3>Materias Inscritas</h3>
+			<h3 class="text-secondary">Materias Inscritas</h3>
 			@if(count($procesos)> 0)
 			<table class="table mt-4">
 				  <thead class="thead-dark">
@@ -42,7 +42,7 @@
 				      @endif
 				      <td>
 				      	<a href="{{ route('proceso.detalle',['id'=>$proceso->id]) }}" class="btn-sm btn-primary">Ver proceso</a>
-				      </td>   
+				      </td>
 				    </tr>
 				    @endforeach
 				</tbody>
@@ -50,7 +50,7 @@
 			@else
 			<p>{{ $alumno->nombres }} no esta inscripto a ninguna materia.</p>
 			@endif
-			<h3>Inscribir a:</h3>
+			<h3 class="text-secondary">Inscribir a:</h3>
 			@if(count($materias)>0)
 			<table class="table mt-4">
 			  <thead class="thead-dark">

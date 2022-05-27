@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-    <h2 class="h1">
+    <h2 class="h1 text-info">
         Inscripciones en {{$mesa->materia->nombre}}
     </h2>
     <hr>
@@ -10,11 +10,11 @@
         {{@session('baja_exitosa')}}
     </div>
     @endif
-    <h2>Primer llamado</h2>
+    <h2 class="text-info">Primer llamado</h2>
     @if( count($primer_llamado) > 0)
     <div class="row">
         <a href="{{route('mesa.descargar',['id'=>$mesa->id,'llamado'=>'primero'])}}" class="btn btn-sm btn-success ml-3">
-            Descargar 1er llamado
+            Descargar 1<sup>er</sup> llamado
         </a>
     </div>
     <table class="table mt-4">
@@ -51,11 +51,11 @@
     <p>No existen inscripciones en este llamado</p>
     @endif
     <hr>
-    <h2>Segundo llamado</h2>
+    <h2 class="text-info">Segundo llamado</h2>
     @if( count($segundo_llamado) > 0)
     <div class="row">
         <a href="{{route('mesa.descargar',['id'=>$mesa->id,'llamado'=>'segundo'])}}" class="btn btn-sm btn-success ml-3">
-            Descargar 2do llamado
+            Descargar 2<sup>do</sup> llamado
         </a>
     </div>
     <table class="table mt-4">

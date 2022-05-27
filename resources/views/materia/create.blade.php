@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container p-3">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Crear materia para {{ $carrera->nombre }}
 		</h2>
 		<p>Asigna materias a la carrera</p>

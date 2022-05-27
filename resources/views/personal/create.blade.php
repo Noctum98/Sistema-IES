@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Agregar Personal
 		</h2>
 		<p>Agrega personal a la institución y asignales una sede</p>

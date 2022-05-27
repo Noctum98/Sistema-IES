@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Tomar asistencias {{ $asistencia->materia->nombre }}
 		</h2>
 		<hr>
@@ -9,11 +9,11 @@
 			<ul>
 				@foreach($procesos as $proceso)
 					<li class="row mt-4">
-						<h4 class="col-md-8 ">
+						<h4 class="col-md-8 text-secondary">
 						{{ $proceso->alumno->nombres.' '.$proceso->alumno->apellidos }}
 						</h4>
 						<div class="row" id="botones-asistencia">
-							
+
 							<button class="btn-sm btn-outline-success mr-2 bn-presente" id="{{$proceso->alumno->id.'/'.$asistencia->id.'/presente'}}">
 								Presente
 							</button>
@@ -30,6 +30,6 @@
 				Guardar Planilla
 			</a>
 		</div>
-		
+
 	</div>
 @endsection

@@ -1,12 +1,11 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-	<h2 class="h1">
+	<h2 class="h1 text-info">
 		Administrar asistencias {{ $materia->nombre }}
 	</h2>
 	<hr>
 	<div class="col-md-12">
-
 		<br>
 		@if($materia->carrera->tipo == 'tradicional')
 			@include('asistencia.tables.table_tradicional')

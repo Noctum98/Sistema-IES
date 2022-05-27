@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Editar alumno {{ $alumno->nombres.' '.$alumno->apellidos }}
 		</h2>
 		<p>Edita los datos de el alumno</p>
@@ -249,13 +249,13 @@
 						</span>
 					@enderror
 				</div>
-				
+
 				<br>
 				<h4>Trayecto de nivel medio</h4>
 				<hr>
 				<div class="form-group">
 					<label for="titulo_archivo">
-						A- Título de Nivel Secundario: 
+						A- Título de Nivel Secundario:
 						@if($alumno->titulo_archivo)
 							(Ya hay un archivo subido, si sube otro, el anterior se eliminará)
 						@endif
@@ -270,7 +270,7 @@
 				</div>
 				<div class="form-group">
 					<label for="certificado_archivo">
-						B- Certificación de Nivel Secundario: 
+						B- Certificación de Nivel Secundario:
 						@if($alumno->certificado_archivo)
 							(Ya hay un archivo subido, si sube otro, el anterior se eliminará)
 						@endif

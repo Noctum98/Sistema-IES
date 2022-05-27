@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="container">
-		<h1>Seccion de Sedes</h1>
+		<h1 class="text-info">Sección de Sedes</h1>
 		<hr>
 		@if(Session::has('admin'))
 			<div class="row">

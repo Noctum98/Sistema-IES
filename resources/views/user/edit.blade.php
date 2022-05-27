@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-	<h2 class="h1">
+	<h2 class="h1 text-info">
 		Mis datos
 	</h2>
 	<hr>
@@ -71,7 +71,7 @@
 			<input type="submit" value="Editar datos" class="btn btn-secondary">
 		</form>
 	</div>
-	<h3>Cambiar contraseña</h3>
+	<h3 class="text-secondary">Cambiar contraseña</h3>
 		<hr>
 		<div class="row">
 		<form class="col-md-4" method="POST" action="{{route('cambiar_contra')}}">

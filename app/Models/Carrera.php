@@ -32,4 +32,9 @@ class Carrera extends Model
     {
         return $this->belongsToMany(Alumno::class)->withTimestamps()->orderBy('apellidos');
     }
+
+    public function cargos()
+    {
+        return $this->hasMany(Cargo::class);
+    }
 }

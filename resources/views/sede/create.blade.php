@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 		Crear Sede
 		</h2>
 		<span>Crea sedes en caso de necesitarlas</span>
@@ -20,7 +20,7 @@
 			 @csrf
 			<div class="form-group">
 				<label for="nombre">Nombre de la Sede</label>
-				<input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" placeholder="Sede Central" required />
+				<input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" placeholder="Sede Central" required />
 
 				@error('nombre')
 					<span class="invalid-feedback d-block" role="alert">
@@ -30,7 +30,7 @@
 			</div>
 			<div class="form-group">
 				<label for="ubicacion">Ubicación de la Sede</label>
-				<input type="text" name="ubicacion" class="form-control @error('ubicacion') is-invalid @enderror" value="{{ old('ubicacion') }}" placeholder="Consulta/San Carlos" required />
+				<input type="text" id="ubicacion" name="ubicacion" class="form-control @error('ubicacion') is-invalid @enderror" value="{{ old('ubicacion') }}" placeholder="Consulta/San Carlos" required />
 
 				@error('ubicacion')
 					<span class="invalid-feedback d-block" role="alert">
@@ -41,8 +41,8 @@
 			<div class="form-group">
 				<input type="submit" value="Guardar Sede" class="btn btn-success">
 			</div>
-			
+
 		</form>
 	</div>
-	
+
 @endsection

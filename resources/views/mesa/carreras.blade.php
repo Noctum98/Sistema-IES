@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-	<h2 class="h1">
+	<h2 class="h1 text-info">
 		{{$sede->nombre}}
 	</h2>
 	<hr>
@@ -20,30 +20,26 @@
 		{{@session('error_fecha')}}
 	</div>
 	@endif
-	
+
 	<div id="accordion">
 		@foreach($sede->carreras as $carrera)
 		<div class="card">
 			<div class="card-header" id="heading{{$carrera->id}}">
-				<h5 class="mb-0">
-					<h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold">
-
+					<h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold text-secondary">
 						{{$carrera->nombre}} -
 						@if($carrera->nombre != 'Enfermería Profesional')
 						Res: {{$carrera->resolucion}}
 						@else
 						Turno {{ucwords($carrera->turno)}}
 						@endif
-
 					</h6>
-				</h5>
 			</div>
-			
+
 			<div id="collapse{{$carrera->id}}" class="collapse" aria-labelledby="heading{{$carrera->id}}" data-bs-parent="#accordion">
 				<div class="card-body">
 					@if($carrera->estado != 1)
 					<table class="table">
-						<thead>
+						<thead class="thead-dark">
 							<tr>
 								<th scope="col">Primer Año</th>
 								@if($instancia->tipo == 0)
@@ -54,6 +50,7 @@
 							</tr>
 						</thead>
 						<tbody>
+
 							@foreach($carrera->materias as $materia)
 							@if($materia->año == 1)
 							@include('includes.mesas.table_materias')
@@ -64,7 +61,7 @@
 					</table>
 					@endif
 					<table class="table">
-						<thead>
+						<thead class="thead-dark">
 							<tr>
 								<th scope="col">Segundo Año</th>
 								@if($instancia->tipo == 0)
@@ -84,7 +81,7 @@
 						</tbody>
 					</table>
 					<table class="table">
-						<thead>
+						<thead class="thead-dark">
 							<tr>
 								<th scope="col">Tercer Año</th>
 								@if($instancia->tipo == 0)

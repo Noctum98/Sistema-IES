@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 
 class AlumnoMesaController extends Controller
 {
-    
+
     public function __construct()
     {
         //$this->middleware('app.auth');
@@ -153,7 +153,7 @@ class AlumnoMesaController extends Controller
             $mesas_alumnos = [];
             foreach ($insc as $inscripcion) {
                 if ($inscripcion->mesa->instancia_id == $instancia->id) {
-                    array_push($mesas_alumnos, $inscripcion);
+                    $mesas_alumnos[] = $inscripcion;
                 }
             }
         }
@@ -170,7 +170,7 @@ class AlumnoMesaController extends Controller
 
                 foreach ($mesas_alumnos as $inscripcion) {
                     if ($instancia->tipo == 1) {
-                        
+
                         if ($inscripcion->materia_id == $dato && !$inscripcion->estado_baja) {
                             return redirect()->route('mesa.mate',[
                                 'instancia_id' => $instancia->id
@@ -180,9 +180,9 @@ class AlumnoMesaController extends Controller
                         }
                     } else {
                         if ($inscripcion['mesa_id'] == $dato) {
-        
+
                             $inscripcion->delete();
-                            
+
                         }
                     }
                 }
@@ -209,16 +209,14 @@ class AlumnoMesaController extends Controller
                 }
                 $inscripcion->save();
             }
-           
-            $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
-            
+$mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
+
             if(!Auth::user())
             {
                 //dd($datos);
                 Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia,$inscripcion));
                 $mensaje = 'Ya estas inscripto correctamente, se ha enviado un comprobante a tu correo electronico.';
             }
-
             return redirect()->route('mesa.mate',[
                 'instancia_id' => $instancia->id
             ])->with([
@@ -231,7 +229,7 @@ class AlumnoMesaController extends Controller
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $inscripcion = MesaAlumno::find($id);
-        
+
         if ($instancia->tipo == 0) {
             if (time() > strtotime($inscripcion->mesa->fecha)) {
                 if (time() > $inscripcion->mesa->cierre_segundo) {
@@ -261,11 +259,12 @@ class AlumnoMesaController extends Controller
             'instancia_id' => $instancia->id
         ]);
     }
+
     public function borrar_inscripcion(Request $request,$id,$instancia_id){
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $inscripcion = MesaAlumno::find($id);
         $mesa_id = $inscripcion->mesa_id;
-        
+
         if(isset($request['motivos']) || $instancia->tipo == 1)
         {
             Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
@@ -277,7 +276,7 @@ class AlumnoMesaController extends Controller
 
         if ($instancia->tipo == 0) {
             $inscripcion->delete();
-            
+
         }
 
         return redirect()->route($ruta,[
@@ -287,6 +286,7 @@ class AlumnoMesaController extends Controller
             'baja_exitosa' => 'Se ha dado de baja la inscripción correctamente'
         ]);
     }
+
     public function email_session($dni, $instancia_id, $sede_id)
     {
         $instancia = Instancia::find($instancia_id);
@@ -338,7 +338,7 @@ class AlumnoMesaController extends Controller
         //dd($mesas_alumnos,$dato);
         foreach ($mesas_alumnos as $inscripcion) {
             if ($instancia->tipo == 1) {
-                
+
                 if ($inscripcion->materia_id == $dato && !$inscripcion->estado_baja) {
                     return redirect()->route('mesa.mate')->with([
                         'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
@@ -348,7 +348,7 @@ class AlumnoMesaController extends Controller
                 if ($inscripcion['mesa_id'] == $dato) {
 
                     $inscripcion->delete();
-                    
+
                 }
             }
         }

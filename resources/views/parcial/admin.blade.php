@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 	<div class="container">
-		<h2 class="h1">
+		<h2 class="h1 text-info">
 			Parciales de {{ $materia->nombre }}
 		</h2>
 		<hr>
@@ -16,8 +16,8 @@
 					  <div class="card">
 					    <div class="card-header" id="heading{{$parci->id}}">
 					      <h5 class="mb-0">
-					        <h6 style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{$parci->id}}" aria-expanded="false" aria-controls="collapse{{$parci->id}}" class="font-weight-bold">
-					        	
+					        <h6 style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{$parci->id}}" aria-expanded="false" aria-controls="collapse{{$parci->id}}" class="font-weight-bold text-secondary">
+
 					          {{$parci->nombre}}
 
 					        </h6>
@@ -27,7 +27,7 @@
 					    <div id="collapse{{$parci->id}}" class="collapse" aria-labelledby="heading{{$parci->id}}" data-parent="#accordion">
 					      <div class="card-body">
 					        <table class="table">
-							  <thead>
+							  <thead class="thead-dark">
 							    <th scope="col">Nombre</th>
 							    <th scope="col">Fecha</th>
 							    <th scope="col">Porcentaje</th>
@@ -35,7 +35,7 @@
 							    <th scope="col">Recuperatorio</th>
 							  </thead>
 							  <tbody>
-							  	
+
 							  	@foreach($parci->parciales as $parcial)
 							  	<tr>
 							  		<td><strong>
@@ -62,8 +62,8 @@
 							<a href="{{ route('parci.recu',['id'=>$parci->id]) }}" class="btn-sm btn-secondary">
 								Recuperatorio
 							</a>
-							
-							
+
+
 					    </div>
 					</div>
 				@endforeach

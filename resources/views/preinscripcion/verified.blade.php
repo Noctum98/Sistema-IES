@@ -1,8 +1,8 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-     <h2 class="h1">
-         {{$title.' '.$carrera->nombre.' ('.$carrera->sede->nombre.' - Turno '.ucwords($carrera->turno).')' }} 
+     <h2 class="h1 text-info">
+         {{$title.' '.$carrera->nombre.' ('.$carrera->sede->nombre.' - Turno '.ucwords($carrera->turno).')' }}
     </h2>
     <hr>
     @if(count($preinscripciones) == 0)
@@ -37,7 +37,7 @@
 		  </tbody>
 		</table>
 		@endif
-    
+
 </div>
-    
+
 @endsection
