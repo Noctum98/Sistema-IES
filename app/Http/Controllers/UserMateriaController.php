@@ -27,15 +27,15 @@ class UserMateriaController extends Controller
             }
 
             if($user->hasMateria($materia->id)){
-                return redirect()->route('usuarios.admin')->with(['error_materia'=>'El usuario ya tiene asignado esta materia.']);
+                return redirect()->route('usuarios.detalle',$user->id)->with(['error_materia'=>'El usuario ya tiene asignado esta materia.']);
             }else{
                 $user->materias()->attach($materia);
             }
         }else{
-            return redirect()->route('usuarios.admin')->with(['error_sede'=>'El usuario no pertenece a esa sede']);
+            return redirect()->route('usuarios.detalle',$user->id)->with(['error_sede'=>'El usuario no pertenece a esa sede']);
         }
 
-        return redirect()->route('usuarios.admin')->with(['carrera_success'=>'Se han añadido la materia y carrera al usuario']);
+        return redirect()->route('usuarios.detalle',$user->id)->with(['carrera_success'=>'Se han añadido la materia y carrera al usuario']);
     }
 
     public function delete($id,$materia_id)

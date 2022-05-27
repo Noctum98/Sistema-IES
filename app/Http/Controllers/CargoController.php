@@ -16,7 +16,7 @@ class CargoController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
+        $this->middleware('app.roles:admin-coordinador');
     }
 
     public function index()
