@@ -1,16 +1,23 @@
 @extends('layouts.app-prueba')
 @section('content')
-<div class="container">
-	<h2 class="h1 text-info">
-		Administrar usuarios
-	</h2>
-    <div class="d-flex justify-content-center" style="font-size: 0.8em">
-        {{ $users->links() }}
-    </div>
+    <div class="container">
+        <div class="col-sm-12 d-flex">
+            <h2 class="h1 text-info  mx-auto">
+                Administrar usuarios
+
+            </h2>
+            <form class="mx-auto d-inline-flex" action="{{ route('usuarios.admin') }}">
+                <input class="form-control mx-auto" type="text" id="search" name="search" placeholder="Buscar usuario" aria-label="Search">
+                <button class="btn btn-outline-success form-control-sm me-2" type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="d-flex justify-content-center" style="font-size: 0.8em">
+            {{ $users->links() }}
+        </div>
 
 	<hr>
 	<div class="col-md-12">
-		
+
 		@if(@session('user_deleted'))
 		<div class="alert alert-success">
 			{{ @session('user_deleted') }}
@@ -45,12 +52,12 @@
 		</table>
 	</div>
 
-    <div class="d-flex justify-content-center" style="font-size: 0.8em">
-        {{ $users->links() }}
+        <div class="d-flex justify-content-center" style="font-size: 0.8em">
+            {{ $users->links() }}
+        </div>
     </div>
-</div>
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/user/carreras.js') }}"></script>
+    <script src="{{ asset('js/user/carreras.js') }}"></script>
 @endsection

@@ -14,7 +14,7 @@
                 @if(Session::has('listas'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseListado"
                        aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
                         Lista de Personal
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
@@ -22,6 +22,7 @@
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('usuarios.listado','profesor') }}">Lista de Profesores</a>
+                            <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de Coordinadores</a>
                         </nav>
                     </div>
                 @endif
