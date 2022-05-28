@@ -4,7 +4,8 @@
 		<div class="col-md-12 d-flex flex-column align-items-center">
 			<div class="col-md-7">
 				<h2 class="h1 text-info">
-					Preinscripción en {{ $preinscripcion->carrera->nombre }}.
+					Preinscripción en {{ $preinscripcion->carrera->nombre }}
+					<small>{{$preinscripcion->carrera->turno}}</small>.
 				</h2>
 				<hr>
 				<p>

@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <h2 class="h1 text-info">
-            Alumnos de {{ $carrera->nombre }}
+			Alumnos de {{ $carrera->nombre }} <small>{{ucwords($carrera->turno)}} - {{$carrera->resolucion}}</small>
         </h2>
         <p>
             Selecciona el año para mostrar los alumnos de cada uno
