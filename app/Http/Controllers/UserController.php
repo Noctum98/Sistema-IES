@@ -181,11 +181,31 @@ class UserController extends Controller
     public function delete($id)
     {
         $user = User::find($id);
-        $user->roles()->detach();
-        $user->sedes()->detach();
-        $user->materias()->detach();
-        $user->carreras()->detach();
-        $user->alumnos()->detach();
+        if($user->roles())
+        {
+            $user->roles()->detach();
+        }
+
+        if($user->sedes())
+        {
+            $user->sedes()->detach();
+        }
+        
+        if($user->carreras())
+        {
+            $user->carreras()->detach();
+        }
+
+        if($user->materias())
+        {
+            $user->materias()->detach();
+        }
+
+        if($user->alumnos())
+        {
+            $user->alumnos()->detach();
+        }
+
         $user->delete();
 
         return redirect()->route('usuarios.admin')->with([
