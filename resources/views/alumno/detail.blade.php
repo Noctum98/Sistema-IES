@@ -94,7 +94,7 @@
 					<strong>Inscripto a:</strong>
 					<br>
 					@foreach($alumno->carreras as $carrera)
-                        _ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }}
+                        _ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
                         <br>
                         Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
                         <br>
