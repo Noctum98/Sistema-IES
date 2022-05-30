@@ -62,8 +62,7 @@ class CargoController extends Controller
     }
 
     public function vista_editar(Cargo $id){
-        $user = Auth::user();
-        $carreras = $user->carreras;
+        $carreras = $this->carreraService->modulares();
 
         return view('cargo.edit',[
             'cargo'   => $id,

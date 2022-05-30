@@ -111,7 +111,7 @@ class RegisterController extends Controller
         $auth = Auth::user();
         $roles = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
         if ($auth->hasAnyRole('coordinador')) {
-            $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
+            $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->orWhere('nombre','planillas')->get();
         }
 
         return view('auth.register', compact('roles'));
