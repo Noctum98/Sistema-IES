@@ -7,21 +7,13 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('cargo.agregarModulo') }}" method="POST">
-                    <div class="form-group">
-                        <input type="hidden" name="cargo_id" value="{{ $cargo->id }}">
-                        <label for="carreras">Carreras</label>
-                        <select name="carrera" id="carreras" class="form-select carreras">
-                            @foreach($sedes as $sede)
-                                @foreach($sede->carreras as $carrera)
-                                <option value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$sede->nombre }}</option>
-                                @endforeach
-                            @endforeach
-                        </select>
-                    </div>
+                    <input type="hidden" name="cargo_id" value="{{ $cargo->id }}">
                     <div class="form-group">
                         <label for="carreras">Modulos</label>
                         <select name="materia" id="materias" class="form-select materias">
-
+                                @foreach($materias as $materia)
+                                    <option value="{{ $materia->id }}">{{ $materia->nombre }}</option>
+                                @endforeach
                         </select>
                     </div>
             </div>
