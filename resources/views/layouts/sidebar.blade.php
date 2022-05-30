@@ -23,9 +23,11 @@
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('usuarios.listado','profesor') }}">Lista de Profesores</a>
                         </nav>
+                        @if(Session::has('admin') || Session::has('regente'))
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de Coordinadores</a>
                         </nav>
+                        @endif
                     </div>
                 @endif
                 @if(Session::has('cargos'))
