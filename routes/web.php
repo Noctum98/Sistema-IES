@@ -96,7 +96,7 @@ Route::prefix('usuario_materia')->group(function () {
 
 });
 
-Route::prefix('usuario_materia')->group(function () {
+Route::prefix('usuario_carrera')->group(function () {
     Route::delete('delete/{user_id}',[UserCarreraController::class,'delete'])->name('delete_user_carrera');
 });
 
