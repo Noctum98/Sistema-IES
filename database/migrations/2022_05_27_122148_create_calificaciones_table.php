@@ -15,11 +15,11 @@ class CreateCalificacionesTable extends Migration
     {
         Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('tipo_id')->constrained('tipos_calificaciones');
             $table->foreignId('proceso_id')->constrained('procesos');
             $table->string('nombre');
-            $table->float('nota',10,2)->unsigned();;
+            $table->float('nota',10,2)->unsigned();
             $table->timestamps();
         });
     }
