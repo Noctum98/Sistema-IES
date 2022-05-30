@@ -5,7 +5,7 @@
     <hr>
     <p><i>{{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->sede->nombre.' )' }}</i></p>
     <h3 class="text-secondary mb-3">Modulos</h3>
-    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarModulo">Agregar modulo</button></p>
+    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarModulo">Agregar módulo</button></p>
     @include('cargo.modals.agregar_modulo')
     @if(count($cargo->materias) == 0)
     <p>No hay materias vinculadas al cargo.</p>
