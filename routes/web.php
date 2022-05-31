@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -335,6 +336,10 @@ Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.a
 Route::delete('deleteUser/{cargo_id}',[CargoController::class,'deleteUser'])->name('cargo.delUser');
 Route::delete('deleteMateria/{cargo_id}',[CargoController::class,'deleteModulo'])->name('cargo.delMateria');
 
+/**
+ * Ruta para TipoCalificaciones
+ */
+Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');

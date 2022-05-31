@@ -89,8 +89,11 @@
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('asis.inicio') }}">Planilla de Asistencia</a>
-                            <a class="nav-link" href="{{ route('trab.inicio') }}">Planilla de TP</a>
-                            <a class="nav-link" href="layout-sidenav-light.html">Planilla de Parciales</a>
+{{--                            <a class="nav-link" href="{{ route('trab.inicio') }}">Planilla de TP</a>--}}
+{{--                            <a class="nav-link" href="layout-sidenav-light.html">Planilla de Parciales</a>--}}
+                            @if(Session::has('planillas') && Session::has('admin') || Session::has('regente') )
+                                                            <a class="nav-link" href="{{ route('tipoCalificaciones.index') }}">Tipo Calificaciones</a>
+                            @endif
                         </nav>
                     </div>
                 @endif
