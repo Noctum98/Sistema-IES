@@ -37,7 +37,7 @@ class TipoCalificacionesController extends Controller
      */
     public function create()
     {
-        //
+        // Ahora en modal
     }
 
     /**
@@ -67,7 +67,7 @@ class TipoCalificacionesController extends Controller
      */
     public function show($id)
     {
-        //
+        // No usado
     }
 
     /**

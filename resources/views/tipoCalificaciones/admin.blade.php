@@ -31,6 +31,11 @@
                                 <td>{{$tc->descripcion}}</td>
                                 <td>{{$tc->nombre}}</td>
                                 <td>
+                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTipoCalificacion">
+                                        Editar
+                                    </button>
+                                </td>
+                                <td>
                                     <form method="POST" class="d-inline"
                                           action="{{route('tipoCalificaciones.destroy', ['tipoCalificacione' => $tc->id])}}">
                                         @csrf
