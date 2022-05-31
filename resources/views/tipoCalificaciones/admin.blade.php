@@ -18,9 +18,11 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="thead-dark">
-                        <th scope="col">descripción</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col" class="text-center"><i class="fa fa-cogs"></i></th>
+                        <tr>
+                            <th scope="col">descripción</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col" class="text-center"><i class="fa fa-cogs"></i></th>
+                        </tr>
                         </thead>
                         <tbody>
 
