@@ -19,7 +19,7 @@
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
-                            <th scope="col">descripción</th>
+                            <th scope="col">Descripción</th>
                             <th scope="col">Nombre</th>
                             <th scope="col" class="text-center"><i class="fa fa-cogs"></i></th>
                         </tr>
@@ -35,7 +35,10 @@
                                           action="{{route('tipoCalificaciones.destroy', ['tipoCalificacione' => $tc->id])}}">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger" type="submit"> Borrar</button>
+                                        <button class="btn btn-danger"
+                                                onclick="return confirm('Se borrará el registro. ¿Confirma?.')"
+                                                type="submit"> Borrar
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
