@@ -125,6 +125,9 @@
 							<option value="vespertino" {{$carrera->turno == 'vespertino' ? 'selected="selected"':''}}>
 								Vespertino
 							</option>
+							<option value="virtual" {{$carrera->turno == 'virtual' ? 'selected="selected"':''}}>
+								Virtual
+							</option>
 						</select>
 					</div>
 					<div class="form-group">

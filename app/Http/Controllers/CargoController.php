@@ -7,22 +7,28 @@ use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\Sede;
 use App\Models\User;
+use App\Services\CarreraService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class CargoController extends Controller
 {
-    public function __construct()
+    protected $carreraService;
+
+    public function __construct(
+        CarreraService $carreraService
+    )
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador');
+        $this->carreraService = $carreraService;
     }
 
     public function index()
     {
         $cargos = Cargo::all();
-        $carreras = Carrera::all();
+        $carreras = $this->carreraService->modulares();
 
         return view('cargo.admin',[
             'cargos' => $cargos,
@@ -37,11 +43,11 @@ class CargoController extends Controller
         })->get();
 
         $cargo = Cargo::find($id);
-        $sedes = Sede::all();
+        $materias = Materia::where('carrera_id',$cargo->carrera_id)->get();
 
         return view('cargo.detail',[
             'cargo' => $cargo,
-            'sedes' => $sedes,
+            'materias' => $materias,
             'users' => $users
         ]);
     }
@@ -56,8 +62,7 @@ class CargoController extends Controller
     }
 
     public function vista_editar(Cargo $id){
-        $user = Auth::user();
-        $carreras = $user->carreras;
+        $carreras = $this->carreraService->modulares();
 
         return view('cargo.edit',[
             'cargo'   => $id,

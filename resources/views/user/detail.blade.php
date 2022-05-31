@@ -40,7 +40,7 @@
                 @if(count($user->carreras) > 0)
                 @foreach($user->carreras as $carrera)
                 <li>
-                    {{ $carrera->nombre.' - '.$carrera->sede->nombre }}
+                    {{ $carrera->nombre.' ( '.$carrera->resolucion.' '.$carrera->turno.' ) '.' - '.$carrera->sede->nombre }}
                     -
                     <form action="{{ route('delete_user_carrera',$user->id) }}" method="POST" class="d-inline">
                         {{ method_field('DELETE') }}

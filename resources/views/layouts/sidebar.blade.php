@@ -5,7 +5,7 @@
                 @if(!Session::has('alumno'))
                 <div class="sb-sidenav-menu-heading">Administración</div>
                 @endif
-                @if(Session::has('admin') or Session::has('coordinador') )
+                @if(Session::has('admin'))
                     <a class="nav-link" href="{{ route('usuarios.admin') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                         Usuarios
@@ -26,6 +26,11 @@
                             <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de Coordinadores</a>
                             @endif
                         </nav>
+                        @if(Session::has('admin') || Session::has('regente'))
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de Coordinadores</a>
+                        </nav>
+                        @endif
                     </div>
                 @endif
                 @if(Session::has('cargos'))
@@ -72,7 +77,7 @@
                         </nav>
                     </div>
                 @endif
-                @if(Session::has('planillas'))
+                @if(Session::has('planillas') && Session::has('admin'))
                     <div class="sb-sidenav-menu-heading">Profesor</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePlanillas"
                        aria-expanded="false" aria-controls="collapseLayouts">

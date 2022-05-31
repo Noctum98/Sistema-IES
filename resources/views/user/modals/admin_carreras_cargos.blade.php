@@ -16,7 +16,7 @@
                             @foreach($carreras as $carrera)
                                 @if(count($carrera->cargos) > 0)
                                     <option
-                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' - '.$carrera->sede->nombre }}</option>
+                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' ( '.$carrera->resolucion.' '.$carrera->turno.' ) '.' - '.$carrera->sede->nombre }}</option>
                                 @endif
                             @endforeach
 

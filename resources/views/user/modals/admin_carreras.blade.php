@@ -15,7 +15,7 @@
                             @foreach($user->sedes as $sede)
                                 @foreach($sede->carreras as $carrera)
                                     <option
-                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' ( '.$carrera->resolucion.' '.$carrera->turno.' ) '.' - '.$sede->nombre }}</option>
+                                        value="{{ $carrera->id }}">{{ $carrera->nombre.' ( '.$carrera->resolucion.' '.$carrera->turno.' ) '.' - '.$carrera->sede->nombre }}</option>
                                 @endforeach
                             @endforeach
                         </select>
