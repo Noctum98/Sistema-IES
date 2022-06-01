@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
 	<h2 class="h1 text-info">
-		Mis datos
+		Mi Perfil
 	</h2>
 	<hr>
 	@if(@session('datos_editados'))

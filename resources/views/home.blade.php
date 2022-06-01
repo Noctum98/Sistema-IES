@@ -15,7 +15,7 @@
                     @endif
 
                     Si has iniciado sesión con los datos por defecto, recomendamos cambiar
-                    tu contraseña en la sección "Mis datos" del menú desplegable.
+                    tu contraseña en la sección "Mi Perfil" del menú desplegable.
                 </div>
             </div>
         </div>
