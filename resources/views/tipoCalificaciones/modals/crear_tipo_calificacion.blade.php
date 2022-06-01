@@ -14,7 +14,7 @@
                     </div>
                     <div class="form-group">
                         <label for="descripcion">Descripción</label>
-                        <input type="text" name="descripcion" id="descripcion" class="form-control" required/>
+                        <input type="number" min="0" name="descripcion" id="descripcion" class="form-control" required/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

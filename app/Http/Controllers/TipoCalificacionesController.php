@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\TipoCalificaciones;
 use App\Request\TipoCalificacionesRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -56,7 +59,9 @@ class TipoCalificacionesController extends Controller
 
         return redirect()
             ->route('tipoCalificaciones.index')
-            ->withSuccess("El nuevo tipo de calificación {$tipoCalificacion->nombre} con descripción {$tipoCalificacion->descripcion} fue creado");
+            ->withSuccess(
+                "El nuevo tipo de calificación {$tipoCalificacion->nombre} con descripción {$tipoCalificacion->descripcion} fue creado"
+            );
     }
 
     /**
@@ -73,24 +78,32 @@ class TipoCalificacionesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return Response
+     * @param TipoCalificaciones $tipoCalificacione
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(TipoCalificaciones $tipoCalificacione)
     {
-        //
+        return view('tipoCalificaciones.modals.editar_tipo_calificacion')->with([
+            'tipoCalificaciones' => $tipoCalificacione,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int $id
-     * @return Response
+     * @param TipoCalificacionesRequest $request
+     * @param TipoCalificaciones $tipoCalificacione
+     * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(TipoCalificacionesRequest $request, TipoCalificaciones $tipoCalificacione)
     {
-        //
+        $tipoCalificacione->update($request->validated());
+
+        return redirect()
+            ->route('tipoCalificaciones.index')
+            ->withSuccess(
+                "El tipo de calificación {$tipoCalificacione->nombre} con descripción {$tipoCalificacione->descripcion} fue actualizado correctamente"
+            );
     }
 
     /**
@@ -99,7 +112,7 @@ class TipoCalificacionesController extends Controller
      * @param TipoCalificaciones $tipoCalificacione
      * @return RedirectResponse
      */
-    public function destroy(TipoCalificaciones $tipoCalificacione):RedirectResponse
+    public function destroy(TipoCalificaciones $tipoCalificacione): RedirectResponse
     {
         $tipoCalificacione->delete();
 
