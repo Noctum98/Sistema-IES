@@ -98,6 +98,27 @@
                     @endif
                 </ul>
             </div>
+            <hr class="mt-2"/>
+            <div class="col-sm-3">
+                <h5 class="text-secondary">Nivel Usuario</h5>
+            </div>
+            <div class="col-sm-9">
+                <ul class="m-0 p-0">
+                    @if(count($nivel_usuario) > 0)
+                        @foreach($nivel_usuario as $nivel)
+
+                            <li>
+                                <strong> {{ $nivel->nombre}} </strong>
+                                <small>
+                                    {{$nivel->descripcion}}
+                                </small>
+                            </li>
+                        @endforeach
+                    @else
+                        <li>Sin asignar</li>
+                    @endif
+                </ul>
+            </div>
         </div>
     </div>
 @endsection
