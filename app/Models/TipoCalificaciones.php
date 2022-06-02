@@ -10,7 +10,7 @@ class TipoCalificaciones extends Model
     use HasFactory;
 
     protected $fillable = [
-        'identificador',
+        'descripcion',
         'nombre',
     ];
 }

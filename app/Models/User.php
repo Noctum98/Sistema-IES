@@ -150,7 +150,7 @@ class User extends Authenticatable
     }
     //============================= CARGOS ===================================//
     public function cargos(){
-        return $this->belongsToMany(Cargo::class)->withTimestamps();
+        return $this->belongsToMany(Cargo::class)->withTimestamps()->orderBy('updated_at', 'DESC');
     }
     public function hasCargo($cargo)
     {

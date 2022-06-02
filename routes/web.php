@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +77,7 @@ Route::prefix('usuarios')->group(function () {
     Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
     Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
     Route::get('detalle/{id}',[UserController::class,'vista_detalle'])->name('usuarios.detalle');
+    Route::get('mis_datos',[UserController::class,'vista_mis_datos'])->name('usuarios.mis_datos');
     Route::get('listado/{listado}/{busqueda?}',[UserController::class,'vista_listado'])->name('usuarios.listado');
 
 
@@ -93,7 +95,6 @@ Route::prefix('usuarios')->group(function () {
 
 Route::prefix('usuario_materia')->group(function () {
     Route::delete('delete/{user_id}/{materia_id}',[UserMateriaController::class,'delete'])->name('delete_materias_carreras');
-
 });
 
 Route::prefix('usuario_carrera')->group(function () {
@@ -102,6 +103,10 @@ Route::prefix('usuario_carrera')->group(function () {
 
 Route::prefix('usuario_cargo')->group(function () {
     Route::delete('delete/{user_id}/{cargo_id}',[UserCargoController::class,'delete'])->name('delete_cargo_carreras');
+});
+
+Route::prefix('usuario_carrera')->group(function(){
+    Route::delete('delete/{user_id}',[UserCarreraController::class,'delete'])->name('delete_user_carrera');
 });
 
 //Ruta de Roles
@@ -332,6 +337,10 @@ Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.a
 Route::delete('deleteUser/{cargo_id}',[CargoController::class,'deleteUser'])->name('cargo.delUser');
 Route::delete('deleteMateria/{cargo_id}',[CargoController::class,'deleteModulo'])->name('cargo.delMateria');
 
+/**
+ * Ruta para TipoCalificaciones
+ */
+Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');

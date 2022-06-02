@@ -3,38 +3,48 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 @if(!Session::has('alumno'))
-                <div class="sb-sidenav-menu-heading">Administración</div>
+                    <div class="sb-sidenav-menu-heading">Administración</div>
                 @endif
                 @if(Session::has('admin'))
                     <a class="nav-link" href="{{ route('usuarios.admin') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                         Usuarios
                     </a>
                 @endif
+                <a class="nav-link" href="{{ route('usuarios.mis_datos')}}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
+                    Mis datos
+                </a>
                 @if(Session::has('listas'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseListado"
                        aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
                         Lista de Personal
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseListado" aria-labelledby="headingOne"
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('usuarios.listado','profesor') }}">Lista de Profesores</a>
+                            <a class="nav-link" href="{{ route('usuarios.listado','profesor') }}">Lista de
+                                Profesores</a>
+                            @if(Session::has('admin') || Session::has('regente'))
+                                <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de
+                                    Coordinadores</a>
+                            @endif
                         </nav>
                         @if(Session::has('admin') || Session::has('regente'))
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de Coordinadores</a>
-                        </nav>
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{{ route('usuarios.listado','coordinador') }}">Lista de
+                                    Coordinadores</a>
+                            </nav>
                         @endif
                     </div>
                 @endif
                 @if(Session::has('cargos'))
-                <a class="nav-link" href="{{ route('cargo.admin') }}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
-                    Cargos
-                </a>
+                    <a class="nav-link" href="{{ route('cargo.admin') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
+                        Cargos
+                    </a>
                 @endif
                 @if(Session::has('preinscripciones'))
                     <a class="nav-link" href="{{ route('pre.admin') }}">
@@ -86,11 +96,16 @@
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('asis.inicio') }}">Planilla de Asistencia</a>
-                            <a class="nav-link" href="{{ route('trab.inicio') }}">Planilla de TP</a>
-                            <a class="nav-link" href="layout-sidenav-light.html">Planilla de Parciales</a>
+                            {{--                            <a class="nav-link" href="{{ route('trab.inicio') }}">Planilla de TP</a>--}}
+                            {{--                            <a class="nav-link" href="layout-sidenav-light.html">Planilla de Parciales</a>--}}
+                            @if(Session::has('planillas') && Session::has('admin') || Session::has('regente') )
+                                <a class="nav-link" href="{{ route('tipoCalificaciones.index') }}">Tipo
+                                    Calificaciones</a>
+                            @endif
                         </nav>
                     </div>
                 @endif
+
 
                 @if(Session::has('alumno'))
                     <div class="sb-sidenav-menu-heading">Alumno</div>
@@ -103,11 +118,14 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                         Mesas
                     </a>
+                    <!-----
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
                         Mis procesos
                     </a>
+                     ----->
                 @endif
+
             </div>
         </div>
     </nav>
