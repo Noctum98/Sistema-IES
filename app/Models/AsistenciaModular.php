@@ -19,7 +19,7 @@ class AsistenciaModular extends Model
 
     public function cargo()
     {
-        return $this->belongsTo('App\Models\Cargo','cargo_id');
+        return $this->belongsTo('App\Models\Cargo','cargo_id')->orderBy('updated_at', 'DESC');
     }
     
     public static function getByAsistenciaCargo($cargo_id,$asistencia_id)

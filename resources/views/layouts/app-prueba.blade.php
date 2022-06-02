@@ -55,7 +55,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li>
                         <a class="dropdown-item" href="{{ route('usuarios.editar') }}">
-                            Mis datos
+                            Mi Perfil
                         </a>
                     </li>
                     <hr class="dropdown-divider" />

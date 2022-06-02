@@ -59,7 +59,7 @@
 					@endif
 				@endforeach
 			</ul>
-			<p>Por favor pulsa en  "Editar datos" y cambia los archivos mencionados.</p>
+			<p>Por favor pulsa en "Editar datos" y cambia los archivos mencionados.</p>
 			<br>
 			<a href="{{route('pre.editar',['timecheck'=>$preinscripcion->timecheck,'id'=>$preinscripcion->id])}}" class="btn">Editar mis datos</a>
 		</div>

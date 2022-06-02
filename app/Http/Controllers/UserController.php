@@ -8,6 +8,9 @@ use App\Models\Cargo;
 use App\Models\User;
 use App\Models\Rol;
 use App\Models\RolUser;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -38,14 +41,14 @@ class UserController extends Controller
     public function vista_admin(Request $request)
     {
         $search = $request->input('search');
-        if(trim($search) != ''){
+        if (trim($search) != '') {
             $auth = Auth::user();
             $rol = null;
             if ($auth->authorizeRoles('coordinador')) {
                 $rol = 'profesor';
             }
             $users = $this->userService->buscador($search, $rol);
-        }else{
+        } else {
             $users = User::usersPersonal();
         }
 
@@ -148,6 +151,29 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @return Application|Factory|View
+     */
+    public function vista_mis_datos()
+    {
+        /** @var User $auth */
+        $auth = Auth::user();
+        $sedes = $auth->sedes;
+        $carreras = $auth->carreras;
+        $materias = $auth->materias;
+        $cargos = $auth->cargos;
+        $nivelUsuario = $auth->roles->where('tipo', 0);
+
+        return view('user.mi_detail', [
+            'user' => $auth,
+            'sedes' => $sedes,
+            'carreras' => $carreras,
+            'cargos' => $cargos,
+            'materias' => $materias,
+            'nivel_usuario' => $nivelUsuario,
+        ]);
+    }
+
     public function vista_editar()
     {
         $user = Auth::user();
@@ -181,28 +207,23 @@ class UserController extends Controller
     public function delete($id)
     {
         $user = User::find($id);
-        if($user->roles())
-        {
+        if ($user->roles()) {
             $user->roles()->detach();
         }
 
-        if($user->sedes())
-        {
+        if ($user->sedes()) {
             $user->sedes()->detach();
         }
-        
-        if($user->carreras())
-        {
+
+        if ($user->carreras()) {
             $user->carreras()->detach();
         }
 
-        if($user->materias())
-        {
+        if ($user->materias()) {
             $user->materias()->detach();
         }
 
-        if($user->alumnos())
-        {
+        if ($user->alumnos()) {
             $user->alumnos()->detach();
         }
 
@@ -253,7 +274,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('usuarios.detalle',$user->id)->with([
+        return redirect()->route('usuarios.detalle', $user->id)->with([
             'message' => 'Rol cambiado!',
         ]);
     }
@@ -279,7 +300,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('usuarios.detalle',$user->id)->with([
+        return redirect()->route('usuarios.detalle', $user->id)->with([
             'message' => 'Sede cambiada!',
         ]);
     }
@@ -295,10 +316,12 @@ class UserController extends Controller
             $user->materias()->attach($materia);
 
         } else {
-            return redirect()->route('usuarios.detalle',$user->id)->with(['error_sede' => 'El usuario no pertenece a esa sede']);
+            return redirect()->route('usuarios.detalle', $user->id)->with(
+                ['error_sede' => 'El usuario no pertenece a esa sede']
+            );
         }
 
-        return redirect()->route('usuarios.detalle',$user->id)->with(
+        return redirect()->route('usuarios.detalle', $user->id)->with(
             ['carrera_success' => 'Se han añadido la materia y carrera al usuario']
         );
     }
