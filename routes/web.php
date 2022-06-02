@@ -344,7 +344,7 @@ Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
-    Route::get('alumnos/all',[ExcelController::class,'all_alumnos']);
+    Route::get('alumnos/all/{sede_id?}',[ExcelController::class,'all_alumnos']);
 });
 
 Route::get('/clear-cache', function () {
