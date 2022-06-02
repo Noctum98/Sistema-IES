@@ -45,10 +45,16 @@ class ExcelController extends Controller
         return Excel::download(new AlumnosYearExport($alumnos,$generos),'Planilla de Alumnos de '.$carrera->nombre.' - Año '.$year.'.xlsx');
     }
 
-    public function all_alumnos()
+    public function all_alumnos($sede_id = null)
     {
-        $carreras = Carrera::all();
+        if($sede_id)
+        {
+            $carreras = Carrera::where('sede_id',$sede_id)->get();
+        }else
+        {
+            $carreras = Carrera::all();
+        }
 
-        return Excel::download(new AllAlumnosExport($carreras),'Planilla de alumnos completa.xlsx');
+        return Excel::download(new AllAlumnosExport($carreras,$sede_id),'Planilla de alumnos completa.xlsx');
     }
 }
