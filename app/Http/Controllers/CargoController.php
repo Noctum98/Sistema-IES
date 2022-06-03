@@ -9,6 +9,8 @@ use App\Models\Sede;
 use App\Models\User;
 use App\Services\CargoService;
 use App\Services\CarreraService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -38,7 +40,7 @@ class CargoController extends Controller
         if (trim($search) != '') {
             $cargos = $this->cargoService->buscador($search);
         } else {
-            $cargos = Cargo::orderBy('updated_at', 'DESC')->get();
+            $cargos = Cargo::orderBy('updated_at', 'DESC')->paginate(10);
         }
 
 
@@ -66,7 +68,7 @@ class CargoController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->getValidate($request);
 
@@ -89,7 +91,7 @@ class CargoController extends Controller
     /**
      * @throws ValidationException
      */
-    public function editar(Cargo $cargo, Request $request)
+    public function editar(Cargo $cargo, Request $request): RedirectResponse
     {
         $this->getValidate($request);
 
@@ -102,7 +104,7 @@ class CargoController extends Controller
         ]);
     }
 
-    public function agregarModulo(Request $request)
+    public function agregarModulo(Request $request): RedirectResponse
     {
         $cargo = Cargo::find($request['cargo_id']);
         $cargo->materias()->attach(Materia::find($request['materia']));
@@ -110,7 +112,7 @@ class CargoController extends Controller
         return redirect()->route('cargo.show', $cargo->id);
     }
 
-    public function agregarUser(Request $request)
+    public function agregarUser(Request $request): RedirectResponse
     {
         $cargo = Cargo::find($request['cargo_id']);
 
@@ -119,8 +121,7 @@ class CargoController extends Controller
         return redirect()->route('cargo.show', $cargo->id);
     }
 
-
-    public function deleteUser(Request $request, $cargo_id)
+    public function deleteUser(Request $request, $cargo_id): RedirectResponse
     {
         $cargo = Cargo::find($cargo_id);
         $cargo->users()->detach(User::find($request['user_id']));
@@ -128,7 +129,7 @@ class CargoController extends Controller
         return redirect()->route('cargo.show', $cargo->id);
     }
 
-    public function deleteModulo(Request $request, $cargo_id)
+    public function deleteModulo(Request $request, $cargo_id): RedirectResponse
     {
         $cargo = Cargo::find($cargo_id);
         $cargo->materias()->detach(Materia::find($request['materia_id']));
@@ -136,11 +137,32 @@ class CargoController extends Controller
         return redirect()->route('cargo.show', $cargo->id);
     }
 
-    public function selectCargos($id)
+    public function selectCargos($id): JsonResponse
     {
         $cargos = Cargo::select('nombre', 'id')->where('carrera_id', $id)->get();
 
         return response()->json($cargos, 200);
+    }
+
+    /**
+     * @param Cargo $cargo Recibe un Model cargo
+     * @return RedirectResponse Redirecciona al index de cargo
+     */
+    public function destroy(Cargo $cargo): RedirectResponse
+    {
+        if ($cargo->users()) {
+            $cargo->users()->detach();
+        }
+
+        if ($cargo->materias()) {
+            $cargo->materias()->detach();
+        }
+
+        $cargo->delete();
+        return redirect()->route('cargo.admin')
+            ->with([
+                'cargo_deleted' => sprintf('El cargo %s fue eliminado exitosamente',$cargo->nombre)
+            ]);
     }
 
     /**

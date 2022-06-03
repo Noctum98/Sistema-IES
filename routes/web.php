@@ -135,6 +135,7 @@ Route::prefix('cargo')->group(function () {
     Route::get('cargo/{id}', [CargoController::class, 'show'])->name('cargo.show');
     Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
     Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
+    Route::delete('delete/{cargo}',[CargoController::class,'destroy'])->name('cargo.delete');
 
 });
 

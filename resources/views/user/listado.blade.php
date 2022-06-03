@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-    <h2 class="h1 text-info">Lista de Profesores</h2>
+    <h2 class="h1 text-info">Listado: {{ ucwords($rolListado->descripcion) }}</h2>
     <hr>
     {{ $lista->links() }}
 	<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="#" id="buscadorProfesores">
