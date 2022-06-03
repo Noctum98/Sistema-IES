@@ -11,9 +11,9 @@
                 {{ $proceso->alumno->nombres.' '.$proceso->alumno->apellidos }}
             </td>
             <td class="porcentaje-{{ $proceso->id }}">
-                @if($proceso->asistencia($proceso->id))
-                 @if($proceso->asistencia($proceso->id)->getByAsistenciaCargo($cargo->id,$proceso->asistencia($proceso->id)->id))
-                % {{ $proceso->asistencia($proceso->id)->getByAsistenciaCargo($cargo->id,$proceso->asistencia($proceso->id)->id)->porcentaje }}
+                @if($proceso->asistencia())
+                 @if($proceso->asistencia()->getByAsistenciaCargo($cargo->id))
+                % {{ $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje }}
                  @endif
                 @endif
             </td>

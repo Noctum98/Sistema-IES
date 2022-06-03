@@ -22,6 +22,7 @@ use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
@@ -253,26 +254,6 @@ Route::prefix('alumno/asis')->group(function () {
     Route::get('{alumno_id}/{asistencia_id}/{estado}', [AlumnoAsistenciaController::class, 'crear']);
 });
 
-// Rutas de Trabajos
-Route::prefix('trabajos')->group(function () {
-    // Vistas
-    Route::get('carreras', [TrabajoController::class, 'vista_carreras'])->name('trab.inicio');
-    Route::get('materia/{id}', [TrabajoController::class, 'vista_admin'])->name('trab.admin');
-    Route::get('crear/{id}', [TrabajoController::class, 'vista_crear'])->name('trab.crear');
-    Route::get('editar/{id}', [TrabajoController::class, 'vista_editar'])->name('trab.editar');
-    Route::get('notas/{id}', [TrabajoController::class, 'vista_notas'])->name('trab.notas');
-
-    // Acciones
-    Route::post('crear_trabajo/{id}', [TrabajoController::class, 'crear'])->name('crear_trab');
-});
-
-// Ruta AlumnoTrabajo
-Route::prefix('nota')->group(function () {
-    Route::get('trabajo/{alumno_id}/{trabajo_id}/{porcentaje}/{nota}', [AlumnoTrabajoController::class, 'crear']);
-    Route::get('parcial/{alumno_id}/{parcial_id}/{porcentaje}/{nota}', [AlumnoParcialController::class, 'crear']);
-    Route::get('recu/{alumno_id}/{parcial_id}/{porcentaje}/{nota}', [AlumnoParcialController::class, 'recuperatorio']);
-});
-
 // Rutas de Parciales
 Route::prefix('parciales')->group(function () {
     // Vistas
@@ -341,6 +322,11 @@ Route::delete('deleteMateria/{cargo_id}',[CargoController::class,'deleteModulo']
  * Ruta para TipoCalificaciones
  */
 Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
+
+Route::prefix('calificacion')->group(function(){
+    Route::get('home',[CalificacionController::class,'home'])->name('calificacion.home');
+    Route::get('admin/{materia_id}/{cargo_id?}',[CalificacionController::class,'admin'])->name('calificacion.admin');
+});
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
