@@ -326,6 +326,8 @@ Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 Route::prefix('calificacion')->group(function(){
     Route::get('home',[CalificacionController::class,'home'])->name('calificacion.home');
     Route::get('admin/{materia_id}/{cargo_id?}',[CalificacionController::class,'admin'])->name('calificacion.admin');
+
+    Route::post('/',[CalificacionController::class,'store'])->name('calificacion.store');
 });
 
 Route::prefix('excel')->group(function(){
