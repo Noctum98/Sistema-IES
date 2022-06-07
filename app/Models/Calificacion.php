@@ -6,26 +6,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Calificaciones extends Model
+class Calificacion extends Model
 {
     use HasFactory;
+
+    protected $table = 'calificaciones';
 
     protected $fillable = [
         'user_id',
         'tipo_id',
-        'proceso_id',
+        'materia_id',
         'nombre',
-        'nota'
+        'fecha'
     ];
 
-    public function tipoCalificaciones(): BelongsTo
+    public function tipo(): BelongsTo
     {
-        return $this->belongsTo(TipoCalificaciones::class,'tipo_id');
+        return $this->belongsTo(TipoCalificacion::class,'tipo_id');
     }
 
-    public function proceso(): BelongsTo
+    public function materia(): BelongsTo
     {
-        return $this->belongsTo(Proceso::class,'proceso_id');
+        return $this->belongsTo(Materia::class,'materia_id');
     }
 
     public function user(): BelongsTo

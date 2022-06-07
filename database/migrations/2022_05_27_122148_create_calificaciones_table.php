@@ -17,9 +17,9 @@ class CreateCalificacionesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('tipo_id')->constrained('tipos_calificaciones');
-            $table->foreignId('proceso_id')->constrained('procesos');
+            $table->foreignId('materia_id')->constrained('materias');
             $table->string('nombre');
-            $table->float('nota',10,2)->unsigned();
+            $table->string('fecha');
             $table->timestamps();
         });
     }
