@@ -8,16 +8,16 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>DATA IESVU</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="{{asset('css/simple-datatables_style.css')}}" rel="stylesheet" />
 
     <script src="{{ asset('js/main.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{asset('js/jquery_1.11.3.js')}}"></script>
 
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
 
     @yield('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
