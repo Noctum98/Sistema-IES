@@ -75,6 +75,7 @@
         </tbody>
     </table>
     @endif
+    <a href="{{route('cargo.admin')}}" ><button class="btn btn-outline-info btn-sm"><i class="fas fa-angle-left"></i> Volver al listado</button> </a>
 </div>
 @endsection
 
