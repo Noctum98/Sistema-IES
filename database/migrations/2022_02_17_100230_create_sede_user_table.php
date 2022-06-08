@@ -17,6 +17,7 @@ class CreateSedeUserTable extends Migration
             $table->id();
             $table->unsignedBigInteger('sede_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('alumno_id');
             $table->timestamps();
             $table->foreign('alumno_id')
                 ->references('id')
