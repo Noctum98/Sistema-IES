@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
     <h2 class="h1 text-info">
-        Calificaciónes: {{ $materia->nombre }}
+        Calificaciones: {{ $materia->nombre }}
     </h2>
     <hr>
     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear Calificación</button>
@@ -33,7 +33,7 @@
                 <td>{{ $calificacion->fecha }}</td>
 
                 <td>
-                    <a href="" class="btn btn-sm btn-secondary">
+                    <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary">
                         Notas
                     </a>
                 </td>
