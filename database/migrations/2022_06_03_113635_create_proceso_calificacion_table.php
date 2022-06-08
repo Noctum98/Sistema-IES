@@ -18,6 +18,7 @@ class CreateProcesoCalificacionTable extends Migration
             $table->foreignId('calificacion_id')->constrained('calificaciones');
             $table->foreignId('proceso_id')->constrained('procesos');
             $table->float('nota',10,2)->unsigned();
+            $table->integer('porcentaje');
             $table->timestamps();
         });
     }

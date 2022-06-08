@@ -30,4 +30,11 @@ class Proceso extends Model
 
         return $asistencia;
     }
+
+    public function procesoCalificacion($calificacion_id)
+    {
+        $procesoCalificacion = ProcesoCalificacion::where(['proceso_id'=>$this->id,'calificacion_id'=>$calificacion_id])->first();
+
+        return $procesoCalificacion;
+    }
 }

@@ -27,6 +27,7 @@ use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
+use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
@@ -326,9 +327,15 @@ Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 Route::prefix('calificacion')->group(function(){
     Route::get('home',[CalificacionController::class,'home'])->name('calificacion.home');
     Route::get('admin/{materia_id}/{cargo_id?}',[CalificacionController::class,'admin'])->name('calificacion.admin');
+    Route::get('create/{id}',[CalificacionController::class,'create'])->name('calificacion.create');
 
     Route::post('/',[CalificacionController::class,'store'])->name('calificacion.store');
 });
+
+Route::prefix('procesoCalificacion')->group(function(){
+    Route::post('/',[ProcesoCalificacionController::class,'store']);
+});
+
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
