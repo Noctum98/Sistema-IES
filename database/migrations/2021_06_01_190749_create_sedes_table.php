@@ -14,7 +14,8 @@ class CreateSedesTable extends Migration
     public function up()
     {
         Schema::create('sedes', function (Blueprint $table) {
-            $table->increments('id');
+//            $table->increments('id');
+            $table->id();
             $table->string('nombre');
             $table->string('ubicacion');
             $table->timestamps();

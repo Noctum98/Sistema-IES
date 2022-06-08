@@ -15,9 +15,7 @@ class CreateCarrerasTable extends Migration
     {
         Schema::create('carreras', function (Blueprint $table) {
             $table->id();
-//            $table->foreignId('sede_id')->constrained('sedes');
-            $table->unsignedBigInteger('sede_id');
-            $table->foreign('sede_id')->references('id')->on('sede');
+            $table->foreignId('sede_id')->constrained('sedes');
             $table->unsignedBigInteger('coordinador')->nullable();
             $table->foreign('coordinador')->references('id')->on('personal');
             $table->unsignedBigInteger('referente_p')->nullable();
