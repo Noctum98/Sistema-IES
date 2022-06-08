@@ -11,6 +11,7 @@ use App\Models\RolUser;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -76,10 +77,13 @@ class UserController extends Controller
                 return $query->where('nombre', $rol);
             })->paginate(20);
         }
+        $rolListado = Rol::where(['descripcion'=>$rol])->first();
+
 
 
         return view('user.listado', [
             'lista' => $lista,
+            'rolListado' => $rolListado
         ]);
     }
 
@@ -183,7 +187,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function editar(Request $request)
+    public function editar(Request $request): RedirectResponse
     {
         $user = Auth::user();
 

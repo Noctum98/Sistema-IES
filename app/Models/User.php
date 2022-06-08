@@ -164,4 +164,10 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+    //=========================Calificaciones=======================//
+    public function calificaciones()
+    {
+        return $this->hasMany('App\Models\Calificacion');
+    }
 }

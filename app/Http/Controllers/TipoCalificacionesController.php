@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TipoCalificacion;
 use App\Models\TipoCalificaciones;
 use App\Request\TipoCalificacionesRequest;
 use Illuminate\Contracts\Foundation\Application;
@@ -25,7 +26,7 @@ class TipoCalificacionesController extends Controller
      */
     public function index()
     {
-        $tipoCalificaciones = TipoCalificaciones::all();
+        $tipoCalificaciones = TipoCalificacion::all();
 
         return view('tipoCalificaciones.admin', [
             'tipoCalificaciones' => $tipoCalificaciones,
@@ -51,7 +52,7 @@ class TipoCalificacionesController extends Controller
      */
     public function store(TipoCalificacionesRequest $request): RedirectResponse
     {
-        $tipoCalificacion = TipoCalificaciones::create($request->validated());
+        $tipoCalificacion = TipoCalificacion::create($request->validated());
         session()->flash(
             'success',
             "El nuevo tipo de calificación {$tipoCalificacion->nombre} con descripción {$tipoCalificacion->descripcion} fue creado"
@@ -81,7 +82,7 @@ class TipoCalificacionesController extends Controller
      * @param TipoCalificaciones $tipoCalificacione
      * @return Application|Factory|View
      */
-    public function edit(TipoCalificaciones $tipoCalificacione)
+    public function edit(TipoCalificacion $tipoCalificacione)
     {
         return view('tipoCalificaciones.modals.editar_tipo_calificacion')->with([
             'tipoCalificaciones' => $tipoCalificacione,
@@ -95,7 +96,7 @@ class TipoCalificacionesController extends Controller
      * @param TipoCalificaciones $tipoCalificacione
      * @return mixed
      */
-    public function update(TipoCalificacionesRequest $request, TipoCalificaciones $tipoCalificacione)
+    public function update(TipoCalificacionesRequest $request, TipoCalificacion $tipoCalificacione)
     {
         $tipoCalificacione->update($request->validated());
 
@@ -112,7 +113,7 @@ class TipoCalificacionesController extends Controller
      * @param TipoCalificaciones $tipoCalificacione
      * @return RedirectResponse
      */
-    public function destroy(TipoCalificaciones $tipoCalificacione): RedirectResponse
+    public function destroy(TipoCalificacion $tipoCalificacione): RedirectResponse
     {
         $tipoCalificacione->delete();
 

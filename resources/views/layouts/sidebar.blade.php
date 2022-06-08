@@ -60,7 +60,7 @@
                 @endif
                 @if(Session::has('carreras'))
                     <a class="nav-link" href="{{ route('carrera.admin') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-city"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
                         Carreras
                     </a>
                 @endif
@@ -96,8 +96,7 @@
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('asis.inicio') }}">Planilla de Asistencia</a>
-                            {{--                            <a class="nav-link" href="{{ route('trab.inicio') }}">Planilla de TP</a>--}}
-                            {{--                            <a class="nav-link" href="layout-sidenav-light.html">Planilla de Parciales</a>--}}
+                            <a class="nav-link" href="{{ route('calificacion.home') }}">Planilla de Calificaciones</a>
                             @if(Session::has('planillas') && Session::has('admin') || Session::has('regente') )
                                 <a class="nav-link" href="{{ route('tipoCalificaciones.index') }}">Tipo
                                     Calificaciones</a>
