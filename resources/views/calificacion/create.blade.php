@@ -22,7 +22,7 @@
                 @foreach($procesos as $proceso)
                 <tr>
                     <td>
-                        {{ $proceso->alumno->apellidos.' '.$proceso->alumno->nombres }}
+                        {{ strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
                     </td>
                     
                     <td>

@@ -70,7 +70,11 @@ class CalificacionController extends Controller
     public function create($calificacion_id)
     {
         $calificacion = Calificacion::find($calificacion_id);
-        $procesos = Proceso::where('materia_id',$calificacion->materia_id)->get();
+        $procesos = Proceso::select('procesos.*')
+        ->join('alumnos','alumnos.id','procesos.alumno_id')
+        ->where('procesos.materia_id',$calificacion->materia_id)
+        ->orderBy('alumnos.apellidos','asc')
+        ->get();
         
         if($calificacion)
         {
