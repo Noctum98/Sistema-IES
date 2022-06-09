@@ -84,7 +84,7 @@
                         </nav>
                     </div>
                 @endif
-                @if(Session::has('planillas') && Session::has('admin'))
+                @if(Session::has('planillas'))
                     <div class="sb-sidenav-menu-heading">Profesor</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePlanillas"
                        aria-expanded="false" aria-controls="collapseLayouts">
@@ -95,9 +95,10 @@
                     <div class="collapse" id="collapsePlanillas" aria-labelledby="headingOne"
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('asis.inicio') }}">Planilla de Asistencia</a>
                             <a class="nav-link" href="{{ route('calificacion.home') }}">Planilla de Calificaciones</a>
+                            
                             @if(Session::has('planillas') && Session::has('admin') || Session::has('regente') )
+                            <a class="nav-link" href="{{ route('asis.inicio') }}">Planilla de Asistencia</a>
                                 <a class="nav-link" href="{{ route('tipoCalificaciones.index') }}">Tipo
                                     Calificaciones</a>
                             @endif
