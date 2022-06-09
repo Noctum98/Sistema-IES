@@ -12,6 +12,10 @@
                     <input type="hidden" name="materia_id" value="{{ $materia->id }}">
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
 
+                    @if(isset($cargo_id))
+                    <input type="hidden" name="cargo_id" value="{{ $cargo_id }}">
+                    @endif
+
                     <div class="form-group">
                         <label for="tipo_id">Tipo de calificación</label>
                         <select name="tipo_id" id="tipo_id" class="form-select" required>

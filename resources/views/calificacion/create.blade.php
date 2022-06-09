@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-<a href="{{ url()->previous() }}"><i class="fa fa-arrow-left"></i> Atras</a>
+    <a href="{{url()->previous()}}" ><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
 
     <h2 class="h1 text-info">
         {{ $calificacion->nombre.' - '.$calificacion->materia->nombre }}

@@ -1,6 +1,8 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
+    <a href="{{route('cargo.admin')}}" ><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
+
     <h2 class="h1 text-info">Configurar Cargo</h2>
     <hr>
     <p><i>{{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->sede->nombre.' )' }}</i></p>
@@ -75,7 +77,6 @@
         </tbody>
     </table>
     @endif
-    <a href="{{route('cargo.admin')}}" ><button class="btn btn-outline-info btn-sm"><i class="fas fa-angle-left"></i> Volver al listado</button> </a>
 </div>
 @endsection
 
