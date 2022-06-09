@@ -6,6 +6,7 @@ use App\Models\Calificacion;
 use App\Models\Calificaciones;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
 use App\Models\TipoCalificaciones;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class CalificacionController extends Controller
         ]);
     }
 
-    public function admin($materia_id)
+    public function admin($materia_id,$cargo_id = null)
     {
         $materia = Materia::find($materia_id);
 
@@ -54,14 +55,15 @@ class CalificacionController extends Controller
         }else{
             $calificaciones = Calificacion::where([
                 'materia_id'=>$materia->id,
-                'user_id'=>Auth::user()->id
+                'user_id'=>Auth::user()->id,
             ])->get();
         }
 
         return view('calificacion.admin',[
             'materia' => $materia,
             'tiposCalificaciones' =>  $tiposCalificaciones,
-            'calificaciones' => $calificaciones
+            'calificaciones' => $calificaciones,
+            'cargo_id' => $cargo_id
         ]);
     }
 
@@ -90,7 +92,21 @@ class CalificacionController extends Controller
         $calificacion = Calificacion::create($request->all());
 
         return redirect()->route('calificacion.admin',[
-            'materia_id' => $request['materia_id']
+            'materia_id' => $request['materia_id'],
+            'cargo_id' => $request['cargo_id']
         ])->with('calificacion_creada','Calificación creada!');
+    }
+
+    public function delete(Request $request,$id)
+    {
+        $calificacion = Calificacion::find($id);
+
+        ProcesoCalificacion::where('calificacion_id',$calificacion->id)->delete();
+
+        $calificacion->delete();
+
+        return redirect()->route('calificacion.admin',[
+            'materia_id' => $calificacion->materia_id
+        ])->with('calificacion_eliminada','La calificación ha sido eliminada');
     }
 }

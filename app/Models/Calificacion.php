@@ -14,6 +14,7 @@ class Calificacion extends Model
 
     protected $fillable = [
         'user_id',
+        'cargo_id',
         'tipo_id',
         'materia_id',
         'nombre',
@@ -33,6 +34,11 @@ class Calificacion extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function cargo(): BelongsTo
+    {
+        return $this->belongsTo(Cargo::class,'user_id');
     }
 
 }

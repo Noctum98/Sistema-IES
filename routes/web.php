@@ -33,6 +33,7 @@ use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Alumno;
+use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\Carrera;
 use App\Models\Instancia;
@@ -329,8 +330,9 @@ Route::prefix('calificacion')->group(function(){
     Route::get('home',[CalificacionController::class,'home'])->name('calificacion.home');
     Route::get('admin/{materia_id}/{cargo_id?}',[CalificacionController::class,'admin'])->name('calificacion.admin');
     Route::get('create/{id}',[CalificacionController::class,'create'])->name('calificacion.create');
-
+    
     Route::post('/',[CalificacionController::class,'store'])->name('calificacion.store');
+    Route::delete('/{id}',[CalificacionController::class,'delete'])->name('calificacion.delete');
 });
 
 Route::prefix('procesoCalificacion')->group(function(){

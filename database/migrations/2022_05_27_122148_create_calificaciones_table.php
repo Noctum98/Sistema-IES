@@ -17,6 +17,7 @@ class CreateCalificacionesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('tipo_id')->constrained('tipos_calificaciones');
+            $table->foreignId('cargo_id')->nullable()->constrained('cargos');
             $table->foreignId('materia_id')->constrained('materias');
             $table->string('nombre');
             $table->string('fecha');
