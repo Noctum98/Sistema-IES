@@ -10,7 +10,7 @@
             @foreach($materias as $materia)
                 @if($materia)
                 <a type="button" href="{{ route($ruta,['materia_id'=>$materia->id]) }}"
-                   class="list-group-item list-group-item-action border-top mt-2 text-success">
+                   class="list-group-item list-group-item-action border-top mt-2 text-primary">
                     <strong>
                         {{ $materia->carrera->sede->nombre.': '.$materia->carrera->nombre.' - '.$materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
                     </strong>
@@ -21,12 +21,12 @@
        
         @if(count($cargos) > 0)
         <hr>
-        <h4 class="text-secondary">Cargos</h4>
+        <h4 class="text-secondary">Módulos</h4>
             @foreach($cargos as $cargo)  
                 @foreach($cargo->materias as $materia)
                     @if($materia)
                     <a type="button" href="{{ route($ruta,['id'=>$materia->id,'cargo_id'=>$cargo->id]) }}"
-                       class="list-group-item list-group-item-action border-top mt-2 text-success">
+                       class="list-group-item list-group-item-action border-top mt-2 text-primary">
                         <strong>
                             {{ $materia->carrera->sede->nombre.': '.$materia->carrera->nombre.' - '.$materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
                         </strong>
