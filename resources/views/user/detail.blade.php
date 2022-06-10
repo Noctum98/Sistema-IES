@@ -109,13 +109,14 @@
             <button type="button" class="ml-2 btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#carrerasModal{{$user->id}}">
                 Asignar Carreras
             </button>
+            @include('user.modals.admin_carreras')
+            @endif
+            @endif
             <button type="button" class="ml-2 btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#rolesModal{{$user->id}}">
                 Asignar Roles
             </button>
-            @include('user.modals.admin_carreras')
             @include('user.modals.admin_roles')
-            @endif
-            @endif
+
 
         </div>
     </div>
