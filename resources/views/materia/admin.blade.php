@@ -5,13 +5,21 @@
 		Plan de estudios de {{ $carrera->nombre }}
 	</h2>
 	<hr>
-	@if(Auth::user()->hasRole('admin'))
+	@if(Session::has('admin'))
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
+	<a href="{{ route('comisiones.ver',$carrera->id) }}" class="btn btn-warning mb-4">
+		Ver comisiones
+	</a>
 	@endif
+
+
+
+
+
 	@if(@session('error_procesos'))
-	 {{ @session('error_procesos') }}
+	{{ @session('error_procesos') }}
 	@endif
 	<div class="col-md-8">
 		@if($carrera->estado != 1)
@@ -20,7 +28,8 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Materia</th>
-					<th scope="col">Accion</th>
+					<th scope="col"> <i class="fa fa-cog" style="font-size:20px;"></i>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,7 +39,7 @@
 					<td>{{ $materia->nombre }}</td>
 					<td>
 						@if(Auth::user()->hasRole('admin'))
-						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn-sm btn-warning">Editar</a>
+						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 					</td>
@@ -46,7 +55,8 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Materia</th>
-					<th scope="col">Accion</th>
+					<th scope="col"> <i class="fa fa-cog" style="font-size:20px;"></i>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,7 +66,7 @@
 					<td>{{ $materia->nombre }}</td>
 					<td>
 						@if(Auth::user()->hasRole('admin'))
-						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn-sm btn-warning">Editar</a>
+						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 					</td>
@@ -71,7 +81,8 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Materia</th>
-					<th scope="col">Accion</th>
+					<th scope="col"> <i class="fa fa-cog" style="font-size:20px;"></i>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -81,7 +92,7 @@
 					<td>{{ $materia->nombre }}</td>
 					<td>
 						@if(Auth::user()->hasRole('admin'))
-						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn-sm btn-warning">Editar</a>
+						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 					</td>

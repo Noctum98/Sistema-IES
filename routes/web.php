@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\ComisionesController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
@@ -61,6 +63,12 @@ Route::get('/', function () {
         return view('auth.login');
     }
 });
+
+
+// Rutas de comisiones
+
+Route::resource('comisiones', ComisionController::class);
+Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->name('comisiones.ver');
 
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {
@@ -338,7 +346,6 @@ Route::prefix('calificacion')->group(function(){
 Route::prefix('procesoCalificacion')->group(function(){
     Route::post('/',[ProcesoCalificacionController::class,'store']);
 });
-
 
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
