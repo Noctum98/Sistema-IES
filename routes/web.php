@@ -25,6 +25,7 @@ use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
@@ -67,6 +68,8 @@ Route::get('/', function () {
 // Rutas de comisiones
 
 Route::resource('comisiones', ComisionController::class);
+Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->name('comisiones.ver');
+
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {
     // Vistas

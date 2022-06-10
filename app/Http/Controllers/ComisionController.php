@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\Comision;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,12 +20,14 @@ class ComisionController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index($carrera_id)
     {
-        $tipoCalificaciones = Comision::all();
+        $carrera = Carrera::find($carrera_id);
+        $comisiones = Comision::where('carrera_id',$carrera->id)->get();
 
-        return view('tipoCalificaciones.admin', [
-            'tipoCalificaciones' => $tipoCalificaciones,
+        return view('comision.index', [
+            'comisiones' => $comisiones,
+            'carrera' => $carrera
         ]);
     }
 
@@ -35,8 +38,9 @@ class ComisionController extends Controller
      */
     public function create()
     {
-        //
+        
     }
+
 
     /**
      * Store a newly created resource in storage.

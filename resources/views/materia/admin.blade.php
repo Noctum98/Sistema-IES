@@ -9,16 +9,17 @@
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
+	<a href="{{ route('comisiones.ver',$carrera->id) }}" class="btn btn-warning mb-4">
+		Ver comisiones
+	</a>
 	@endif
 
-	<a href="" class="btn btn-warning">
-		Ver comisión
-	</a>
+
 
 
 
 	@if(@session('error_procesos'))
-	 {{ @session('error_procesos') }}
+	{{ @session('error_procesos') }}
 	@endif
 	<div class="col-md-8">
 		@if($carrera->estado != 1)
@@ -27,7 +28,8 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Materia</th>
-					<th scope="col">Accion</th>
+					<th scope="col"> <i class="fa fa-cog" style="font-size:20px;"></i>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -53,7 +55,8 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Materia</th>
-					<th scope="col">Accion</th>
+					<th scope="col"> <i class="fa fa-cog" style="font-size:20px;"></i>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -78,7 +81,8 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Materia</th>
-					<th scope="col">Accion</th>
+					<th scope="col"> <i class="fa fa-cog" style="font-size:20px;"></i>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

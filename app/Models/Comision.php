@@ -11,6 +11,8 @@ class Comision extends Model
 {
     use HasFactory;
 
+    protected $table = 'comisiones';
+
     protected $fillable = [
         'carrera_id',
         'año',
