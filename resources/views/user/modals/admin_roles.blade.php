@@ -16,7 +16,9 @@
                         </label>
                     </div>
                     @endforeach
+                    @if(isset($roles_secundarios) && $roles_secundarios)
                     <hr>
+
                     @foreach($roles_secundarios as $rol)
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $rol->nombre }}" id="rol-{{ $rol->id }}" {{ $user->hasRole($rol->nombre) ? 'checked':null }}>
@@ -25,6 +27,7 @@
                         </label>
                     </div>
                     @endforeach
+                    @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>

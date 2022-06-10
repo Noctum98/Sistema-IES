@@ -18,6 +18,10 @@
     <div class="alert alert-success mt-2">{{@session('calificacion_creada')}}</div>
     @endif
 
+    @if(@session('calificacion_fallo'))
+    <div class="alert alert-warning mt-2">{{@session('calificacion_fallo')}}</div>
+    @endif
+
     @if(@session('calificacion_eliminada'))
     <div class="alert alert-danger mt-2">{{@session('calificacion_eliminada')}}</div>
     @endif

@@ -30,36 +30,38 @@ class CalificacionController extends Controller
 
         // dd($materias,$cargos);
 
-        return view('calificacion.home',[
+        return view('calificacion.home', [
             'materias' => $materias,
             'cargos' => $cargos,
             'ruta' => $ruta
         ]);
     }
 
-    public function admin($materia_id,$cargo_id = null)
+    public function admin($materia_id, $cargo_id = null)
     {
         $materia = Materia::find($materia_id);
 
-        if($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2')
-        {
+        if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
             $tiposCalificaciones = TipoCalificacion::all();
-        }else{
-            $tiposCalificaciones = TipoCalificacion::where('descripcion','!=',3)->get();
+        } else {
+            $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
         }
 
         $user = Auth::user();
-        
-        if($user->hasAnyRole(['coordinador','admin','regente'])){
-            $calificaciones = Calificacion::where('materia_id',$materia->id)->get();
-        }else{
+
+        if ($user->hasAnyRole(['coordinador', 'admin', 'regente'])) {
+            $calificaciones = Calificacion::where('materia_id', $materia->id)->get();
+        } else {
             $calificaciones = Calificacion::where([
-                'materia_id'=>$materia->id,
-                'user_id'=>Auth::user()->id,
-            ])->get();
+                'materia_id' => $materia->id,
+                'user_id' => Auth::user()->id,
+            ])->orWhereHas('tipo',function($query){
+                $query->where('descripcion',3);
+            })
+            ->get();
         }
 
-        return view('calificacion.admin',[
+        return view('calificacion.admin', [
             'materia' => $materia,
             'tiposCalificaciones' =>  $tiposCalificaciones,
             'calificaciones' => $calificaciones,
@@ -71,14 +73,13 @@ class CalificacionController extends Controller
     {
         $calificacion = Calificacion::find($calificacion_id);
         $procesos = Proceso::select('procesos.*')
-        ->join('alumnos','alumnos.id','procesos.alumno_id')
-        ->where('procesos.materia_id',$calificacion->materia_id)
-        ->orderBy('alumnos.apellidos','asc')
-        ->get();
-        
-        if($calificacion)
-        {
-            return view('calificacion.create',[
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $calificacion->materia_id)
+            ->orderBy('alumnos.apellidos', 'asc')
+            ->get();
+
+        if ($calificacion) {
+            return view('calificacion.create', [
                 'calificacion' => $calificacion,
                 'procesos' => $procesos
             ]);
@@ -87,30 +88,52 @@ class CalificacionController extends Controller
 
     public function store(Request $request)
     {
-        $validate = $this->validate($request,[
+        $validate = $this->validate($request, [
             'nombre' =>  ['required'],
-            'tipo_id'=> ['required'],
+            'tipo_id' => ['required'],
             'fecha' => ['required']
         ]);
 
-        $calificacion = Calificacion::create($request->all());
+        $calificacionFinal = $this->verificarFinalIntegrador($request);
 
-        return redirect()->route('calificacion.admin',[
+        if ($calificacionFinal) {
+            $mensaje = ['calificacion_fallo' => 'Ya existe un trabajo integrador final en esta materia'];
+        } else {
+            $calificacion = Calificacion::create($request->all());
+            $mensaje = ['calificacion_creada' => 'Calificación creada!'];
+        }
+
+        return redirect()->route('calificacion.admin', [
             'materia_id' => $request['materia_id'],
             'cargo_id' => $request['cargo_id']
-        ])->with('calificacion_creada','Calificación creada!');
+        ])->with($mensaje);
     }
 
-    public function delete(Request $request,$id)
+    public function delete(Request $request, $id)
     {
         $calificacion = Calificacion::find($id);
 
-        ProcesoCalificacion::where('calificacion_id',$calificacion->id)->delete();
+        ProcesoCalificacion::where('calificacion_id', $calificacion->id)->delete();
 
         $calificacion->delete();
 
-        return redirect()->route('calificacion.admin',[
+        return redirect()->route('calificacion.admin', [
             'materia_id' => $calificacion->materia_id
-        ])->with('calificacion_eliminada','La calificación ha sido eliminada');
+        ])->with('calificacion_eliminada', 'La calificación ha sido eliminada');
+    }
+
+    private function verificarFinalIntegrador(Request $request)
+    {
+        $calificacionFinal = Calificacion::select('calificaciones.*')
+            ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
+            ->where('calificaciones.materia_id', $request['materia_id'])
+            ->where('tipo_calificaciones.descripcion', 3)
+            ->first();
+
+        if ($calificacionFinal) {
+            return $calificacionFinal;
+        } else {
+            return false;
+        }
     }
 }
