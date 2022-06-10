@@ -138,11 +138,17 @@ class UserController extends Controller
                 ->get();
         }
 
-        $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
-        if ($auth->hasAnyRole('coordinador')) {
-            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->get();
+        if ($auth->hasRole('coordinador')) {
+            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')
+            ->where('nombre', 'profesor')
+            ->orWhere('nombre','planillas')
+            ->get();
+
+            $roles_secundarios = null;
+        }else{
+            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
+            $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();
         }
-        $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();
 
         return view('user.detail', [
             'user' => $user,
