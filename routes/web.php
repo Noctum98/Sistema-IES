@@ -66,7 +66,7 @@ Route::get('/', function () {
 
 // Rutas de comisiones
 
-Route::resource('comisiones', ComisionesController::class);
+Route::resource('comisiones', ComisionController::class);
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {
     // Vistas

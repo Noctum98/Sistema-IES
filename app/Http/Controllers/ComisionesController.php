@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comision;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ComisionesController extends Controller
+class ComisionController extends Controller
 {
 
     function __construct()
@@ -20,7 +21,7 @@ class ComisionesController extends Controller
      */
     public function index()
     {
-        $tipoCalificaciones = Comisiones::all();
+        $tipoCalificaciones = Comision::all();
 
         return view('tipoCalificaciones.admin', [
             'tipoCalificaciones' => $tipoCalificaciones,
