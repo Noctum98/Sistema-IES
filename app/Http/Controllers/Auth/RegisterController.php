@@ -85,9 +85,10 @@ class RegisterController extends Controller
             'rol' => $data['roles'][0] ? 'rol_'.$data['roles'][0] : '',
         ]);
 
-        $role = $data['roles'][0] ?? 'default';
-
-        $user->roles()->attach(Rol::where('nombre', $role)->first());
+        foreach($data['roles'] as $role)
+        {
+            $user->roles()->attach(Rol::where('nombre', $role)->first());
+        }
 
         return $user;
     }
