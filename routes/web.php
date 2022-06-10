@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\ComisionesController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,10 @@ Route::get('/', function () {
     }
 });
 
+
+// Rutas de comisiones
+
+Route::resource('comisiones', ComisionesController::class);
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {
     // Vistas
