@@ -339,7 +339,6 @@ Route::prefix('procesoCalificacion')->group(function(){
     Route::post('/',[ProcesoCalificacionController::class,'store']);
 });
 
-
 Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
     Route::get('alumnos/all',[ExcelController::class,'all_alumnos']);

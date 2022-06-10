@@ -5,11 +5,18 @@
 		Plan de estudios de {{ $carrera->nombre }}
 	</h2>
 	<hr>
-	@if(Auth::user()->hasRole('admin'))
+	@if(Session::has('admin'))
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
 	@endif
+
+	<a href="" class="btn btn-warning">
+		Ver comisión
+	</a>
+
+
+
 	@if(@session('error_procesos'))
 	 {{ @session('error_procesos') }}
 	@endif
@@ -30,7 +37,7 @@
 					<td>{{ $materia->nombre }}</td>
 					<td>
 						@if(Auth::user()->hasRole('admin'))
-						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn-sm btn-warning">Editar</a>
+						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 					</td>
@@ -56,7 +63,7 @@
 					<td>{{ $materia->nombre }}</td>
 					<td>
 						@if(Auth::user()->hasRole('admin'))
-						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn-sm btn-warning">Editar</a>
+						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 					</td>
@@ -81,7 +88,7 @@
 					<td>{{ $materia->nombre }}</td>
 					<td>
 						@if(Auth::user()->hasRole('admin'))
-						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn-sm btn-warning">Editar</a>
+						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 					</td>
