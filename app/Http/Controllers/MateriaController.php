@@ -72,8 +72,6 @@ class MateriaController extends Controller
         $materia->nombre = $request->input('nombre');
         $materia->año = (int)$request->input('año');
         $materia->carrera_id = $carrera_id;
-        $materia->personal_id = (int)$request->input('personal');
-        $materia->correlativa = $request->input('correlativa');
 
         $materia->save();
 
@@ -85,8 +83,8 @@ class MateriaController extends Controller
         $validate = $this->validate($request, [
             'nombre' => ['required'],
             'año' => ['required', 'numeric', 'max:3'],
-            'personal' => ['required', 'numeric'],
         ]);
+        
         $materia = Materia::find($id);
         $materia->nombre = $request->input('nombre');
         $materia->año = (int)$request->input('año');
