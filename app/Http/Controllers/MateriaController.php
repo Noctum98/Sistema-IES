@@ -72,8 +72,6 @@ class MateriaController extends Controller
         $materia->nombre = $request->input('nombre');
         $materia->año = (int)$request->input('año');
         $materia->carrera_id = $carrera_id;
-        $materia->personal_id = (int)$request->input('personal');
-        $materia->correlativa = $request->input('correlativa');
 
         $materia->save();
 
