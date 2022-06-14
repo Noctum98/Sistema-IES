@@ -38,4 +38,33 @@ class UserService{
         return User::select('id', 'nombre', 'apellido')->where('username', $busqueda)->get();
 
     }
+
+    public function listadoRol($rol,$sede = false,$carrera = false,$paginate = false)
+    {
+        $users = User::whereHas('roles',function($query) use ($rol){
+            return $query->where('roles.nombre',$rol);
+        });
+
+        if($sede)
+        {
+            $users->whereHas('sedes',function($query) use ($sede){
+                return $query->where('sedes.id',$sede);
+            });
+        }
+
+        if($carrera)
+        {
+            $users->whereHas('carreras',function($query) use ($carrera){
+                return $query->where('carreras.id',$carrera);
+            });
+        }
+
+
+        if($paginate)
+        {
+            return $users->paginate(10);
+        }else{
+            return $users->get();
+        }
+    }
 }

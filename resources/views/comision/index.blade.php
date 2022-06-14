@@ -22,7 +22,7 @@
                        {{ $comision->año }}
                     </td>
                     <td>
-                        <a href="" class="btn btn btn-secondary">Ver</a>
+                        <a href="{{ route('comisiones.show',$comision->id) }}" class="btn btn btn-secondary">Ver</a>
                     </td>
                 </tr>
                 @endforeach

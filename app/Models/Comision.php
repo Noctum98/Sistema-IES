@@ -19,9 +19,14 @@ class Comision extends Model
         'nombre',
     ];
 
+    public function carrera(): BelongsTo
+    {
+        return $this->belongsTo(Carrera::class,'carrera_id');
+    }
+
     public function profesores(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class,'comision_profesor','comision_id','profesor_id')->withTimestamps();
     }
 
     public function procesos(): BelongsToMany

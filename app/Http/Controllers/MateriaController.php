@@ -85,8 +85,8 @@ class MateriaController extends Controller
         $validate = $this->validate($request, [
             'nombre' => ['required'],
             'año' => ['required', 'numeric', 'max:3'],
-            'personal' => ['required', 'numeric'],
         ]);
+        
         $materia = Materia::find($id);
         $materia->nombre = $request->input('nombre');
         $materia->año = (int)$request->input('año');

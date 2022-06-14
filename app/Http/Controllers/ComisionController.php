@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Carrera;
 use App\Models\Comision;
+use App\Models\Proceso;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ComisionController extends Controller
 {
 
-    function __construct()
+    protected $userService;
+
+    function __construct(
+        UserService $userService
+    )
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-regente-coordinador');
+        $this->userService = $userService;
     }
     /**
      * Display a listing of the resource.
@@ -61,7 +68,16 @@ class ComisionController extends Controller
      */
     public function show($id)
     {
-        //
+        $comision = Comision::find($id);
+        $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,true);
+        $procesos = Proceso::where('carrera_id',$comision->carrera_id)->get();
+
+
+        return view('comision.detail',[
+            'comision' => $comision,
+            'profesores' => $profesores,
+            'procesos' => $procesos
+        ]);
     }
 
     /**
