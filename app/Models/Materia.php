@@ -48,4 +48,14 @@ class Materia extends Model
 
         return $peticion;
     }
+
+    public function comisiones()
+    {
+        return $this->belongsToMany(Comision::class);
+    }
+    public function getTotalAttribute()
+    {
+
+        return $this->comisiones()->count();
+    }
 }

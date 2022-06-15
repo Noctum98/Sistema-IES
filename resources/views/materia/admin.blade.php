@@ -47,6 +47,7 @@
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
+							<sup class="badge badge-info" title="Total Comisiones">{{$materia->getTotalAttribute()}}</sup>
 					</td>
 				</tr>
 				@endif
@@ -74,6 +75,7 @@
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
+							<span class="badge badge-info" title="Total Comisiones">{{$materia->getTotalAttribute()}}</span>
 					</td>
 				</tr>
 				@endif
@@ -100,6 +102,9 @@
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
+
+							<span class="badge badge-info" title="Total Comisiones">{{$materia->getTotalAttribute()}}</span>
+
 					</td>
 				</tr>
 				@endif
