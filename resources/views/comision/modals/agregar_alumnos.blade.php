@@ -9,13 +9,23 @@
                 <form action="" method="POST">
                     <input type="hidden" name="cargo_id" value="{{ $comision->id }}">
                     <div class="form-group">
-                        <label for="carreras">Profesores</label>
-                        <select name="profesor_id" id="profesor_id" class="form-select">
-                                @foreach($procesos as $proceso)
-                                    <option value="{{ $profesor->id }}">{{ $proceso->alumno->nombre.' '.$proceso->alumno->apellido }}</option>
-                                @endforeach
-                        </select>
+                        <label for="carreras">Alumnos</label>
+                            Primer Año
+
+                            @foreach($alumnos as $alumno)
+							
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="alumnos[]" id="{{ $alumno->id }}" value="{{$alumno->id}}">
+                                <label class="form-check-label" for="{{ $alumno->id }}">
+                                    {{$alumno->apellidos.' '.$alumno->nombres}}
+                                </label>
+                            </div>
+                           
+                            
+                            @endforeach
                     </div>
+                    
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
