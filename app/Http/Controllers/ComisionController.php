@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Carrera;
 use App\Models\Comision;
+use App\Models\Materia;
 use App\Models\Proceso;
+use App\Models\TipoCalificacion;
+use App\Request\ComisionesRequest;
+use App\Request\TipoCalificacionesRequest;
 use App\Services\UserService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -38,26 +43,31 @@ class ComisionController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        
-    }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param ComisionesRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(ComisionesRequest $request): RedirectResponse
     {
-        //
+        $comision = Comision::create($request->validated());
+        $materias = Materia::where('carrera_id', $request->carrera_id)->where('año' , $request->año)->orderBy('nombre')->get();
+        $comision->materias()->attach($materias);
+        session()->flash(
+            'success',
+            "La nueva comisión {$comision->nombre} del año {$comision->año} fue creada"
+        );
+
+        return redirect()
+            ->route('materia.admin',[
+                'carrera_id' => $request->carrera_id,
+            ])
+            ->withSuccess(
+                "La nueva comisión {$comision->nombre} del año {$comision->año} fue creada"
+            );
+            ;
     }
 
     /**

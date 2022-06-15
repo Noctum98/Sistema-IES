@@ -12,6 +12,11 @@
 	<a href="{{ route('comisiones.ver',$carrera->id) }}" class="btn btn-warning mb-4">
 		Ver comisiones
 	</a>
+		<button class="btn btn-info mb-4"
+		   data-bs-toggle="modal" data-bs-target="#crearComision"
+		>
+		Crear comisión
+	</button>
 	@endif
 
 
@@ -104,4 +109,5 @@
 	</div>
 
 </div>
+@include('comision.modals.crear_comision')
 @endsection
