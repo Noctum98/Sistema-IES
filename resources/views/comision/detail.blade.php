@@ -42,7 +42,7 @@
     </table>
     @endif
     <hr>
-    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarProfesor">Agregar Alumno</button></p>
+    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarAlumno">Agregar Alumno</button></p>
     @if(count($comision->procesos) == 0)
     <p>No hay alumnos vinculados a la comisión.</p>
     @else
@@ -77,4 +77,5 @@
     <hr>
 </div>
 @include('comision.modals.agregar_profesor')
+@include('comision.modals.agregar_alumnos')
 @endsection

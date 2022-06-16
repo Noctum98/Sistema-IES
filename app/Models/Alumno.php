@@ -90,6 +90,15 @@ class Alumno extends Model
         return $procesoCarrera;
     }
 
+    public function proceso($carrera_id){
+        $proceso = Proceso::where('alumno_id',$this->id)
+        ->whereHas('materia',function($query) use ($carrera_id){
+            $query->where('carrera_id',$carrera_id);
+        })->first();
+
+        return $proceso;
+    }
+
     public function hasProceso($materia_id)
     {
         if($this->procesos->where('materia_id',$materia_id)->first())

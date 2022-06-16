@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
@@ -80,13 +81,18 @@ class ComisionController extends Controller
     {
         $comision = Comision::find($id);
         $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,true);
-        $procesos = Proceso::where('carrera_id',$comision->carrera_id)->get();
 
+        $carrera_id = $comision->carrera_id;
+        $año = $comision->año;
+        $alumnos = Alumno::whereHas('carreras',function($query) use ($carrera_id,$año){
+            $query->where('carrera_id',$carrera_id)
+            ->where('año',$año);
+        })->orderBy('apellidos')->get();
 
         return view('comision.detail',[
             'comision' => $comision,
             'profesores' => $profesores,
-            'procesos' => $procesos
+            'alumnos' => $alumnos
         ]);
     }
 
