@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
+                <form action="{{ route('comision.profesor',$comision->id) }}" method="POST">
                     <input type="hidden" name="cargo_id" value="{{ $comision->id }}">
                     <div class="form-group">
                         <label for="carreras">Profesores</label>

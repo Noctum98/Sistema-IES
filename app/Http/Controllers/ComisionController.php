@@ -8,6 +8,7 @@ use App\Models\Comision;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\TipoCalificacion;
+use App\Models\User;
 use App\Request\ComisionesRequest;
 use App\Request\TipoCalificacionesRequest;
 use App\Services\UserService;
@@ -94,15 +95,16 @@ class ComisionController extends Controller
 
         $carrera_id = $comision->carrera_id;
         $año = $comision->año;
+        /*
         $alumnos = Alumno::whereHas('carreras',function($query) use ($carrera_id,$año){
             $query->where('carrera_id',$carrera_id)
             ->where('año',$año);
-        })->orderBy('apellidos')->get();
+        })->orderBy('apellidos')->get();*/
 
         return view('comision.detail',[
             'comision' => $comision,
             'profesores' => $profesores,
-            'alumnos' => $alumnos
+            'alumnos' => []
         ]);
     }
 
@@ -138,5 +140,32 @@ class ComisionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function agregar_profesor(Request $request,$id){
+        $comision = Comision::find($id);
+
+        if(!$comision->hasProfesor($request['profesor_id'])){
+            $comision->profesores()->attach(User::where('id',$request['profesor_id'])->first());
+            $mensaje = ['mensaje_success' => 'El profesor se ha añadido correctamente.'];
+        }else{
+            $mensaje = [
+                'mensaje_error' => 'El profesor ya existe en esta comisión.'
+            ];
+        }
+
+        return redirect()->route('comisiones.show',$comision->id)->with($mensaje);
+    }
+
+    public function delete_profesor(Request $request,$id){
+        $comision = Comision::find($id);
+
+        if($comision->hasProfesor($request['profesor_id']))
+        {
+            $comision->profesores()->detach(User::where('id',$request['profesor_id'])->first());
+            $mensaje = ['profesor_deleted'=>'El profesor se ha eliminado correctamente.'];
+        }
+
+        return redirect()->route('comisiones.show',$comision->id)->with($mensaje);
     }
 }

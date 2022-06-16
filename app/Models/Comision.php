@@ -39,4 +39,15 @@ class Comision extends Model
         return $this->belongsToMany(Materia::class)->withTimestamps();
     }
 
+
+
+    //Has Relations
+    public function hasProfesor($profesor_id){
+        if ($this->profesores->where('id', $profesor_id)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

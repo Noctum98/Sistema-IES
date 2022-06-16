@@ -6,7 +6,7 @@
 		Plan de estudios de {{ $carrera->nombre }}
 	</h2>
 	<hr>
-	@if(Session::has('admin'))
+	@if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
