@@ -69,6 +69,7 @@ Route::get('/', function () {
 
 Route::resource('comisiones', ComisionController::class);
 Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->name('comisiones.ver');
+Route::post('crearComisiones/{carrera_id}',[ComisionController::class,'store'])->name('comisiones.crear');
 
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {
