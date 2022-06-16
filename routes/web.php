@@ -69,6 +69,9 @@ Route::get('/', function () {
 
 Route::resource('comisiones', ComisionController::class);
 Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->name('comisiones.ver');
+Route::post('crearComisiones/{carrera_id}',[ComisionController::class,'store'])->name('comisiones.crear');
+Route::post('comision/profesor/{comision_id}',[ComisionController::class,'agregar_profesor'])->name('comision.profesor');
+Route::delete('comisiones/profesor/{comision_id}',[ComisionController::class,'delete_profesor'])->name('comision.delprofesor');
 
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {

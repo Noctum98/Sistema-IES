@@ -48,7 +48,7 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">Nombre y Apellido</th>
+								<th scope="col">Apellidos y Nombres</th>
 									<th scope="col">DNI</th>
 									<th scope="col" class="text-center">Verificado</th>
 									<th scope="col" class="text-center"><i class="fa fa-cogs"></i> </th>
@@ -58,7 +58,7 @@
 								@foreach($carrera->alumnos as $alumno)
 								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 1)
 								<tr>
-									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
+									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td class="text-center">
 										@if($alumno->user_id)
@@ -94,7 +94,7 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">Nombre y Apellido</th>
+								<th scope="col">Apellidos y Nombres</th>
 									<th scope="col">DNI</th>
 									<th scope="col">Verificado</th>
 									<th scope="col">Accion</th>
@@ -104,7 +104,7 @@
 								@foreach($carrera->alumnos as $alumno)
 								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 2)
 								<tr>
-									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
+									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td>
 										@if($alumno->user_id)
@@ -140,7 +140,7 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">Nombre y Apellido</th>
+									<th scope="col">Apellidos y Nombres</th>
 									<th scope="col">DNI</th>
 									<th scope="col">Verificado</th>
 									<th scope="col">Accion</th>
@@ -150,7 +150,7 @@
 								@foreach($carrera->alumnos as $alumno)
 								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 3)
 								<tr>
-									<td>{{$alumno->nombres.' '.$alumno->apellidos}}</td>
+									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td>
 										@if($alumno->user_id)

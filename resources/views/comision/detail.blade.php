@@ -7,6 +7,24 @@
         Comisión de {{ $comision->nombre.' - '.$comision->carrera->nombre }}
     </h2>
     <hr>
+    @if(@session('mensaje_success'))
+        <div class="alert alert-success">
+            {{ @session('mensaje_success') }}
+        </div>
+    @endif
+
+    @if(@session('mensaje_error'))
+        <div class="alert alert-danger">
+            {{ @session('mensaje_error') }}
+        </div>
+    @endif
+
+    @if(@session('profesor_deleted'))
+        <div class="alert alert-warning">
+            {{ @session('profesor_deleted') }}
+        </div>
+    @endif
+
     @if(Session::has('coordinador') || Session::has('regente') || Session::has('admin'))
     <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarProfesor">Agregar Profesor</button></p>
     @endif
@@ -30,9 +48,9 @@
                 <th scope="row">{{ $profesor->id }}</th>
                 <td>{{ $profesor->nombre.' '.$profesor->apellido }}</td>
                 <td>
-                    <form action="{{ route('cargo.delUser',$profesor->id) }}" method="POST">
+                    <form action="{{ route('comision.delprofesor',$comision->id) }}" method="POST">
                         {{ method_field('DELETE') }}
-                        <input type="hidden" name="user_id" value="{{$profesor->id}}">
+                        <input type="hidden" name="profesor_id" value="{{$profesor->id}}">
                         <input type="submit" value="Eliminar" class="btn btn-sm btn-danger">
                     </form>
                 </td>
@@ -41,8 +59,9 @@
         </tbody>
     </table>
     @endif
-    <hr>
-    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarProfesor">Agregar Alumno</button></p>
+
+    <!---
+    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarAlumno">Agregar Alumno</button></p>
     @if(count($comision->procesos) == 0)
     <p>No hay alumnos vinculados a la comisión.</p>
     @else
@@ -75,6 +94,7 @@
     </table>
     @endif
     <hr>
+    --->
 </div>
 @include('comision.modals.agregar_profesor')
 @endsection
