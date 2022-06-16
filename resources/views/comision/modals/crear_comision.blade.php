@@ -10,7 +10,9 @@
                     <input type="hidden" name="carrera_id" value="{{ $carrera->id }}">
                     <div class="form-group">
                         <label for="año">Año:</label>
-                        <input type="number" id="año" name="año" min="1" step="1" max="3" class="form-control @error('año') is-invalid @enderror" value="{{ old('año') }}" required />
+                        <input type="number" id="año" name="año" min="1" step="1" max="3"
+                               class="form-control @error('año') is-invalid @enderror" value="{{ old('año') }}"
+                               required/>
                         @error('año')
                         <span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
@@ -20,17 +22,19 @@
                     </div>
                     <div class="form-group">
                         <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" required />
+                        <input type="text" id="nombre" name="nombre"
+                               class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}"
+                               required/>
                         @error('nombre')
                         <span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
                         @enderror
                     </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
                 </form>
             </div>
         </div>
