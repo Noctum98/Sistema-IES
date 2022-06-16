@@ -11,6 +11,9 @@ use App\Models\TipoCalificacion;
 use App\Request\ComisionesRequest;
 use App\Request\TipoCalificacionesRequest;
 use App\Services\UserService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -31,12 +34,19 @@ class ComisionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return Application|Factory|View
      */
-    public function index($carrera_id)
+    public function index($carrera_id, Request $request)
     {
+
         $carrera = Carrera::find($carrera_id);
-        $comisiones = Comision::where('carrera_id',$carrera->id)->get();
+
+
+        $comisiones = Comision::where('carrera_id',$carrera->id);
+        if($request->año){
+            $comisiones->where('año', $request->año);
+        }
+        $comisiones = $comisiones->get();
 
         return view('comision.index', [
             'comisiones' => $comisiones,
@@ -68,14 +78,14 @@ class ComisionController extends Controller
             ->withSuccess(
                 "La nueva comisión {$comision->nombre} del año {$comision->año} fue creada"
             );
-            ;
+
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|Factory|View
      */
     public function show($id)
     {

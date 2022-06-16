@@ -10,7 +10,7 @@
                     <input type="hidden" name="carrera_id" value="{{ $carrera->id }}">
                     <div class="form-group">
                         <label for="año">Año:</label>
-                        <input type="number" id="año" name="año" class="form-control @error('año') is-invalid @enderror" value="{{ old('año') }}" required />
+                        <input type="number" id="año" name="año" min="1" step="1" max="3" class="form-control @error('año') is-invalid @enderror" value="{{ old('año') }}" required />
                         @error('año')
                         <span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
