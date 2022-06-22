@@ -13,7 +13,11 @@ class Proceso extends Model
     protected $fillable = [
         'alumno_id',
         'materia_id',
-        'estado'
+        'estado',
+        'cierre',
+        'porcentaje_final_calificaciones',
+        'nota_global',
+        'nota_recuperatorio'
     ];
 
     public function materia(): BelongsTo
