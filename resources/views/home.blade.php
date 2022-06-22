@@ -5,6 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                <div class="card-header bg-dark">
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ asset('images/logo.png') }}" alt="" height="150px">
+                    </div>
+                </div>
                 <div class="card-header">Bienvenido a Sistema IES 9015 Valle de Uco</div>
 
                 <div class="card-body">
