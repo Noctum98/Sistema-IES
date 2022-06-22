@@ -1,7 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
+@include('comision.modals.agregar_profesor')
+
 <div class="container p-3">
-    <a href="{{url()->previous()}}"><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
+    <a href="{{route('comisiones.ver',$comision->carrera_id)}}"><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
 
     <h2 class="h1 text-info">
         Comisión de {{ $comision->nombre.' - '.$comision->carrera->nombre }}
@@ -31,7 +33,7 @@
     @if(count($comision->profesores) == 0)
     <p>No hay profesores vinculados a la comisión.</p>
     @else
-
+    <h3 class="text-info">Profesores</h3>
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -59,12 +61,13 @@
         </tbody>
     </table>
     @endif
+    <h3 class="text-info">Alumnos</h3>
 
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nombre</th>
+                <th scope="col">Nombre </th>
                 <th scope="col">
                     <i class="fa fa-cog" style="font-size:20px;"></i>
                 </th>
@@ -93,7 +96,6 @@
     </table>
     <hr>
 </div>
-@include('comision.modals.agregar_profesor')
 @endsection
 @section('scripts')
 <script src="{{ asset('js/comision/asignar_alumnos.js') }}"></script>
