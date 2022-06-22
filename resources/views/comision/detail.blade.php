@@ -79,7 +79,7 @@
                     <form action="" id="{{$alumno->id}}" method="POST">
                         @foreach($comisiones as $comision)
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->comision_id == $comision->id) checked @endif @if(Session::has('seccionAlumnos')) disabled @endif>
+                            <input class="form-check-input" type="radio" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->comision_id == $comision->id) checked @endif>
                             <label class="form-check-label" for="exampleRadios1">
                                 {{$comision->nombre}}
                             </label>
