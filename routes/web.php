@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionesController;
+use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +73,12 @@ Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->na
 Route::post('crearComisiones/{carrera_id}',[ComisionController::class,'store'])->name('comisiones.crear');
 Route::post('comision/profesor/{comision_id}',[ComisionController::class,'agregar_profesor'])->name('comision.profesor');
 Route::delete('comisiones/profesor/{comision_id}',[ComisionController::class,'delete_profesor'])->name('comision.delprofesor');
+
+
+// Rutas de estados
+
+Route::resource('estados', EstadosController::class);
+
 
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {

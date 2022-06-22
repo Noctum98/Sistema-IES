@@ -154,7 +154,7 @@
                   <li class="nav-item">
                     <a class="nav-link text-light" href="{{ route('trab.inicio') }}">
                       <span data-feather="layers"></span>
-                      Planilla de Trabájos Prácticos
+                      Planilla de Trabajos Prácticos
                     </a>
                   </li>
                    <li class="nav-item">
