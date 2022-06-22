@@ -91,11 +91,16 @@ class ComisionController extends Controller
     public function show($id)
     {
         $comision = Comision::find($id);
-        $comisiones = Comision::select('nombre','id')->where('carrera_id',$comision->carrera_id)->get();
-        $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,true);
-
         $carrera_id = $comision->carrera_id;
         $año = $comision->año;
+        $comisiones = Comision::select('nombre','id')->where([
+            'carrera_id'=>$comision->carrera_id,
+            'año' => $año
+        ])->get();
+
+        $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,true);
+
+
         
         $alumnos = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
             $query->where('carrera_id',$carrera_id)
@@ -146,7 +151,6 @@ class ComisionController extends Controller
 
     public function agregar_profesor(Request $request,$id){
         $comision = Comision::find($id);
-
         if(!$comision->hasProfesor($request['profesor_id'])){
             $comision->profesores()->attach(User::where('id',$request['profesor_id'])->first());
             $mensaje = ['mensaje_success' => 'El profesor se ha añadido correctamente.'];
