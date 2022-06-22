@@ -18,7 +18,8 @@ class Calificacion extends Model
         'tipo_id',
         'materia_id',
         'nombre',
-        'fecha'
+        'fecha',
+        'ciclo_lectivo'
     ];
 
     public function tipo(): BelongsTo
