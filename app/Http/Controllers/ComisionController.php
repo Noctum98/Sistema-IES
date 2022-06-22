@@ -91,20 +91,22 @@ class ComisionController extends Controller
     public function show($id)
     {
         $comision = Comision::find($id);
+        $comisiones = Comision::select('nombre','id')->where('carrera_id',$comision->carrera_id)->get();
         $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,true);
 
         $carrera_id = $comision->carrera_id;
         $año = $comision->año;
-        /*
-        $alumnos = Alumno::whereHas('carreras',function($query) use ($carrera_id,$año){
+        
+        $alumnos = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
             $query->where('carrera_id',$carrera_id)
             ->where('año',$año);
-        })->orderBy('apellidos')->get();*/
+        })->orderBy('apellidos')->get();
 
         return view('comision.detail',[
             'comision' => $comision,
             'profesores' => $profesores,
-            'alumnos' => []
+            'alumnos' => $alumnos,
+            'comisiones' => $comisiones
         ]);
     }
 
@@ -167,5 +169,14 @@ class ComisionController extends Controller
         }
 
         return redirect()->route('comisiones.show',$comision->id)->with($mensaje);
+    }
+
+    public function agregar_alumno(Request $request)
+    {
+        $alumno = Alumno::find($request['alumno_id']);
+        $alumno->comision_id = (int) $request['comision_id'];
+        $alumno->update();
+
+        return response()->json('Comisión asignada!',200);
     }
 }

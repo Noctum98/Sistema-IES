@@ -1,28 +1,28 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container p-3">
-    <a href="{{url()->previous()}}" ><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
+    <a href="{{url()->previous()}}"><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
 
     <h2 class="h1 text-info">
         Comisión de {{ $comision->nombre.' - '.$comision->carrera->nombre }}
     </h2>
     <hr>
     @if(@session('mensaje_success'))
-        <div class="alert alert-success">
-            {{ @session('mensaje_success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ @session('mensaje_success') }}
+    </div>
     @endif
 
     @if(@session('mensaje_error'))
-        <div class="alert alert-danger">
-            {{ @session('mensaje_error') }}
-        </div>
+    <div class="alert alert-danger">
+        {{ @session('mensaje_error') }}
+    </div>
     @endif
 
     @if(@session('profesor_deleted'))
-        <div class="alert alert-warning">
-            {{ @session('profesor_deleted') }}
-        </div>
+    <div class="alert alert-warning">
+        {{ @session('profesor_deleted') }}
+    </div>
     @endif
 
     @if(Session::has('coordinador') || Session::has('regente') || Session::has('admin'))
@@ -60,12 +60,6 @@
     </table>
     @endif
 
-    <!---
-    <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarAlumno">Agregar Alumno</button></p>
-    @if(count($comision->procesos) == 0)
-    <p>No hay alumnos vinculados a la comisión.</p>
-    @else
-
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -77,24 +71,30 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($comision->procesos as $proceso)
+            @foreach ($alumnos as $alumno)
             <tr>
                 <th scope="row">{{ $alumno->id }}</th>
-                <td>{{ $proceso->alumno->nombre.' '.$proceso->alumno->apellido }}</td>
+                <td>{{ $alumno->apellidos.' '.$alumno->nombres }}</td>
                 <td>
-                    <form action="{{ route('cargo.delUser',$proceso->id) }}" method="POST">
-                        {{ method_field('DELETE') }}
-                        <input type="hidden" name="user_id" value="{{$proceso->id}}">
-                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger">
+                    <form action="" id="{{$alumno->id}}" method="POST">
+                        @foreach($comisiones as $comision)
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->comision_id == $comision->id) checked @endif @if(Session::has('seccionAlumnos')) disabled @endif>
+                            <label class="form-check-label" for="exampleRadios1">
+                                {{$comision->nombre}}
+                            </label>
+                        </div>
+                        @endforeach
                     </form>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
-    @endif
     <hr>
-    --->
 </div>
 @include('comision.modals.agregar_profesor')
+@endsection
+@section('scripts')
+<script src="{{ asset('js/comision/asignar_alumnos.js') }}"></script>
 @endsection
