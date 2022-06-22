@@ -91,10 +91,10 @@
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="{{ route('calificacion.home') }}">Planilla de Calificaciones</a>
 
-                        @if(Session::has('planillas') && Session::has('admin') || Session::has('regente') )
+                        @if(Session::has('planillas') && Session::has('admin') )
                         <a class="nav-link" href="{{ route('asis.inicio') }}">Planilla de Asistencia</a>
-                        <a class="nav-link" href="{{ route('tipoCalificaciones.index') }}">Tipo
-                            Calificaciones</a>
+                        <a class="nav-link" href="{{ route('tipoCalificaciones.index') }}">Tipo Calificaciones</a>
+                        <a class="nav-link" href="{{ route('estados.index') }}">Estados <small>(Alumno Materia)</small></a>
                         @endif
                     </nav>
                 </div>
