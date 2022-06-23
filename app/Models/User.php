@@ -170,4 +170,17 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Calificacion');
     }
+
+    //=========================Comisiones=======================//
+    public function comisiones(){
+        return $this->belongsToMany(Comision::class,'comision_profesor','profesor_id','comision_id')->withTimestamps();
+    }
+    public function hasComision($comision)
+    {
+
+        if ($this->comisiones->where('id', $comision)->first()) {
+            return true;
+        }
+        return false;
+    }
 }

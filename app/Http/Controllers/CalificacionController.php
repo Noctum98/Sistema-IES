@@ -55,13 +55,21 @@ class CalificacionController extends Controller
         if ($user->hasAnyRole(['coordinador', 'admin', 'regente'])) {
             $calificaciones = Calificacion::where('materia_id', $materia->id)->get();
         } else {
-            $calificaciones = Calificacion::where([
-                'materia_id' => $materia->id,
-//                'user_id' => Auth::user()->id,
-            ])->orWhereHas('tipo',function($query){
-                $query->where('descripcion',3);
-            })
-            ->get();
+
+            if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2' && $cargo_id) {
+                $calificaciones = Calificacion::where([
+                    'materia_id' => $materia->id,
+                    'cargo_id' => $cargo_id
+                ]);
+            } else {
+                $calificaciones = Calificacion::where([
+                    'materia_id' => $materia->id,
+                ]);
+            }
+
+            $calificaciones = $calificaciones->orWhereHas('tipo', function ($query) {
+                $query->where('descripcion', 3);
+            })->orderBy('comision_id')->get();
         }
 
         return view('calificacion.admin', [
@@ -77,19 +85,15 @@ class CalificacionController extends Controller
         $calificacion = Calificacion::find($calificacion_id);
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $calificacion->materia_id)
+            ->where('procesos.materia_id', $calificacion->materia_id);
 
-        ;
-
-        if($calificacion->comision_id !== null){
+            
+        if ($calificacion->comision_id) {
             $procesos->where('alumnos.comision_id', $calificacion->comision_id);
         }
 
-$procesos->orderBy('alumnos.apellidos', 'asc');
-$procesos= $procesos->get();
-
-
-
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos = $procesos->get();
 
         if ($calificacion) {
             return view('calificacion.create', [
@@ -106,6 +110,15 @@ $procesos= $procesos->get();
             'tipo_id' => ['required'],
             'fecha' => ['required']
         ]);
+
+        if($request['comision_id'] && !Auth::user()->hasComision($request['comision_id'])){
+            $mensaje = ['error_comision'=>'No tienes permiso para trabajar en esta comisión'];
+
+            return redirect()->route('calificacion.admin', [
+                'materia_id' => $request['materia_id'],
+                'cargo_id' => $request['cargo_id']
+            ])->with($mensaje);
+        }
 
         $calificacionFinal = $this->verificarFinalIntegrador($request);
 
