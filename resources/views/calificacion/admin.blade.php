@@ -26,6 +26,10 @@
     <div class="alert alert-danger mt-2">{{@session('calificacion_eliminada')}}</div>
     @endif
 
+    @if(@session('error_comision'))
+    <div class="alert alert-danger mt-2">{{@session('error_comision')}}</div>
+    @endif
+
     @if(count($calificaciones) > 0)
     <table class="table  mt-4">
         <thead class="thead-dark">
@@ -33,7 +37,8 @@
                 <th scope="col">Tipo</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Fecha</th>
-                <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
+                <th scope="col">Comisión</th>
+                <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -42,14 +47,20 @@
                 <td>{{ $calificacion->tipo->nombre }}</td>
                 <td>{{ $calificacion->nombre }}</td>
                 <td>{{ $calificacion->fecha }}</td>
-
+                @if( $calificacion->comision_id)
+                <td>{{ $calificacion->comision->nombre }}</td>
+                @else
+                <td>General</td>
+                @endif
                 <td >
-                    <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary">
+                    <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary 
+                    @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif" 
+                    >
                         Notas
                     </a>
                     <form action="{{ route('calificacion.delete',$calificacion->id) }}" method="POST" class="d-inline">
                         {{ method_field('DELETE') }}
-                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger">
+                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger" @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif>
                     </form>
                 </td>
             </tr>

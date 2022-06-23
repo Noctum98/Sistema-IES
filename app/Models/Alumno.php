@@ -54,7 +54,8 @@ class Alumno extends Model
         'acompañamiento_motriz' ,
         'matriculacion' ,
         'pase' ,
-        'titulo_s'
+        'titulo_s',
+        'comision_id'
     ];
 
     use HasFactory;

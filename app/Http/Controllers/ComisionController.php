@@ -146,7 +146,26 @@ class ComisionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comision = Comision::find($id);
+        $alumnos = Alumno::where('comision_id',$comision->id)->update([
+            'comision_id' => null
+        ]);
+
+        if($comision->profesores())
+        {
+            $comision->profesores()->detach();
+        }
+
+        if($comision->materias())
+        {
+            $comision->materias()->detach();
+        }
+
+        $comision->delete();
+
+        return redirect()->route('comisiones.ver',$comision->carrera_id)->with(
+            'comision_eliminada','La comisión se eliminó con exito!'
+        );
     }
 
     public function agregar_profesor(Request $request,$id){

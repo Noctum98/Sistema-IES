@@ -36,6 +36,17 @@
                         <input type="date" name="fecha" id="fecha" class="form-control" required>
                     </div>
 
+                    @if($materia->getTotalAttribute() > 0)
+                    <div class="form-group">
+                        <label for="comision_id">Comisión</label>
+                        <select name="comision_id" id="comision_id" class="form-select" required>
+                            @foreach($materia->comisiones as $comisiones)
+                                <option value="{{ $comisiones->id }}">{{ $comisiones->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
+
                     <input type="submit" value="Guardar" class="btn btn-primary">
                 </form>
             </div>
