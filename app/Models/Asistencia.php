@@ -13,7 +13,8 @@ class Asistencia extends Model
         'proceso_id',
         'porcentaje_final',
         'porcentaje_presencial',
-        'porcentaje_virtual'
+        'porcentaje_virtual',
+        'comision_id'
     ];
 
     public function materia(){

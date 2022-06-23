@@ -18,7 +18,9 @@ class Calificacion extends Model
         'tipo_id',
         'materia_id',
         'nombre',
-        'fecha'
+        'fecha',
+        'ciclo_lectivo',
+        'comision_id'
     ];
 
     public function tipo(): BelongsTo
@@ -39,6 +41,10 @@ class Calificacion extends Model
     public function cargo(): BelongsTo
     {
         return $this->belongsTo(Cargo::class,'user_id');
+    }
+    public function comision(): BelongsTo
+    {
+        return $this->belongsTo(Comision::class,'comision_id');
     }
 
 }
