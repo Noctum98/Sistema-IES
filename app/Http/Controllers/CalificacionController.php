@@ -67,8 +67,11 @@ class CalificacionController extends Controller
                 ]);
             }
 
-            $calificaciones = $calificaciones->orWhereHas('tipo', function ($query) {
-                $query->where('descripcion', 3);
+            $calificaciones = $calificaciones->orWhereHas('tipo', function ($query) use ($materia) {
+                $query->where([
+                    'materia_id' => $materia->id,
+                    'descripcion'=> 3
+                ]);
             })->orderBy('comision_id')->get();
         }
 
