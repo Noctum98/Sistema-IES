@@ -98,7 +98,7 @@ class ComisionController extends Controller
             'año' => $año
         ])->get();
 
-        $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,true);
+        $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,false);
 
 
         
