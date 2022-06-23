@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Calificacion;
 use App\Models\Calificaciones;
+use App\Models\Comision;
+use App\Models\ComisionMateria;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
 use App\Models\TipoCalificaciones;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +57,7 @@ class CalificacionController extends Controller
         } else {
             $calificaciones = Calificacion::where([
                 'materia_id' => $materia->id,
-                'user_id' => Auth::user()->id,
+//                'user_id' => Auth::user()->id,
             ])->orWhereHas('tipo',function($query){
                 $query->where('descripcion',3);
             })
@@ -75,8 +78,18 @@ class CalificacionController extends Controller
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $calificacion->materia_id)
-            ->orderBy('alumnos.apellidos', 'asc')
-            ->get();
+
+        ;
+
+        if($calificacion->comision_id !== null){
+            $procesos->where('alumnos.comision_id', $calificacion->comision_id);
+        }
+
+$procesos->orderBy('alumnos.apellidos', 'asc');
+$procesos= $procesos->get();
+
+
+
 
         if ($calificacion) {
             return view('calificacion.create', [

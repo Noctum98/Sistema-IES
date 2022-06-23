@@ -33,7 +33,8 @@
                 <th scope="col">Tipo</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Fecha</th>
-                <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
+                <th scope="col">Comisión</th>
+                <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
                 <td>{{ $calificacion->tipo->nombre }}</td>
                 <td>{{ $calificacion->nombre }}</td>
                 <td>{{ $calificacion->fecha }}</td>
+                <td>{{ $calificacion->comision->nombre }}</td>
 
                 <td >
                     <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary">
