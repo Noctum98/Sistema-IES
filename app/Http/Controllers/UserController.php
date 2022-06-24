@@ -361,14 +361,18 @@ class UserController extends Controller
             ->orWhere('username', $alumno->dni)->first();
 
         if ($user_exists) {
-            return redirect()->route('alumno.detalle', [
-                'id' => $alumno->id,
-            ])->with([
-                'mensaje_error' => 'Ya existe un usuario con este email o username',
-            ]);
+//            return redirect()->route('alumno.detalle', [
+//                'id' => $alumno->id,
+//            ])->with([
+//                'mensaje_error' => 'Ya existe un usuario con este email o username',
+//            ]);
+            $user = $user_exists;
+            $user->update($data);
+        }else{
+            $user = User::create($data);
         }
 
-        $user = User::create($data);
+
         $user->roles()->attach(Rol::where('nombre', 'alumno')->first());
 
         $alumno->user_id = $user->id;
