@@ -85,7 +85,7 @@
 						@if(Auth::user()->hasRole('admin'))
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
-						<a href="" class="btn btn-sm btn-secondary">Ver calificaciónes</a>
+						<a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-secondary">Ver calificaciónes</a>
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 							<sup class="badge badge-info" title="Total Comisiones">
 								{{$materia->getTotalAttribute()}}
@@ -120,6 +120,7 @@
 						@if(Auth::user()->hasRole('admin'))
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
+						<a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-secondary">Ver calificaciónes</a>
 						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar Alumnos</a>
 
 							<sup class="badge badge-info" title="Total Comisiones">
