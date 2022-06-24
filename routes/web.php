@@ -250,6 +250,7 @@ Route::prefix('proceso')->group(function () {
     // Acciones
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name('inscribir_proceso');
     Route::post('administrar/{alumno_id}',[ProcesoController::class,'administrar'])->name('proceso.administrar');
+    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name('proceso.listado');
 });
 
 // Rutas de Asistencia
