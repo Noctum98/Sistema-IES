@@ -302,7 +302,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/administrar', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name('mesa.carreras');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
-    Route::get('/inscriptos/{id}', [MesaController::class, 'vista_inscripciones'])->name('mesa.inscriptos');
+    Route::get('/inscriptos/{instancia_id}/{materia_id}', [MesaController::class, 'vista_inscripciones'])->name('mesa.inscriptos');
     Route::get('/especial/inscriptos/{id}/{instancia_id?}',[AlumnoMesaController::class,'vista_inscriptos'])->name('mesa.especial.inscriptos');
 
     Route::post('/seleccionar/{id}', [InstanciaController::class, 'seleccionar_sede'])->name('sele.sede');

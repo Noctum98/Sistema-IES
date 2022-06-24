@@ -39,11 +39,11 @@ class Materia extends Model
         return $this->hasMany('App\Models\Mesa');
     }
 
-    public function mesa($instancia_id, $materia_id)
+    public function mesa($instancia_id)
     {
         $peticion = Mesa::where([
             'instancia_id' => $instancia_id,
-            'materia_id'    => $materia_id
+            'materia_id' => $this->id
         ])->first();
 
         return $peticion;
