@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\Comision;
 use App\Models\Materia;
 use App\Models\Proceso;
 
@@ -13,7 +14,7 @@ class ProcesoController extends Controller
     function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor');
     }
     // Vistas
     public function vista_inscribir($id)
@@ -46,6 +47,33 @@ class ProcesoController extends Controller
 
         return view('proceso.detail', [
             'proceso'   =>  $proceso
+        ]);
+    }
+
+    public function vista_listado($materia_id, $comision_id = null)
+    {
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id);
+
+
+        if ($comision_id) {
+            $procesos->where('alumnos.comision_id', $comision_id);
+        }
+        $materia = Materia::find($materia_id);
+
+        $comision =  null;
+        if($comision_id){
+            $comision = Comision::find($comision_id);
+        }
+
+
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos = $procesos->get();
+        return view('proceso.listado', [
+            'procesos'   =>  $procesos,
+            'materia' => $materia,
+            'comision' => $comision
         ]);
     }
 

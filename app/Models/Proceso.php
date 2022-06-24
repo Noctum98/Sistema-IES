@@ -17,28 +17,44 @@ class Proceso extends Model
         'cierre',
         'porcentaje_final_calificaciones',
         'nota_global',
-        'nota_recuperatorio'
+        'nota_recuperatorio',
     ];
 
     public function materia(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Materia','materia_id');
+        return $this->belongsTo('App\Models\Materia', 'materia_id');
     }
+
     public function alumno(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Alumno','alumno_id');
+        return $this->belongsTo('App\Models\Alumno', 'alumno_id');
     }
+
     public function asistencia()
     {
-        $asistencia = Asistencia::where('proceso_id',$this->id)->first();
+        $asistencia = Asistencia::where('proceso_id', $this->id)->first();
 
         return $asistencia;
     }
 
     public function procesoCalificacion($calificacion_id)
     {
-        $procesoCalificacion = ProcesoCalificacion::where(['proceso_id'=>$this->id,'calificacion_id'=>$calificacion_id])->first();
+        $procesoCalificacion = ProcesoCalificacion::where(
+            ['proceso_id' => $this->id, 'calificacion_id' => $calificacion_id]
+        )->first();
 
         return $procesoCalificacion;
+    }
+
+    public function procesosCalificaciones()
+    {
+        $procesosCalificaciones = ProcesoCalificacion::where(
+            ['proceso_id' => $this->id]
+        )
+            ->orderBy('calificacion_id', 'ASC')
+            ->get()
+        ;
+
+        return $procesosCalificaciones;
     }
 }
