@@ -1,6 +1,8 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
+
+    @if($mesa)
     <h2 class="h1 text-info">
         Inscripciones en {{$mesa->materia->nombre}}
     </h2>
@@ -13,7 +15,7 @@
     <h2 class="text-info">Primer llamado</h2>
     @if( count($primer_llamado) > 0)
     <div class="row">
-        <a href="{{route('mesa.descargar',['id'=>$mesa->id,'llamado'=>'primero'])}}" class="btn btn-sm btn-success ml-3">
+        <a href="{{route('mesa.descargar',['id'=>$mesa->id,'instancia_id'=>$mesa->instancia_id,'llamado'=>'primero'])}}" class="btn btn-sm btn-success ml-3 col-md-2">
             Descargar 1<sup>er</sup> llamado
         </a>
     </div>
@@ -50,7 +52,7 @@
     @else
     <p>No existen inscripciones en este llamado</p>
     @endif
-    <hr>
+    
     <h2 class="text-info">Segundo llamado</h2>
     @if( count($segundo_llamado) > 0)
     <div class="row">
@@ -90,6 +92,11 @@
     </table>
     @else
     <p>No existen inscripciones en este llamado</p>
+    @endif
+    @else
+    <h2 class="h1 text-info">
+        La mesa no esta configurada.
+    </h2>
     @endif
 </div>
 @endsection
