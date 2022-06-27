@@ -14,11 +14,17 @@
 						<td>
 							Alumno
 						</td>
+						@if(count($calificaciones) > 0)
+							@foreach($calificaciones as $calificacion)
+								<td>{{$calificacion->nombre}}</td>
+							@endforeach
+						@else
+							<td>
+								Notas
+							</td>
+						@endif
 						<td>
 							Estado
-						</td>
-						<td>
-							Notas
 						</td>
 						<td>
 							Cierre
@@ -31,14 +37,29 @@
 							<td>
 								{{$proceso->alumno->apellidos}}, {{$proceso->alumno->nombres}}
 							</td>
+							@if($proceso->procesosCalificaciones())
+								@foreach($proceso->procesosCalificaciones() as $calificacion)
 							<td>
-								{{$proceso->procesosCalificaciones()}}
+								{{$calificacion->porcentaje}}
 							</td>
+								@endforeach
+							@endif
 							<td>
+								<select class="custom-select select-estado" name="estado-{{$proceso->id}}" id="{{$proceso->id}}">
+									<option value="">Seleccione estado</option>
+									@foreach($estados as $estado)
+										@if($estado->id == $proceso->$estado)
+											<option value="{{$estado->id}}" selected>{{$estado->nombre}}</option>
+										@else
+											<option value="{{$estado->id}}" >{{$estado->nombre}}</option>
+										@endif
+									@endforeach
+								</select>
 								{{$proceso->estado}}
 							</td>
 							<td>
-								{{$proceso->cierre}}
+								<input type="checkbox" class=" " value="{{$proceso->cierre}}" id="{{$proceso->id}}"
+										{{$proceso->cierre == 'activa' ? 'checked':'checked'}}>
 							</td>
 
 						</tr>
@@ -63,4 +84,7 @@
 {{--			</ul>--}}
 {{--		</div>--}}
 	</div>
+@endsection
+			@section('scripts')
+				<script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
 @endsection

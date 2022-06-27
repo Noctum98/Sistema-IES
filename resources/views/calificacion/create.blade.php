@@ -34,9 +34,11 @@
                         <form action="" class="col-md-3 m0 p-0 calificacion-alumnos form-calificacion" id="{{ $proceso->id }}" method="POST">
                             <input type="hidden" name="calificacion_id" id="calificacion_id" value="{{ $calificacion->id }}">
                            
-                            <input type="number" style="width: 100%" class="form-control col-md-5" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor')) disabled @endif required>
+                            <input type="number" style="width: 100%" class="form-control" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor')) disabled @endif required>
+                            <div id="spinner-{{$proceso->id}}">
 
-                                </div>
+                            </div>
+
                             </form>
                         </td>
                         <td class="nota-{{ $proceso->id }}">
