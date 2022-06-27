@@ -132,7 +132,7 @@ class ProcesoController extends Controller
     public function cambiarEstado(Request $request): JsonResponse
     {
         $proceso = Proceso::find($request['proceso_id']);
-        $proceso->estado = (int) $request['estado_id'];
+        $proceso->estado_id = (int) $request['estado_id'];
         $proceso->update();
 
         return response()->json('¡Proceso actualizado!',200);

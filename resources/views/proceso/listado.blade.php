@@ -44,18 +44,29 @@
 							</td>
 								@endforeach
 							@endif
-							<td>
+							<td class="d-inline">
+								<span class="d-none" id="span-{{$proceso->id}}">
+									<i class="fa fa-check"></i>
+								</span>
+								<span class="d-none" id="spin-{{$proceso->id}}">
+									<i class="fa fa-spinner fa-spin"></i>
+								</span>
 								<select class="custom-select select-estado" name="estado-{{$proceso->id}}" id="{{$proceso->id}}">
 									<option value="">Seleccione estado</option>
 									@foreach($estados as $estado)
-										@if($estado->id == $proceso->$estado)
+										@if($estado->id == $proceso->estado_id)
 											<option value="{{$estado->id}}" selected>{{$estado->nombre}}</option>
 										@else
 											<option value="{{$estado->id}}" >{{$estado->nombre}}</option>
 										@endif
 									@endforeach
 								</select>
-								{{$proceso->estado}}
+								<span class="d-none" id="span-{{$proceso->id}}">
+									<i class="fa fa-check"></i>
+								</span>
+								<span class="d-none" id="spin-{{$proceso->id}}">
+									<i class="fa fa-spinner fa-spin"></i>
+								</span>
 							</td>
 							<td>
 								<input type="checkbox" class=" " value="{{$proceso->cierre}}" id="{{$proceso->id}}"
