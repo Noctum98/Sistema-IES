@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\Calificacion;
 use App\Models\Comision;
+use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProcesoController extends Controller
@@ -56,7 +59,6 @@ class ProcesoController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id);
 
-
         if ($comision_id) {
             $procesos->where('alumnos.comision_id', $comision_id);
         }
@@ -70,10 +72,24 @@ class ProcesoController extends Controller
 
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
+        $calificacion = Calificacion::where([
+           'materia_id' => $materia_id
+        ]);
+        if($comision_id){
+            $calificacion->where([
+                'comision_id' => $comision_id
+            ]);
+        }
+        $calificaciones = $calificacion->get();
+
+        $estados = Estados::all();
+
         return view('proceso.listado', [
             'procesos'   =>  $procesos,
             'materia' => $materia,
-            'comision' => $comision
+            'comision' => $comision,
+            'calificaciones' => $calificaciones,
+            'estados'=>$estados
         ]);
     }
 
@@ -81,8 +97,6 @@ class ProcesoController extends Controller
     {
         $alumno = Alumno::find($id);
         $procesos = $request['materias'];
-
-        //dd($request['materias']);
 
         foreach ($alumno->procesos as $proceso) {
 
@@ -113,5 +127,14 @@ class ProcesoController extends Controller
         ])->with([
             'mensaje_procesos' => 'Se han actualizado los procesos'
         ]);
+    }
+
+    public function cambiarEstado(Request $request): JsonResponse
+    {
+        $proceso = Proceso::find($request['proceso_id']);
+        $proceso->estado = (int) $request['estado_id'];
+        $proceso->update();
+
+        return response()->json('¡Proceso actualizado!',200);
     }
 }
