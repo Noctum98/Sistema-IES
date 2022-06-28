@@ -69,6 +69,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Carrera</th>
                     <th scope="col" class="text-center">
                         <i class="fa fa-cog" style="font-size:20px;"></i>
                     </th>
@@ -79,9 +80,9 @@
                 <tr>
                     <th scope="row">{{ $cargo->id }}</th>
                     <td>{{ $cargo->nombre }}</td>
+                    <th scope="row">{{ $cargo->carrera->nombre. '-'. $cargo->carrera->sede->nombre }}</th>
                     <td class="text-center">
                         <a href="{{ route('cargo.show',$cargo->id) }}" class="btn btn-sm btn-primary block-inline ">Configurar</a>
-
                         <a href="{{ route('cargo.edit',$cargo->id) }}" class="btn btn-sm btn-warning ">Editar</a>
                         <form method="POST" class="d-inline" action="{{route('cargo.delete', ['cargo' => $cargo->id])}}">
                             @csrf
