@@ -10,7 +10,7 @@ class CargoService
     public function buscador($busqueda,$paginate = false)
     {
         $cargos = Cargo::select('cargos.*');
-        
+
         if($busqueda['nombre'] && $busqueda['nombre'] != ''){
             $cargos = $cargos->where('nombre','LIKE','%'.$busqueda['nombre'].'%');
         }
@@ -22,7 +22,7 @@ class CargoService
 
         if($paginate)
         {
-            return $cargos->paginate(10);
+            return $cargos->paginate(30);
         }else{
             return $cargos->get();
         }
