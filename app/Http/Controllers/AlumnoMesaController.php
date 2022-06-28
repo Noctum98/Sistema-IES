@@ -237,8 +237,9 @@ $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
                     ]);
                 } else {
-                    $inscripcion->delete();
-                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    $inscripcion->estado_baja = true;
+
+                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
             } else {
                 if (time() > $inscripcion->mesa->cierre) {
@@ -246,14 +247,20 @@ $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
                         'error_baja' => 'Ya ha pasado el tiempo límite para bajarte de esta mesa'
                     ]);
                 } else {
-                    $inscripcion->delete();
-                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    $inscripcion->estado_baja = true;
+                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
+            }
+
+            if(Auth::user()){
+                $inscripcion->user_id = Auth::user()->id;
             }
         }else{
             $inscripcion->estado_baja = true;
-            $inscripcion->update();
         }
+
+        $inscripcion->motivo_baja = 'Baja del alumno';
+        $inscripcion->update();
 
         return redirect()->route('mesa.mate',[
             'instancia_id' => $instancia->id

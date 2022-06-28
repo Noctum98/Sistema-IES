@@ -181,8 +181,12 @@
 						@else
 						<span class="font-weight-bold">2do llamado </span>
 						@endif
-						@if(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo']))
-						 - <a href="{{route('mesa.baja',['id'=>$inscripcion['id']])}}" class="text-danger">Bajarme</a>
+
+						@if($inscripcion->estado_baja)
+						<span class="text-secondary">Dada de baja</span>
+
+						@elseif(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo']))
+						 - <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
 						@endif
 						@endif
 					</li>

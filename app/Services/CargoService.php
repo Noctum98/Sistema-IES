@@ -7,19 +7,24 @@ use App\Models\User;
 
 class CargoService
 {
-    public function buscador($busqueda)
+    public function buscador($busqueda,$paginate = false)
     {
-        $lista = Cargo::where(function ($query) use ($busqueda){
-            $query->join('carreras', 'carrera_id', '=', 'cargos.carrera_id')
-            ->where('cargos.nombre', 'LIKE', '%'.$busqueda.'%')
-//            ->orWhere('cargo.carrera.nombre', 'LIKE', '%'.$busqueda.'%');
-//        $lista->whereHas('carrera',function($query) use ($busqueda){
-//            return $query->orWhere('nombre', 'LIKE', '%' . $busqueda . '%');
-//        });
-            ;
-    });
+        $cargos = new Cargo();
+        if($busqueda['nombre'] && $busqueda['nombre'] != ''){
+            $cargos = $cargos->where('nombre','LIKE','%'.$busqueda['nombre'].'%');
+        }
 
-        return $lista->paginate(10);
+        if($busqueda['carrera_id']  && $busqueda['carrera_id'] != 'todos')
+        {
+            $cargos->where('carrera_id',$busqueda['carrera_id']);
+        }
+
+        if($paginate)
+        {
+            return $cargos->paginate(10);
+        }else{
+            return $cargos->get();
+        }
     }
 
 

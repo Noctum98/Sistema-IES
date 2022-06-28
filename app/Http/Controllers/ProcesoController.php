@@ -11,6 +11,7 @@ use App\Models\Proceso;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProcesoController extends Controller
 {
@@ -129,10 +130,28 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function cambiarEstado(Request $request): JsonResponse
+    public function cambiaEstado(Request $request): JsonResponse
     {
+        $user = Auth::user();
         $proceso = Proceso::find($request['proceso_id']);
-        $proceso->estado = (int) $request['estado_id'];
+        $proceso->estado_id = (int) $request['estado_id'];
+        $proceso->operador_id = $user->id;
+        $proceso->update();
+
+        return response()->json('¡Proceso actualizado!',200);
+    }
+    public function cambiaCierre(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        $proceso = Proceso::find($request['proceso_id']);
+        if($request['cierre'] == 'true'){
+            $proceso->cierre = 1;
+        }
+        if($request['cierre'] == 'false'){
+            $proceso->cierre = 0;
+        }
+        $proceso->operador_id = $user->id;
+
         $proceso->update();
 
         return response()->json('¡Proceso actualizado!',200);
