@@ -4,7 +4,11 @@
     <h2 class="h1 text-info">
         Calificaciones: {{ $materia->nombre }}
     </h2>
+    @if(isset($cargo))
+        <i>{{ $cargo->nombre }}</i>
+    @endif
     <hr>
+    <a href="{{route('calificacion.home')}}" ><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a><br>
     @if(Session::has('profesor'))
     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear Calificación</button>
     @endif
@@ -50,7 +54,7 @@
                 <td>{{ $calificacion->tipo->nombre }}</td>
                 <td>{{ $calificacion->nombre }}</td>
                 <td>
-                    {{ $calificacion->user->nombre.' '.$calificacion->user->apellido }} 
+                    {{ $calificacion->user->nombre.' '.$calificacion->user->apellido }}
                 </td>
                 <td>{{ $calificacion->fecha }}</td>
                 @if( $calificacion->comision_id)
@@ -58,10 +62,9 @@
                 @else
                 <td>General</td>
                 @endif
-                <td >
+                <td>
                     <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary 
-                    @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif" 
-                    >
+                    @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">
                         Notas
                     </a>
                     <form action="{{ route('calificacion.delete',$calificacion->id) }}" method="POST" class="d-inline">
@@ -74,7 +77,7 @@
         </tbody>
     </table>
     @else
-     <p class="mt-3">No has creado ninguna calificación.</p>
+    <p class="mt-3">No has creado ninguna calificación.</p>
     @endif
 </div>
 @include('calificacion.modals.crear_calificacion')
