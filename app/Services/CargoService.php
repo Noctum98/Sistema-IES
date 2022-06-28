@@ -9,7 +9,8 @@ class CargoService
 {
     public function buscador($busqueda,$paginate = false)
     {
-        $cargos = new Cargo();
+        $cargos = Cargo::select('cargos.*');
+        
         if($busqueda['nombre'] && $busqueda['nombre'] != ''){
             $cargos = $cargos->where('nombre','LIKE','%'.$busqueda['nombre'].'%');
         }
