@@ -12,8 +12,8 @@
                     <input type="hidden" name="materia_id" value="{{ $materia->id }}">
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
 
-                    @if(isset($cargo_id))
-                    <input type="hidden" name="cargo_id" value="{{ $cargo_id }}">
+                    @if(isset($cargo))
+                    <input type="hidden" name="cargo_id" value="{{ $cargo->id }}">
                     @endif
 
                     <div class="form-group">

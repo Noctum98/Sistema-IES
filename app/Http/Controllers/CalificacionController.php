@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Calificacion;
 use App\Models\Calificaciones;
+use App\Models\Cargo;
 use App\Models\Comision;
 use App\Models\ComisionMateria;
 use App\Models\Materia;
@@ -43,6 +44,9 @@ class CalificacionController extends Controller
     public function admin($materia_id, $cargo_id = null)
     {
         $materia = Materia::find($materia_id);
+        if($cargo_id){
+            $cargo = Cargo::select('nombre','id')->where('id',$cargo_id)->first();
+        }
 
         if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
             $tiposCalificaciones = TipoCalificacion::all();
@@ -57,7 +61,7 @@ class CalificacionController extends Controller
             'materia' => $materia,
             'tiposCalificaciones' =>  $tiposCalificaciones,
             'calificaciones' => $calificaciones,
-            'cargo_id' => $cargo_id
+            'cargo' => isset($cargo) ? $cargo : null
         ]);
     }
 
