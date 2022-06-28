@@ -18,6 +18,7 @@ class Proceso extends Model
         'porcentaje_final_calificaciones',
         'nota_global',
         'nota_recuperatorio',
+        'operador_id'
     ];
 
     public function materia(): BelongsTo
