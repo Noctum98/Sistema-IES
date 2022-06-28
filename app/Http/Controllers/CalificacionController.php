@@ -51,24 +51,7 @@ class CalificacionController extends Controller
         }
 
         $user = Auth::user();
-
-        if ($user->hasAnyRole(['coordinador', 'admin', 'regente'])) {
-            $calificaciones = Calificacion::where('materia_id', $materia->id)->get();
-        } else {
-
-            if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2' && $cargo_id) {
-                $calificaciones = Calificacion::where([
-                    'materia_id' => $materia->id,
-                    'cargo_id' => $cargo_id
-                ]);
-            } else {
-                $calificaciones = Calificacion::where([
-                    'materia_id' => $materia->id,
-                ]);
-            }
-
-            $calificaciones = $calificaciones->orderBy('comision_id')->get();
-        }
+        $calificaciones = Calificacion::where('materia_id', $materia->id)->orderBy('tipo_id')->get();
 
         return view('calificacion.admin', [
             'materia' => $materia,
