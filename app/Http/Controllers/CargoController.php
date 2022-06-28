@@ -36,13 +36,12 @@ class CargoController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        if (trim($search) != '') {
-            $cargos = $this->cargoService->buscador($search);
+        $search = $request->input('busqueda');
+        if ($search) {
+            $cargos = $this->cargoService->buscador($request,true);
         } else {
             $cargos = Cargo::orderBy('updated_at', 'DESC')->paginate(10);
         }
-
 
         $carreras = $this->carreraService->modulares();
 
@@ -87,7 +86,6 @@ class CargoController extends Controller
 //            'personal'  => $personal
         ]);
     }
-
     /**
      * @throws ValidationException
      */
