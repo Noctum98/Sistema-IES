@@ -53,9 +53,8 @@ class Materia extends Model
     {
         return $this->belongsToMany(Comision::class);
     }
-    public function getTotalAttribute()
+    public function getTotalAttribute(): int
     {
-
         return $this->comisiones()->count();
     }
 }
