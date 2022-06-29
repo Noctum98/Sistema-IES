@@ -64,6 +64,47 @@ class ProcesoCalificacionController extends Controller
         return response()->json($reponse,200);
     }
 
+    public function crearRecuperatorio(Request $request)
+    {
+        $ausente = false;
+        if($request['porcentaje'] && is_numeric($request['porcentaje'])){
+            $rules = ['required','numeric','max:100'];
+        }else{
+            $rules = ['required','string','regex:/^[A?a?]/'];
+            $ausente = true;
+        }
+        $validate = Validator::make($request->all(),[
+            'porcentaje' => $rules
+        ]);
+
+        if(!$validate->fails())
+        {
+            $procesoCalificacion = ProcesoCalificacion::where([
+                'proceso_id' => $request['proceso_id'],
+                'calificacion_id' => $request['calificacion_id']
+            ])->first();
+
+            $procesoCalificacion->porcentaje_recuperatorio = $request['porcentaje'];
+
+            if (!$ausente) {
+                $procesoCalificacion->nota_recuperatorio = $this->calcularNota((int) $request['porcentaje']);
+            }else{
+                $procesoCalificacion->nota_recuperatorio = 'A';
+            }
+
+            $procesoCalificacion->update();
+
+            $response = $procesoCalificacion;
+        }else{
+            $response = [
+                'code' => 200,
+                'errors' => $validate->errors()
+            ];
+        }
+
+        return response()->json($response,200);
+    }
+
     private function calcularNota($porcentaje)
     {
         if($porcentaje == 0)

@@ -41,6 +41,7 @@ use App\Models\Cargo;
 use App\Models\Carrera;
 use App\Models\Instancia;
 use App\Models\MesaAlumno;
+use App\Models\ProcesoCalificacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -359,6 +360,7 @@ Route::prefix('calificacion')->group(function(){
 
 Route::prefix('procesoCalificacion')->group(function(){
     Route::post('/',[ProcesoCalificacionController::class,'store']);
+    Route::post('/recuperatorio',[ProcesoCalificacionController::class,'crearRecuperatorio']);
 });
 
 Route::prefix('excel')->group(function(){
