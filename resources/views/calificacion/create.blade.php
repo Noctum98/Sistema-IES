@@ -28,17 +28,18 @@
                 <tr>
                     <td>
                         {{ strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
+
                     </td>
-                    <td>
-                        <form action="" class="col-md-3 m0 p-0 calificacion-alumnos form-calificacion" id="{{ $proceso->id }}" method="POST">
+                    <td class="input-group">
+                        <form action="" class="col-md-3 m0 p-0 calificacion-alumnos form-calificacion input-group" id="{{ $proceso->id }}" method="POST">
                             <input type="hidden" name="calificacion_id" id="calificacion_id" value="{{ $calificacion->id }}">
                            
                             @if($calificacion->tipo_id == 1)
-                            <input type="text" style="width: 100%" class="form-control col-md-8" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor')) disabled @endif required>
+                            <input type="text" style="width: 100%" class="form-control col-md-8 " id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif required>
                             @else
-                            <input type="number" style="width: 100%" class="form-control col-md-8" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor')) disabled @endif required>
+                            <input type="number" style="width: 100%" class="form-control col-md-8 " id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif required>
                             @endif
-
+                            <button type="submit" class="btn btn-info btn-sm input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif"><i class="fa fa-save"></i> </button>
                             </form>
                         </td>
                         <td class="nota-{{ $proceso->id }}">
