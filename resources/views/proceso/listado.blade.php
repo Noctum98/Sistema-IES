@@ -1,6 +1,17 @@
 @extends('layouts.app-prueba')
 @section('content')
+    <style>
+        thead Th {
+            position: sticky;
+            z-index: 1;
+            top: 0;
+        }
+
+    </style>
     <div class="container">
+        <a href="{{url()->previous()}}">
+            <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+        </a>
         <h2 class="h1 text-info">
             Notas de Proceso de {{ $materia->nombre }} @if($comision)
                 <br/><small>{{$comision->nombre}}</small>
@@ -8,29 +19,29 @@
         </h2>
         <hr>
         @if(count($procesos) > 0)
-            <div class="table-responsive">
+            <div class="table-responsive tableFixHead">
 
-                <table class="table mt-4">
-                    <thead class="thead-dark">
+                <table class="table mt-4 ">
+                    <thead class="thead-dark ">
                     <tr>
-                        <td>
+                        <th>
                             Alumno
-                        </td>
+                        </th>
                         @if(count($calificaciones) > 0)
                             @foreach($calificaciones as $calificacion)
-                                <td>{{$calificacion->nombre}}</td>
+                                <th>{{$calificacion->nombre}}</th>
                             @endforeach
                         @else
-                            <td>
+                            <th>
                                 Notas
-                            </td>
+                            </th>
                         @endif
-                        <td>
+                        <th>
                             Estado
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             Cierre
-                        </td>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,30 +54,30 @@
                                 @foreach($calificaciones as $cc)
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
-                                        {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
+                                            {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
                                         @else
                                             -
                                         @endif
                                         %
                                     </td>
 
-{{--                                                                        <td>{{$calificacion->nombre}}</td>--}}
+                                    {{--                                                                        <td>{{$calificacion->nombre}}</td>--}}
 
 
-{{--                                    @if($proceso->procesosCalificaciones())--}}
-{{--                                        @foreach($proceso->procesosCalificaciones() as $calificacion)--}}
-{{--                                            <td>--}}
-{{--                                            {{$calificacion->id}} ({{$calificacion->nombre}})--}}
-{{--                                                / {{$cc->id}}({{$cc->nombre}}) /--}}
+                                    {{--                                    @if($proceso->procesosCalificaciones())--}}
+                                    {{--                                        @foreach($proceso->procesosCalificaciones() as $calificacion)--}}
+                                    {{--                                            <td>--}}
+                                    {{--                                            {{$calificacion->id}} ({{$calificacion->nombre}})--}}
+                                    {{--                                                / {{$cc->id}}({{$cc->nombre}}) /--}}
 
-{{--                                            @if($calificacion->id == $cc->id)--}}
+                                    {{--                                            @if($calificacion->id == $cc->id)--}}
 
-{{--                                                    {{$calificacion->porcentaje}}--}}
+                                    {{--                                                    {{$calificacion->porcentaje}}--}}
 
-{{--                                            @endif--}}
-{{--                                            </td>--}}
-{{--                                        @endforeach--}}
-{{--                                    @endif--}}
+                                    {{--                                            @endif--}}
+                                    {{--                                            </td>--}}
+                                    {{--                                        @endforeach--}}
+                                    {{--                                    @endif--}}
                                 @endforeach
                             @else
                                 <td>
@@ -77,7 +88,7 @@
                             <td>
 
                                 <select class="custom-select select-estado" name="estado-{{$proceso->id}}"
-                                        id="{{$proceso->id}}">
+                                        id="{{$proceso->id}}" @if($proceso->cierre == 1) disabled @endif >
                                     <option value="">Seleccione estado</option>
                                     @foreach($estados as $estado)
                                         @if($estado->id == $proceso->estado_id)

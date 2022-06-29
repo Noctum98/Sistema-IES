@@ -12,11 +12,12 @@
         @endif
     </h2>
     <hr>
+    <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el boton de guardar debajo de cada recuadro.</i></p>
     <div id="alerts">
 
     </div>
     <div class="col-md-12">
-        <table class="table">
+        <table class="table col-md-12 m-0 p-0">
             <thead class="thead-dark">
                 <th>Apellido y Nombre</th>
 
@@ -37,16 +38,19 @@
                 <tr>
                     <td>
                         {{ strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
+
                     </td>
-                    <td>
-                        <form action="" class="col-md-3 m0 p-0 calificacion-alumnos form-calificacion" id="{{ $proceso->id }}" method="POST">
+                    <td class="input-group">
+                        <form action="" class="col-md-3 m0 p-0 calificacion-alumnos form-calificacion input-group" id="{{ $proceso->id }}" method="POST">
                             <input type="hidden" name="calificacion_id" id="calificacion_id" value="{{ $calificacion->id }}">
 
                             @if($calificacion->tipo->descripcion == 1)
-                            <input type="text" style="width: 100%" class="form-control col-md-8" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor')) disabled @endif required>
+                            <input type="text" style="width: 100%" class="form-control col-md-12" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif required>
                             @else
-                            <input type="number" style="width: 100%" class="form-control col-md-8" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor')) disabled @endif required>
+                            <input type="number" style="width: 100%" class="form-control col-md-12 " id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }}" placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif required>
                             @endif
+                            <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif"><i class="fa fa-save"></i> </button>
+
                             <div id="spinner-{{$proceso->id}}">
 
                             </div>
@@ -65,13 +69,14 @@
                     <td>
                         <form action="" class="col-md-3 m0 p-0 calificacion-alumnos form-recuperatorio" id="{{ $proceso->id }}" method="POST">
                             <input type="hidden" name="calificacion_id" id="calificacion_id" value="{{ $calificacion->id }}">
-                            <input type="text" style="width: 100%" class="form-control col-md-8" id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio : '' }}" placeholder="%" @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id)) disabled @endif required>
+                            <input type="text" style="width: 100%" class="form-control col-md-12" id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio : '' }}" placeholder="%" @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id)) || $proceso->cierre disabled @endif required>
+                            <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif"><i class="fa fa-save"></i> </button>
+
                             <div id="spinner-recuperatorio-{{$proceso->id}}">
 
                             </div>
                         </form>
                     </td>
-                    @endif
                     <td class="nota-recuperatorio-{{ $proceso->id }}">
                         @if($proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio)
                             @if($proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio >= 4)
@@ -81,6 +86,8 @@
                             @endif
                         @endif
                     </td>
+                    @endif
+                    
                 </tr>
                 @endforeach
             </tbody>
@@ -91,3 +98,5 @@
 @section('scripts')
 <script src="{{ asset('js/calificacion/crear.js') }}"></script>
 @endsection
+
+
