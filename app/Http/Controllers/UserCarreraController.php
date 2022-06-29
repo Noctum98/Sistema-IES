@@ -24,7 +24,7 @@ class UserCarreraController extends Controller
     public function delete(Request $request,$user_id)
     {
         $user = User::find($user_id);
-        $user->detach(Carrera::find($request['carrera_id']));
+        $user->carreras()->detach(Carrera::find($request['carrera_id']));
 
         return redirect('usuarios.detalle',$user->id);
     }
