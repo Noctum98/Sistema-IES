@@ -29,13 +29,8 @@ class InstanciaController extends Controller
 
     public function vista_admin()
     {
-        $instancia = Instancia::where('tipo',1)->get();
+        $instancia = Instancia::all();
 
-        if(Session::has('admin'))
-        {
-            $instancia = Instancia::all();
-
-        }
         $sedes = Auth::user()->sedes;
         /*
         $sedes = Sede::where('id',7)

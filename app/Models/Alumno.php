@@ -64,11 +64,17 @@ class Alumno extends Model
     {
         return $this->belongsToMany(Carrera::class)->withTimestamps();
     }
+    public function comisiones()
+    {
+        return $this->belongsToMany(Comision::class)->withTimestamps();
+    }
     public function procesos()
     {
         return $this->hasMany('App\Models\Proceso');
     }
-    public function asistencias(){
+
+    public function asistencias()
+    {
         return $this->hasMany('App\Models\AlumnoAsistencia');
     }
 
