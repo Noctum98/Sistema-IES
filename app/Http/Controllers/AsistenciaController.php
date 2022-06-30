@@ -35,8 +35,10 @@ class AsistenciaController extends Controller
         ]);
     }
 
-    public function vista_admin(int $id, $cargo_id = null)
+    public function vista_admin(Request $request,int $id, $cargo_id = null)
     {
+
+        dd($request->all());
         $materia = Materia::find($id);
         $procesos = Proceso::where('materia_id', $id)->get();
 

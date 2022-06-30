@@ -28,7 +28,10 @@ class Comision extends Model
     {
         return $this->belongsToMany(User::class,'comision_profesor','comision_id','profesor_id')->withTimestamps();
     }
-
+    public function alumnos(): BelongsToMany
+    {
+        return $this->belongsToMany(Alumno::class);
+    }
     public function procesos(): BelongsToMany
     {
         return $this->belongsToMany(Proceso::class)->withTimestamps();
