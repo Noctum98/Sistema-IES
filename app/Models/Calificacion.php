@@ -47,4 +47,9 @@ class Calificacion extends Model
         return $this->belongsTo(Comision::class,'comision_id');
     }
 
+    public function proceso(){
+        return $this->belongsToMany(ProcesoCalificacion::class,'procesos')
+            ->withPivot('proceso_id','calificacion_id');
+    }
+
 }

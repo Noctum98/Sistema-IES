@@ -120,6 +120,53 @@ class CalificacionController extends Controller
         ])->with($mensaje);
     }
 
+    public function edit(Calificacion $calificacion)
+    {
+
+
+        if ($calificacion->materia->carrera->tipo == 'modular' || $calificacion->materia->carrera->tipo == 'modular2') {
+            $tiposCalificaciones = TipoCalificacion::all();
+        } else {
+            $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
+        }
+
+        return view('calificacion.modals.form_edit_calificacion')->with([
+            'calificacion' => $calificacion,
+            'tiposCalificaciones' =>  $tiposCalificaciones,
+        ]);
+    }
+
+    public function update(Request $request, Calificacion $calificacion )
+    {
+        $validate = $this->validate($request, [
+            'nombre' =>  ['required'],
+            'tipo_id' => ['required'],
+            'fecha' => ['required']
+        ]);
+
+        if($calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)){
+            $mensaje = ['error_comision'=>'No tienes permiso para trabajar en esta comisión'];
+
+            return redirect()->route('calificacion.admin', [
+                'materia_id' => $calificacion->materia_id,
+                'cargo_id' => $calificacion->cargo_id
+            ])->with($mensaje);
+        }
+
+
+
+
+
+            $calificacion->update($request->all());
+            $mensaje = ['calificacion_creada' => '¡Calificación actualizada!'];
+
+
+        return redirect()->route('calificacion.admin', [
+            'materia_id' => $request['materia_id'],
+            'cargo_id' => $request['cargo_id']
+        ])->with($mensaje);
+    }
+
     public function delete(Request $request, $id)
     {
         $calificacion = Calificacion::find($id);
