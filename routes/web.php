@@ -355,6 +355,8 @@ Route::prefix('calificacion')->group(function(){
     Route::get('create/{id}',[CalificacionController::class,'create'])->name('calificacion.create');
     
     Route::post('/',[CalificacionController::class,'store'])->name('calificacion.store');
+    Route::post('update/{calificacion}',[CalificacionController::class,'update'])->name('calificacion.update');
+    Route::get('edit/{calificacion}',[CalificacionController::class,'edit'])->name('calificacion.edit');
     Route::delete('/{id}',[CalificacionController::class,'delete'])->name('calificacion.delete');
 });
 

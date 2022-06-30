@@ -83,6 +83,12 @@
                     @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">
                                 Notas
                             </a>
+
+                            <a class="btn btn-warning @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif>" data-bs-toggle="modal" id="editButton" data-bs-target="#editModal"
+                               data-loader="{{$calificacion->id}}" data-attr="{{ route('calificacion.edit', $calificacion) }}">
+                                <i class="fas fa-edit text-gray-300"></i>
+                                <i class="fa fa-spinner fa-spin" style="display: none" id="loader{{$calificacion->id}}"></i>
+                            </a>
                             <form action="{{ route('calificacion.delete',$calificacion->id) }}" method="POST"
                                   class="d-inline">
                                 {{ method_field('DELETE') }}
@@ -99,4 +105,37 @@
         @endif
     </div>
     @include('calificacion.modals.crear_calificacion')
+    @include('calificacion.modals.editar_calificacion')
+@endsection
+@section('scripts')
+    <script>
+
+        $(document).on('click', '#editButton', function(event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader'+referencia);
+
+            $.ajax({
+                url: href,
+                beforeSend: function() {
+                    $laoder.show();
+                },
+                // return the result
+                success: function(result) {
+                    $('#editModal').modal("show");
+                    $('#editBody').html(result).show();
+                },
+                complete: function() {
+                    $laoder.hide();
+                },
+                error: function(jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+    </script>
 @endsection

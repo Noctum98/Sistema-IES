@@ -39,15 +39,15 @@ class InsertTipoCalificacion extends Command
     public function handle(): string
     {
         DB::table('tipo_calificaciones')->insert([
-            'nombre' => "Trabajo Práctico Diario",
+            'nombre' => "Parcial",
             'descripcion' => "1",
         ]);
         DB::table('tipo_calificaciones')->insert([
-            'nombre' => "Trabajo Práctico Semanal",
+            'nombre' => "TP (Trabajo Práctico)",
             'descripcion' => "2",
         ]);
         DB::table('tipo_calificaciones')->insert([
-            'nombre' => "Trabajo Práctico Mensual",
+            'nombre' => "EIFM (Trabajo Integrador Final)",
             'descripcion' => "3",
         ]);
 
