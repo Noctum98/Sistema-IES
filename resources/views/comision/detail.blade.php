@@ -77,12 +77,12 @@
             @foreach ($alumnos as $alumno)
             <tr>
                 <th scope="row">{{ $alumno->id }}</th>
-                <td>{{ $alumno->apellidos.' '.$alumno->nombres }}</td>
+                <td>{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
                 <td>
                     <form action="" id="{{$alumno->id}}" method="POST">
                         @foreach($comisiones as $comision)
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->comision_id == $comision->id) checked @endif>
+                            <input class="form-check-input comision_id" type="checkbox" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->hasComision($comision->id)) checked @endif>
                             <label class="form-check-label" for="exampleRadios1">
                                 {{$comision->nombre}}
                             </label>
@@ -92,6 +92,29 @@
                 </td>
             </tr>
             @endforeach
+            @if($recursantes && count($recursantes) > 0)
+            <tr>
+            <td>RECURSANTES</td>
+            </tr>
+            @foreach ($recursantes as $alumno)
+            <tr>
+                <th scope="row">{{ $alumno->id }}</th>
+                <td>{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
+                <td>
+                    <form action="" id="{{$alumno->id}}" method="POST">
+                        @foreach($comisiones as $comision)
+                        <div class="form-check">
+                            <input class="form-check-input comision_id" type="checkbox" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->hasComision($comision->id)) checked @endif>
+                            <label class="form-check-label" for="exampleRadios1">
+                                {{$comision->nombre}}
+                            </label>
+                        </div>
+                        @endforeach
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+            @endif
         </tbody>
     </table>
     <hr>

@@ -13,7 +13,7 @@ class Proceso extends Model
     protected $fillable = [
         'alumno_id',
         'materia_id',
-        'estado',
+        'estado_id',
         'cierre',
         'porcentaje_final_calificaciones',
         'nota_global',
@@ -36,6 +36,11 @@ class Proceso extends Model
         $asistencia = Asistencia::where('proceso_id', $this->id)->first();
 
         return $asistencia;
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estados::class,'estado_id');
     }
 
     public function procesoCalificacion($calificacion_id)

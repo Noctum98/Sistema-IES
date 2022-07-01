@@ -66,7 +66,7 @@
 				</li>
 				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil? :'Sin Asignar') }}</li>
 				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion? :'Sin Asignar') }}</li>
-				<li><strong>Grupo Sanguíneo: </strong> {{ strtoupper($alumno->g_sanguineo? :'Sin Asignar') }}</li>
+				<li><strong>Grupo Sanguíneo: </strong> {{ mb_strtoupper($alumno->g_sanguineo? :'Sin Asignar') }}</li>
 				@if($alumno->año == 1)
 				<li><strong>Escuela Secundaria: </strong> {{ $alumno->escuela_s ? : 'Sin Asignar' }}</li>
 				<li><strong>Articulo Séptimo: </strong> {{ $alumno->articulo_septimo ? 'Si' : 'No' }} </li>

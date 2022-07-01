@@ -2,7 +2,10 @@
 @section('content')
 	<div class="container">
 		<h2 class="h1 text-info">
-			Tomar asistencias {{ $asistencia->materia->nombre }}
+			Tomar asistencias {{ $asistencia->materia->nombre }} 
+			@if(isset($comision))
+				{{$comision->nombre}}
+			@endif
 		</h2>
 		<hr>
 		<div class="col-md-8 asistencia-lista">

@@ -13,7 +13,7 @@
         @foreach($procesos as $proceso)
         <tr>
             <td>
-                {{ $proceso->alumno->nombres.' '.$proceso->alumno->apellidos }}
+            {{ mb_strtoupper($proceso->alumno->apellidos).' '.$proceso->alumno->nombres }}
             </td>
             <td class="porcentaje-{{ $proceso->id }}">
             @if($proceso->asistencia())
