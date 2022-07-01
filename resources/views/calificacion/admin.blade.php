@@ -15,7 +15,7 @@
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear
                 Calificación
             </button>
-            @if($materia->comisiones())
+            @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
                         <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
