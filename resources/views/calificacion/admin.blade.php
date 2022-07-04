@@ -15,7 +15,9 @@
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear
                 Calificación
             </button>
-            @if($materia->carrera->tipo == 'tradicional' || $materia->carrera->tipo == 'tradicional2' )
+        @endif
+        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente'))
+        @if($materia->carrera->tipo == 'tradicional' || $materia->carrera->tipo == 'tradicional2' )
             @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
@@ -28,7 +30,6 @@
                     procesos</a>
             @endif
             @endif
-
         @endif
         <!---
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 mt-1" method="GET" action="#" id="buscador">
