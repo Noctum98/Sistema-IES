@@ -12,6 +12,7 @@ use App\Models\Proceso;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ProcesoController extends Controller
 {
@@ -160,5 +161,32 @@ class ProcesoController extends Controller
         $proceso->update();
 
         return response()->json('¡Proceso actualizado!',200);
+    }
+
+    public function cambia_nota_final(Request $request)
+    {
+        $validate = Validator::make($request->all(),[
+            'proceso_id' => ['required','integer'],
+            'nota_final' => ['required','integer','max:10']
+        ]);
+
+        if(!$validate->fails()){
+            $proceso = Proceso::find($request['proceso_id']);
+            $proceso->final_calificaciones = $request['nota_final'];
+            $proceso->update();
+
+            $response = [
+                'code' => 200,
+                'nota' => $proceso->final_calificaciones
+            ];
+
+        }else{
+            $response = [
+                'code' => 400,
+                'errors' => $validate->errors()
+            ];
+        }
+
+        return response()->json($response,$response['code']);
     }
 }

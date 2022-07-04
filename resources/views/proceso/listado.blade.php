@@ -42,12 +42,11 @@
                         Notas
                     </th>
                     @endif
-                     <!--
-                    <th>Nota Final</th>
-                    -->
                     <th>
                         Estado
                     </th>
+                    <th>Nota Final</th>
+
                     <th>
                         Cierre
                     </th>
@@ -64,7 +63,7 @@
                     <td>
                         @if($proceso->procesoCalificacion($cc->id))
                         <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                        {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
+                            {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
                         </span>
                         @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
                         %
@@ -86,7 +85,7 @@
                     {{-- / {{$cc->id}}({{$cc->nombre}}) /--}}
 
                     {{-- @if($calificacion->id == $cc->id)--}}
-                    
+
                     {{-- {{$calificacion->porcentaje}}--}}
 
                     {{-- @endif--}}
@@ -99,16 +98,7 @@
                         -
                     </td>
                     @endif
-                    <!--
-                    <td>
-                        <form action="">
-                        <input type="number" class="form-control nota_final" value="{{ $proceso->final_calificaciones ? $proceso->final_calificaciones : '' }}">
-                        <button type="submit"
-                                        class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
-                                    <i class="fa fa-save"></i></button>    
-                    </form>
-                    </td>
-                    -->
+
                     <td>
 
                         <select class="custom-select select-estado" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1) disabled @endif >
@@ -121,6 +111,14 @@
                             @endif
                             @endforeach
                         </select>
+                    </td>
+                    <td>
+                        <form action="" id="{{ $proceso->id }}">
+                            <input type="number" class="form-control nota_final {{ $proceso->final_calificaciones >= 4 ? 'text-success' : 'text-danger' }}" id="nota-{{ $proceso->id }}" value="{{ $proceso->final_calificaciones ? $proceso->final_calificaciones : '' }}" 
+                            @if($proceso->cierre || !$proceso->estado_id) disabled @endif>
+                            <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
+                                <i class="fa fa-save"></i></button>
+                        </form>
                     </td>
                     <td>
                         <span class="d-none" id="span-{{$proceso->id}}">
@@ -159,4 +157,6 @@
     @section('scripts')
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
+    <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
+
     @endsection

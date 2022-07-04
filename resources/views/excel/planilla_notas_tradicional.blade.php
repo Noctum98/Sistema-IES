@@ -17,6 +17,9 @@
                 Estado
             </th>
             <th>
+                Nota Final
+            </th>
+            <th>
                 Cierre
             </th>
         </tr>
@@ -31,7 +34,11 @@
             @foreach($calificaciones as $cc)
             <td>
                 @if($proceso->procesoCalificacion($cc->id))
-                {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
+                @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 60 )
+                 <span style="color:#025827"> {{$proceso->procesoCalificacion($cc->id)->porcentaje}}</span>
+                @else
+                <span style="color:red"> {{$proceso->procesoCalificacion($cc->id)->porcentaje}}</span>
+                @endif
                 @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
                 %
                 @endif
@@ -69,6 +76,15 @@
             <td>
                 {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
             </td>
+            @if($proceso->final_calificaciones && $proceso->final_calificaciones >=4)
+            <td style="color:#025827">
+                {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}
+            </td>
+            @else
+            <td style="color:red">
+                {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}
+            </td>
+            @endif
             <td>
                 {{ $proceso->cierre ? 'Proceso cerrado' : 'Proceso abierto' }}
             </td>
