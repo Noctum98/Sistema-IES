@@ -15,16 +15,18 @@
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear
                 Calificación
             </button>
-            @if($materia->comisiones())
+            @if($materia->carrera->tipo == 'tradicional' || $materia->carrera->tipo == 'tradicional2' )
+            @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
                         <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
-                           class="btn btn-info">Ver proceso {{$comision->nombre}}</a>
+                           class="btn btn-info">Ver procesos {{$comision->nombre}}</a>
                     @endif
                 @endforeach
             @else
                 <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">Ver
-                    proceso</a>
+                    procesos</a>
+            @endif
             @endif
 
         @endif

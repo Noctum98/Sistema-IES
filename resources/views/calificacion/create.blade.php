@@ -38,7 +38,7 @@
                 @foreach($procesos as $proceso)
                     <tr>
                         <td>
-                            {{ strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
+                            {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
 
                         </td>
                         <td class="input-group" >

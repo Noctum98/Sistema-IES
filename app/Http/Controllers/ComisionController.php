@@ -107,10 +107,26 @@ class ComisionController extends Controller
             ->where('año',$año);
         })->orderBy('apellidos')->get();
 
+        if($año == 2 || $año == 3)
+        {
+            $recursantes = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
+                $query->where('carrera_id',$carrera_id)
+                ->where('año',($año - 1));
+            });
+
+            if($año == 2 || $año == "2"){
+                $recursantes = $recursantes->where('regularidad','recursante_diferenciado_primero')->orderBy('apellidos')->get();
+            }elseif($año == 3 || $año == "3"){
+                $recursantes = $recursantes->where('regularidad','recursante_diferenciado_segundo')->orderBy('apellidos')->get();
+            }
+        }
+        
+        // dd($recursantes);
         return view('comision.detail',[
             'comision' => $comision,
             'profesores' => $profesores,
             'alumnos' => $alumnos,
+            'recursantes' => isset($recursantes) ? $recursantes : null,
             'comisiones' => $comisiones
         ]);
     }
@@ -197,9 +213,17 @@ class ComisionController extends Controller
     public function agregar_alumno(Request $request)
     {
         $alumno = Alumno::find($request['alumno_id']);
-        $alumno->comision_id = (int) $request['comision_id'];
-        $alumno->update();
 
-        return response()->json('Comisión asignada!',200);
+        $comision = Comision::find($request['comision_id']);
+
+        if($request['detach'] == 'true'){
+            $alumno->comisiones()->detach($comision);
+            $mensaje = "Comisión desasignada.";
+        }else{
+            $alumno->comisiones()->attach($comision);
+            $mensaje = "Comisión asignada.";
+        }
+
+        return response()->json($mensaje,200);
     }
 }

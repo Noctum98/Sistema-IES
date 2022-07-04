@@ -115,6 +115,14 @@ class Alumno extends Model
         return false;
     }
 
+    public function hasComision($comision_id)
+    {
+        if($this->comisiones->where('id',$comision_id)->first()){
+            return true;
+        }
+        return false;
+    }
+
     // Functiones Estáticas
 
     public static function alumnosAño($year,$carrera_id)

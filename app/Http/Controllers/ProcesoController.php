@@ -12,6 +12,7 @@ use App\Models\Proceso;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ProcesoController extends Controller
 {
@@ -60,8 +61,13 @@ class ProcesoController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id);
 
+            
         if ($comision_id) {
-            $procesos->where('alumnos.comision_id', $comision_id);
+            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
+                $query->whereHas('comisiones',function($query) use ($comision_id){
+                    $query->where('comisiones.id',$comision_id);
+                });
+            });
         }
         $materia = Materia::find($materia_id);
 
@@ -81,7 +87,7 @@ class ProcesoController extends Controller
                 'comision_id' => $comision_id
             ]);
         }
-        $calificaciones = $calificacion->get();
+        $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
 
         $estados = Estados::all();
 
@@ -155,5 +161,32 @@ class ProcesoController extends Controller
         $proceso->update();
 
         return response()->json('¡Proceso actualizado!',200);
+    }
+
+    public function cambia_nota_final(Request $request)
+    {
+        $validate = Validator::make($request->all(),[
+            'proceso_id' => ['required','integer'],
+            'nota_final' => ['required','integer','max:10']
+        ]);
+
+        if(!$validate->fails()){
+            $proceso = Proceso::find($request['proceso_id']);
+            $proceso->final_calificaciones = $request['nota_final'];
+            $proceso->update();
+
+            $response = [
+                'code' => 200,
+                'nota' => $proceso->final_calificaciones
+            ];
+
+        }else{
+            $response = [
+                'code' => 400,
+                'errors' => $validate->errors()
+            ];
+        }
+
+        return response()->json($response,$response['code']);
     }
 }

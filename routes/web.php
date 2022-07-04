@@ -254,6 +254,7 @@ Route::prefix('proceso')->group(function () {
     Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name('proceso.listado');
     Route::post('cambia/estado',[ProcesoController::class,'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre',[ProcesoController::class,'cambiaCierre'])->name('proceso.cambiaCierre');
+    Route::post('cambia/nota_final',[ProcesoController::class,'cambia_nota_final'])->name('proceso.nota_final');
 });
 
 // Rutas de Asistencia
@@ -369,6 +370,7 @@ Route::prefix('excel')->group(function(){
     Route::get('alumnos/{carrera_id}/{year}',[ExcelController::class,'alumnos_year'])->name('excel.alumnosAño');
     Route::get('alumnos/all',[ExcelController::class,'all_alumnos']);
     Route::get('alumnos/sedes/sede/{sede_id}',[ExcelController::class,'all_alumnos']);
+    Route::get('procesos/{materia_id}/{comision_id?}',[ExcelController::class,'planilla_notas_tradicional'])->name('excel.procesos');
 
 });
 

@@ -12,7 +12,7 @@
         <tbody>
             @foreach($carrera->alumnos as $alumno)
             <tr>
-                <td>{{ strtoupper($alumno->apellidos).', '.ucwords($alumno->nombres) }}</td>
+                <td>{{ mb_strtoupper($alumno->apellidos).', '.ucwords($alumno->nombres) }}</td>
                 <td>{{ $alumno->dni }}</td>
                 <td>{{ $alumno->email }}</td>
                 <td>{{ $alumno->localidad }}</td>

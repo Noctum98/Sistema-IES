@@ -9,6 +9,7 @@ use App\Models\Asistencia;
 use App\Models\AlumnoAsistencia;
 use App\Models\AsistenciaModular;
 use App\Models\Cargo;
+use App\Models\Comision;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -38,9 +39,22 @@ class AsistenciaController extends Controller
     public function vista_admin(Request $request,int $id, $cargo_id = null)
     {
 
-        dd($request->all());
+        $comision_id = $request['comision_id'] ? $request['comision_id'] : null;
         $materia = Materia::find($id);
-        $procesos = Proceso::where('materia_id', $id)->get();
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia->id);
+            
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
+                $query->whereHas('comisiones',function($query) use ($comision_id){
+                    $query->where('comisiones.id',$comision_id);
+                });
+            });
+        }
+
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos = $procesos->get();
 
         $datos = [
             'materia'       =>  $materia,
@@ -52,6 +66,9 @@ class AsistenciaController extends Controller
             $datos['cargo'] = $cargo;
         }
 
+        if($comision_id){
+            $datos['comision'] = Comision::find($comision_id);
+        }
         return view('asistencia.admin', $datos);
     }
     public function vista_fecha(int $id)
