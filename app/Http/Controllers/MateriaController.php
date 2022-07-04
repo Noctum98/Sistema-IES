@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AlumnosMateriaExport;
+use App\Services\MateriaService;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Personal;
@@ -13,10 +14,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MateriaController extends Controller
 {
-    function __construct()
+    /**
+     * @var MateriaService
+     */
+    private $materiaService;
+
+    /**
+     * @param MateriaService $materiaService
+     */
+    function __construct(MateriaService $materiaService)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
+        $this->materiaService = $materiaService;
     }
 
     // Vistas
@@ -127,6 +137,18 @@ class MateriaController extends Controller
             ]);
         }
 
+
+    }
+
+    public function vista_listado()
+    {
+        $materias = Materia::orderBy(
+            'nombre','Asc',
+
+        )->orderBy('año', 'Asc') ->paginate(10);
+        return view('materia.listado', [
+            'materias' => $materias,
+        ]);
 
     }
 }

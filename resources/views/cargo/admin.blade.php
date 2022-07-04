@@ -69,6 +69,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Módulos</th>
                     <th scope="col">Carrera</th>
                     <th scope="col" class="text-center">
                         <i class="fa fa-cog" style="font-size:20px;"></i>
@@ -80,6 +81,13 @@
                 <tr>
                     <th scope="row">{{ $cargo->id }}</th>
                     <td>{{ $cargo->nombre }}</td>
+                    <td>
+                        @if($cargo->materias)
+                            @foreach($cargo->materias as $materia)
+                                - {{$materia->nombre}}<br/>
+                            @endforeach
+                        @endif
+                    </td>
                     <th scope="row">{{ $cargo->carrera->nombre. '-'. $cargo->carrera->sede->nombre }}</th>
                     <td class="text-center">
                         <a href="{{ route('cargo.show',$cargo->id) }}" class="btn btn-sm btn-primary block-inline ">Configurar</a>

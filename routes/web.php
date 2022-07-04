@@ -81,6 +81,12 @@ Route::delete('comisiones/profesor/{comision_id}',[ComisionController::class,'de
 
 Route::resource('estados', EstadosController::class);
 
+/**
+ * Rutas Materias
+ */
+Route::prefix('materia')->group(function () {
+    Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
+});
 
 //Rutas de sedes
 Route::prefix('sedes')->group(function () {
