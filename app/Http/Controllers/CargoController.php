@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\CargoMateria;
 use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\Sede;
@@ -110,6 +111,35 @@ class CargoController extends Controller
         return redirect()->route('cargo.show', $cargo->id);
     }
 
+    public function ponderarCargo(Request $request): JsonResponse
+    {
+        $cargo = Cargo::find($request['cargo_id']);
+        $materia = Materia::find($request['materia_id']);
+        $porcentaje = $request['porcentaje']??null;
+        $code = 404;
+        if($cargo && $materia && $porcentaje){
+            $cargo_materia = CargoMateria::where([
+               'cargo_id' => $cargo->id,
+               'materia_id' => $materia->id
+            ]);
+            $cargo_materia->update(["ponderacion" =>$porcentaje ]);
+            $code = 200;
+        }
+        return response()->json($porcentaje, $code);
+    }
+
+    public function getPonderarCargo(Request $request): JsonResponse
+    {
+        $cargo = Cargo::find($request['cargo_id']);
+        $materia = Materia::find($request['materia_id']);
+        $porcentaje = '0';
+
+        if($cargo && $materia){
+            $porcentaje = $this->cargoService->getPonderacion($cargo->id, $materia->id);
+        }
+        return response()->json($porcentaje, 200);
+    }
+
     public function agregarUser(Request $request): RedirectResponse
     {
         $cargo = Cargo::find($request['cargo_id']);
@@ -175,4 +205,6 @@ class CargoController extends Controller
             'carrera_id' => ['required', 'numeric'],
         ]);
     }
+
+
 }

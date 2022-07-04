@@ -348,8 +348,11 @@ Route::prefix('matriculacion')->group(function(){
 //Route::resource('cargo',CargoController::class);
 Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.agregarUser');
+Route::get('ponderarCargo/{cargo_id}/{materia_id}',[CargoController::class,'ponderarCargo'])->name('cargo.ponderar');
+Route::get('getPonderarCargo/{cargo_id}/{materia_id}',[CargoController::class,'getPonderarCargo'])->name('cargo.get_ponderar');
 Route::delete('deleteUser/{cargo_id}',[CargoController::class,'deleteUser'])->name('cargo.delUser');
 Route::delete('deleteMateria/{cargo_id}',[CargoController::class,'deleteModulo'])->name('cargo.delMateria');
+
 
 /**
  * Ruta para TipoCalificaciones

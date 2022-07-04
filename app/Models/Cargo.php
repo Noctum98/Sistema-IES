@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CargoService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,12 @@ class Cargo extends Model
 
     protected $table = 'cargos';
     protected $fillable = ['nombre','carrera_id'];
+    /**
+     * @var CargoService
+     */
+    private $cargoService;
+
+
 
     public function users()
     {
@@ -25,5 +32,12 @@ class Cargo extends Model
     public function carrera()
     {
         return $this->belongsTo('App\Models\Carrera','carrera_id');
+    }
+
+    public function ponderacion($cargo_id,$materia_id)
+    {
+        $ponderacion = new CargoService();
+
+        return $ponderacion->getPonderacion($cargo_id, $materia_id);
     }
 }
