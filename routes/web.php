@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoProcesoController;
-use App\Http\Controllers\ComisionesController;
+use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
@@ -15,18 +15,14 @@ use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\AsistenciaController;
-use App\Http\Controllers\TrabajoController;
 use App\Http\Controllers\ParcialController;
 use App\Http\Controllers\AlumnoAsistenciaController;
 use App\Http\Controllers\AlumnoCarreraController;
-use App\Http\Controllers\AlumnoTrabajoController;
-use App\Http\Controllers\AlumnoParcialController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
-use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
@@ -35,16 +31,10 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Alumno;
 use App\Models\Calificacion;
-use App\Models\Cargo;
-use App\Models\Carrera;
 use App\Models\Comision;
-use App\Models\Instancia;
 use App\Models\Materia;
-use App\Models\MesaAlumno;
 use App\Models\Proceso;
-use App\Models\ProcesoCalificacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +51,7 @@ use App\Models\ProcesoCalificacion;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::get('/', function () {
     if (Auth::user()) {
         return view('home');
@@ -73,19 +64,17 @@ Route::get('/', function () {
 // Rutas de comisiones
 
 Route::resource('comisiones', ComisionController::class);
-Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->name('comisiones.ver');
-Route::post('crearComisiones/{carrera_id}',[ComisionController::class,'store'])->name('comisiones.crear');
-Route::post('comision/alumno/agregar',[ComisionController::class,'agregar_alumno'])->name('comision.alumno');
-Route::get('comision/edit/{comision_id}',[ComisionController::class,'edit'])->name('comision.edit');
-Route::post('comision/update/{comision_id}',[ComisionController::class,'update'])->name('comision.update');
-Route::post('comision/profesor/{comision_id}',[ComisionController::class,'agregar_profesor'])->name('comision.profesor');
-Route::delete('comisiones/profesor/{comision_id}',[ComisionController::class,'delete_profesor'])->name('comision.delprofesor');
+Route::get('comision/edit/{comision_id}', [ComisionController::class, 'edit'])->name('comision.edit');
 Route::get('verComisiones/{carrera_id}', [ComisionController::class, 'index'])->name('comisiones.ver');
-Route::post('crearComisiones/{carrera_id}', [ComisionController::class, 'store'])->name('comisiones.crear');
 Route::post('comision/alumno/agregar', [ComisionController::class, 'agregar_alumno'])->name('comision.alumno');
-Route::post('comision/profesor/{comision_id}', [ComisionController::class, 'agregar_profesor'])->name('comision.profesor');
-Route::delete('comisiones/profesor/{comision_id}', [ComisionController::class, 'delete_profesor'])->name('comision.delprofesor');
-
+Route::post('comision/profesor/{comision_id}', [ComisionController::class, 'agregar_profesor'])->name(
+    'comision.profesor'
+);
+Route::post('comision/update/{comision_id}', [ComisionController::class, 'update'])->name('comision.update');
+Route::post('crearComisiones/{carrera_id}', [ComisionController::class, 'store'])->name('comisiones.crear');
+Route::delete('comisiones/profesor/{comision_id}', [ComisionController::class, 'delete_profesor'])->name(
+    'comision.delprofesor'
+);
 
 // Rutas de estados
 
@@ -129,11 +118,15 @@ Route::prefix('usuarios')->group(function () {
     Route::post('set_Carrera/{id}', [UserCarreraController::class, 'store'])->name('set_carrera');
     Route::post('set_CarreraMaterias/{id}', [UserMateriaController::class, 'store'])->name('set_materias_carreras');
     Route::post('set_CarreraCargo/{id}', [UserCargoController::class, 'store'])->name('set_cargos_carreras');
-    Route::get('crear_alumno_usuario/{id}', [UserController::class, 'crear_usuario_alumno'])->name('crear_usuario_alumno');
+    Route::get('crear_alumno_usuario/{id}', [UserController::class, 'crear_usuario_alumno'])->name(
+        'crear_usuario_alumno'
+    );
 });
 
 Route::prefix('usuario_materia')->group(function () {
-    Route::delete('delete/{user_id}/{materia_id}', [UserMateriaController::class, 'delete'])->name('delete_materias_carreras');
+    Route::delete('delete/{user_id}/{materia_id}', [UserMateriaController::class, 'delete'])->name(
+        'delete_materias_carreras'
+    );
 });
 
 Route::prefix('usuario_carrera')->group(function () {
@@ -202,7 +195,9 @@ Route::prefix('carreras/materias')->group(function () {
     // Acciones
     Route::post('crear-materia/{carrera_id}', [MateriaController::class, 'crear'])->name('crear_materia');
     Route::post('editar-materia/{id}', [MateriaController::class, 'editar'])->name('editar_materia');
-    Route::get('descargar_excel_alumnos/{id}', [MateriaController::class, 'descargar_planilla'])->name('descargar_planilla');
+    Route::get('descargar_excel_alumnos/{id}', [MateriaController::class, 'descargar_planilla'])->name(
+        'descargar_planilla'
+    );
 });
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
 Route::get('/selectCargosCarrera/{id}', [CargoController::class, 'selectCargos']);
@@ -227,14 +222,18 @@ Route::prefix('alumnos')->group(function () {
 });
 
 Route::prefix('alumno/carrera')->group(function () {
-    Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name('alumnoCarrera.year');
+    Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
+        'alumnoCarrera.year'
+    );
 });
 
 // Rutas de preinscripciones
 Route::prefix('preinscripcion')->group(function () {
     Route::get('/carreras/{busqueda?}', [PreinscripcionController::class, 'vista_admin'])->name('pre.admin');
     Route::get('/{id}', [PreinscripcionController::class, 'vista_preinscripcion'])->name('alumno.pre');
-    Route::get('terminada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_inscripto'])->name('pre.inscripto');
+    Route::get('terminada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
+        'pre.inscripto'
+    );
     Route::get('editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/carrera/{id}', [PreinscripcionController::class, 'vista_all'])->name('pre.all');
@@ -264,9 +263,13 @@ Route::prefix('proceso')->group(function () {
     Route::get('/mis_procesos/{id}', [AlumnoProcesoController::class, 'vista_procesos'])->name('proceso.alumno');
 
     // Acciones
-    Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name('inscribir_proceso');
+    Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
+        'inscribir_proceso'
+    );
     Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
-    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name('proceso.listado');
+    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
+        'proceso.listado'
+    );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
     Route::post('cambia/nota_final', [ProcesoController::class, 'cambia_nota_final'])->name('proceso.nota_final');
@@ -319,10 +322,16 @@ Route::prefix('mesas')->group(function () {
     Route::get('/inscripcion/{id}', [AlumnoMesaController::class, 'vista_home'])->name('mesa.welcome');
     Route::get('/instancias', [AlumnoMesaController::class, 'vista_instancias'])->name('mesa.instancias');
     Route::get('/administrar', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
-    Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name('mesa.carreras');
+    Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name(
+        'mesa.carreras'
+    );
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
-    Route::get('/inscriptos/{instancia_id}/{materia_id}', [MesaController::class, 'vista_inscripciones'])->name('mesa.inscriptos');
-    Route::get('/especial/inscriptos/{id}/{instancia_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name('mesa.especial.inscriptos');
+    Route::get('/inscriptos/{instancia_id}/{materia_id}', [MesaController::class, 'vista_inscripciones'])->name(
+        'mesa.inscriptos'
+    );
+    Route::get('/especial/inscriptos/{id}/{instancia_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name(
+        'mesa.especial.inscriptos'
+    );
 
     Route::post('/seleccionar/{id}', [InstanciaController::class, 'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{materia_id}/{instancia_id}', [MesaController::class, 'crear'])->name('crear_mesa');
@@ -334,33 +343,52 @@ Route::prefix('mesas')->group(function () {
     Route::post('/alumno/crear', [AlumnoMesaController::class, 'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
-    Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name('mesa.borrar');
+    Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
+        'mesa.borrar'
+    );
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}', [AlumnoMesaController::class, 'email_session'])->name('edit.mesa');
-    Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel'])->name('mesa.descargar');
-    Route::get('/descargar_tribunal/{id}/{instancia_id}', [InstanciaController::class, 'descargar_tribunal'])->name('mesa.tribunal');
+    Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel']
+    )->name('mesa.descargar');
+    Route::get('/descargar_tribunal/{id}/{instancia_id}', [InstanciaController::class, 'descargar_tribunal'])->name(
+        'mesa.tribunal'
+    );
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
 });
 
 Route::prefix('matriculacion')->group(function () {
-    Route::get('/carrera/{id}/{year}/{timecheck?}', [MatriculacionController::class, 'create'])->name('matriculacion.create');
-    Route::get('/editar/{alumno_id}/{carrera_id}/{year?}', [MatriculacionController::class, 'edit'])->name('matriculacion.edit');
-    Route::delete('/delete/{id}/{carrera_id}/{year?}', [MatriculacionController::class, 'delete'])->name('matriculacion.delete');
-    Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name('matriculacion.checked');
+    Route::get('/carrera/{id}/{year}/{timecheck?}', [MatriculacionController::class, 'create'])->name(
+        'matriculacion.create'
+    );
+    Route::get('/editar/{alumno_id}/{carrera_id}/{year?}', [MatriculacionController::class, 'edit'])->name(
+        'matriculacion.edit'
+    );
+    Route::delete('/delete/{id}/{carrera_id}/{year?}', [MatriculacionController::class, 'delete'])->name(
+        'matriculacion.delete'
+    );
+    Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
+        'matriculacion.checked'
+    );
     Route::get('finalizada', function () {
         return view('matriculacion.card_email_check');
     });
     Route::post('/carrera/{id}/{year}', [MatriculacionController::class, 'store'])->name('matriculacion.store');
-    Route::put('/carrera/{id}/{carrera_id?}/{year?}', [MatriculacionController::class, 'update'])->name('matriculacion.update');
-    Route::post('/verificar/{carrera_id}/{year}', [MatriculacionController::class, 'send_email'])->name('matriculacion.verificar');
+    Route::put('/carrera/{id}/{carrera_id?}/{year?}', [MatriculacionController::class, 'update'])->name(
+        'matriculacion.update'
+    );
+    Route::post('/verificar/{carrera_id}/{year}', [MatriculacionController::class, 'send_email'])->name(
+        'matriculacion.verificar'
+    );
 });
 
 //Route::resource('cargo',CargoController::class);
-Route::post('agregarModulo',[CargoController::class,'agregarModulo'])->name('cargo.agregarModulo');
-Route::post('agregarUser',[CargoController::class,'agregarUser'])->name('cargo.agregarUser');
-Route::get('ponderarCargo/{cargo_id}/{materia_id}',[CargoController::class,'ponderarCargo'])->name('cargo.ponderar');
-Route::get('getPonderarCargo/{cargo_id}/{materia_id}',[CargoController::class,'getPonderarCargo'])->name('cargo.get_ponderar');
-Route::delete('deleteUser/{cargo_id}',[CargoController::class,'deleteUser'])->name('cargo.delUser');
-Route::delete('deleteMateria/{cargo_id}',[CargoController::class,'deleteModulo'])->name('cargo.delMateria');
+Route::post('agregarModulo', [CargoController::class, 'agregarModulo'])->name('cargo.agregarModulo');
+Route::post('agregarUser', [CargoController::class, 'agregarUser'])->name('cargo.agregarUser');
+Route::get('ponderarCargo/{cargo_id}/{materia_id}', [CargoController::class, 'ponderarCargo'])->name('cargo.ponderar');
+Route::get('getPonderarCargo/{cargo_id}/{materia_id}', [CargoController::class, 'getPonderarCargo'])->name(
+    'cargo.get_ponderar'
+);
+Route::delete('deleteUser/{cargo_id}', [CargoController::class, 'deleteUser'])->name('cargo.delUser');
+Route::delete('deleteMateria/{cargo_id}', [CargoController::class, 'deleteModulo'])->name('cargo.delMateria');
 Route::post('agregarModulo', [CargoController::class, 'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser', [CargoController::class, 'agregarUser'])->name('cargo.agregarUser');
 Route::delete('deleteUser/{cargo_id}', [CargoController::class, 'deleteUser'])->name('cargo.delUser');
@@ -392,7 +420,9 @@ Route::prefix('excel')->group(function () {
     Route::get('alumnos/{carrera_id}/{year}', [ExcelController::class, 'alumnos_year'])->name('excel.alumnosAño');
     Route::get('alumnos/all', [ExcelController::class, 'all_alumnos']);
     Route::get('alumnos/sedes/sede/{sede_id}', [ExcelController::class, 'all_alumnos']);
-    Route::get('procesos/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name('excel.procesos');
+    Route::get('procesos/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
+        'excel.procesos'
+    );
 });
 
 Route::get('/clear-cache', function () {
@@ -404,12 +434,11 @@ Route::get('/clear-cache', function () {
 });
 
 
-Route::get('/prueba/{id}/{comision_id?}', function ($materia_id,$comision_id = null) {
+Route::get('/prueba/{id}/{comision_id?}', function ($materia_id, $comision_id = null) {
 
     $procesos = Proceso::select('procesos.*')
         ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
         ->where('procesos.materia_id', $materia_id);
-
 
     if ($comision_id) {
         $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -419,28 +448,28 @@ Route::get('/prueba/{id}/{comision_id?}', function ($materia_id,$comision_id = n
         });
     }
     $materia = Materia::find($materia_id);
+    $comision = null;
 
-    $comision =  null;
     if ($comision_id) {
         $comision = Comision::find($comision_id);
     }
 
-
     $procesos->orderBy('alumnos.apellidos', 'asc');
     $procesos = $procesos->get();
     $calificacion = Calificacion::where([
-        'materia_id' => $materia_id
+        'materia_id' => $materia_id,
     ]);
+
     if ($comision_id) {
         $calificacion->where([
-            'comision_id' => $comision_id
+            'comision_id' => $comision_id,
         ]);
     }
-    $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
 
+    $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
 
     return view('excel.planilla_notas_tradicional', [
         'procesos' => $procesos,
-        'calificaciones' => $calificaciones
+        'calificaciones' => $calificaciones,
     ]);
 });
