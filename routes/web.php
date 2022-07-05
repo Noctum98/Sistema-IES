@@ -73,6 +73,8 @@ Route::resource('comisiones', ComisionController::class);
 Route::get('verComisiones/{carrera_id}',[ComisionController::class,'index'])->name('comisiones.ver');
 Route::post('crearComisiones/{carrera_id}',[ComisionController::class,'store'])->name('comisiones.crear');
 Route::post('comision/alumno/agregar',[ComisionController::class,'agregar_alumno'])->name('comision.alumno');
+Route::get('comision/edit/{comision_id}',[ComisionController::class,'edit'])->name('comision.edit');
+Route::post('comision/update/{comision_id}',[ComisionController::class,'update'])->name('comision.update');
 Route::post('comision/profesor/{comision_id}',[ComisionController::class,'agregar_profesor'])->name('comision.profesor');
 Route::delete('comisiones/profesor/{comision_id}',[ComisionController::class,'delete_profesor'])->name('comision.delprofesor');
 

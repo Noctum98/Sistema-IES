@@ -77,7 +77,9 @@
                         </td>
                         <td>{{ $calificacion->fecha }}</td>
                         @if( $calificacion->comision_id)
+                            @if($calificacion->comision)
                             <td>{{ $calificacion->comision->nombre }}</td>
+                            @endif
                         @else
                             <td>General</td>
                         @endif
