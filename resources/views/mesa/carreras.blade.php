@@ -37,6 +37,8 @@
 
 			<div id="collapse{{$carrera->id}}" class="collapse" aria-labelledby="heading{{$carrera->id}}" data-bs-parent="#accordion">
 				<div class="card-body">
+				<a href="{{ route('mesa.tribunal',['id'=>$carrera->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success mb-3">Descargar tribunal</a>
+
 					@if($carrera->estado != 1)
 					<table class="table">
 						<thead class="thead-dark">

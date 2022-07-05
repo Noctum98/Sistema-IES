@@ -18,9 +18,11 @@
                 @endif
             </td>
             <td>
-                <form action="" class="col-md-3 m0 p-0 asis-alumnos form-modular" id="{{ $proceso->id }}" method="POST">
+                <form action="" class="col-md-6 m0 p-0 asis-alumnos form-modular" id="{{ $proceso->id }}" method="POST">
                     <input type="hidden" name="cargo_id" class="cargo_id" value="{{ $cargo->id }}">
-                    <input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}" required>
+                    <input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif required>
+                    <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
+                        <i class="fa fa-save"></i></button>
                 </form>
             </td>
         </tr>

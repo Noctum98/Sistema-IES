@@ -17,9 +17,12 @@
         @endif
     </h2>
     <hr>
+    <p><strong><i>Importante:</i></strong></p>
+    <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
+    <p><i>Al hacer click en el nombre de la calificación, redirige a la misma.</i></p>
+
     @if($comision)
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>
-
     @else
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>
 
@@ -37,11 +40,8 @@
                     @foreach($calificaciones as $calificacion)
                     <th><a href="{{ route('calificacion.create',$calificacion->id) }}" class="text-white">{{$calificacion->nombre}}</a></th>
                     @endforeach
-                    @else
-                    <th>
-                        Notas
-                    </th>
                     @endif
+                    <th> <a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>
                     <th>
                         Estado
                     </th>
@@ -62,46 +62,37 @@
                     @foreach($calificaciones as $cc)
                     <td>
                         @if($proceso->procesoCalificacion($cc->id))
-                        <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                            {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
-                        </span>
-                        @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
-                        %
-                        @endif
+                            <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
+                                {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
+                            </span>
+                            @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
+                            %
+                            @endif
+
+                            @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
+                            <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
+                                R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                            </span>
+                            @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                            %
+                            @endif
+                            @endif
                         @else
                         -
                         @endif
-
-
                     </td>
-
-                    {{-- <td>{{$calificacion->nombre}}</td>--}}
-
-
-                    {{-- @if($proceso->procesosCalificaciones())--}}
-                    {{-- @foreach($proceso->procesosCalificaciones() as $calificacion)--}}
-                    {{-- <td>--}}
-                    {{-- {{$calificacion->id}} ({{$calificacion->nombre}})--}}
-                    {{-- / {{$cc->id}}({{$cc->nombre}}) /--}}
-
-                    {{-- @if($calificacion->id == $cc->id)--}}
-
-                    {{-- {{$calificacion->porcentaje}}--}}
-
-                    {{-- @endif--}}
-                    {{-- </td>--}}
-                    {{-- @endforeach--}}
-                    {{-- @endif--}}
                     @endforeach
                     @else
                     <td>
                         -
                     </td>
                     @endif
-
                     <td>
+                        {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
+                    </td>
+                    <td class="col-md-3">
 
-                        <select class="custom-select select-estado" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1) disabled @endif >
+                        <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1) disabled @endif >
                             <option value="">Seleccione estado</option>
                             @foreach($estados as $estado)
                             @if($estado->id == $proceso->estado_id)

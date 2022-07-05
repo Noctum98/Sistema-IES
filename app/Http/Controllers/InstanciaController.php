@@ -153,21 +153,17 @@ class InstanciaController extends Controller
             'Inscripciones ' . $instancia->nombre . '-' . $materia->nombre.' - '.$materia->carrera->nombre . '.xlsx'
         );
     }
-    public function descargar_tribunal($carrera)
+    public function descargar_tribunal($carrera,$instancia_id)
     {
         $carrera = Carrera::find($carrera);
-        $instancia = session('instancia');
+        $instancia = Instancia::find($instancia_id);
 
-        if (time() > strtotime($instancia->segundo_llamado)) {
-            $llamado = "Segundo llamado";
-        } else {
-            $llamado = "Primer llamado";
-        }
+
 
         if ($carrera) {
             $excel = Excel::download(
-                new excelTribunalExport($carrera),
-                'Mesas ' . $carrera->nombre . '-' . $carrera->sede->nombre . '(' . $llamado . ').xlsx'
+                new excelTribunalExport($carrera,$instancia),
+                'Mesas ' . $carrera->nombre . '-' . $carrera->sede->nombre . '(' . $instancia->nombre . ').xlsx'
             );
         }
 
