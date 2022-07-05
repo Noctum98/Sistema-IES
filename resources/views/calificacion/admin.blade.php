@@ -8,9 +8,6 @@
             <i>{{ $cargo->nombre }}</i>
         @endif
         <hr>
-        <a href="{{route('calificacion.home')}}">
-            <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
-        </a><br>
         @if(Session::has('profesor'))
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear
                 Calificación

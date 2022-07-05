@@ -90,6 +90,6 @@ class ExcelController extends Controller
         }
         $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
 
-        return Excel::download(new PlanillaNotasTradicionalExport($procesos,$calificaciones),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
+        return Excel::download(new PlanillaNotasTradicionalExport($procesos,$calificaciones,$materia->carrera),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
     }
 }

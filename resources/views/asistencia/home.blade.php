@@ -31,10 +31,11 @@
             @foreach($cargos as $cargo)
                 <h4 class="text-secondary">Cargos</h4>
                 @foreach($cargo->materias as $materia)
+                <h5>{{$cargo->nombre.' - '. $cargo->carrera->nombre.'('.$cargo->carrera->sede->nombre.')'}}</h5>
                     <a type="button" href="{{ route($ruta,['id'=>$materia->id,'cargo_id'=>$cargo->id]) }}"
                        class="list-group-item list-group-item-action border-top mt-2 text-success">
                         <strong>
-                            {{ $materia->carrera->sede->nombre.': '.$materia->carrera->nombre.' - '.$materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
+                        {{ $materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
                         </strong>
                     </a>
                 @endforeach
