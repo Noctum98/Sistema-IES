@@ -1,6 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container col-md-8">
+    <a href="{{route('alumno.detalle',$matriculacion->id)}}">
+        <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+    </a>
     <h2 class="h1 mb-4 text-info">
         Editar matriculación de {{ $matriculacion->nombres.' '.$matriculacion->apellidos }}
     </h2>

@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\Calificacion;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
-use App\Models\Proceso;
-use App\Models\TipoCalificacion;
 use App\Models\User;
 use App\Request\ComisionesRequest;
-use App\Request\TipoCalificacionesRequest;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+
 
 class ComisionController extends Controller
 {
@@ -39,9 +37,7 @@ class ComisionController extends Controller
      */
     public function index($carrera_id, Request $request)
     {
-
         $carrera = Carrera::find($carrera_id);
-
 
         $comisiones = Comision::where('carrera_id',$carrera->id);
         if($request->año){
@@ -100,8 +96,6 @@ class ComisionController extends Controller
 
         $profesores = $this->userService->listadoRol('profesor',false,$comision->carrera_id,false);
 
-
-        
         $alumnos = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
             $query->where('carrera_id',$carrera_id)
             ->where('año',$año);
@@ -115,9 +109,9 @@ class ComisionController extends Controller
             });
 
             if($año == 2 || $año == "2"){
-                $recursantes = $recursantes->where('regularidad','recursante_diferenciado_primero')->orderBy('apellidos')->get();
+                $recursantes = $recursantes->where('regularidad','!=','regular_primero')->orderBy('apellidos')->get();
             }elseif($año == 3 || $año == "3"){
-                $recursantes = $recursantes->where('regularidad','recursante_diferenciado_segundo')->orderBy('apellidos')->get();
+                $recursantes = $recursantes->where('regularidad','!=','regular_segundo')->orderBy('apellidos')->get();
             }
         }
         
@@ -134,38 +128,66 @@ class ComisionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Comision $comision
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(Comision $comision_id)
     {
-        //
+
+        return view('comision.modals.form_edit_comision')->with([
+            'comision' => $comision_id
+
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param ComisionesRequest $request
+
      */
-    public function update(Request $request, $id)
+    public function update(ComisionesRequest $request, $comision_id)
     {
-        //
+        $comision = Comision::find($comision_id);
+        $comision->update($request->validated());
+        $mensaje = ['comision_update' => '¡Comision actualizada!'];
+        return redirect()->route('comisiones.ver', [
+            'carrera_id' => $comision->carrera_id,
+
+        ])->with($mensaje);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
+
         $comision = Comision::find($id);
+
         $alumnos = Alumno::where('comision_id',$comision->id)->update([
             'comision_id' => null
         ]);
+        $calificaciones = Calificacion::where('comision_id',$comision->id)->get();
+          Calificacion::where('comision_id',$comision->id)->update([
+            'comision_id' => null
+        ]);
+
+//         foreach ($calificaciones as $calificacion){
+//             $procesos = ProcesoCalificacion::where([
+//                 'calificacion_id' => $calificacion->id
+//             ])->get();
+//
+//             foreach ($procesos as $proceso){
+//                 $proceso->update([
+//                     'nota' => ' ',
+//                     'porcentaje' => ' '
+//                 ]);
+//             }
+//         }
 
         if($comision->profesores())
         {

@@ -19,12 +19,14 @@ class ProcesoCalificacionController extends Controller
     {
 
         $ausente = false;
-        if($request['porcentaje'] && is_numeric($request['porcentaje'])){
+
+        if(is_numeric($request['porcentaje']) || $request['porcentaje'] === 0){
             $rules = ['required','numeric','max:100'];
         }else{
             $rules = ['required','string','regex:/^[A?a?]/'];
             $ausente = true;
         }
+
         $validate = Validator::make($request->all(),[
             'porcentaje' => $rules
         ]);
@@ -38,17 +40,24 @@ class ProcesoCalificacionController extends Controller
     
             if($procesoCalificacion)
             {
-                $procesoCalificacion->porcentaje = $request['porcentaje'];
-
                 if(!$ausente)
                 {
+                    $procesoCalificacion->porcentaje = $request['porcentaje'];
                     $procesoCalificacion->nota = $this->calcularNota((int) $request['porcentaje']);
                 }else{
-                    $procesoCalificacion->nota = 'A';
+                    $procesoCalificacion->porcentaje = -1;
+                    $procesoCalificacion->nota = -1;
                 }
                 $procesoCalificacion->update();
             }else{
                 $request['nota'] = $ausente ? $request['porcentaje'] : $this->calcularNota((int) $request['porcentaje']);
+
+                if($ausente)
+                {
+                    $request['porcentaje'] = -1;
+                    $request['nota'] = -1;
+                }
+
                 $procesoCalificacion = ProcesoCalificacion::create($request->all());
             }
 

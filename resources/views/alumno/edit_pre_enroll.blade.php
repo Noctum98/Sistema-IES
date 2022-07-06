@@ -184,7 +184,7 @@
 									Gral. Alvear
 								</option>
 								<option value="malargue" {{$preinscripcion->residencia == 'malargue' ? 'selected="selected"' : ''}}>
-									Malargue
+									Malargüe
 								</option>
 								<option value="otra provincia">Otra provincia</option>
 							</select>
@@ -221,8 +221,8 @@
 								</option>
 							</select>
 							<span class="text-danger">
-								*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, clickea sobre
-								la siguiente casilla para inscribirte por articulo 7mo.
+								*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, haz clic sobre
+								la siguiente casilla para inscribirte por artículo 7mo.
 							</span>
 							<div class="form-check">
 							  <input class="form-check-input" type="checkbox" value="" id="articulo7mo"
@@ -437,7 +437,7 @@
 							</div>
 							<div class="form-group">
 								<label for="nota">
-									Nota a la Rectora (en  PDF)
+									Nota a la Rectora (en PDF)
 									@if($preinscripcion->nota)
 										<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
 									@endif

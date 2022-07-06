@@ -41,9 +41,9 @@
 
                 @if($proceso->procesoCalificacion($cc->id))
                 <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                    {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
+                    {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
                 </span>
-                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
+                @if($proceso->procesoCalificacion($cc->id)->porcentaje > 0)
                 %
                 @endif
 
