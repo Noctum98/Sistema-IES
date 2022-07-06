@@ -86,8 +86,8 @@
                                 Notas
                             </a>
 
-                            @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id))
-                                @if(!Session::has('coordinador'))
+                            @if (Session::has('profesor') && $calificacion->user_id == Auth::user()->id)
+                                
                                     <a class="btn btn-warning" data-bs-toggle="modal" id="editButton"
                                        data-bs-target="#editModal"
                                        data-loader="{{$calificacion->id}}"
@@ -103,7 +103,7 @@
                                         <input type="submit" value="Eliminar" class="btn btn-sm btn-danger"/>
 
                                     </form>
-                                @endif
+                               
                             @endif
                         </td>
                     </tr>
