@@ -41,7 +41,7 @@
 				<li><strong>Email:</strong> {{ $alumno->email ? : 'Sin Asignar' }}</li>
 				<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha ? : 'Sin Asignar' }}</li>
 				<li><strong>N° de documento: </strong> {{ $alumno->dni ? : 'Sin Asignar' }}</li>
-				<li><strong>CUIL: </strong> {{ $alumno->cuil ? : 'Sin Asignar' }}</li>
+				<li><strong>C.U.I.L.: </strong> {{ $alumno->cuil ? : 'Sin Asignar' }}</li>
 				<li><strong>Edad: </strong> {{ $alumno->edad }} años</li>
 				<li><strong>Género: </strong> {{ ucwords($alumno->genero ? : 'Sin Asignar') }}</li>
 				<li><strong>Nacionalidad: </strong> {{ ucwords($alumno->nacionalidad) ? : 'Sin Asignar' }}</li>
@@ -90,6 +90,8 @@
                     <h2 class="text-info"><u>Datos de Inscripción</u></h2>
 				</li>
 				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }} </li>
+				<li> <strong>Cohorte: </strong>{{ $alumno->cohorte?? 'No indicada'}} </li>
+				<li> <strong>Activo: </strong>{{ $alumno->active?'Si': 'No'}} </li>
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>

@@ -16,10 +16,10 @@
                 @csrf
                 <div class="form-group">
                     <label for="imagen">
-                        Foto tipo carnet digital (La imágen cambiará al subir el formulario)
+                        Foto tipo carnet digital (La imagen cambiará al subir el formulario)
                     </label>
                     <div class="imagen-alumno ml-4 mb-2">
-                        <img src="{{ route('ver_imagen',['foto'=>$alumno->imagen]) }}">
+                        <img src="{{ route('ver_imagen',['foto'=>$alumno->imagen]) }}" alt="Imagen Alumno IESVU">
                     </div>
                     <input type="file" id="imagen" name="imagen"
                            class="form-control @error('imagen') is-invalid @enderror" value="{{ old('imagen') }}">
@@ -46,6 +46,30 @@
                                 @endif
                             @endforeach
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cohorte">Cohorte:</label>
+                        <input type="text" id="cohorte" name="cohorte"
+                               class="form-control @error('cohorte') is-invalid @enderror" value="{{ $alumno->cohorte }}"
+                               required/>
+
+                        @error('cohorte')
+                        <span class="invalid-feedback d-block" role="alert">
+						    <strong>{{ $message }}</strong>
+						</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="active">Activo:</label>
+                        <input type="text" id="active" name="active"
+                               class="form-control @error('active') is-invalid @enderror" value="{{ $alumno->active }}"
+                               required/>
+
+                        @error('active')
+                        <span class="invalid-feedback d-block" role="alert">
+						    <strong>{{ $message }}</strong>
+						</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="año">Año:</label>
@@ -99,7 +123,7 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label for="cuil">N° de CUIL (Sin guiones ni puntos):</label>
+                    <label for="cuil">N° de C.U.I.L. (Sin guiones ni puntos):</label>
                     <input type="number" id="cuil" name="cuil" class="form-control @error('cuil') is-invalid @enderror"
                            value="{{ $alumno->cuil }}" required/>
 

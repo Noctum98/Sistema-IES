@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cargo;
+use App\Models\CargoMateria;
 use App\Models\User;
 
 class CargoService
@@ -32,5 +33,24 @@ class CargoService
     public function buscadorCargo($busqueda)
     {
         return Cargo::select('id', 'nombre')->where('nombre', $busqueda)->get();
+    }
+
+    /**
+     * @param $cargo
+     * @param $materia
+     * @return mixed
+     */
+    public function getPonderacion($cargo, $materia)
+    {
+        $ponderacion = 0;
+        $cargo_materia = CargoMateria::where([
+            'cargo_id' => $cargo,
+            'materia_id' => $materia
+        ])->first();
+        if($cargo_materia){
+            $ponderacion = $cargo_materia->ponderacion;
+        }
+
+        return $ponderacion;
     }
 }
