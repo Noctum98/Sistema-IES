@@ -77,7 +77,7 @@
             @foreach ($alumnos as $alumno)
             <tr>
                 <th scope="row">{{ $alumno->id }}</th>
-                <td>{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
+                <td><a href="{{ route('alumno.detalle',$alumno->id) }}">{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }} </a></td>
                 <td>
                     <form action="" id="{{$alumno->id}}" method="POST">
                         @foreach($comisiones as $comision)
@@ -94,12 +94,12 @@
             @endforeach
             @if($recursantes && count($recursantes) > 0)
             <tr>
-            <td>RECURSANTES</td>
+            <td>RECURSANTES/CONDICIONALES DE AÑO ANTERIOR</td>
             </tr>
             @foreach ($recursantes as $alumno)
             <tr>
                 <th scope="row">{{ $alumno->id }}</th>
-                <td>{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
+                <td><a href="{{ route('alumno.detalle',$alumno->id) }}">{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }} </a></td>
                 <td>
                     <form action="" id="{{$alumno->id}}" method="POST">
                         @foreach($comisiones as $comision)

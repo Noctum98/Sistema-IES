@@ -115,9 +115,9 @@ class ComisionController extends Controller
             });
 
             if($año == 2 || $año == "2"){
-                $recursantes = $recursantes->where('regularidad','recursante_diferenciado_primero')->orderBy('apellidos')->get();
+                $recursantes = $recursantes->where('regularidad','!=','regular_primero')->orderBy('apellidos')->get();
             }elseif($año == 3 || $año == "3"){
-                $recursantes = $recursantes->where('regularidad','recursante_diferenciado_segundo')->orderBy('apellidos')->get();
+                $recursantes = $recursantes->where('regularidad','!=','regular_segundo')->orderBy('apellidos')->get();
             }
         }
         
