@@ -55,7 +55,9 @@ class Alumno extends Model
         'matriculacion' ,
         'pase' ,
         'titulo_s',
-        'comision_id'
+        'comision_id',
+        'cohorte',
+        'active'
     ];
 
     use HasFactory;

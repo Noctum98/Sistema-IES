@@ -13,6 +13,11 @@
                 Notas
             </th>
             @endif
+            <th>Asistencia %</th>
+            @if($carrera->tipo == 'tradicional2')
+            <th>Asistencia Presencial</th>
+            <th>Asistencia Virtual</th>
+            @endif
             <th>
                 Estado
             </th>
@@ -33,46 +38,38 @@
             @if(count($calificaciones) > 0)
             @foreach($calificaciones as $cc)
             <td>
+
                 @if($proceso->procesoCalificacion($cc->id))
-                @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 60 )
-                 <span style="color:#025827"> {{$proceso->procesoCalificacion($cc->id)->porcentaje}}</span>
-                @else
-                <span style="color:red"> {{$proceso->procesoCalificacion($cc->id)->porcentaje}}</span>
-                @endif
+                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
+                    {{$proceso->procesoCalificacion($cc->id)->porcentaje}}
+                </span>
                 @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
                 %
+                @endif
+
+                @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
+                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
+                    - R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                </span>
+                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                %
+                @endif
                 @endif
                 @else
                 -
                 @endif
-
-
             </td>
-
-            {{-- <td>{{$calificacion->nombre}}</td>--}}
-
-
-            {{-- @if($proceso->procesosCalificaciones())--}}
-            {{-- @foreach($proceso->procesosCalificaciones() as $calificacion)--}}
-            {{-- <td>--}}
-            {{-- {{$calificacion->id}} ({{$calificacion->nombre}})--}}
-            {{-- / {{$cc->id}}({{$cc->nombre}}) /--}}
-
-            {{-- @if($calificacion->id == $cc->id)--}}
-
-            {{-- {{$calificacion->porcentaje}}--}}
-
-            {{-- @endif--}}
-            {{-- </td>--}}
-            {{-- @endforeach--}}
-            {{-- @endif--}}
             @endforeach
             @else
             <td>
                 -
             </td>
             @endif
-
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
+            @if($carrera->tipo == 'tradicional2')
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_presencial : '-' }}%</td>
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_virtual : '-' }}%</td>
+            @endif
             <td>
                 {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
             </td>
