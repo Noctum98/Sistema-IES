@@ -85,13 +85,7 @@
                                            @endif>
                                     <button type="submit"
                                             class="btn btn-info btn-sm col-md-12 input-group-text
-                                            @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif
-                                            @if($proceso->procesoCalificacion($calificacion->id))
-                                @if($proceso->procesoCalificacion($calificacion->id)->procentaje < 60)
-                                disabled
-                                @endif
-                                @endif
-                                            "
+                                            @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif"
                                     >
                                         <i class="fa fa-save"></i></button>
 
