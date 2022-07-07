@@ -57,4 +57,21 @@ class Materia extends Model
     {
         return $this->comisiones()->count();
     }
+
+    public function totalModulo()
+    {
+        $total_modulo = 0;
+        $cargos_modulo = CargoMateria::where([
+            'materia_id' => $this->id
+        ])->get();
+
+        foreach ($cargos_modulo as $cm) {
+            $total_modulo = $cm->ponderacion + $total_modulo;
+
+        }
+
+        return $total_modulo;
+    }
+
+
 }
