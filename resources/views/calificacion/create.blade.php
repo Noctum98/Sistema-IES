@@ -79,7 +79,7 @@
                                            value="{{ $calificacion->id }}">
                                     <input type="text" style="width: 100%" class="form-control col-md-12"
                                            id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}"
-                                           value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio : '' }}"
+                                           value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio : '' }}"
                                            placeholder="%"
                                            @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id) || $proceso->cierre) disabled
                                            @endif>
