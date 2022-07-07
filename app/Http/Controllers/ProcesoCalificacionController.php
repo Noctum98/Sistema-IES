@@ -112,6 +112,33 @@ class ProcesoCalificacionController extends Controller
         return response()->json($response, 200);
     }
 
+    public function delete(Request $request)
+    {
+        $procesoCalificacion = ProcesoCalificacion::where([
+            'proceso_id' => $request['proceso_id'],
+            'calificacion_id' => $request['calificacion_id'],
+        ])->first();
+
+        if($procesoCalificacion)
+        {
+            if($request['recuperatorio'])
+            {
+                $procesoCalificacion->porcentaje_recuperatorio = null;
+                $procesoCalificacion->nota_recuperatorio = null;
+                $response = 'recuperatorio_eliminado';
+
+            }else{
+                $procesoCalificacion->porcentaje = null;
+                $procesoCalificacion->nota = null;
+                $response = 'calificacion_eliminada';
+            }
+
+            $procesoCalificacion->update();
+        }
+
+        return response($response,200);
+    }
+
     private function calcularNota($porcentaje)
     {
         if ($porcentaje == 0) {

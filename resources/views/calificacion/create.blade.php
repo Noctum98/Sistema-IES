@@ -49,7 +49,7 @@
                                        id="calificacion-procentaje-{{ $proceso->id }}"
                                        value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                        placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled
-                                       @endif required>
+                                       @endif>
 
                                 <button type="submit"
                                         class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
@@ -82,7 +82,7 @@
                                            value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio : '' }}"
                                            placeholder="%"
                                            @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id) || $proceso->cierre) disabled
-                                           @endif required>
+                                           @endif>
                                     <button type="submit"
                                             class="btn btn-info btn-sm col-md-12 input-group-text
                                             @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif

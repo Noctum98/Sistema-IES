@@ -415,6 +415,7 @@ Route::prefix('calificacion')->group(function () {
 Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/', [ProcesoCalificacionController::class, 'store']);
     Route::post('/recuperatorio', [ProcesoCalificacionController::class, 'crearRecuperatorio']);
+    Route::post('/delete',[ProcesoCalificacionController::class,'delete']);
 });
 
 Route::prefix('excel')->group(function () {
