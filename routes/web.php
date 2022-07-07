@@ -383,7 +383,8 @@ Route::prefix('matriculacion')->group(function () {
 //Route::resource('cargo',CargoController::class);
 Route::post('agregarModulo', [CargoController::class, 'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser', [CargoController::class, 'agregarUser'])->name('cargo.agregarUser');
-Route::get('ponderarCargo/{cargo_id}/{materia_id}', [CargoController::class, 'ponderarCargo'])->name('cargo.ponderar');
+Route::post('ponderarCargo', [CargoController::class, 'ponderarCargo'])->name('cargo.ponderar');
+Route::get('getTotalModulo/{materia}', [CargoController::class, 'getTotalModulo'])->name('cargo.getTotalModulo');
 Route::get('getPonderarCargo/{cargo_id}/{materia_id}', [CargoController::class, 'getPonderarCargo'])->name(
     'cargo.get_ponderar'
 );
@@ -414,6 +415,7 @@ Route::prefix('calificacion')->group(function () {
 Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/', [ProcesoCalificacionController::class, 'store']);
     Route::post('/recuperatorio', [ProcesoCalificacionController::class, 'crearRecuperatorio']);
+    Route::post('/delete',[ProcesoCalificacionController::class,'delete']);
 });
 
 Route::prefix('excel')->group(function () {

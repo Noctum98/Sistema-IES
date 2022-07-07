@@ -9,8 +9,8 @@
         @endif
         <hr>
         @if(Session::has('profesor'))
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">Crear
-                Calificación
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">
+                Crear Calificación
             </button>
         @endif
         @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente'))

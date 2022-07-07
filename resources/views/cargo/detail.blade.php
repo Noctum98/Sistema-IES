@@ -18,6 +18,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
+                <th scope="col">Ponderación Cargo</th>
+                <th scope="col">Ponderación total módulo</th>
                 <th scope="col">
                     <i class="fa fa-cog" style="font-size:20px;"></i>
                 </th>
@@ -28,6 +30,27 @@
             <tr>
                 <th scope="row">{{ $materia->id }}</th>
                 <td>{{ $materia->nombre }}</td>
+                <td>
+                    <form action="" id="pondera-cargo-materia">
+                        <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
+{{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
+                        "
+                         id="ponderacion" value="{{$cargo->ponderacion($cargo->id,$materia->id)??'0' }}" />
+                        <input type="hidden" id="cargo" value="{{$cargo->id}}" />
+                        <input type="hidden" id="materia" value="{{$materia->id}}" />
+                        <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
+                        @if(!Session::has('coordinador') && !Session::has('admin') ) disabled @endif
+                        ">
+                            <i class="fa fa-save"></i></button>
+                    </form>
+
+                </td>
+<td>
+    <i class="fa fa-spinner fa-spin" style="display: none"
+       id="loader-cargo-{{$cargo->id}}-materia-{{$materia->id}}"></i>
+    <div id="cargo-{{$cargo->id}}-materia-{{$materia->id}}">{{$materia->totalModulo()}}</div>
+</td>
+
                 <td>
                     <form action="{{ route('cargo.delMateria',$cargo->id) }}" method="POST">
                         {{ method_field('DELETE') }}
@@ -82,4 +105,5 @@
 
 @section('scripts')
 <script src="{{ asset('js/user/carreras.js') }}"></script>
+<script src="{{ asset('js/cargos/pondera.js') }}"></script>
 @endsection

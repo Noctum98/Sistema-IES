@@ -125,7 +125,11 @@ class CargoController extends Controller
             $cargo_materia->update(["ponderacion" =>$porcentaje ]);
             $code = 200;
         }
-        return response()->json($porcentaje, $code);
+        $total_modulo = $this->getTotalModulo($materia);
+
+        $data= [$porcentaje, $total_modulo];
+
+        return response()->json($data, $code);
     }
 
     public function getPonderarCargo(Request $request): JsonResponse
@@ -204,6 +208,25 @@ class CargoController extends Controller
             'nombre' => ['required'],
             'carrera_id' => ['required', 'numeric'],
         ]);
+    }
+
+    /**
+     * @param $materia
+     * @return int|mixed
+     */
+    public function getTotalModulo($materia)
+    {
+        $total_modulo = 0;
+        $cargos_modulo = CargoMateria::where([
+            'materia_id' => $materia->id
+        ])->get();
+
+        foreach ($cargos_modulo as $cm) {
+            $total_modulo = $cm->ponderacion + $total_modulo;
+
+        }
+
+        return $total_modulo;
     }
 
 
