@@ -182,7 +182,7 @@ class ProcesoController extends Controller
 
         }else{
             $response = [
-                'code' => 400,
+                'code' => 200,
                 'errors' => $validate->errors()
             ];
         }
