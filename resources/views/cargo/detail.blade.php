@@ -6,7 +6,7 @@
     <h2 class="h1 text-info">Configurar Cargo</h2>
     <hr>
     <p><i>{{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->sede->nombre.' )' }}</i></p>
-    <h3 class="text-secondary mb-3">Modulos</h3>
+    <h3 class="text-secondary mb-3">Módulos</h3>
     <p><button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarModulo">Agregar módulo</button></p>
     @include('cargo.modals.agregar_modulo')
     @if(count($cargo->materias) == 0)

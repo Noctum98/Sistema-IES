@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calificacion;
-use App\Models\Calificaciones;
 use App\Models\Cargo;
-use App\Models\Comision;
-use App\Models\ComisionMateria;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
-use App\Models\TipoCalificaciones;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -57,16 +56,16 @@ class ProcesoCalificacionController extends Controller
                 $procesoCalificacion = ProcesoCalificacion::create($request->all());
             }
 
-            $reponse = $procesoCalificacion;
+            $response = $procesoCalificacion;
         } else {
-            $reponse = [
+            $response = [
                 'code' => 200,
                 'errors' => $validate->errors(),
             ];
         }
 
 
-        return response()->json($reponse, 200);
+        return response()->json($response);
     }
 
     public function crearRecuperatorio(Request $request)
@@ -109,7 +108,7 @@ class ProcesoCalificacionController extends Controller
             ];
         }
 
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     public function delete(Request $request)
