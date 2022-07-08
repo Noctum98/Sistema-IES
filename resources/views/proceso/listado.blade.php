@@ -7,7 +7,7 @@
         top: 0;
     }
 </style>
-<div class="container">
+<div class="container" id="container-scroll">
     <a href="{{url()->previous()}}">
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
@@ -17,6 +17,9 @@
         @endif
     </h2>
     <hr>
+    <div id="alerts">
+
+    </div>
     <p><strong><i>Importante:</i></strong></p>
     <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
     <p><i>Al hacer click en el nombre de la calificación, redirige a la misma.</i></p>
@@ -65,7 +68,7 @@
                             <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                 {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
                             </span>
-                            @if($proceso->procesoCalificacion($cc->id)->porcentaje > 0)
+                            @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
                             %
                             @endif
 
