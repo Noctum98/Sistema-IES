@@ -55,13 +55,12 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function vista_listado($materia_id, $comision_id = null)
+    public function vista_listado($materia_id, $cargo_id =  null, $comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id);
 
-            
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
                 $query->whereHas('comisiones',function($query) use ($comision_id){
@@ -70,13 +69,10 @@ class ProcesoController extends Controller
             });
         }
         $materia = Materia::find($materia_id);
-
         $comision =  null;
         if($comision_id){
             $comision = Comision::find($comision_id);
         }
-
-
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
@@ -88,7 +84,46 @@ class ProcesoController extends Controller
             ]);
         }
         $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
+        $estados = Estados::all();
 
+        return view('proceso.listado', [
+            'procesos'   =>  $procesos,
+            'materia' => $materia,
+            'comision' => $comision,
+            'calificaciones' => $calificaciones,
+            'estados'=>$estados
+        ]);
+    }
+
+    public function vista_listado_modular($materia_id, $cargo_id, $comision_id = null)
+    {
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id);
+
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
+                $query->whereHas('comisiones',function($query) use ($comision_id){
+                    $query->where('comisiones.id',$comision_id);
+                });
+            });
+        }
+        $materia = Materia::find($materia_id);
+        $comision =  null;
+        if($comision_id){
+            $comision = Comision::find($comision_id);
+        }
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos = $procesos->get();
+        $calificacion = Calificacion::where([
+            'materia_id' => $materia_id
+        ]);
+        if($comision_id){
+            $calificacion->where([
+                'comision_id' => $comision_id
+            ]);
+        }
+        $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
         $estados = Estados::all();
 
         return view('proceso.listado', [

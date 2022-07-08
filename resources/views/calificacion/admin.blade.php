@@ -1,11 +1,15 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">
-            Calificaciones: {{ $materia->nombre }}
+        <h2 class="text-info">
+            Calificaciones: <br/>
         </h2>
+        <h3>
+            Materia: {{ $materia->nombre }}
+        </h3>
+
         @if(isset($cargo))
-            <i>{{ $cargo->nombre }}</i>
+            <i>Cargo: {{ $cargo->nombre }}</i>
         @endif
         <hr>
         @if(Session::has('profesor'))
@@ -14,18 +18,17 @@
             </button>
         @endif
         @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente'))
-            @if($materia->carrera->tipo == 'tradicional' || $materia->carrera->tipo == 'tradicional2' )
-                @if($materia->getTotalAttribute() > 0)
-                    @foreach($materia->comisiones as $comision)
-                        @if(Auth::user()->hasComision($comision->id))
-                            <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
-                               class="btn btn-info">Ver procesos {{$comision->nombre}}</a>
-                        @endif
-                    @endforeach
-                @else
-                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">Ver
-                        procesos</a>
-                @endif
+            @if($materia->getTotalAttribute() > 0)
+                @foreach($materia->comisiones as $comision)
+                    @if(Auth::user()->hasComision($comision->id))
+                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                           class="btn btn-info">Ver procesos {{$comision->nombre}}</a>
+                    @endif
+                @endforeach
+            @else
+                <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
+                    Ver procesos
+                </a>
             @endif
         @endif
         <!---
@@ -60,8 +63,11 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Creador</th>
                     <th scope="col">Fecha</th>
+                    @if($materia->carrera->tipo == 'modular' )
+                        <th scope="col">Cargo</th>
+                    @endif
                     <th scope="col">Comisión</th>
-                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i></th>
+                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>-</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,6 +79,9 @@
                             {{ $calificacion->user->nombre.' '.$calificacion->user->apellido }}
                         </td>
                         <td>{{ $calificacion->fecha }}</td>
+                        @if($materia->carrera->tipo == 'modular' )
+                            <td> {{optional($calificacion->modelCargo)->nombre }}</td>
+                        @endif
                         @if( $calificacion->comision_id)
                             @if($calificacion->comision)
                                 <td>{{ $calificacion->comision->nombre }}</td>
@@ -87,23 +96,23 @@
                             </a>
 
                             @if (Session::has('profesor') && $calificacion->user_id == Auth::user()->id)
-                                
-                                    <a class="btn btn-warning" data-bs-toggle="modal" id="editButton"
-                                       data-bs-target="#editModal"
-                                       data-loader="{{$calificacion->id}}"
-                                       data-attr="{{ route('calificacion.edit', $calificacion) }}">
-                                        <i class="fas fa-edit text-gray-300"></i>
-                                        <i class="fa fa-spinner fa-spin" style="display: none"
-                                           id="loader{{$calificacion->id}}"></i>
-                                    </a>
 
-                                    <form action="{{ route('calificacion.delete',$calificacion->id) }}" method="POST"
-                                          class="d-inline">
-                                        {{ method_field('DELETE') }}
-                                        <input type="submit" value="Eliminar" class="btn btn-sm btn-danger"/>
+                                <a class="btn btn-warning" data-bs-toggle="modal" id="editButton"
+                                   data-bs-target="#editModal"
+                                   data-loader="{{$calificacion->id}}"
+                                   data-attr="{{ route('calificacion.edit', $calificacion) }}">
+                                    <i class="fas fa-edit text-gray-300"></i>
+                                    <i class="fa fa-spinner fa-spin" style="display: none"
+                                       id="loader{{$calificacion->id}}"></i>
+                                </a>
 
-                                    </form>
-                               
+                                <form action="{{ route('calificacion.delete',$calificacion->id) }}" method="POST"
+                                      class="d-inline">
+                                    {{ method_field('DELETE') }}
+                                    <input type="submit" value="Eliminar" class="btn btn-sm btn-danger"/>
+
+                                </form>
+
                             @endif
                         </td>
                     </tr>

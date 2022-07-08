@@ -56,7 +56,7 @@ class CalificacionController extends Controller
             'materia' => $materia,
             'tiposCalificaciones' =>  $tiposCalificaciones,
             'calificaciones' => $calificaciones,
-            'cargo' => isset($cargo) ? $cargo : null
+            'cargo' => $cargo ?? null
         ]);
     }
 

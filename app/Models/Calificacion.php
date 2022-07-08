@@ -52,4 +52,9 @@ class Calificacion extends Model
             ->withPivot('proceso_id','calificacion_id');
     }
 
+    public function modelCargo(): BelongsTo
+    {
+        return $this->belongsTo(Cargo::class,'cargo_id');
+    }
+
 }
