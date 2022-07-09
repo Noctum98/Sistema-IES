@@ -44,18 +44,21 @@ class MesaController extends Controller
         {
             foreach ($mesa->mesa_inscriptos as $inscripcion) {
                 if ($inscripcion->segundo_llamado) {
-                    array_push($segundo_llamado, $inscripcion);
-                    if($inscripcion->estado_baja){
-                        array_push($primer_llamado_bajas, $inscripcion);
-                    }
-                } else {
-                    array_push($primer_llamado, $inscripcion);
                     if($inscripcion->estado_baja){
                         array_push($segundo_llamado_bajas, $inscripcion);
+                    }else{
+                        array_push($segundo_llamado, $inscripcion);
+                    }
+                } else {
+                    if($inscripcion->estado_baja){
+                        array_push($primer_llamado_bajas, $inscripcion);
+                    }else{
+                        array_push($primer_llamado, $inscripcion);
                     }
                 }
             }
         }
+
         return view('mesa.inscripciones', [
             'mesa' => $mesa,
             'primer_llamado' => $primer_llamado,

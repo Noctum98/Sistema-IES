@@ -267,14 +267,24 @@ $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
         ]);
     }
 
-    public function borrar_inscripcion(Request $request,$id,$instancia_id){
+    public function borrar_inscripcion(Request $request,$id,$instancia_id = null){
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $inscripcion = MesaAlumno::find($id);
         $mesa_id = $inscripcion->mesa_id;
 
-        if(isset($request['motivos']) || $instancia->tipo == 1)
+        //dd($request->all());
+        $inscripcion->user_id = Auth::user()->id;
+
+        if($instancia->tipo == 1)
         {
-            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
+            if($request['motivos'])
+            {
+                Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
+            }else{
+                $request['motivos'] = "Baja realizada por el alumno.";
+            }
+
+            $inscripcion->motivo_baja = $request['motivos'];
             $inscripcion->estado_baja = true;
             $inscripcion->update();
             $ruta = 'mesa.especial.inscriptos';
@@ -282,12 +292,26 @@ $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
         }
 
         if ($instancia->tipo == 0) {
-            $inscripcion->delete();
-
+            if($request['motivos'])
+            {
+                // Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
+                foreach($request['motivos'] as $motivo)
+                {
+                    $inscripcion->motivo_baja = $inscripcion->motivo_baja.' | '.$motivo;
+                }
+            }else{
+                $request['motivos'] = "Baja realizada por el alumno.";
+                $inscripcion->motivo_baja = $request['motivos'];
+            }
+            $inscripcion->estado_baja = true;           
+            $inscripcion->update();
+            $ruta = 'mesa.inscriptos';
+            $id = $inscripcion->materia_id;
         }
 
         return redirect()->route($ruta,[
-            'id' => $id,
+            'instancia_id' => $instancia->id,
+            'materia_id' => $inscripcion->mesa->materia_id,
 
         ])->with([
             'baja_exitosa' => 'Se ha dado de baja la inscripción correctamente'
