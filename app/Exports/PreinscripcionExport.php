@@ -5,9 +5,13 @@ namespace App\Exports;
 use App\Models\Preinscripcion;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class PreinscripcionExport implements FromView
+class PreinscripcionExport implements FromView,WithEvents
 {
+    use RegistersEventListeners;
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -28,5 +32,16 @@ class PreinscripcionExport implements FromView
         return view('excel.preinscripciones',[
             'preinscripciones'=>$preinscripciones
         ]);
+    }
+
+    public static function afterSheet(AfterSheet $event)
+    {
+        // Get Worksheet
+        $active_sheet = $event->sheet->getDelegate();
+        foreach(range('A','H') as $columnID) {
+            $active_sheet->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
     }
 }
