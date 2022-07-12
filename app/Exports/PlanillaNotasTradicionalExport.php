@@ -39,27 +39,12 @@ class PlanillaNotasTradicionalExport implements FromView,WithEvents
 
     public static function afterSheet(AfterSheet $event)
     {
-        // Create Style Arrays
-        $default_font_style = [
-            'font' => ['name' => 'Arial', 'size' => 10]
-        ];
-
-        $strikethrough = [
-            'font' => ['strikethrough' => true],
-        ];
-
         // Get Worksheet
         $active_sheet = $event->sheet->getDelegate();
+        foreach(range('A','H') as $columnID) {
+            $active_sheet->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
 
-        // Apply Style Arrays
-        $active_sheet->getParent()->getDefaultStyle()->applyFromArray($default_font_style);
-
-        // strikethrough group of cells (A10 to B12) 
-        $active_sheet->getStyle('A10:B12')->applyFromArray($strikethrough);
-        // or
-        $active_sheet->getStyle('A10:B12')->getFont()->setStrikethrough(true);
-
-        // single cell
-        $active_sheet->getStyle('A13')->getFont()->setStrikethrough(true);
     }
 }

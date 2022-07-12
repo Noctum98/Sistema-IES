@@ -40,8 +40,10 @@
                 <td>{{ $inscripcion->telefono }}</td>
                 @if(Auth::user()->rol == 'rol_admin')
                 <td>
-                    <a href="{{route('mesa.borrar',['id'=>$inscripcion->id])}}" class="btn-sm btn-danger">
-                        Borrar
+                    @include('mesa.modals.dar_baja_mesa')
+
+                    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
+                        Dar baja
                     </a>
                 </td>
                 @endif
@@ -50,11 +52,41 @@
         </tbody>
     </table>
     @else
-    <p>No existen inscripciones en este llamado</p>
+        @if(count($primer_llamado_bajas) > 0)
+        <table class="table mt-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">D.N.I</th>
+                    <th scope="col">Teléfono</th>
+                    <th>Responsable</th>
+                    <th scope="col">Motivos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($primer_llamado_bajas as $inscripcion)
+                <tr style="cursor:pointer;">
+                    <td>{{ $inscripcion->nombres }}</td>
+                    <td>{{ $inscripcion->apellidos }}</td>
+                    <td>{{ $inscripcion->dni }}</td>
+                    <td>{{ $inscripcion->telefono }}</td>
+                    <td>{{ ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) }}</td>
+                    <td>
+                        {{ $inscripcion->motivo_baja }}
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @else
+        <p>No existen inscripciones en este llamado</p>
+        @endif
     @endif
-    
-    <h2 class="text-info">Segundo llamado</h2>
+
     @if( count($segundo_llamado) > 0)
+    <h2 class="text-info">Segundo llamado</h2>
+
     <div class="row">
         <a href="{{route('mesa.descargar',['id'=>$mesa->id,'llamado'=>'segundo'])}}" class="btn btn-sm btn-success ml-3">
             Descargar 2<sup>do</sup> llamado

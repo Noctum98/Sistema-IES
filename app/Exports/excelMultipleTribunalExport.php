@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Events\AfterSheet;
 
 class excelMultipleTribunalExport implements WithMultipleSheets
 {
@@ -33,5 +34,16 @@ class excelMultipleTribunalExport implements WithMultipleSheets
             }
         }
         return $sheets;
+    }
+
+    public static function afterSheet(AfterSheet $event)
+    {
+        // Get Worksheet
+        $active_sheet = $event->sheet->getDelegate();
+        foreach(range('A','Z') as $columnID) {
+            $active_sheet->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+
     }
 }
