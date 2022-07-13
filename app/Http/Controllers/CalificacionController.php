@@ -38,10 +38,10 @@ class CalificacionController extends Controller
 
     public function admin($materia_id, $cargo_id = null)
     {
+
         $materia = Materia::find($materia_id);
-        if($cargo_id){
-            $cargo = Cargo::select('nombre','id')->where('id',$cargo_id)->first();
-        }
+
+
 
         if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
             $tiposCalificaciones = TipoCalificacion::all();
@@ -50,7 +50,17 @@ class CalificacionController extends Controller
         }
 
         $user = Auth::user();
-        $calificaciones = Calificacion::where('materia_id', $materia->id)->orderBy('tipo_id')->get();
+        $calificaciones = Calificacion::select()
+        ->where('materia_id', $materia->id);
+        if($cargo_id){
+            $cargo = Cargo::select('nombre','id')->where('id',$cargo_id)->first();
+            if($cargo){
+                $calificaciones->where('cargo_id', $cargo_id);
+            }
+        }
+
+        $calificaciones = $calificaciones->orderBy('tipo_id')->get();
+
 
         return view('calificacion.admin', [
             'materia' => $materia,
