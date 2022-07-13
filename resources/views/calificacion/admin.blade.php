@@ -1,15 +1,14 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="text-info">
-            Calificaciones: <br/>
-        </h2>
-        <h3>
-            Materia: {{ $materia->nombre }}
-        </h3>
+        <h4 class="text-dark">
+            Calificaciones <br/>
+            Carrera: <i>{{$materia->carrera->nombre}},{{$materia->carrera->sede->nombre}}, Turno: {{$materia->carrera->turno}}</i><br/>
+            Materia: <i>{{ $materia->nombre }}</i>
+        </h4>
 
         @if(isset($cargo))
-            <i>Cargo: {{ $cargo->nombre }}</i>
+            Cargo: <i> {{ $cargo->nombre }}</i>
         @endif
         <hr>
         @if(Session::has('profesor'))
