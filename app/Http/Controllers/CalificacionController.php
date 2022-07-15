@@ -38,10 +38,7 @@ class CalificacionController extends Controller
 
     public function admin($materia_id, $cargo_id = null)
     {
-
         $materia = Materia::find($materia_id);
-
-
 
         if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
             $tiposCalificaciones = TipoCalificacion::all();

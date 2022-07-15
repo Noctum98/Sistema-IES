@@ -20,14 +20,27 @@
             @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
+                        @if($cargo)
+                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, 'comision_id' => $comision->id]) }}" class="btn btn-info">
+                                Ver procesos / {{$cargo->nombre}}  / {{$comision->nombre}}
+                            </a>
+                        @else
                         <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
                            class="btn btn-info">Ver procesos {{$comision->nombre}}</a>
+                        @endif
                     @endif
                 @endforeach
             @else
-                <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
-                    Ver procesos
-                </a>
+                @if($cargo)
+                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-info">
+                        Ver procesos {{$cargo->nombre}}
+                    </a>
+                @else
+                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
+                        Ver procesos
+                    </a>
+                @endif
+
             @endif
         @endif
         <!---

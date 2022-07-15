@@ -267,8 +267,18 @@ Route::prefix('proceso')->group(function () {
         'inscribir_proceso'
     );
     Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
-    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
-        'proceso.listado'
+    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name('proceso.listado');
+
+    Route::get('listado-cargo/{materia_id}/{cargo_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo'])->name(
+        'proceso.listadoCargo'
+    );
+
+    Route::get('listado-modular/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoModular'])->name(
+        'proceso.listadoModular'
+    );
+
+    Route::get('listado-cargos-modulo/{materia_id}/{alumno_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargosModulo'])->name(
+        'proceso.listadoCargosModulo'
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');

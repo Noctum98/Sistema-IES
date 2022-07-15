@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Calificacion;
+use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +18,6 @@ class ProcesoCalificacionController extends Controller
 
     public function store(Request $request)
     {
-
         $ausente = false;
 
         if (is_numeric($request['porcentaje']) || $request['porcentaje'] === 0) {
@@ -55,6 +56,15 @@ class ProcesoCalificacionController extends Controller
 
                 $procesoCalificacion = ProcesoCalificacion::create($request->all());
             }
+
+            $proceso = Proceso::find($procesoCalificacion->proceso_id);
+            $calificacion = Calificacion::find($procesoCalificacion->calificacion_id);
+
+            if($calificacion->cargo_id){
+                $proceso->cargo_id= $calificacion->cargo_id;
+                $proceso->update();
+            }
+
 
             $response = $procesoCalificacion;
         } else {
