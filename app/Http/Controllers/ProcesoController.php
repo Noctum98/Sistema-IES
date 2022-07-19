@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Calificacion;
+use App\Models\Cargo;
 use App\Models\Comision;
 use App\Models\Estados;
 use App\Models\Materia;
@@ -99,8 +100,10 @@ class ProcesoController extends Controller
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->join('proceso_calificacion', 'proceso_calificacion.proceso_id', 'procesos.id')
+            ->join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('procesos.cargo_id', $cargo_id)
+            ->where('calificaciones.cargo_id', $cargo_id)
         ;
 
         if ($comision_id) {
@@ -178,11 +181,12 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function vista_listadoCargosModulo($materia_id, $alumno_id, $comision_id = null)
+    public function vista_listadoCargosModulo($materia_id, $cargo_id, $alumno_id, $comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id);
+//            ->where('procesos.cargo_id', $cargo_id);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
@@ -192,6 +196,7 @@ class ProcesoController extends Controller
             });
         }
         $materia = Materia::find($materia_id);
+        $cargo = Cargo::find($cargo_id);
         $comision =  null;
         if($comision_id){
             $comision = Comision::find($comision_id);
@@ -209,12 +214,13 @@ class ProcesoController extends Controller
         $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
         $estados = Estados::all();
 
-        return view('proceso.listado', [
+        return view('proceso.listado-cargos-modulo', [
             'procesos'   =>  $procesos,
             'materia' => $materia,
             'comision' => $comision,
             'calificaciones' => $calificaciones,
-            'estados'=>$estados
+            'estados'=>$estados,
+            'cargo' =>$cargo
         ]);
     }
 

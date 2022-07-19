@@ -60,10 +60,10 @@ class ProcesoCalificacionController extends Controller
             $proceso = Proceso::find($procesoCalificacion->proceso_id);
             $calificacion = Calificacion::find($procesoCalificacion->calificacion_id);
 
-            if($calificacion->cargo_id){
-                $proceso->cargo_id= $calificacion->cargo_id;
-                $proceso->update();
-            }
+//            if($calificacion->cargo_id){
+//                $proceso->cargo_id= $calificacion->cargo_id;
+//                $proceso->update();
+//            }
 
 
             $response = $procesoCalificacion;

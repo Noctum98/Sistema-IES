@@ -277,7 +277,7 @@ Route::prefix('proceso')->group(function () {
         'proceso.listadoModular'
     );
 
-    Route::get('listado-cargos-modulo/{materia_id}/{alumno_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargosModulo'])->name(
+    Route::get('listado-cargos-modulo/{materia_id}/{cargo_id}/{alumno_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargosModulo'])->name(
         'proceso.listadoCargosModulo'
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
