@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CalificacionService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,13 +49,22 @@ class Calificacion extends Model
     }
 
     public function proceso(){
-        return $this->belongsToMany(ProcesoCalificacion::class,'procesos')
-            ->withPivot('proceso_id','calificacion_id');
+        return $this->belongsToMany(ProcesoCalificacion::class,'procesos_calificacion')
+            ->withPivot('id','proceso_id');
+    }
+
+    public function procesosCalificacionByAlumno($alumno_id)
+    {
+            $calificaion_service = new CalificacionService();
+            return $calificaion_service->calificacionesByAlumno($alumno_id, $this->id);
+
     }
 
     public function modelCargo(): BelongsTo
     {
         return $this->belongsTo(Cargo::class,'cargo_id');
     }
+
+
 
 }

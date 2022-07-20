@@ -22,6 +22,7 @@ class ProcesoController extends Controller
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor');
     }
+
     // Vistas
     public function vista_inscribir($id)
     {
@@ -41,9 +42,9 @@ class ProcesoController extends Controller
         }
 
         return view('alumno.enroll', [
-            'alumno'    =>  $alumno,
-            'materias'  =>  $mis_materias,
-            'procesos'  => $procesos,
+            'alumno' => $alumno,
+            'materias' => $mis_materias,
+            'procesos' => $procesos,
         ]);
     }
 
@@ -52,7 +53,7 @@ class ProcesoController extends Controller
         $proceso = Proceso::find($id);
 
         return view('proceso.detail', [
-            'proceso'   =>  $proceso
+            'proceso' => $proceso,
         ]);
     }
 
@@ -63,36 +64,36 @@ class ProcesoController extends Controller
             ->where('procesos.materia_id', $materia_id);
 
         if ($comision_id) {
-            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
-                $query->whereHas('comisiones',function($query) use ($comision_id){
-                    $query->where('comisiones.id',$comision_id);
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
                 });
             });
         }
         $materia = Materia::find($materia_id);
-        $comision =  null;
-        if($comision_id){
+        $comision = null;
+        if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
-           'materia_id' => $materia_id
+            'materia_id' => $materia_id,
         ]);
-        if($comision_id){
+        if ($comision_id) {
             $calificacion->where([
-                'comision_id' => $comision_id
+                'comision_id' => $comision_id,
             ]);
         }
-        $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
+        $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
         $estados = Estados::all();
 
         return view('proceso.listado', [
-            'procesos'   =>  $procesos,
+            'procesos' => $procesos,
             'materia' => $materia,
             'comision' => $comision,
             'calificaciones' => $calificaciones,
-            'estados'=>$estados
+            'estados' => $estados,
         ]);
     }
 
@@ -103,41 +104,40 @@ class ProcesoController extends Controller
             ->join('proceso_calificacion', 'proceso_calificacion.proceso_id', 'procesos.id')
             ->join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('calificaciones.cargo_id', $cargo_id)
-        ;
+            ->where('calificaciones.cargo_id', $cargo_id);
 
         if ($comision_id) {
-            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
-                $query->whereHas('comisiones',function($query) use ($comision_id){
-                    $query->where('comisiones.id',$comision_id);
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
                 });
             });
         }
         $materia = Materia::find($materia_id);
-        $comision =  null;
-        if($comision_id){
+        $comision = null;
+        if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
-            'cargo_id' => $cargo_id
+            'cargo_id' => $cargo_id,
         ]);
-        if($comision_id){
+        if ($comision_id) {
             $calificacion->where([
                 'comision_id' => $comision_id,
             ]);
         }
-        $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
+        $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
         $estados = Estados::all();
 
         return view('proceso.listado', [
-            'procesos'   =>  $procesos,
+            'procesos' => $procesos,
             'materia' => $materia,
             'comision' => $comision,
             'calificaciones' => $calificaciones,
-            'estados'=>$estados
+            'estados' => $estados,
         ]);
     }
 
@@ -148,36 +148,36 @@ class ProcesoController extends Controller
             ->where('procesos.materia_id', $materia_id);
 
         if ($comision_id) {
-            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
-                $query->whereHas('comisiones',function($query) use ($comision_id){
-                    $query->where('comisiones.id',$comision_id);
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
                 });
             });
         }
         $materia = Materia::find($materia_id);
-        $comision =  null;
-        if($comision_id){
+        $comision = null;
+        if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
-            'materia_id' => $materia_id
+            'materia_id' => $materia_id,
         ]);
-        if($comision_id){
+        if ($comision_id) {
             $calificacion->where([
-                'comision_id' => $comision_id
+                'comision_id' => $comision_id,
             ]);
         }
-        $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
+        $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
         $estados = Estados::all();
 
         return view('proceso.listado', [
-            'procesos'   =>  $procesos,
+            'procesos' => $procesos,
             'materia' => $materia,
             'comision' => $comision,
             'calificaciones' => $calificaciones,
-            'estados'=>$estados
+            'estados' => $estados,
         ]);
     }
 
@@ -185,42 +185,49 @@ class ProcesoController extends Controller
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
-//            ->where('procesos.cargo_id', $cargo_id);
-
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.alumno_id', $alumno_id)
+            //            ->where('procesos.cargo_id', $cargo_id);
+        ;
         if ($comision_id) {
-            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
-                $query->whereHas('comisiones',function($query) use ($comision_id){
-                    $query->where('comisiones.id',$comision_id);
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
                 });
             });
         }
         $materia = Materia::find($materia_id);
         $cargo = Cargo::find($cargo_id);
-        $comision =  null;
-        if($comision_id){
+        $comision = null;
+        if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
-            'materia_id' => $materia_id
+            'materia_id' => $materia_id,
         ]);
-        if($comision_id){
+        if ($comision_id) {
             $calificacion->where([
-                'comision_id' => $comision_id
+                'comision_id' => $comision_id,
             ]);
         }
-        $calificaciones = $calificacion->orderBy('tipo_id','DESC')->get();
+        $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
         $estados = Estados::all();
 
+        $alumno = Alumno::find($alumno_id);
+        $cargos = $procesos->first()->materia->cargos;
+//        dd($procesos->first()->materia->cargos[0]->calificacionesCargo[0]->procesosCalificacionByAlumno($alumno_id));
+
         return view('proceso.listado-cargos-modulo', [
-            'procesos'   =>  $procesos,
+            'procesos' => $procesos,
             'materia' => $materia,
             'comision' => $comision,
             'calificaciones' => $calificaciones,
-            'estados'=>$estados,
-            'cargo' =>$cargo
+            'estados' => $estados,
+            'cargo' => $cargo,
+            'alumno' => $alumno,
+            'cargos' => $cargos
         ]);
     }
 
@@ -245,8 +252,8 @@ class ProcesoController extends Controller
                 if ($proceso) {
                     Proceso::create([
                         'alumno_id' => $alumno->id,
-                        'estado'    => 'en curso',
-                        'materia_id' => $proceso
+                        'estado' => 'en curso',
+                        'materia_id' => $proceso,
                     ]);
                 }
             }
@@ -254,9 +261,9 @@ class ProcesoController extends Controller
 
 
         return redirect()->route('alumno.detalle', [
-            'id' => $alumno->id
+            'id' => $alumno->id,
         ])->with([
-            'mensaje_procesos' => 'Se han actualizado los procesos'
+            'mensaje_procesos' => 'Se han actualizado los procesos',
         ]);
     }
 
@@ -264,53 +271,54 @@ class ProcesoController extends Controller
     {
         $user = Auth::user();
         $proceso = Proceso::find($request['proceso_id']);
-        $proceso->estado_id = (int) $request['estado_id'];
+        $proceso->estado_id = (int)$request['estado_id'];
         $proceso->operador_id = $user->id;
         $proceso->update();
 
-        return response()->json('¡Proceso actualizado!',200);
+        return response()->json('¡Proceso actualizado!', 200);
     }
+
     public function cambiaCierre(Request $request): JsonResponse
     {
         $user = Auth::user();
         $proceso = Proceso::find($request['proceso_id']);
-        if($request['cierre'] == 'true'){
+        if ($request['cierre'] == 'true') {
             $proceso->cierre = 1;
         }
-        if($request['cierre'] == 'false'){
+        if ($request['cierre'] == 'false') {
             $proceso->cierre = 0;
         }
         $proceso->operador_id = $user->id;
 
         $proceso->update();
 
-        return response()->json('¡Proceso actualizado!',200);
+        return response()->json('¡Proceso actualizado!', 200);
     }
 
     public function cambia_nota_final(Request $request)
     {
-        $validate = Validator::make($request->all(),[
-            'proceso_id' => ['required','integer'],
-            'nota_final' => ['required','integer','max:10']
+        $validate = Validator::make($request->all(), [
+            'proceso_id' => ['required', 'integer'],
+            'nota_final' => ['required', 'integer', 'max:10'],
         ]);
 
-        if(!$validate->fails()){
+        if (!$validate->fails()) {
             $proceso = Proceso::find($request['proceso_id']);
             $proceso->final_calificaciones = $request['nota_final'];
             $proceso->update();
 
             $response = [
                 'code' => 200,
-                'nota' => $proceso->final_calificaciones
+                'nota' => $proceso->final_calificaciones,
             ];
 
-        }else{
+        } else {
             $response = [
                 'code' => 200,
-                'errors' => $validate->errors()
+                'errors' => $validate->errors(),
             ];
         }
 
-        return response()->json($response,$response['code']);
+        return response()->json($response, $response['code']);
     }
 }

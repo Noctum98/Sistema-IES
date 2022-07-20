@@ -16,21 +16,29 @@
     <div class="container" id="container-scroll">
         <div class="table-responsive tableFixHead">
             <div class="col-sm-12">
+                {{$alumno->nombre}} {{$alumno->apellidos}},DU: {{$alumno->dni}}
             </div>
-            @foreach($materia->cargos as $cargo )
-                <table class="table-responsive">
-
+            @foreach($cargos as $cargo )
+                <table class="table table-responsive">
                     <thead>
                     <tr>
-                    <th>Cargo</th>
-                    <th>Calificaciones</th>
+                        <th>Cargo</th>
+                        @foreach($cargo->calificacionesCargo as $calificacion)
+                            <th>{{$calificacion->nombre}}</th>
+                        @endforeach
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>{{$cargo}}</td>
-                        <td>{{count($cargo->calificacionesCargo)}}</td>
+                        <td class="col-3">
+                            {{$cargo->nombre}}
+                        </td>
+
+                        @foreach($cargo->calificacionesCargo as $calificacion)
+                            <th>{{$calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje}}</th>
+                        @endforeach
                     </tr>
+
                     </tbody>
                 </table>
             @endforeach
