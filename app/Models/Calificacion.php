@@ -65,6 +65,12 @@ class Calificacion extends Model
         return $this->belongsTo(Cargo::class,'cargo_id');
     }
 
+    public function obtenerParcial($alumno_id)
+    {
+        $calificaion_service = new CalificacionService();
+        return $calificaion_service->calificacionParcialByAlumno($alumno_id, $this->id);
+    }
+
 
 
 }

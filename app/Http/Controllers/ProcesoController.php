@@ -216,8 +216,8 @@ class ProcesoController extends Controller
         $estados = Estados::all();
 
         $alumno = Alumno::find($alumno_id);
+
         $cargos = $procesos->first()->materia->cargos;
-//        dd($procesos->first()->materia->cargos[0]->calificacionesCargo[0]->procesosCalificacionByAlumno($alumno_id));
 
         return view('proceso.listado-cargos-modulo', [
             'procesos' => $procesos,
