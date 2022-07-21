@@ -52,36 +52,38 @@
         </tbody>
     </table>
     @else
-        @if(count($primer_llamado_bajas) > 0)
-        <table class="table mt-4">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">D.N.I</th>
-                    <th scope="col">Teléfono</th>
-                    <th>Responsable</th>
-                    <th scope="col">Motivos</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($primer_llamado_bajas as $inscripcion)
-                <tr style="cursor:pointer;">
-                    <td>{{ $inscripcion->nombres }}</td>
-                    <td>{{ $inscripcion->apellidos }}</td>
-                    <td>{{ $inscripcion->dni }}</td>
-                    <td>{{ $inscripcion->telefono }}</td>
-                    <td>{{ ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) }}</td>
-                    <td>
-                        {{ $inscripcion->motivo_baja }}
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @else
-        <p>No existen inscripciones en este llamado</p>
-        @endif
+    <p>No existen inscripciones para este llamado.</p>
+    @endif
+
+    @if(count($primer_llamado_bajas) > 0)
+    <h2 class="text-info">Primer llamado bajas</h2>
+
+    <table class="table mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">D.N.I</th>
+                <th scope="col">Teléfono</th>
+                <th>Responsable</th>
+                <th scope="col">Motivos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($primer_llamado_bajas as $inscripcion)
+            <tr style="cursor:pointer;">
+                <td>{{ $inscripcion->nombres }}</td>
+                <td>{{ $inscripcion->apellidos }}</td>
+                <td>{{ $inscripcion->dni }}</td>
+                <td>{{ $inscripcion->telefono }}</td>
+                <td>{{ ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) }}</td>
+                <td>
+                    {{ $inscripcion->motivo_baja }}
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
     @endif
 
     @if( count($segundo_llamado) > 0)
@@ -122,8 +124,36 @@
             @endforeach
         </tbody>
     </table>
-    @else
-    <p>No existen inscripciones en este llamado</p>
+    @endif
+    @if(count($segundo_llamado_bajas) > 0)
+    <h2 class="text-info">Segundo llamado bajas</h2>
+
+    <table class="table mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">D.N.I</th>
+                <th scope="col">Teléfono</th>
+                <th>Responsable</th>
+                <th scope="col">Motivos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($segundo_llamado_bajas as $inscripcion)
+            <tr style="cursor:pointer;">
+                <td>{{ $inscripcion->nombres }}</td>
+                <td>{{ $inscripcion->apellidos }}</td>
+                <td>{{ $inscripcion->dni }}</td>
+                <td>{{ $inscripcion->telefono }}</td>
+                <td>{{ ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) }}</td>
+                <td>
+                    {{ $inscripcion->motivo_baja }}
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
     @endif
     @else
     <h2 class="h1 text-info">
