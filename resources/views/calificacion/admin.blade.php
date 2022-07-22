@@ -35,6 +35,9 @@
                     <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-info">
                         Ver procesos {{$cargo->nombre}}
                     </a>
+                    <a href="{{ route('proceso.listadoModular', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-secondary">
+                        Ver Módulo {{$cargo->nombre}}
+                    </a>
                 @else
                     <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
                         Ver procesos

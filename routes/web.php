@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
+use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
@@ -426,6 +427,11 @@ Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/', [ProcesoCalificacionController::class, 'store']);
     Route::post('/recuperatorio', [ProcesoCalificacionController::class, 'crearRecuperatorio']);
     Route::post('/delete',[ProcesoCalificacionController::class,'delete']);
+});
+
+// Rutas de Parciales
+Route::prefix('proceso-modular')->group(function () {
+   Route::get('/listado/{materia}', [ProcesoModularController::class, 'list'])->name('proceso_modular.list');
 });
 
 Route::prefix('excel')->group(function () {

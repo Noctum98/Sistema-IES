@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class ProcesoModular extends Model
 {
     use HasFactory;
+
+    protected $table = "proceso_modular";
+    protected $fillable = [
+
+        'promedio_final_porcentaje',
+        'promedio_final_nota',
+        'ponderacion_promedio_final',
+        'trabajo_final_porcentaje',
+        'trabajo_final_nota',
+        'ponderacion_trabajo_final',
+        'nota_final_porcentaje',
+        'nota_final_nota',
+        'cierre',
+        'operador_id',
+        'proceso_id',
+    ];
 }
