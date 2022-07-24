@@ -432,6 +432,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 // Rutas de Parciales
 Route::prefix('proceso-modular')->group(function () {
    Route::get('/listado/{materia}/{cargo_id}', [ProcesoModularController::class, 'list'])->name('proceso_modular.list');
+   Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular'])->name('proceso_modular.procesa_ponderacion_modular');
 });
 
 Route::prefix('excel')->group(function () {

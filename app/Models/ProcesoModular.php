@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class ProcesoModular extends Model
 {
@@ -28,6 +29,12 @@ class ProcesoModular extends Model
     public function procesoRelacionado()
     {
         return $this->belongsTo(Proceso::class, 'proceso_id');
+    }
+
+    public function alumnoRelacionado()
+    {
+        $proceso =  $this->procesoRelacionado()->first();
+        return $proceso->alumno()->first();
     }
 
 

@@ -38,8 +38,6 @@ class ProcesoModularController extends Controller
         }
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
 
-        dd($serviceModular->cargarPonderacionEnProcesoModular($materia));
-
         return view('procesoModular.listado', [
                 'materia' => $materia,
                 'cargo_id' => $cargo_id,
@@ -47,6 +45,22 @@ class ProcesoModularController extends Controller
                 'procesos' => $procesos
             ]
         );
+
+
+    }
+
+    public function procesaPonderacionModular(Materia $materia)
+    {
+        $acciones = [];
+        $serviceModular = new ProcesoModularService();
+        if(count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0){
+            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+            $serviceModular->crearProcesoModular($materia->id);
+        }
+
+        $serviceModular->cargarPonderacionEnProcesoModular($materia);
+
+
 
 
     }
