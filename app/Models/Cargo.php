@@ -63,6 +63,7 @@ class Cargo extends Model
             ->where('tipo_calificaciones.descripcion','=', 2)
             ->get();
     }
+
     public function calificacionesParcialByCargoByMateria($materia_id): Collection
     {
         return $this->hasMany(Calificacion::class)

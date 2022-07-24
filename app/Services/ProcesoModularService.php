@@ -43,7 +43,7 @@ class ProcesoModularService
     public function obtenerProcesosModularesByMateria($materia)
     {
         return ProcesoModular::select('proceso_modular.*')
-            ->join('procesos','procesos.id', 'proceso_modular.proceso_id')
+            ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
             ->where('procesos.materia_id', $materia)
             ->get();
     }
@@ -51,13 +51,31 @@ class ProcesoModularService
     public function ponderarCargos(Materia $materia)
     {
         $cargos = $materia->cargos()->get();
-        foreach ($cargos as $cargo){
+        foreach ($cargos as $cargo) {
             /** @var Cargo $cargo */
             $cargo->calificacionesTPByCargoByMateria($materia->id);
         }
 
-
         return $materia->cargos()->get();
+    }
+
+    public function cargarPonderacionEnProcesoModular(Materia $materia)
+    {
+        $serviceCargo = new CargoService();
+        $cant = '';
+        $cargos = $this->obtenerCargosPorModulo($materia);
+
+
+        foreach ($cargos as $cargo) {
+            dd($serviceCargo->calculoPonderacionPorCargo($cargo, $materia->id, 2690));
+        }
+        return $cant;
+
+    }
+
+    public function obtenerCargosPorModulo(Materia $modulo)
+    {
+        return $modulo->cargos()->get();
     }
 
 

@@ -31,17 +31,14 @@ class ProcesoModularController extends Controller
     public function list(Materia $materia, int $cargo_id)
     {
         $acciones = [];
-        $seviceModular = new ProcesoModularService();
-        if(count($seviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0){
+        $serviceModular = new ProcesoModularService();
+        if(count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0){
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
-            $seviceModular->crearProcesoModular($materia->id);
+            $serviceModular->crearProcesoModular($materia->id);
         }
+        $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
 
-        $procesos = $seviceModular->obtenerProcesosModularesByMateria($materia->id);
-//        dd($procesos);
-
-
-//        dd($seviceModular->ponderarCargos($materia));
+        dd($serviceModular->cargarPonderacionEnProcesoModular($materia));
 
         return view('procesoModular.listado', [
                 'materia' => $materia,

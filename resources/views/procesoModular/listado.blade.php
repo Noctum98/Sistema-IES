@@ -107,9 +107,6 @@
                             {{--                            </td>--}}
 
 
-
-
-
                         </tr>
                         <tr>
                             <td colspan="8" class="border-top-0 border-info">
