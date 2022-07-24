@@ -49,6 +49,11 @@ class Cargo extends Model
 
     }
 
+    /**
+     *
+     * @param $materia_id
+     * @return Collection
+     */
     public function calificacionesTPByCargoByMateria($materia_id): Collection
     {
         return $this->hasMany(Calificacion::class)

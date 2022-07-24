@@ -24,4 +24,11 @@ class ProcesoModular extends Model
         'operador_id',
         'proceso_id',
     ];
+
+    public function procesoRelacionado()
+    {
+        return $this->belongsTo(Proceso::class, 'proceso_id');
+    }
+
+
 }

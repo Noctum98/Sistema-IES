@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Materia;
 use App\Models\ProcesoModular;
 use App\Services\ProcesoModularService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class ProcesoModularController extends Controller
@@ -20,14 +23,33 @@ class ProcesoModularController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Muestra los procesos de los cargos de cada módulo ponderados.
+     * @param Materia $materia
+     * @param int $cargo_id
+     * @return Application|Factory|View
      */
-    public function list(Materia $materia)
+    public function list(Materia $materia, int $cargo_id)
     {
+        $acciones = [];
         $seviceModular = new ProcesoModularService();
-        dd($seviceModular->crearProcesoModular($materia->id));
+        if(count($seviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0){
+            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+            $seviceModular->crearProcesoModular($materia->id);
+        }
+
+        $procesos = $seviceModular->obtenerProcesosModularesByMateria($materia->id);
+//        dd($procesos);
+
+
+//        dd($seviceModular->ponderarCargos($materia));
+
+        return view('procesoModular.listado', [
+                'materia' => $materia,
+                'cargo_id' => $cargo_id,
+                'acciones' => $acciones,
+                'procesos' => $procesos
+            ]
+        );
 
 
     }
@@ -45,7 +67,7 @@ class ProcesoModularController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -56,7 +78,7 @@ class ProcesoModularController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProcesoModular  $procesoModular
+     * @param \App\Models\ProcesoModular $procesoModular
      * @return \Illuminate\Http\Response
      */
     public function show(ProcesoModular $procesoModular)
@@ -67,7 +89,7 @@ class ProcesoModularController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProcesoModular  $procesoModular
+     * @param \App\Models\ProcesoModular $procesoModular
      * @return \Illuminate\Http\Response
      */
     public function edit(ProcesoModular $procesoModular)
@@ -78,8 +100,8 @@ class ProcesoModularController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProcesoModular  $procesoModular
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\ProcesoModular $procesoModular
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ProcesoModular $procesoModular)
@@ -90,7 +112,7 @@ class ProcesoModularController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProcesoModular  $procesoModular
+     * @param \App\Models\ProcesoModular $procesoModular
      * @return \Illuminate\Http\Response
      */
     public function destroy(ProcesoModular $procesoModular)

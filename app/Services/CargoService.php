@@ -29,13 +29,13 @@ class CargoService
         }
     }
 
-
     public function buscadorCargo($busqueda)
     {
         return Cargo::select('id', 'nombre')->where('nombre', $busqueda)->get();
     }
 
     /**
+     * Obtiene el valor <b>porcentual</b> de la <i>ponderación</i> con respecto a la <i>materia</i>
      * @param $cargo
      * @param $materia
      * @return mixed

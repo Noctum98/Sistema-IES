@@ -6,14 +6,10 @@
     }
 
     table thead tr th:first-child,
-    table tbody tr td:first-child {
-        width: 30%;
+    table.f30 tbody tr td:first-child {
+        width: 25%;
     }
 
-    table th, td {
-        font-size: 0.9em !important;
-        vertical-align: center;
-    }
 
     /*table {*/
     /*    table-layout: fixed;*/
@@ -29,10 +25,9 @@
     /*}*/
 
 </style>
-<div class="container" id="container-scroll">
-    <div class="tableFixHead">
+<div class="container-fluid" id="container-scroll">
         <div class="col-sm-12">
-            {{$alumno->nombre}} {{$alumno->apellidos}}, DU: {{$alumno->dni}}
+{{--            {{$alumno->nombre}} {{$alumno->apellidos}}, DU: {{$alumno->dni}}--}}
         </div>
         @foreach($cargos as $cargo )
             @php
@@ -40,22 +35,17 @@
                 $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
                 $pparcial = 0;
             @endphp
-            <table class="table table-striped">
+            <table class="table table-striped f30">
                 <colgroup>
-                    <col class="col-md-3">
+                    <col class="col-md-2">
                     @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                         <col class="col-">
                     @endforeach
                     <col class="col-">
-                    <col class="col-">
-                    <col class="col-">
-
                 </colgroup>
                 <thead>
                 <tr>
-                    <th scope="col">
-                        Cargo
-                    </th>
+                    <th scope="col">Cargo</th>
                     @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                         <th scope="col">{{$calificacion->nombre}}</th>
                     @endforeach
@@ -66,14 +56,11 @@
                 </thead>
                 <tbody>
                 <tr>
-
                     <td>
                         {{$cargo->nombre}}
                     </td>
-
                     @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                         <td>
-
                             @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
                                 {{$calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje}}
                                 @php
@@ -84,7 +71,11 @@
                             @endif
                         </td>
                     @endforeach
-                    <td>{{$suma/$cant}}</td>
+                    <td>
+                        @if($cant > 0)
+                            {{$suma/$cant}}
+                        @endif
+                    </td>
                     <td>
                         @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
                             {{$calificacionP->obtenerParcial($alumno->id)}}
@@ -95,14 +86,16 @@
                     </td>
                     <td>
                         @php
-                            $pfinal =($pparcial * 0.3) + ($suma/$cant * 0.7)
+                            $p70 = 0;
+                            if($cant > 0) $p70 = ($suma/$cant * 0.7);
+
+                                $pfinal =($pparcial * 0.3) + $p70
                         @endphp
                         {{$pfinal}}
                     </td>
                 </tr>
-
                 </tbody>
             </table>
         @endforeach
-    </div>
+
 </div>

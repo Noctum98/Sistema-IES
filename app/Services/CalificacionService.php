@@ -12,15 +12,20 @@ class CalificacionService
             ->join('procesos', 'procesos.id', 'proceso_calificacion.proceso_id')
             ->where('proceso_calificacion.calificacion_id', $calificacion_id)
             ->where('procesos.alumno_id', $alumno_id)
-            ->get()
-        ;
+            ->get();
     }
 
     public function calificacionParcialByAlumno($alumno_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByAlumno($alumno_id, $calificacion_id);
-        $pp = $proceso_calificacion?$proceso_calificacion[0]->porcentaje:0;
-        $pr = $proceso_calificacion?$proceso_calificacion[0]->porcentaje_recuperatorio:0;
+//        dd($proceso_calificacion);
+
+        $pp = $pr = 0;
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->porcentaje??0;
+            $pr = $proceso_calificacion[0]->porcentaje_recuperatorio??0;
+        }
+
         return max($pp, $pr);
     }
 
