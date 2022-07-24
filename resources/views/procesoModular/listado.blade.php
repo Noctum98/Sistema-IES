@@ -5,7 +5,7 @@
             font-size: 0.85em;
         }
     </style>
-    <div class="container-fluid" id="container-scroll">
+    <div class="container-fluid w-100" id="container-scroll">
         <a href="{{route('calificacion.admin', ['materia_id'=>$materia->id, 'cargo_id'=> $cargo_id])}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
@@ -46,8 +46,8 @@
         {{--    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>--}}
 
         @if(count($procesos) > 0)
-            <div class="table-responsive tableFixHead">
-                <table class="table mt-1 table-responsive">
+            <div class="table tableFixHead">
+                <table class="table mt-1 ">
                     <thead class="thead-dark ">
                     <tr>
                         <th>
@@ -71,22 +71,22 @@
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
                             </td>
                             <td>
-                                {{$proceso->promedio_final_porcentaje}}
+                                {{$proceso->promedio_final_porcentaje}} |
                             </td>
                             <td>
-                                {{$proceso->promedio_final_nota}}
+                                {{$proceso->promedio_final_nota}} |
                             </td>
                             <td>
-                                {{$proceso->trabajo_final_porcentaje}}
+                                {{$proceso->trabajo_final_porcentaje}} |
                             </td>
                             <td>
-                                {{$proceso->trabajo_final_porcentaje}}
+                                {{$proceso->trabajo_final_porcentaje}} |
                             </td>
                             <td>
-                                {{$proceso->nota_final_porcentaje}}
+                                {{$proceso->nota_final_porcentaje}} |
                             </td>
                             <td>
-                                {{$proceso->nota_final_nota}}
+                                {{$proceso->nota_final_nota}} |
                             </td>
                             <td>
 
@@ -103,7 +103,7 @@
 
 
                             {{--                            <td>--}}
-                            {{--                                {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %--}}
+                            {{--                                {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} |  %--}}
                             {{--                            </td>--}}
 
 
