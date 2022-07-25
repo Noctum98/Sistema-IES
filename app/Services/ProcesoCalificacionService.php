@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Alumno;
 use App\Models\Proceso;
+use App\Models\ProcesoCalificacion;
 
 
 class ProcesoCalificacionService
@@ -53,4 +54,14 @@ class ProcesoCalificacionService
         return $nota;
 
     }
+
+    public function obtenerTimeUltimaCalificacionPorModulo($materia)
+    {
+         return ProcesoCalificacion::select('proceso_calificacion.updated_at')
+            ->join('procesos', 'procesos.id', 'proceso_calificacion.proceso_id')
+            ->where('procesos.materia_id', $materia)
+            ->orderBy('proceso_calificacion.updated_at', 'desc')
+            ->first();
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ProcesoModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -35,6 +36,18 @@ class ProcesoModular extends Model
     {
         $proceso =  $this->procesoRelacionado()->first();
         return $proceso->alumno()->first();
+    }
+
+    public function timeUltimaModificacionModulo($materia_id)
+    {
+        $service = new ProcesoModularService();
+        return $service->obtenerTimeUltimoProcesoModular($materia_id);
+    }
+
+    public function timeUltimaCalificacionModulo($materia_id)
+    {
+        $service = new ProcesoModularService();
+        return $service->obtenerTimeUltimaCalificacion($materia_id);
     }
 
 

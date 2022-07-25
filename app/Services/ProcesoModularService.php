@@ -7,6 +7,7 @@ use App\Models\Cargo;
 use App\Models\CargoMateria;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Models\ProcesoCalificacion;
 use App\Models\ProcesoModular;
 
 
@@ -118,14 +119,19 @@ class ProcesoModularService
         return $modulo->cargos()->get();
     }
 
-    public function obtenerUltimaCalificacion($materia)
+    public function obtenerTimeUltimaCalificacion($materia_id)
     {
-        return ProcesoModular::select('proceso_modular.*')
+        $serviceProcesoCalificacion = new ProcesoCalificacionService();
+        return $serviceProcesoCalificacion->obtenerTimeUltimaCalificacionPorModulo($materia_id);
+    }
+
+    public function obtenerTimeUltimoProcesoModular($materia_id)
+    {
+        return ProcesoModular::select('proceso_modular.updated_at')
             ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
-            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
-            ->orderBy('alumnos.apellidos', 'asc')
-            ->get();
+            ->orderBy('proceso_modular.updated_at', 'desc')
+            ->first();
     }
 
 

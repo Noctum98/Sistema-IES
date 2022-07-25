@@ -32,12 +32,16 @@ class ProcesoModularController extends Controller
     {
         $acciones = [];
         $serviceModular = new ProcesoModularService();
-        if(count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0){
+        if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id);
+            $serviceModular->cargarPonderacionEnProcesoModular($materia);
+            $acciones[] = "Procesando % modulares para {$materia->nombre}";
         }
-        $serviceModular->cargarPonderacionEnProcesoModular($materia);
-        $acciones[] = "Procesando % modulares para {$materia->nombre}";
+        if ($serviceModular->obtenerTimeUltimaCalificacion($materia->id)->updated_at >= $serviceModular->obtenerTimeUltimoProcesoModular($materia->id)->updated_at) {
+            $serviceModular->cargarPonderacionEnProcesoModular($materia);
+            $acciones[] = "Procesando % modulares para {$materia->nombre}";
+        }
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
 
@@ -45,7 +49,7 @@ class ProcesoModularController extends Controller
                 'materia' => $materia,
                 'cargo_id' => $cargo_id,
                 'acciones' => $acciones,
-                'procesos' => $procesos
+                'procesos' => $procesos,
             ]
         );
 
@@ -56,14 +60,12 @@ class ProcesoModularController extends Controller
     {
         $acciones = [];
         $serviceModular = new ProcesoModularService();
-        if(count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0){
+        if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id);
         }
 
         $serviceModular->cargarPonderacionEnProcesoModular($materia);
-
-
 
 
     }

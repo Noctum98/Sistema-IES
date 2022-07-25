@@ -70,32 +70,33 @@
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
                             </td>
-                            <td>
-                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} |
+                            <td class="text-center">
+                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|
                             </td>
-                            <td>
+                            <td class="text-center">
                                 {{$proceso->promedio_final_nota}} |
                             </td>
-                            <td>
-                                {{$proceso->trabajo_final_porcentaje}} |
+                            <td class="text-center">
+                                {{$proceso->trabajo_final_porcentaje}} %|
                             </td>
-                            <td>
-                                {{$proceso->trabajo_final_porcentaje}} |
+                            <td class="text-center">
+                                {{$proceso->trabajo_final_porcentaje}} %|
                             </td>
-                            <td>
-                                {{$proceso->nota_final_porcentaje}} |
+                            <td class="text-center">
+                                {{$proceso->nota_final_porcentaje}} %|
                             </td>
-                            <td>
+                            <td class="text-center">
                                 {{$proceso->nota_final_nota}} |
                             </td>
                             <td>
-
                                 <span class="d-none" id="span-{{$proceso->id}}">
-                            <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
-                        </span>
+                                    <small style="font-size: 0.6em" class="text-success">
+                                        Cambio realizado
+                                    </small>
+                                </span>
                                 <span class="d-none" id="spin-{{$proceso->id}}">
-                            <i class="fa fa-spinner fa-spin"></i>
-                        </span>
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </span>
 
                                 <input type="checkbox" class="check-cierre"
                                        id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}}>
