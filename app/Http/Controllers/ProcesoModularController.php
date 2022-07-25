@@ -36,6 +36,9 @@ class ProcesoModularController extends Controller
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id);
         }
+        $serviceModular->cargarPonderacionEnProcesoModular($materia);
+        $acciones[] = "Procesando % modulares para {$materia->nombre}";
+
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
 
         return view('procesoModular.listado', [

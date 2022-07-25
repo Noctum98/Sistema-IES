@@ -9,21 +9,6 @@
     table.f30 tbody tr td:first-child {
         width: 25%;
     }
-
-
-    /*table {*/
-    /*    table-layout: fixed;*/
-    /*    word-wrap: break-word;*/
-    /*}*/
-
-    /*table th, table td {*/
-    /*    overflow: hidden;*/
-    /*}*/
-
-    /*.table td, .table th {*/
-    /*    min-width: 100px;*/
-    /*}*/
-
 </style>
 <div class="container-fluid border border-info border-top-0" id="container-scroll">
         <div class="col-sm-12">
@@ -57,12 +42,12 @@
                 <tbody>
                 <tr>
                     <td>
-                        {{$cargo->nombre}}
+                        {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                     </td>
                     @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                         <td>
                             @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
-                                {{$calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje}}
+                                {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
                                 @php
                                     $suma+=$calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje;
                                 @endphp
@@ -73,12 +58,12 @@
                     @endforeach
                     <td>
                         @if($cant > 0)
-                            {{$suma/$cant}}
+                            {{number_format($suma/$cant , 2, '.', ',')}}
                         @endif
                     </td>
                     <td>
                         @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
-                            {{$calificacionP->obtenerParcial($alumno->id)}}
+                            {{number_format($calificacionP->obtenerParcial($alumno->id), 2, '.', ',')}}
                             @php
                                 $pparcial = $calificacionP->obtenerParcial($alumno->id);
                             @endphp
@@ -91,7 +76,7 @@
 
                                 $pfinal =($pparcial * 0.3) + $p70
                         @endphp
-                        {{$pfinal}}
+                        {{number_format($pfinal, 2, '.', ',')}}
                     </td>
                 </tr>
                 </tbody>

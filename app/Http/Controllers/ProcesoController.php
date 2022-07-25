@@ -77,6 +77,7 @@ class ProcesoController extends Controller
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
+//        $procesos = $procesos->dd();
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
         ]);
@@ -99,12 +100,16 @@ class ProcesoController extends Controller
 
     public function vista_listadoCargo($materia_id, $cargo_id, $comision_id = null)
     {
+//        $procesos = Proceso::select('procesos.*')
+//            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+//            ->join('proceso_calificacion', 'proceso_calificacion.proceso_id', 'procesos.id')
+//            ->join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
+//            ->where('procesos.materia_id', $materia_id)
+//            ->where('calificaciones.cargo_id', $cargo_id);
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->join('proceso_calificacion', 'proceso_calificacion.proceso_id', 'procesos.id')
-            ->join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
-            ->where('procesos.materia_id', $materia_id)
-            ->where('calificaciones.cargo_id', $cargo_id);
+            ->where('procesos.materia_id', $materia_id);
+
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -120,6 +125,7 @@ class ProcesoController extends Controller
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
+
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
             'cargo_id' => $cargo_id,
@@ -131,13 +137,15 @@ class ProcesoController extends Controller
         }
         $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
         $estados = Estados::all();
+        $cargo = Cargo::find($cargo_id);
 
-        return view('proceso.listado', [
+        return view('proceso.listado-modular', [
             'procesos' => $procesos,
             'materia' => $materia,
             'comision' => $comision,
             'calificaciones' => $calificaciones,
             'estados' => $estados,
+            'cargo' => $cargo
         ]);
     }
 

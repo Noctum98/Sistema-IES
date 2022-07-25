@@ -36,11 +36,11 @@ class Cargo extends Model
         return $this->belongsTo('App\Models\Carrera','carrera_id');
     }
 
-    public function ponderacion($cargo_id,$materia_id)
+    public function ponderacion($materia_id)
     {
         $ponderacion = new CargoService();
 
-        return $ponderacion->getPonderacion($cargo_id, $materia_id);
+        return $ponderacion->getPonderacion($this->id, $materia_id);
     }
 
     public function calificacionesCargo(): HasMany

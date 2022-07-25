@@ -57,7 +57,9 @@ class ProcesoModularService
     {
         return ProcesoModular::select('proceso_modular.*')
             ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
+            ->orderBy('alumnos.apellidos', 'asc')
             ->get();
     }
 
@@ -77,33 +79,37 @@ class ProcesoModularService
         $this->crearProcesoModular($materia->id);
 
         $serviceCargo = new CargoService();
-        $cant = '';
+        $serviceProcesoCalificacion = new ProcesoCalificacionService();
+        $cant = 0;
         $cargos = $this->obtenerCargosPorModulo($materia);
         $promedio_final_p = 0;
-
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
-
         foreach ($procesos as $proceso) {
+            $promedio_final_p = 0;
             foreach ($cargos as $cargo) {
                 /** @var ProcesoModular $proceso */
                 $ponderacion_cargo_materia = CargoMateria::where([
                     'cargo_id' => $cargo->id,
                     'materia_id' => $materia->id,
                 ])->first();
-
                 $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
                         $cargo,
                         $materia->id,
                         $proceso->alumnoRelacionado()->id
                     ) ?? 0;
                 $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
-                $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada /100;
-//                dd($porcentaje_cargo , $ponderacion_asignada,$promedio_final_p, $proceso->alumnoRelacionado());
+                $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
             }
-            dd($promedio_final_p);
+            $proceso->promedio_final_porcentaje = $promedio_final_p;
+            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota($promedio_final_p);
+
+            $proceso->update();
+
+            $cant += 1;
+
         }
 
-        return $promedio_final_p;
+        return $cant;
 
     }
 

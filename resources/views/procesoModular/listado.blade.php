@@ -25,7 +25,7 @@
         <h5>
             Cargos:
             @foreach($materia->cargos()->get() as $cargo)
-                <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id]) }}"
+                <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
                    class="btn btn-info" title="Ver proceso cargo">
                     {{$cargo->nombre}}
                 </a>
@@ -66,12 +66,12 @@
                     </thead>
                     <tbody>
                     @foreach($procesos as $proceso)
-                        <tr>
+                        <tr class="bg-secondary">
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
                             </td>
                             <td>
-                                {{$proceso->promedio_final_porcentaje}} |
+                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} |
                             </td>
                             <td>
                                 {{$proceso->promedio_final_nota}} |
