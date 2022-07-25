@@ -15,13 +15,13 @@ class CreateProcesoModularTable extends Migration
     {
         Schema::create('proceso_modular', function (Blueprint $table) {
             $table->id();
-            $table->integer('promedio_final_porcentaje')->unsigned()->nullable();
+            $table->float('promedio_final_porcentaje')->unsigned()->nullable();
             $table->float('promedio_final_nota')->unsigned()->nullable();
             $table->integer('ponderacion_promedio_final')->unsigned()->nullable();
-            $table->integer('trabajo_final_porcentaje')->unsigned()->nullable();
+            $table->float('trabajo_final_porcentaje')->unsigned()->nullable();
             $table->float('trabajo_final_nota')->unsigned()->nullable();
             $table->integer('ponderacion_trabajo_final')->unsigned()->nullable();
-            $table->integer('nota_final_porcentaje')->unsigned()->nullable();
+            $table->float('nota_final_porcentaje')->unsigned()->nullable();
             $table->float('nota_final_nota')->unsigned()->nullable();
             $table->boolean('cierre')->default(false);
 

@@ -9,7 +9,12 @@ use App\Models\Proceso;
 class ProcesoCalificacionService
 {
 
-    public function calculoPorcentajeNota(int $porcentaje)
+    /**
+     * Calcula la nota desde un porcentaje dado
+     * @param int $porcentaje
+     * @return int
+     */
+    public function calculoPorcentajeNota(int $porcentaje): int
     {
 
         $nota = 0;
