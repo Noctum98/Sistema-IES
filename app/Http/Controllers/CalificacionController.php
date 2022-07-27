@@ -16,7 +16,7 @@ class CalificacionController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-profesor-regente');
+        $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos');
     }
 
     public function home()

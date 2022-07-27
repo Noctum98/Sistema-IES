@@ -76,7 +76,7 @@
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono }}</td>
-                <td>{{ ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) }}</td>
+                <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
                 <td>
                     {{ $inscripcion->motivo_baja }}
                 </td>
@@ -90,7 +90,7 @@
     <h2 class="text-info">Segundo llamado</h2>
 
     <div class="row">
-        <a href="{{route('mesa.descargar',['id'=>$mesa->id,'llamado'=>'segundo'])}}" class="btn btn-sm btn-success ml-3">
+        <a href="{{route('mesa.descargar',['id'=>$mesa->id,'instancia_id'=>$mesa->instancia_id,'llamado'=>'segundo'])}}" class="btn btn-sm btn-success ml-3 col-md-2">
             Descargar 2<sup>do</sup> llamado
         </a>
     </div>
@@ -146,7 +146,7 @@
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono }}</td>
-                <td>{{ ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) }}</td>
+                <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
                 <td>
                     {{ $inscripcion->motivo_baja }}
                 </td>

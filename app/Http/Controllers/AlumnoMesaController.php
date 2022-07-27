@@ -197,7 +197,7 @@ class AlumnoMesaController extends Controller
                 $inscripcion->telefono = $alumno['telefono'];
                 if ($instancia->tipo == 0) {
                     $mesa = Mesa::find($dato);
-                    if (time() > strtotime($mesa->fecha)) {
+                    if (time() > strtotime($mesa->fecha) || isset($request['segundo-'.$mesa->id])) {
                         $inscripcion->segundo_llamado = true;
                     } else {
                         $inscripcion->segundo_llamado = false;
@@ -209,7 +209,7 @@ class AlumnoMesaController extends Controller
                 }
                 $inscripcion->save();
             }
-$mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
+            $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
 
             if(!Auth::user())
             {

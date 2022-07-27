@@ -134,7 +134,8 @@ class InstanciaController extends Controller
             }
             $inscripciones = MesaAlumno::where([
                 'mesa_id' => $id,
-                'segundo_llamado' => $segundo_llamado
+                'segundo_llamado' => $segundo_llamado,
+                'estado_baja' => false
             ])->get();
 
             $materia = $mesa->materia;

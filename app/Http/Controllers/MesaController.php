@@ -116,11 +116,17 @@ class MesaController extends Controller
         } else {
             $request['cierre'] = strtotime($request['fecha'] . "-2 days");
         }
-        if ($request['fecha_segundo'] && date('D', strtotime($request['fecha_segundo'])) == 'Mon' || date('D', strtotime($request['fecha_segundo'])) == 'Tue') {
-            $request['cierre_segundo'] = strtotime($request['fecha_segundo'] . "-4 days");
-        } else {
-            $request['cierre_segundo'] = strtotime($request['fecha_segundo'] . "-2 days");
+        if($request['fecha_segundo'])
+        {
+            if ($request['fecha_segundo'] && date('D', strtotime($request['fecha_segundo'])) == 'Mon' || date('D', strtotime($request['fecha_segundo'])) == 'Tue') {
+                $request['cierre_segundo'] = strtotime($request['fecha_segundo'] . "-4 days");
+            } else {
+                $request['cierre_segundo'] = strtotime($request['fecha_segundo'] . "-2 days");
+            }
+        }else{
+            $request['cierre_segundo'] = null;
         }
+        
 
         if ($mesa_verified) {
             $mesa = $mesa_verified->update($request->all());
