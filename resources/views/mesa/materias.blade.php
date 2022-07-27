@@ -71,16 +71,30 @@
 											<td>
 												<div class="form-check">
 
-													@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
-															<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
-															<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
-																{{$materia->nombre}}
-															</label>
-															@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) || time() > $mesa->cierre_segundo))
-																<label class="form-check-label text-secondary" for="{{$materia->id}}">
-																	{{$materia->nombre}}
-																</label>
-																@endif
+													@if(time() < $mesa->cierre)
+														<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
+														<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
+															{{$materia->nombre}}
+														</label>
+													@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) || time() > $mesa->cierre_segundo))
+														<label class="form-check-label text-secondary" for="{{$materia->id}}">
+															{{$materia->nombre}}
+														</label>
+													@endif
+													<br>
+													@if(time() < $mesa->cierre_segundo)
+														<input class="form-check-input inputs" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
+														<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
+															{{$materia->nombre}}
+														</label>
+														<div id="segundo-{{$mesa->id}}">
+
+														</div>
+													@else
+													<label class="form-check-label text-secondary" for="{{$materia->id}}">
+															{{$materia->nombre}}
+														</label>
+													@endif
 												</div>
 
 											</td>
@@ -89,11 +103,13 @@
 													<span class="font-weight-bold">
 														{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
 													</span>
-													@else
-													<span class="font-weight-bold">
-														{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
-													</span>
 													@endif
+													<br>
+													@if($mesa->fecha_segundo && time() <= strtotime($mesa->fecha))
+														<span class="font-weight-bold">
+															{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
+														</span>
+														@endif
 											</td>
 											<td>
 												@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
@@ -153,49 +169,51 @@
 		</div>
 		<div class="col-md-4 mt-3">
 			<h4 class="text-secondary">Materias inscriptas</h4>
-				@if(@session('bajar_exitosa'))
-				<div class="alert alert-warning">
-					{{@session('bajar_exitosa')}}
-				</div>
-				@endif
-				@if(count($inscripciones)>0)
-				<ul class="list-group list-group-flush">
-					@foreach($inscripciones as $inscripcion)
-					<li class="list-group-item">
-						{{
+			@if(@session('bajar_exitosa'))
+			<div class="alert alert-warning">
+				{{@session('bajar_exitosa')}}
+			</div>
+			@endif
+			@if(count($inscripciones)>0)
+			<ul class="list-group list-group-flush">
+				@foreach($inscripciones as $inscripcion)
+				<li class="list-group-item">
+					{{
 							$instancia->tipo != 0 ?
 							$inscripcion->materia->nombre :
 							$inscripcion['mesa']['materia']['nombre']
 						}}
-						-
-						@if($instancia->tipo == 1)
-						@if($inscripcion->estado_baja)
-							<span class="text-secondary">Dada de baja</span>
-						@else
+					-
+					@if($instancia->tipo == 1)
+					@if($inscripcion->estado_baja)
+					<span class="text-secondary">Dada de baja</span>
+					@else
 
-						<a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
-						@endif
-						@else
-						@if(!$inscripcion['segundo_llamado'])
-						<span class="font-weight-bold">1er llamado </span>
-						@else
-						<span class="font-weight-bold">2do llamado </span>
-						@endif
+					<a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
+					@endif
+					@else
+					@if(!$inscripcion['segundo_llamado'])
+					<span class="font-weight-bold">1er llamado </span>
+					@else
+					<span class="font-weight-bold">2do llamado </span>
+					@endif
 
-						@if($inscripcion->estado_baja)
-						<span class="text-secondary">Dada de baja</span>
+					@if($inscripcion->estado_baja)
+					<span class="text-secondary">Dada de baja</span>
 
-						@elseif(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo']))
-						 - <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
-						@endif
-						@endif
-					</li>
-					@endforeach
-				</ul>
-				@else
-				<p>No te encuentras inscripto en ninguna materia </p>
-				@endif
+					@elseif(time() < $inscripcion['mesa']['cierre'] || (time()> strtotime($inscripcion['mesa']['fecha']) && time() < $inscripcion['mesa']['cierre_segundo'])) - <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
+							@endif
+							@endif
+				</li>
+				@endforeach
+			</ul>
+			@else
+			<p>No te encuentras inscripto en ninguna materia </p>
+			@endif
 		</div>
 	</div>
 </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/mesas/mesas.js') }}"></script>
 @endsection
