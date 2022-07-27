@@ -82,7 +82,7 @@
 														</label>
 													@endif
 													<br>
-													@if(time() < $mesa->cierre_segundo)
+													@if($mesa->cierre_segundo && time() < $mesa->cierre_segundo)
 														<input class="form-check-input inputs" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
 														<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
 															{{$materia->nombre}}
