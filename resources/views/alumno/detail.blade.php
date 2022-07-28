@@ -102,7 +102,7 @@
                         <br>
 
                         <div class="row">
-                            @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos'))
+                            @if(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin'))
                                 <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
                                 @include('alumno.modals.carreras_matriculacion')
 
@@ -110,10 +110,12 @@
                                 @include('alumno.modals.carreras_year')
                             @endif
 
-                            @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador'))
+							<!---
+                            @if(Session::has('regente') || Session::has('coordinador') || Session::has('admin'))
                                 <button class="btn btn-sm btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar</button>
                                 @include('alumno.modals.correo_eliminar')
                             @endif
+							-->
                         </div>
 					@endforeach
 				</li>
