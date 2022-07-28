@@ -10,6 +10,7 @@ use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
 use App\Models\MailCheck;
 use App\Models\Proceso;
+use App\Models\User;
 use App\Services\ProcesoService as ServicesProcesoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -192,30 +193,22 @@ class MatriculacionController extends Controller
             'carrera_id' => $carrera->id
         ])->delete();
 
-        if (!$alumno->carreras || count($alumno->carreras) == 0) {
-
-            $alumno->delete();
-
-            if (!Auth::user()) 
-            {
-                return redirect()->route('matriculacion.create', [
-                    'id' => $carrera->id,
-                    'year' => $año
-                ])->with(['alumno_deleted' => 'Matriculación eliminada']);
-            }
-
-        } 
-        elseif (count($alumno->carreras) > 0 && !Auth::user()) 
+        if($alumno->asistencias())
         {
-            return redirect()->route('matriculacion.edit', [
-                'alumno_id' => $alumno->id,
-                'carrera_id' => $carrera_id,
-                'year'      => $año
-            ])->with(['alumno_deleted' => 'Matriculación eliminada']);
+            $alumno->asistencias()->detach();
         }
 
-        return redirect()->route('alumno.carrera', [
-            'carrera_id' => $carrera_id
+        if($alumno->comisiones())
+        {
+            $alumno->comisiones()->detach();
+        }
+
+        $user = User::find($alumno->user_id);
+
+        $alumno->delete();
+
+        return redirect()->route('alumno.detail', [
+            'alumno_id' => $alumno
         ])->with([
             'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
         ]);

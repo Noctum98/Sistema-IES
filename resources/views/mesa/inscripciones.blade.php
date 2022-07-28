@@ -26,9 +26,8 @@
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
-                @if(Auth::user()->rol == 'rol_admin')
+                
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
-                @endif
             </tr>
         </thead>
         <tbody>
@@ -38,7 +37,7 @@
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono }}</td>
-                @if(Auth::user()->rol == 'rol_admin')
+
                 <td>
                     @include('mesa.modals.dar_baja_mesa')
 
@@ -46,7 +45,7 @@
                         Dar baja
                     </a>
                 </td>
-                @endif
+
             </tr>
             @endforeach
         </tbody>
@@ -101,9 +100,9 @@
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
-                @if(Auth::user()->rol == 'rol_admin')
+
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
-                @endif
+
             </tr>
         </thead>
         <tbody>
@@ -113,13 +112,13 @@
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono }}</td>
-                @if(Auth::user()->rol == 'rol_admin')
+
                 <td>
                     <a href="{{route('mesa.borrar',['id'=>$inscripcion->id])}}" class="btn-sm btn-danger">
                         Borrar
                     </a>
                 </td>
-                @endif
+  
             </tr>
             @endforeach
         </tbody>
