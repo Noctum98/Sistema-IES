@@ -18,7 +18,8 @@ class Proceso extends Model
         'porcentaje_final_calificaciones',
         'nota_global',
         'nota_recuperatorio',
-        'operador_id'
+        'operador_id',
+        'cargo_id'
     ];
 
     public function materia(): BelongsTo
@@ -62,5 +63,10 @@ class Proceso extends Model
         ;
 
         return $procesosCalificaciones;
+    }
+
+    public function cargos()
+    {
+        return $this->belongsTo(Cargo::class,'cargo_id');
     }
 }

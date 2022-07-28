@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
+use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
@@ -267,8 +268,18 @@ Route::prefix('proceso')->group(function () {
         'inscribir_proceso'
     );
     Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
-    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
-        'proceso.listado'
+    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name('proceso.listado');
+
+    Route::get('listado-cargo/{materia_id}/{cargo_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo'])->name(
+        'proceso.listadoCargo'
+    );
+
+    Route::get('listado-modular/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoModular'])->name(
+        'proceso.listadoModular'
+    );
+
+    Route::get('listado-cargos-modulo/{materia_id}/{cargo_id}/{alumno_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargosModulo'])->name(
+        'proceso.listadoCargosModulo'
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
@@ -416,6 +427,12 @@ Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/', [ProcesoCalificacionController::class, 'store']);
     Route::post('/recuperatorio', [ProcesoCalificacionController::class, 'crearRecuperatorio']);
     Route::post('/delete',[ProcesoCalificacionController::class,'delete']);
+});
+
+// Rutas de Parciales
+Route::prefix('proceso-modular')->group(function () {
+   Route::get('/listado/{materia}/{cargo_id}', [ProcesoModularController::class, 'list'])->name('proceso_modular.list');
+   Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular'])->name('proceso_modular.procesa_ponderacion_modular');
 });
 
 Route::prefix('excel')->group(function () {

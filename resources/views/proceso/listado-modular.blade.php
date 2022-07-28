@@ -1,25 +1,24 @@
 @extends('layouts.app-prueba')
 @section('content')
 <style>
-    thead th {
+    thead Th {
         position: sticky;
         z-index: 1;
         top: 0;
-    }
-    table th{
-        font-size: 0.9em !important;
-        vertical-align: center;
     }
 </style>
 <div class="container" id="container-scroll">
     <a href="{{url()->previous()}}">
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
-    <h2 class="h1 text-info">
-        Notas de Proceso de {{ $materia->nombre }} @if($comision)
+    <h3 class="text-info">
+        Notas de Proceso de {{ $cargo->nombre }} @if($comision)
         <br /><small>{{$comision->nombre}}</small>
         @endif
-    </h2>
+    </h3>
+    <h4>
+        Correspondiente al módulo {{$materia->nombre}}
+    </h4>
     <hr>
     <div id="alerts">
 
@@ -34,6 +33,9 @@
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>
 
     @endif
+    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}" class="btn btn-secondary">
+        Ver Módulo {{$materia->nombre}}
+    </a>
     @if(count($procesos) > 0)
     <div class="table-responsive tableFixHead">
 

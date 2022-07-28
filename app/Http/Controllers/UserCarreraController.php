@@ -26,6 +26,8 @@ class UserCarreraController extends Controller
         $user = User::find($user_id);
         $user->carreras()->detach(Carrera::find($request['carrera_id']));
 
-        return redirect('usuarios.detalle',$user->id);
+        return redirect()->route('usuarios.detalle',$user->id)->with(
+            ['carrera_success' => 'Cambio realizado']
+        );
     }
 }

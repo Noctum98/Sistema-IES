@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Services\CargoService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cargo extends Model
 {
@@ -34,10 +36,52 @@ class Cargo extends Model
         return $this->belongsTo('App\Models\Carrera','carrera_id');
     }
 
-    public function ponderacion($cargo_id,$materia_id)
+    public function ponderacion($materia_id)
     {
         $ponderacion = new CargoService();
 
-        return $ponderacion->getPonderacion($cargo_id, $materia_id);
+        return $ponderacion->getPonderacion($this->id, $materia_id);
+    }
+
+    public function calificacionesCargo(): HasMany
+    {
+        return $this->hasMany(Calificacion::class);
+
+    }
+
+    /**
+     *
+     * @param $materia_id
+     * @return Collection
+     */
+    public function calificacionesTPByCargoByMateria($materia_id): Collection
+    {
+        return $this->hasMany(Calificacion::class)
+            ->select('calificaciones.*')
+            ->join('tipo_calificaciones', 'calificaciones.tipo_id','tipo_calificaciones.id')
+            ->where('calificaciones.materia_id',$materia_id)
+            ->where('tipo_calificaciones.descripcion','=', 2)
+            ->get();
+    }
+
+    public function calificacionesParcialByCargoByMateria($materia_id): Collection
+    {
+        return $this->hasMany(Calificacion::class)
+            ->select('calificaciones.*')
+            ->join('tipo_calificaciones', 'calificaciones.tipo_id','tipo_calificaciones.id')
+            ->where('calificaciones.materia_id',$materia_id)
+            ->where('tipo_calificaciones.descripcion','=', 1)
+            ->get()
+            ;
+    }
+
+    public function calificacionesIFByCargoByMateria($materia_id): Collection
+    {
+        return $this->hasMany(Calificacion::class)
+            ->select('calificaciones.*')
+            ->join('tipo_calificaciones', 'calificaciones.tipo_id','tipo_calificaciones.id')
+            ->where('calificaciones.materia_id',$materia_id)
+            ->where('tipo_calificaciones.descripcion','=', 3)
+            ->get();
     }
 }

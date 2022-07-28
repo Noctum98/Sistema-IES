@@ -144,4 +144,9 @@ class Alumno extends Model
         ->orderBy('alumnos.apellidos','asc')
         ->get();
     }
+
+    public function getApellidosNombresAttribute()
+    {
+        return $this->apellidos .', '. $this->nombres;
+    }
 }

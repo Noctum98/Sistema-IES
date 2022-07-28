@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Cargo;
 use App\Models\CargoMateria;
-use App\Models\Carrera;
 use App\Models\Materia;
-use App\Models\Sede;
 use App\Models\User;
 use App\Services\CargoService;
 use App\Services\CarreraService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class CargoController extends Controller
