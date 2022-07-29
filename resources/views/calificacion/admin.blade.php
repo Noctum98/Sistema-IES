@@ -16,28 +16,33 @@
                 Crear Calificación
             </button>
         @endif
-        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente'))
+        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos'))
             @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
                         @if($cargo)
                             <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, 'comision_id' => $comision->id]) }}" class="btn btn-info">
-                                Ver procesos / {{$cargo->nombre}}  / {{$comision->nombre}}
+                                Ver Planilla de Calificaciones / {{$cargo->nombre}}  / {{$comision->nombre}}
                             </a>
                         @else
                         <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
-                           class="btn btn-info">Ver procesos {{$comision->nombre}}</a>
+                           class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                         @endif
+                    @elseif(Session::has('coordinador') || Session::has('seccionAlumnos'))
+                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                           class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                     @endif
                 @endforeach
             @else
                 @if($cargo)
+                    <!---
                     <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-info">
-                        Ver procesos {{$cargo->nombre}}
+                        Ver Planilla de Asistencia {{$cargo->nombre}}
                     </a>
                     <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}" class="btn btn-secondary">
-                        Ver Módulo {{$materia->nombre}}
+                        Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
+                    -->
                 @else
                     <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
                         Ver procesos

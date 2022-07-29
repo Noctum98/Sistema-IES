@@ -89,10 +89,6 @@
                         @endif
                     </td>
                     @endforeach
-                    @else
-                    <td>
-                        -
-                    </td>
                     @endif
                     <td>
                         {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
