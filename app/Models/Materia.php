@@ -41,12 +41,10 @@ class Materia extends Model
 
     public function mesa($instancia_id)
     {
-        $peticion = Mesa::where([
+        return Mesa::where([
             'instancia_id' => $instancia_id,
             'materia_id' => $this->id
         ])->first();
-
-        return $peticion;
     }
 
     public function comisiones()
