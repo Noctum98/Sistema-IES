@@ -278,12 +278,25 @@ class ProcesoController extends Controller
     public function cambiaEstado(Request $request): JsonResponse
     {
         $user = Auth::user();
+
+        $estado = Estados::find($request['estado_id']);
         $proceso = Proceso::find($request['proceso_id']);
-        $proceso->estado_id = (int)$request['estado_id'];
+        $proceso->estado_id = $estado->id;
         $proceso->operador_id = $user->id;
+
+        if($estado->identificador != 5)
+        {
+            $proceso->nota_global = null;
+        }
+
         $proceso->update();
 
-        return response()->json('¡Proceso actualizado!', 200);
+        $data = [
+            'message' => '¡Proceso actualizado!',
+            'estado' => $proceso->estado
+        ];
+
+        return response()->json($data, 200);
     }
 
     public function cambiaCierre(Request $request): JsonResponse
@@ -300,7 +313,7 @@ class ProcesoController extends Controller
 
         $proceso->update();
 
-        return response()->json('¡Proceso actualizado!', 200);
+        return response()->json($proceso, 200);
     }
 
     public function cambia_nota_final(Request $request)
@@ -318,6 +331,33 @@ class ProcesoController extends Controller
             $response = [
                 'code' => 200,
                 'nota' => $proceso->final_calificaciones,
+            ];
+
+        } else {
+            $response = [
+                'code' => 200,
+                'errors' => $validate->errors(),
+            ];
+        }
+
+        return response()->json($response, $response['code']);
+    }
+
+    public function cambia_nota_global(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'proceso_id' => ['required', 'integer'],
+            'nota_global' => ['required', 'integer', 'max:10'],
+        ]);
+
+        if (!$validate->fails()) {
+            $proceso = Proceso::find($request['proceso_id']);
+            $proceso->nota_global = $request['nota_global'];
+            $proceso->update();
+
+            $response = [
+                'code' => 200,
+                'nota' => $proceso->nota_global,
             ];
 
         } else {
