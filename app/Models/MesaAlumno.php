@@ -9,6 +9,11 @@ class MesaAlumno extends Model
 {
     use HasFactory;
     protected $table = 'mesa_alumno';
+    protected $fillable = [
+        'mesa_id','alumno_id','materia_id','instancia_id','segundo_llamado',
+        'nombres','apellidos','dni','correo','telefono','estado_baja','user_id',
+        'motivo_baja'
+    ];
 
     public function materia(){
         return $this->belongsTo('App\Models\Materia','materia_id');

@@ -12,6 +12,20 @@
         {{@session('baja_exitosa')}}
     </div>
     @endif
+    @if(@session('alumno_success'))
+    <div class="alert alert-success">
+        {{@session('alumno_success')}}
+    </div>
+    @endif
+    @if(@session('alumno_error'))
+    <div class="alert alert-danger">
+        {{@session('alumno_error')}}
+    </div>
+    @endif
+
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#inscribirAlumno">Inscribir alumno</button>
+    @include('mesa.modals.inscribir_alumno')
+    
     <h2 class="text-info">Primer llamado</h2>
     @if( count($primer_llamado) > 0)
     <div class="row">
@@ -114,8 +128,8 @@
                 <td>{{ $inscripcion->telefono }}</td>
 
                 <td>
-                    <a href="{{route('mesa.borrar',['id'=>$inscripcion->id])}}" class="btn-sm btn-danger">
-                        Borrar
+                    <a href="{{route('mesa.borrar',['id'=>$inscripcion->id])}}" class="btn btn-sm btn-danger">
+                        Dar baja
                     </a>
                 </td>
   

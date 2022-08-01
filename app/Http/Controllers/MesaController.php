@@ -6,6 +6,7 @@ use App\Models\Instancia;
 use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
+use App\Models\Proceso;
 
 class MesaController extends Controller
 {
@@ -34,6 +35,11 @@ class MesaController extends Controller
         $primer_llamado_bajas = [];
         $segundo_llamado = [];
         $segundo_llamado_bajas = [];
+
+        $procesos = $procesos = Proceso::select('procesos.*')
+        ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+        ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+
 
         $mesa = Mesa::where([
             'instancia_id' => $instancia_id,
@@ -65,7 +71,8 @@ class MesaController extends Controller
             'segundo_llamado' => $segundo_llamado,
             'primer_llamado_bajas' => $primer_llamado_bajas,
             'segundo_llamado_bajas' => $segundo_llamado_bajas, 
-            'instancia_id' => $instancia_id
+            'instancia_id' => $instancia_id,
+            'procesos' => $procesos
         ]);
     }
     // Funcionalidades
@@ -185,4 +192,5 @@ class MesaController extends Controller
             'message_edit' => 'Mesa ' . $mesa->materia->nombre . ' editada correctamente'
         ]);
     }
+    
 }
