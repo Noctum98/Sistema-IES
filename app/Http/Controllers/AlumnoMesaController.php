@@ -11,6 +11,7 @@ use App\Models\Mesa;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
+use App\Models\Alumno;
 use App\Models\Materia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -223,6 +224,40 @@ class AlumnoMesaController extends Controller
                 'inscripcion_success' => $mensaje
             ]);
         }
+    }
+
+    // Función para coordinadores
+    public function inscribir_alumno(Request $request)
+    {
+        $alumno = Alumno::find($request['alumno_id']);
+        $mesa = Mesa::find($request['mesa_id']);
+        $inscripcion = MesaAlumno::where([
+            'alumno_id' => $request['alumno_id'],
+            'mesa_id' => $request['mesa_id'],
+            'segundo_llamado' => $request['llamado']
+        ])->first();
+
+        if(!$inscripcion)
+        {
+            $request['nombres'] = $alumno->nombres;
+            $request['apellidos'] = $alumno->apellidos;
+            $request['dni'] = $alumno->dni;
+            $request['correo'] = $alumno->email;
+            $request['telefono'] = $alumno->telefono;
+            $request['segundo_llamado'] = $request['llamado'];
+            $inscripcion = MesaAlumno::create($request->all());
+
+            $mensaje = ['alumno_success' => 'El alumno ha sido inscripto.'];
+
+        
+        }else{
+            $mensaje = ['alumno_error' => 'El alumno ya esta inscripto a este llamado.'];
+        }
+
+        return redirect()->route('mesa.inscriptos',[
+            'materia_id' => $mesa->materia_id,
+            'instancia_id' => $mesa->instancia_id
+        ])->with($mensaje);
     }
 
     public function bajar_mesa($id,$instancia_id = null)
