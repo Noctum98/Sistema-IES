@@ -18,7 +18,7 @@
         </p>
         @include('cargo.modals.agregar_modulo')
         @if(count($cargo->materias) == 0)
-            <p>No hay materias vinculadas al cargo.</p>
+            <p>No hay módulos vinculadas al cargo.</p>
         @else
 
             <table class="table mt-4">
@@ -75,8 +75,8 @@
 
         <h3 class="text-secondary mb-3">Usuarios</h3>
         <p>
-            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarUser">Agregar
-                usuario
+            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarUser">
+                Agregar usuario
             </button>
         </p>
         @include('cargo.modals.agregar_user')
@@ -90,6 +90,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Módulo</th>
                     <th scope="col">
                         <i class="fa fa-cog" style="font-size:20px;"></i>
                     </th>
@@ -100,6 +101,22 @@
                     <tr>
                         <th scope="row">{{ $usuario->id }}</th>
                         <td>{{ $usuario->nombre.' '.$usuario->apellido }}</td>
+                        <td>
+                            @foreach($usuario->cargo_materia()->get() as $cargo_materia)
+                                {{$cargo_materia->materia->nombre}}<br/>
+                            @endforeach
+                                <a class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarCargoModulo"
+                                        id="formAgregar"
+                                        data-loader="{{$usuario->id}}"
+                                        data-attr="{{ route('modulo_profesor.form_agregar_cargo_modulo', ['cargo' => $cargo->id, 'usuario' => $usuario->id]) }}">
+                                    <i class="fa fa-spinner fa-spin" style="display: none"
+                                       id="loader{{$usuario->id}}"></i>
+
+                                    Vincular Cargo-Modulo
+                                </a>
+                                @include('cargo.modals.agregar_cargo-modulo')
+
+                        </td>
                         <td>
                             <form action="{{ route('cargo.delUser',$cargo->id) }}" method="POST">
                                 {{ method_field('DELETE') }}
@@ -118,4 +135,34 @@
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
     <script src="{{ asset('js/cargos/pondera.js') }}"></script>
+    <script>
+
+        $(document).on('click', '#formAgregar', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+
+            $.ajax({
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                },
+                // return the result
+                success: function (result) {
+                    $('#agregarCargoModulo').modal("show");
+                    $('#agregarCargoModuloBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+    </script>
 @endsection

@@ -20,5 +20,16 @@ class CargoMateria extends Model
         return $this->belongsToMany(User::class, 'modulo_profesor', 'modulo_id');
     }
 
+    /**
+     * Los usuarios (profesores) que puede tener un cargo_materia.
+     */
+    public function materia()
+    {
+        return $this->hasOne(Materia::class, 'id', 'materia_id');
+    }
+
+
+
+
 
 }
