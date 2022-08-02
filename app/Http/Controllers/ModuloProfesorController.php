@@ -36,7 +36,7 @@ class ModuloProfesorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,39 +47,49 @@ class ModuloProfesorController extends Controller
     public function agregarCargoModulo(Request $request): RedirectResponse
     {
         $modulos = ModuloProfesor::where([
-            'user_id' => $request['usuario_id']
+            'user_id' => $request['usuario_id'],
         ]);
 
-        $modulos->delete();
+        $modulos = ModuloProfesor::select('modulo_profesor.*')
+            ->join('cargo_materia', 'cargo_materia.id', 'modulo_profesor.modulo_id')
+            ->where('cargo_materia.cargo_id', $request['cargo_id'])
+            ->where('modulo_profesor.user_id', $request['usuario_id'])
+            ->get();
 
-
-        foreach ($request['materia_id'] as $materia) {
-            $cargo_modulo = CargoMateria::where([
-                'cargo_id' => $request['cargo_id'],
-                'materia_id' => $materia
-            ])->first();
-
-            ModuloProfesor::create([
-                'user_id' => $request['usuario_id'],
-                'modulo_id' => $cargo_modulo->id,
-            ]);
+        foreach ($modulos as $modulo) {
+            $modulo->delete();
         }
 
-        return redirect()->route('cargo.show',$request['cargo_id']);
+
+        if (isset($request['materia_id'])) {
+            foreach ($request['materia_id'] as $materia) {
+                $cargo_modulo = CargoMateria::where([
+                    'cargo_id' => $request['cargo_id'],
+                    'materia_id' => $materia,
+                ])->first();
+
+                ModuloProfesor::create([
+                    'user_id' => $request['usuario_id'],
+                    'modulo_id' => $cargo_modulo->id,
+                ]);
+            }
+        }
+
+        return redirect()->route('cargo.show', $request['cargo_id']);
     }
 
     public function formAgregarCargoModulo(Cargo $cargo, User $usuario)
     {
         return view('cargo.modals.form_agregar_cargo_modulo')->with([
             'cargo' => $cargo,
-            'usuario' =>  $usuario,
+            'usuario' => $usuario,
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ModuloProfesor  $moduloProfesor
+     * @param \App\Models\ModuloProfesor $moduloProfesor
      * @return \Illuminate\Http\Response
      */
     public function show(ModuloProfesor $moduloProfesor)
@@ -90,7 +100,7 @@ class ModuloProfesorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ModuloProfesor  $moduloProfesor
+     * @param \App\Models\ModuloProfesor $moduloProfesor
      * @return \Illuminate\Http\Response
      */
     public function edit(ModuloProfesor $moduloProfesor)
@@ -101,8 +111,8 @@ class ModuloProfesorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ModuloProfesor  $moduloProfesor
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\ModuloProfesor $moduloProfesor
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ModuloProfesor $moduloProfesor)
@@ -113,7 +123,7 @@ class ModuloProfesorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ModuloProfesor  $moduloProfesor
+     * @param \App\Models\ModuloProfesor $moduloProfesor
      * @return \Illuminate\Http\Response
      */
     public function destroy(ModuloProfesor $moduloProfesor)

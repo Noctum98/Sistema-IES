@@ -21,11 +21,19 @@ class CargoMateria extends Model
     }
 
     /**
-     * Los usuarios (profesores) que puede tener un cargo_materia.
+     * La materia de un cargo materia.
      */
     public function materia()
     {
         return $this->hasOne(Materia::class, 'id', 'materia_id');
+    }
+
+    /**
+     * La materia de un cargo materia.
+     */
+    public function cargo()
+    {
+        return $this->hasOne(Cargo::class, 'id', 'cargo_id');
     }
 
 

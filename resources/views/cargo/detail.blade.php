@@ -91,6 +91,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Módulo</th>
+                    <th scope="col">cargo</th>
                     <th scope="col">
                         <i class="fa fa-cog" style="font-size:20px;"></i>
                     </th>
@@ -117,6 +118,7 @@
                                 @include('cargo.modals.agregar_cargo-modulo')
 
                         </td>
+                        <td>{{$cargo->id}}</td>
                         <td>
                             <form action="{{ route('cargo.delUser',$cargo->id) }}" method="POST">
                                 {{ method_field('DELETE') }}
