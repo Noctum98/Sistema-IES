@@ -36,7 +36,7 @@
                     <!-- FAQ Accordion 1-->
                     <h4 class="fw-bolder mb-3">Cargos</h4>
                     <h5 class="fw-bolder mb-3">Configuraciones</h5>
-                    <div class="mb-5" id="">
+                    <div class="mb-5" id="accordionConfig">
                         <div class="accordion-item">
                             <h3 class="accordion-header" id="headingHome">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -47,7 +47,7 @@
                             </h3>
                             <div class="accordion-collapse collapse show" id="collapseHome"
                                  aria-labelledby="headingHome"
-                                 data-bs-parent="#accordionExample">
+                                 data-bs-parent="#accordionConfig">
                                 <div class="accordion-body">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
@@ -59,7 +59,7 @@
                                             <div class="col-xl-3">
 
                                                 <img class="me-3 img-fluid"
-                                                     src="{{asset('images/ayuda/home.png')}}"
+                                                     src="{{asset('images/ayuda/cargos/home.png')}}"
                                                      alt="home"/>
                                             </div>
                                         </div>
@@ -79,7 +79,7 @@
                             </h3>
                             <div class="accordion-collapse collapse show" id="collapseCargos"
                                  aria-labelledby="headingCargos"
-                                 data-bs-parent="#accordionExample">
+                                 data-bs-parent="#accordionConfig">
                                 <div class="accordion-body">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
@@ -111,7 +111,7 @@
                                             </div>
                                             <div class="col-xl-3">
                                                 <img class="me-3 img-fluid"
-                                                     src="{{asset('images/ayuda/cargos.png')}}"
+                                                     src="{{asset('images/ayuda/cargos/cargos.png')}}"
                                                      alt="home"/>
                                             </div>
                                         </div>
@@ -131,7 +131,7 @@
                             </h3>
                             <div class="accordion-collapse collapse show" id="collapseConfigurarCargos"
                                  aria-labelledby="headingConfigurarCargos"
-                                 data-bs-parent="#accordionExample">
+                                 data-bs-parent="#accordionConfig">
                                 <div class="accordion-body">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
@@ -148,7 +148,7 @@
                                             </div>
                                             <div class="col-xl-3">
                                                 <img class="me-3 img-fluid"
-                                                     src="{{asset('images/ayuda/configurar-cargos.png')}}"
+                                                     src="{{asset('images/ayuda/cargos/configurar-cargos.png')}}"
                                                      alt="home"/>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@
                             </h3>
                             <div class="accordion-collapse collapse show" id="collapseConfigurarCargosUsuarios"
                                  aria-labelledby="headingConfigurarCargosUsuarios"
-                                 data-bs-parent="#accordionExample">
+                                 data-bs-parent="#accordionConfig">
                                 <div class="accordion-body">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
@@ -187,7 +187,7 @@
                                             </div>
                                             <div class="col-xl-3">
                                                 <img class="me-3 img-fluid"
-                                                     src="{{asset('images/ayuda/configurar-cargos-2.png')}}"
+                                                     src="{{asset('images/ayuda/cargos/configurar-cargos-2.png')}}"
                                                      alt="home"/>
                                             </div>
                                         </div>
@@ -208,7 +208,7 @@
                             </h3>
                             <div class="accordion-collapse collapse show" id="collapseConfigurarCargosModuloUsuario"
                                  aria-labelledby="headingConfigurarCargosModuloUsuario"
-                                 data-bs-parent="#accordionExample">
+                                 data-bs-parent="#accordionConfig">
                                 <div class="accordion-body">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
@@ -225,7 +225,7 @@
                                             </div>
                                             <div class="col-xl-3">
                                                 <img class="me-3 img-fluid"
-                                                     src="{{asset('images/ayuda/administrar-cargo-modulo-user.png')}}"
+                                                     src="{{asset('images/ayuda/cargos/administrar-cargo-modulo-user.png')}}"
                                                      alt="home"/>
                                             </div>
                                         </div>
@@ -238,6 +238,224 @@
 
                     </div>
                     <!-- FAQ Accordion 2-->
+                    <h5 class="fw-bolder mb-3">Planillas</h5>
+                    <div class="mb-5" id="accordionPlanilla">
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingHomePlanilla">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseHomePlanilla" aria-expanded="true"
+                                        aria-controls="collapseHome">
+                                    Acceso a las planillas cargos
+                                </button>
+                            </h3>
+                            <div class="accordion-collapse collapse show" id="collapseHomePlanilla"
+                                 aria-labelledby="headingHomePlanilla"
+                                 data-bs-parent="#accordionPlanilla">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-xl-9">
+                                                Para ingresar a la planilla de los cargos se debe ir al <strong>menú
+                                                    lateral derecho.</strong> y hacer clic en <code>Planillas ->
+                                                    Planilla de Calificaciones</code>
+                                            </div>
+                                            <div class="col-xl-3">
+
+                                                <img class="me-3 img-fluid"
+                                                     src="{{asset('images/ayuda/cargos/home.png')}}"
+                                                     alt="home"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingCalificaciones">
+                                <button class="accordion-button" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseCalificaciones" aria-expanded="true"
+                                        aria-controls="collapseCCalificaciones">
+                                    Vista Calificaciones
+                                </button>
+                            </h3>
+                            <div class="accordion-collapse collapse show" id="collapseCalificaciones"
+                                 aria-labelledby="headingCalificaciones"
+                                 data-bs-parent="#accordionPlanilla">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-xl-9">
+                                                La vista de calificaciones tiene 2 secciones:
+                                                <ul>
+                                                    <li>Materias</li>
+                                                    <li>Cargos</li>
+                                                </ul>
+                                                desde donde se puede acceder a la administración de sus respectivas
+                                                calificaciones.
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <img class="me-3 img-fluid"
+                                                     src="{{asset('images/ayuda/cargos/calificaciones.png')}}"
+                                                     alt="calificaciones"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingAdminCalificaciones">
+                                <button class="accordion-button" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseAdminCalificaciones" aria-expanded="true"
+                                        aria-controls="collapseAdminCalificaciones">
+                                    Vista Administración de Calificaciones
+                                </button>
+                            </h3>
+                            <div class="accordion-collapse collapse show" id="collapseAdminCalificaciones"
+                                 aria-labelledby="headingAdminCalificaciones"
+                                 data-bs-parent="#accordionPlanilla">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-xl-9">
+                                                Desde la <b>administración de Calificaciones</b> podemos
+                                                <ul>
+                                                    <li><code>Crear</code> nuevas calificaciones.</li>
+                                                    <li><code>Ver y anotar </code> calificaciones.</li>
+                                                    <li><code>Ver </code> calificaciones modulares (en caso de
+                                                        corresponder).
+                                                    </li>
+                                                </ul>
+                                                El listado nos muestra
+                                                <ul>
+                                                    <li><b>Tipo</b> de calificación.</li>
+                                                    <li><b>Nombre</b> de la calificación que la diferencia de las otras
+                                                        calificaciones.
+                                                    </li>
+                                                    <li>Quién <b>creo</b> la calificación.</li>
+                                                    <li><b>Fecha</b> en la que se creó la calificación.</li>
+                                                    <li><b>Cargo</b> a la que pertenece la calificación (si
+                                                        corresponde).
+                                                    </li>
+                                                    <li><b>Comisión</b> a la que pertenece la calificación (si
+                                                        corresponde).
+                                                    </li>
+                                                    <li><b>Acciones</b> posibles:
+                                                        <ul>
+                                                            <li><code>Notas</code> desde donde se califica al alumno
+                                                            </li>
+                                                            <li><code>Edición <i class="fas fa-edit text-warning"></i>
+                                                                </code> desde
+                                                                donde se puede modificar
+                                                                datos de la calificación en sí.
+                                                            </li>
+                                                            <li><code>Eliminar</code> desde donde elimina una
+                                                                calificación.
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <img class="me-3 img-fluid"
+                                                     src="{{asset('images/ayuda/cargos/admin-calificaciones.png')}}"
+                                                     alt="home"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="accordion-item">
+                            <h3 class="accordion-header" id="headingVistaCalificaciones">
+                                <button class="accordion-button" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseVistaCalificaciones" aria-expanded="true"
+                                        aria-controls="collapseVistaCalificaciones">
+                                    Vista Calificaciones
+                                </button>
+                            </h3>
+                            <div class="accordion-collapse collapse show" id="collapseVistaCalificaciones"
+                                 aria-labelledby="headingVistaCalificaciones"
+                                 data-bs-parent="#accordionPlanilla">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-xl-9">
+                                                En la <b>vista de calificaciones (notas de)</b> podemos <code>
+                                                    Descargar </code> las notas en formato de planilla de cálculo y
+                                                <code>ver la calificación modular</code> respectiva.
+                                                En el listado veremos
+                                                <ul>
+                                                    <li>El <b> nombre</b> del alumno/a al que se le asigna la nota.</li>
+                                                    <li>Las <b> calificaciones</b> en donde se colocarán las notas.</li>
+                                                    <li>El <b> estado</b> del alumno/a en el cargo.</li>
+                                                    <li>La <b> nota final</b> del cargo.</li>
+                                                    <li><b> Cierre</b> de notas.</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <img class="me-3 img-fluid"
+                                                     src="{{asset('images/ayuda/cargos/vista-calificaciones.png')}}"
+                                                     alt="vista-calificaciones"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="accordion-item" id="vista-modular">
+                            <h3 class="accordion-header" id="headingVistaModular">
+                                <button class="accordion-button" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapseVistaModular" aria-expanded="true"
+                                        aria-controls="collapseVistaModular">
+                                    Vista Calificaciones modulares
+                                </button>
+                            </h3>
+                            <div class="accordion-collapse collapse show" id="collapseVistaModular"
+                                 aria-labelledby="headingVistaModular"
+                                 data-bs-parent="#accordionConfig">
+                                <div class="accordion-body">
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-xl-9">
+                                                En la <b>vista de calificaciones modulares</b> podemos acceder a las
+                                                <code> Calificaciones (notas) </code> de los cargos que componen el
+                                                módulo, además de observar:
+                                                <ul>
+                                                    <li>Las <b>notas de proceso</b> discriminada por alumno/a
+                                                        <ul>
+                                                            <li> Discriminación <b>por cargo</b> con sus respectivas
+                                                                calificaciones
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                                Esta vista procesa las ponderaciones entre cargos para dar la nota del
+                                                módulo.
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <img class="me-3 img-fluid"
+                                                     src="{{asset('images/ayuda/cargos/vista-modular.png')}}"
+                                                     alt="home"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
 
                 </div>
 
