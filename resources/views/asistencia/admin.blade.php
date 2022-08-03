@@ -1,8 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-	<h2 class="h1 text-info">
+	<h2 class="text-info">
 		Administrar asistencias {{ $materia->nombre }}
+		<br/>
 	</h2>
 	<hr>
 	<div class="col-md-12">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
+use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
@@ -52,6 +53,7 @@ use App\Models\Proceso;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/ayuda', [App\Http\Controllers\HomeController::class, 'ayuda'])->name('home.ayuda');
 
 Route::get('/', function () {
     if (Auth::user()) {
@@ -424,6 +426,10 @@ Route::prefix('calificacion')->group(function () {
     Route::post('update/{calificacion}', [CalificacionController::class, 'update'])->name('calificacion.update');
     Route::get('edit/{calificacion}', [CalificacionController::class, 'edit'])->name('calificacion.edit');
     Route::delete('/{id}', [CalificacionController::class, 'delete'])->name('calificacion.delete');
+});
+Route::prefix('moduloProfesor')->group(function () {
+    Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name('modulo_profesor.vincular_cargo_modulo');
+    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo'])->name('modulo_profesor.form_agregar_cargo_modulo');
 });
 
 Route::prefix('procesoCalificacion')->group(function () {

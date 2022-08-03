@@ -26,8 +26,8 @@ class AsistenciaController extends Controller
     {
         $materias = Auth::user()->materias;
         $cargos = Auth::user()->cargos;
-        $ruta = 'asis.admin';
 
+        $ruta = 'asis.admin';
 
         return view('asistencia.home', [
             'materias'  =>  $materias,
@@ -71,6 +71,7 @@ class AsistenciaController extends Controller
         }
         return view('asistencia.admin', $datos);
     }
+
     public function vista_fecha(int $id)
     {
         $materia = Materia::find($id);
@@ -79,6 +80,7 @@ class AsistenciaController extends Controller
             'materia'   =>  $materia
         ]);
     }
+
     public function vista_crear(int $id)
     {
         $asistencia = Asistencia::find($id);

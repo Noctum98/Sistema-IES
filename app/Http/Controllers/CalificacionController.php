@@ -129,7 +129,6 @@ class CalificacionController extends Controller
     public function edit(Calificacion $calificacion)
     {
 
-
         if ($calificacion->materia->carrera->tipo == 'modular' || $calificacion->materia->carrera->tipo == 'modular2') {
             $tiposCalificaciones = TipoCalificacion::all();
         } else {
