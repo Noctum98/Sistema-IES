@@ -237,7 +237,7 @@ class ProcesoCalificacionController extends Controller
             // Dividir, y listo
             $promedio = $suma / $cantidadDeElementos;
 
-            $proceso->final_trabajos = number_format((float)$promedio, 2, ',', '');
+            $proceso->final_trabajos = number_format((float)$promedio, 2, '.', '');
             $proceso->update();
         }
 
