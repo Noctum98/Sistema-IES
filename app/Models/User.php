@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -182,5 +183,13 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    /**
+     * Los módulos que tiene un usuario.
+     */
+    public function cargo_materia(): BelongsToMany
+    {
+        return $this->belongsToMany(CargoMateria::class, 'modulo_profesor', 'user_id', 'modulo_id');
     }
 }

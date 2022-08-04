@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Materia;
@@ -26,8 +29,8 @@ class AsistenciaController extends Controller
     {
         $materias = Auth::user()->materias;
         $cargos = Auth::user()->cargos;
-        $ruta = 'asis.admin';
 
+        $ruta = 'asis.admin';
 
         return view('asistencia.home', [
             'materias'  =>  $materias,
@@ -36,6 +39,12 @@ class AsistenciaController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param int $id <b>id</b> de la materia.
+     * @param $cargo_id <b>id</> del cargo.
+     * @return Application|Factory|View
+     */
     public function vista_admin(Request $request,int $id, $cargo_id = null)
     {
 
@@ -71,6 +80,7 @@ class AsistenciaController extends Controller
         }
         return view('asistencia.admin', $datos);
     }
+
     public function vista_fecha(int $id)
     {
         $materia = Materia::find($id);
@@ -79,6 +89,7 @@ class AsistenciaController extends Controller
             'materia'   =>  $materia
         ]);
     }
+
     public function vista_crear(int $id)
     {
         $asistencia = Asistencia::find($id);

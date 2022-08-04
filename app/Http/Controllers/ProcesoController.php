@@ -80,6 +80,7 @@ class ProcesoController extends Controller
 //        $procesos = $procesos->dd();
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
+            'tipo_id' => 1
         ]);
         if ($comision_id) {
             $calificacion->where([
@@ -87,6 +88,16 @@ class ProcesoController extends Controller
             ]);
         }
         $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
+
+        if(count($calificaciones) > 0)
+        {
+            foreach($procesos as $proceso)
+            {
+                
+            }
+        }
+
+
         $estados = Estados::all();
 
         return view('proceso.listado', [

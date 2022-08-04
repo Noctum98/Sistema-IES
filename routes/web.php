@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
+use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
@@ -52,6 +53,7 @@ use App\Models\Proceso;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name('home.ayuda.cargos');
 
 Route::get('/', function () {
     if (Auth::user()) {
@@ -285,6 +287,8 @@ Route::prefix('proceso')->group(function () {
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
     Route::post('cambia/nota_final', [ProcesoController::class, 'cambia_nota_final'])->name('proceso.nota_final');
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
+    Route::post('calcularPorcentaje',[ProcesoCalificacionController::class,'calcularPorcentaje']);
+    Route::get('procesosCalificaciones/{proceso_id}',[ProcesoCalificacionController::class,'show']);
 
 });
 
@@ -424,6 +428,10 @@ Route::prefix('calificacion')->group(function () {
     Route::post('update/{calificacion}', [CalificacionController::class, 'update'])->name('calificacion.update');
     Route::get('edit/{calificacion}', [CalificacionController::class, 'edit'])->name('calificacion.edit');
     Route::delete('/{id}', [CalificacionController::class, 'delete'])->name('calificacion.delete');
+});
+Route::prefix('moduloProfesor')->group(function () {
+    Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name('modulo_profesor.vincular_cargo_modulo');
+    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo'])->name('modulo_profesor.form_agregar_cargo_modulo');
 });
 
 Route::prefix('procesoCalificacion')->group(function () {

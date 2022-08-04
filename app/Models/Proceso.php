@@ -34,9 +34,7 @@ class Proceso extends Model
 
     public function asistencia()
     {
-        $asistencia = Asistencia::where('proceso_id', $this->id)->first();
-
-        return $asistencia;
+        return Asistencia::where('proceso_id', $this->id)->first();
     }
 
     public function estado()
@@ -55,12 +53,16 @@ class Proceso extends Model
 
     public function procesosCalificaciones()
     {
-        $procesosCalificaciones = ProcesoCalificacion::where(
+        $procesosCalificaciones = ProcesoCalificacion::join('procesos','procesos.id','proceso_calificacion.proceso_id')
+        ->join('alumnos','procesos.alumno_id','alumnos.id')
+        ->join('calificaciones','calificaciones.id','proceso_calificacion.calificacion_id')
+        ->where(
             ['proceso_id' => $this->id]
-        )
-            ->orderBy('calificacion_id', 'ASC')
-            ->get()
+        )->where('calificaciones.tipo_id',2)
+        ->orderBy('calificacion_id', 'ASC')
+        ->get()
         ;
+
 
         return $procesosCalificaciones;
     }

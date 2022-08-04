@@ -36,4 +36,9 @@ class HomeController extends Controller
 
         return view('home');
     }
+
+    public function ayudaCargos()
+    {
+        return view('componentes.cargos.ayuda');
+    }
 }

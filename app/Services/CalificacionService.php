@@ -29,4 +29,37 @@ class CalificacionService
         return max($pp, $pr);
     }
 
+    public function calcularPorcentaje($proceso_id)
+    {
+        $calificaciones = ProcesoCalificacion::where([
+            'proceso_id' => $proceso_id,
+        ])->whereHas('calificacion',function($query){
+            return $query->where('tipo_id',2);
+        })
+        ->get();
+
+        $array_calificaciones = [];
+
+        foreach ($calificaciones as $calificacion) {
+            if ($calificacion->nota == -1) {
+                array_push($array_calificaciones, 0);
+            } else {
+                array_push($array_calificaciones, $calificacion->nota);
+            }
+        }
+
+        $valorInicial = 0; // Valor inicial de array_reduce
+        $suma = array_reduce($array_calificaciones, function ($acarreo, $numero) {
+            return $acarreo + $numero;
+        }, $valorInicial);
+
+        // Obtener longitud
+        $cantidadDeElementos = count($array_calificaciones);
+
+        // Dividir, y listo
+        $promedio = $suma / $cantidadDeElementos;
+        
+        return $promedio;
+    }
+
 }

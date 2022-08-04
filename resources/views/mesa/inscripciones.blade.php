@@ -40,7 +40,6 @@
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
-                
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
@@ -79,6 +78,7 @@
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
                 <th>Responsable</th>
+                <th>Fecha de baja</th>
                 <th scope="col">Motivos</th>
             </tr>
         </thead>
@@ -90,6 +90,7 @@
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono }}</td>
                 <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
+                <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
                 <td>
                     {{ $inscripcion->motivo_baja }}
                 </td>
@@ -128,7 +129,7 @@
                 <td>{{ $inscripcion->telefono }}</td>
 
                 <td>
-                    <a href="{{route('mesa.borrar',['id'=>$inscripcion->id])}}" class="btn btn-sm btn-danger">
+                    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
                 </td>
@@ -149,6 +150,7 @@
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
                 <th>Responsable</th>
+                <th>Fecha de baja</th>
                 <th scope="col">Motivos</th>
             </tr>
         </thead>
@@ -160,6 +162,8 @@
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono }}</td>
                 <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
+                <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
+
                 <td>
                     {{ $inscripcion->motivo_baja }}
                 </td>
