@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Materia;
@@ -36,6 +39,12 @@ class AsistenciaController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param int $id <b>id</b> de la materia.
+     * @param $cargo_id <b>id</> del cargo.
+     * @return Application|Factory|View
+     */
     public function vista_admin(Request $request,int $id, $cargo_id = null)
     {
 
