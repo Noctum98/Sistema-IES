@@ -28,7 +28,7 @@
     <p><strong><i>Importante:</i></strong></p>
     <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
     <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
-    <p><i>Al clickear sobre Promedio de TP se podrán ver todos los Trabajos Prácticos.</i></p>
+    <p><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
 
     @if($comision)
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>
