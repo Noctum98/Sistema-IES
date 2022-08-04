@@ -16,6 +16,13 @@ class ProcesoCalificacionController extends Controller
         $this->middleware('app.roles:admin-profesor-seccionAlumnos-coordinador');
     }
 
+    public function show(Request $request,$id)
+    {
+        $proceso = Proceso::find($id);
+
+        return response()->json($proceso->procesosCalificaciones(),200);
+    }
+
     public function store(Request $request)
     {
         $ausente = false;
@@ -58,12 +65,13 @@ class ProcesoCalificacionController extends Controller
             }
 
             $proceso = Proceso::find($procesoCalificacion->proceso_id);
+
             $calificacion = Calificacion::find($procesoCalificacion->calificacion_id);
 
-//            if($calificacion->cargo_id){
-//                $proceso->cargo_id= $calificacion->cargo_id;
-//                $proceso->update();
-//            }
+            //            if($calificacion->cargo_id){
+            //                $proceso->cargo_id= $calificacion->cargo_id;
+            //                $proceso->update();
+            //            }
 
 
             $response = $procesoCalificacion;
@@ -128,15 +136,12 @@ class ProcesoCalificacionController extends Controller
             'calificacion_id' => $request['calificacion_id'],
         ])->first();
 
-        if($procesoCalificacion)
-        {
-            if($request['recuperatorio'])
-            {
+        if ($procesoCalificacion) {
+            if ($request['recuperatorio']) {
                 $procesoCalificacion->porcentaje_recuperatorio = null;
                 $procesoCalificacion->nota_recuperatorio = null;
                 $response = 'recuperatorio_eliminado';
-
-            }else{
+            } else {
                 $procesoCalificacion->porcentaje = null;
                 $procesoCalificacion->nota = null;
                 $response = 'calificacion_eliminada';
@@ -145,7 +150,7 @@ class ProcesoCalificacionController extends Controller
             $procesoCalificacion->update();
         }
 
-        return response($response,200);
+        return response($response, 200);
     }
 
     private function calcularNota($porcentaje)
@@ -195,5 +200,48 @@ class ProcesoCalificacionController extends Controller
         }
 
         return $nota;
+    }
+
+    public function calcularPorcentaje(Request $request)
+    {
+
+        $proceso = Proceso::find($request['proceso_id']);
+
+
+        $calificaciones = ProcesoCalificacion::where([
+            'proceso_id' => $proceso->id,
+        ])->whereHas('calificacion', function ($query) {
+            return $query->where('tipo_id', 2);
+        })
+            ->get();
+
+        if (count($calificaciones) > 0) {
+            $array_calificaciones = [];
+
+            foreach ($calificaciones as $calificacion) {
+                if ($calificacion->nota == -1) {
+                    array_push($array_calificaciones, 0);
+                } else {
+                    array_push($array_calificaciones, $calificacion->nota);
+                }
+            }
+
+            $valorInicial = 0; // Valor inicial de array_reduce
+            $suma = array_reduce($array_calificaciones, function ($acarreo, $numero) {
+                return $acarreo + $numero;
+            }, $valorInicial);
+
+            // Obtener longitud
+            $cantidadDeElementos = count($array_calificaciones);
+
+            // Dividir, y listo
+            $promedio = $suma / $cantidadDeElementos;
+
+            $proceso->final_trabajos = $promedio;
+            $proceso->update();
+        }
+
+
+        return response()->json($proceso, 200);
     }
 }

@@ -44,6 +44,7 @@
                     <th>
                         Alumno
                     </th>
+                    <th>Promedio TP</th>
                     @if(count($calificaciones) > 0)
                     @foreach($calificaciones as $calificacion)
                     <th><a href="{{ route('calificacion.create',$calificacion->id) }}" class="text-white">{{$calificacion->nombre}}</a></th>
@@ -67,24 +68,31 @@
                     <td>
                         {{$proceso->alumno->apellidos}}, {{$proceso->alumno->nombres}}
                     </td>
+                    <td id="tp-{{$proceso->id}}">
+                        <span id="tp-spin-{{$proceso->id}}">
+                            <i class="fa fa-spinner fa-spin"></i>
+                        </span>
+                    </td>
                     @if(count($calificaciones) > 0)
                     @foreach($calificaciones as $cc)
                     <td>
                         @if($proceso->procesoCalificacion($cc->id))
-                        <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
+                        <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'badge-success' : 'badge-danger' }}">
                             {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                            @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
+                            %
+                            @endif
                         </span>
-                        @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
-                        %
-                        @endif
+                       
 
                         @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
-                        <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
+                        <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'badge-success' : 'badge-danger' }}">
                             R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                            @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                             %
+                            @endif
                         </span>
-                        @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                        %
-                        @endif
+                        
                         @endif
                         @else
                         -
@@ -93,7 +101,9 @@
                     @endforeach
                     @endif
                     <td>
+                        <span class="badge badge-secondary">
                         {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
+                        </span>
                     </td>
                     <td class="col-md-3">
 
@@ -155,10 +165,12 @@
             {{-- </ul>--}}
             {{-- </div>--}}
     </div>
+    @include('proceso.modals.tps-mostrar')
     @endsection
     @section('scripts')
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
-
+    <script src="{{ asset('js/proceso/calcular_porcentaje.js') }}"></script>
+    <script src="{{ asset('js/proceso/ver_tps.js') }}"></script>
     @endsection

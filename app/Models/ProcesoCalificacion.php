@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProcesoCalificacion extends Model
 {
@@ -11,5 +12,10 @@ class ProcesoCalificacion extends Model
 
     protected $table = "proceso_calificacion";
     protected $fillable = ['proceso_id','calificacion_id','nota','porcentaje'];
+
+    public function calificacion(): BelongsTo
+    {
+        return $this->belongsTo(Calificacion::class,'calificacion_id');
+    }
 
 }

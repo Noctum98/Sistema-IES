@@ -287,6 +287,8 @@ Route::prefix('proceso')->group(function () {
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
     Route::post('cambia/nota_final', [ProcesoController::class, 'cambia_nota_final'])->name('proceso.nota_final');
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
+    Route::post('calcularPorcentaje',[ProcesoCalificacionController::class,'calcularPorcentaje']);
+    Route::get('procesosCalificaciones/{proceso_id}',[ProcesoCalificacionController::class,'show']);
 
 });
 
