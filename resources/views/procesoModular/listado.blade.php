@@ -22,6 +22,7 @@
         <h3 class="text-info">
             Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
         </h3>
+        @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
         <h5>
             Cargos:
             @foreach($materia->cargos()->get() as $cargo)
@@ -33,6 +34,7 @@
 
 
         </h5>
+        @endif
         <hr>
         <div id="alerts">
         </div>
