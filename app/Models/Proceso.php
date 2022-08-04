@@ -34,9 +34,7 @@ class Proceso extends Model
 
     public function asistencia()
     {
-        $asistencia = Asistencia::where('proceso_id', $this->id)->first();
-
-        return $asistencia;
+        return Asistencia::where('proceso_id', $this->id)->first();
     }
 
     public function estado()

@@ -20,7 +20,7 @@
             </td>
             <td class="porcentaje-{{ $proceso->id }}">
                 @if($proceso->asistencia($proceso->id))
-                % {{ $proceso->asistencia($proceso->id)->porcentaje_final }}
+                     {{ $proceso->asistencia($proceso->id)->porcentaje_final }} %
                 @endif
             </td>
         </tr>

@@ -53,7 +53,7 @@ use App\Models\Proceso;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home/ayuda', [App\Http\Controllers\HomeController::class, 'ayuda'])->name('home.ayuda');
+Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name('home.ayuda.cargos');
 
 Route::get('/', function () {
     if (Auth::user()) {
