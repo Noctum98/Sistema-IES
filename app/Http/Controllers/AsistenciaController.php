@@ -24,6 +24,7 @@ class AsistenciaController extends Controller
         // $this->middleware('app.admin');
         // $this->middleware('app.roles:admin-profesor');
     }
+
     // Vistas
     public function vista_carreras()
     {
@@ -33,9 +34,9 @@ class AsistenciaController extends Controller
         $ruta = 'asis.admin';
 
         return view('asistencia.home', [
-            'materias'  =>  $materias,
-            'ruta'      =>  $ruta,
-            'cargos'    =>  $cargos
+            'materias' => $materias,
+            'ruta' => $ruta,
+            'cargos' => $cargos,
         ]);
     }
 
@@ -45,7 +46,7 @@ class AsistenciaController extends Controller
      * @param $cargo_id <b>id</> del cargo.
      * @return Application|Factory|View
      */
-    public function vista_admin(Request $request,int $id, $cargo_id = null)
+    public function vista_admin(Request $request, int $id, $cargo_id = null)
     {
 
         $comision_id = $request['comision_id'] ? $request['comision_id'] : null;
@@ -53,11 +54,11 @@ class AsistenciaController extends Controller
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia->id);
-            
+
         if ($comision_id) {
-            $procesos = $procesos->whereHas('alumno',function($query) use ($comision_id){
-                $query->whereHas('comisiones',function($query) use ($comision_id){
-                    $query->where('comisiones.id',$comision_id);
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
                 });
             });
         }
@@ -66,8 +67,8 @@ class AsistenciaController extends Controller
         $procesos = $procesos->get();
 
         $datos = [
-            'materia'       =>  $materia,
-            'procesos'   =>  $procesos
+            'materia' => $materia,
+            'procesos' => $procesos,
         ];
 
         if ($cargo_id) {
@@ -75,9 +76,10 @@ class AsistenciaController extends Controller
             $datos['cargo'] = $cargo;
         }
 
-        if($comision_id){
+        if ($comision_id) {
             $datos['comision'] = Comision::find($comision_id);
         }
+
         return view('asistencia.admin', $datos);
     }
 
@@ -86,7 +88,7 @@ class AsistenciaController extends Controller
         $materia = Materia::find($id);
 
         return view('asistencia.date', [
-            'materia'   =>  $materia
+            'materia' => $materia,
         ]);
     }
 
@@ -96,8 +98,8 @@ class AsistenciaController extends Controller
         $procesos = Proceso::where('materia_id', $asistencia->materia_id)->get();
 
         return view('asistencia.create', [
-            'procesos'  =>  $procesos,
-            'asistencia'   =>  $asistencia
+            'procesos' => $procesos,
+            'asistencia' => $asistencia,
         ]);
     }
 
@@ -107,8 +109,8 @@ class AsistenciaController extends Controller
         $asistencias = Asistencia::where('materia_id', $id)->get();
 
         return view('asistencia.close', [
-            'procesos'      =>  $procesos,
-            'asistencias'   =>  $asistencias
+            'procesos' => $procesos,
+            'asistencias' => $asistencias,
         ]);
     }
 
@@ -117,7 +119,7 @@ class AsistenciaController extends Controller
     public function crear(Request $request)
     {
         $validate = $this->validate($request, [
-            'porcentaje_final'             =>  ['required', 'numeric'],
+            'porcentaje_final' => ['required', 'numeric'],
         ]);
 
         $issetAsistencia = Asistencia::where('proceso_id', $request['proceso_id'])->first();
@@ -132,21 +134,21 @@ class AsistenciaController extends Controller
 
         return response()->json([
             'message' => 'Asistencia creada con éxito!',
-            'asistencia' => $asistencia
+            'asistencia' => $asistencia,
         ], 200);
     }
 
     public function crear_7030(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'porcentaje_virtual'           =>  ['required', 'numeric', 'max:30'],
-            'porcentaje_presencial'             =>  ['required', 'numeric', 'max:70']
+            'porcentaje_virtual' => ['required', 'numeric', 'max:30'],
+            'porcentaje_presencial' => ['required', 'numeric', 'max:70'],
         ]);
 
         if (!$validate->fails()) {
             $issetAsistencia = Asistencia::where('proceso_id', $request['proceso_id'])->first();
 
-            $request['porcentaje_final'] = (int) $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
+            $request['porcentaje_final'] = (int)$request['porcentaje_virtual'] + $request['porcentaje_presencial'];
 
             if ($issetAsistencia) {
                 $issetAsistencia->update($request->all());
@@ -157,12 +159,12 @@ class AsistenciaController extends Controller
 
             $response = [
                 'message' => 'Asistencia creada con éxito!',
-                'asistencia' => $asistencia
+                'asistencia' => $asistencia,
             ];
         } else {
             $response = [
                 'message' => 'Error',
-                'errors' => $validate->errors()
+                'errors' => $validate->errors(),
             ];
         }
 
@@ -173,23 +175,40 @@ class AsistenciaController extends Controller
     public function crear_modular(Request $request)
     {
         $validate = $this->validate($request, [
-            'porcentaje'             =>  ['required', 'numeric'],
+            'porcentaje' => ['required', 'numeric'],
         ]);
 
+
         $asistencia = Asistencia::where([
-            'proceso_id' => $request['proceso_id']
+            'proceso_id' => $request['proceso_id'],
         ])->first();
 
-        if ($asistencia)
-        {
-            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'],$asistencia->id);
-            if ($asistencia_modular)
-            {
-                $asistencia_modular->porcentaje = (int) $request['porcentaje'];
+
+        if ($asistencia) {
+
+            $asistencia_modular = AsistenciaModular::getByAsistenciaCargoMateria(
+                $request['cargo_id'],
+                $asistencia->id,
+                $request['materia_id']
+            );
+
+            if ($asistencia_modular) {
+
+                $asistencia_modular->porcentaje = (int)$request['porcentaje'];
                 $asistencia_modular->update();
             } else {
-                $request['asistencia_id'] = $asistencia->id;
-                $asistencia_modular = AsistenciaModular::create($request->all());
+                $asistencia_modular_cargo = AsistenciaModular::getByAsistenciaCargo(
+                    $request['cargo_id'],
+                    $asistencia->id
+                );
+                if ($asistencia_modular_cargo) {
+                    $asistencia_modular_cargo->materia_id = $request['materia_id'];
+                    $asistencia_modular->porcentaje = (int)$request['porcentaje'];
+                    $asistencia_modular->update();
+                } else {
+                    $request['asistencia_id'] = $asistencia->id;
+                    $asistencia_modular = AsistenciaModular::create($request->all());
+                }
             }
         } else {
             $asistencia = Asistencia::create($request->all());
@@ -200,56 +219,57 @@ class AsistenciaController extends Controller
 
         $response = [
             'message' => 'Asistencia creada con éxito!',
-            'asistencia' => $asistencia
+            'asistencia' => $asistencia,
         ];
 
         return response()->json($response, 200);
     }
 
-    public function crear_modular_7030(Request $request)
-    {
+    public function crear_modular_7030(
+        Request $request
+    ) {
         $validate = Validator::make($request->all(), [
-            'porcentaje_virtual'           =>  ['required', 'numeric', 'max:30'],
-            'porcentaje_presencial'             =>  ['required', 'numeric', 'max:70']
+            'porcentaje_virtual' => ['required', 'numeric', 'max:30'],
+            'porcentaje_presencial' => ['required', 'numeric', 'max:70'],
         ]);
 
         if (!$validate->fails()) {
             $asistencia = Asistencia::where([
-                'proceso_id' => $request['proceso_id']
+                'proceso_id' => $request['proceso_id'],
             ])->first();
 
             if ($asistencia) {
                 $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'], $asistencia->id);
                 if ($asistencia_modular) {
-                    $asistencia_modular->porcentaje_virtual = (int) $request['porcenaje_virtual'];
-                    $asistencia_modular->porcentaje_presencial = (int) $request['porcentaje_presencial'];
+                    $asistencia_modular->porcentaje_virtual = (int)$request['porcenaje_virtual'];
+                    $asistencia_modular->porcentaje_presencial = (int)$request['porcentaje_presencial'];
                     $asistencia_modular->porcentaje = $asistencia_modular->porcentaje_virtual + $asistencia_modular->porcentaje_presencial;
                     $asistencia_modular->update();
                 } else {
                     $request['asistencia_id'] = $asistencia->id;
-                    $request['porcentaje'] = (int) $request['porcentaje_virtual'] + (int) $request['porcentaje_presencial'];
+                    $request['porcentaje'] = (int)$request['porcentaje_virtual'] + (int)$request['porcentaje_presencial'];
                     $asistencia_modular = AsistenciaModular::create($request->all());
                 }
             } else {
                 $asistencia = Asistencia::create([
-                    'proceso_id' => $request['proceso_id']
+                    'proceso_id' => $request['proceso_id'],
                 ]);
 
                 $request['asistencia_id'] = $asistencia->id;
-                $request['porcentaje'] = (int) $request['porcentaje_virtual'] + (int) $request['porcentaje_presencial'];
+                $request['porcentaje'] = (int)$request['porcentaje_virtual'] + (int)$request['porcentaje_presencial'];
                 $asistencia_modular = AsistenciaModular::create($request->all());
             }
 
             $response = [
                 'message' => 'Asistencia creada con éxito!',
                 'code' => 200,
-                'asistencia' => $asistencia_modular
+                'asistencia' => $asistencia_modular,
             ];
-        }else{
+        } else {
             $response = [
                 'message' => 'Error',
                 'code' => 200,
-                'errors' => $validate->errors()
+                'errors' => $validate->errors(),
             ];
         }
 

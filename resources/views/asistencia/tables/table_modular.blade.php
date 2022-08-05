@@ -15,6 +15,7 @@
             <td>
                 <form action="" class="col-md-6 m0 p-0 asis-alumnos form-modular" id="{{ $proceso->id }}" method="POST">
                     <input type="hidden" name="cargo_id" class="cargo_id" value="{{ $cargo->id }}">
+                    <input type="hidden" name="materia_id" class="materia_id" value="{{ $materia->id }}">
                     <input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}"
                            @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif required>
                     <button type="submit"
