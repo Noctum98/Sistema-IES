@@ -37,7 +37,7 @@
                 @if($cargo && $materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2')
                     <!---
                     <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-info">
-                        Ver Planilla de Asistencia {{$cargo->nombre}}
+                        Ver Planilla de Calificaciones {{$cargo->nombre}}
                     </a>
                     <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}" class="btn btn-secondary">
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}

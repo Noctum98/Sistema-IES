@@ -27,6 +27,8 @@
                         <col class="col-">
                     @endforeach
                     <col class="col-">
+                    <col class="col-">
+                    <col class="col-">
                 </colgroup>
                 <thead>
                 <tr>
@@ -35,6 +37,7 @@
                         <th scope="col">{{$calificacion->nombre}}</th>
                     @endforeach
                     <th>% x̄</th>
+                    <th>% Asist.</th>
                     <th>Parcial</th>
                     <th>% Final</th>
                 </tr>
@@ -60,6 +63,9 @@
                         @if($cant > 0)
                             {{number_format($suma/$cant , 2, '.', ',')}}
                         @endif
+                    </td>
+                    <td>
+                        {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }} %
                     </td>
                     <td>
                         @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)

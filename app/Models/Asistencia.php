@@ -16,6 +16,10 @@ class Asistencia extends Model
         'comision_id'
     ];
 
+    public function materia(){
+        return $this->belongsTo('App\Models\Materia','materia_id');
+    }
+
     public function proceso(){
         return $this->belongsTo('App\Models\Proceso','proceso_id');
     }
