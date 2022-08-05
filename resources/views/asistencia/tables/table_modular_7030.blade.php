@@ -25,6 +25,8 @@
             <td>
                 <form action="" class="col-md-3 m0 p-0 asis-alumnos float-right form-modular_7030" id="{{ $proceso->id }}" method="POST">
                     <input type="hidden" name="cargo_id" class="cargo_id" value="{{ $cargo->id }}">
+                    <input type="hidden" name="materia_id" class="materia_id" value="{{$materia->id}}">
+
 
                     <input type="number" class="form-control" id="asis-presencial-{{ $proceso->id }}" value="{{ $proceso->asistencia() && $proceso->asistencia()->getByAsistenciaCargo($cargo->id) ? $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje_presencial : ''  }}" required>
             </td>
