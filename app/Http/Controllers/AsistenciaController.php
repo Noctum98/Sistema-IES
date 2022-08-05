@@ -175,40 +175,23 @@ class AsistenciaController extends Controller
     public function crear_modular(Request $request)
     {
         $validate = $this->validate($request, [
-            'porcentaje' => ['required', 'numeric'],
+            'porcentaje'             =>  ['required', 'numeric'],
         ]);
 
-
         $asistencia = Asistencia::where([
-            'proceso_id' => $request['proceso_id'],
+            'proceso_id' => $request['proceso_id']
         ])->first();
 
-
-        if ($asistencia) {
-
-            $asistencia_modular = AsistenciaModular::getByAsistenciaCargoMateria(
-                $request['cargo_id'],
-                $asistencia->id,
-                $request['materia_id']
-            );
-
-            if ($asistencia_modular) {
-
-                $asistencia_modular->porcentaje = (int)$request['porcentaje'];
+        if ($asistencia)
+        {
+            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'],$asistencia->id);
+            if ($asistencia_modular)
+            {
+                $asistencia_modular->porcentaje = (int) $request['porcentaje'];
                 $asistencia_modular->update();
             } else {
-                $asistencia_modular_cargo = AsistenciaModular::getByAsistenciaCargo(
-                    $request['cargo_id'],
-                    $asistencia->id
-                );
-                if ($asistencia_modular_cargo) {
-                    $asistencia_modular_cargo->materia_id = $request['materia_id'];
-                    $asistencia_modular->porcentaje = (int)$request['porcentaje'];
-                    $asistencia_modular->update();
-                } else {
-                    $request['asistencia_id'] = $asistencia->id;
-                    $asistencia_modular = AsistenciaModular::create($request->all());
-                }
+                $request['asistencia_id'] = $asistencia->id;
+                $asistencia_modular = AsistenciaModular::create($request->all());
             }
         } else {
             $asistencia = Asistencia::create($request->all());
@@ -219,7 +202,7 @@ class AsistenciaController extends Controller
 
         $response = [
             'message' => 'Asistencia creada con éxito!',
-            'asistencia' => $asistencia,
+            'asistencia' => $asistencia
         ];
 
         return response()->json($response, 200);
