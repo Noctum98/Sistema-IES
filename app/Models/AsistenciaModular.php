@@ -16,8 +16,6 @@ class AsistenciaModular extends Model
         'porcentaje_presencial',
         'asistencia_id',
         'cargo_id',
-        'proceso_id',
-        'materia_id',
     ];
 
 
