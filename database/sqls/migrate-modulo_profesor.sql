@@ -1,0 +1,3 @@
+create table `modulo_profesor` (`id` bigint unsigned not null auto_increment primary key, `created_at` timestamp null, `updated_at` timestamp null, `user_id` int unsigned not null, `modulo_id` bigint unsigned not null) default character set utf8mb4 collate 'utf8mb4_unicode_ci'
+alter table `modulo_profesor` add constraint `modulo_profesor_user_id_foreign` foreign key (`user_id`) references `users` (`id`)
+alter table `modulo_profesor` add constraint `modulo_profesor_modulo_id_foreign` foreign key (`modulo_id`) references `cargo_materia` (`id`)

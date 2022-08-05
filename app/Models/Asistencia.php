@@ -9,7 +9,6 @@ class Asistencia extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'materia_id',
         'proceso_id',
         'porcentaje_final',
         'porcentaje_presencial',

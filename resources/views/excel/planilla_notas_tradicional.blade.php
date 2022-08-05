@@ -5,9 +5,9 @@
                 Alumno
             </th>
             @if(count($calificaciones) > 0)
-            @foreach($calificaciones as $calificacion)
-            <th>{{$calificacion->nombre}}</th>
-            @endforeach
+                @foreach($calificaciones as $calificacion)
+                <th>{{$calificacion->nombre}}</th>
+                @endforeach
             @else
             <th>
                 Notas
@@ -21,6 +21,8 @@
             <th>
                 Estado
             </th>
+            <th>Promedio Final TP</th>
+            <th>Nota Global</th>
             <th>
                 Nota Final
             </th>
@@ -73,6 +75,28 @@
             <td>
                 {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
             </td>
+
+            @if($proceso->final_trabajos && $proceso->final_trabajos >=4)
+            <td style="color:#025827">
+                {{ $proceso->final_trabajos ?? '-' }}
+            </td>
+            @else
+            <td style="color:red">
+                {{ $proceso->final_trabajos ?? '-' }}
+            </td>
+            @endif
+
+
+            @if($proceso->nota_global && $proceso->nota_global >=4)
+            <td style="color:#025827">
+                {{$proceso->nota_global ?? '-'}}
+            </td>
+            @else
+            <td style="color:red">
+                {{$proceso->nota_global ?? '-'}}
+            </td>
+            @endif
+
             @if($proceso->final_calificaciones && $proceso->final_calificaciones >=4)
             <td style="color:#025827">
                 {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}

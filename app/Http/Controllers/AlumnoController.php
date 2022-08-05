@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Carrera;
+use App\Services\AlumnoService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,15 @@ use Illuminate\Support\Facades\Storage;
 
 class AlumnoController extends Controller
 {
-    public function __construct(){
+
+    protected $alumnoService;
+
+    public function __construct(
+        AlumnoService $alumnoService
+    ){
         $this->middleware('app.auth',['except'=>['descargar_archivo','descargar_ficha']]);
         $this->middleware('app.roles:admin-coordinador-regente-seccionAlumnos',['only'=>['vista_admin','vista_alumnos','vista_elegir']]);
+        $this->alumnoService = $alumnoService;
     }
     // Vistas
     public function vista_admin($busqueda = null){
@@ -22,13 +29,7 @@ class AlumnoController extends Controller
         $sedes = null;
 
         if(!empty($busqueda)){
-            $alumnos = Alumno::where('dni','LIKE','%'.$busqueda.'%')
-                            ->orWhere('nombres','LIKE','%'.$busqueda.'%')
-                            ->orWhere('apellidos','LIKE','%'.$busqueda.'%')
-                            ->orWhere('telefono','LIKE','%'.$busqueda.'%')
-                            ->orWhere('localidad','LIKE','%'.$busqueda.'%')
-                            ->select('nombres','apellidos','id','dni')
-                            ->get();
+            $alumnos = $this->alumnoService->buscarAlumnos($busqueda);
         }else{
             $sedes = $user->sedes;
         }
@@ -85,6 +86,33 @@ class AlumnoController extends Controller
         return view('alumno.detail',[
             'alumno'    =>  $alumno
         ]);
+    }
+
+    public function buscar(Request $request,$id)
+    {
+        $alumno = $this->alumnoService->buscarAlumno($request['busqueda'],$id);
+
+        if($alumno)
+        {
+            $response = [
+                'status' => 'success',
+                'alumno' => $alumno
+            ];
+        }else{
+            $response = [
+                'status' => 'error',
+                'message' => 'No existe alumno con este dni.'
+            ];
+        }
+
+        return response()->json($response,200);
+    }
+
+    public function alumnosMateria(Request $request,$materia_id)
+    {
+        $alumnos = $this->alumnoService->alumnosMateria($materia_id);
+
+        return response()->json($alumnos,200);
     }
 
     public function ver_foto(string $foto): Response
