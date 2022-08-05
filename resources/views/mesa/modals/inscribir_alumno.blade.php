@@ -8,16 +8,31 @@
                 </button>
             </div>
             <div class="modal-body">
+                <label for="dni">DNI Alumno</label><br>
+
+               
+
+                <div class="input-group mb-3">
+                    <input type="hidden" name="carrera_id" id="carrera_id" value="{{$mesa->materia->carrera_id}}">
+                    <input class="form-control mx-auto" type="number" id="dni" name="dni" placeholder="Buscar alumno por dni" aria-label="Search">
+                    <button class="btn btn-outline-primary me-2" type="submit" id="buscarDNI"><i class="fa fa-search"></i></button>
+                    <span class="d-block invalid-feedback" id="span-error"></span>
+                </div>
+               
+
                 <form method="POST" action="{{ route('mesa.inscribir_alumno') }}">
-                    
+
                     <input type="hidden" name="mesa_id" value="{{ $mesa->id }}">
-                    <div class="form-group">
-                        <label for="alumno_id">Alumno</label>
+                    <label for="alumno_id">Alumno</label>
+
+                    <div class="input-group">
+                        <input type="hidden" id="materia_id" value="{{$mesa->materia_id}}">
                         <select name="alumno_id" id="alumno_id" class="form-select" required>
                             @foreach($procesos as $proceso)
-                                <option value="{{ $proceso->alumno_id }}">{{mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres)}}</option>
+                            <option value="{{ $proceso->alumno_id }}">{{mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres)}}</option>
                             @endforeach
                         </select>
+                        <button class="btn btn-outline-warning me-2" type="submit" id="recargar"><i class="fas fa-sync"></i></button>
                     </div>
                     @if($mesa->fecha_segundo)
                     <div class="form-group">
@@ -30,7 +45,7 @@
                     @else
                     <input type="hidden" name="llamado" value="0">
                     @endif
-                    
+                    <br>
                     <input type="submit" class="btn btn-success" value="Inscribir">
                 </form>
             </div>

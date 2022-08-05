@@ -34,7 +34,7 @@
                     @endif
                 @endforeach
             @else
-                @if($cargo)
+                @if($cargo && $materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2')
                     <!---
                     <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-info">
                         Ver Planilla de Asistencia {{$cargo->nombre}}
