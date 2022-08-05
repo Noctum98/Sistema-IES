@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
     <style>
-        thead Th {
+        thead th {
             position: sticky;
             z-index: 1;
             top: 0;
@@ -101,7 +101,7 @@
                                 </td>
                             @endif
                             <td>
-                                {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
+                                {{ $proceso->asistencia() ? $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje : '-' }} %
                             </td>
                             <td class="col-md-3">
 
