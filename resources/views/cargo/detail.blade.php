@@ -7,7 +7,7 @@
                 Volver
             </button>
         </a>
-        <h2 class="h1 text-info">Configurar Cargo</h2>
+        <h2 class="text-info">Configurar Cargo</h2>
         <hr>
         <p><i>{{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->sede->nombre.' )' }}</i></p>
         <h3 class="text-secondary mb-3">Módulos</h3>
@@ -18,7 +18,7 @@
         </p>
         @include('cargo.modals.agregar_modulo')
         @if(count($cargo->materias) == 0)
-            <p>No hay módulos vinculadas al cargo.</p>
+            <p>No hay módulos vinculados al cargo.</p>
         @else
 
             <table class="table mt-4">
@@ -37,13 +37,18 @@
                 @foreach ($cargo->materias as $materia)
                     <tr>
                         <th scope="row">{{ $materia->id }}</th>
-                        <td>{{ $materia->nombre }}</td>
+                        <td>
+                            <a href="{{route('modulos.ver', ['materia' => $materia->id])}}"
+                               title="Ver módulo">
+                                {{$materia->nombre}}
+                            </a>
+                        </td>
                         <td>
                             <form action="" id="pondera-cargo-materia" class="pondera-cargo">
                                 <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
                         "
-                                       id="ponderacion" value="{{$cargo->ponderacion($cargo->id,$materia->id)??'0' }}"/>
+                                       id="ponderacion" value="{{$cargo->ponderacion($materia->id)??'0' }}"/>
                                 <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
                                 <input type="hidden" id="materia" value="{{$materia->id}}"/>
                                 <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
@@ -56,7 +61,11 @@
                         <td>
                             <i class="fa fa-spinner fa-spin" style="display: none"
                                id="loader-cargo-{{$cargo->id}}-materia-{{$materia->id}}"></i>
-                            <div id="cargo-{{$cargo->id}}-materia-{{$materia->id}}">{{$materia->totalModulo()}}</div>
+                            <a href="{{route('modulos.ver', ['materia' => $materia->id])}}"
+                               title="Ver módulo" class="text-info btn-sm d-inline">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <div class="d-inline" id="cargo-{{$cargo->id}}-materia-{{$materia->id}}">{{$materia->totalModulo()}}</div>
                         </td>
 
                         <td>
