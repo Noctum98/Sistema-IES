@@ -19,9 +19,16 @@ class CarreraController extends Controller
 
     public function vista_admin(){
         $user = Auth::user();
+        $carreras = Carrera::orderBy('sede_id')->get();
+
+        if(!$user->hasRole('admin'))
+        {
+            $carreras = $user->carreras;
+        }
+
         $sedes = $user->sedes;
         return view('carrera.admin',[
-            'sedes'  => $sedes
+            'carreras'  => $carreras
         ]);
     }
     public function vista_crear(){
