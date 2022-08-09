@@ -110,12 +110,11 @@
                                 @include('alumno.modals.carreras_year')
                             @endif
 
-							<!---
+							
                             @if(Session::has('regente') || Session::has('coordinador') || Session::has('admin'))
                                 <button class="btn btn-sm btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar</button>
                                 @include('alumno.modals.correo_eliminar')
                             @endif
-							-->
                         </div>
 					@endforeach
 				</li>

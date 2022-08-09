@@ -26,8 +26,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($sedes as $sede)
-				@foreach($sede->carreras as $carrera)
+				
+				@foreach($carreras as $carrera)
 				<tr style="cursor:pointer;">
 					<td><b>{{ $carrera->id }}</b></td>
 					<td>{{ $carrera->nombre }}</td>
@@ -55,7 +55,7 @@
 					</td>
 				</tr>
 				@endforeach
-				@endforeach
+				
 			</tbody>
 		</table>
 	</div>
