@@ -50,8 +50,7 @@
                     <div class="form-group">
                         <label for="cohorte">Cohorte:</label>
                         <input type="text" id="cohorte" name="cohorte"
-                               class="form-control @error('cohorte') is-invalid @enderror" value="{{ $alumno->cohorte }}"
-                               required/>
+                               class="form-control @error('cohorte') is-invalid @enderror" value="{{ $alumno->cohorte }}" />
 
                         @error('cohorte')
                         <span class="invalid-feedback d-block" role="alert">
@@ -59,6 +58,31 @@
 						</span>
                         @enderror
                     </div>
+
+                    <div class="form-group">
+                        <label for="fecha_primera_acreditacion">Fecha Primera Acreditación:</label>
+                        <input type="date" id="fecha_primera_acreditacion" name="fecha_primera_acreditacion"
+                               class="form-control @error('fecha_primera_acreditacion') is-invalid @enderror" value="{{ $alumno->fecha_primera_acreditacion }}" />
+
+                        @error('fecha_primera_acreditacion')
+                        <span class="invalid-feedback d-block" role="alert">
+						    <strong>{{ $message }}</strong>
+						</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha_ultima_acreditacion">Fecha Última Acreditación:</label>
+                        <input type="text" id="fecha_ultima_acreditacion" name="fecha_ultima_acreditacion"
+                               class="form-control @error('fecha_ultima_acreditacion') is-invalid @enderror" value="{{ $alumno->fecha_ultima_acreditacion }}" />
+
+                        @error('fecha_ultima_acreditacion')
+                        <span class="invalid-feedback d-block" role="alert">
+						    <strong>{{ $message }}</strong>
+						</span>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="active">Activo:</label>
                         <input type="text" id="active" name="active"

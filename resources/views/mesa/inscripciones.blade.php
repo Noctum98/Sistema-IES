@@ -129,6 +129,8 @@
                 <td>{{ $inscripcion->telefono }}</td>
 
                 <td>
+                @include('mesa.modals.dar_baja_mesa')
+
                     <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
