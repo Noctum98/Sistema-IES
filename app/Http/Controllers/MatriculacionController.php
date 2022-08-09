@@ -195,7 +195,7 @@ class MatriculacionController extends Controller
 
         if($alumno->asistencias())
         {
-            $alumno->asistencias()->detach();
+            $alumno->asistencias()->delete();
         }
 
         if($alumno->comisiones())
@@ -203,12 +203,28 @@ class MatriculacionController extends Controller
             $alumno->comisiones()->detach();
         }
 
-        $user = User::find($alumno->user_id);
+        if($alumno->user_id)
+        {
+            $user = User::find($alumno->user_id);
+
+            if($user)
+            {
+                $user->carreras()->detach();
+                $user->roles()->detach();
+                $user->procesos()->detach();
+
+                $user->delete();
+            }
+
+        }
+
+
+       
 
         $alumno->delete();
 
-        return redirect()->route('alumno.detail', [
-            'alumno_id' => $alumno
+        return redirect()->route('alumno.carrera', [
+            'carrera_id' => $carrera->id
         ])->with([
             'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
         ]);
