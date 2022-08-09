@@ -79,22 +79,24 @@ class AsistenciaModularService
 
     public function cargarPonderacionEnAsistenciaModular(Materia $materia)
     {
-
-
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
+        $serviceProcesoModular = new ProcesoModularService();
         $cant = 0;
         $cargos = $this->obtenerCargosPorModulo($materia);
-        $promedio_final_p = 0;
-        $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
+        $asistencia_final_p = 0;
+        $procesos = $serviceProcesoModular->obtenerProcesosModularesByMateria($materia->id);
         foreach ($procesos as $proceso) {
-            $promedio_final_p = 0;
+            $asistencia_final_p = 0;
             foreach ($cargos as $cargo) {
                 /** @var ProcesoModular $proceso */
-                $ponderacion_cargo_materia = CargoMateria::where([
-                    'cargo_id' => $cargo->id,
-                    'materia_id' => $materia->id,
-                ])->first();
+                $ponderacion_cargo = $this->ponderarAsistencias($materia);
+
+                /**
+                 * Aquí tengo que calcular la ponderación de la asistencia por asistencia modular
+                 * La relación es proceso→asistencia(proceso_id)→asistencia_modular(asistencia_id)
+                 * filtrando por cargo
+                 */
                 $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
                         $cargo,
                         $materia->id,
