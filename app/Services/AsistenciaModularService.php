@@ -1,0 +1,140 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Alumno;
+use App\Models\AsistenciaModular;
+use App\Models\Cargo;
+use App\Models\CargoMateria;
+use App\Models\Materia;
+use App\Models\Proceso;
+use App\Models\ProcesoCalificacion;
+use App\Models\ProcesoModular;
+
+
+class AsistenciaModularService
+{
+
+    /**
+     * @param $materia_id <b>id</b> materia
+     * @return void
+     */
+    public function crearAsistenciaModular(int $materia_id)
+    {
+        $pm_sin_vincular = $this->obtenerProcesosModularesNoVinculados($materia_id);
+        $inicio = 0;
+        foreach ($pm_sin_vincular as $pm) {
+            $data['proceso_id'] = $pm->id;
+            ProcesoModular::create($data);
+            $inicio += 1;
+        }
+
+    }
+
+    /**
+     * @param int $materia_id <b>id</b> materia
+     * @return mixed
+     */
+    public function obtenerProcesosModularesNoVinculados(int $materia_id)
+    {
+        $procesos = Proceso::select('procesos.id')
+            ->where('materia_id', '=', $materia_id)
+            ->get();
+
+        return Proceso::select('procesos.id')
+            ->where('procesos.materia_id', $materia_id)
+            ->whereNotIn(
+                'procesos.id',
+                ProcesoModular::select('proceso_modular.proceso_id')
+                    ->whereIn('proceso_modular.proceso_id', $procesos)
+            )
+            ->get();
+    }
+
+    /**
+     * @param $materia_id <b>id</b> de la materia
+     * @return mixed
+     */
+    public function obtenerAsistenciasModularesByMateria($materia_id)
+    {
+        return AsistenciaModular::select('asistencias_modulares.*')
+            ->join('asistencias', 'asistencias.id', 'asistencias_modulares.asistencia_id')
+            ->join('procesos', 'procesos.id', 'asistencias.proceso_id')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id)
+            ->orderBy('alumnos.apellidos', 'asc')
+            ->get();
+    }
+
+    public function ponderarAsistencias(Materia $materia)
+    {
+        $total = 1;
+        $cargos = $this->obtenerCargosPorModulo($materia);
+        if($cargos and count($cargos) > 0){
+            $total = count($cargos);
+        }
+        return 100 / $total;
+    }
+
+
+    public function cargarPonderacionEnAsistenciaModular(Materia $materia)
+    {
+
+
+        $serviceCargo = new CargoService();
+        $serviceProcesoCalificacion = new ProcesoCalificacionService();
+        $cant = 0;
+        $cargos = $this->obtenerCargosPorModulo($materia);
+        $promedio_final_p = 0;
+        $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
+        foreach ($procesos as $proceso) {
+            $promedio_final_p = 0;
+            foreach ($cargos as $cargo) {
+                /** @var ProcesoModular $proceso */
+                $ponderacion_cargo_materia = CargoMateria::where([
+                    'cargo_id' => $cargo->id,
+                    'materia_id' => $materia->id,
+                ])->first();
+                $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
+                        $cargo,
+                        $materia->id,
+                        $proceso->alumnoRelacionado()->id
+                    ) ?? 0;
+                $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
+                $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
+            }
+            $proceso->promedio_final_porcentaje = $promedio_final_p;
+            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota($promedio_final_p);
+
+            $proceso->update();
+
+            $cant += 1;
+
+        }
+
+        return $cant;
+
+    }
+
+    public function obtenerCargosPorModulo(Materia $modulo)
+    {
+        return $modulo->cargos()->get();
+    }
+
+    public function obtenerTimeUltimaCalificacion($materia_id)
+    {
+        $serviceProcesoCalificacion = new ProcesoCalificacionService();
+        return $serviceProcesoCalificacion->obtenerTimeUltimaCalificacionPorModulo($materia_id);
+    }
+
+    public function obtenerTimeUltimoProcesoModular($materia_id)
+    {
+        return ProcesoModular::select('proceso_modular.updated_at')
+            ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
+            ->where('procesos.materia_id', $materia_id)
+            ->orderBy('proceso_modular.updated_at', 'desc')
+            ->first();
+    }
+
+
+}
