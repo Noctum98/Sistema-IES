@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\AllAlumnosExport;
 use App\Exports\AlumnosYearExport;
+use App\Exports\PlanillaNotasModularExport;
 use App\Exports\PlanillaNotasTradicionalExport;
 use Illuminate\Http\Request;
 use App\Models\Alumno;
@@ -80,6 +81,7 @@ class ExcelController extends Controller
 
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
+        
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id
         ]);
@@ -91,5 +93,34 @@ class ExcelController extends Controller
         $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
 
         return Excel::download(new PlanillaNotasTradicionalExport($procesos,$calificaciones,$materia->carrera),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
+    }
+
+    public function planilla_notas_modular($materia_id, $comision_id = null)
+    {
+
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id);
+
+
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
+                });
+            });
+        }
+        $materia = Materia::find($materia_id);
+
+        $comision =  null;
+        if ($comision_id) {
+            $comision = Comision::find($comision_id);
+        }
+
+
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos = $procesos->get();
+
+        return Excel::download(new PlanillaNotasModularExport($materia,$procesos),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
     }
 }

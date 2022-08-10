@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <a href="{{url()->previous()}}">
+        <a href="{{ route('cargo.admin') }}">
             <button class="btn btn-outline-info mb-2">
                 <i class="fas fa-angle-left"></i>
                 Volver

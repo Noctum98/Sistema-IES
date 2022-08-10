@@ -37,4 +37,10 @@ class Carrera extends Model
     {
         return $this->hasMany(Cargo::class);
     }
+
+    //============================ CARRERAS ====================================//
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 }

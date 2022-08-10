@@ -21,6 +21,10 @@ class PlanillaModularCargoSheet implements FromView
 
     public function view(): View
     {
-        
+        return view('excel.planilla_notas_modular',[
+            'materia' => $this->data_array['materia'],
+            'cargo' => $this->data_array['cargo'],
+            'procesos' => $this->data_array['procesos']
+        ]);
     }
 }

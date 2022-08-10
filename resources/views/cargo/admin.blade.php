@@ -20,13 +20,6 @@
 
 
         <h2 class="h1 text-info">Cargos
-            <form class="me-2 d-inline-flex" action="{{ route('cargo.admin') }}">
-                <div class="input-group mt-3">
-                    <input class="form-control mx-auto" type="text" id="search" name="search" placeholder="Buscar cargo"
-                           aria-label="Search">
-                    <button class="btn btn-outline-primary me-2" type="submit"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
         </h2>
 
         <h6>
@@ -57,7 +50,9 @@
         <br>
         <p>
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearCargo">Crear Cargo</button>
+            @if(Session::has('admin') || Session::has('regente'))
             <button class="btn btn-primary" id="filtros">Filtros</button>
+            @endif
 
         </p>
         @include('cargo.modals.crear_cargo')
