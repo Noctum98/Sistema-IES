@@ -4,6 +4,7 @@ use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\ModuloProfesorController;
+use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
@@ -202,6 +203,12 @@ Route::prefix('carreras/materias')->group(function () {
         'descargar_planilla'
     );
 });
+
+// Rutas de Módulos
+Route::prefix('modulos')->group(function () {
+    Route::get('/ver/{materia}', [ModulosController::class, 'ver_modulo'])->name('modulos.ver');
+});
+
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
 Route::get('/selectCargosCarrera/{id}', [CargoController::class, 'selectCargos']);
 Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsuarioByUsernameOrNull']);
