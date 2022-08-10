@@ -11,6 +11,8 @@ use App\Services\CarreraService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class CargoController extends Controller
@@ -34,11 +36,28 @@ class CargoController extends Controller
 
     public function index(Request $request)
     {
+
+        $user_id = Auth::user()->id;
         $search = $request->input('busqueda');
         if ($search) {
             $cargos = $this->cargoService->buscador($request,true);
         } else {
-            $cargos = Cargo::orderBy('updated_at', 'DESC')->paginate(10);
+
+            if(Session::has('coordinador'))
+            {
+                $cargos = Cargo::whereHas('materias',function($query) use ($user_id){
+                    return $query->whereHas('carrera',function($query) use ($user_id){
+                        return $query->whereHas('users',function($query) use ($user_id){
+                            return $query->where('users.id',$user_id);
+                        });
+                    });
+                })->paginate(30);
+            }else{
+                $cargos = Cargo::orderBy('updated_at', 'DESC')->paginate(10);
+            }
+
+            
+
         }
 
         $carreras = $this->carreraService->modulares();
