@@ -4,15 +4,14 @@
         <a href="{{url()->previous()}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
-
-        <h2 class="h1 text-info">
+        <h2 class="text-info">
             {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}}
             @if($calificacion->comision)
                 {{$calificacion->comision->nombre}}
             @endif
         </h2>
         <hr>
-        <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el boton de guardar debajo de cada
+        <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el botón de guardar debajo de cada
                 recuadro.</i></p>
         <div id="alerts">
 
@@ -48,9 +47,10 @@
                                 <input type="text" style="width: 100%" class="form-control col-md-12"
                                        id="calificacion-procentaje-{{ $proceso->id }}"
                                        value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
-                                       placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled
+                                       placeholder="%"
+                                       @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id )
+                                           disabled
                                        @endif>
-
                                 <button type="submit"
                                         class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
                                     <i class="fa fa-save"></i></button>

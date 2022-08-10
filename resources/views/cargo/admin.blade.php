@@ -89,9 +89,13 @@
                                         @if(Auth::user()->hasRole('admin'))
                                             <small>({{$materia->id}})</small>
                                         @endif
-                                        {{$materia->nombre}}
+                                        <a href="{{route('modulos.ver', ['materia' => $materia->id])}}"
+                                        title="Ver módulo">
+                                            {{$materia->nombre}}
+                                        </a>
 
-                                        <sub>Ponderación: {{$cargo->ponderacion($cargo->id,$materia->id)??'0'}} %</sub><br/>
+
+                                        <sub>Ponderación: {{$cargo->ponderacion($materia->id)??'0'}} %</sub><br/>
                                     @endforeach
                                 @endif
                             </td>
