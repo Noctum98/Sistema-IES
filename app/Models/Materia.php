@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -69,6 +70,14 @@ class Materia extends Model
         }
 
         return $total_modulo;
+    }
+
+    public function obtenerPonderacionAsistencia()
+    {
+        $servicioAsistencia = new AsistenciaModularService();
+
+        return $servicioAsistencia->ponderarAsistencias($this);
+
     }
 
 

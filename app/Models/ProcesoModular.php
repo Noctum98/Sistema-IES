@@ -25,6 +25,7 @@ class ProcesoModular extends Model
         'cierre',
         'operador_id',
         'proceso_id',
+        'asistencia_final_porcentaje',
     ];
 
     public function procesoRelacionado()
