@@ -25,10 +25,10 @@ class ProcesoModularController extends Controller
     /**
      * Muestra los procesos de los cargos de cada módulo ponderados.
      * @param Materia $materia
-     * @param int $cargo_id
+     * @param int|null $cargo_id
      * @return Application|Factory|View
      */
-    public function list(Materia $materia, int $cargo_id)
+    public function list(Materia $materia, ?int $cargo_id = null)
     {
         $acciones = [];
         $serviceModular = new ProcesoModularService();
