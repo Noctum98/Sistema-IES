@@ -89,15 +89,6 @@ class ProcesoController extends Controller
         }
         $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
 
-        if(count($calificaciones) > 0)
-        {
-            foreach($procesos as $proceso)
-            {
-                
-            }
-        }
-
-
         $estados = Estados::all();
 
         return view('proceso.listado', [

@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\PlanillaModularAsistenciaSheet;
 use App\Exports\Sheets\PlanillaModularCargoSheet;
 use App\Models\Materia;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -22,6 +23,7 @@ class PlanillaNotasModularExport implements WithMultipleSheets
     {
 
         $sheets = [];
+        $sheets[] = new PlanillaModularAsistenciaSheet($this->materia->cargos,$this->procesos,$this->materia);
 
         foreach($this->materia->cargos as $cargo)
         {
@@ -29,7 +31,7 @@ class PlanillaNotasModularExport implements WithMultipleSheets
                 'materia' => $this->materia,
                 'cargo' => $cargo,
                 'procesos' => $this->procesos
-            ];
+            ];  
             
             $sheets[] = new PlanillaModularCargoSheet($data_array);
         }

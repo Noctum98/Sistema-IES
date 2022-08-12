@@ -30,7 +30,7 @@
                    class="btn btn-info" title="Ver proceso cargo">
                     {{$cargo->nombre}}
                 </a>
-            @endforeach
+        @endforeach
 
 
         </h5>
@@ -44,9 +44,12 @@
                     Los procesos se editan desde cada cargo individualmente.
                 </small></i></p>
 
+        @if(isset($comision))
+        <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}" class="btn btn-sm btn-success">Descargar planilla</a>
+        @else
+        <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success">Descargar planilla</a>
 
-        {{--    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>--}}
-
+        @endif
         @if(count($procesos) > 0)
             <div class="table tableFixHead">
                 <table class="table mt-1 ">
