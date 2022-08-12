@@ -54,9 +54,8 @@
                                        class="text-white">{{$calificacion->nombre}}</a></th>
                             @endforeach
                         @endif
-                        <th><a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>
                         <th>
-                            Estado
+                            <a href="{{ route('asis.admin', ['id'=> $materia->id, 'cargo_id' => $cargo->id])}}" class="text-white"> Asistencia % </a>
                         </th>
                         <th>Nota Final</th>
 
@@ -103,20 +102,6 @@
                             <td>
                                 {{ $proceso->asistencia() ? $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje : '-' }}
                                 %
-                            </td>
-                            <td class="col-md-3">
-
-                                <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}"
-                                        id="{{$proceso->id}}" @if($proceso->cierre == 1) disabled @endif >
-                                    <option value="">Seleccione estado</option>
-                                    @foreach($estados as $estado)
-                                        @if($estado->id == $proceso->estado_id)
-                                            <option value="{{$estado->id}}" selected>{{$estado->nombre}}</option>
-                                        @else
-                                            <option value="{{$estado->id}}">{{$estado->nombre}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
                             </td>
                             <td>
                                 <form action="" id="{{ $proceso->id }}">

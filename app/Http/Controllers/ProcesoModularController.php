@@ -28,7 +28,7 @@ class ProcesoModularController extends Controller
      * @param int $cargo_id
      * @return Application|Factory|View
      */
-    public function list(Materia $materia, int $cargo_id)
+    public function listado(Materia $materia, int $cargo_id)
     {
         $acciones = [];
         $serviceModular = new ProcesoModularService();
