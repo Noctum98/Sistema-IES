@@ -19,7 +19,6 @@
             @endforeach
             <th>Parcial</th>
             <th>% Final</th>
-            <th># Final</th>
         </tr>
     </thead>
     <tbody>
@@ -68,15 +67,6 @@
                 $pfinal =($pparcial * 0.3) + $p70
                 @endphp
                 {{number_format($pfinal, 2, '.', ',') !=0 ? number_format($pfinal, 2, '.', ',').'%' :  '-'}}
-            </td>
-            <td>
-                @php
-                $p70 = 0;
-                if($cant > 0) $p70 = ($sumaNota/$cant * 0.7);
-
-                $pfinal =($pparcial * 0.3) + $p70
-                @endphp
-                {{number_format($pfinal, 2, '.', ',') != 0 ? number_format($pfinal, 2, '.', ',') : '-'}}
             </td>
 
         </tr>
