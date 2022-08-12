@@ -68,6 +68,8 @@
                                id="loader-cargo-{{$cargo->id}}-materia-{{$modulo->id}}"></i>
 
                             {{--						{{$cargo->ponderacion($modulo->id)}}--}}
+                            @if(!$cargo->ponderacion($modulo->id))
+
                             <form action="" id="pondera-cargo-materia" class="pondera-cargo">
                                 <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
@@ -80,6 +82,9 @@
                         ">
                                     <i class="fa fa-save"></i></button>
                             </form>
+                            @else
+                                {{$cargo->ponderacion($modulo->id)}}
+                            @endif
                         </td>
                         <td>
                             @foreach ($cargo->users as $usuario)

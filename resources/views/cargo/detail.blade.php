@@ -44,6 +44,7 @@
                             </a>
                         </td>
                         <td>
+                            @if(!$cargo->ponderacion($materia->id))
                             <form action="" id="pondera-cargo-materia" class="pondera-cargo">
                                 <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
@@ -56,6 +57,9 @@
                         ">
                                     <i class="fa fa-save"></i></button>
                             </form>
+                            @else
+                                {{$cargo->ponderacion($materia->id)}}
+                            @endif
 
                         </td>
                         <td>
