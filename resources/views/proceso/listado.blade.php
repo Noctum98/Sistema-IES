@@ -56,7 +56,6 @@
                         Estado
                     </th>
                     <th>Nota Global</th>
-                    <th>Nota Final</th>
 
                     <th>
                         Cierre
@@ -121,15 +120,8 @@
                     </td>
                     <td>
                         <form action="" id="{{ $proceso->id }}" class="form_nota_global">
-                            <input type="number" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : 'text-danger' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global ? $proceso->nota_global : '' }}" @if(!$proceso->nota_global || $proceso->estado->identificador != 5 || $proceso->cierre) disabled @endif>
+                            <input type="number" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global ? $proceso->nota_global : '' }}" @if(!$proceso->nota_global || $proceso->estado->identificador != 5 || $proceso->cierre) disabled @endif>
                             <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text" id="btn-global-{{ $proceso->id }}" @if(!Session::has('profesor') or $proceso->cierre) disabled @endif>
-                                <i class="fa fa-save"></i></button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="" id="{{ $proceso->id }}" class="form_nota_final">
-                            <input type="number" class="form-control nota_final {{ $proceso->final_calificaciones >= 4 ? 'text-success' : 'text-danger' }}" id="nota-{{ $proceso->id }}" value="{{ $proceso->final_calificaciones ? $proceso->final_calificaciones : '' }}" @if($proceso->cierre || !$proceso->estado_id) disabled @endif>
-                            <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text" @if(!Session::has('profesor') or $proceso->cierre) disabled @endif>
                                 <i class="fa fa-save"></i></button>
                         </form>
                     </td>
@@ -147,26 +139,11 @@
                 </tr>
                 @endforeach
             </tbody>
+            @include('proceso.modals.tps-mostrar')
             @else
             'No se encontraron procesos'
             @endif
-            {{-- <div class="col-md-4 m-0 p-0 proceso-detalle">--}}
-            {{-- <ul>--}}
-            {{-- <li><strong>Materia:</strong> {{ $proceso->materia->nombre }}</li>--}}
-            {{-- <li><strong>Estado:</strong> {{ ucwords($proceso->estado) }}</li>--}}
-            {{-- <li><strong>Nota final de parciales:</strong>--}}
-            {{-- {{ $proceso->final_parciales ? $proceso->final_parciales : 'Sin asignar'}}--}}
-            {{-- </li>--}}
-            {{-- <li><strong>Nota final de TP:</strong>--}}
-            {{-- {{ $proceso->final_trabajos ? $proceso->final_trabajos : 'Sin asignar'}}--}}
-            {{-- </li>--}}
-            {{-- <li><strong>Asistencia final:</strong>--}}
-            {{-- {{ $proceso->final_asistencia ? $proceso->final_asistencia : 'Sin asignar'}}--}}
-            {{-- </li>--}}
-            {{-- </ul>--}}
-            {{-- </div>--}}
     </div>
-    @include('proceso.modals.tps-mostrar')
     @endsection
     @section('scripts')
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>

@@ -1,113 +1,82 @@
-<table>
+<table class="table table-striped f30">
     <thead>
         <tr>
-            <th>
-                Alumno
-            </th>
-            @if(count($cargo->calificaciones) > 0)
-                @foreach($cargo->calificaciones as $calificacion)
-                <th>{{$calificacion->nombre}}</th>
-                @endforeach
-            @else
-            <th>
-                Notas
-            </th>
-            @endif
-            <th>Asistencia %</th>
-            @if($materia->carrera->tipo == 'tradicional2')
-            <th>Asistencia Presencial</th>
-            <th>Asistencia Virtual</th>
-            @endif
-            <th>
-                Estado
-            </th>
-            <th>Promedio Final TP</th>
-            <th>Nota Global</th>
-            <th>
-                Nota Final
-            </th>
-            <th>
-                Cierre
-            </th>
+            <th><b>UNIDAD ACADEMICA:</b></th>
+            <th><b>{{$materia->carrera->sede->nombre}} </b></th>
+        </tr>
+        <tr>
+            <th><b>CARRERA:</b></th>
+            <th> <b> {{ $materia->carrera->nombre.' ( '.ucwords($materia->carrera->turno).' )' }}</b></th>
+        </tr>
+        <tr>
+            <th><b>RESOLUCION: </b></th>
+            <th style="text-align: left;"><b> {{ $materia->carrera->resolucion }} </b></th>
+        </tr>
+        <tr>
+            <th scope="col">Apeliido y Nombre</th>
+            @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
+            <th scope="col">{{$calificacion->nombre}}</th>
+            @endforeach
+            <th>Parcial</th>
+            <th>% Final</th>
+            <th># Final</th>
         </tr>
     </thead>
     <tbody>
         @foreach($procesos as $proceso)
+        @php
+        $suma=0;
+        $sumaNota=0;
+        $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
+        $pparcial = 0;
+        @endphp
         <tr>
-            <td>
-                {{$proceso->alumno->apellidos}}, {{$proceso->alumno->nombres}}
-            </td>
-            @if(count($calificaciones) > 0)
-            @foreach($cargo->calificaciones as $cc)
-            <td>
+            <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}</td>
 
-                @if($proceso->procesoCalificacion($cc->id))
-                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                    {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
-                </span>
-                @if($proceso->procesoCalificacion($cc->id)->porcentaje > 0)
-                %
-                @endif
 
-                @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
-                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                    - R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
-                </span>
-                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                %
-                @endif
-                @endif
+            <!--Trabajos Prácticos-->
+            @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
+            <td>
+                @if(count($calificacion->procesosCalificacionByAlumno($proceso->alumno->id)) > 0)
+                {{number_format($calificacion->procesosCalificacionByAlumno($proceso->alumno->id)[0]->porcentaje, 2, '.', ',').'%' }}
+                @php
+                $suma+=$calificacion->procesosCalificacionByAlumno($proceso->alumno->id)[0]->porcentaje;
+                $sumaNota+=$calificacion->procesosCalificacionByAlumno($proceso->alumno->id)[0]->nota;
+                @endphp
                 @else
                 -
                 @endif
             </td>
             @endforeach
-            @else
+
+
+            <!--Parciales-->
+
             <td>
-                -
+                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
+                {{number_format($calificacionP->obtenerParcial($proceso->alumno->id), 2, '.', ',')}}
+                @php
+                $pparcial = $calificacionP->obtenerParcial($proceso->alumno->id);
+                @endphp
+                @endforeach
             </td>
-            @endif
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
-            @if($carrera->tipo == 'tradicional2')
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_presencial : '-' }}%</td>
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_virtual : '-' }}%</td>
-            @endif
             <td>
-                {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
-            </td>
+                @php
+                $p70 = 0;
+                if($cant > 0) $p70 = ($suma/$cant * 0.7);
 
-            @if($proceso->final_trabajos && $proceso->final_trabajos >=4)
-            <td style="color:#025827">
-                {{ $proceso->final_trabajos ?? '-' }}
+                $pfinal =($pparcial * 0.3) + $p70
+                @endphp
+                {{number_format($pfinal, 2, '.', ',') !=0 ? number_format($pfinal, 2, '.', ',').'%' :  '-'}}
             </td>
-            @else
-            <td style="color:red">
-                {{ $proceso->final_trabajos ?? '-' }}
-            </td>
-            @endif
-
-
-            @if($proceso->nota_global && $proceso->nota_global >=4)
-            <td style="color:#025827">
-                {{$proceso->nota_global ?? '-'}}
-            </td>
-            @else
-            <td style="color:red">
-                {{$proceso->nota_global ?? '-'}}
-            </td>
-            @endif
-
-            @if($proceso->final_calificaciones && $proceso->final_calificaciones >=4)
-            <td style="color:#025827">
-                {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}
-            </td>
-            @else
-            <td style="color:red">
-                {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}
-            </td>
-            @endif
             <td>
-                {{ $proceso->cierre ? 'Proceso cerrado' : 'Proceso abierto' }}
+                @php
+                $p70 = 0;
+                if($cant > 0) $p70 = ($sumaNota/$cant * 0.7);
+
+                $pfinal =($pparcial * 0.3) + $p70
+                @endphp
+                {{number_format($pfinal, 2, '.', ',') != 0 ? number_format($pfinal, 2, '.', ',') : '-'}}
             </td>
 
         </tr>

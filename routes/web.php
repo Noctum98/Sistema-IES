@@ -463,7 +463,7 @@ Route::prefix('excel')->group(function () {
     Route::get('procesos/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
-    Route::get('procesosModular/{materia_id},{comision_id}',[ExcelController::class,'planilla_notas_modular'])->name('excel.procesosModular');
+    Route::get('procesosModular/{materia_id}/{comision_id?}',[ExcelController::class,'planilla_notas_modular'])->name('excel.procesosModular');
 });
 
 Route::get('/clear-cache', function () {
