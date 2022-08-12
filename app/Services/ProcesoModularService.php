@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Alumno;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
 use App\Models\Materia;
 use App\Models\Proceso;
-use App\Models\ProcesoCalificacion;
 use App\Models\ProcesoModular;
 
 

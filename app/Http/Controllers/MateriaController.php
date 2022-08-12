@@ -33,10 +33,16 @@ class MateriaController extends Controller
 
     public function vista_admin(int $carrera_id)
     {
+        $ruta = 'materia.admin';
         $carrera = Carrera::find($carrera_id);
         $materias = Materia::where('carrera_id', $carrera_id)->orderBy('año')->get();
 
-        return view('materia.admin', [
+        if($carrera->tipo == 'modular' || $carrera->tipo == 'modular2' )
+        {
+            $ruta = 'materia.admin-modular';
+        }
+
+        return view( $ruta, [
             'carrera' => $carrera,
             'materias' => $materias,
         ]);
