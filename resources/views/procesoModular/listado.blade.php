@@ -6,7 +6,7 @@
         }
     </style>
     <div class="container-fluid w-100" id="container-scroll">
-        <a href="{{route('calificacion.admin', ['materia_id'=>$materia->id, 'cargo_id'=> $cargo_id])}}">
+        <a href="{{url()->previous()}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
         @if($acciones)
