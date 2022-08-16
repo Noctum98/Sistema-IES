@@ -44,8 +44,16 @@
 					</select>
 				</div>
 				<div class="form-group">
+					<label for="regimen">Régimen:</label>
+					<select class="form-select" id="regimen" name="regimen">
+						<option value="Anual">Anual</option>
+						<option value="Cuatrimestral (1er)">Cuatrimestral (1er)</option>
+						<option value="Cuatrimestral (2do)">Cuatrimestral (2do)</option>
+					</select>
+				</div>
+				<div class="form-group">
 					<label for="correlativa" name="correlativa">Correlatividad:</label>
-					<select class="form-control" id="correlativa">
+					<select class="form-select" id="correlativa">
 						<option value="">No es correlativa</option>
 						@foreach($materias as $materia)
 							<option value="{{ $materia->id }}">

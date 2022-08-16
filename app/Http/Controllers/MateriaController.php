@@ -84,12 +84,9 @@ class MateriaController extends Controller
             'personal' => ['numeric'],
         ]);
 
-        $materia = new Materia();
-        $materia->nombre = $request->input('nombre');
-        $materia->año = (int)$request->input('año');
-        $materia->carrera_id = $carrera_id;
+        $request['carrera_id'] = $carrera_id;
 
-        $materia->save();
+        $materia = Materia::create($request->all());
 
         return redirect()->route('materia.admin', ['carrera_id' => $carrera_id]);
     }
@@ -99,15 +96,12 @@ class MateriaController extends Controller
         $validate = $this->validate($request, [
             'nombre' => ['required'],
             'año' => ['required', 'numeric', 'max:3'],
+            'regimen' => ['required']
         ]);
-        
-        $materia = Materia::find($id);
-        $materia->nombre = $request->input('nombre');
-        $materia->año = (int)$request->input('año');
-        $materia->personal_id = (int)$request->input('personal');
-        $materia->correlativa = $request->input('correlativa');
 
-        $materia->update();
+        $materia = Materia::find($id);
+        $materia->update($request->all());
+
 
         return redirect()->route('materia.editar', ['id' => $id])->with([
             'message' => 'Materia editada correctamente!',

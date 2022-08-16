@@ -32,6 +32,14 @@
 					@enderror
 				</div>
 				<div class="form-group">
+					<label for="regimen">Régimen:</label>
+					<select class="form-select" id="regimen"  name="regimen">
+						<option value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>Anual</option>
+						<option value="Cuatrimestral (1er)" {{ $materia->regimen == 'Cuatrimestral (1er)' ?  'selected="selected"' :'' }}>Cuatrimestral (1er)</option>
+						<option value="Cuatrimestral (2do)" {{ $materia->regimen == 'Cuatrimestral (2do)' ?  'selected="selected"' :'' }}>Cuatrimestral (2do)</option>
+					</select>
+				</div>
+				<div class="form-group">
 					<label for="personal">Profesor:</label>
 					<select class="form-control" id="personal" name="personal">
 						@foreach($personal as $persona)

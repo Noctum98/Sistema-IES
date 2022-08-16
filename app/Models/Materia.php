@@ -10,6 +10,14 @@ class Materia extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'carrera_id',
+        'correlativa',
+        'año',
+        'nombre',
+        'regimen'
+    ];
+
     public function carrera()
     {
         return $this->belongsTo('App\Models\Carrera', 'carrera_id');
