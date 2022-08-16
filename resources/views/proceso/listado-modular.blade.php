@@ -16,9 +16,9 @@
                 <br/><small>{{$comision->nombre}}</small>
             @endif
         </h3>
-        <h4>
-            Correspondiente al módulo {{$materia->nombre}}
-        </h4>
+        <h5>
+            Correspondiente al módulo <i>{{$materia->nombre}}</i>
+        </h5>
         <hr>
         <div id="alerts">
 
@@ -53,6 +53,10 @@
                                 <th><a href="{{ route('calificacion.create',$calificacion->id) }}"
                                        class="text-white">{{$calificacion->nombre}}</a></th>
                             @endforeach
+                        @else
+                            <th>
+                                -
+                            </th>
                         @endif
                         <th>
                             <a href="{{ route('asis.admin', ['id'=> $materia->id, 'cargo_id' => $cargo->id])}}" class="text-white"> Asistencia % </a>
