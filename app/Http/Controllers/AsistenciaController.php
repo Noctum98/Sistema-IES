@@ -140,9 +140,24 @@ class AsistenciaController extends Controller
     public function crear_7030(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'porcentaje_virtual' => ['required', 'numeric', 'max:30'],
-            'porcentaje_presencial' => ['required', 'numeric', 'max:70'],
+            'porcentaje_virtual' => ['required', 'numeric'],
+            'porcentaje_presencial' => ['required', 'numeric','max:30'],
         ]);
+
+        $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
+
+        if($porcentaje_final > 100)
+        {
+            $response = [
+                'message' => 'Error',
+                'errors' =>[
+                    "porcentaje_presencial" => [
+                      0 => "La suma de las asistencias no debe ser mayor a 100"
+                    ]
+                ]
+            ];
+            return response()->json($response, 200);
+        }
 
         if (!$validate->fails()) {
             $issetAsistencia = Asistencia::where('proceso_id', $request['proceso_id'])->first();
@@ -166,7 +181,6 @@ class AsistenciaController extends Controller
                 'errors' => $validate->errors(),
             ];
         }
-
 
         return response()->json($response, 200);
     }
@@ -208,9 +222,24 @@ class AsistenciaController extends Controller
     public function crear_modular_7030(Request $request): JsonResponse
     {
         $validate = Validator::make($request->all(), [
-            'porcentaje_virtual' => ['required', 'numeric', 'max:30'],
-            'porcentaje_presencial' => ['required', 'numeric', 'max:70'],
+            'porcentaje_virtual' => ['required', 'numeric'],
+            'porcentaje_presencial' => ['required', 'numeric'],
         ]);
+
+        $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
+
+        if($porcentaje_final > 100)
+        {
+            $response = [
+                'message' => 'Error',
+                'errors' =>[
+                    "porcentaje_presencial" => [
+                      0 => "La suma de las asistencias no debe ser mayor a 100"
+                    ]
+                ]
+            ];
+            return response()->json($response, 200);
+        }
 
         if (!$validate->fails()) {
             $asistencia = Asistencia::where([
