@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Materia;
 use App\Models\ProcesoModular;
+use App\Services\AsistenciaModularService;
 use App\Services\ProcesoModularService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -46,6 +47,13 @@ class ProcesoModularController extends Controller
                 $serviceModular->cargarPonderacionEnProcesoModular($materia);
                 $acciones[] = "Procesando % modulares para {$materia->nombre}";
             }
+        }
+        $asistenciaModular = new AsistenciaModularService();
+
+        $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia);
+
+        if($asistencias > 0){
+            $acciones[] = "Procesando % asistencia para {$materia->nombre}";
         }
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);

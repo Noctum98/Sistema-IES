@@ -66,7 +66,7 @@ class AsistenciaModularService
             ->get();
     }
 
-    public function ponderarAsistencias(Materia $materia)
+    public function calcularAsistencias(Materia $materia)
     {
         $total = 1;
         $cargos = $this->obtenerCargosPorModulo($materia);
@@ -76,37 +76,42 @@ class AsistenciaModularService
         return 100 / $total;
     }
 
+    public function ponderarAsistencias(Materia $materia, Cargo $cargo)
+    {
 
-    public function cargarPonderacionEnAsistenciaModular(Materia $materia)
+        return $cargo->ponderacion($materia->id);
+
+    }
+
+
+    public function cargarPonderacionEnAsistenciaModular(Materia $materia): int
     {
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
         $serviceProcesoModular = new ProcesoModularService();
         $cant = 0;
         $cargos = $this->obtenerCargosPorModulo($materia);
-        $asistencia_final_p = 0;
         $procesos = $serviceProcesoModular->obtenerProcesosModularesByMateria($materia->id);
         foreach ($procesos as $proceso) {
             $asistencia_final_p = 0;
+
             foreach ($cargos as $cargo) {
                 /** @var ProcesoModular $proceso */
-                $ponderacion_cargo = $this->ponderarAsistencias($materia);
+                $ponderacion_cargo = $cargo->ponderacion($materia->id);
 
                 /**
                  * Aquí tengo que calcular la ponderación de la asistencia por asistencia modular
                  * La relación es proceso→asistencia(proceso_id)→asistencia_modular(asistencia_id)
                  * filtrando por cargo
                  */
-                $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
-                        $cargo,
-                        $materia->id,
-                        $proceso->alumnoRelacionado()->id
-                    ) ?? 0;
-                $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
-                $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
+
+                $asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
+
+
+                $asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
             }
-            $proceso->promedio_final_porcentaje = $promedio_final_p;
-            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota($promedio_final_p);
+            $proceso->asistencia_final_porcentaje = $asistencia_final_p;
+
 
             $proceso->update();
 
