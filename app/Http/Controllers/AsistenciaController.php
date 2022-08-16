@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Asistencia;
@@ -139,9 +140,24 @@ class AsistenciaController extends Controller
     public function crear_7030(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'porcentaje_virtual' => ['required', 'numeric', 'max:30'],
-            'porcentaje_presencial' => ['required', 'numeric', 'max:70'],
+            'porcentaje_virtual' => ['required', 'numeric'],
+            'porcentaje_presencial' => ['required', 'numeric','max:30'],
         ]);
+
+        $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
+
+        if($porcentaje_final > 100)
+        {
+            $response = [
+                'message' => 'Error',
+                'errors' =>[
+                    "porcentaje_presencial" => [
+                      0 => "La suma de las asistencias no debe ser mayor a 100"
+                    ]
+                ]
+            ];
+            return response()->json($response, 200);
+        }
 
         if (!$validate->fails()) {
             $issetAsistencia = Asistencia::where('proceso_id', $request['proceso_id'])->first();
@@ -166,26 +182,23 @@ class AsistenciaController extends Controller
             ];
         }
 
-
         return response()->json($response, 200);
     }
 
     public function crear_modular(Request $request)
     {
         $validate = $this->validate($request, [
-            'porcentaje'             =>  ['required', 'numeric'],
+            'porcentaje' => ['required', 'numeric'],
         ]);
 
         $asistencia = Asistencia::where([
-            'proceso_id' => $request['proceso_id']
+            'proceso_id' => $request['proceso_id'],
         ])->first();
 
-        if ($asistencia)
-        {
-            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'],$asistencia->id);
-            if ($asistencia_modular)
-            {
-                $asistencia_modular->porcentaje = (int) $request['porcentaje'];
+        if ($asistencia) {
+            $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'], $asistencia->id);
+            if ($asistencia_modular) {
+                $asistencia_modular->porcentaje = (int)$request['porcentaje'];
                 $asistencia_modular->update();
             } else {
                 $request['asistencia_id'] = $asistencia->id;
@@ -200,19 +213,33 @@ class AsistenciaController extends Controller
 
         $response = [
             'message' => 'Asistencia creada con éxito!',
-            'asistencia' => $asistencia
+            'asistencia' => $asistencia,
         ];
 
         return response()->json($response, 200);
     }
 
-    public function crear_modular_7030(
-        Request $request
-    ) {
+    public function crear_modular_7030(Request $request): JsonResponse
+    {
         $validate = Validator::make($request->all(), [
-            'porcentaje_virtual' => ['required', 'numeric', 'max:30'],
-            'porcentaje_presencial' => ['required', 'numeric', 'max:70'],
+            'porcentaje_virtual' => ['required', 'numeric'],
+            'porcentaje_presencial' => ['required', 'numeric'],
         ]);
+
+        $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
+
+        if($porcentaje_final > 100)
+        {
+            $response = [
+                'message' => 'Error',
+                'errors' =>[
+                    "porcentaje_presencial" => [
+                      0 => "La suma de las asistencias no debe ser mayor a 100"
+                    ]
+                ]
+            ];
+            return response()->json($response, 200);
+        }
 
         if (!$validate->fails()) {
             $asistencia = Asistencia::where([
@@ -222,7 +249,7 @@ class AsistenciaController extends Controller
             if ($asistencia) {
                 $asistencia_modular = AsistenciaModular::getByAsistenciaCargo($request['cargo_id'], $asistencia->id);
                 if ($asistencia_modular) {
-                    $asistencia_modular->porcentaje_virtual = (int)$request['porcenaje_virtual'];
+                    $asistencia_modular->porcentaje_virtual = (int)$request['porcentaje_virtual'];
                     $asistencia_modular->porcentaje_presencial = (int)$request['porcentaje_presencial'];
                     $asistencia_modular->porcentaje = $asistencia_modular->porcentaje_virtual + $asistencia_modular->porcentaje_presencial;
                     $asistencia_modular->update();
