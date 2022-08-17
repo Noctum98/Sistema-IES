@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Materia extends Model
 {
@@ -15,12 +16,18 @@ class Materia extends Model
         'correlativa',
         'año',
         'nombre',
-        'regimen'
+        'regimen',
+        'tipo_materia_id'
     ];
 
     public function carrera()
     {
         return $this->belongsTo('App\Models\Carrera', 'carrera_id');
+    }
+
+    public function tipoMateria(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
     }
 
     public function cargos()

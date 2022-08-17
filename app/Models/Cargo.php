@@ -6,6 +6,7 @@ use App\Services\CargoService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cargo extends Model
@@ -13,7 +14,7 @@ class Cargo extends Model
     use HasFactory;
 
     protected $table = 'cargos';
-    protected $fillable = ['nombre','carrera_id'];
+    protected $fillable = ['nombre','carrera_id', 'tipo_materia_id'];
     /**
      * @var CargoService
      */
@@ -34,6 +35,11 @@ class Cargo extends Model
     public function carrera()
     {
         return $this->belongsTo('App\Models\Carrera','carrera_id');
+    }
+
+    public function tipoMateria(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
     }
 
     public function ponderacion($materia_id)
