@@ -60,6 +60,7 @@
                         </th>
                         <th>Promedio Final %</th>
                         <th>Promedio Final #</th>
+                        <th>Asistencia Final %</th>
                         <th>Trabajo FI %</th>
                         <th>Trabajo FI #</th>
                         <th>Nota Final %</th>
@@ -78,8 +79,12 @@
                             <td class="text-center">
                                 {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|
                             </td>
+
                             <td class="text-center">
                                 {{$proceso->promedio_final_nota}} |
+                            </td>
+                            <td class="text-center">
+                                {{$proceso->asistencia_final_porcentaje}} % |
                             </td>
                             <td class="text-center">
                                 {{$proceso->trabajo_final_porcentaje}} %|
