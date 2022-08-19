@@ -167,7 +167,6 @@ Route::prefix('personal')->group(function () {
 
 Route::prefix('cargo')->group(function () {
     Route::get('/', [CargoController::class, 'index'])->name('cargo.admin');
-    Route::get('crear', [CargoController::class, ''])->name('carrera.crear');
     Route::post('cargo', [CargoController::class, 'store'])->name('cargo.store');
     Route::get('cargo/{id}', [CargoController::class, 'show'])->name('cargo.show');
     Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
