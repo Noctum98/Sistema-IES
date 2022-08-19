@@ -151,4 +151,45 @@ class MateriaController extends Controller
         ]);
 
     }
+
+    public function cierre(Request $request,$materia_id,$comision_id = null)
+    {
+        $materia = Materia::find($materia_id);
+
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id);
+
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
+                });
+            });
+        }
+
+
+
+        if($materia->cierre)
+        {
+            $materia->cierre = false;
+        }else{
+            $materia->cierre = true;
+            $procesos = $procesos->update(['cierre'=>true]);
+
+        }
+
+        $materia->update();
+
+        $datos = [
+            'materia_id' => $materia_id
+        ];
+
+        if($comision_id)
+        {
+            $datos['comision_id'] = $comision_id;
+        }
+
+        return redirect()->route('proceso.listado',$datos);
+    }
 }
