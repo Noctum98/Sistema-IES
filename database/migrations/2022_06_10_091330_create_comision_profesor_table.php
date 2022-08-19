@@ -16,8 +16,12 @@ class CreateComisionProfesorTable extends Migration
         Schema::create('comision_profesor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('comision_id')->constrained('comisiones');
-            $table->foreignId('profesor_id')->constrained('profesores');
+            $table->unsignedInteger('profesor_id');
             $table->timestamps();
+
+            $table->foreign('profesor_id')
+                ->references('id')
+                ->on('profesores');
         });
     }
 
