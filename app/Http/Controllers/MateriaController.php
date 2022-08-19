@@ -168,8 +168,6 @@ class MateriaController extends Controller
             });
         }
 
-
-
         if($materia->cierre)
         {
             $materia->cierre = false;
