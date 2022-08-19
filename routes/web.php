@@ -160,7 +160,6 @@ Route::prefix('personal')->group(function () {
     // Acciones
     Route::post('crear-personal', [PersonalController::class, 'crear_personal'])->name('crear_personal');
     Route::post('edita-personal/{id}', [PersonalController::class, 'editar_personal'])->name('editar_personal');
-    Route::get('descargar-ficha/{id}', [PersonalController::class, 'descargar_ficha'])->name('descargar_ficha');
 });
 
 // Rutas Cargo
