@@ -171,6 +171,7 @@ Route::prefix('cargo')->group(function () {
     Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
     Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
     Route::delete('delete/{cargo}', [CargoController::class, 'destroy'])->name('cargo.delete');
+    Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
 });
 
 // Rutas de Carreras

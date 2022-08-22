@@ -90,4 +90,9 @@ class Cargo extends Model
             ->where('tipo_calificaciones.descripcion','=', 3)
             ->get();
     }
+
+    public function tipoCargo(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
+    }
 }

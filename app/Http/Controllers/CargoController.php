@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
 use App\Models\Materia;
+use App\Models\TipoMateria;
 use App\Models\User;
 use App\Services\CargoService;
 use App\Services\CarreraService;
@@ -40,23 +41,21 @@ class CargoController extends Controller
         $user_id = Auth::user()->id;
         $search = $request->input('busqueda');
         if ($search) {
-            $cargos = $this->cargoService->buscador($request,true);
+            $cargos = $this->cargoService->buscador($request, true);
         } else {
 
-            if(Session::has('coordinador'))
-            {
-                $cargos = Cargo::whereHas('materias',function($query) use ($user_id){
-                    return $query->whereHas('carrera',function($query) use ($user_id){
-                        return $query->whereHas('users',function($query) use ($user_id){
-                            return $query->where('users.id',$user_id);
+            if (Session::has('coordinador')) {
+                $cargos = Cargo::whereHas('materias', function ($query) use ($user_id) {
+                    return $query->whereHas('carrera', function ($query) use ($user_id) {
+                        return $query->whereHas('users', function ($query) use ($user_id) {
+                            return $query->where('users.id', $user_id);
                         });
                     });
                 })->paginate(30);
-            }else{
+            } else {
                 $cargos = Cargo::orderBy('updated_at', 'DESC')->paginate(10);
             }
 
-            
 
         }
 
@@ -103,6 +102,7 @@ class CargoController extends Controller
 //            'personal'  => $personal
         ]);
     }
+
     /**
      * @throws ValidationException
      */
@@ -131,19 +131,19 @@ class CargoController extends Controller
     {
         $cargo = Cargo::find($request['cargo_id']);
         $materia = Materia::find($request['materia_id']);
-        $porcentaje = $request['porcentaje']??null;
+        $porcentaje = $request['porcentaje'] ?? null;
         $code = 404;
-        if($cargo && $materia && $porcentaje){
+        if ($cargo && $materia && $porcentaje) {
             $cargo_materia = CargoMateria::where([
-               'cargo_id' => $cargo->id,
-               'materia_id' => $materia->id
+                'cargo_id' => $cargo->id,
+                'materia_id' => $materia->id,
             ]);
-            $cargo_materia->update(["ponderacion" =>$porcentaje ]);
+            $cargo_materia->update(["ponderacion" => $porcentaje]);
             $code = 200;
         }
         $total_modulo = $this->getTotalModulo($materia);
 
-        $data= [$porcentaje, $total_modulo];
+        $data = [$porcentaje, $total_modulo];
 
         return response()->json($data, $code);
     }
@@ -154,9 +154,10 @@ class CargoController extends Controller
         $materia = Materia::find($request['materia_id']);
         $porcentaje = '0';
 
-        if($cargo && $materia){
+        if ($cargo && $materia) {
             $porcentaje = $this->cargoService->getPonderacion($cargo->id, $materia->id);
         }
+
         return response()->json($porcentaje, 200);
     }
 
@@ -207,9 +208,10 @@ class CargoController extends Controller
         }
 
         $cargo->delete();
+
         return redirect()->route('cargo.admin')
             ->with([
-                'cargo_deleted' => sprintf('El cargo %s fue eliminado exitosamente',$cargo->nombre)
+                'cargo_deleted' => sprintf('El cargo %s fue eliminado exitosamente', $cargo->nombre),
             ]);
     }
 
@@ -234,7 +236,7 @@ class CargoController extends Controller
     {
         $total_modulo = 0;
         $cargos_modulo = CargoMateria::where([
-            'materia_id' => $materia->id
+            'materia_id' => $materia->id,
         ])->get();
 
         foreach ($cargos_modulo as $cm) {
@@ -243,6 +245,19 @@ class CargoController extends Controller
         }
 
         return $total_modulo;
+    }
+
+    public function agregarTipoCargo(Cargo $cargo, Request $request): RedirectResponse
+    {
+
+        $cargo = Cargo::find($request['cargo_id']);
+        $tipoCargo = TipoMateria::find($request['tipo_cargo']);
+        if ($tipoCargo) {
+            $cargo->tipo_materia_id = $tipoCargo->id;
+            $cargo->update();
+        }
+
+        return redirect()->route('cargo.show', $cargo->id);
     }
 
 
