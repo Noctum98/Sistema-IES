@@ -1,0 +1,72 @@
+#main_s {
+	margin-top: 100px !important;
+}
+.lista-ficha li {
+	list-style: none;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	font-size: 17px;
+}
+
+/* Fichas de pdf  */
+.pdf-ficha .lista-ficha li {
+	list-style: none;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	font-size: 17px;
+}
+
+.row .sidebar {
+	min-height: 950px !important;
+}
+
+/* Detalle de alumno  */
+.imagen-alumno {
+	height: 150px;
+	width: 150px;
+	border: 1px solid #ccc;
+	border-radius: 900px;
+	overflow: hidden !important;
+}
+
+.imagen-alumno img {
+	width: 100%;
+}
+
+.datos-alumno {
+	margin-top: 20px;
+}
+
+.datos-alumno li {
+	font-size: 20px;
+}
+
+.datos-academicos li {
+	font-size: 18px;
+}
+
+.datos-academicos li h2 {
+	color: #666;
+	margin-bottom: 20px;
+}
+
+/* Detalle proceso */
+.proceso-detalle li {
+	font-size: 20px;
+}
+
+/* Tomar asistencia  */
+.asistencia-lista {
+	margin: 0px;
+	padding: 0px;
+}
+
+/* Detalle preinscripcion  */
+.detalle-pre li {
+	font-size: 18px;
+	margin-top: 5px;
+}
+.spinner-border {
+    width: 100px; 
+    height: 100px;
+} 
