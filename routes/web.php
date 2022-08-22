@@ -89,6 +89,7 @@ Route::resource('estados', EstadosController::class);
  */
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
+    Route::get('/cierre/{materia_id}/{comision_id?}',[MateriaController::class,'cierre'])->name('materia.cierre');
 });
 
 //Rutas de sedes
@@ -159,14 +160,12 @@ Route::prefix('personal')->group(function () {
     // Acciones
     Route::post('crear-personal', [PersonalController::class, 'crear_personal'])->name('crear_personal');
     Route::post('edita-personal/{id}', [PersonalController::class, 'editar_personal'])->name('editar_personal');
-    Route::get('descargar-ficha/{id}', [PersonalController::class, 'descargar_ficha'])->name('descargar_ficha');
 });
 
 // Rutas Cargo
 
 Route::prefix('cargo')->group(function () {
     Route::get('/', [CargoController::class, 'index'])->name('cargo.admin');
-    Route::get('crear', [CargoController::class, ''])->name('carrera.crear');
     Route::post('cargo', [CargoController::class, 'store'])->name('cargo.store');
     Route::get('cargo/{id}', [CargoController::class, 'show'])->name('cargo.show');
     Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');

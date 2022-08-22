@@ -16,12 +16,16 @@ class CreateCalificacionesTable extends Migration
         Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('tipo_id')->constrained('tipo_calificaciones');
+            $table->unsignedInteger('tipo_id');
             $table->foreignId('cargo_id')->nullable()->constrained('cargos');
             $table->foreignId('materia_id')->constrained('materias');
             $table->string('nombre');
             $table->string('fecha');
             $table->timestamps();
+
+            $table->foreign('tipo_id')
+                ->references('id')
+                ->on('tipo_calificaciones');
         });
     }
 
