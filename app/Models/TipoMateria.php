@@ -12,7 +12,7 @@ class TipoMateria extends Model
 
     use SoftDeletes;
 
-    protected $table = 'tipo_materia';
+    protected $table = 'tipo_materias';
 
     protected $fillable = [
         'nombre',

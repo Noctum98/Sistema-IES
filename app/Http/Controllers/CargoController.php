@@ -95,10 +95,12 @@ class CargoController extends Controller
     public function vista_editar(Cargo $id)
     {
         $carreras = $this->carreraService->modulares();
+        $tipo_cargos = TipoMateria::all();
 
         return view('cargo.edit', [
             'cargo' => $id,
             'carreras' => $carreras,
+            'tipo_cargos' => $tipo_cargos
 //            'personal'  => $personal
         ]);
     }
