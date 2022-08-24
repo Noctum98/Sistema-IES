@@ -104,7 +104,7 @@
                                 </td>
                             @endif
                             <td>
-                                {{ $proceso->asistencia() ? $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje : '-' }}
+                                {{ $proceso->asistencia() ? optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
                                 %
                             </td>
                             <td>
