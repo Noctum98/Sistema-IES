@@ -18,7 +18,7 @@
 				<tr>
 					<th scope="col">ID</th>
 					<th scope="col">Nombre</th>
-					@if(Auth::user()->hasRole('admin'))
+					@if(Session::has('admin'))
 					<th scope="col">Estado</th>
 					@endif
 					<th scope="col">Ubicación</th>

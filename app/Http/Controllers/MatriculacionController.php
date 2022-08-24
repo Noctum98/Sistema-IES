@@ -203,6 +203,11 @@ class MatriculacionController extends Controller
             $alumno->comisiones()->detach();
         }
 
+        if($alumno->procesos())
+        {
+            $alumno->procesos()->detach();
+        }
+
         if($alumno->user_id)
         {
             $user = User::find($alumno->user_id);
@@ -211,8 +216,6 @@ class MatriculacionController extends Controller
             {
                 $user->carreras()->detach();
                 $user->roles()->detach();
-                $user->procesos()->detach();
-
                 $user->delete();
             }
 
