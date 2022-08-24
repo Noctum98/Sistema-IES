@@ -466,51 +466,9 @@ Route::prefix('excel')->group(function () {
     Route::get('procesosModular/{materia_id}/{comision_id?}',[ExcelController::class,'planilla_notas_modular'])->name('excel.procesosModular');
 });
 
-Route::get('/clear-cache', function () {
-    echo Artisan::call('config:clear');
-    echo Artisan::call('config:cache');
-    echo Artisan::call('view:clear');
-    echo Artisan::call('cache:clear');
-    echo Artisan::call('route:clear');
+Route::prefix('estadistica')->group(function () {
+   Route::get('datos',[AlumnoController::class,'vista_datos']);
+   Route::get('datos/{sede_id?}/{edad?}/{localidad?}',[AlumnoController::class,'vista_datos']);
+
 });
 
-
-Route::get('/prueba/{id}/{comision_id?}', function ($materia_id, $comision_id = null) {
-
-    $procesos = Proceso::select('procesos.*')
-        ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-        ->where('procesos.materia_id', $materia_id);
-
-    if ($comision_id) {
-        $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
-            $query->whereHas('comisiones', function ($query) use ($comision_id) {
-                $query->where('comisiones.id', $comision_id);
-            });
-        });
-    }
-    $materia = Materia::find($materia_id);
-    $comision = null;
-
-    if ($comision_id) {
-        $comision = Comision::find($comision_id);
-    }
-
-    $procesos->orderBy('alumnos.apellidos', 'asc');
-    $procesos = $procesos->get();
-    $calificacion = Calificacion::where([
-        'materia_id' => $materia_id,
-    ]);
-
-    if ($comision_id) {
-        $calificacion->where([
-            'comision_id' => $comision_id,
-        ]);
-    }
-
-    $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
-
-    return view('excel.planilla_notas_tradicional', [
-        'procesos' => $procesos,
-        'calificaciones' => $calificaciones,
-    ]);
-});
