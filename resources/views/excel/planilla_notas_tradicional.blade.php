@@ -1,6 +1,18 @@
 <table>
     <thead>
         <tr>
+            <th><b>UNIDAD ACADEMICA:</b></th>
+            <th><b>{{$materia->carrera->sede->nombre}} </b></th>
+        </tr>
+        <tr>
+            <th><b>CARRERA:</b></th>
+            <th> <b> {{ $materia->carrera->nombre.' ( '.ucwords($materia->carrera->turno).' )' }}</b></th>
+        </tr>
+        <tr>
+            <th><b>RESOLUCION: </b></th>
+            <th style="text-align: left;"><b> {{ $materia->carrera->resolucion }} </b></th>
+        </tr>
+        <tr>
             <th>
                 Alumno
             </th>
@@ -13,6 +25,8 @@
                 Notas
             </th>
             @endif
+            <th>Promedio Final TP</th>
+
             <th>Asistencia %</th>
             @if($carrera->tipo == 'tradicional2')
             <th>Asistencia Presencial</th>
@@ -21,7 +35,6 @@
             <th>
                 Estado
             </th>
-            <th>Promedio Final TP</th>
             <th>Nota Global</th>
             <th>
                 Nota Final
@@ -67,14 +80,6 @@
                 -
             </td>
             @endif
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
-            @if($carrera->tipo == 'tradicional2')
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_presencial : '-' }}%</td>
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_virtual : '-' }}%</td>
-            @endif
-            <td>
-                {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
-            </td>
 
             @if($proceso->final_trabajos && $proceso->final_trabajos >=4)
             <td style="color:#025827">
@@ -85,6 +90,16 @@
                 {{ $proceso->final_trabajos ?? '-' }}
             </td>
             @endif
+
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
+            @if($carrera->tipo == 'tradicional2')
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_presencial : '-' }}%</td>
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_virtual : '-' }}%</td>
+            @endif
+            <td>
+                {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
+            </td>
+            
 
 
             @if($proceso->nota_global && $proceso->nota_global >=4)

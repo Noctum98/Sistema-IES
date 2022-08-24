@@ -21,7 +21,7 @@ class CarreraController extends Controller
         $user = Auth::user();
         $carreras = Carrera::orderBy('sede_id')->get();
 
-        if(!$user->hasRole('admin'))
+        if(!$user->hasRole('admin') || !$user->hasRole('regente'))
         {
             $carreras = $user->carreras;
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Carrera;
+use App\Models\Sede;
 use App\Services\AlumnoService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,135 +18,217 @@ class AlumnoController extends Controller
 
     public function __construct(
         AlumnoService $alumnoService
-    ){
-        $this->middleware('app.auth',['except'=>['descargar_archivo','descargar_ficha']]);
-        $this->middleware('app.roles:admin-coordinador-regente-seccionAlumnos',['only'=>['vista_admin','vista_alumnos','vista_elegir']]);
+    ) {
+        $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
+        $this->middleware('app.roles:admin-coordinador-regente-seccionAlumnos', ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir']]);
         $this->alumnoService = $alumnoService;
     }
     // Vistas
-    public function vista_admin($busqueda = null){
+    public function vista_admin($busqueda = null)
+    {
         $user = Auth::user();
         $alumnos = [];
         $sedes = null;
 
-        if(!empty($busqueda)){
+        if (!empty($busqueda)) {
             $alumnos = $this->alumnoService->buscarAlumnos($busqueda);
-        }else{
+        } else {
             $sedes = $user->sedes;
         }
 
-        return view('alumno.admin',[
+        return view('alumno.admin', [
             'alumnos' => $alumnos,
-            'sedes'=> $sedes,
-            'busqueda'=> $busqueda
+            'sedes' => $sedes,
+            'busqueda' => $busqueda
         ]);
     }
 
-    public function vista_elegir(){
+    public function vista_elegir()
+    {
         $carreras = Carrera::orderBy('sede_id')->get();
-        return view('alumno.choice',[
+        return view('alumno.choice', [
             'carreras' => $carreras
         ]);
     }
 
-    public function vista_crear(int $id){
+    public function vista_crear(int $id)
+    {
         $carrera = Carrera::find($id);
-        return view('alumno.create',[
+        return view('alumno.create', [
             'carrera' => $carrera
         ]);
     }
 
-    public function vista_editar(int $id){
+    public function vista_editar(int $id)
+    {
         $alumno = Alumno::find($id);
         $carreras = Carrera::all();
 
-        return view('alumno.edit',[
+        return view('alumno.edit', [
             'alumno'    =>  $alumno,
             'carreras'  =>  $carreras
         ]);
     }
 
-    public function vista_alumnos(Request $request,$carrera_id){
+    public function vista_alumnos(Request $request, $carrera_id)
+    {
         $carrera = Carrera::find($carrera_id);
 
-        return view('alumno.alumnos',[
+        return view('alumno.alumnos', [
             'carrera'   =>  $carrera
         ]);
     }
 
-    public function vista_detalle(int $id){
+    public function vista_detalle(int $id)
+    {
         $alumno = Alumno::find($id);
 
-        if(!$alumno)
-        {
+        if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'El alumno no existe'
             ]);
         }
 
-        return view('alumno.detail',[
+        return view('alumno.detail', [
             'alumno'    =>  $alumno
         ]);
     }
 
-    public function buscar(Request $request,$id)
+    public function vista_datos(Request $request, $sede_id = null,$edad = null,$localidad = null)
     {
-        $alumno = $this->alumnoService->buscarAlumno($request['busqueda'],$id);
+        $data = [];
+        if ($sede_id) {
 
-        if($alumno)
-        {
+            $discapacidad_visual = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('discapacidad_visual', true)->count();
+
+            $discapacidad_motriz = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('discapacidad_motriz', true)->count();
+
+
+            $discapacidad_mental = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('discapacidad_mental', true)->count();
+
+            $discapacidad_intelectual = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('discapacidad_intelectual', '!=', 'ninguna')->count();
+
+            $discapacidad_auditiva = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('discapacidad_auditiva', '!=', 'ninguna')->count();
+
+            $poblacion_indigena = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('poblacion_indigena', true)->count();
+
+            $privacidad = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('privacidad', true)->count();
+
+            $fuera_mendoza = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                return $query->where('sede_id', $sede_id);
+            })->where('provincia', '!=', 'Mendoza')
+            ->orWhere('provincia', '!=', 'mendoza')->count();
+
+        
+            if ($localidad) {
+                $localidad_cantidad = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                    return $query->where('sede_id', $sede_id);
+                })->where('localidad', $request['localidad'])->count();
+            }
+
+            if($edad)
+            {
+                $edades =Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+                    return $query->where('sede_id', $sede_id);
+                })->where('edad',$edad)->count();
+            }
+
+            $data = [
+                'status' => true,
+                'edad' => $edad ?? null,
+                'localidad' => $localidad ?? null,
+                'sede_id' => $sede_id ?? null,
+                'edades' => $edades ?? null,
+                'discapacidad_visual' => $discapacidad_visual ?? null,
+                'discapacidad_motriz' => $discapacidad_motriz ?? null,
+                'discapacidad_mental' => $discapacidad_mental ?? null,
+                'discapacidad_intelectual' => $discapacidad_intelectual ?? null,
+                'discapacidad_auditiva' => $discapacidad_auditiva ?? null,
+                'poblacion_indigena' => $poblacion_indigena ?? null,
+                'privacidad' => $privacidad ?? null,
+                'localidad_cantidad' => $localidad_cantidad ?? null,
+                'fuera_mendoza' => $fuera_mendoza ?? null,
+            ];
+        }
+
+        $data['sedes'] = Sede::all();
+
+        return view('estadistica.datos', $data);
+    }
+
+
+    public function buscar(Request $request, $id)
+    {
+        $alumno = $this->alumnoService->buscarAlumno($request['busqueda'], $id);
+
+        if ($alumno) {
             $response = [
                 'status' => 'success',
                 'alumno' => $alumno
             ];
-        }else{
+        } else {
             $response = [
                 'status' => 'error',
                 'message' => 'No existe alumno con este dni.'
             ];
         }
 
-        return response()->json($response,200);
+        return response()->json($response, 200);
     }
 
-    public function alumnosMateria(Request $request,$materia_id)
+    public function alumnosMateria(Request $request, $materia_id)
     {
         $alumnos = $this->alumnoService->alumnosMateria($materia_id);
 
-        return response()->json($alumnos,200);
+        return response()->json($alumnos, 200);
     }
 
     public function ver_foto(string $foto): Response
     {
         $archivo = Storage::disk('alumno_foto')->get($foto);
 
-        return new Response($archivo,200);
+        return new Response($archivo, 200);
     }
-    public function descargar_archivo(string $nombre,string $disco){
+    public function descargar_archivo(string $nombre, string $disco)
+    {
 
         $exists = Storage::disk($disco)->exists($nombre);
 
-        if($exists){
-           $archivo = Storage::disk($disco)->path($nombre);
-           return response()->file($archivo);
-        }else{
+        if ($exists) {
+            $archivo = Storage::disk($disco)->path($nombre);
+            return response()->file($archivo);
+        } else {
             return redirect()->route('alumno.detalle');
         }
     }
-    public function descargar_ficha(int $id){
+    public function descargar_ficha(int $id)
+    {
         $alumno = Alumno::find($id);
 
-        if($alumno)
-        {
+        if ($alumno) {
             $data = [
                 'alumno' => $alumno
             ];
 
             $pdf = \App::make('dompdf.wrapper');
-            $pdf->loadView('pdfs.alumno_ficha',$data);
+            $pdf->loadView('pdfs.alumno_ficha', $data);
 
-            return $pdf->download('Ficha '.$alumno->nombres.' '.$alumno->apellidos.'.pdf');
-        }else{
+            return $pdf->download('Ficha ' . $alumno->nombres . ' ' . $alumno->apellidos . '.pdf');
+        } else {
             return view('error.error');
         }
     }
