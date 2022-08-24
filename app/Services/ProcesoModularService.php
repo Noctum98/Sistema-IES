@@ -132,5 +132,19 @@ class ProcesoModularService
             ->first();
     }
 
+    public function obtenerEstadoAlumnoEnModulo(ProcesoModular $procesoModular)
+    {
+        /**
+         * Mirando👆 Módulos sería Acreditación Directa si Asist >75%, Proceso >60%, Promedio >78% y TFI >78%
+         * Regular si Asist entre 60 y 75% y PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
+         */
+
+        $asistencia = $procesoModular->asistencia_final_porcentaje;
+        $proceso = $procesoModular->promedio_final_porcentaje;
+
+
+
+    }
+
 
 }
