@@ -36,9 +36,7 @@
                 Estado
             </th>
             <th>Nota Global</th>
-            <th>
-                Nota Final
-            </th>
+           
             <th>
                 Cierre
             </th>
@@ -100,8 +98,6 @@
                 {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
             </td>
             
-
-
             @if($proceso->nota_global && $proceso->nota_global >=4)
             <td style="color:#025827">
                 {{$proceso->nota_global ?? '-'}}
@@ -109,16 +105,6 @@
             @else
             <td style="color:red">
                 {{$proceso->nota_global ?? '-'}}
-            </td>
-            @endif
-
-            @if($proceso->final_calificaciones && $proceso->final_calificaciones >=4)
-            <td style="color:#025827">
-                {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}
-            </td>
-            @else
-            <td style="color:red">
-                {{$proceso->final_calificaciones ? $proceso->final_calificaciones : 'Sin asignar'}}
             </td>
             @endif
             <td>

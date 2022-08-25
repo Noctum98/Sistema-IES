@@ -22,7 +22,7 @@
 			<label for="edad">Edad</label>
 			<input type="number" name="edad" id="edad" class="form-control" value="{{ isset($edad) ? $edad : '' }}">
 		</div>
-		<input type="submit" value="Buscar">
+		<input type="submit" value="Buscar" class="btn btn-success">
 	</form>
 
 	@if(isset($status) && $status == 1)
