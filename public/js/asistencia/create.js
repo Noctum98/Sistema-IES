@@ -41,7 +41,7 @@ $(document).ready(function () {
             data: data,
             //dataType: "dataType",
             success: function (response) {
-                $(".porcentaje-" + proceso_id).html("<p>% " + porcentaje + "</p>");
+                $(".porcentaje-" + proceso_id).html("<p>" + porcentaje + " %</p>");
 
             }
         });
@@ -68,7 +68,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response.asistencia);
                 if (response.asistencia) {
-                    $(".porcentaje-" + proceso_id).html("<p>% " + response.asistencia.porcentaje_final + "</p>");
+                    $(".porcentaje-" + proceso_id).html("<p>" + response.asistencia.porcentaje_final + " %</p>");
                     $("#alerts").html("");
                 } else {
                     for (const key in response.errors) {
@@ -100,7 +100,7 @@ $(document).ready(function () {
             data: data,
             //dataType: "dataType",
             success: function (response) {
-                $(".porcentaje-" + proceso_id).html("<p>% " + porcentaje + "</p>");
+                $(".porcentaje-" + proceso_id).html("<p>" + porcentaje + " %</p>");
 
             }
         });
@@ -129,7 +129,7 @@ $(document).ready(function () {
             success: function (response) {
 
                 if (response.asistencia) {
-                    $(".porcentaje-" + proceso_id).html("<p>% " + response.asistencia.porcentaje + "</p>");
+                    $(".porcentaje-" + proceso_id).html("<p>" + response.asistencia.porcentaje + " %</p>");
                 }else{
                     for (const key in response.errors) {
                         if (Object.hasOwnProperty.call(response.errors, key)) {
