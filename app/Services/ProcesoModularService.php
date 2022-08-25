@@ -92,15 +92,17 @@ class ProcesoModularService
                     'materia_id' => $materia->id,
                 ])->first();
                 $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
-                        $cargo,
-                        $materia->id,
-                        $proceso->alumnoRelacionado()->id
-                    ) ?? 0;
+                    $cargo,
+                    $materia->id,
+                    $proceso->alumnoRelacionado()->id
+                ) ?? 0;
                 $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
                 $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
             }
             $proceso->promedio_final_porcentaje = $promedio_final_p;
-            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota($promedio_final_p);
+            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
+                $promedio_final_p
+            );
 
             $proceso->update();
 
@@ -120,6 +122,7 @@ class ProcesoModularService
     public function obtenerTimeUltimaCalificacion($materia_id)
     {
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
+
         return $serviceProcesoCalificacion->obtenerTimeUltimaCalificacionPorModulo($materia_id);
     }
 
@@ -143,7 +146,39 @@ class ProcesoModularService
         $proceso = $procesoModular->promedio_final_porcentaje;
 
 
+    }
 
+
+    public function getAsistenciaModular(
+        int $porcentaje_max,
+        Proceso $proceso,
+        int $porcentaje_min = null
+    ) {
+        $cargos = $proceso->cargos()->get();
+
+
+        foreach ($cargos as $cargo) {
+
+
+            if (
+                $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                < $porcentaje_max) {
+
+                if ($porcentaje_min) {
+                    if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                        < $porcentaje_min) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
 
