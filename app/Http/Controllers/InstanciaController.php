@@ -46,6 +46,7 @@ class InstanciaController extends Controller
 
     public function vista_carreras($sede_id,$instancia_id)
     {
+        
         $sede = Sede::find($sede_id);
         $instancia = Instancia::find($instancia_id);
 

@@ -26,7 +26,7 @@
             <td class="porcentaje-{{ $proceso->id }}">
                 @if($proceso->asistencia())
                     @if($proceso->asistencia()->getByAsistenciaCargo($cargo->id))
-                         {{ $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje }} %
+                        {{ $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje }}  %
                     @endif
                 @endif
             </td>

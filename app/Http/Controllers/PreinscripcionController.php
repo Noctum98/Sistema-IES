@@ -19,10 +19,14 @@ use Illuminate\Http\Request;
 
 class PreinscripcionController extends Controller
 {
+
+    protected $disk;
+
     public function __construct()
     {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
         $this->middleware('app.roles:admin-areaSocial',['only'=>['vista_admin','vista_all']]);
+        $this->disk = Storage::disk('google');
     }
     // Vistas
     public function vista_preinscripcion($id)
@@ -226,55 +230,55 @@ class PreinscripcionController extends Controller
         if ($dni_archivo) {
             $dni_nombre = time() . $dni_archivo->getClientOriginalName();
 
-            Storage::disk('alumno_dni')->put($dni_nombre, File::get($dni_archivo));
+           $this->disk->put('/'.$request['dni'].'/'.$dni_nombre, File::get($dni_archivo));
             $preinscripcion->dni_archivo = $dni_nombre;
         }
         if ($dni_archivo2) {
             $dni_nombre2 = time() . $dni_archivo2->getClientOriginalName();
 
-            Storage::disk('alumno_dni')->put($dni_nombre2, File::get($dni_archivo2));
+            $this->disk->put('/'.$request['dni'].'/'.$dni_nombre2, File::get($dni_archivo2));
             $preinscripcion->dni_archivo_2 = $dni_nombre2;
         }
         if ($comprobante) {
             $comprobante_nombre = time() . $comprobante->getClientOriginalName();
 
-            Storage::disk('comprobante')->put($comprobante_nombre, File::get($comprobante));
+            $this->disk->put('/'.$request['dni'].'/'.$comprobante_nombre, File::get($comprobante));
             $preinscripcion->comprobante = $comprobante_nombre;
         }
         if ($certificado_archivo) {
             $certificado_nombre = time() . $certificado_archivo->getClientOriginalName();
 
-            Storage::disk('alumno_certificado')->put($certificado_nombre, File::get($certificado_archivo));
+            $this->disk->put('/'.$request['dni'].'/'.$certificado_nombre, File::get($certificado_archivo));
             $preinscripcion->certificado_archivo = $certificado_nombre;
         }
         if ($certificado_archivo2) {
             $certificado_nombre2 = time() . $certificado_archivo2->getClientOriginalName();
 
-            Storage::disk('alumno_certificado')->put($certificado_nombre2, File::get($certificado_archivo2));
+            $this->disk->put('/'.$request['dni'].'/'.$certificado_nombre2, File::get($certificado_archivo2));
             $preinscripcion->certificado_archivo_2 = $certificado_nombre2;
         }
         if ($primario) {
             $primario_nombre = time() . $primario->getClientOriginalName();
 
-            Storage::disk('alumno_primario')->put($primario_nombre, File::get($primario));
+            $this->disk->put('/'.$request['dni'].'/'.$primario_nombre, File::get($primario));
             $preinscripcion->primario = $primario_nombre;
         }
         if ($curriculum) {
             $curriculum_nombre = time() . $curriculum->getClientOriginalName();
 
-            Storage::disk('alumno_curriculum')->put($curriculum_nombre, File::get($curriculum));
+            $this->disk->put('/'.$request['dni'].'/'.$curriculum_nombre, File::get($curriculum));
             $preinscripcion->curriculum = $curriculum_nombre;
         }
         if ($ctrabajo) {
             $ctrabajo_nombre = time() . $ctrabajo->getClientOriginalName();
 
-            Storage::disk('alumno_ctrabajo')->put($ctrabajo_nombre, File::get($ctrabajo));
+            $this->disk->put('/'.$request['dni'].'/'.$ctrabajo_nombre, File::get($ctrabajo));
             $preinscripcion->ctrabajo = $ctrabajo_nombre;
         }
         if ($nota) {
             $nota_nombre = time() . $nota->getClientOriginalName();
 
-            Storage::disk('alumno_nota')->put($nota_nombre, File::get($nota));
+            $this->disk->put('/'.$request['dni'].'/'.$nota_nombre, File::get($nota));
             $preinscripcion->nota = $nota_nombre;
         }
 
@@ -301,7 +305,7 @@ class PreinscripcionController extends Controller
         $preinscripcion->timecheck = time();
         $preinscripcion->save();
 
-        Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        //Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
 
         return redirect()->route('pre.inscripto', [
             'timecheck' => $preinscripcion->timecheck,

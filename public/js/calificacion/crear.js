@@ -91,6 +91,8 @@ $(document).ready(function () {
 
                         if (response.nota >= 4) {
                             $(".nota-" + proceso_id).html("<p class='text-success font-weight-bold'>" + response.nota + "</p>");
+                            $("#calificacion-procentaje-recuperatorio-"+proceso_id).prop('disabled', true);
+
                         } else if(response.nota < 4 && response.nota >= 0) {
                             $("#calificacion-procentaje-recuperatorio-"+proceso_id).prop('disabled', false);
 
