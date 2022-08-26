@@ -106,7 +106,7 @@ class CargoService
         return $percent;
     }
 
-    public function calculoPonderacionPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
+    public function calculoPorcentajeCalificacionPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
     {
         $tp = $this->calculoPorcentajeCargoByTPPorAlumno($cargo, $materia_id, $alumno_id) * 0.7;
         $parc = $this->calculoPorcentajeCargoByParcial($cargo, $materia_id, $alumno_id) * 0.3;

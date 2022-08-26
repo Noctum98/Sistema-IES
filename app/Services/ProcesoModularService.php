@@ -91,7 +91,7 @@ class ProcesoModularService
                     'cargo_id' => $cargo->id,
                     'materia_id' => $materia->id,
                 ])->first();
-                $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
+                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargo(
                     $cargo,
                     $materia->id,
                     $proceso->alumnoRelacionado()->id
@@ -147,8 +147,8 @@ class ProcesoModularService
         foreach ($procesosModulares as $pm) {
             /** @var ProcesoModular $pm */
 //            print_r($pm->proceso_id->alumno_id);
-            if($this->getAsistenciaModular(75, $pm->procesoRelacionado()->first()) === false){
-                return $this->getAsistenciaModular(75, $pm->procesoRelacionado()->first() , 60);
+            if($this->getAsistenciaModularBoolean(75, $pm->procesoRelacionado()->first()) === false){
+                return $this->getAsistenciaModularBoolean(75, $pm->procesoRelacionado()->first() , 60);
             }
             return true;
         }
@@ -160,8 +160,13 @@ class ProcesoModularService
 
     }
 
+    public function regularityDirectAccreditation(Proceso $proceso)
+    {
+        $this->getAsistenciaModularBoolean(75, $proceso);
+    }
 
-    public function getAsistenciaModular(
+
+    public function getAsistenciaModularBoolean(
         int $porcentaje_max,
         Proceso $proceso,
         int $porcentaje_min = null
@@ -193,6 +198,22 @@ class ProcesoModularService
         }
 
         return true;
+    }
+
+    public function getCalificacionModularBoolean(
+        int $porcentaje_max,
+        Proceso $proceso
+    ): bool
+    {
+        $serviceCargo = new CargoService();
+        $materia_id = $proceso->materia()->first()->id;
+        $alumno_id = $proceso->alumno()->first()->id;
+        $cargos = $proceso->materia()->first()->cargos()->get();
+        foreach ($cargos as $cargo) {
+            $serviceCargo->calculoPorcentajeCalificacionPorCargo($cargo, $materia_id, $alumno_id);
+            }
+
+
     }
 
 
