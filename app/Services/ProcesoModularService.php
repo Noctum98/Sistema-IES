@@ -135,15 +135,27 @@ class ProcesoModularService
             ->first();
     }
 
-    public function obtenerEstadoAlumnoEnModulo(ProcesoModular $procesoModular)
+    public function obtenerEstadoAlumnoEnModulo($materia_id)
     {
         /**
          * Mirando👆 Módulos sería Acreditación Directa si Asist >75%, Proceso >60%, Promedio >78% y TFI >78%
          * Regular si Asist entre 60 y 75% y PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
          */
 
-        $asistencia = $procesoModular->asistencia_final_porcentaje;
-        $proceso = $procesoModular->promedio_final_porcentaje;
+        $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id);
+
+        foreach ($procesosModulares as $pm) {
+            /** @var ProcesoModular $pm */
+//            print_r($pm->proceso_id->alumno_id);
+            if($this->getAsistenciaModular(75, $pm->procesoRelacionado()->first()) === false){
+                return $this->getAsistenciaModular(75, $pm->procesoRelacionado()->first() , 60);
+            }
+            return true;
+        }
+
+
+//        $asistencia = $procesoModular->asistencia_final_porcentaje;
+//        $proceso = $procesoModular->promedio_final_porcentaje;
 
 
     }
@@ -154,28 +166,30 @@ class ProcesoModularService
         Proceso $proceso,
         int $porcentaje_min = null
     ) {
-        $cargos = $proceso->cargos()->get();
-
+        $cargos = $proceso->materia()->first()->cargos()->get();
 
         foreach ($cargos as $cargo) {
 
-
-            if (
-                $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
-                < $porcentaje_max) {
+            if ($proceso->asistencia() and $proceso->asistencia()->getByAsistenciaCargo($cargo->id)) {
 
                 if ($porcentaje_min) {
+
                     if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
                         < $porcentaje_min) {
                         return false;
-                    } else {
-                        return true;
+                    }
+
+                } else {
+                    if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                        < $porcentaje_max) {
+
+
+                        return false;
                     }
                 }
-
+            } else {
                 return false;
             }
-
         }
 
         return true;
