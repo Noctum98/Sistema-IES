@@ -35,25 +35,21 @@ $(document).ready(function () {
 
                     if (response.cierre) {
                         $('#' + proceso_id).attr('disabled', true);
+                        $('#global-' + proceso_id).attr('disabled', true);
+                            $('#btn-global-' + proceso_id).attr('disabled', true);
+                        
                     } else {
+                        if (response.estado_id == 5) {
+                            $('#global-' + proceso_id).attr('disabled', false);
+                            $('#btn-global-' + proceso_id).attr('disabled', false);
+                        }else{
+                            $('#global-' + proceso_id).attr('disabled', true);
+                            $('#btn-global-' + proceso_id).attr('disabled', true);
+                        }
                         $('#' + proceso_id).attr('disabled', false);
                     }
 
-                    if (response.estado_id == 5) {
-
-                        if ($('#global-' + proceso_id).attr('disabled')) {
-                            $('#global-' + proceso_id).attr('disabled', false);
-                        } else {
-                            $('#global-' + proceso_id).attr('disabled', true);
-                        }
-
-
-                        if ($('#btn-global-' + proceso_id).attr('disabled')) {
-                            $('#btn-global-' + proceso_id).attr('disabled', false);
-                        } else {
-                            $('#btn-global-' + proceso_id).attr('disabled', true);
-                        }
-                    }
+                    
                 }
                 $('#span-' + proceso_id).removeClass('d-none')
                 $('#span-' + proceso_id).addClass('d-block')
