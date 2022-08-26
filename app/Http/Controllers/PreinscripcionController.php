@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PreinscripcionController extends Controller
 {
@@ -36,7 +37,7 @@ class PreinscripcionController extends Controller
         $carreras_abiertas = [1, 2, 5, 15];
 
 
-        if (($carrera->estado == 1 || !in_array($carrera->id, $carreras_abiertas) || $carrera->vacunas == 'todas') && !Auth::user()) {
+        if (!Auth::user() && !Session::has('admin')) {
             $carrera = null;
             $error = 'Página deshabilitada';
         }
@@ -341,7 +342,7 @@ class PreinscripcionController extends Controller
         $ctrabajo = $request->file('ctrabajo_file');
         $nota = $request->file('nota_file');
 
-        
+
         $dir = '/';
         $recursive = false; // Get subdirectories also?
         $contents = collect($this->disk->listContents($dir, $recursive));
