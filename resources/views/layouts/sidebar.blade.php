@@ -107,15 +107,9 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                     Mi matrícula
                 </a>
-
                 <a class="nav-link" href="{{ route('mesa.instancias') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                     Mesas
-                </a>
-
-                <a class="nav-link" href="https://drive.google.com/drive/folders/1crwsQzH8bVTu2c6oWFN5Qf4-ra7lVSzG" target="__blank">
-                    <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                    Biblioteca
                 </a>
                 <!-----
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
@@ -124,7 +118,10 @@
                     </a>
                      ----->
                 @endif
-
+                <a class="nav-link" href="https://drive.google.com/drive/folders/1crwsQzH8bVTu2c6oWFN5Qf4-ra7lVSzG" target="__blank">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                    Biblioteca
+                </a>
             </div>
         </div>
     </nav>

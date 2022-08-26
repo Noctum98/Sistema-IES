@@ -94,7 +94,7 @@ class AlumnoController extends Controller
         ]);
     }
 
-    public function vista_datos(Request $request, $sede_id = null,$edad = null,$localidad = null)
+    public function vista_datos(Request $request, $sede_id = null, $edad = null, $localidad = null)
     {
         $data = [];
         if ($sede_id) {
@@ -131,20 +131,19 @@ class AlumnoController extends Controller
             $fuera_mendoza = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
                 return $query->where('sede_id', $sede_id);
             })->where('provincia', '!=', 'Mendoza')
-            ->orWhere('provincia', '!=', 'mendoza')->count();
+                ->orWhere('provincia', '!=', 'mendoza')->count();
 
-        
+
             if ($localidad) {
                 $localidad_cantidad = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
                     return $query->where('sede_id', $sede_id);
                 })->where('localidad', $request['localidad'])->count();
             }
 
-            if($edad)
-            {
-                $edades =Alumno::whereHas('carreras', function ($query) use ($sede_id) {
+            if ($edad) {
+                $edades = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
                     return $query->where('sede_id', $sede_id);
-                })->where('edad',$edad)->count();
+                })->where('edad', $edad)->count();
             }
 
             $data = [
@@ -203,14 +202,37 @@ class AlumnoController extends Controller
 
         return new Response($archivo, 200);
     }
-    public function descargar_archivo(string $nombre, string $disco)
+    public function descargar_archivo(string $nombre, string $dni)
     {
+        $disk = Storage::disk('google');
 
-        $exists = Storage::disk($disco)->exists($nombre);
+        $dir = '/';
+        $recursive = false; 
+        $contents = collect($disk->listContents($dir, $recursive));
+        $dir = $contents->where('type', '=', 'dir')
+            ->where('filename', '=', $dni)
+            ->first();
 
-        if ($exists) {
-            $archivo = Storage::disk($disco)->path($nombre);
-            return response()->file($archivo);
+
+        $dir_file = $dir['path'];        
+        $contents = collect($disk->listContents($dir_file, $recursive));
+
+        $file = $contents
+            ->where('type', '=', 'file')
+            ->where('filename', '=', pathinfo($nombre, PATHINFO_FILENAME))
+            ->where('extension', '=', pathinfo($nombre, PATHINFO_EXTENSION))
+            ->first(); 
+
+
+        $rawData = $disk->getDriver()->readStream($file['path']);
+
+        if ($file) {
+            return response()->stream(function () use ($rawData) {
+                fpassthru($rawData);
+            }, 200, [
+                'Content-Type' => $file['mimetype'],
+                //'Content-disposition' => 'attachment; filename="'.$filename.'"', // force download?
+            ]);
         } else {
             return redirect()->route('alumno.detalle');
         }
