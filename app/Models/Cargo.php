@@ -95,4 +95,9 @@ class Cargo extends Model
     {
         return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
     }
+
+    public function getCargoPracticaProfesiona()
+    {
+        
+    }
 }

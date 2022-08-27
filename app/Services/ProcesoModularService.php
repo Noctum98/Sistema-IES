@@ -11,6 +11,26 @@ use App\Models\ProcesoModular;
 
 class ProcesoModularService
 {
+    /**
+     * Mirando👆 Módulos sería Acreditación Directa si
+     *  [X] Asist >75%,
+     *  [X] Proceso >60%,
+     *  [X] Promedio >78% y
+     *  [X] TFI >78%
+     * Regular si Asist entre 60 y 75% y PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
+     */
+    const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
+    const PROCESO_ACCREDITATION_DIRECTA = 60;
+    const PROMEDIO_ACCREDITATION_DIRECTA = 78;
+    const TFI_ACCREDITATION_DIRECTA = 78;
+
+    const ASISTENCIA_MIN_REGULAR = 60;
+    const ASISTENCIA_MAX_REGULAR = 75;
+    const ASISTENCIA_PRACTICA_PROFESIONAL = 100;
+    const PROMEDIO_MIN_REGULAR = 60;
+    const PROMEDIO_MAX_REGULAR = 78;
+    const TFI_MIN_REGULAR = 60;
+    const TFI_MAX_REGULAR = 78;
 
     /**
      * @param $materia_id <b>id</b> materia
@@ -135,22 +155,31 @@ class ProcesoModularService
             ->first();
     }
 
-    public function obtenerEstadoAlumnoEnModulo($materia_id)
+    public function grabaEstadoCursoEnModulo($materia_id)
     {
         /**
-         * Mirando👆 Módulos sería Acreditación Directa si Asist >75%, Proceso >60%, Promedio >78% y TFI >78%
-         * Regular si Asist entre 60 y 75% y PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
+         * Mirando👆 Módulos sería Acreditación Directa si
+         *  [X] Asist >75%,
+         *  [X] Proceso >60%,
+         *  [X] Promedio >78% y
+         *  [X] TFI >78%
+         * Regular si
+         *  [X] Asist entre 60 y 75% y
+         *  [ ] PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
          */
 
         $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id);
 
         foreach ($procesosModulares as $pm) {
             /** @var ProcesoModular $pm */
-//            print_r($pm->proceso_id->alumno_id);
-            if($this->getAsistenciaModularBoolean(75, $pm->procesoRelacionado()->first()) === false){
-                return $this->getAsistenciaModularBoolean(75, $pm->procesoRelacionado()->first() , 60);
+            if ($this->regularityDirectAccreditation($pm)) {
+                return true;
+
+            } else {
+                return $this->regularityRegular($pm);
             }
-            return true;
+
+
         }
 
 
@@ -160,17 +189,50 @@ class ProcesoModularService
 
     }
 
-    public function regularityDirectAccreditation(Proceso $proceso)
+    /**
+     * @param ProcesoModular $pm
+     * @return bool
+     */
+    public function regularityDirectAccreditation(ProcesoModular $pm): bool
     {
-        $this->getAsistenciaModularBoolean(75, $proceso);
+        /** @var Proceso $proceso */
+        $proceso = $pm->procesoRelacionado()->first();
+
+        return (
+            $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
+            and
+            $this->getCalificacionModularBoolean(self::PROCESO_ACCREDITATION_DIRECTA, $proceso)
+            and
+            $this->getPromedioModularBoolean(self::PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
+            and
+            $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
+        );
+    }
+
+    /**
+     * @param ProcesoModular $pm
+     * @return bool
+     */
+    public function regularityRegular(ProcesoModular $pm): bool
+    {
+        /** @var Proceso $proceso */
+        $proceso = $pm->procesoRelacionado()->first();
+
+        return (
+        $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
+        );
+
     }
 
 
-    public function getAsistenciaModularBoolean(
-        int $porcentaje_max,
-        Proceso $proceso,
-        int $porcentaje_min = null
-    ) {
+    /**
+     * @param int $porcentaje_max
+     * @param Proceso $proceso
+     * @param int|null $porcentaje_min
+     * @return bool
+     */
+    public function getAsistenciaModularBoolean(int $porcentaje_max, Proceso $proceso, int $porcentaje_min = null): bool
+    {
         $cargos = $proceso->materia()->first()->cargos()->get();
 
         foreach ($cargos as $cargo) {
@@ -187,8 +249,6 @@ class ProcesoModularService
                 } else {
                     if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
                         < $porcentaje_max) {
-
-
                         return false;
                     }
                 }
@@ -200,21 +260,48 @@ class ProcesoModularService
         return true;
     }
 
-    public function getCalificacionModularBoolean(
-        int $porcentaje_max,
-        Proceso $proceso
-    ): bool
+    /**
+     * @param int $porcentaje_max
+     * @param Proceso $proceso
+     * @return bool
+     */
+    public function getCalificacionModularBoolean(int $porcentaje_max, Proceso $proceso): bool
     {
         $serviceCargo = new CargoService();
         $materia_id = $proceso->materia()->first()->id;
         $alumno_id = $proceso->alumno()->first()->id;
         $cargos = $proceso->materia()->first()->cargos()->get();
         foreach ($cargos as $cargo) {
-            $serviceCargo->calculoPorcentajeCalificacionPorCargo($cargo, $materia_id, $alumno_id);
+            if ($porcentaje_max < $serviceCargo->calculoPorcentajeCalificacionPorCargo(
+                    $cargo,
+                    $materia_id,
+                    $alumno_id
+                )) {
+                return false;
             }
+        }
 
-
+        return true;
     }
 
+    /**
+     * @param int $porcentaje_max
+     * @param int $promedio_final
+     * @return bool
+     */
+    public function getPromedioModularBoolean(int $porcentaje_max, int $promedio_final): bool
+    {
+        return $porcentaje_max > $promedio_final;
+    }
+
+    /**
+     * @param int $porcentaje_max
+     * @param int $trabajo_final_porcentaje
+     * @return bool
+     */
+    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje): bool
+    {
+        return $porcentaje_max > $trabajo_final_porcentaje;
+    }
 
 }

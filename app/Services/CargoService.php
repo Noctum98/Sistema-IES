@@ -113,4 +113,9 @@ class CargoService
         return $parc + $tp;
     }
 
+    public function obtenerPorcentajeCalificacionPracticaProfesional(Cargo $cargo, int $materia_id, int $alumno_id): ?float
+    {
+        return null;
+    }
+
 }
