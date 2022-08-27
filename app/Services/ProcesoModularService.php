@@ -17,7 +17,11 @@ class ProcesoModularService
      *  [X] Proceso >60%,
      *  [X] Promedio >78% y
      *  [X] TFI >78%
-     * Regular si Asist entre 60 y 75% y PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
+     * Regular si
+     *  [X] Asist entre 60 y 75% y
+     *  [X] PP 100%,
+     *  [X] Promedio entre 60 y 78,
+     *  [] TFI entre 60 y 78
      */
     const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
     const PROCESO_ACCREDITATION_DIRECTA = 60;
@@ -165,7 +169,9 @@ class ProcesoModularService
          *  [X] TFI >78%
          * Regular si
          *  [X] Asist entre 60 y 75% y
-         *  [ ] PP 100%, Promedio entre 60 y 78, TFI entre 60 y 78
+         *  [X] PP 100%,
+         *  [X] Promedio entre 60 y 78,
+         *  [ ] TFI entre 60 y 78
          */
 
         $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id);
@@ -220,6 +226,8 @@ class ProcesoModularService
 
         return (
         $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
+        and
+        $this->getCalificacionModularBoolean(self::PROMEDIO_MIN_REGULAR, $proceso )
         );
 
     }
@@ -237,6 +245,8 @@ class ProcesoModularService
 
         foreach ($cargos as $cargo) {
 
+            /** @var Cargo $cargo */
+
             if ($proceso->asistencia() and $proceso->asistencia()->getByAsistenciaCargo($cargo->id)) {
 
                 if ($porcentaje_min) {
@@ -244,6 +254,12 @@ class ProcesoModularService
                     if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
                         < $porcentaje_min) {
                         return false;
+                    }
+                    if($cargo->isPracticaProfesional()){
+                        if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                            < self::ASISTENCIA_PRACTICA_PROFESIONAL) {
+                            return false;
+                        }
                     }
 
                 } else {
@@ -261,18 +277,19 @@ class ProcesoModularService
     }
 
     /**
-     * @param int $porcentaje_max
+     * @param int $porcentaje
      * @param Proceso $proceso
      * @return bool
      */
-    public function getCalificacionModularBoolean(int $porcentaje_max, Proceso $proceso): bool
+    public function getCalificacionModularBoolean(int $porcentaje, Proceso $proceso): bool
     {
         $serviceCargo = new CargoService();
         $materia_id = $proceso->materia()->first()->id;
         $alumno_id = $proceso->alumno()->first()->id;
         $cargos = $proceso->materia()->first()->cargos()->get();
         foreach ($cargos as $cargo) {
-            if ($porcentaje_max < $serviceCargo->calculoPorcentajeCalificacionPorCargo(
+
+            if ($porcentaje > $serviceCargo->calculoPorcentajeCalificacionPorCargo(
                     $cargo,
                     $materia_id,
                     $alumno_id

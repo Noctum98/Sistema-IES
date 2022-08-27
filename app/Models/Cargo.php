@@ -15,6 +15,8 @@ class Cargo extends Model
 
     protected $table = 'cargos';
     protected $fillable = ['nombre','carrera_id', 'tipo_materia_id'];
+
+    const IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL = 1;
     /**
      * @var CargoService
      */
@@ -96,8 +98,11 @@ class Cargo extends Model
         return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
     }
 
-    public function getCargoPracticaProfesiona()
+    public function isPracticaProfesional(): bool
     {
-        
+        if(!$this->tipoCargo()->first()){
+            return false;
+        }
+       return ( self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador);
     }
 }
