@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCargaTfiToCargos extends Migration
+class AddCargaTfiToCargoMateria extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddCargaTfiToCargos extends Migration
      */
     public function up()
     {
-        Schema::table('cargos', function (Blueprint $table) {
+        Schema::table('cargo_materia', function (Blueprint $table) {
             $table->boolean('carga_tfi')->default(false)->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddCargaTfiToCargos extends Migration
      */
     public function down()
     {
-        Schema::table('cargos', function (Blueprint $table) {
+        Schema::table('cargo_materia', function (Blueprint $table) {
             $table->dropColumn('carga_tfi');
         });
     }

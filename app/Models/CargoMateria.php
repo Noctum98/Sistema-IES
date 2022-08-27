@@ -10,7 +10,7 @@ class CargoMateria extends Model
 {
     use HasFactory;
     protected $table = 'cargo_materia';
-    protected $fillable = ['ponderacion'];
+    protected $fillable = ['ponderacion', 'carga_tfi'];
 
     /**
      * Los usuarios (profesores) que puede tener un cargo_materia.
