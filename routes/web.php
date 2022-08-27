@@ -230,7 +230,7 @@ Route::prefix('alumnos')->group(function () {
     Route::get('alumnosMateria/{id}',[AlumnoController::class,'alumnosMateria']);
 
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
-    Route::get('descargar/{nombre}/{disco}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
+    Route::get('descargar/{nombre}/{dni?}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
 });
 
