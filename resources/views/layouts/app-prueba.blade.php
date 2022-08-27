@@ -20,6 +20,7 @@
     <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/select2/css/select2.min.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/styless.css') }}" />
 

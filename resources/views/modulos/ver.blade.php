@@ -44,6 +44,7 @@
                     @endif
                     <th scope="col">Cargo</th>
                     <th scope="col">Ponderación</th>
+                        <th scope="col"><small>TFI Responsable</small></th>
                     <th scope="col">Profesor</th>
                     <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>
                     </th>
@@ -52,15 +53,15 @@
                 <tbody>
                 @foreach($modulo->cargos as $cargo)
 
-                    <tr >
+                    <tr>
                         @if(Auth::user()->hasRole('admin'))
                             <td>{{$cargo->id}}</td>
                         @endif
                         <td>
                             <small>
-                            <a href="{{ route('cargo.show',$cargo->id) }}"
-                               class="btn btn-sm btn-primary block-inline ">Configurar cargo</a>
-                            {{ $cargo->nombre }}
+                                <a href="{{ route('cargo.show',$cargo->id) }}"
+                                   class="btn btn-sm btn-primary block-inline ">Configurar cargo</a>
+                                {{ $cargo->nombre }}
                             </small>
                         </td>
                         <td>
@@ -70,26 +71,35 @@
                             {{--						{{$cargo->ponderacion($modulo->id)}}--}}
                             @if(!$cargo->ponderacion($modulo->id))
 
-                            <form action="" id="pondera-cargo-materia" class="pondera-cargo">
-                                <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
+                                <form action="" id="pondera-cargo-materia" class="pondera-cargo">
+                                    <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
                         "
-                                       id="ponderacion" value="{{$cargo->ponderacion($modulo->id)??'0' }}"/>
-                                <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
-                                <input type="hidden" id="materia" value="{{$modulo->id}}"/>
-                                <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
+                                           id="ponderacion" value="{{$cargo->ponderacion($modulo->id)??'0' }}"/>
+                                    <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
+                                    <input type="hidden" id="materia" value="{{$modulo->id}}"/>
+                                    <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
                         @if(!Session::has('coordinador') && !Session::has('admin') ) disabled @endif
                         ">
-                                    <i class="fa fa-save"></i></button>
-                            </form>
+                                        <i class="fa fa-save"></i></button>
+                                </form>
                             @else
                                 {{$cargo->ponderacion($modulo->id)}}
                             @endif
                         </td>
+                        <td class="text-center">
+                            <select class="selection-tfi" name="icon">
+                                <option value="1" data-icon="fa-check" @if ($cargo->carga_tfi === 1) selected @endif > </option>
+                                <option value="0" data-icon="fa-times" @if ($cargo->carga_tfi !== 1 ) selected @endif> </option>
+                            </select>
+
+
+{{--                            <i class="{{$cargo->carga_tfi?'fas fa-check text-success':'fas fa-times text-danger'}}"></i>--}}
+                        </td>
                         <td>
                             @foreach ($cargo->users as $usuario)
                                 {{ $usuario->nombre.' '.$usuario->apellido }}<br/>
-                        @endforeach
+                            @endforeach
                         </td>
 
                     </tr>
@@ -106,7 +116,20 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/cargos/pondera.js') }}"></script>
+    <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            function formatText (icon) {
+                return $('<span><i class="fas ' + $(icon.element).data('icon') + '"></i> ' + icon.text + '</span>');
+            }
+
+            $('.selection-tfi').select2({
+                width: "100%",
+                templateSelection: formatText,
+                templateResult: formatText
+            });
+
+        });
 
         $(document).on('click', '#formAgregar', function (event) {
             event.preventDefault();

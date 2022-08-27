@@ -113,6 +113,13 @@ class CargoService
         return $parc + $tp;
     }
 
+    public function calculoPorcentajeTFIPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
+    {
+        $tp = $this->calculoPorcentajeCargoByTPPorAlumno($cargo, $materia_id, $alumno_id) * 0.7;
+        $parc = $this->calculoPorcentajeCargoByParcial($cargo, $materia_id, $alumno_id) * 0.3;
+        return $parc + $tp;
+    }
+
     public function obtenerPorcentajeCalificacionPracticaProfesional(Cargo $cargo, int $materia_id, int $alumno_id): ?float
     {
         return null;

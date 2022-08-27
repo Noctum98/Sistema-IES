@@ -14,7 +14,7 @@ class Cargo extends Model
     use HasFactory;
 
     protected $table = 'cargos';
-    protected $fillable = ['nombre','carrera_id', 'tipo_materia_id'];
+    protected $fillable = ['nombre','carrera_id', 'tipo_materia_id', 'carga_tfi'];
 
     const IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL = 1;
     /**
