@@ -88,9 +88,12 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <select class="selection-tfi" name="icon">
-                                <option value="1" data-icon="fa-check" @if ($cargo->carga_tfi === 1) selected @endif > </option>
-                                <option value="0" data-icon="fa-times" @if ($cargo->carga_tfi !== 1 ) selected @endif> </option>
+                            <i class="fa fa-spinner fa-spin" style="display: none"
+                               id="loader-tfi-{{$cargo->relacionCargoModulo($modulo->id)->id}}"></i>
+                            <select class="selection-tfi change-state" name="icon" id="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
+                            data-loader="{{$cargo->relacionCargoModulo($modulo->id)->id}}">
+                                <option value="1" data-icon="fa-check" data-state="text-success" @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi === 1) selected @endif > </option>
+                                <option value="0" data-icon="fa-times" data-state="text-danger" @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi !== 1 ) selected @endif> </option>
                             </select>
 
 
@@ -120,7 +123,7 @@
     <script>
         $(document).ready(function() {
             function formatText (icon) {
-                return $('<span><i class="fas ' + $(icon.element).data('icon') + '"></i> ' + icon.text + '</span>');
+                return $('<span><i class="fas ' + $(icon.element).data('icon')+' ' + $(icon.element).data('state') +'"></i> ' + icon.text + '</span>');
             }
 
             $('.selection-tfi').select2({
@@ -146,6 +149,43 @@
                 success: function (result) {
                     $('#agregarCargoModulo').modal("show");
                     $('#agregarCargoModuloBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+
+        $(document).on('change', '.change-state', function (event) {
+            event.preventDefault();
+            let cargo_modulo = $(this);
+            console.log(cargo_modulo);
+            let url = '/asignaRelacionCargoModulo';
+            let data = {
+                "cargo_modulo_id": cargo_modulo.attr('id'),
+                "valor": cargo_modulo.val(),
+            };
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader-tfi-' + referencia);
+
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: data,
+                // return the result
+                beforeSend: function () {
+                    $laoder.show();
+                },
+                success: function (result) {
+                    // $('#agregarCargoModulo').modal("show");
+                    // $('#agregarCargoModuloBody').html(result).show();
                 },
                 complete: function () {
                     $laoder.hide();

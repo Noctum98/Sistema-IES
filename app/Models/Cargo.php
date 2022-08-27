@@ -51,6 +51,20 @@ class Cargo extends Model
         return $ponderacion->getPonderacion($this->id, $materia_id);
     }
 
+    public function responsableTFI($materia_id)
+    {
+        $responsable_tfi = new CargoService();
+
+        return $responsable_tfi->getResponsableTFI($this->id, $materia_id);
+    }
+
+    public function relacionCargoModulo($materia_id)
+    {
+        $relation = new CargoService();
+
+        return $relation->getRelacionCargoModulo($this->id, $materia_id);
+    }
+
     public function calificacionesCargo(): HasMany
     {
         return $this->hasMany(Calificacion::class);

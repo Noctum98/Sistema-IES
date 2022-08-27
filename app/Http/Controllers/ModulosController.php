@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo;
+use App\Models\CargoMateria;
 use App\Models\Materia;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ModulosController extends Controller
@@ -22,6 +25,22 @@ class ModulosController extends Controller
         return view('modulos.ver', [
             'modulo' => $materia
         ]);
+    }
+
+    public function asignaRelacionCargoModulo(Request $request)
+    {
+
+        $cargo_materia = CargoMateria::find($request['cargo_modulo_id']);
+
+        if ($cargo_materia) {
+            $cargo_materia->update(["carga_tfi" => $request['valor']]);
+
+        }
+
+        return view('modulos.ver', [
+            'modulo' => $cargo_materia->materia_id
+        ]);
+
     }
 
     /**
