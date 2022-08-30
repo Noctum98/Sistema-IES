@@ -44,7 +44,7 @@
 					@endif
 					<td>{{ $carrera->sede->nombre }}</td>
 					<td>
-						@if(Session::has('admin') || Session::has('coordinador'))
+						@if(Session::has('admin') || Session::has('coordinador') || Session::has('regente'))
 						<a href="{{ route('carrera.editar',['id'=>$carrera->id]) }}" class="mr-2 col-md-12 btn btn-sm btn-warning">
 							Editar
 						</a>

@@ -468,7 +468,6 @@ Route::prefix('excel')->group(function () {
 
 Route::prefix('estadistica')->group(function () {
    Route::get('datos',[AlumnoController::class,'vista_datos']);
-   Route::get('datos/{sede_id?}/{edad?}/{localidad?}',[AlumnoController::class,'vista_datos']);
-
+   Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}',[AlumnoController::class,'vista_datos']);
 });
 

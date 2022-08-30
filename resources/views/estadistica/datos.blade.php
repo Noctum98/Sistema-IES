@@ -14,7 +14,17 @@
 				@endforeach
 			</select>
 		</div>
-		<div class="localidad">
+		<div class="form-group">
+			<label for="carrera_id">Carreras</label>
+			<select name="carrera_id" id="carrera_id" class="form-select">
+			<option value="">Ninguna</option>
+			@foreach($carreras as $carrera)
+				<option value="{{ $carrera->id }}" {{ isset($carrera_id) && $carrera->id == $carrera_id ? 'selected':'' }}>{{ $carrera->nombre.' ('.$carrera->turno.') - '.$carrera->sede->nombre }}</option>
+			@endforeach
+			</select>
+					
+		</div>
+		<div class="form-group">
 			<label for="localidad">Localidad</label>
 			<input type="text" class="form-control" id="localidad" name="localidad" value="{{ isset($localidad) ? $localidad : '' }}">
 		</div>
