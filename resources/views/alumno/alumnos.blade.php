@@ -14,13 +14,12 @@
                     {{ @session('alumno_deleted') }}
                 </div>
             @endif
-            <div class="col-md-6 row mb-3">
-                <div class="col-md-6 mr-2">
+            <div class="col-md-12 row mb-3">
+                <div class="col-md-4">
                     <form method="GET" action="#" id="buscador-alumnos" class="form-inline">
-                        <div class="row pr-2">
+                        <div class="row">
                             <div class="input-group">
 {{--                                <div class="input-group-append">--}}
-
 {{--                                </div>--}}
                                 <input type="text" id="busqueda" class="form-control" placeholder="Buscar alumno"
                                        aria-describedby="inputGroupPrepend2"
@@ -32,6 +31,10 @@
                         </div>
                     </form>
                 </div>
+				<div class="col-md-3">
+				<a href="{{ route('excel.alumnosDatos',$carrera->id) }}" class="d-block btn btn-secondary" >Descargar Datos</a>
+
+				</div>
             </div>
             <div id="accordion">
                 <div class="card">

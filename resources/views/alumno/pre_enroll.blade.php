@@ -14,7 +14,16 @@
 					</div>
 				@endif
 				<div class="col-md-10">
-					@include('includes.inscripcion')
+					@if($checked)
+						@include('includes.inscripcion')
+					@else
+						<form action="">
+							<div class="form-group col-md-12">
+							<label for="email">Ingrese su email</label>
+							<input type="email" name="email" id="email" class="form-control" required>
+							</div>	
+						</form>
+					@endif
 				</div>
 				@else
 				<h2 class="h1 text-info">{{$error}}</h2>
