@@ -23,17 +23,17 @@
             Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
         </h3>
         @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
-        <h5>
-            Cargos:
-            @foreach($materia->cargos()->get() as $cargo)
-                <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
-                   class="btn btn-info" title="Ver proceso cargo">
-                    {{$cargo->nombre}}
-                </a>
-        @endforeach
+            <h5>
+                Cargos:
+                @foreach($materia->cargos()->get() as $cargo)
+                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                       class="btn btn-info" title="Ver proceso cargo">
+                        {{$cargo->nombre}}
+                    </a>
+                @endforeach
 
 
-        </h5>
+            </h5>
         @endif
         <hr>
         <div id="alerts">
@@ -45,11 +45,21 @@
                 </small></i></p>
 
         @if(isset($comision))
-        <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}" class="btn btn-sm btn-success">Descargar planilla</a>
+            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
+               class="btn btn-sm btn-success">Descargar planilla</a>
         @else
-        <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success">Descargar planilla</a>
+            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success">Descargar
+                planilla</a>
 
         @endif
+        @if($cargo_id)
+            @inject('cargoService', 'App\Services\CargoService')
+            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)
+                <a href="{{route('proceso_modular.procesa_estados_modular',['materia'=>$materia->id, 'cargo_id' => $cargo_id])}}"
+                   class="btn btn-sm btn-info">Calcula Regularidad</a>
+            @endif
+        @endif
+
         @if(count($procesos) > 0)
             <div class="table tableFixHead">
                 <table class="table mt-1 ">
@@ -75,6 +85,7 @@
                         <tr class="bg-secondary">
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
+                                <small><br/>{{$proceso->procesoRelacionado->estado->nombre}}</small>
                             </td>
                             <td class="text-center">
                                 {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|

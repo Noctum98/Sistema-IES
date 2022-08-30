@@ -9,6 +9,7 @@ use App\Services\ProcesoModularService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProcesoModularController extends Controller
@@ -40,7 +41,7 @@ class ProcesoModularController extends Controller
             $serviceModular->cargarPonderacionEnProcesoModular($materia);
             $acciones[] = "Procesando % modulares para {$materia->nombre}";
         }
-        if($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
+        if ($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
             if ($serviceModular->obtenerTimeUltimaCalificacion(
                     $materia->id
                 )->updated_at >= $serviceModular->obtenerTimeUltimoProcesoModular($materia->id)->updated_at) {
@@ -52,7 +53,7 @@ class ProcesoModularController extends Controller
 
         $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia);
 
-        if($asistencias > 0){
+        if ($asistencias > 0) {
             $acciones[] = "Procesando % asistencia para {$materia->nombre}";
         }
 
@@ -80,6 +81,15 @@ class ProcesoModularController extends Controller
 
         $serviceModular->cargarPonderacionEnProcesoModular($materia);
 
+
+    }
+
+    public function procesaEstadosModular(Materia $materia, int $cargo_id = null): RedirectResponse
+    {
+        $service = new ProcesoModularService();
+        $service->grabaEstadoCursoEnModulo($materia);
+
+        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'cargo_id' => $cargo_id]);
 
     }
 

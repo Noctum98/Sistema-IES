@@ -455,6 +455,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 Route::prefix('proceso-modular')->group(function () {
    Route::get('/listado/{materia}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name('proceso_modular.list');
    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular'])->name('proceso_modular.procesa_ponderacion_modular');
+   Route::get('/procesaEstados/{materia}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular'])->name('proceso_modular.procesa_estados_modular');
 });
 
 Route::prefix('excel')->group(function () {
