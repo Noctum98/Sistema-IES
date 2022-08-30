@@ -242,7 +242,7 @@ Route::prefix('alumno/carrera')->group(function () {
 // Rutas de preinscripciones
 Route::prefix('preinscripcion')->group(function () {
     Route::get('/carreras/{busqueda?}', [PreinscripcionController::class, 'vista_admin'])->name('pre.admin');
-    Route::get('/{id}', [PreinscripcionController::class, 'vista_preinscripcion'])->name('alumno.pre');
+    Route::get('/{id}/{timecheck?}', [PreinscripcionController::class, 'vista_preinscripcion'])->name('alumno.pre');
     Route::get('terminada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
         'pre.inscripto'
     );
@@ -463,6 +463,7 @@ Route::prefix('excel')->group(function () {
         'excel.procesos'
     );
     Route::get('procesosModular/{materia_id}/{comision_id?}',[ExcelController::class,'planilla_notas_modular'])->name('excel.procesosModular');
+    Route::get('alumnosDatos/{carrera_id}',[ExcelController::class,'alumnos_datos'])->name('excel.alumnosDatos');
 });
 
 Route::prefix('estadistica')->group(function () {
