@@ -12,6 +12,8 @@ use App\Models\Preinscripcion;
 use App\Mail\PreEnrolledFormReceived;
 use App\Mail\FileErrorForm;
 use App\Mail\VerifiedPreEnroll;
+use App\Models\MailCheck;
+use App\Services\MailService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,16 +24,43 @@ class PreinscripcionController extends Controller
 {
 
     protected $disk;
+    protected $mailService;
 
-    public function __construct()
+    public function __construct(
+        MailService $mailService
+    )
     {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
         $this->middleware('app.roles:admin-areaSocial', ['only' => ['vista_admin', 'vista_all']]);
         $this->disk = Storage::disk('google');
+        $this->mailService = $mailService;
     }
+
+    public function email_check(Request $request,$timecheck,$carrera_id)
+    {   
+        $mailcheck = $this->mailService->checkEmail($timecheck);
+
+        return redirect()->route('alumno.pre',[
+            'id' => $carrera_id,
+            'timecheck' => $timecheck
+        ]);
+    }
+
     // Vistas
-    public function vista_preinscripcion($id)
+    public function vista_preinscripcion($id,$timecheck=null)
     {
+        $checked = null;
+
+        if($timecheck)
+        {
+            $email_check = MailCheck::where([
+                'timecheck'=>$timecheck,
+                'checked' => true
+            ])->first();
+
+            $checked = $email_check ?? null;
+        }
+        
         $carrera = Carrera::find($id);
         $error = '';
         $carreras_abiertas = [1, 2, 5, 15];
@@ -44,7 +73,8 @@ class PreinscripcionController extends Controller
 
         return view('alumno.pre_enroll', [
             'carrera'   =>  $carrera,
-            'error'     =>  $error
+            'error'     =>  $error,
+            'checked'   => $checked
         ]);
     }
     public function vista_editar($timecheck, $id)

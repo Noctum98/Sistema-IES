@@ -11,6 +11,7 @@ use App\Models\Carrera;
 use App\Models\MailCheck;
 use App\Models\Proceso;
 use App\Models\User;
+use App\Services\MailService;
 use App\Services\ProcesoService as ServicesProcesoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,11 +21,14 @@ use Illuminate\Support\Facades\Auth;
 class MatriculacionController extends Controller
 {
     protected $procesoService;
+    protected $mailService;
 
     public function __construct(
-        ServicesProcesoService $procesoService
+        ServicesProcesoService $procesoService,
+        MailService $mailService
     ) {
         $this->procesoService = $procesoService;
+        $this->mailService = $mailService;
         // $this->middleware('app.auth',['only'=>['create','edit']]);
         // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit']]);
 
@@ -272,11 +276,7 @@ class MatriculacionController extends Controller
 
     public function email_check($timecheck, $carrera_id, $año)
     {
-        $mail_check = MailCheck::where('timecheck', $timecheck)->first();
-
-        $mail_check->checked = true;
-
-        $mail_check->update();
+        $mail_check = $this->mailService->checkEmail($timecheck);
 
         return redirect()->route('matriculacion.create', [
             'id' => $carrera_id,

@@ -14,7 +14,17 @@
 					</div>
 				@endif
 				<div class="col-md-10">
-					@include('includes.inscripcion')
+					@if($checked)
+						@include('includes.inscripcion')
+					@else
+						<form action="{{ route('pre.sendEmail',$carrera->id) }}" method="POST">
+							<div class="form-group">
+							<label for="email">Ingrese su email</label>
+							<input type="email" name="email" id="email" class="form-control" required>
+							</div>
+							<input type="submit" value="Enviar Correo" class="btn btn-success">	
+						</form>
+					@endif
 				</div>
 				@else
 				<h2 class="h1 text-info">{{$error}}</h2>

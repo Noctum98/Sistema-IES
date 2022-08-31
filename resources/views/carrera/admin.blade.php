@@ -18,6 +18,7 @@
 				<tr>
 					<th scope="col">ID</th>
 					<th scope="col">Nombre</th>
+					<th>Resolución</th>
 					@if(Session::has('admin'))
 					<th scope="col">Estado</th>
 					@endif
@@ -31,6 +32,7 @@
 				<tr style="cursor:pointer;">
 					<td><b>{{ $carrera->id }}</b></td>
 					<td>{{ $carrera->nombre }}</td>
+					<td>{{ $carrera->resolucion }}</td>
 					@if(Auth::user()->hasRole('admin'))
 					<td>
 						@if($carrera->estado == 1)
@@ -44,7 +46,7 @@
 					@endif
 					<td>{{ $carrera->sede->nombre }}</td>
 					<td>
-						@if(Session::has('admin') || Session::has('coordinador'))
+						@if(Session::has('admin') || Session::has('coordinador') || Session::has('regente'))
 						<a href="{{ route('carrera.editar',['id'=>$carrera->id]) }}" class="mr-2 col-md-12 btn btn-sm btn-warning">
 							Editar
 						</a>

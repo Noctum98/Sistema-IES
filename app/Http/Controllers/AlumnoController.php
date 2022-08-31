@@ -94,7 +94,7 @@ class AlumnoController extends Controller
         ]);
     }
 
-    public function vista_datos(Request $request, $sede_id = null, $edad = null, $localidad = null)
+    public function vista_datos(Request $request, $sede_id = null,$carrera_id=null, $localidad = null,$edad = null)
     {
         $data = [];
         if ($sede_id) {
@@ -134,15 +134,20 @@ class AlumnoController extends Controller
                 ->orWhere('provincia', '!=', 'mendoza')->count();
 
 
-            if ($localidad) {
+            if ($localidad && $localidad != 0) {
                 $localidad_cantidad = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
                     return $query->where('sede_id', $sede_id);
                 })->where('localidad', $request['localidad'])->count();
             }
 
-            if ($edad) {
-                $edades = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                    return $query->where('sede_id', $sede_id);
+            if ($edad && $edad != 0) {
+                $edades = Alumno::whereHas('carreras', function ($query) use ($sede_id,$carrera_id) {
+                    if($carrera_id && $carrera_id != 0)
+                    {
+                        return $query->where('carreras.id',$carrera_id);
+                    }else{
+                        return $query->where('sede_id', $sede_id);
+                    }
                 })->where('edad', $edad)->count();
             }
 
@@ -151,6 +156,7 @@ class AlumnoController extends Controller
                 'edad' => $edad ?? null,
                 'localidad' => $localidad ?? null,
                 'sede_id' => $sede_id ?? null,
+                'carrera_id' => $carrera_id ?? null,
                 'edades' => $edades ?? null,
                 'discapacidad_visual' => $discapacidad_visual ?? null,
                 'discapacidad_motriz' => $discapacidad_motriz ?? null,
@@ -165,6 +171,7 @@ class AlumnoController extends Controller
         }
 
         $data['sedes'] = Sede::all();
+        $data['carreras'] = Carrera::all();
 
         return view('estadistica.datos', $data);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AllAlumnosExport;
+use App\Exports\AlumnosDatosExport;
 use App\Exports\AlumnosYearExport;
 use App\Exports\PlanillaNotasModularExport;
 use App\Exports\PlanillaNotasTradicionalExport;
@@ -55,6 +56,17 @@ class ExcelController extends Controller
         }
 
         return Excel::download(new AllAlumnosExport($carreras, $sede_id), 'Planilla de alumnos completa.xlsx');
+    }
+
+    public function alumnos_datos($carrera_id)
+    {
+        $carrera = Carrera::select('id','nombre')->where('id',$carrera_id)->first();
+        
+        $alumnos = Alumno::whereHas('carreras',function($query) use ($carrera_id){
+            return $query->where('carreras.id',$carrera_id);
+        })->get();
+
+        return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos '.$carrera->nombre.'.xlsx');
     }
 
     public function planilla_notas_tradicional($materia_id, $comision_id = null)
