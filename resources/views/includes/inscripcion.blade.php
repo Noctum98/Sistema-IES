@@ -62,7 +62,7 @@
 	</div>
 	<div class="form-group">
 		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" oncopy="return false" email required />
+		<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" oncopy="return false" email required disabled/>
 
 		@error('email')
 		<span class="invalid-feedback d-block" role="alert">
@@ -70,13 +70,7 @@
 		</span>
 		@enderror
 	</div>
-	<div class="form-group">
-		<label for="email-confirm">{{ __('Confirmar Email') }}:</label>
-
-		<div>
-			<input id="email-confirm" type="email" class="form-control" name="email_confirmation" required autocomplete="new-email" onpaste="return false" value="{{ old('email_confirmation') }}">
-		</div>
-	</div>
+	<input id="email-confirm" type="hidden" class="form-control" name="email_confirmation" required autocomplete="new-email" onpaste="return false" value="{{ $checked ? $checked->email : old('email_confirmation') }}" disabled>
 	<div class="form-group">
 		<label for="nacionalidad">Nacionalidad:</label>
 		<select class="form-control" name="nacionalidad" id="nacionalidad">
