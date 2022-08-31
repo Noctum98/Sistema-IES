@@ -140,7 +140,7 @@
 								En cierre
 							</option>
 							<option value= 2 {{$carrera->estado == 2 ? 'selected="selected"':''}}>
-								En Apertura
+								En apertura
 							</option>
 
 						</select>
