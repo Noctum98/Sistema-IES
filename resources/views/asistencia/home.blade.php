@@ -1,9 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">
-            Elige la materia para ver la planilla
-        </h2>
+        <h3 class="text-info">
+            Elige la materia para ver la planilla de asistencia
+        </h3>
         <hr>
         @if(count($materias) > 0)
             <h4 class="text-secondary">Materias</h4>
