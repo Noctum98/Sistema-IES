@@ -139,6 +139,9 @@
 							<option value= 1 {{$carrera->estado == 1 ? 'selected="selected"':''}}>
 								En cierre
 							</option>
+							<option value= 2 {{$carrera->estado == 2 ? 'selected="selected"':''}}>
+								En apertura
+							</option>
 
 						</select>
 					</div>

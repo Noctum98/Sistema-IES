@@ -51,7 +51,11 @@
 			<br>
 			<p>Clickea sobre el enlace para confirmar la verificación:</p>
 			<br>
+			@if($año)
 			<a href="{{ route('matriculacion.checked',['timecheck'=>$timecheck,'carrera_id'=>$carrera_id,'year'=>$año]) }}" class="btn">Confirmar verificación</a>
+			@else
+			<a href="{{ route('pre.email',['timecheck' => $timecheck,'carrera_id'=>$carrera_id]) }}" class="btn">Confirmar verificación</a>
+			@endif
 		</div>
 	</div>		
 </div>

@@ -27,6 +27,7 @@ use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\ProcesoCalificacionController;
@@ -246,6 +247,7 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('terminada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
         'pre.inscripto'
     );
+
     Route::get('editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/carrera/{id}', [PreinscripcionController::class, 'vista_all'])->name('pre.all');
@@ -254,6 +256,7 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('/erroneas/{id}', [PreinscripcionController::class, 'vista_sincorregir'])->name('pre.sincorregir');
     Route::get('/editar/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editar'])->name('pre.editar');
     Route::get('/articulo/septimo', [PreinscripcionController::class, 'vista_articulo'])->name('pre.articulo');
+    Route::get('/mail/check/{timecheck}/{carrera_id}',[PreinscripcionController::class,'email_check'])->name('pre.email');
 
 
     // Acciones
@@ -469,5 +472,9 @@ Route::prefix('excel')->group(function () {
 Route::prefix('estadistica')->group(function () {
    Route::get('datos',[AlumnoController::class,'vista_datos']);
    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}',[AlumnoController::class,'vista_datos']);
+});
+
+Route::prefix('mail')->group(function(){
+    Route::post('/mail/pre/send/{carrera_id}',[MailController::class,'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
