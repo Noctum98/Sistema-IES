@@ -159,18 +159,6 @@
 			<strong>{{ $message }}</strong>
 		</span>
 		@enderror
-
-		<span class="text-danger">
-			*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, clickea sobre
-			la siguiente casilla para inscribirte por articulo 7mo.
-		</span>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="articulo7mo">
-			<label class="form-check-label" for="articulo7mo">
-				Inscripción Articulo 7mo
-			</label>
-		</div>
-
 	</div>
 	<div class="form-group">
 		<label for="escolaridad">Título Secundario:</label>
