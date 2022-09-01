@@ -62,7 +62,7 @@
 	</div>
 	<div class="form-group">
 		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" oncopy="return false" email required disabled/>
+		<input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" readonly/>
 
 		@error('email')
 		<span class="invalid-feedback d-block" role="alert">
@@ -70,7 +70,6 @@
 		</span>
 		@enderror
 	</div>
-	<input id="email-confirm" type="hidden" class="form-control" name="email_confirmation" required autocomplete="new-email" onpaste="return false" value="{{ $checked ? $checked->email : old('email_confirmation') }}" disabled>
 	<div class="form-group">
 		<label for="nacionalidad">Nacionalidad:</label>
 		<select class="form-control" name="nacionalidad" id="nacionalidad">
@@ -246,7 +245,7 @@
 	<div class="form-group">
 		<label>Trabajas actualmente: </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1" required />
+			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1"/>
 			<label class="form-check-label" for="trabajo1">
 				Si
 			</label>
@@ -263,6 +262,28 @@
 		</span>
 		@enderror
 	</div>
+
+	<div class="form-group d-none" id="trabajo_relacionado_div">
+		<label>Tu trabajo está relacionado a la carrera? </label>
+		<div class="form-check">
+			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1"/>
+			<label class="form-check-label" for="trabajo1">
+				Si
+			</label>
+		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="radio" value="no" name="trabajo_relacionado" id="trabajo_relacionado2">
+			<label class="form-check-label" for="trabajo2">
+				No
+			</label>
+		</div>
+		@error('trabajo')
+		<span class="invalid-feedback d-block" role="alert">
+			<strong>{{ $message }}</strong>
+		</span>
+		@enderror
+	</div>
+
 	<br>
 	<h4 class="text-secondary">Documentación a adjuntar</h4>
 	<div class="alert alert-warning">
@@ -333,7 +354,7 @@
 		</span>
 		@enderror
 	</div>
-	<div id="7mo" style="display: none;">
+	<div id="7mo" class="d-none">
 		<br>
 		<h4 class="text-secondary">Artículo 7mo</h4>
 		<hr>
@@ -375,7 +396,7 @@
 		</div>
 		<div class="form-group">
 			<label for="nota_file">
-				Nota a la Rectora (en PDF)
+				Nota al Rector (en PDF)
 			</label>
 			<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
 
@@ -387,7 +408,11 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<input type="submit" value="Inscribirse" class="btn btn-success" id="loading">
+		<input type="submit" value="Inscribirse" class="btn btn-success">
 	</div>
 
 </form>
+
+@section('scripts')
+<script src="{{ asset('js/preinscripcion/preinscripcion.js') }}"></script>
+@endsection
