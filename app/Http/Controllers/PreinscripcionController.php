@@ -63,13 +63,18 @@ class PreinscripcionController extends Controller
         
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [1, 2, 5, 15];
+        $carreras_abiertas = [3,7,8,38,10,16,13,12,17,19,23,20,21,22];
 
-
-        if (!Auth::user() && !Session::has('admin')) {
+        if(!in_array($carrera->id,$carreras_abiertas))
+        {
             $carrera = null;
             $error = 'Página deshabilitada';
         }
+
+        /*
+        if (!Auth::user() && !Session::has('admin')) {
+           
+        }*/
 
         return view('alumno.pre_enroll', [
             'carrera'   =>  $carrera,
@@ -214,7 +219,7 @@ class PreinscripcionController extends Controller
             'dni'           =>  ['required', 'numeric'],
             'cuil'          =>  ['required', 'numeric'],
             'fecha'         =>  ['required'],
-            'email'         =>  ['required', 'email'],
+            'email'         =>  ['required','email'],
             'edad'          =>  ['required', 'numeric'],
             'nacionalidad'  =>  ['required'],
             'domicilio'     =>  ['required'],
@@ -325,7 +330,7 @@ class PreinscripcionController extends Controller
         $request['timecheck'] = time();
         $preinscripcion = Preinscripcion::create($request->all());
 
-        //Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
 
         return redirect()->route('pre.inscripto', [
             'timecheck' => $preinscripcion->timecheck,
