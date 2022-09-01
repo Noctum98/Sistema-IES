@@ -76,7 +76,7 @@
 						</div>
 						<div class="form-group">
 							<label for="email">Email:</label>
-							<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{$preinscripcion->email}}" email required />
+							<input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{$preinscripcion->email}}" email required readonly/>
 
 							@error('email')
 								<span class="invalid-feedback d-block" role="alert">
@@ -220,17 +220,6 @@
 									Cursando actualmente el nivel secundario
 								</option>
 							</select>
-							<span class="text-danger">
-								*IMPORTANTE: Si tienes secundario incompleto y eres mayor de 25 años, haz clic sobre
-								la siguiente casilla para inscribirte por artículo 7mo.
-							</span>
-							<div class="form-check">
-							  <input class="form-check-input" type="checkbox" value="" id="articulo7mo"
-							   {{$preinscripcion->nota || $preinscripcion->curriculum || $preinscripcion->ctrabajo || $preinscripcion->primario ? 'checked' : ''}}>
-							  <label class="form-check-label" for="articulo7mo">
-							    Inscripción Articulo 7mo
-							  </label>
-							</div>
 						</div>
 						<div class="form-group">
 							<label for="escolaridad">Título Secundario:</label>
