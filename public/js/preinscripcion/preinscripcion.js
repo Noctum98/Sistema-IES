@@ -11,6 +11,7 @@ $(document).ready(function () {
     $("#trabajo2").change(function(e){
         if($(this).val() == 'no'){
             $("#trabajo_relacionado_div").addClass('d-none');
+            $("#7mo").addClass('d-none');
         }
     });
 
