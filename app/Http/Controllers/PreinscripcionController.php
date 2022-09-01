@@ -214,7 +214,7 @@ class PreinscripcionController extends Controller
             'dni'           =>  ['required', 'numeric'],
             'cuil'          =>  ['required', 'numeric'],
             'fecha'         =>  ['required'],
-            'email'         =>  ['required', 'email', 'confirmed'],
+            'email'         =>  ['required', 'email'],
             'edad'          =>  ['required', 'numeric'],
             'nacionalidad'  =>  ['required'],
             'domicilio'     =>  ['required'],
