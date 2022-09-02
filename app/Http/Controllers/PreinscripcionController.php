@@ -31,7 +31,7 @@ class PreinscripcionController extends Controller
     )
     {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-areaSocial', ['only' => ['vista_admin', 'vista_all']]);
+        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all']]);
         $this->disk = Storage::disk('google');
         $this->mailService = $mailService;
     }
