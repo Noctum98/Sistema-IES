@@ -152,6 +152,7 @@ class PreinscripcionController extends Controller
             'carrera_id' => $carrera_id,
             'estado'    => 'sin verificar'
         ])->get();
+        
         $carrera = Carrera::find($carrera_id);
 
         return view('preinscripcion.all', [

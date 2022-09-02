@@ -243,6 +243,7 @@ Route::prefix('alumno/carrera')->group(function () {
 // Rutas de preinscripciones
 Route::prefix('preinscripcion')->group(function () {
     Route::get('/carreras/{busqueda?}', [PreinscripcionController::class, 'vista_admin'])->name('pre.admin');
+    Route::get('/admin/carrera/{id}', [PreinscripcionController::class, 'vista_all'])->name('pre.all');
     Route::get('/{id}/{timecheck?}', [PreinscripcionController::class, 'vista_preinscripcion'])->name('alumno.pre');
     Route::get('terminada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
         'pre.inscripto'
@@ -250,12 +251,11 @@ Route::prefix('preinscripcion')->group(function () {
 
     Route::get('editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
-    Route::get('/carrera/{id}', [PreinscripcionController::class, 'vista_all'])->name('pre.all');
-    Route::get('/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
-    Route::get('/verificadas/{id}', [PreinscripcionController::class, 'vista_verificadas'])->name('pre.verificadas');
-    Route::get('/erroneas/{id}', [PreinscripcionController::class, 'vista_sincorregir'])->name('pre.sincorregir');
+    Route::get('/admin/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
+    Route::get('/admin/verificadas/{id}', [PreinscripcionController::class, 'vista_verificadas'])->name('pre.verificadas');
+    Route::get('/admin/erroneas/{id}', [PreinscripcionController::class, 'vista_sincorregir'])->name('pre.sincorregir');
     Route::get('/editar/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editar'])->name('pre.editar');
-    Route::get('/articulo/septimo', [PreinscripcionController::class, 'vista_articulo'])->name('pre.articulo');
+    Route::get('/admin/articulo/septimo', [PreinscripcionController::class, 'vista_articulo'])->name('pre.articulo');
     Route::get('/mail/check/{timecheck}/{carrera_id}',[PreinscripcionController::class,'email_check'])->name('pre.email');
 
 
