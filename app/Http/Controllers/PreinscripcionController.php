@@ -101,7 +101,6 @@ class PreinscripcionController extends Controller
         $title = "Tu preinscripción ha sido enviada con éxito";
         $content = "Se ha enviado un comprobante de preinscripción a tu correo electronico, los datos serán verificados
         en el establecimiento y se te informará el resultado.";
-        
         $edit = false;
 
         return view('alumno.enrolled', [
