@@ -73,16 +73,16 @@
 	<div class="form-group">
 		<label for="nacionalidad">Nacionalidad:</label>
 		<select class="form-control" name="nacionalidad" id="nacionalidad">
-			<option value="argentina" selected="selected">Argentina</option>
-			<option value="uruguaya">Uruguaya</option>
-			<option value="chilena">Chilena</option>
-			<option value="paraguaya">Paraguaya</option>
-			<option value="brasilera">Brasilera</option>
-			<option value="boliviana">Boliviana</option>
-			<option value="colombiana">Colombiana</option>
-			<option value="peruana">Peruana</option>
-			<option value="venezolana">Venezolana</option>
-			<option value="otra">Otra</option>
+			<option value="argentina" {{ old('nacionalidad') == 'argentina' ? 'selected' : '' }}>Argentina</option>
+			<option value="uruguaya" {{ old('nacionalidad') == 'uruguaya' ? 'selected' : '' }}>Uruguaya</option>
+			<option value="chilena" {{ old('nacionalidad') == 'chilena' ? 'selected' : '' }}>Chilena</option>
+			<option value="paraguaya" {{ old('nacionalidad') == 'paraguaya' ? 'selected' : '' }}>Paraguaya</option>
+			<option value="brasilera" {{ old('nacionalidad') == 'brasilera' ? 'selected' : '' }}>Brasilera</option>
+			<option value="boliviana" {{ old('nacionalidad') == 'boliviana' ? 'selected' : '' }}>Boliviana</option>
+			<option value="colombiana" {{ old('nacionalidad') == 'colombiana' ? 'selected' : '' }}>Colombiana</option>
+			<option value="peruana" {{ old('nacionalidad') == 'peruana' ? 'selected' : '' }}>Peruana</option>
+			<option value="venezolana" {{ old('nacionalidad') == 'venezolana' ? 'selected' : '' }}>Venezolana</option>
+			<option value="otra" {{ old('nacionalidad') == 'otra' ? 'selected' : '' }}>Otra</option>
 		</select>
 		@error('nacionalidad')
 		<span class="invalid-feedback d-block" role="alert">
@@ -104,24 +104,24 @@
 		<label for="residencia">Residencia:</label>
 		<select class="form-control" name="residencia" id="residencia">
 			<option value="capital" selected="selected">Capital</option>
-			<option value="las heras">Las Heras</option>
-			<option value="godoy cruz">Godoy Cruz</option>
-			<option value="guaymallén">Guaymallén</option>
-			<option value="lavalle">Lavalle</option>
-			<option value="maipú">Maipú</option>
-			<option value="san martín">San Martín</option>
-			<option value="junín">Junín</option>
-			<option value="rivadavia">Rivadavia</option>
-			<option value="santa rosa">Santa Rosa</option>
-			<option value="la paz">La Paz</option>
-			<option value="luján">Luján</option>
-			<option value="tupungato">Tupungato</option>
-			<option value="tunuyán">Tunuyán</option>
-			<option value="san carlos">San Carlos</option>
-			<option value="san rafael">San Rafael</option>
-			<option value="gral. alvear">Gral. Alvear</option>
-			<option value="malargue">Malargue</option>
-			<option value="otra provincia" id="otra-p">
+			<option value="las heras" {{ old('residencia') == 'las heras' ? 'selected' : '' }}>Las Heras</option>
+			<option value="godoy cruz" {{ old('residencia') == 'godoy cruz' ? 'selected' : '' }}>Godoy Cruz</option>
+			<option value="guaymallén" {{ old('residencia') == 'guaymallén' ? 'selected' : '' }}>Guaymallén</option>
+			<option value="lavalle" {{ old('residencia') == 'lavalle' ? 'selected' : '' }}>Lavalle</option>
+			<option value="maipú" {{ old('residencia') == 'maipú' ? 'selected' : '' }}>Maipú</option>
+			<option value="san martín" {{ old('residencia') == 'san martín' ? 'selected' : '' }}>San Martín</option>
+			<option value="junín" {{ old('residencia') == 'junín' ? 'selected' : '' }}>Junín</option>
+			<option value="rivadavia" {{ old('residencia') == 'rivadavia' ? 'selected' : '' }}>Rivadavia</option>
+			<option value="santa rosa" {{ old('residencia') == 'santa rosa' ? 'selected' : '' }}>Santa Rosa</option>
+			<option value="la paz" {{ old('residencia') == 'la paz' ? 'selected' : '' }}>La Paz</option>
+			<option value="luján" {{ old('residencia') == 'luján' ? 'selected' : '' }}>Luján</option>
+			<option value="tupungato" {{ old('residencia') == 'tupungato' ? 'selected' : '' }}>Tupungato</option>
+			<option value="tunuyán" {{ old('residencia') == 'tunuyán' ? 'selected' : '' }}>Tunuyán</option>
+			<option value="san carlos" {{ old('residencia') == 'san carlos' ? 'selected' : '' }}>San Carlos</option>
+			<option value="san rafael" {{ old('residencia') == 'san rafael' ? 'selected' : '' }}>San Rafael</option>
+			<option value="gral. alvear" {{ old('residencia') == 'gral. alvear' ? 'selected' : '' }}>Gral. Alvear</option>
+			<option value="malargue" {{ old('residencia') == 'malargue' ? 'selected' : '' }}>Malargue</option>
+			<option value="otra provincia" id="otra-p" {{ old('residencia') == 'otra provincia' ? 'selected' : '' }}>
 				Otra provincia
 			</option>
 		</select>
@@ -149,10 +149,10 @@
 	<div class="form-group">
 		<label for="condicion_s">Situación de Escolaridad:</label>
 		<select class="form-control" name="condicion_s" id="condicion_s">
-			<option value="primario completo">Primario Completo</option>
-			<option value="secundario completo">Secundario Completo</option>
-			<option value="secundario incompleto">Secundario Incompleto</option>
-			<option value="cursando actualmente secundario">Cursando actualmente el nivel secundario</option>
+			<option value="primario completo" {{ old('condicion_s') == 'primario completo' ? 'selected' : '' }}>Primario Completo</option>
+			<option value="secundario completo" {{ old('condicion_s') == 'secundario completo' ? 'selected' : '' }}>Secundario Completo</option>
+			<option value="secundario incompleto" {{ old('condicion_s') == 'secundario incompleto' ? 'selected' : '' }}>Secundario Incompleto</option>
+			<option value="cursando actualmente secundario" {{ old('condicion_s') == 'cursando actualmente secundario' ? 'selected' : '' }}>Cursando actualmente el nivel secundario</option>
 		</select>
 		@error('condicion_s')
 		<span class="invalid-feedback d-block" role="alert">
@@ -163,13 +163,13 @@
 	<div class="form-group">
 		<label for="escolaridad">Título Secundario:</label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="escolaridad" id="escolaridad1" required />
+			<input class="form-check-input" type="radio" value="si" name="escolaridad" id="escolaridad1" {{ old('escolaridad') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="escolaridad1">
 				Si
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="no" name="escolaridad" id="escolaridad2">
+			<input class="form-check-input" type="radio" value="no" name="escolaridad" id="escolaridad2" {{ old('escolaridad') == 'no' ? 'checked' : '' }}>
 			<label class="form-check-label" for="escolaridad2">
 				No
 			</label>
@@ -193,13 +193,13 @@
 	<div class="form-group">
 		<label for="materias_s">Adeuda materias:</label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="materias_s" id="materia_s1" required />
+			<input class="form-check-input" type="radio" value="si" name="materias_s" id="materia_s1" {{ old('materias_s') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="materia_s1">
 				Si
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="no" name="materias_s" id="materia_s2">
+			<input class="form-check-input" type="radio" value="no" name="materias_s" id="materia_s2" {{ old('materias_s') == 'no' ? 'checked' : '' }}>
 			<label class="form-check-label" for="materia_s2">
 				No
 			</label>
@@ -213,13 +213,13 @@
 	<div class="form-group">
 		<label>Conexión a internet: </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="conexion" id="conexion1" required />
+			<input class="form-check-input" type="radio" value="si" name="conexion" id="conexion1" {{ old('conexion') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="conexion1">
 				Si
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="no" name="conexion" id="conexion2">
+			<input class="form-check-input" type="radio" value="no" name="conexion" id="conexion2" {{ old('conexion') == 'no' ? 'checked' : '' }}>
 			<label class="form-check-label" for="conexion2">
 				No
 			</label>
@@ -233,13 +233,13 @@
 	<div class="form-group">
 		<label>Trabajas actualmente: </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1"/>
+			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1" {{ old('trabajo') == 'si' ? 'checked' : '' }}/>
 			<label class="form-check-label" for="trabajo1">
 				Si
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="no" name="trabajo" id="trabajo2">
+			<input class="form-check-input" type="radio" value="no" name="trabajo" id="trabajo2" {{ old('trabajo') == 'no' ? 'checked' : '' }}>
 			<label class="form-check-label" for="trabajo2">
 				No
 			</label>
@@ -254,13 +254,13 @@
 	<div class="form-group d-none" id="trabajo_relacionado_div">
 		<label>Tu trabajo está relacionado a la carrera? </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1"/>
+			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }}/>
 			<label class="form-check-label" for="trabajo1">
 				Si
 			</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="no" name="trabajo_relacionado" id="trabajo_relacionado2">
+			<input class="form-check-input" type="radio" value="no" name="trabajo_relacionado" id="trabajo_relacionado2" {{ old('trabajo_relacionado') == 'no' ? 'checked' : '' }}>
 			<label class="form-check-label" for="trabajo2">
 				No
 			</label>
@@ -276,6 +276,9 @@
 	<h4 class="text-secondary">Documentación a adjuntar</h4>
 	<div class="alert alert-warning">
 		Los siguientes campos solo admiten un archivo, en caso de tener que unir dos fotos se recomienda unirlas en un pdf utilizando la herramienta <a href="https://www.ilovepdf.com/" target="_blank">iLovePDF</a>.
+	</div>
+	<div class="alert alert-warning">
+		El tamaño de los archivos no puede superar los 5MB.
 	</div>
 	<hr>
 
