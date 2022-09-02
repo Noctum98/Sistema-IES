@@ -236,20 +236,26 @@ class PreinscripcionController extends Controller
             'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5000'],
             'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
             'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
         ]);
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],
-            'carrera_id' => $carrera_id
-        ])->first();
+        ])->get();
 
-
-        if ($exists) {
-            return redirect()->route('alumno.pre', [
-                'id' => $carrera_id
-            ])->with([
-                'error_carrera' => 'Ya estas inscripto en esta carrera.'
-            ]);
+        foreach($exists as $exist)
+        {
+            if($exist->carrera->resolucion == $carrera->resolucion)
+            {
+                return redirect()->route('alumno.pre', [
+                    'id' => $carrera_id
+                ])->with([
+                    'error_carrera' => 'Ya estas inscripto en esta carrera.'
+                ]);
+            }
         }
 
         $dni_archivo = $request->file('dni_archivo_file');
@@ -485,7 +491,7 @@ class PreinscripcionController extends Controller
         $preinscripcion->delete();
 
         $title = "Tu preinscripción ha sido eliminada";
-        $content = "Se ha enviado tu correo electronico un comprobante, podrás volver a inscribirte hasta la fecha límite establecida.";
+        $content = "Se ha enviado tu correo electrónico un comprobante, podrás volver a inscribirte hasta la fecha límite establecida.";
         $delete = true;
 
         return view('alumno.enrolled', [
