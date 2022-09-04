@@ -116,7 +116,7 @@
                                            class="form-control nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                            id="global-{{ $proceso->procesoRelacionado->id }}"
                                            value="{{ $proceso->procesoRelacionado->nota_global ? $proceso->procesoRelacionado->nota_global : '' }}"
-                                           @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 2) || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                           @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 4) || $proceso->procesoRelacionado->cierre) disabled @endif>
                                     <button type="submit" class="btn btn-info btn-sm col-md-6 input-group-text"
                                             id="btn-global-{{ $proceso->procesoRelacionado->id }}"
                                             @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
