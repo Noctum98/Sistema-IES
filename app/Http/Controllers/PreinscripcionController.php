@@ -31,7 +31,7 @@ class PreinscripcionController extends Controller
     )
     {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-areaSocial', ['only' => ['vista_admin', 'vista_all']]);
+        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all']]);
         $this->disk = Storage::disk('google');
         $this->mailService = $mailService;
     }
@@ -63,13 +63,18 @@ class PreinscripcionController extends Controller
         
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [1, 2, 5, 15];
+        $carreras_abiertas = [3,7,8,38,10,16,13,12,17,19,23,20,21,22];
 
-
-        if (!Auth::user() && !Session::has('admin')) {
+        if(!in_array($carrera->id,$carreras_abiertas))
+        {
             $carrera = null;
             $error = 'Página deshabilitada';
         }
+
+        /*
+        if (!Auth::user() && !Session::has('admin')) {
+           
+        }*/
 
         return view('alumno.pre_enroll', [
             'carrera'   =>  $carrera,
@@ -94,7 +99,8 @@ class PreinscripcionController extends Controller
             'timecheck' => $timecheck
         ])->first();
         $title = "Tu preinscripción ha sido enviada con éxito";
-        $content = "Se ha enviado un comprobante a tu correo electronico.";
+        $content = "Se ha enviado un comprobante de preinscripción a tu correo electronico, los datos serán verificados
+        en el establecimiento y se te informará el resultado.";
         $edit = false;
 
         return view('alumno.enrolled', [
@@ -147,6 +153,7 @@ class PreinscripcionController extends Controller
             'carrera_id' => $carrera_id,
             'estado'    => 'sin verificar'
         ])->get();
+        
         $carrera = Carrera::find($carrera_id);
 
         return view('preinscripcion.all', [
@@ -214,7 +221,7 @@ class PreinscripcionController extends Controller
             'dni'           =>  ['required', 'numeric'],
             'cuil'          =>  ['required', 'numeric'],
             'fecha'         =>  ['required'],
-            'email'         =>  ['required', 'email', 'confirmed'],
+            'email'         =>  ['required','email'],
             'edad'          =>  ['required', 'numeric'],
             'nacionalidad'  =>  ['required'],
             'domicilio'     =>  ['required'],
@@ -229,20 +236,26 @@ class PreinscripcionController extends Controller
             'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5000'],
             'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
             'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
         ]);
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],
-            'carrera_id' => $carrera_id
-        ])->first();
+        ])->get();
 
-
-        if ($exists) {
-            return redirect()->route('alumno.pre', [
-                'id' => $carrera_id
-            ])->with([
-                'error_carrera' => 'Ya estas inscripto en esta carrera.'
-            ]);
+        foreach($exists as $exist)
+        {
+            if($exist->carrera->resolucion == $carrera->resolucion)
+            {
+                return redirect()->route('alumno.pre', [
+                    'id' => $carrera_id
+                ])->with([
+                    'error_carrera' => 'Ya estas inscripto en esta carrera.'
+                ]);
+            }
         }
 
         $dni_archivo = $request->file('dni_archivo_file');
@@ -325,7 +338,7 @@ class PreinscripcionController extends Controller
         $request['timecheck'] = time();
         $preinscripcion = Preinscripcion::create($request->all());
 
-        //Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
 
         return redirect()->route('pre.inscripto', [
             'timecheck' => $preinscripcion->timecheck,
@@ -478,7 +491,7 @@ class PreinscripcionController extends Controller
         $preinscripcion->delete();
 
         $title = "Tu preinscripción ha sido eliminada";
-        $content = "Se ha enviado tu correo electronico un comprobante, podrás volver a inscribirte hasta la fecha límite establecida.";
+        $content = "Se ha enviado tu correo electrónico un comprobante, podrás volver a inscribirte hasta la fecha límite establecida.";
         $delete = true;
 
         return view('alumno.enrolled', [

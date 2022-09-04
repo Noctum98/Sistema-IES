@@ -39,8 +39,8 @@
 						<span class="text-danger font-weight-bold">En cierre</span>
 						@elseif($carrera->estado == 0)
 						<span class="text-success font-weight-bold">En curso</span>
-						@else
-						<span class="text-primary font-weight-bold">Ninguna</span>
+						@elseif($carrera->estado == 2)
+						<span class="text-primary font-weight-bold">En Apertura</span>
 						@endif
 					</td>
 					@endif
