@@ -85,7 +85,7 @@
                         <tr class="bg-secondary">
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
-                                <small><br/>{{$proceso->procesoRelacionado->estado->nombre}}</small>
+                                <small><br/>{{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
                             </td>
                             <td class="text-center">
                                 {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|
