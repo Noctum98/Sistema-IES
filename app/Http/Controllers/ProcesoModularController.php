@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo;
 use App\Models\Materia;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProcesoModularController extends Controller
 {
@@ -33,6 +35,12 @@ class ProcesoModularController extends Controller
 
     public function listado(Materia $materia, int $cargo_id = null)
     {
+        $cargo = Cargo::find($cargo_id);
+        $puedeProcesar = false;
+        if($cargo and Auth::user()->hasCargo($cargo_id) and $cargo->responsableTFI($materia->id)){
+            $puedeProcesar = true;
+        };
+
         $acciones = [];
         $serviceModular = new ProcesoModularService();
         if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
@@ -64,6 +72,7 @@ class ProcesoModularController extends Controller
                 'cargo_id' => $cargo_id,
                 'acciones' => $acciones,
                 'procesos' => $procesos,
+                'puede_procesar' => $puedeProcesar
             ]
         );
 

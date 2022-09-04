@@ -54,7 +54,8 @@
         @endif
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
-            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)
+{{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}
+            @if($puede_procesar)
                 <a href="{{route('proceso_modular.procesa_estados_modular',['materia'=>$materia->id, 'cargo_id' => $cargo_id])}}"
                    class="btn btn-sm btn-info">Calcula Regularidad</a>
             @endif
@@ -116,7 +117,7 @@
                                            class="form-control nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                            id="global-{{ $proceso->procesoRelacionado->id }}"
                                            value="{{ $proceso->procesoRelacionado->nota_global ? $proceso->procesoRelacionado->nota_global : '' }}"
-                                           @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 4) || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                           @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5 && $puede_procesar) || $proceso->procesoRelacionado->cierre) disabled @endif>
                                     <button type="submit" class="btn btn-info btn-sm col-md-6 input-group-text"
                                             id="btn-global-{{ $proceso->procesoRelacionado->id }}"
                                             @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
