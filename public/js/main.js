@@ -185,23 +185,6 @@ window.addEventListener("load", function () {
 			});
 		}
 	}
-	// ARTICULO 7MO OCULTAR
-	if (document.getElementById('articulo7mo')) {
-		var septimo = document.getElementById('7mo');
-		var check = document.getElementById('articulo7mo');
-		if (check.checked) {
-			septimo.style.display = "block";
-		} else {
-			septimo.style.display = "none";
-		}
-		check.addEventListener('click', function (e) {
-			if (check.checked) {
-				septimo.style.display = "block";
-			} else {
-				septimo.style.display = "none";
-			}
-		});
-	}
 
 	//OTRA RESIDENCIA PAIS
 	if (document.getElementById('residencia')) {

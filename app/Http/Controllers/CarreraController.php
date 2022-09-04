@@ -108,8 +108,6 @@ class CarreraController extends Controller
             'modalidad' =>  ['required','alpha'],
             'vacunas'   =>  ['required','alpha']
         ]);
-
-        $request['estado'] = $request['estado'] ? 1 : null;
         $carrera = Carrera::find($id);
         $carrera->update($request->all());
         
