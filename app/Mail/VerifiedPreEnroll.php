@@ -30,8 +30,9 @@ class VerifiedPreEnroll extends Mailable
     public function build()
     {
         $titulo = 'Preinscripción: '.$this->preinscripcion->nombres.' '.$this->preinscripcion->apellidos;
-        $pie = 'Tu preinscripción esta completa, y tus datos han sido verificados, en breve se anunciará
-        a traves de la página web cuando este disponible el aula virtual.';
+        $pie = 'Tu preinscripción esta completa, y tus datos han sido verificados, EL CICLO DE ACTUALIZACIÓN DE SABERES PREVIOS INICIA EL 24/10/2022, a través de nuestras aulas virtuales. 
+        Antes de esa fecha recibirás un correo para ingresar al aula virtual.
+        Te recomendamos leer atentamente el documento "Proceso de ingreso 2023" disponible en nuestro sitio web.';
         $subtitulo = '';
         return $this->view('mail.verified_pre_enroll',[
             'preinscripcion' => $this->preinscripcion,

@@ -137,7 +137,7 @@
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title text-secondary" id="exampleModalLabel">Indica el archivo erroneo</h5>
+				        <h5 class="modal-title text-secondary" id="exampleModalLabel">Indica el archivo erróneo</h5>
 				        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
 				          <span aria-bs-hidden="true">&times;</span>
 				        </button>
