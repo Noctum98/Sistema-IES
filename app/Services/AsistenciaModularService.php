@@ -105,10 +105,24 @@ class AsistenciaModularService
                  * filtrando por cargo
                  */
 
-                $asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
+                if ($proceso->procesoRelacionado()->first()) {
+                    if ($proceso->procesoRelacionado()->first()->asistencia()) {
+                        if ($proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)) {
+                            $asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia(
+                            )->getByAsistenciaCargo(
+                                $cargo->id
+                            )->porcentaje;
 
 
-                $asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
+                            $asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
+                        }
+                    }
+                }
+
+                //$asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
+
+
+                //$asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
             }
             $proceso->asistencia_final_porcentaje = $asistencia_final_p;
 
