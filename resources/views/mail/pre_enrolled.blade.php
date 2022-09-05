@@ -56,6 +56,8 @@
 	<div class="row">
 		<div class="detalle-pre">
 			<ul>
+				<li><b>Carrera:</b> {{ $preinscripcion->carrera->nombre }}</li>
+				<li><b>Turno:</b> {{ ucwords($preinscripcion->carrera->turno) }}</li>
 				<li><b>D.N.I:</b> {{$preinscripcion->dni}}</li>
 				<li><b>CUIL:</b> {{$preinscripcion->cuil}}</li>
 				<li><b>Edad:</b> {{$preinscripcion->edad}} años</li>
