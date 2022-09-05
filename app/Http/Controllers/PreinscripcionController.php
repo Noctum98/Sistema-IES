@@ -233,13 +233,15 @@ class PreinscripcionController extends Controller
             'escuela_s'     =>  ['required'],
             'materias_s'     =>  ['required'],
             'conexion'      =>  ['required'],
-            'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5500'],
+            'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'dni_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'certificado_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
         ]);
 
         $exists = Preinscripcion::where([
@@ -369,9 +371,15 @@ class PreinscripcionController extends Controller
             'escuela_s'     =>  ['required'],
             'materia_s'     =>  ['required'],
             'conexion'      =>  ['required'],
-            'dni_archivo'   =>  ['file','mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo'   =>  ['file','mimes:jpg,jpeg,png,pdf','max:5000'],
-            'comprobante'           =>  ['file','mimes:jpg,jpeg,png,pdf','max:5000'],
+            'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5500'],
+            'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'dni_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'certificado_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
+            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5500'],
         ]);
 
         $preinscripcion = Preinscripcion::find($id);
