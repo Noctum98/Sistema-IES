@@ -70,10 +70,9 @@ class AsistenciaModularService
     {
         $total = 1;
         $cargos = $this->obtenerCargosPorModulo($materia);
-        if ($cargos and count($cargos) > 0) {
+        if($cargos and count($cargos) > 0){
             $total = count($cargos);
         }
-
         return 100 / $total;
     }
 
@@ -120,6 +119,10 @@ class AsistenciaModularService
                     }
                 }
 
+                //$asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
+
+
+                //$asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
             }
             $proceso->asistencia_final_porcentaje = $asistencia_final_p;
 
@@ -142,7 +145,6 @@ class AsistenciaModularService
     public function obtenerTimeUltimaCalificacion($materia_id)
     {
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
-
         return $serviceProcesoCalificacion->obtenerTimeUltimaCalificacionPorModulo($materia_id);
     }
 
