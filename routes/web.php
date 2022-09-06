@@ -266,7 +266,7 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('eliminar/{timecheck}/{id}', [PreinscripcionController::class, 'borrar'])->name('pre.eliminar');
     Route::get('descargar-excel/{carrera_id}', [PreinscripcionController::class, 'descargar_excel'])->name('pre.excel');
     Route::get('/excel/verificados', [PreinscripcionController::class, 'descargar_verificados'])->name('pre.excelv');
-    Route::get('estado/{id}', [PreinscripcionController::class, 'cambiar_estado'])->name('pre_estado');
+    Route::get('/admin/estado/{id}', [PreinscripcionController::class, 'cambiar_estado'])->name('pre_estado');
     Route::post('/error/{id}', [PreinscripcionController::class, 'email_archivo_error'])->name('pre.error');
 });
 

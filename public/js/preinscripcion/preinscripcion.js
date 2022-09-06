@@ -13,21 +13,7 @@ $(document).ready(function () {
             $("#7mo").addClass('d-none');
         }
     }
-
-
-    $("#trabajo1").change(function (e) {
-        if ($(this).val() == 'si') {
-            $("#trabajo_relacionado_div").removeClass('d-none');
-        }
-    });
-
-    $("#trabajo2").change(function (e) {
-        if ($(this).val() == 'no') {
-            $("#trabajo_relacionado_div").addClass('d-none');
-            $("#7mo").addClass('d-none');
-        }
-    });
-
+    
     $("#edad").change(function (e) {
         let secundario = $("#condicion_s").val();
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
