@@ -21,6 +21,9 @@
     
 </IfModule>
 php_value max_execution_time 300
+php_value post_max_size 150M
+php_value upload_max_filesize 100M
+
 RewriteCond %{HTTP_HOST} ^inscripciones\.iesvu\.edu\.ar$
 RewriteRule ^/?$ "https\:\/\/inscripciones\.iesvu\.edu\.ar\/" [R=301,L]
 
