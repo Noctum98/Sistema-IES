@@ -56,6 +56,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name('home.ayuda.cargos');
+Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'ayudaVisual'])->name('home.ayuda.visual');
 
 Route::get('/', function () {
     if (Auth::user()) {
@@ -208,6 +209,7 @@ Route::prefix('carreras/materias')->group(function () {
 // Rutas de Módulos
 Route::prefix('modulos')->group(function () {
     Route::get('/ver/{materia}', [ModulosController::class, 'ver_modulo'])->name('modulos.ver');
+    Route::post('/agregarCargo', [ModulosController::class, 'agregarCargo'])->name('modulos.agregarCargo');
 });
 
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);

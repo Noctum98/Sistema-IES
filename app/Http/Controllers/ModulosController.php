@@ -6,6 +6,7 @@ use App\Models\Cargo;
 use App\Models\CargoMateria;
 use App\Models\Materia;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ModulosController extends Controller
@@ -22,9 +23,21 @@ class ModulosController extends Controller
 
     public function ver_modulo(Materia $materia)
     {
+        $cargos = Cargo::where([
+           'carrera_id' => $materia->carrera_id
+        ])->get();
         return view('modulos.ver', [
-            'modulo' => $materia
+            'modulo' => $materia,
+            'cargos' => $cargos
         ]);
+    }
+
+    public function agregarCargo(Request $request): RedirectResponse
+    {
+        $cargo = Cargo::find($request['cargo_id']);
+        $cargo->materias()->attach(Materia::find($request['materia']));
+
+        return redirect()->route('modulos.ver', $request['materia']);
     }
 
     public function asignaRelacionCargoModulo(Request $request)

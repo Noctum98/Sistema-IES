@@ -9,7 +9,13 @@
         </a>
         <h2 class="text-info">
             Detalle de {{ $modulo->nombre }}
+            <small>
+                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarCargo">
+                    Agregar cargo
+                </button>
+            </small>
         </h2>
+        @include('modulos.modals.agregar_cargo')
         <h3>
 
             Ponderación total: <span class="
@@ -165,7 +171,6 @@
         $(document).on('change', '.change-state', function (event) {
             event.preventDefault();
             let cargo_modulo = $(this);
-            console.log(cargo_modulo);
             let url = '/asignaRelacionCargoModulo';
             let data = {
                 "cargo_modulo_id": cargo_modulo.attr('id'),
@@ -173,8 +178,6 @@
             };
             let referencia = $(this).attr('data-loader');
             const $laoder = $('#loader-tfi-' + referencia);
-
-
             $.ajax({
                 method: "POST",
                 url: url,
