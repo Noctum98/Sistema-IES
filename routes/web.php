@@ -481,3 +481,6 @@ Route::prefix('mail')->group(function(){
     Route::post('/mail/pre/send/{carrera_id}',[MailController::class,'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
+Route::get('/prueba-post-size',function(){
+    dd(ini_get('post_max_size'));
+});

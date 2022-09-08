@@ -1,5 +1,4 @@
 <?php
-ini_set('max_execution_time', 300);
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
@@ -9,6 +8,9 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+
+ini_set('post_max_size', '150M');
+ini_set('upload_max_filesize', '150M');
 
 $method = $_SERVER['REQUEST_METHOD'];
 if($method == "OPTIONS") {
