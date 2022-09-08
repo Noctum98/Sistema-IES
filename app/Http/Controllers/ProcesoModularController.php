@@ -32,7 +32,6 @@ class ProcesoModularController extends Controller
      * @param int|null $cargo_id
      * @return Application|Factory|View
      */
-
     public function listado(Materia $materia, int $cargo_id = null)
     {
         $cargo = Cargo::find($cargo_id);
@@ -75,8 +74,6 @@ class ProcesoModularController extends Controller
                 'puede_procesar' => $puedeProcesar
             ]
         );
-
-
     }
 
     public function procesaPonderacionModular(Materia $materia)
