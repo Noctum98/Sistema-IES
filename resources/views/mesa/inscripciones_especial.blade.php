@@ -22,6 +22,7 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
+                <th>Teléfono</th>
                 @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 @endif
@@ -38,13 +39,19 @@
                 @endif
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
+                <td>{{ $inscripcion->telefono ?? '-'  }}</td>
                 @if(Session::has('admin') || Session::has('coordinador'))
                 <td>
                     <a  class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
+                    <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}">Confirmar</button>
+                    <button class="btn btn-sm btn-primary {{!$inscripcion->confirmado ? 'd-none' : ''}}" id="nota-{{$inscripcion->id}}" data-bs-toggle="modal" data-bs-target="#nota{{$inscripcion->id}}">Nota</button>
+
                 </td>
                 @include('mesa.modals.dar_baja_mesa')
+                @include('mesa.modals.nota_mesa')
+
                 @endif
             </tr>
             @endforeach
@@ -88,4 +95,9 @@
     </table>
     @endif
 </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/mesas/confirmacion.js') }}"></script>
+<script src="{{ asset('js/mesas/inscripcion.js') }}"></script>
+
 @endsection

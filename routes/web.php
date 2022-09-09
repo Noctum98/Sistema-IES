@@ -383,6 +383,7 @@ Route::prefix('mesas')->group(function () {
     );
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
     Route::post('/inscribir_alumno',[AlumnoMesaController::class,'inscribir_alumno'])->name('mesa.inscribir_alumno');
+    Route::post('/confirmar/{mesa_alumno_id}',[AlumnoMesaController::class,'confirmar'])->name('mesa.confirmar');
 });
 
 Route::prefix('matriculacion')->group(function () {
