@@ -132,13 +132,9 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </span>
 
-                                /*/*/*/*/*
-
-
                                 <input type="checkbox" class="check-cierre"
                                        id="{{$proceso->procesoRelacionado->id}}" {{$proceso->procesoRelacionado->cierre == false ? 'unchecked':'checked'}} />
                             </td>
-
 
                             {{--                            <td>--}}
                             {{--                                {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} |  %--}}
