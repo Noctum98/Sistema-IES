@@ -40,11 +40,7 @@ class CalificacionController extends Controller
     {
         $materia = Materia::find($materia_id);
 
-        if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
-            $tiposCalificaciones = TipoCalificacion::all();
-        } else {
-            $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
-        }
+
 
         $user = Auth::user();
         $calificaciones = Calificacion::select()
@@ -55,6 +51,20 @@ class CalificacionController extends Controller
                 $calificaciones->where('cargo_id', $cargo_id);
             }
         }
+
+        if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
+            /** @var Cargo $cargo */
+            if($cargo->responsableTFI($materia->id) === 1){
+                $tiposCalificaciones = TipoCalificacion::all();
+            }else{
+                $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
+            }
+
+        } else {
+            $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
+        }
+
+
 
         $calificaciones = $calificaciones->orderBy('tipo_id')->get();
 

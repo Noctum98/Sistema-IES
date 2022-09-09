@@ -60,6 +60,8 @@ $(document).ready(function () {
         let proceso_id = $(this).attr('id');
         let nota_global = $('#global-'+proceso_id).val();
 
+        console.log(proceso_id)
+
         let url = '/proceso/cambia/nota_global';
         let data = {
             "proceso_id": proceso_id,

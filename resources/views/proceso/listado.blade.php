@@ -34,15 +34,8 @@
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>
     @else
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar Planilla</a>
-        @if(Session::has('coordinador') || Session::has('admin'))
-            <a href="{{ route('materia.cierre',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-warning">
-                {{ $materia->cierre ? 'Habilitar planilla' : 'Cerrar Planilla' }}
-            </a>
-        @endif
+
     @endif
-
-
-
     @if(count($procesos) > 0)
     <div class="table-responsive tableFixHead">
 
@@ -140,7 +133,7 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </span>
 
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{$materia->cierre ? 'disabled':''}}>
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}}>
                     </td>
 
                 </tr>

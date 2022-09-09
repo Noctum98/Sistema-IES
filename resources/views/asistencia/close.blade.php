@@ -17,7 +17,7 @@
 		  	@foreach($procesos as $proceso)
 			    <tr style="cursor:pointer;">
 			      <td>{{ $proceso->alumno->nombres.' '.$proceso->alumno->apellidos }}</td>
-			      <td>% {{ $proceso->final_asistencia }}</td>
+			      <td> {{ $proceso->final_asistencia }} %</td>
 			      <td>
 			      	@if($proceso->final_asistencia >= 70)
 			      		<span class="text-success font-weight-bold"> Asistencia regular </span>

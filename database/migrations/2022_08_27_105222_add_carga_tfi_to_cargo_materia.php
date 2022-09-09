@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCierreToMateriasTable extends Migration
+class AddCargaTfiToCargoMateria extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddCierreToMateriasTable extends Migration
      */
     public function up()
     {
-        Schema::table('materias', function (Blueprint $table) {
-            $table->boolean('cierre')->after('regimen')->default(false);
+        Schema::table('cargo_materia', function (Blueprint $table) {
+            $table->boolean('carga_tfi')->default(false)->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddCierreToMateriasTable extends Migration
      */
     public function down()
     {
-        Schema::table('materias', function (Blueprint $table) {
-            $table->dropColumn('cierre');
+        Schema::table('cargo_materia', function (Blueprint $table) {
+            $table->dropColumn('carga_tfi');
         });
     }
 }

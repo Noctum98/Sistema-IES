@@ -44,7 +44,7 @@
 				<tr style="cursor:pointer;">
 					<td>{{ $materia->nombre }}</td>
 					<td>
-						@if(Session::has('seccionAlumnos') || Session::has('coordinador') || Session::has('admin'))
+						@if(Auth::user()->hasRole('admin'))
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-secondary">Ver calificaciones</a>
