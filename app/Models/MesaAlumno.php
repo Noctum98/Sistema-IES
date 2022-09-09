@@ -26,6 +26,11 @@ class MesaAlumno extends Model
 
     }
 
+    public function instancia()
+    {
+        return $this->belongsTo(Instancia::class,'instancia_id');
+    }
+
     // Funciones adicionales
 
     public function alumnoByDni($dni)
