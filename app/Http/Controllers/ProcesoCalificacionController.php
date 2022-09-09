@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Calificacion;
 use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
+use App\Models\ProcesoModular;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,7 +67,18 @@ class ProcesoCalificacionController extends Controller
 
             $proceso = Proceso::find($procesoCalificacion->proceso_id);
 
+            /** @var Calificacion $calificacion */
             $calificacion = Calificacion::find($procesoCalificacion->calificacion_id);
+
+            if($calificacion->tipo()->first()->descripcion == 3){
+                $procesoModular = ProcesoModular::where([
+                    'proceso_id' => $proceso->id
+                ])->first();
+                $procesoModular->trabajo_final_porcentaje = $procesoCalificacion->porcentaje;
+                $procesoModular->trabajo_final_nota = $procesoCalificacion->nota;
+                $procesoModular->update();
+            }
+
 
             //            if($calificacion->cargo_id){
             //                $proceso->cargo_id= $calificacion->cargo_id;

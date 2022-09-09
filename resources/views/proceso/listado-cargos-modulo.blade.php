@@ -69,7 +69,7 @@
                     </td>
                     <td>
                         @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
-                            {{number_format($calificacionP->obtenerParcial($alumno->id), 2, '.', ',')}}
+                            {{number_format($calificacionP->obtenerParcial($alumno->id), 2, '.', ',')??'-'}}
                             @php
                                 $pparcial = $calificacionP->obtenerParcial($alumno->id);
                             @endphp

@@ -71,6 +71,4 @@ class Calificacion extends Model
         return $calificaion_service->calificacionParcialByAlumno($alumno_id, $this->id);
     }
 
-
-
 }
