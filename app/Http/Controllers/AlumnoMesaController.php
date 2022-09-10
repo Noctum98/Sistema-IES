@@ -45,9 +45,17 @@ class AlumnoMesaController extends Controller
     public function vista_instancias()
     {
         $instancias = Instancia::where('estado','activa')->get();
+        $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
+        $inscripciones = MesaAlumno::where([
+            'dni' => $alumno['dni'],
+
+        ])
+            ->orderBy('created_at' , 'DESC')
+        ->get();
 
         return view('mesa.instancias',[
-            'instancias' => $instancias
+            'instancias' => $instancias,
+            'inscripciones' => $inscripciones
         ]);
     }
 
@@ -97,7 +105,7 @@ class AlumnoMesaController extends Controller
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
 
-        $inscripciones = MesaAlumno::select('nombres','apellidos','id','dni','alumno_id','instancia_id')->where([
+        $inscripciones = MesaAlumno::where([
             'materia_id'=>$materia_id,
             'estado_baja' => 0
         ])->get();
@@ -395,6 +403,22 @@ class AlumnoMesaController extends Controller
             ]);
             return redirect()->route('mesa.mate');
         }
+    }
+
+    public function confirmar(Request $request,$id)
+    {
+        $inscripcion = MesaAlumno::find($id);
+
+        $inscripcion->confirmado = true;
+
+        $inscripcion->update();
+
+        $data = [
+            'status' => 'success',
+            'inscripcion' => $inscripcion
+        ];
+        
+        return response()->json($data,200);
     }
 
     // Funciones privadas

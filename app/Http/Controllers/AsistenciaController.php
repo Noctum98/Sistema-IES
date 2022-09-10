@@ -141,7 +141,7 @@ class AsistenciaController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'porcentaje_virtual' => ['required', 'numeric'],
-            'porcentaje_presencial' => ['required', 'numeric','max:30'],
+            'porcentaje_presencial' => ['required', 'numeric'],
         ]);
 
         $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];

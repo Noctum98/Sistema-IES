@@ -132,8 +132,7 @@
 				<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="col-md-2 ml-2 mr-2 mt-4 btn btn-sm btn-warning">
 					Corregir datos
 				</a>
-
-			@endif
+				@endif
 			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-primary">Descargar PDF</a>
 		</div>
 	</div>

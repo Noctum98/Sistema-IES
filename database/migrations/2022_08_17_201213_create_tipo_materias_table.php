@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComisionProfesorTable extends Migration
+class CreateTipoMateriasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateComisionProfesorTable extends Migration
      */
     public function up()
     {
-        Schema::create('comision_profesor', function (Blueprint $table) {
+        Schema::create('tipo_materias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('comision_id')->constrained('comisiones');
-            $table->foreignId('profesor_id')->constrained('profesores');
+            $table->string('nombre');
+            $table->integer('identificador');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ class CreateComisionProfesorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comision_profesor');
+        Schema::dropIfExists('tipo_materias');
     }
 }

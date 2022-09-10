@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Cargo;
 use App\Models\CargoMateria;
+use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
@@ -11,6 +12,30 @@ use App\Models\ProcesoModular;
 
 class ProcesoModularService
 {
+    /**
+     * Mirando👆 Módulos sería Acreditación Directa si
+     *  [X] Asist >75%,
+     *  [X] Proceso >60%,
+     *  [X] Promedio >78% y
+     *  [X] TFI >78%
+     * Regular si
+     *  [X] Asist entre 60 y 75% y
+     *  [X] PP 100%,
+     *  [X] Promedio entre 60 y 78,
+     *  [] TFI entre 60 y 78
+     */
+    const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
+    const PROCESO_ACCREDITATION_DIRECTA = 60;
+    const PROMEDIO_ACCREDITATION_DIRECTA = 78;
+    const TFI_ACCREDITATION_DIRECTA = 78;
+
+    const ASISTENCIA_MIN_REGULAR = 60;
+    const ASISTENCIA_MAX_REGULAR = 75;
+    const ASISTENCIA_PRACTICA_PROFESIONAL = 100;
+    const PROMEDIO_MIN_REGULAR = 60;
+    const PROMEDIO_MAX_REGULAR = 78;
+    const TFI_MIN_REGULAR = 60;
+    const TFI_MAX_REGULAR = 78;
 
     /**
      * @param $materia_id <b>id</b> materia
@@ -59,7 +84,9 @@ class ProcesoModularService
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
             ->orderBy('alumnos.apellidos', 'asc')
-            ->get();
+            ->get()
+
+            ;
     }
 
     public function ponderarCargos(Materia $materia)
@@ -91,16 +118,18 @@ class ProcesoModularService
                     'cargo_id' => $cargo->id,
                     'materia_id' => $materia->id,
                 ])->first();
-                $porcentaje_cargo = $serviceCargo->calculoPonderacionPorCargo(
-                        $cargo,
-                        $materia->id,
-                        $proceso->alumnoRelacionado()->id
-                    ) ?? 0;
+                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargo(
+                    $cargo,
+                    $materia->id,
+                    $proceso->alumnoRelacionado()->id
+                ) ?? 0;
                 $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
                 $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
             }
             $proceso->promedio_final_porcentaje = $promedio_final_p;
-            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota($promedio_final_p);
+            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
+                $promedio_final_p
+            );
 
             $proceso->update();
 
@@ -120,6 +149,7 @@ class ProcesoModularService
     public function obtenerTimeUltimaCalificacion($materia_id)
     {
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
+
         return $serviceProcesoCalificacion->obtenerTimeUltimaCalificacionPorModulo($materia_id);
     }
 
@@ -132,5 +162,186 @@ class ProcesoModularService
             ->first();
     }
 
+    /**
+     * @param $materia_id <b>Módulo</b> a procesar
+     * @return string[] <i>200</i> si generó todos los estados
+     */
+    public function grabaEstadoCursoEnModulo($materia_id): array
+    {
+
+        $estados_procesados = [];
+
+        $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id);
+
+
+
+        foreach ($procesosModulares as $pm) {
+            /** @var ProcesoModular $pm */
+            $estado = $this->grabaEstadoPorProcesoModular($pm);
+            $estados_procesados[] = [$pm->id => $estado];
+        }
+
+        return $estados_procesados;
+    }
+
+    /**
+     * @param ProcesoModular $pm
+     * @return bool
+     */
+    public function regularityDirectAccreditation(ProcesoModular $pm): bool
+    {
+        /** @var Proceso $proceso */
+        $proceso = $pm->procesoRelacionado()->first();
+
+        return (
+            $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
+            and
+            $this->getCalificacionModularBoolean(self::PROCESO_ACCREDITATION_DIRECTA, $proceso)
+            and
+            $this->getPromedioModularBoolean(self::PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
+            and
+            $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
+        );
+    }
+
+    /**
+     * @param ProcesoModular $pm
+     * @return bool
+     */
+    public function regularityRegular(ProcesoModular $pm): bool
+    {
+        /** @var Proceso $proceso */
+        $proceso = $pm->procesoRelacionado()->first();
+
+        return (
+            $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
+            and
+            $this->getCalificacionModularBoolean(self::PROMEDIO_MIN_REGULAR, $proceso)
+            and
+            $this->getTFIModularBoolean(self::TFI_MIN_REGULAR, $pm->promedio_final_porcentaje)
+        );
+
+    }
+
+
+    /**
+     * @param int $porcentaje_max
+     * @param Proceso $proceso
+     * @param int|null $porcentaje_min
+     * @return bool
+     */
+    public function getAsistenciaModularBoolean(int $porcentaje_max, Proceso $proceso, int $porcentaje_min = null): bool
+    {
+        $cargos = $proceso->materia()->first()->cargos()->get();
+
+        foreach ($cargos as $cargo) {
+
+            /** @var Cargo $cargo */
+
+            if ($proceso->asistencia() and $proceso->asistencia()->getByAsistenciaCargo($cargo->id)) {
+
+                if ($porcentaje_min) {
+
+                    if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                        < $porcentaje_min) {
+                        return false;
+                    }
+                    if ($cargo->isPracticaProfesional()) {
+                        if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                            < self::ASISTENCIA_PRACTICA_PROFESIONAL) {
+                            return false;
+                        }
+                    }
+
+                } else {
+                    if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                        < $porcentaje_max) {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $porcentaje
+     * @param Proceso $proceso
+     * @return bool
+     */
+    public function getCalificacionModularBoolean(int $porcentaje, Proceso $proceso): bool
+    {
+        $serviceCargo = new CargoService();
+        $materia_id = $proceso->materia()->first()->id;
+        $alumno_id = $proceso->alumno()->first()->id;
+        $cargos = $proceso->materia()->first()->cargos()->get();
+        foreach ($cargos as $cargo) {
+
+            if ($porcentaje > $serviceCargo->calculoPorcentajeCalificacionPorCargo(
+                    $cargo,
+                    $materia_id,
+                    $alumno_id
+                )) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $porcentaje_max
+     * @param int $promedio_final
+     * @return bool
+     */
+    public function getPromedioModularBoolean(int $porcentaje_max, int $promedio_final): bool
+    {
+        return $porcentaje_max > $promedio_final;
+    }
+
+    /**
+     * @param int $porcentaje_max
+     * @param int $trabajo_final_porcentaje
+     * @return bool
+     */
+    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje): bool
+    {
+        return $porcentaje_max > $trabajo_final_porcentaje;
+    }
+
+    /**
+     * @param ProcesoModular $pm
+     * @return int
+     */
+    public function grabaEstadoPorProcesoModular(ProcesoModular $pm): int
+    {
+        if ($this->regularityDirectAccreditation($pm)) {
+            $estado = Estados::where(
+                ['identificador' => 4]
+            )->first();
+
+
+        } else {
+
+            if ($this->regularityRegular($pm)) {
+                $estado = Estados::where(
+                    ['identificador' => 1]
+                )->first();
+            } else {
+                $estado = Estados::where(
+                    ['identificador' => 5]
+                )->first();
+            }
+
+        }
+        $proceso = $pm->procesoRelacionado()->first();
+        $proceso->estado_id = $estado->id;
+        $proceso->update();
+
+        return $estado->id;
+    }
 
 }

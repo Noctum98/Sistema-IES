@@ -27,6 +27,7 @@
         @endif
         @endif
     </td>
+    @endif
     <td>
         @if($instancia->tipo == 0)
         <a class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
@@ -37,6 +38,6 @@
         @endif
 
     </td>
-    @endif
+
 </tr>
 </tr>

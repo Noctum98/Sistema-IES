@@ -9,9 +9,6 @@ header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Conte
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 
-ini_set('post_max_size', '150M');
-ini_set('upload_max_filesize', '150M');
-
 $method = $_SERVER['REQUEST_METHOD'];
 if($method == "OPTIONS") {
     die();

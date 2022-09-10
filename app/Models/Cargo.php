@@ -6,6 +6,7 @@ use App\Services\CargoService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cargo extends Model
@@ -13,7 +14,9 @@ class Cargo extends Model
     use HasFactory;
 
     protected $table = 'cargos';
-    protected $fillable = ['nombre','carrera_id'];
+    protected $fillable = ['nombre','carrera_id', 'tipo_materia_id'];
+
+    const IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL = 1;
     /**
      * @var CargoService
      */
@@ -36,11 +39,30 @@ class Cargo extends Model
         return $this->belongsTo('App\Models\Carrera','carrera_id');
     }
 
+    public function tipoMateria(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
+    }
+
     public function ponderacion($materia_id)
     {
         $ponderacion = new CargoService();
 
         return $ponderacion->getPonderacion($this->id, $materia_id);
+    }
+
+    public function responsableTFI($materia_id)
+    {
+        $responsable_tfi = new CargoService();
+
+        return $responsable_tfi->getResponsableTFI($this->id, $materia_id);
+    }
+
+    public function relacionCargoModulo($materia_id)
+    {
+        $relation = new CargoService();
+
+        return $relation->getRelacionCargoModulo($this->id, $materia_id);
     }
 
     public function calificacionesCargo(): HasMany
@@ -83,5 +105,18 @@ class Cargo extends Model
             ->where('calificaciones.materia_id',$materia_id)
             ->where('tipo_calificaciones.descripcion','=', 3)
             ->get();
+    }
+
+    public function tipoCargo(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
+    }
+
+    public function isPracticaProfesional(): bool
+    {
+        if(!$this->tipoCargo()->first()){
+            return false;
+        }
+       return ( self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador);
     }
 }

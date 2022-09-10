@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EstadosController;
@@ -56,6 +57,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name('home.ayuda.cargos');
+Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'ayudaVisual'])->name('home.ayuda.visual');
 
 Route::get('/', function () {
     if (Auth::user()) {
@@ -172,6 +174,7 @@ Route::prefix('cargo')->group(function () {
     Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
     Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
     Route::delete('delete/{cargo}', [CargoController::class, 'destroy'])->name('cargo.delete');
+    Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
 });
 
 // Rutas de Carreras
@@ -207,6 +210,7 @@ Route::prefix('carreras/materias')->group(function () {
 // Rutas de Módulos
 Route::prefix('modulos')->group(function () {
     Route::get('/ver/{materia}', [ModulosController::class, 'ver_modulo'])->name('modulos.ver');
+    Route::post('/agregarCargo', [ModulosController::class, 'agregarCargo'])->name('modulos.agregarCargo');
 });
 
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
@@ -383,6 +387,7 @@ Route::prefix('mesas')->group(function () {
     );
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
     Route::post('/inscribir_alumno',[AlumnoMesaController::class,'inscribir_alumno'])->name('mesa.inscribir_alumno');
+    Route::post('/confirmar/{mesa_alumno_id}',[AlumnoMesaController::class,'confirmar'])->name('mesa.confirmar');
 });
 
 Route::prefix('matriculacion')->group(function () {
@@ -414,6 +419,7 @@ Route::prefix('matriculacion')->group(function () {
 Route::post('agregarModulo', [CargoController::class, 'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser', [CargoController::class, 'agregarUser'])->name('cargo.agregarUser');
 Route::post('ponderarCargo', [CargoController::class, 'ponderarCargo'])->name('cargo.ponderar');
+Route::post('asignaRelacionCargoModulo', [ModulosController::class, 'asignaRelacionCargoModulo'])->name('modulos.asignaRelacionCargoModulo');
 Route::get('getTotalModulo/{materia}', [CargoController::class, 'getTotalModulo'])->name('cargo.getTotalModulo');
 Route::get('getPonderarCargo/{cargo_id}/{materia_id}', [CargoController::class, 'getPonderarCargo'])->name(
     'cargo.get_ponderar'
@@ -456,6 +462,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 Route::prefix('proceso-modular')->group(function () {
    Route::get('/listado/{materia}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name('proceso_modular.list');
    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular'])->name('proceso_modular.procesa_ponderacion_modular');
+   Route::get('/procesaEstados/{materia}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular'])->name('proceso_modular.procesa_estados_modular');
 });
 
 Route::prefix('excel')->group(function () {
@@ -477,6 +484,8 @@ Route::prefix('estadistica')->group(function () {
 Route::prefix('mail')->group(function(){
     Route::post('/mail/pre/send/{carrera_id}',[MailController::class,'emailPreinscripciones'])->name('pre.sendEmail');
 });
+
+Route::resource('actas_volantes',ActaVolanteController::class);
 
 Route::get('/prueba-post-size',function(){
     dd(ini_get('post_max_size'));

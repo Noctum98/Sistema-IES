@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo;
 use App\Models\Materia;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
@@ -9,7 +10,9 @@ use App\Services\ProcesoModularService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProcesoModularController extends Controller
 {
@@ -29,9 +32,14 @@ class ProcesoModularController extends Controller
      * @param int|null $cargo_id
      * @return Application|Factory|View
      */
-
     public function listado(Materia $materia, int $cargo_id = null)
     {
+        $cargo = Cargo::find($cargo_id);
+        $puedeProcesar = false;
+        if($cargo and Auth::user()->hasCargo($cargo_id) and $cargo->responsableTFI($materia->id)){
+            $puedeProcesar = true;
+        };
+
         $acciones = [];
         $serviceModular = new ProcesoModularService();
         if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
@@ -40,7 +48,7 @@ class ProcesoModularController extends Controller
             $serviceModular->cargarPonderacionEnProcesoModular($materia);
             $acciones[] = "Procesando % modulares para {$materia->nombre}";
         }
-        if($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
+        if ($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
             if ($serviceModular->obtenerTimeUltimaCalificacion(
                     $materia->id
                 )->updated_at >= $serviceModular->obtenerTimeUltimoProcesoModular($materia->id)->updated_at) {
@@ -52,7 +60,7 @@ class ProcesoModularController extends Controller
 
         $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia);
 
-        if($asistencias > 0){
+        if ($asistencias > 0) {
             $acciones[] = "Procesando % asistencia para {$materia->nombre}";
         }
 
@@ -63,10 +71,9 @@ class ProcesoModularController extends Controller
                 'cargo_id' => $cargo_id,
                 'acciones' => $acciones,
                 'procesos' => $procesos,
+                'puede_procesar' => $puedeProcesar
             ]
         );
-
-
     }
 
     public function procesaPonderacionModular(Materia $materia)
@@ -80,6 +87,15 @@ class ProcesoModularController extends Controller
 
         $serviceModular->cargarPonderacionEnProcesoModular($materia);
 
+
+    }
+
+    public function procesaEstadosModular(Materia $materia, int $cargo_id = null): RedirectResponse
+    {
+        $service = new ProcesoModularService();
+        $service->grabaEstadoCursoEnModulo($materia->id);
+
+        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'cargo_id' => $cargo_id]);
 
     }
 
