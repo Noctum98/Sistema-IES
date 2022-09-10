@@ -8,20 +8,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="">
+                <form action="{{ route('actas_volantes.store') }}" method="POST">
                     <div class="form-group">
                         <label for="nota_escrito">Escrito</label>
                         <input type="number" name="nota_escrito" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="nota_escrito">Oral</label>
-                        <input type="number" name="nota_escrito" class="form-control">
+                        <input type="number" name="nota_oral" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="nota_escrito">Porcentaje</label>
-                        <input type="number" name="nota_escrito" class="form-control">
+                        <input type="number" name="promedio" class="form-control">
                     </div>
+                    <div>
+                        <input type="hidden" name="instancia_id" value="{{$instancia->id}}">
+                        <input type="hidden" name="materia_id" value="{{$inscripcion->materia_id}}">
+                        <input type="hidden" name="alumno_id" value="{{$inscripcion->alumno_id}}">
 
+                    </div>
                     <input type="submit" value="Guardar" class="btn btn-success">
                 </form>
             </div>

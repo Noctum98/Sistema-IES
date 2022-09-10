@@ -2,11 +2,12 @@
 @section('content')
 	<div class="container p-3">
 		<div class="col-md-12 d-flex flex-column align-items-center">
-			<div class="col-md-7">
+			<div class="col-md-9">
 			    @if($carrera)
 				<h2 class="h1 text-info">
 					Preinscripción en {{ $carrera->nombre.' ('.$carrera->sede->nombre.' - Turno '.ucwords($carrera->turno).')' }}
 				</h2>
+				<h5 class="text-primary">Ubicación: {{$carrera->sede->ubicacion}}</h5>
 				<hr>
 				@if(@session('error_carrera'))
 					<div class="alert alert-danger">
