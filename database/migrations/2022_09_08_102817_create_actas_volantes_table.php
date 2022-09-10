@@ -15,10 +15,10 @@ class CreateActasVolantesTable extends Migration
     {
         Schema::create('actas_volantes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('alumno_id')->constrained('alumnos');
-            $table->foreignId('materia_id')->nullable()->constrained('materias');
-            $table->foreignId('mesa_id')->nullable()->constrained('mesas');
-            $table->foreignId('instancia_id')->constrained('instancias');
+            $table->integer('alumno_id');
+            $table->integer('materia_id')->nullable();
+            $table->integer('mesa_id')->nullable();
+            $table->integer('instancia_id');
             $table->string('nota_escrito')->nullable();
             $table->string('nota_oral')->nullable();
             $table->string('promedio');
