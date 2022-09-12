@@ -14,6 +14,7 @@ use App\Mail\MesaUnsubscribe;
 use App\Models\Alumno;
 use App\Models\Materia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AlumnoMesaController extends Controller
@@ -51,6 +52,10 @@ class AlumnoMesaController extends Controller
         ])
             ->orderBy('created_at' , 'DESC')
         ->get();
+
+        Log::info($alumno);
+        Log::info($alumno['dni']);
+        Log::info($inscripciones);
         
         return view('mesa.instancias',[
             'instancias' => $instancias,
