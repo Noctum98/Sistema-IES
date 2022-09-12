@@ -106,10 +106,12 @@ class AlumnoMesaController extends Controller
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
 
         $inscripciones = MesaAlumno::where([
+            'instancia_id'=>$instancia->id,
             'materia_id'=>$materia_id,
             'estado_baja' => 0
         ])->get();
         $inscripciones_baja = MesaAlumno::where([
+            'instancia_id'=>$instancia->id,
             'materia_id'=>$materia_id,
             'estado_baja' => 1
         ])->get();
