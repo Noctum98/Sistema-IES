@@ -28,7 +28,7 @@
                 @foreach($inscripciones as $inscripcion)
                     <li class="list-group-item">
                         {{
-                                $inscripcion->instancia_id && $inscripcion->instancia->tipo == 1 ?
+                                !$inscripcion->mesa_id ?
                                 $inscripcion->materia->nombre :
                                 $inscripcion->mesa->materia->nombre
                             }}
