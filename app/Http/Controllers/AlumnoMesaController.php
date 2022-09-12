@@ -48,7 +48,6 @@ class AlumnoMesaController extends Controller
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $inscripciones = MesaAlumno::where([
             'dni' => $alumno['dni'],
-
         ])
             ->orderBy('created_at' , 'DESC')
         ->get();
