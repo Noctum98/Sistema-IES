@@ -28,12 +28,12 @@
                 @foreach($inscripciones as $inscripcion)
                     <li class="list-group-item">
                         {{
-                                $inscripcion->instancia && $inscripcion->instancia->tipo == 1 ?
+                                $inscripcion->instancia_id && $inscripcion->instancia->tipo == 1 ?
                                 $inscripcion->materia->nombre :
                                 $inscripcion->mesa->materia->nombre
                             }}
-                        - {{ $inscripcion->instancia ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
-                        - {{ $inscripcion->instancia ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
+                        - {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
+                        - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
                         @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
                             @if($inscripcion->estado_baja)
                                 <span class="text-secondary">Dada de baja</span>
