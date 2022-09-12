@@ -28,18 +28,18 @@
                 @foreach($inscripciones as $inscripcion)
                     <li class="list-group-item">
                         {{
-                                $inscripcion->instancia()->first()->tipo != 0 ?
+                                $inscripcion->instancia->tipo != 0 ?
                                 $inscripcion->materia->nombre :
                                 $inscripcion['mesa']['materia']['nombre']
                             }}
-                        - {{$inscripcion->instancia()->first()->nombre}}
+                        - {{$inscripcion->instancia->nombre}}
                         - {{ $inscripcion->instancia->año}}
-                        @if($inscripcion->instancia()->first()->tipo == 1)
+                        @if($inscripcion->instancia->tipo == 1)
                             @if($inscripcion->estado_baja)
                                 <span class="text-secondary">Dada de baja</span>
                             @else
                                 <span class="text-secondary">Se presenta</span>
-                                @if($inscripcion->instancia()->first()->estado == 'activa')
+                                @if($inscripcion->instancia->estado == 'activa')
                                     <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
@@ -56,13 +56,13 @@
 
                             @elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo'])
                                 -
-                                @if($inscripcion->instancia()->first()->estado == 'activa')
+                                @if($inscripcion->instancia->estado == 'activa')
                                     <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
                             @elseif(!$inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre'])
                                 -
-                                @if($inscripcion->instancia()->first()->estado == 'activa')
+                                @if($inscripcion->instancia->estado == 'activa')
                                     <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
