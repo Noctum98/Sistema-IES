@@ -109,7 +109,7 @@ class AlumnoMesaController extends Controller
             'materia_id'=>$materia_id,
             'estado_baja' => 0
         ])->get();
-        $inscripciones_baja = MesaAlumno::select('nombres','apellidos','id','dni','alumno_id','updated_at')->where([
+        $inscripciones_baja = MesaAlumno::where([
             'materia_id'=>$materia_id,
             'estado_baja' => 1
         ])->get();
@@ -295,19 +295,17 @@ class AlumnoMesaController extends Controller
                 }
             }
 
-            if(Auth::user()){
-                $inscripcion->user_id = Auth::user()->id;
-            }
+            
         }else{
             $inscripcion->estado_baja = true;
         }
-
+        if(Auth::user()){
+            $inscripcion->user_id = Auth::user()->id;
+        }
         $inscripcion->motivo_baja = 'Baja del alumno';
         $inscripcion->update();
 
-        return redirect()->route('mesa.mate',[
-            'instancia_id' => $instancia->id
-        ]);
+        return redirect()->back();
     }
 
     public function borrar_inscripcion(Request $request,$id,$instancia_id = null){

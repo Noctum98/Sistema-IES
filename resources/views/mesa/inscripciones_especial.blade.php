@@ -72,23 +72,24 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
-                <th scope="col">Fecha</th>
+                <th scope="col">Teléfono</th>
+                <th>Responsable</th>
+                <th>Fecha de baja</th>
+                <th scope="col">Motivos</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($inscripciones_baja as $inscripcion)
             <tr style="cursor:pointer;">
-                @if(!$inscripcion->alumno_id)
                 <td>{{ $inscripcion->nombres }}</td>
-                @else
-                <td><a href="{{ route('alumno.detalle',$inscripcion->alumno_id) }}">{{ $inscripcion->nombres }}</a></td>
-                @endif
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
+                <td>{{ $inscripcion->telefono }}</td>
+                <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
+                <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
                 <td>
-                    {{date_format(new DateTime($inscripcion->updated_at),'d-m-Y H:i')}}
+                    {{ $inscripcion->motivo_baja }}
                 </td>
-
             </tr>
             @endforeach
         </tbody>
