@@ -30,10 +30,10 @@
                         {{
                                 $inscripcion->instancia && $inscripcion->instancia->tipo != 0 ?
                                 $inscripcion->materia->nombre :
-                                $inscripcion['mesa']['materia']['nombre']
+                                $inscripcion->mesa->materia->nombre
                             }}
-                        - {{ $inscripcion->instancia ? $inscripcion->instancia->nombre : $inscripcion['mesa']['instancia']['nombre']}}
-                        - {{ $inscripcion->instancia ? $inscripcion->instancia->año : $inscripcion['mesa']['instancia']['año'] }}
+                        - {{ $inscripcion->instancia ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
+                        - {{ $inscripcion->instancia ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
                         @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
                             @if($inscripcion->estado_baja)
                                 <span class="text-secondary">Dada de baja</span>
@@ -45,7 +45,7 @@
                                 @endif
                             @endif
                         @else
-                            @if(!$inscripcion['segundo_llamado'])
+                            @if(!$inscripcion->segundo_llamado)
                                 <span class="font-weight-bold">1er llamado </span>
                             @else
                                 <span class="font-weight-bold">2do llamado </span>
@@ -54,16 +54,16 @@
                             @if($inscripcion->estado_baja)
                                 <span class="text-secondary">Dada de baja</span>
 
-                            @elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo'])
+                            @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre_segundo)
                                 -
-                                @if($inscripcion->instancia->estado == 'activa')
-                                    <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}"
+                                @if($inscripcion->mesa->instancia->estado == 'activa')
+                                    <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
-                            @elseif(!$inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre'])
+                            @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesacierre)
                                 -
-                                @if($inscripcion->instancia->estado == 'activa')
-                                    <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}"
+                                @if($inscripcion->mesa->instancia->estado == 'activa')
+                                    <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
 

@@ -51,7 +51,7 @@ class AlumnoMesaController extends Controller
         ])
             ->orderBy('created_at' , 'DESC')
         ->get();
-
+        
         return view('mesa.instancias',[
             'instancias' => $instancias,
             'inscripciones' => $inscripciones

@@ -30,4 +30,8 @@ class Mesa extends Model
     public function mesa_inscriptos(){
         return $this->hasMany('App\Models\MesaAlumno');
     }
+
+    public function instancia(){
+        return $this->belongsTo(Instancia::class,'instancia_id');
+    }
 }
