@@ -27,11 +27,7 @@
             <ul class="list-group list-group-flush">
                 @foreach($inscripciones as $inscripcion)
                     <li class="list-group-item">
-                        {{
-                                !$inscripcion->mesa_id ?
-                                $inscripcion->materia->nombre :
-                                $inscripcion->mesa->materia->nombre
-                            }}
+                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}
                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
                         @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
