@@ -48,14 +48,10 @@ class AlumnoMesaController extends Controller
         $instancias = Instancia::where('estado','activa')->get();
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $inscripciones = MesaAlumno::where([
-            'dni' => $alumno['dni'],
+            'dni' => $alumno->dni,
         ])
             ->orderBy('created_at' , 'DESC')
         ->get();
-
-        Log::info($alumno);
-        Log::info($alumno['dni']);
-        Log::info($inscripciones);
         
         return view('mesa.instancias',[
             'instancias' => $instancias,
