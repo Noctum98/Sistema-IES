@@ -16,22 +16,9 @@ class ActaVolanteController extends Controller
             'promedio' => ['alpha_num']
         ]);
         
-        $inscripciones = MesaAlumno::where([
-            'materia_id'=>$request['materia_id'],
-            'estado_baja' => 0
-        ])->get();
-        $inscripciones_baja = MesaAlumno::select('nombres','apellidos','id','dni','alumno_id','updated_at')->where([
-            'materia_id'=>$request['materia_id'],
-            'estado_baja' => 1
-        ])->get();
 
         $acta_volante = ActaVolante::create($request->all());
 
-        return view('mesa.inscripciones_especial',[
-            'inscripciones' => $inscripciones,
-            'inscripciones_baja' => $inscripciones_baja,
-            'materia' => $request['materia_id'],
-            'instancia' => $request['instancia_id']
-        ])->with('Se han colocado correctamente las notas');
+        return redirect()->back()->with('Se han colocado correctamente las notas');
     }
 }
