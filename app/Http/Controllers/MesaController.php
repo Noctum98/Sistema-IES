@@ -205,5 +205,23 @@ class MesaController extends Controller
             'message_edit' => 'Mesa ' . $mesa->materia->nombre . ' editada correctamente'
         ]);
     }
+
+    public function generar_pdf_mesa(Instancia $instancia)
+    {
+
+
+
+            $data = [
+                'instancia' => $instancia
+            ];
+
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadView('pdfs.mesa_generar_pdf', $data);
+
+            return $pdf->download('Ficha ' . $instancia->nombre . '.pdf');
+
+//            return view('error.error');
+
+    }
     
 }
