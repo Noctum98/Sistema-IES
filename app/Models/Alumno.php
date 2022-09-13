@@ -127,6 +127,26 @@ class Alumno extends Model
         return false;
     }
 
+    public function comisionPorAño($carrera_id,$año)
+    {
+        $comision = Comision::where([
+            'carrera_id' => $carrera_id,
+            'año' => $año
+        ])->first();
+
+        $respuesta = null;
+
+        if($comision)
+        {
+            if($this->hasComision($comision->id))
+            {
+                $respuesta = $comision->nombre;
+            }
+        }
+        
+        return $respuesta;
+    }
+
     // Functiones Estáticas
 
     public static function alumnosAño($year,$carrera_id)

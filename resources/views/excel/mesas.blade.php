@@ -5,6 +5,7 @@
 		    <th scope="col">D.N.I</th>
 		    <th scope="col">Email</th>
 		    <th scope="col">Teléfono</th>
+			<th>Comisión</th>
 		    <th scope="col">Materia</th>
 		    <th scope="col">Fecha</th>
 		</tr>
@@ -16,6 +17,7 @@
 		      <td>{{ $inscripcion->dni }}</td>
 		      <td>{{ $inscripcion->correo }}</td>
 		      <td>{{ $inscripcion->telefono }}</td>
+			  <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->año,$inscripcion->materia->carrera_id) ?? '-' }}</td>
 			  @if($inscripcion->mesa)
 			  <td>{{$inscripcion->mesa->materia->nombre}}</td>
 			  @else
