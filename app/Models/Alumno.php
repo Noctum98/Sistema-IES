@@ -129,18 +129,21 @@ class Alumno extends Model
 
     public function comisionPorAño($carrera_id,$año)
     {
-        $comision = Comision::where([
+        $comisiones = Comision::where([
             'carrera_id' => $carrera_id,
             'año' => $año
-        ])->first();
+        ])->get();
 
         $respuesta = null;
-
-        if($comision)
+        
+        if($comisiones)
         {
-            if($this->hasComision($comision->id))
+            foreach($comisiones as $comision)
             {
-                $respuesta = $comision->nombre;
+                if($this->hasComision($comision->id))
+                {
+                    $respuesta = $comision->nombre;
+                }
             }
         }
         
