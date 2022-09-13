@@ -41,7 +41,7 @@
                 <td>{{ $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->telefono ?? '-'  }}</td>
-                <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->año,$inscripcion->materia->carrera_id) ?? '-' }}</td>
+                <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->carrera_id,$inscripcion->materia->año) ?? '-' }}</td>
                 @if(Session::has('admin') || Session::has('coordinador'))
                 <td>
                     <a  class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
