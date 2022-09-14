@@ -1,7 +1,7 @@
 @extends('layouts.pdf')
 
 <div class="container alumno">
-    <img src="{{ 'images/logo-dge-iesvu.png' }}" class="w-100" alt="DATAIESVU">
+    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 100%"  alt="DATAIESVU">
     <h2>
         Matriculación de {{ $instancia->nombre }}
     </h2>

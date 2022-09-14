@@ -57,10 +57,19 @@
                                         </a>
                                     @endif
                                 @endif
-{{--                                <button type="button" class="btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modal-{{$instancia->id}}-pdf">--}}
-{{--                                    Generar PDF--}}
-{{--                                </button>--}}
-                                <a href="{{ route('generar_pdf_mesa', ['instancia' => $instancia->id]) }}" class="btn-sm btn-info">DESCARGAR PDF</a>
+
+                                <a class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#vistaSeleccionCarrera"
+                                   id="vistaCarrera"
+                                   data-loader="{{$instancia->id}}"
+                                   data-attr="{{ route('carrera.vista_carrera') }}">
+                                    <i class="fa fa-spinner fa-spin" style="display: none"
+                                       id="loader{{$instancia->id}}"></i>
+
+                                    Seleccionar Carreras PDF
+                                </a>
+                                @include('mesa.modals.vista_seleccion_carreras')
+
+{{--                                <a href="{{ route('generar_pdf_mesa', ['instancia' => $instancia->id]) }}" class="btn btn-info">DESCARGAR PDF</a>--}}
                             </td>
                             @if(Session::has('admin'))
                                 <td>
@@ -88,4 +97,36 @@
             <p>No existen instancias creadas</p>
         @endif
     </div>
+@endsection
+@section('scripts')
+    <script>
+
+        $(document).on('click', '#vistaCarrera', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+
+            $.ajax({
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                },
+                // return the result
+                success: function (result) {
+                    $('#vistaSeleccionCarrera').modal("show");
+                    $('#vistaSeleccionCarreraBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+    </script>
 @endsection
