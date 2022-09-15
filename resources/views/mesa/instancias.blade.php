@@ -34,7 +34,7 @@
                         @else
                             -
                         @endif
-{{--                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}--}}
+                          {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}
                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
                         @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
@@ -42,7 +42,7 @@
                                 <span class="text-secondary">Dada de baja</span>
                             @else
                                 <span class="text-secondary">Se presenta</span>
-                                @if($inscripcion->instancia->estado == 'activa')
+                                @if($inscripcion->instancia->estado == 'activa' || $inscripcion->instancia->cierre == 1)
                                     <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
@@ -63,7 +63,7 @@
                                     <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                        class="text-danger">Bajarme</a>
                                 @endif
-                            @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesacierre)
+                            @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre)
                                 -
                                 @if($inscripcion->mesa->instancia->estado == 'activa')
                                     <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"

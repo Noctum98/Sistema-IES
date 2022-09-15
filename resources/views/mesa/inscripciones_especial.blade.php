@@ -10,6 +10,19 @@
         {{@session('baja_exitosa')}}
     </div>
     @endif
+    @if(@session('alumno_success'))
+    <div class="alert alert-success">
+        {{@session('alumno_success')}}
+    </div>
+    @endif
+    @if(@session('alumno_error'))
+    <div class="alert alert-danger">
+        {{@session('alumno_error')}}
+    </div>
+    @endif
+
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#inscribirAlumno">Inscribir alumno</button>
+    @include('mesa.modals.inscribir_alumno')
     @if(count($inscripciones) > 0)
     <div class="row">
         <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 ml-3">
@@ -102,5 +115,4 @@
 @section('scripts')
 <script src="{{ asset('js/mesas/confirmacion.js') }}"></script>
 <script src="{{ asset('js/mesas/inscripcion.js') }}"></script>
-
 @endsection
