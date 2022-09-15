@@ -13,7 +13,7 @@
                
 
                 <div class="input-group mb-3">
-                    <input type="hidden" name="carrera_id" id="carrera_id" value="{{$mesa->materia->carrera_id}}">
+                    <input type="hidden" name="carrera_id" id="carrera_id" value="{{ isset($mesa) ? $mesa->materia->carrera_id : $materia->carrera_id}}">
                     <input class="form-control mx-auto" type="number" id="dni" name="dni" placeholder="Buscar alumno por dni" aria-label="Search">
                     <button class="btn btn-outline-primary me-2" type="submit" id="buscarDNI"><i class="fa fa-search"></i></button>
                     <span class="d-block invalid-feedback" id="span-error"></span>
@@ -22,11 +22,15 @@
 
                 <form method="POST" action="{{ route('mesa.inscribir_alumno') }}">
 
+                    @if($instancia->tipo == 0)
                     <input type="hidden" name="mesa_id" value="{{ $mesa->id }}">
+                    @else
+                    <input type="hidden" name="instancia_id" value="{{ $instancia->id }}">
+                    @endif
                     <label for="alumno_id">Alumno</label>
 
                     <div class="input-group">
-                        <input type="hidden" id="materia_id" value="{{$mesa->materia_id}}">
+                        <input type="hidden" name="materia_id" id="materia_id" value="{{ isset($mesa) ? $mesa->materia_id : $materia->id}}">
                         <select name="alumno_id" id="alumno_id" class="form-select" required>
                             @foreach($procesos as $proceso)
                             <option value="{{ $proceso->alumno_id }}">{{mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres)}}</option>
@@ -34,7 +38,7 @@
                         </select>
                         <button class="btn btn-outline-warning me-2" type="submit" id="recargar"><i class="fas fa-sync"></i></button>
                     </div>
-                    @if($mesa->fecha_segundo)
+                    @if($instancia->tipo == 0 && $mesa->fecha_segundo)
                     <div class="form-group">
                         <label for="llamado">Llamado</label>
                         <select name="llamado" id="llamado" class="form-select" required>

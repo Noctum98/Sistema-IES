@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActaVolante extends Model
 {
@@ -16,7 +17,13 @@ class ActaVolante extends Model
         'instancia_id',
         'mesa_id',
         'alumno_id',
-        'materia_id'
+        'materia_id',
+        'mesa_alumno_id'
     ];
 
+
+    public function inscripcion(): BelongsTo
+    {
+        return $this->belongsTo(MesaAlumno::class,'mesa_alumno_id');
+    }
 }

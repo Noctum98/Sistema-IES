@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MesaAlumno extends Model
 {
@@ -34,6 +35,11 @@ class MesaAlumno extends Model
     public function instancia()
     {
         return $this->belongsTo(Instancia::class,'instancia_id');
+    }
+
+    public function acta_volante(): HasOne
+    {
+        return $this->hasOne(ActaVolante::class);
     }
 
     // Funciones adicionales

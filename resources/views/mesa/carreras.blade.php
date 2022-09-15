@@ -44,19 +44,17 @@
 						<thead class="thead-dark">
 							<tr>
 								<th scope="col">Primer Año</th>
-								@if($instancia->tipo == 0)
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
-								@endif
 								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
 
 							@foreach($carrera->materias as $materia)
-							@if($materia->año == 1)
-							@include('includes.mesas.table_materias')
-							@endif
+								@if($materia->año == 1)
+									@include('includes.mesas.table_materias')
+								@endif
 							@endforeach
 
 						</tbody>
@@ -66,18 +64,18 @@
 						<thead class="thead-dark">
 							<tr>
 								<th scope="col">Segundo Año</th>
-								@if($instancia->tipo == 0)
+								
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
-								@endif
+								
 								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($carrera->materias as $materia)
-							@if($materia->año == 2)
-							@include('includes.mesas.table_materias')
-							@endif
+								@if($materia->año == 2)
+									@include('includes.mesas.table_materias')
+								@endif
 							@endforeach
 
 						</tbody>
@@ -86,18 +84,18 @@
 						<thead class="thead-dark">
 							<tr>
 								<th scope="col">Tercer Año</th>
-								@if($instancia->tipo == 0)
+								
 								<th scope="col">Fecha Primer llamado</th>
 								<th scope="col">Fecha Segundo llamado</th>
-								@endif
+								
 								<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($carrera->materias as $materia)
-							@if($materia->año == 3)
-							@include('includes.mesas.table_materias')
-							@endif
+								@if($materia->año == 3)
+									@include('includes.mesas.table_materias')
+								@endif
 							@endforeach
 
 						</tbody>
