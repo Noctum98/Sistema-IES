@@ -210,7 +210,8 @@ class MesaController extends Controller
     public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera)
     {
             $data = [
-                'instancia' => $instancia
+                'instancia' => $instancia,
+                'carrera' => $carrera
             ];
 
             $pdf = \App::make('dompdf.wrapper');

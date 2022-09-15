@@ -1,11 +1,11 @@
 @extends('layouts.pdf')
 
 <div class="container alumno">
-    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 100%"  alt="DATAIESVU">
-    <h2>
-        Matriculación de {{ $instancia->nombre }}
-    </h2>
-    <hr>
+    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 100%"  alt="DATA-IESVU">
+    <h5><u> {{$carrera->nombre}} Res: {{$carrera->resolucion}}</u></h5>
+    <h5><u>Turno: {{$instancia->nombre}}</u></h5>
+    <h5><u>Mesas ordenadas por año</u> {{$carrera->sede()->first()->nombre}}</h5>
+
     <div class="col-md-12">
 
         <div class="datos-alumno">
