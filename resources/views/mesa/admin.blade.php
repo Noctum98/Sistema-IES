@@ -61,7 +61,7 @@
                                 <a class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#vistaSeleccionCarrera"
                                    id="vistaCarrera"
                                    data-loader="{{$instancia->id}}"
-                                   data-attr="{{ route('carrera.vista_carrera') }}">
+                                   data-attr="{{ route('carrera.vista_carrera', ['instancia' => $instancia->id]) }}">
                                     <i class="fa fa-spinner fa-spin" style="display: none"
                                        id="loader{{$instancia->id}}"></i>
 
@@ -69,7 +69,7 @@
                                 </a>
                                 @include('mesa.modals.vista_seleccion_carreras')
 
-{{--                                <a href="{{ route('generar_pdf_mesa', ['instancia' => $instancia->id]) }}" class="btn btn-info">DESCARGAR PDF</a>--}}
+
                             </td>
                             @if(Session::has('admin'))
                                 <td>
@@ -125,7 +125,7 @@
 
                     $laoder.hide();
                 },
-                timeout: 8000
+                timeout: 16000
             })
         });
     </script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\Instancia;
 use Illuminate\Http\Request;
 use App\Models\Materia;
@@ -206,7 +207,7 @@ class MesaController extends Controller
         ]);
     }
 
-    public function generar_pdf_mesa(Instancia $instancia)
+    public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera)
     {
             $data = [
                 'instancia' => $instancia

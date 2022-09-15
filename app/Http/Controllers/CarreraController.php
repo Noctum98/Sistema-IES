@@ -115,12 +115,13 @@ class CarreraController extends Controller
         ]);
     }
 
-    public function vistaCarrera()
+    public function vistaCarrera(int $instancia)
     {
-
+        $carrera = new Carrera();
+        $carreras = $carrera->obtenerInstanciasCarrera($instancia);
         return view('mesa.components.vista_carreras')->with([
-            'cargo' => $cargo,
-            'usuario' => $usuario,
+            'carreras' => $carreras,
+            'instancia' => $instancia
         ]);
     }
 
