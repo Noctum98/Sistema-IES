@@ -485,16 +485,21 @@ class PreinscripcionController extends Controller
             'timecheck' => $timecheck
         ])->first();
 
-        $dir = '/';
-        $recursive = false; // Get subdirectories also?
-        $contents = collect($this->disk->listContents($dir, $recursive));
-    
-        $directory = $contents
-            ->where('type', '=', 'dir')
-            ->where('filename', '=', $preinscripcion->dni)
-            ->first();
+        $preinscripciones = Preinscripcion::where('dni',$preinscripcion->dni)->count();
 
-        $this->disk->deleteDirectory($directory['path']);
+        if($preinscripciones < 2)
+        {
+            $dir = '/';
+            $recursive = false; // Get subdirectories also?
+            $contents = collect($this->disk->listContents($dir, $recursive));
+        
+            $directory = $contents
+                ->where('type', '=', 'dir')
+                ->where('filename', '=', $preinscripcion->dni)
+                ->first();
+    
+            $this->disk->deleteDirectory($directory['path']);
+        }
 
         $preinscripcion->delete();
 

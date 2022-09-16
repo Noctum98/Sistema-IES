@@ -59,7 +59,7 @@
                                     <a href="{{ route('modulos.ver',['materia'=>$materia->id]) }}"
                                        class="btn btn-sm btn-secondary">Ver Módulo</a>
                                     <a href="{{ route('descargar_planilla',$materia->id) }}"
-                                       class="btn btn-sm btn-success">Descargar Alumnos</a>
+                                       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>
                                     <sup class="badge badge-info" title="Total Comisiones">
                                         {{$materia->getTotalAttribute()}}
                                         @if($materia->getTotalAttribute() > 0)
@@ -97,7 +97,7 @@
                                 @endif
                                 <a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}"
                                    class="btn btn-sm btn-secondary">Ver calificaciones</a>
-                                <a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar
+                                <a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar
                                     Alumnos</a>
                                 <sup class="badge badge-info" title="Total Comisiones">
                                     {{$materia->getTotalAttribute()}}
@@ -135,7 +135,7 @@
                                 @endif
                                 <a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}"
                                    class="btn btn-sm btn-secondary">Ver calificaciones</a>
-                                <a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success">Descargar
+                                <a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar
                                     Alumnos</a>
 
                                 <sup class="badge badge-info" title="Total Comisiones">

@@ -21,14 +21,20 @@
     </div>
     @endif
 
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#inscribirAlumno">Inscribir alumno</button>
-    @include('mesa.modals.inscribir_alumno')
-    @if(count($inscripciones) > 0)
+
+
     <div class="row">
-        <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 ml-3">
+        <button class="btn btn-sm btn-primary col-md-2 ml-3" data-bs-toggle="modal" data-bs-target="#inscribirAlumno"><i class="fas fa-clipboard"></i> Inscribir alumno</button>
+        @include('mesa.modals.inscribir_alumno')
+
+        @if(count($inscripciones) > 0)
+        <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 ml-1">
+        <i class="fas fa-download"></i>
             Descargar Inscriptos
         </a>
+        @endif
     </div>
+    @if(count($inscripciones) > 0)
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -57,11 +63,12 @@
                 <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->carrera_id,$inscripcion->materia->año) ?? '-' }}</td>
                 @if(Session::has('admin') || Session::has('coordinador'))
                 <td>
-                    <a  class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
+                    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
+                    <i class="fas fa-arrow-down"></i>
                         Dar baja
                     </a>
-                    <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}">Confirmar</button>
-                    <button class="btn btn-sm btn-primary {{!$inscripcion->confirmado ? 'd-none' : ''}}" id="nota-{{$inscripcion->id}}" data-bs-toggle="modal" data-bs-target="#nota{{$inscripcion->id}}">Nota</button>
+                    <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}"><i class="fas fa-check"></i> Confirmar</button>
+                    <button class="btn btn-sm btn-primary {{!$inscripcion->confirmado ? 'd-none' : ''}}" id="nota-{{$inscripcion->id}}" data-bs-toggle="modal" data-bs-target="#nota{{$inscripcion->id}}"><i class="fas fa-clipboard"></i> Nota</button>
 
                 </td>
                 @include('mesa.modals.dar_baja_mesa')
