@@ -487,7 +487,7 @@ class PreinscripcionController extends Controller
 
         $preinscripciones = Preinscripcion::where('dni',$preinscripcion->dni)->count();
 
-        if($preinscripciones < 2)
+        if($preinscripciones == 1)
         {
             $dir = '/';
             $recursive = false; // Get subdirectories also?
