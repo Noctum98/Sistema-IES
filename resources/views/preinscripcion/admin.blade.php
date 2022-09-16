@@ -8,6 +8,7 @@
 
 	<div class="col-md-12">
 		<a href="{{route('pre.excelv')}}" class="btn btn-success" class="">
+		<i class="fas fa-download"></i>
 			Descargar verificadas
 		</a>
 		<a href="{{route('pre.articulo')}}" class="ml-2 btn btn-secondary">Articulo 7mo</a>

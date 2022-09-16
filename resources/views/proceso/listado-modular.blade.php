@@ -29,7 +29,7 @@
 
         @if($comision)
             <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}"
-               class="btn btn-sm btn-success">Descargar Planilla</a>
+               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
         @else
             <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar
                 Planilla</a>

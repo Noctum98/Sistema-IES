@@ -5,7 +5,7 @@
 			Preinscripciones de {{ $carrera->nombre.' ('.$carrera->sede->nombre.'-'.ucwords($carrera->turno).')' }}
 		</h2>
 		<hr>
-		<a class="btn btn-success" href="{{route('pre.excel',['carrera_id'=>$carrera->id])}}">Descargar Excel</a>
+		<a class="btn btn-success" href="{{route('pre.excel',['carrera_id'=>$carrera->id])}}"><i class="fas fa-download"></i> Descargar Excel</a>
 		<a class="btn btn-secondary" href="{{route('pre.verificadas',['id'=>$carrera->id])}}">Ver verificadas</a>
 		<a class="btn btn-danger" href="{{route('pre.sincorregir',['id'=>$carrera->id])}}">Ver sin corregir</a>
 		<br>
