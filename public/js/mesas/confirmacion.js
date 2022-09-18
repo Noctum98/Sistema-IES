@@ -3,7 +3,7 @@ $(document).ready(function () {
     $('.inscripcion_id').click(function(e){
         e.preventDefault();
 
-        let inscripcion_id = $(".inscripcion_id").attr('id');
+        let inscripcion_id = $(this).attr('id');
         let url = '/mesas/confirmar/'+inscripcion_id;
 
         console.log(inscripcion_id,url);

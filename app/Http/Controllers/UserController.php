@@ -24,6 +24,7 @@ use App\Models\Materia;
 use App\Models\SedeUser;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -45,7 +46,7 @@ class UserController extends Controller
         if (trim($search) != '') {
             $auth = Auth::user();
             $rol = null;
-            if ($auth->authorizeRoles('coordinador')) {
+            if (Session::get('coordinador')) {
                 $rol = 'profesor';
             }
             $users = $this->userService->buscador($search, $rol);
@@ -92,13 +93,13 @@ class UserController extends Controller
         $auth = Auth::user();
         $user = User::find($id);
 
-        if ($auth->authorizeRoles('admin')) {
+        if (Session::get('admin')) {
             $sedes = Sede::all();
         } else {
             $sedes = $auth->sedes;
         }
 
-        if ($auth->authorizeRoles('admin')) {
+        if (Session::get('admin')) {
             $carreras = Carrera::all();
         } else {
             $carreras = $auth->carreras;
@@ -108,7 +109,7 @@ class UserController extends Controller
             }
         }
 
-        if ($auth->authorizeRoles('admin')) {
+        if (Session::get('admin')) {
             $materias = Materia::all();
         } else {
             $materias = Materia::select('materias.id')
@@ -123,7 +124,7 @@ class UserController extends Controller
                 ->orderBy('materias.nombre', 'asc')
                 ->get();
         }
-        if ($auth->authorizeRoles('admin')) {
+        if (Session::get('admin')) {
             $cargos = Cargo::all();
         } else {
             $cargos = Cargo::select('cargos.id')

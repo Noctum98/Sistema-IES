@@ -14,7 +14,7 @@
                             Editar ficha
                         </a>
                         <a href="{{ route('descargar_ficha',['id'=>$personal->id]) }}" class="btn-sm btn-danger">
-                            Descargar ficha
+                        <i class="fas fa-download"></i> Descargar ficha
                         </a>
                     </div>
 

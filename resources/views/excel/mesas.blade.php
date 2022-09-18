@@ -1,31 +1,47 @@
-<table class="table table-hover mt-4">
-	<thead class="thead-dark">
+<table>
+	<thead>
+
 		<tr>
-		    <th scope="col">Nombre y Apellido</th>
-		    <th scope="col">D.N.I</th>
-		    <th scope="col">Email</th>
-		    <th scope="col">Teléfono</th>
-			<th>Comisión</th>
-		    <th scope="col">Materia</th>
-		    <th scope="col">Fecha</th>
+			<th><img src="{{ public_path().'/images/cabecera_iesvu.png' }}" height="90px"></th>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<th><strong>UNIDAD ACADEMICA: {{ mb_strtoupper($materia->carrera->sede->nombre) }}</strong></th>
+			<th><strong>CARRERA: {{ mb_strtoupper($materia->carrera->nombre) }}</strong></th>
+		</tr>
+		<tr>
+			<th><strong>ESPACIO/MODULO: </strong></th>
+			<th><strong>{{ mb_strtoupper($materia->nombre) }}</strong></th>
+			<th><strong>RESOL. N°: {{ $materia->carrera->resolucion }}</strong></th>
+		</tr>
+		<tr>
+			<th><strong>AÑO: {{ '°'.$materia->año }}</strong></th>
+			<th><strong>TURNO: {{ mb_strtoupper($materia->carrera->turno) }}</strong></th>
+		</tr>
+		<tr>
+			<th><strong> N° DE ORDEN </strong></th>
+			<th><strong>APELLIDOS Y NOMBRES </strong></th>
+			<th><strong> DOCUMENTO DE IDENTIDAD </strong></th>
+			<th><strong> CORREO ELECTRONICO </strong></th>
+			<th><strong> TELÉFONO</strong></th>
+			<th><strong> ESCRITO</strong></th>
+			<th><strong> ORAL</strong></th>
+			<th><strong> PROMEDIO</strong></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach ($inscripciones as $inscripcion)
-		    <tr style="cursor:pointer;">
-		      <td>{{  mb_strtoupper($inscripcion->apellidos).', '.$inscripcion->nombres  }}</td>
-		      <td>{{ $inscripcion->dni }}</td>
-		      <td>{{ $inscripcion->correo }}</td>
-		      <td>{{ $inscripcion->telefono }}</td>
-			  <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->año,$inscripcion->materia->carrera_id) ?? '-' }}</td>
-			  @if($inscripcion->mesa)
-			  <td>{{$inscripcion->mesa->materia->nombre}}</td>
-			  @else
-			  <td>{{$inscripcion->materia->nombre}}</td>
-			  @endif
-		      
-		      <td>{{$inscripcion->created_at->format('d-m-Y')}}</td>
-		    </tr>
+		@foreach ($inscripciones as $key => $inscripcion)
+		<tr>
+			<td>{{ $key + 1 }}</td>
+			<td>{{ mb_strtoupper($inscripcion->apellidos).', '.$inscripcion->nombres  }}</td>
+			<td>{{ $inscripcion->dni }}</td>
+			<td>{{ $inscripcion->correo }}</td>
+			<td>{{ $inscripcion->telefono }}</td>
+			<td>{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->nota_escrito : '' }}</td>
+			<td>{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->nota_oral : '' }}</td>
+			<td>{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->promedio : '' }}</td>
+		</tr>
 		@endforeach
 	</tbody>
 </table>

@@ -133,7 +133,7 @@
 					Corregir datos
 				</a>
 				@endif
-			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-primary">Descargar PDF</a>
+			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-primary"><i class="fas fa-download"></i> Descargar PDF</a>
 		</div>
 	</div>
 </div>

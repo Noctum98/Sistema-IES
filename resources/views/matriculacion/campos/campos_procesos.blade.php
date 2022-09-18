@@ -2,7 +2,7 @@
     <h5 class="card-header text-secondary">INFORMACIÓN INSCRIPCIÓN</h5>
     <div class="card-body">
         <h6 class="text-secondary">Recuerda, si eliminas todas las matriculaciones, deberás volver a matricularte correctamente.</h6>
-        <a href="{{ route('descargar_ficha',$matriculacion->id) }}" class="mt-2 btn btn-sm btn-success">Descargar PDF</a>
+        <a href="{{ route('descargar_ficha',$matriculacion->id) }}" class="mt-2 btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar PDF</a>
         <br><br>
         <strong>Inscripto a:</strong>
         <br>

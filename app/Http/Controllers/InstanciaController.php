@@ -133,19 +133,25 @@ class InstanciaController extends Controller
             }else{
                 $segundo_llamado = true;
             }
-            $inscripciones = MesaAlumno::where([
+            $inscripciones = MesaAlumno::with(['acta_volante','alumno'=>function($query){
+                $query->orderBy('apellidos','asc');
+            }])->where([
                 'mesa_id' => $id,
                 'segundo_llamado' => $segundo_llamado,
-                'estado_baja' => false
+                'estado_baja' => false,
+                'confirmado' => true
             ])->get();
 
             $materia = $mesa->materia;
         } else {
 
-            $inscripciones = MesaAlumno::where([
+            $inscripciones = MesaAlumno::with(['acta_volante','alumno'=>function($query){
+                $query->orderBy('apellidos','asc');
+            }])->where([
                 'materia_id' => $id,
                 'instancia_id' => $instancia->id,
-                'estado_baja' => false
+                'estado_baja' => false,
+                'confirmado' => true
             ])->get();
             $materia = Materia::find($id);
         }

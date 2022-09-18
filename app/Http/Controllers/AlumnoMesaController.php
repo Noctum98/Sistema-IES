@@ -13,6 +13,7 @@ use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
 use App\Models\Alumno;
 use App\Models\Materia;
+use App\Models\Proceso;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -116,13 +117,19 @@ class AlumnoMesaController extends Controller
             'estado_baja' => 1
         ])->get();
 
-        //dd($inscripciones);
-        $materia = Materia::select('nombre','id')->where('id',$materia_id)->first();
+
+        $procesos = $procesos = Proceso::select('procesos.*')
+        ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+        ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+
+        $materia = Materia::select('nombre','id','carrera_id')->where('id',$materia_id)->first();
+
         return view('mesa.inscripciones_especial',[
             'inscripciones' => $inscripciones,
             'inscripciones_baja' => $inscripciones_baja,
             'materia' => $materia,
-            'instancia' => $instancia
+            'instancia' => $instancia,
+            'procesos' => $procesos
         ]);
     }
 
@@ -240,13 +247,24 @@ class AlumnoMesaController extends Controller
     public function inscribir_alumno(Request $request)
     {
         $alumno = Alumno::find($request['alumno_id']);
-        $mesa = Mesa::find($request['mesa_id']);
-        $inscripcion = MesaAlumno::where([
-            'alumno_id' => $request['alumno_id'],
-            'mesa_id' => $request['mesa_id'],
-            'segundo_llamado' => $request['llamado']
-        ])->first();
 
+
+        if($request['mesa_id'] && $request['mesa_id'] != null)
+        {
+            $mesa = Mesa::find($request['mesa_id']);
+            $inscripcion = MesaAlumno::where([
+                'alumno_id' => $request['alumno_id'],
+                'mesa_id' => $request['mesa_id'],
+                'segundo_llamado' => $request['llamado']
+            ])->first();
+        }else{
+            $inscripcion = MesaAlumno::where([
+                'alumno_id' => $request['alumno_id'],
+                'instancia_id' => $request['instancia_id'],
+                'materia_id' => $request['materia_id']
+            ])->first();
+        }
+        
         if(!$inscripcion)
         {
             $request['nombres'] = $alumno->nombres;
@@ -264,10 +282,7 @@ class AlumnoMesaController extends Controller
             $mensaje = ['alumno_error' => 'El alumno ya esta inscripto a este llamado.'];
         }
 
-        return redirect()->route('mesa.inscriptos',[
-            'materia_id' => $mesa->materia_id,
-            'instancia_id' => $mesa->instancia_id
-        ])->with($mensaje);
+        return redirect()->back()->with($mensaje);
     }
 
     public function bajar_mesa($id,$instancia_id = null)
