@@ -44,7 +44,7 @@
                         @if($materia->año == 1)
                         <tr>
                             <td>{{$materia->nombre}}</td>
-                            <td @empty($materia->mesa($instancia->id))
+                            <td align="center" @empty($materia->mesa($instancia->id))
                                     colspan="5"
                                     @endempty
                             >
@@ -56,23 +56,12 @@
                             </td>
                             @if($materia->mesa($instancia->id))
 
-                            <td>{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                            <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
                             <td>{{$materia->mesa($instancia->id)->presidente}}</td>
                             <td>{{$materia->mesa($instancia->id)->primer_vocal}}</td>
                             <td>{{$materia->mesa($instancia->id)->segundo_vocal}}</td>
 
                             @endif
-{{--                            <td>{{ $mesa['materia']['año'] }}</td>--}}
-{{--                            <td>{{ date_format(new DateTime( $mesa['fecha'] ), 'd-m-Y') }}</td>--}}
-{{--                            <td>{{date_format(new DateTime( $mesa['fecha'] ), 'H:i') }}</td>--}}
-{{--                            <td>{{ $mesa['presidente'] }}</td>--}}
-{{--                            <td>{{ $mesa['primer_vocal'] }}</td>--}}
-{{--                            <td>{{ $mesa['segundo_vocal'] }}</td>--}}
-{{--                            <td>{{ $mesa['fecha_segundo'] ? date_format(new DateTime( $mesa['fecha_segundo'] ), 'd-m-Y') : '' }}</td>--}}
-{{--                            <td>{{ $mesa['fecha_segundo'] ? date_format(new DateTime( $mesa['fecha_segundo'] ), 'H:i') : ''}}</td>--}}
-{{--                            <td>{{ $mesa['presidente_segundo'] }}</td>--}}
-{{--                            <td>{{ $mesa['primer_vocal_segundo'] }}</td>--}}
-{{--                            <td>{{ $mesa['segundo_vocal_segundo'] }}</td>--}}
                         </tr>
                         @endif
                     @endforeach
@@ -81,6 +70,34 @@
                     </tr>
                     @foreach($carrera->materias()->get() as $materia )
                         @if($materia->año == 2)
+                            <tr>
+                                <td>{{$materia->nombre}}</td>
+                                <td align="center" @empty($materia->mesa($instancia->id))
+                                        colspan="5"
+                                        @endempty
+                                >
+                                    @if($materia->mesa($instancia->id))
+                                        {{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'd-m-Y') }}
+                                    @else
+                                        No tiene mesa asignada
+                                    @endif
+                                </td>
+                                @if($materia->mesa($instancia->id))
+
+                                    <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                                    <td>{{$materia->mesa($instancia->id)->presidente}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->primer_vocal}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal}}</td>
+
+                                @endif
+                            </tr>
+                        @endif
+                    @endforeach
+                    <tr>
+                        <td colspan="6" align="center"> <b>Espacios curriculares 3 <sup>er</sup> Año </b></td>
+                    </tr>
+                    @foreach($carrera->materias()->get() as $materia )
+                        @if($materia->año == 3)
                             <tr>
                                 <td>{{$materia->nombre}}</td>
                                 <td align="center" @empty($materia->mesa($instancia->id))
@@ -115,44 +132,8 @@
                             </tr>
                         @endif
                     @endforeach
-                    <tr>
-                        <td colspan="6" align="center"> <b>Espacios curriculares 3 <sup>er</sup> Año </b></td>
-                    </tr>
-                    @foreach($carrera->materias()->get() as $materia )
-                        @if($materia->año == 3)
-                            <tr>
-                                <td>{{$materia->nombre}}</td>
-                                <td @empty($materia->mesa($instancia->id))
-                                        colspan="5"
-                                        @endempty
-                                >
-                                    @if($materia->mesa($instancia->id))
-                                        {{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'd-m-Y') }}
-                                    @else
-                                        No tiene mesa asignada
-                                    @endif
-                                </td>
-                                @if($materia->mesa($instancia->id))
-
-                                    <td>{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
-                                    <td>{{$materia->mesa($instancia->id)->presidente}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->primer_vocal}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal}}</td>
-
-                                @endif
-                                {{--                            <td>{{ $mesa['materia']['año'] }}</td>--}}
-                                {{--                            <td>{{ date_format(new DateTime( $mesa['fecha'] ), 'd-m-Y') }}</td>--}}
-                                {{--                            <td>{{date_format(new DateTime( $mesa['fecha'] ), 'H:i') }}</td>--}}
-                                {{--                            <td>{{ $mesa['presidente'] }}</td>--}}
-                                {{--                            <td>{{ $mesa['primer_vocal'] }}</td>--}}
-                                {{--                            <td>{{ $mesa['segundo_vocal'] }}</td>--}}
-                                {{--                            <td>{{ $mesa['fecha_segundo'] ? date_format(new DateTime( $mesa['fecha_segundo'] ), 'd-m-Y') : '' }}</td>--}}
-                                {{--                            <td>{{ $mesa['fecha_segundo'] ? date_format(new DateTime( $mesa['fecha_segundo'] ), 'H:i') : ''}}</td>--}}
-                                {{--                            <td>{{ $mesa['presidente_segundo'] }}</td>--}}
-                                {{--                            <td>{{ $mesa['primer_vocal_segundo'] }}</td>--}}
-                                {{--                            <td>{{ $mesa['segundo_vocal_segundo'] }}</td>--}}
-                            </tr>
-                        @endif
-                    @endforeach
                     </tbody>
                 </table>
+        </div>
+    </div>
+</div>
