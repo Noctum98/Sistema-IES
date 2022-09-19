@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Sede;
 use App\Models\Personal;
@@ -18,25 +20,21 @@ class CarreraController extends Controller
     // Vistas
 
     public function vista_admin(){
-        $user = Auth::user();
-        $carreras = Carrera::orderBy('sede_id')->get();
-
-        if(!$user->hasRole('admin') && !$user->hasRole('regente'))
-        {
-            $carreras = $user->carreras;
-        }
+        list($user, $carreras) = $this->getUserAndCarrera();
 
         $sedes = $user->sedes;
         return view('carrera.admin',[
             'carreras'  => $carreras
         ]);
     }
+
     public function vista_crear(){
         $sedes = Sede::all();
         return view('carrera.create',[
             'sedes' => $sedes
         ]);
     }
+
     public function vista_agregarPersonal(int $id){
         $carrera = Carrera::find($id);
         $personal = Personal::where('sede_id',$carrera->sede_id)->get();
@@ -46,6 +44,7 @@ class CarreraController extends Controller
             'carrera'  => $carrera
         ]);
     }
+
     public function vista_editar(int $id){
         $carrera = Carrera::find($id);
         $personal = Personal::where('sede_id',$carrera->sede_id)->get();
@@ -114,5 +113,30 @@ class CarreraController extends Controller
         return redirect()->route('carrera.editar',['id'=>$carrera->id])->with([
             'message'   =>      'Datos editados correctamente!'
         ]);
+    }
+
+    public function vistaCarrera(int $instancia)
+    {
+        $carrera = new Carrera();
+        $carreras = $carrera->obtenerInstanciasCarrera($instancia);
+        return view('mesa.components.vista_carreras')->with([
+            'carreras' => $carreras,
+            'instancia' => $instancia
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getUserAndCarrera(): array
+    {
+        $user = Auth::user();
+        $carreras = Carrera::orderBy('sede_id')->get();
+
+        if (!$user->hasRole('admin') && !$user->hasRole('regente')) {
+            $carreras = $user->carreras;
+        }
+
+        return array($user, $carreras);
     }
 }
