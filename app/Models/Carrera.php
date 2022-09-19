@@ -43,4 +43,21 @@ class Carrera extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function obtenerInstanciasCarrera(int $instancia)
+    {
+     return   Carrera::select(
+            'carreras.id as id',
+            'carreras.nombre as nombre',
+            'sedes.nombre as sede'
+        )
+            ->join('sedes','carreras.sede_id','sedes.id')
+            ->join('materias','carreras.id','materias.carrera_id')
+            ->join('mesas','materias.id','mesas.materia_id')
+            ->where('mesas.instancia_id',$instancia)
+            ->groupBy('carreras.id')
+//            ->orderBy('materias.año','asc')
+//            ->orderBy('materias.nombre','asc')
+            ->get();
+    }
 }

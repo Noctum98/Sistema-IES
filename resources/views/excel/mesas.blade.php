@@ -2,9 +2,12 @@
 	<thead>
 
 		<tr>
-			<th><img src="{{ public_path().'/images/cabecera_iesvu.png' }}" height="90px"></th>
+			<th><img src="{{ public_path().'/images/logo-iesvu.png' }}" height="90px"></th>
 		</tr>
 		<tr>
+			<td></td>
+			<td><strong>LIBRO:</strong></td>
+			<td><strong>FOLIO:</strong></td>
 		</tr>
 		<tr>
 			<th><strong>UNIDAD ACADEMICA: {{ mb_strtoupper($materia->carrera->sede->nombre) }}</strong></th>
@@ -38,9 +41,21 @@
 			<td>{{ $inscripcion->dni }}</td>
 			<td>{{ $inscripcion->correo }}</td>
 			<td>{{ $inscripcion->telefono }}</td>
-			<td>{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->nota_escrito : '' }}</td>
-			<td>{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->nota_oral : '' }}</td>
-			<td>{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->promedio : '' }}</td>
+			@if($inscripcion->acta_volante)
+			<td>{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}</td>
+			@else
+			<td></td>
+			@endif
+			@if($inscripcion->acta_volante)
+			<td>{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}</td>
+			@else
+			<td></td>
+			@endif
+			@if($inscripcion->acta_volante)
+			<td>{{ $inscripcion->acta_volante->promedio >= 0 ? $inscripcion->acta_volante->promedio : 'A' }}</td>
+			@else
+			<td></td>
+			@endif
 		</tr>
 		@endforeach
 	</tbody>

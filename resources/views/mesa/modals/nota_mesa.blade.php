@@ -14,15 +14,27 @@
                     @endif    
                     <div class="form-group">
                         <label for="nota_escrito">Escrito</label>
-                        <input type="number" name="nota_escrito" class="form-control" value="{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->nota_escrito : '' }}">
+                        @if($inscripcion->acta_volante)
+                        <input type="text" name="nota_escrito" class="form-control" value="{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}">
+                        @else
+                        <input type="text" name="nota_escrito" class="form-control">
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="nota_escrito">Oral</label>
-                        <input type="number" name="nota_oral" class="form-control" value="{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->nota_oral : '' }}">
+                        @if($inscripcion->acta_volante)
+                        <input type="text" name="nota_oral" class="form-control" value="{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}">
+                        @else
+                        <input type="text" name="nota_oral" class="form-control">
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="nota_escrito">Porcentaje</label>
-                        <input type="number" name="promedio" class="form-control" value="{{ $inscripcion->acta_volante ? $inscripcion->acta_volante->promedio : '' }}">
+                        @if($inscripcion->acta_volante)
+                        <input type="text" name="promedio" class="form-control" value="{{ $inscripcion->acta_volante->promedio >= 0 ? $inscripcion->acta_volante->promedio : 'A' }}">
+                        @else
+                        <input type="text" name="promedio" class="form-control">
+                        @endif
                     </div>
                     <div>
                         <input type="hidden" name="instancia_id" value="{{$instancia->id}}">

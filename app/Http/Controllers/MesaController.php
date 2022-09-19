@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\Instancia;
 use Illuminate\Http\Request;
 use App\Models\Materia;
@@ -14,6 +15,10 @@ class MesaController extends Controller
 
     public function __construct()
     {
+        /**
+         * Fuente https://www.argentina.gob.ar/interior/feriados-nacionales-2022
+         */
+
         $this->feriados = [
             '19-02-2022',
             '20-02-2022',
@@ -25,7 +30,16 @@ class MesaController extends Controller
             '06-03-2022',
             '12-03-2022',
             '13-03-2022',
-            '09-07-2022'
+            '09-07-2022',
+            '15-08-2022',
+            '25-08-2022',
+            '02-09-2022',
+            '07-10-2022',
+            '10-10-2022',
+            '20-11-2022',
+            '21-11-2022',
+            '08-12-2022',
+            '09-12-2022',
         ];
     }
     // Vistas
@@ -191,6 +205,22 @@ class MesaController extends Controller
         ])->with([
             'message_edit' => 'Mesa ' . $mesa->materia->nombre . ' editada correctamente'
         ]);
+    }
+
+    public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera)
+    {
+            $data = [
+                'instancia' => $instancia,
+                'carrera' => $carrera
+            ];
+
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadView('pdfs.mesa_generar_pdf', $data);
+
+            return $pdf->download('Tribunal Mesa ' . $instancia->nombre . '.pdf');
+
+//            return view('error.error');
+
     }
     
 }
