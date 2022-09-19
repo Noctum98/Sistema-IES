@@ -68,6 +68,11 @@ class mesaAlumnosExport implements FromView, WithEvents
                 $active_sheet->getStyle($row . $columnID)->getBorders()
                     ->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $active_sheet->getRowDimension($columnID)->setRowHeight(30);
+
+                if(($row == 'F' || $row == 'G' || $row == 'H') )
+                {
+                    $active_sheet->getStyle($row . $columnID)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+                }
             }
         }
 

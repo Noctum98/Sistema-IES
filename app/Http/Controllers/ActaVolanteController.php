@@ -15,11 +15,12 @@ class ActaVolanteController extends Controller
             'nota_oral' => ['alpha_num'],
             'promedio' => ['alpha_num']
         ]);
-        
+
+        $request = $this->verificar_nota($request);
 
         $acta_volante = ActaVolante::create($request->all());
 
-        return redirect()->back()->with('Se han colocado correctamente las notas');
+        return redirect()->back()->with(['alumno_success'=>'Se han colocado correctamente las notas']);
     }
 
     public function update(Request $request, $id)
@@ -30,10 +31,29 @@ class ActaVolanteController extends Controller
             'promedio' => ['alpha_num']
         ]);
 
+        $request = $this->verificar_nota($request);
+
         $acta_volante = ActaVolante::find($id);
 
         $acta_volante->update($request->all());
 
-        return redirect()->back()->with('Se han editado correctamente las notas');
+        return redirect()->back()->with(['alumno_success'=>'Se han editado correctamente las notas']);
+    }
+
+    private function verificar_nota(Request $request)
+    {
+        if(!is_numeric($request['nota_escrito'])){
+            $request['nota_escrito'] = -1;
+        }
+
+        if(!is_numeric($request['nota_oral'])){
+            $request['nota_oral'] = -1;
+        }
+
+        if(!is_numeric($request['promedio'])){
+            $request['promedio'] = -1;
+        }
+
+        return $request;
     }
 }
