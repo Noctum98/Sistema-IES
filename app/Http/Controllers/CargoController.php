@@ -44,6 +44,9 @@ class CargoController extends Controller
             $cargos = $this->cargoService->buscador($request, true);
         } else {
 
+            /**
+             * Si el rol es coordinador puede ver todos los cargos de las materias asignadas
+             */
             if (Session::has('coordinador')) {
                 $cargos = Cargo::whereHas('materias', function ($query) use ($user_id) {
                     return $query->whereHas('carrera', function ($query) use ($user_id) {
