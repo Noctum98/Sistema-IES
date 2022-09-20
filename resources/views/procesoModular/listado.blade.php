@@ -48,7 +48,8 @@
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
         @else
-            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar
+            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
+                        class="fas fa-download"></i> Descargar
                 planilla</a>
 
         @endif
@@ -158,4 +159,8 @@
             @section('scripts')
                 {{--                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>--}}
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
+
+    {{--Ver este ejemplo--}}
+    {{--                    <script src="{{ asset('js/calificacion/crear.js') }}"></script>--}}
+    {{--Ver este ejemplo--}}
 @endsection
