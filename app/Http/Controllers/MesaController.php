@@ -85,7 +85,7 @@ class MesaController extends Controller
             'segundo_llamado' => $segundo_llamado,
             'primer_llamado_bajas' => $primer_llamado_bajas,
             'segundo_llamado_bajas' => $segundo_llamado_bajas, 
-            'instancia_id' => $instancia_id,
+            'instancia' => $mesa->instancia,
             'procesos' => $procesos
         ]);
     }
