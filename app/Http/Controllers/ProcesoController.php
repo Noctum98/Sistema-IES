@@ -345,16 +345,28 @@ class ProcesoController extends Controller
         return response()->json($response, $response['code']);
     }
 
-    public function cambia_nota_global(Request $request)
+    public function cambia_nota_global(Request $request): JsonResponse
     {
+        $ausente =  false;
+        if (is_numeric($request['nota_global']) || $request['nota_global'] === 0) {
+            $rules = ['required', 'numeric', 'max:10'];
+        } else {
+            $rules = ['required', 'string', 'regex:/^[A?a?]/'];
+            $ausente = true;
+        }
+
         $validate = Validator::make($request->all(), [
             'proceso_id' => ['required', 'integer'],
-            'nota_global' => ['required', 'integer', 'max:10'],
+            'nota_global' => $rules,
         ]);
+        $nota_global = $request['nota_global'];
+        if($ausente){
+            $nota_global = -1;
+        }
 
         if (!$validate->fails()) {
             $proceso = Proceso::find($request['proceso_id']);
-            $proceso->nota_global = $request['nota_global'];
+            $proceso->nota_global = $nota_global;
             $proceso->update();
 
             $response = [

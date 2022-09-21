@@ -114,10 +114,10 @@
                             </td>
                             <td>
                                 <form action="" id="{{ $proceso->procesoRelacionado->id }}" class="form_nota_global">
-                                    <input type="number"
+                                    <input type="text"
                                            class="form-control nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                            id="global-{{ $proceso->procesoRelacionado->id }}"
-                                           value="{{ $proceso->procesoRelacionado->nota_global ? $proceso->procesoRelacionado->nota_global : '' }}"
+                                           value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
                                            @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
                                     <button type="submit" class="btn btn-info btn-sm col-md-6 input-group-text"
                                             id="btn-global-{{ $proceso->procesoRelacionado->id }}"
