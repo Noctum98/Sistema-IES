@@ -3,8 +3,10 @@ $(document).ready(function () {
     $('.check-cierre').on('change', function () {
         const campo = $(this);
         const proceso_id = campo.attr('id');
+        const proceso_tipo = campo.attr('data-tipo');
+        const proceso_cargo = campo.attr('data-cargo');
         const cierre = $(this).prop('checked');
-        console.log(cierre)
+
         $('#span-' + proceso_id).removeClass('d-block')
         $('#span-' + proceso_id).addClass('d-none')
         $('#spin-' + proceso_id).removeClass('d-none')
@@ -13,7 +15,9 @@ $(document).ready(function () {
         let url = '/proceso/cambia/cierre';
         let data = {
             "proceso_id": proceso_id,
-            "cierre": cierre
+            "cierre": cierre,
+            'tipo': proceso_tipo,
+            'cargo': proceso_cargo
         };
         //
         //

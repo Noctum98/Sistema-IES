@@ -137,9 +137,7 @@
                                        id="{{$proceso->procesoRelacionado->id}}" {{$proceso->procesoRelacionado->cierre == false ? 'unchecked':'checked'}} />
                             </td>
 
-                            {{--                            <td>--}}
-                            {{--                                {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} |  %--}}
-                            {{--                            </td>--}}
+
 
 
                         </tr>
@@ -157,10 +155,8 @@
             </div>
             @endsection
             @section('scripts')
-                {{--                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>--}}
+                                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
 
-    {{--Ver este ejemplo--}}
-    {{--                    <script src="{{ asset('js/calificacion/crear.js') }}"></script>--}}
-    {{--Ver este ejemplo--}}
+
 @endsection
