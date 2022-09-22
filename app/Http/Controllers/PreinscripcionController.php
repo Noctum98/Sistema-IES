@@ -270,13 +270,21 @@ class PreinscripcionController extends Controller
         $ctrabajo = $request->file('ctrabajo_file');
         $nota = $request->file('nota_file');
 
-        $path_folder = $this->disk->makeDirectory($request['dni']);
         $dir = '/';
         $recursive = false; // Get subdirectories also?
         $contents = collect($this->disk->listContents($dir, $recursive));
         $dir = $contents->where('type', '=', 'dir')
             ->where('filename', '=', $request['dni'])
             ->first();
+
+        if(!$dir)
+        {
+            $path_folder = $this->disk->makeDirectory($request['dni']);
+            $contents = collect($this->disk->listContents($dir, $recursive));
+            $dir = $contents->where('type', '=', 'dir')
+                ->where('filename', '=', $request['dni'])
+                ->first();
+        }
 
         if ($dni_archivo) {
             $dni_nombre = time() . $dni_archivo->getClientOriginalName();
@@ -371,9 +379,9 @@ class PreinscripcionController extends Controller
             'escuela_s'     =>  ['required'],
             'materia_s'     =>  ['required'],
             'conexion'      =>  ['required'],
-            'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'dni_archivo_file'   =>  ['file','mimes:jpg,jpeg,png,pdf','max:5000'],
+            'certificado_archivo_file'   =>  ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'comprobante_file'           =>  ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
             'dni_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
             'certificado_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
             'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
@@ -400,6 +408,17 @@ class PreinscripcionController extends Controller
         $dir = $contents->where('type', '=', 'dir')
             ->where('filename', '=', $request['dni'])
             ->first();
+
+        if(!$dir)
+        {
+            $this->disk->makeDirectory($request['dni']);
+
+            $contents = collect($this->disk->listContents($dir, $recursive));
+            $dir = $contents->where('type', '=', 'dir')
+            ->where('filename', '=', $request['dni'])
+            ->first();
+
+        }
 
         if ($dni_archivo) {
             $dni_nombre = time() . $dni_archivo->getClientOriginalName();
