@@ -1,6 +1,10 @@
 <table>
 	<thead class="thead-dark">
 		<tr>
+			<td>Total: {{ count($preinscripciones)}}</td>
+		</tr>
+		<tr>
+			<th>N°</th>
 			<th scope="col">Fecha de Actualización</th>
 			<th scope="col">Nombres</th>
 			<th scope="col">Apellidos</th>
@@ -22,8 +26,9 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach ($preinscripciones as $preinscripcion)
+		@foreach ($preinscripciones as $i => $preinscripcion)
 		<tr>
+			<td>{{ $i + 1 }}</td>
 			<td>{{$preinscripcion->updated_at->format('d-m-Y')}}</td>
 			<td>{{ ucwords($preinscripcion->nombres)}}</td>
 			<td>{{ ucwords($preinscripcion->apellidos)}}</td>

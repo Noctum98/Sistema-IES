@@ -268,8 +268,8 @@ Route::prefix('preinscripcion')->group(function () {
     Route::post('inscribir/{carrera_id}', [PreinscripcionController::class, 'crear'])->name('crear_preins');
     Route::post('editar/{id}', [PreinscripcionController::class, 'editar'])->name('editar_preins');
     Route::get('eliminar/{timecheck}/{id}', [PreinscripcionController::class, 'borrar'])->name('pre.eliminar');
-    Route::get('descargar-excel/{carrera_id}', [PreinscripcionController::class, 'descargar_excel'])->name('pre.excel');
-    Route::get('/excel/verificados', [PreinscripcionController::class, 'descargar_verificados'])->name('pre.excelv');
+    Route::get('/admin/descargar-excel/{carrera_id}', [PreinscripcionController::class, 'descargar_excel'])->name('pre.excel');
+    Route::get('/admin/excel/verificados', [PreinscripcionController::class, 'descargar_verificados'])->name('pre.excelv');
     Route::get('/admin/estado/{id}', [PreinscripcionController::class, 'cambiar_estado'])->name('pre_estado');
     Route::post('/error/{id}', [PreinscripcionController::class, 'email_archivo_error'])->name('pre.error');
 });
