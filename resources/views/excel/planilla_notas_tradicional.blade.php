@@ -17,9 +17,9 @@
                 Alumno
             </th>
             @if(count($calificaciones) > 0)
-                @foreach($calificaciones as $calificacion)
-                <th>{{$calificacion->nombre}}</th>
-                @endforeach
+            @foreach($calificaciones as $calificacion)
+            <th>{{$calificacion->nombre}}</th>
+            @endforeach
             @else
             <th>
                 Notas
@@ -36,7 +36,7 @@
                 Estado
             </th>
             <th>Nota Global</th>
-           
+
             <th>
                 Cierre
             </th>
@@ -54,13 +54,19 @@
 
                 @if($proceso->procesoCalificacion($cc->id))
                 <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                    {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}
+                    {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                    @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
+                    %
+                    @endif
                 </span>
 
                 @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                 <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                    - R: {{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}
+                    - R: {{$proceso->$proceso->procesoCalificacion($cc->id)->nota_recuperatorio.' '.$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
                 </span>
+                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                %
+                @endif
                 @endif
                 @else
                 -
@@ -91,7 +97,7 @@
             <td>
                 {{$proceso->estado_id ? $proceso->estado->nombre : 'Sin asignar'}}
             </td>
-            
+
             @if($proceso->nota_global && $proceso->nota_global >=4)
             <td style="color:#025827">
                 {{$proceso->nota_global ?? '-'}}

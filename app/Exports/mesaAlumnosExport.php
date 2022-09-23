@@ -33,33 +33,28 @@ class mesaAlumnosExport implements FromView, WithEvents
     {
         // Get Worksheet
         $active_sheet = $event->sheet->getDelegate();
+        foreach(range('A','Z') as $columnID) {
+            $active_sheet->getColumnDimension($columnID)
+                ->setAutoSize(true);
+        }
+        /*
+        // Get Worksheet
+        $active_sheet = $event->sheet->getDelegate();
         foreach (range('A', 'E') as $columnID) {
             $active_sheet->getColumnDimension($columnID)
                 ->setWidth('25');
         }
 
+        $active_sheet->getColumnDimension('A')->setWidth('7');
         $active_sheet->getColumnDimension('F')->setWidth('8');
         $active_sheet->getColumnDimension('G')->setWidth('8');
         $active_sheet->getColumnDimension('H')->setWidth('13');
 
-        $active_sheet->getStyle('A1:B1')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A2:C2')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A3:C3')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A4:C4')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A5:C5')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $active_sheet->getStyle('A6:H6')->getBorders()
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
 
-
         foreach (range('A', 'H') as $row) {
-            foreach (range(7, 30) as $columnID) {
-
-
+            foreach (range(7, 32) as $columnID) {
                 $active_sheet->getStyle($row . $columnID)->getBorders()
                     ->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
                 $active_sheet->getStyle($row . $columnID)->getBorders()
@@ -84,5 +79,6 @@ class mesaAlumnosExport implements FromView, WithEvents
         $active_sheet->getStyle('A2:H2')->getAlignment()->setWrapText(true);
         $active_sheet->getStyle('A3:H3')->getAlignment()->setWrapText(true);
         $active_sheet->getStyle('A5:H5')->getAlignment()->setWrapText(true);
+        */
     }
 }
