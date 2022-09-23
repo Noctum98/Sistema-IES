@@ -10,7 +10,7 @@ class ProcesosCargos extends Model
 {
     use HasFactory;
 
-    protected $table = "proceso_modular";
+    protected $table = "procesos_cargos";
     protected $fillable = [
         'proceso_id',
         'cargo_id',
@@ -19,13 +19,13 @@ class ProcesosCargos extends Model
     ];
 
     protected $dates = [
-        'active_until'
+        'cierre'
     ];
 
 
     public function isClose()
     {
-        return $this->cierre->gt(now());
+        return (bool)optional($this->cierre)->lte(now());
     }
 
     public function proceso(): BelongsTo

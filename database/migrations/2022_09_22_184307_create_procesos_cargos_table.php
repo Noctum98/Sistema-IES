@@ -15,8 +15,8 @@ class CreateProcesosCargosTable extends Migration
     {
         Schema::create('procesos_cargos', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('cierre');
-            $table->bigInteger('operador_id')->unsigned()->unique();
+            $table->timestamp('cierre')->nullable();
+            $table->unsignedInteger('operador_id')->unsigned();
             $table->bigInteger('proceso_id')->unsigned();
             $table->bigInteger('cargo_id')->unsigned();
             $table->timestamps();
