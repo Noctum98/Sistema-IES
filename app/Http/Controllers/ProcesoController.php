@@ -10,6 +10,7 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 
+use App\Services\ProcesosCargosService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -304,13 +305,16 @@ class ProcesoController extends Controller
         if ($request['cierre'] == 'false') {
             $proceso->cierre = 0;
         }
-        $proceso->operador_id = $user->id;
 
-
-
-
-
-        $proceso->update();
+        if($request['tipo'] and  $request['tipo'] == 'modular' and $request['cargo'])
+        {
+            $cargo_id = $request['cargo'];
+            $procesoService = new ProcesosCargosService();
+            $procesoService->actualizar($proceso->id, $cargo_id, $user->id);
+        } else {
+            $proceso->operador_id = $user->id;
+            $proceso->update();
+        }
 
         return response()->json($proceso, 200);
     }

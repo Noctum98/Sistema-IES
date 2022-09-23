@@ -2,32 +2,33 @@
 
 namespace App\Services;
 
-use App\Models\Alumno;
-use App\Models\Proceso;
 use App\Models\ProcesosCargos;
-use Illuminate\Support\Facades\Auth;
-
 
 class ProcesosCargosService{
+
     public function crear(int $proceso, int $cargo, int $user ){
 
         $data['proceso_id'] = $proceso;
         $data['cargo_id'] = $cargo;
         $data['operador_id'] = $user;
         $data['cierre'] =  new \DateTime('now');
-//dd($data['cierre']);
 
             ProcesosCargos::create($data);
 
     }
 
-    public function update(int $proceso, int $cargo, int $user){
+    /**
+     * @param int $proceso <i>id</i> de proceso
+     * @param int $cargo <i>id</i> de cargo
+     * @param int $user <i>id</i> de usuario
+     * @return void
+     */
+    public function actualizar(int $proceso, int $cargo, int $user){
 
         $pc = ProcesosCargos::where([
            'proceso_id'=>$proceso,
            'cargo_id'=>$cargo,
         ])->first();
-
 
         if($pc){
             if($pc->isClose()){
@@ -40,10 +41,5 @@ class ProcesosCargosService{
         }else{
             $this->crear($proceso, $cargo, $user);
         }
-
-
-
-
-
     }
 }
