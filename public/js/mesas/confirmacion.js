@@ -16,7 +16,7 @@ $(document).ready(function () {
             success: function (response) {
                 if(response.status == 'success')
                 {
-                    $("#nota-"+response.inscripcion.id).removeClass('d-none');
+                    $("#confirmado-"+response.inscripcion.id).removeClass('d-none');
                     $('#'+response.inscripcion.id).addClass('d-none');
                 }
             }
