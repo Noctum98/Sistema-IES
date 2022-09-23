@@ -298,7 +298,7 @@
 		<label for="dni_archivo_2_file">
 			DNI Dorso: (Debe ser legible y claro los datos que figura en el documento digital que adjunte):
 		</label>
-		<input type="file" id="dni_archivo_2_file" name="dni_archivo_2_file" class=" @error('dni_archivo_2_file') is-invalid @enderror" value="{{ old('dni_archivo_2_file') }}">
+		<input type="file" id="dni_archivo_2_file" name="dni_archivo_2_file" class="@error('dni_archivo_2_file') is-invalid @enderror" value="{{ old('dni_archivo_2_file') }}">
 
 		@error('dni_archivo_2_file')
 		<span class="invalid-feedback d-block" role="alert">
