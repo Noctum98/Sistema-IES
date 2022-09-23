@@ -54,19 +54,13 @@
 
                 @if($proceso->procesoCalificacion($cc->id))
                 <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                    {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                    {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}
                 </span>
-                @if($proceso->procesoCalificacion($cc->id)->porcentaje > 0)
-                %
-                @endif
 
                 @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                 <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                    - R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                    - R: {{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}
                 </span>
-                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                %
-                @endif
                 @endif
                 @else
                 -
