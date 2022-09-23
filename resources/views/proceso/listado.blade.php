@@ -78,15 +78,20 @@
                     <td>
                         @if($proceso->procesoCalificacion($cc->id))
                         <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'badge-success' : 'badge-danger' }}">
-                            {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}
+                            {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ?$proceso->procesoCalificacion($cc->id)->nota.' - '. $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                            @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje))
+                        %
+                        @endif
                         </span>
                        
 
                         @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                         <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'badge-success' : 'badge-danger' }}">
-                            R: {{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}
+                            - R: {{$proceso->$proceso->procesoCalificacion($cc->id)->nota_recuperatorio.' '.$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
                         </span>
-                        
+                        @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                        %
+                        @endif
                         @endif
                         @else
                         -
@@ -96,7 +101,7 @@
                     @endif
                     <td>
                         <span class="badge badge-secondary">
-                        {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
+                            {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
                         </span>
                     </td>
                     <td class="col-md-3">
