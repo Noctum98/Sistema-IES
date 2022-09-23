@@ -34,7 +34,7 @@
             <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 m-1">
                 <i class="fas fa-download"></i>
                 Descargar Inscriptos
-            </a>s
+            </a>
         @endif
         
     </div>
@@ -72,7 +72,8 @@
                             <i class="fas fa-arrow-down"></i>
                             Dar baja
                         </a>
-                        {{--<button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}"><i class="fas fa-check"></i> Confirmar</button>
+                        <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}"><i class="fas fa-check"></i> Confirmar</button>
+                        {{--
                         <button class="btn btn-sm btn-primary {{!$inscripcion->confirmado ? 'd-none' : ''}}" id="nota-{{$inscripcion->id}}" data-bs-toggle="modal" data-bs-target="#nota{{$inscripcion->id}}"><i class="fas fa-clipboard"></i> Nota</button>--}}
 
                     </td>
