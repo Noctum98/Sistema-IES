@@ -26,17 +26,17 @@
     <div class="row col-md-12">
 
         @if(Session::has('coordinador') || Session::has('admin'))
-            <button class="btn btn-sm btn-primary col-md-2 m-1" data-bs-toggle="modal" data-bs-target="#inscribirAlumno"><i class="fas fa-clipboard"></i> Inscribir alumno</button>
-            @include('mesa.modals.inscribir_alumno')
+        <button class="btn btn-sm btn-primary col-md-2 m-1" data-bs-toggle="modal" data-bs-target="#inscribirAlumno"><i class="fas fa-clipboard"></i> Inscribir alumno</button>
+        @include('mesa.modals.inscribir_alumno')
         @endif
 
         @if(count($inscripciones) > 0)
-            <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 m-1">
-                <i class="fas fa-download"></i>
-                Descargar Inscriptos
-            </a>
+        <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 m-1">
+            <i class="fas fa-download"></i>
+            Descargar Inscriptos
+        </a>
         @endif
-        
+
     </div>
     @if(count($inscripciones) > 0)
     <div class="table-responsive">
@@ -66,19 +66,20 @@
                     <td>{{ $inscripcion->dni }}</td>
                     <td>{{ $inscripcion->telefono ?? '-'  }}</td>
                     <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->carrera_id,$inscripcion->materia->año) ?? '-' }}</td>
-                    @if(Session::has('admin') || Session::has('coordinador'))
                     <td>
+                        @if(Session::has('admin') || Session::has('coordinador'))
+
                         <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                             <i class="fas fa-arrow-down"></i>
                             Dar baja
                         </a>
-                    @endif
-                        
+                        @endif
+
                         <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}"><i class="fas fa-check"></i> Confirmar</button>
                         <button class="btn btn-sm btn-success d-none" id="confirmado-{{$inscripcion->id}}" disabled><i class="fas fa-check"></i>Confirmado </button>
 
                         @if($inscripcion->confirmado)
-                            <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado </button>
+                        <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado </button>
                         @endif
                         {{--
                         <button class="btn btn-sm btn-primary {{!$inscripcion->confirmado ? 'd-none' : ''}}" id="nota-{{$inscripcion->id}}" data-bs-toggle="modal" data-bs-target="#nota{{$inscripcion->id}}"><i class="fas fa-clipboard"></i> Nota</button>--}}
