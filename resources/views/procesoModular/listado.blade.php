@@ -6,7 +6,7 @@
         }
 
         .table-responsive {
-            height: 400px;
+            height: 800px;
             overflow: scroll;
         }
 
