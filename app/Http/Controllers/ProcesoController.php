@@ -316,6 +316,8 @@ class ProcesoController extends Controller
             $proceso->update();
         }
 
+
+
         return response()->json($proceso, 200);
     }
 

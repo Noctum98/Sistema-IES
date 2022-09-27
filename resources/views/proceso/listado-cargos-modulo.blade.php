@@ -1,15 +1,4 @@
-<style>
-    thead th {
-        position: sticky;
-        z-index: 1;
-        top: 0;
-    }
 
-    table thead tr th:first-child,
-    table.f30 tbody tr td:first-child {
-        width: 25%;
-    }
-</style>
 <div class="container-fluid border border-info border-top-0" id="container-scroll">
     <div class="col-sm-12">
         {{--            {{$alumno->nombre}} {{$alumno->apellidos}}, DU: {{$alumno->dni}}--}}

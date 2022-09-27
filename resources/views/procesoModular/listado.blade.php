@@ -4,6 +4,15 @@
         table {
             font-size: 0.85em;
         }
+
+        .table-responsive{
+            height:400px;
+            overflow:scroll;
+        }
+
+        .fijar{
+            background: white; position: sticky;top: 0;z-index: 10;
+        }
     </style>
     <div class="container-fluid w-100" id="container-scroll">
         <a href="{{url()->previous()}}">
@@ -63,22 +72,22 @@
         @endif
 
         @if(count($procesos) > 0)
-            <div class="table tableFixHead">
-                <table class="table mt-1 ">
-                    <thead class="thead-dark text-white ">
-                    <tr>
-                        <th>
-                            Alumno
+            <div class="table-responsive">
+                <table class="table table-hover" id="job-table">
+                    <thead class="thead-dark text-white" style="z-index: 100">
+                    <tr class="fijar">
+                        <th class="sticky-top" >
+                             Alumno
                         </th>
-                        <th>Prom. Final %</th>
-                        <th>Prom. Final #</th>
-                        <th>Asis. Final %</th>
-                        <th>TFI %</th>
-                        <th>TFI #</th>
-                        <th>Nota Final %</th>
-                        <th>Nota Final #</th>
-                        <th class="col-sm-1">Global #</th>
-                        <th>Cierre</th>
+                        <th class="sticky-top">Prom. Final %</th>
+                        <th class="sticky-top">Prom. Final #</th>
+                        <th class="sticky-top">Asis. Final %</th>
+                        <th class="sticky-top">TFI %</th>
+                        <th class="sticky-top">TFI #</th>
+                        <th class="sticky-top">Nota Final %</th>
+                        <th class="sticky-top">Nota Final #</th>
+                        <th class="sticky-top col-sm-1">Global #</th>
+                        <th class="sticky-top">Cierre</th>
                         {{--                        <th><a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>--}}
 
                     </tr>
