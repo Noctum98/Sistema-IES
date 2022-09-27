@@ -79,18 +79,12 @@
                         @if($proceso->procesoCalificacion($cc->id))
                         <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'badge-success' : 'badge-danger' }}">
                             {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
-                            @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
-                            %
-                            @endif
                         </span>
                        
 
                         @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                         <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'badge-success' : 'badge-danger' }}">
                             R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
-                            @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                             %
-                            @endif
                         </span>
                         
                         @endif

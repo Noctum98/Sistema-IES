@@ -31,9 +31,9 @@ class AlumnoMesaController extends Controller
         $instancia = Instancia::find($id);
         $sedes = Sede::all();
 
-        if(!$instancia){
+        if (!$instancia) {
             return view('error.error');
-        }elseif ($instancia->estado == 'inactiva') {
+        } elseif ($instancia->estado == 'inactiva') {
             return view('error.mesa_closed');
         } else {
             session(['instancia' => $instancia]);
@@ -46,15 +46,15 @@ class AlumnoMesaController extends Controller
 
     public function vista_instancias()
     {
-        $instancias = Instancia::where('estado','activa')->get();
+        $instancias = Instancia::where('estado', 'activa')->get();
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $inscripciones = MesaAlumno::where([
             'dni' => $alumno->dni,
         ])
-            ->orderBy('created_at' , 'DESC')
-        ->get();
-        
-        return view('mesa.instancias',[
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('mesa.instancias', [
             'instancias' => $instancias,
             'inscripciones' => $inscripciones
         ]);
@@ -66,8 +66,7 @@ class AlumnoMesaController extends Controller
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $carreras = Auth::user() ? $alumno->carreras : Carrera::where('sede_id', $alumno['sede'])->get();
 
-        if($instancia->cierre)
-        {
+        if ($instancia->cierre) {
             $carreras = null;
         }
 
@@ -102,29 +101,29 @@ class AlumnoMesaController extends Controller
         }
     }
 
-    public function vista_inscriptos($materia_id,$instancia_id=null)
+    public function vista_inscriptos($materia_id, $instancia_id = null)
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
 
         $inscripciones = MesaAlumno::where([
-            'instancia_id'=>$instancia->id,
-            'materia_id'=>$materia_id,
+            'instancia_id' => $instancia->id,
+            'materia_id' => $materia_id,
             'estado_baja' => 0
         ])->get();
         $inscripciones_baja = MesaAlumno::where([
-            'instancia_id'=>$instancia->id,
-            'materia_id'=>$materia_id,
+            'instancia_id' => $instancia->id,
+            'materia_id' => $materia_id,
             'estado_baja' => 1
         ])->get();
 
 
         $procesos = $procesos = Proceso::select('procesos.*')
-        ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-        ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
 
-        $materia = Materia::select('nombre','id','carrera_id')->where('id',$materia_id)->first();
+        $materia = Materia::select('nombre', 'id', 'carrera_id')->where('id', $materia_id)->first();
 
-        return view('mesa.inscripciones_especial',[
+        return view('mesa.inscripciones_especial', [
             'inscripciones' => $inscripciones,
             'inscripciones_baja' => $inscripciones_baja,
             'materia' => $materia,
@@ -151,7 +150,7 @@ class AlumnoMesaController extends Controller
     }
 
     // Funcionalidade
-    public function inscripcion(Request $request,$instancia_id = null)
+    public function inscripcion(Request $request, $instancia_id = null)
     {
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
@@ -177,7 +176,7 @@ class AlumnoMesaController extends Controller
         }
 
         if ((count($mesas_alumnos) + count($datos) - 1) > $instancia->limite) {
-            return redirect()->route('mesa.mate',[
+            return redirect()->route('mesa.mate', [
                 'instancia_id' => $instancia->id
             ])->with([
                 'error_mesa' => 'Solo te puedes inscribir a ' . $instancia->limite . ' materias.'
@@ -190,7 +189,7 @@ class AlumnoMesaController extends Controller
                     if ($instancia->tipo == 1) {
 
                         if ($inscripcion->materia_id == $dato && !$inscripcion->estado_baja) {
-                            return redirect()->route('mesa.mate',[
+                            return redirect()->route('mesa.mate', [
                                 'instancia_id' => $instancia->id
                             ])->with([
                                 'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
@@ -200,7 +199,6 @@ class AlumnoMesaController extends Controller
                         if ($inscripcion['mesa_id'] == $dato) {
 
                             $inscripcion->delete();
-
                         }
                     }
                 }
@@ -215,7 +213,7 @@ class AlumnoMesaController extends Controller
                 $inscripcion->telefono = $alumno['telefono'];
                 if ($instancia->tipo == 0) {
                     $mesa = Mesa::find($dato);
-                    if (time() > strtotime($mesa->fecha) || isset($request['segundo-'.$mesa->id])) {
+                    if (time() > strtotime($mesa->fecha) || isset($request['segundo-' . $mesa->id])) {
                         $inscripcion->segundo_llamado = true;
                     } else {
                         $inscripcion->segundo_llamado = false;
@@ -229,13 +227,12 @@ class AlumnoMesaController extends Controller
             }
             $mensaje = 'Ya estas inscripto correctamente a las carreras seleccionadas.';
 
-            if(!Auth::user())
-            {
+            if (!Auth::user()) {
                 //dd($datos);
-                Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia,$inscripcion));
+                Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
                 $mensaje = 'Ya estas inscripto correctamente, se ha enviado un comprobante a tu correo electrónico.';
             }
-            return redirect()->route('mesa.mate',[
+            return redirect()->route('mesa.mate', [
                 'instancia_id' => $instancia->id
             ])->with([
                 'inscripcion_success' => $mensaje
@@ -249,24 +246,22 @@ class AlumnoMesaController extends Controller
         $alumno = Alumno::find($request['alumno_id']);
 
 
-        if($request['mesa_id'] && $request['mesa_id'] != null)
-        {
+        if ($request['mesa_id'] && $request['mesa_id'] != null) {
             $mesa = Mesa::find($request['mesa_id']);
             $inscripcion = MesaAlumno::where([
                 'alumno_id' => $request['alumno_id'],
                 'mesa_id' => $request['mesa_id'],
                 'segundo_llamado' => $request['llamado']
             ])->first();
-        }else{
+        } else {
             $inscripcion = MesaAlumno::where([
                 'alumno_id' => $request['alumno_id'],
                 'instancia_id' => $request['instancia_id'],
                 'materia_id' => $request['materia_id']
             ])->first();
         }
-        
-        if(!$inscripcion)
-        {
+
+        if (!$inscripcion) {
             $request['nombres'] = $alumno->nombres;
             $request['apellidos'] = $alumno->apellidos;
             $request['dni'] = $alumno->dni;
@@ -276,16 +271,14 @@ class AlumnoMesaController extends Controller
             $inscripcion = MesaAlumno::create($request->all());
 
             $mensaje = ['alumno_success' => 'El alumno ha sido inscripto.'];
-
-        
-        }else{
+        } else {
             $mensaje = ['alumno_error' => 'El alumno ya esta inscripto a este llamado.'];
         }
 
         return redirect()->back()->with($mensaje);
     }
 
-    public function bajar_mesa($id,$instancia_id = null)
+    public function bajar_mesa($id, $instancia_id = null)
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $inscripcion = MesaAlumno::find($id);
@@ -311,12 +304,10 @@ class AlumnoMesaController extends Controller
                     // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
                 }
             }
-
-            
-        }else{
+        } else {
             $inscripcion->estado_baja = true;
         }
-        if(Auth::user()){
+        if (Auth::user()) {
             $inscripcion->user_id = Auth::user()->id;
         }
         $inscripcion->motivo_baja = 'Baja del alumno';
@@ -325,7 +316,8 @@ class AlumnoMesaController extends Controller
         return redirect()->back();
     }
 
-    public function borrar_inscripcion(Request $request,$id,$instancia_id = null){
+    public function borrar_inscripcion(Request $request, $id, $instancia_id = null)
+    {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $inscripcion = MesaAlumno::find($id);
         $mesa_id = $inscripcion->mesa_id;
@@ -333,16 +325,16 @@ class AlumnoMesaController extends Controller
         //dd($request->all());
         $inscripcion->user_id = Auth::user()->id;
 
-        if($instancia->tipo == 1)
-        {
-            if($request['motivos'])
-            {
-                Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
-            }else{
+        if ($instancia->tipo == 1) {
+            if ($request['motivos']) {
+                Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
+            } else {
                 $request['motivos'] = "Baja realizada por el alumno.";
             }
 
-            $inscripcion->motivo_baja = $request['motivos'];
+            foreach ($request['motivos'] as $motivo) {
+                $inscripcion->motivo_baja = $inscripcion->motivo_baja . ' | ' . $motivo;
+            }
             $inscripcion->estado_baja = true;
             $inscripcion->update();
             $ruta = 'mesa.especial.inscriptos';
@@ -350,28 +342,22 @@ class AlumnoMesaController extends Controller
         }
 
         if ($instancia->tipo == 0) {
-            if($request['motivos'])
-            {
+            if ($request['motivos']) {
                 // Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
-                foreach($request['motivos'] as $motivo)
-                {
-                    $inscripcion->motivo_baja = $inscripcion->motivo_baja.' | '.$motivo;
+                foreach ($request['motivos'] as $motivo) {
+                    $inscripcion->motivo_baja = $inscripcion->motivo_baja . ' | ' . $motivo;
                 }
-            }else{
+            } else {
                 $request['motivos'] = "Baja realizada por el alumno.";
                 $inscripcion->motivo_baja = $request['motivos'];
             }
-            $inscripcion->estado_baja = true;           
+            $inscripcion->estado_baja = true;
             $inscripcion->update();
             $ruta = 'mesa.inscriptos';
             $id = $inscripcion->materia_id;
         }
 
-        return redirect()->route($ruta,[
-            'instancia_id' => $instancia->id,
-            'materia_id' => $inscripcion->mesa->materia_id,
-
-        ])->with([
+        return redirect()->back()->with([
             'baja_exitosa' => 'Se ha dado de baja la inscripción correctamente'
         ]);
     }
@@ -420,7 +406,7 @@ class AlumnoMesaController extends Controller
         }
     }
 
-    public function confirmar(Request $request,$id)
+    public function confirmar(Request $request, $id)
     {
         $inscripcion = MesaAlumno::find($id);
 
@@ -432,8 +418,8 @@ class AlumnoMesaController extends Controller
             'status' => 'success',
             'inscripcion' => $inscripcion
         ];
-        
-        return response()->json($data,200);
+
+        return response()->json($data, 200);
     }
 
     // Funciones privadas
@@ -453,7 +439,6 @@ class AlumnoMesaController extends Controller
                 if ($inscripcion['mesa_id'] == $dato) {
 
                     $inscripcion->delete();
-
                 }
             }
         }
