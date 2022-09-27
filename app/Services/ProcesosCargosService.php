@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ProcesoModular;
 use App\Models\ProcesosCargos;
 
 class ProcesosCargosService{
@@ -35,6 +36,17 @@ class ProcesosCargosService{
                 $pc->cierre = null;
             }else{
                 $pc->cierre = new \DateTime('now');
+
+                $pm = ProcesoModular::where([
+                    'proceso_id'=>$proceso,
+                ])->first();
+
+                $pms = new ProcesoModularService();
+
+                $pms->grabaEstadoPorProcesoModular($pm);
+
+
+
             };
             $pc->operador_id =  $user;
             $pc->update();

@@ -71,4 +71,20 @@ class Proceso extends Model
     {
         return $this->belongsTo(Cargo::class,'cargo_id');
     }
+
+    public function procesoModular()
+    {
+        return ProcesoModular::where(
+                ['proceso_id' => $this->id])
+            ->get()
+        ;
+    }
+
+    public function obtenerProcesoCargo(int $cargo)
+    {
+        return ProcesosCargos::where([
+            'cargo_id' => $cargo,
+            'proceso_id' => $this->id
+        ])->first();
+    }
 }
