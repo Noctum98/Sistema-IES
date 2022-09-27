@@ -150,7 +150,7 @@
                         </span>
 
                                 <input type="checkbox" class="check-cierre"
-                                       id="{{$proceso->procesoRelacionado->id}}" {{$proceso->procesoRelacionado->cierre == false ? 'unchecked':'checked'}} />
+                                       id="{{$proceso->procesoRelacionado->id}}" {{!$proceso->procesoRelacionado->cierre ? 'unchecked':'checked'}} />
                             </td>
 
 

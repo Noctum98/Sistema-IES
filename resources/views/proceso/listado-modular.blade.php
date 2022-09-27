@@ -128,7 +128,7 @@
                         </span>
 
                                 <input type="checkbox" class="check-cierre"
-                                       id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}}
+                                       id="{{$proceso->id}}" {{$proceso->obtenerProcesoCargo($cargo->id) ? 'checked':'unchecked'}}
                                         data-tipo="modular"
                                        data-cargo="{{$cargo->id}}"
                                 >
