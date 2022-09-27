@@ -5,13 +5,16 @@
             font-size: 0.85em;
         }
 
-        .table-responsive{
-            height:400px;
-            overflow:scroll;
+        .table-responsive {
+            height: 400px;
+            overflow: scroll;
         }
 
-        .fijar{
-            background: white; position: sticky;top: 0;z-index: 10;
+        .fijar {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
     </style>
     <div class="container-fluid w-100" id="container-scroll">
@@ -76,8 +79,8 @@
                 <table class="table table-hover" id="job-table">
                     <thead class="thead-dark text-white" style="z-index: 100">
                     <tr class="fijar">
-                        <th class="sticky-top" >
-                             Alumno
+                        <th class="sticky-top">
+                            Alumno
                         </th>
                         <th class="sticky-top">Prom. Final %</th>
                         <th class="sticky-top">Prom. Final #</th>
@@ -89,7 +92,6 @@
                         <th class="sticky-top col-sm-1">Global #</th>
                         <th class="sticky-top">Cierre</th>
                         {{--                        <th><a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>--}}
-
                     </tr>
                     </thead>
                     <tbody>
@@ -121,17 +123,22 @@
                             <td class="text-center">
                                 {{$proceso->nota_final_nota}} |
                             </td>
-                            <td>
+                            <td class="row">
                                 <form action="" id="{{ $proceso->procesoRelacionado->id }}" class="form_nota_global">
-                                    <input type="text"
-                                           class="form-control nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
-                                           id="global-{{ $proceso->procesoRelacionado->id }}"
-                                           value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                           @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
-                                    <button type="submit" class="btn btn-info btn-sm col-md-6 input-group-text"
-                                            id="btn-global-{{ $proceso->procesoRelacionado->id }}"
-                                            @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
-                                        <i class="fa fa-save"></i></button>
+                                    <div class="input-group mb-3">
+                                        <input type="text"
+                                               class="form-control nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
+                                               id="global-{{ $proceso->procesoRelacionado->id }}"
+                                               value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
+                                               @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                        <div class="input-group-append">
+                                            <button type="submit"
+                                                    class="btn btn-info btn-sm input-group-text"
+                                                    id="btn-global-{{ $proceso->procesoRelacionado->id }}"
+                                                    @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                <i class="fa fa-save"></i>
+                                            </button>
+                                        </div>
                                 </form>
                             </td>
                             <td>
@@ -145,8 +152,6 @@
                                 <input type="checkbox" class="check-cierre"
                                        id="{{$proceso->procesoRelacionado->id}}" {{$proceso->procesoRelacionado->cierre == false ? 'unchecked':'checked'}} />
                             </td>
-
-
 
 
                         </tr>
@@ -164,8 +169,7 @@
             </div>
             @endsection
             @section('scripts')
-                                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
+                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
-
 
 @endsection
