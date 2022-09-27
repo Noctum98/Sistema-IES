@@ -44,19 +44,26 @@
                                   id="{{ $proceso->id }}" method="POST">
                                 <input type="hidden" name="calificacion_id" id="calificacion_id"
                                        value="{{ $calificacion->id }}">
-                                <input type="text" style="width: 100%" class="form-control col-md-12"
-                                       id="calificacion-procentaje-{{ $proceso->id }}"
-                                       value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
-                                       placeholder="%"
-                                       @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id )
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control"
+                                           id="calificacion-procentaje-{{ $proceso->id }}"
+                                           value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
+                                           placeholder="%"
+                                           @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id or
+                                    optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
+//                                               )
                                            disabled
-                                       @endif>
-                                <button type="submit"
-                                        class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
-                                    <i class="fa fa-save"></i></button>
+                                            @endif>
+                                    <div class="input-group-append">
+                                        <button type="submit"
+                                                class="btn btn-info btn-sm  input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
+                                            <i class="fa fa-save"></i></button>
+                                    </div>
+                                </div>
                                 <div id="spinner-{{$proceso->id}}">
                                 </div>
                             </form>
+
                         </td>
                         <td class="nota-{{ $proceso->id }}">
                             @if($proceso->procesoCalificacion($calificacion->id))
@@ -82,7 +89,7 @@
                                            value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio : '' }}"
                                            placeholder="%"
                                            @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id) || $proceso->cierre) disabled
-                                           @endif>
+                                            @endif>
                                     <button type="submit"
                                             class="btn btn-info btn-sm col-md-12 input-group-text
                                             @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif"
