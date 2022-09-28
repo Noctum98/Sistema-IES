@@ -1,15 +1,3 @@
-<style>
-    thead th {
-        position: sticky;
-        z-index: 1;
-        top: 0;
-    }
-
-    table thead tr th:first-child,
-    table.f30 tbody tr td:first-child {
-        width: 25%;
-    }
-</style>
 <div class="container-fluid border border-info border-top-0" id="container-scroll">
     <div class="col-sm-12">
         {{--            {{$alumno->nombre}} {{$alumno->apellidos}}, DU: {{$alumno->dni}}--}}
@@ -33,6 +21,7 @@
                     <col class="col-">
                 @endforeach
                 <col class="col-">
+                <col class="col-">
             </colgroup>
             <thead>
             <tr>
@@ -47,6 +36,7 @@
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% Final</th>
+                <th>Cerrado</th>
             </tr>
             </thead>
             <tbody>
@@ -93,6 +83,13 @@
                             $pfinal =($pparcial * 0.3) + $p70
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
+                </td>
+                <td>
+                    @if (optional($cargo->obtenerProcesoCargo(optional($proceso->procesoRelacionado()->first())->id))->isClose())
+                        <i class="fa fa-check text-success"></i>
+                    @else
+                        <i class="fa fa-minus text-danger"></i>
+                    @endif
                 </td>
             </tr>
             </tbody>

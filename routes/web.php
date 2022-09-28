@@ -56,8 +56,12 @@ use App\Models\Proceso;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name('home.ayuda.cargos');
-Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'ayudaVisual'])->name('home.ayuda.visual');
+Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name(
+    'home.ayuda.cargos'
+);
+Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'ayudaVisual'])->name(
+    'home.ayuda.visual'
+);
 
 Route::get('/', function () {
     if (Auth::user()) {
@@ -92,7 +96,7 @@ Route::resource('estados', EstadosController::class);
  */
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
-    Route::get('/cierre/{materia_id}/{comision_id?}',[MateriaController::class,'cierre'])->name('materia.cierre');
+    Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre'])->name('materia.cierre');
 });
 
 //Rutas de sedes
@@ -231,8 +235,8 @@ Route::prefix('alumnos')->group(function () {
     // Acciones
     Route::post('crear-alumno/{carrera_id}', [AlumnoController::class, 'crear'])->name('crear_alumno');
     Route::post('editar-alumno/{id}', [AlumnoController::class, 'editar'])->name('editar_alumno');
-    Route::post('buscarAlumno/{id}',[AlumnoController::class,'buscar']);
-    Route::get('alumnosMateria/{id}',[AlumnoController::class,'alumnosMateria']);
+    Route::post('buscarAlumno/{id}', [AlumnoController::class, 'buscar']);
+    Route::get('alumnosMateria/{id}', [AlumnoController::class, 'alumnosMateria']);
 
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
@@ -257,19 +261,27 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/admin/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
-    Route::get('/admin/verificadas/{id}', [PreinscripcionController::class, 'vista_verificadas'])->name('pre.verificadas');
+    Route::get('/admin/verificadas/{id}', [PreinscripcionController::class, 'vista_verificadas'])->name(
+        'pre.verificadas'
+    );
     Route::get('/admin/erroneas/{id}', [PreinscripcionController::class, 'vista_sincorregir'])->name('pre.sincorregir');
     Route::get('/editar/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editar'])->name('pre.editar');
     Route::get('/admin/articulo/septimo', [PreinscripcionController::class, 'vista_articulo'])->name('pre.articulo');
-    Route::get('/mail/check/{timecheck}/{carrera_id}',[PreinscripcionController::class,'email_check'])->name('pre.email');
+    Route::get('/mail/check/{timecheck}/{carrera_id}', [PreinscripcionController::class, 'email_check'])->name(
+        'pre.email'
+    );
 
 
     // Acciones
     Route::post('inscribir/{carrera_id}', [PreinscripcionController::class, 'crear'])->name('crear_preins');
     Route::post('editar/{id}', [PreinscripcionController::class, 'editar'])->name('editar_preins');
     Route::get('eliminar/{timecheck}/{id}', [PreinscripcionController::class, 'borrar'])->name('pre.eliminar');
-    Route::get('/admin/descargar-excel/{carrera_id}', [PreinscripcionController::class, 'descargar_excel'])->name('pre.excel');
-    Route::get('/admin/excel/verificados', [PreinscripcionController::class, 'descargar_verificados'])->name('pre.excelv');
+    Route::get('/admin/descargar-excel/{carrera_id}', [PreinscripcionController::class, 'descargar_excel'])->name(
+        'pre.excel'
+    );
+    Route::get('/admin/excel/verificados', [PreinscripcionController::class, 'descargar_verificados'])->name(
+        'pre.excelv'
+    );
     Route::get('/admin/estado/{id}', [PreinscripcionController::class, 'cambiar_estado'])->name('pre_estado');
     Route::post('/error/{id}', [PreinscripcionController::class, 'email_archivo_error'])->name('pre.error');
 });
@@ -287,9 +299,12 @@ Route::prefix('proceso')->group(function () {
         'inscribir_proceso'
     );
     Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
-    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name('proceso.listado');
+    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
+        'proceso.listado'
+    );
 
-    Route::get('listado-cargo/{materia_id}/{cargo_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo'])->name(
+    Route::get('listado-cargo/{materia_id}/{cargo_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo']
+    )->name(
         'proceso.listadoCargo'
     );
 
@@ -297,15 +312,18 @@ Route::prefix('proceso')->group(function () {
         'proceso.listadoModular'
     );
 
-    Route::get('listado-cargos-modulo/{materia_id}/{cargo_id}/{alumno_id}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargosModulo'])->name(
+    Route::get(
+        'listado-cargos-modulo/{materia_id}/{cargo_id}/{alumno_id}/{comision_id?}',
+        [ProcesoController::class, 'vista_listadoCargosModulo']
+    )->name(
         'proceso.listadoCargosModulo'
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
     Route::post('cambia/nota_final', [ProcesoController::class, 'cambia_nota_final'])->name('proceso.nota_final');
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
-    Route::post('calcularPorcentaje',[ProcesoCalificacionController::class,'calcularPorcentaje']);
-    Route::get('procesosCalificaciones/{proceso_id}',[ProcesoCalificacionController::class,'show']);
+    Route::post('calcularPorcentaje', [ProcesoCalificacionController::class, 'calcularPorcentaje']);
+    Route::get('procesosCalificaciones/{proceso_id}', [ProcesoCalificacionController::class, 'show']);
 
 });
 
@@ -423,7 +441,9 @@ Route::prefix('matriculacion')->group(function () {
 Route::post('agregarModulo', [CargoController::class, 'agregarModulo'])->name('cargo.agregarModulo');
 Route::post('agregarUser', [CargoController::class, 'agregarUser'])->name('cargo.agregarUser');
 Route::post('ponderarCargo', [CargoController::class, 'ponderarCargo'])->name('cargo.ponderar');
-Route::post('asignaRelacionCargoModulo', [ModulosController::class, 'asignaRelacionCargoModulo'])->name('modulos.asignaRelacionCargoModulo');
+Route::post('asignaRelacionCargoModulo', [ModulosController::class, 'asignaRelacionCargoModulo'])->name(
+    'modulos.asignaRelacionCargoModulo'
+);
 Route::get('getTotalModulo/{materia}', [CargoController::class, 'getTotalModulo'])->name('cargo.getTotalModulo');
 Route::get('getPonderarCargo/{cargo_id}/{materia_id}', [CargoController::class, 'getPonderarCargo'])->name(
     'cargo.get_ponderar'
@@ -452,21 +472,28 @@ Route::prefix('calificacion')->group(function () {
     Route::delete('/{id}', [CalificacionController::class, 'delete'])->name('calificacion.delete');
 });
 Route::prefix('moduloProfesor')->group(function () {
-    Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name('modulo_profesor.vincular_cargo_modulo');
-    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo'])->name('modulo_profesor.form_agregar_cargo_modulo');
+    Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name(
+        'modulo_profesor.vincular_cargo_modulo'
+    );
+    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo']
+    )->name('modulo_profesor.form_agregar_cargo_modulo');
 });
 
 Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/', [ProcesoCalificacionController::class, 'store']);
     Route::post('/recuperatorio', [ProcesoCalificacionController::class, 'crearRecuperatorio']);
-    Route::post('/delete',[ProcesoCalificacionController::class,'delete']);
+    Route::post('/delete', [ProcesoCalificacionController::class, 'delete']);
 });
 
 // Rutas de Parciales
 Route::prefix('proceso-modular')->group(function () {
-   Route::get('/listado/{materia}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name('proceso_modular.list');
-   Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular'])->name('proceso_modular.procesa_ponderacion_modular');
-   Route::get('/procesaEstados/{materia}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular'])->name('proceso_modular.procesa_estados_modular');
+    Route::get('/listado/{materia}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
+        'proceso_modular.list'
+    );
+    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
+    )->name('proceso_modular.procesa_ponderacion_modular');
+    Route::get('/procesaEstados/{materia}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
+    )->name('proceso_modular.procesa_estados_modular');
 });
 
 Route::prefix('excel')->group(function () {
@@ -476,21 +503,23 @@ Route::prefix('excel')->group(function () {
     Route::get('procesos/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
-    Route::get('procesosModular/{materia_id}/{comision_id?}',[ExcelController::class,'planilla_notas_modular'])->name('excel.procesosModular');
-    Route::get('alumnosDatos/{carrera_id}',[ExcelController::class,'alumnos_datos'])->name('excel.alumnosDatos');
+    Route::get('procesosModular/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
+        'excel.procesosModular'
+    );
+    Route::get('alumnosDatos/{carrera_id}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
 });
 
 Route::prefix('estadistica')->group(function () {
-   Route::get('datos',[AlumnoController::class,'vista_datos']);
-   Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}',[AlumnoController::class,'vista_datos']);
+    Route::get('datos', [AlumnoController::class, 'vista_datos']);
+    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
 });
 
-Route::prefix('mail')->group(function(){
-    Route::post('/mail/pre/send/{carrera_id}',[MailController::class,'emailPreinscripciones'])->name('pre.sendEmail');
+Route::prefix('mail')->group(function () {
+    Route::post('/mail/pre/send/{carrera_id}', [MailController::class, 'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
-Route::resource('actas_volantes',ActaVolanteController::class);
+Route::resource('actas_volantes', ActaVolanteController::class);
 
-Route::get('/prueba-post-size',function(){
+Route::get('/prueba-post-size', function () {
     dd(ini_get('post_max_size'));
 });

@@ -10,6 +10,7 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 
+use App\Services\ProcesosCargosService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,16 +103,9 @@ class ProcesoController extends Controller
 
     public function vista_listadoCargo($materia_id, $cargo_id, $comision_id = null)
     {
-//        $procesos = Proceso::select('procesos.*')
-//            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-//            ->join('proceso_calificacion', 'proceso_calificacion.proceso_id', 'procesos.id')
-//            ->join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
-//            ->where('procesos.materia_id', $materia_id)
-//            ->where('calificaciones.cargo_id', $cargo_id);
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id);
-
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -311,9 +305,18 @@ class ProcesoController extends Controller
         if ($request['cierre'] == 'false') {
             $proceso->cierre = 0;
         }
-        $proceso->operador_id = $user->id;
 
-        $proceso->update();
+        if($request['tipo'] and  $request['tipo'] == 'modular' and $request['cargo'])
+        {
+            $cargo_id = $request['cargo'];
+            $procesoService = new ProcesosCargosService();
+            $procesoService->actualizar($proceso->id, $cargo_id, $user->id);
+        } else {
+            $proceso->operador_id = $user->id;
+            $proceso->update();
+        }
+
+
 
         return response()->json($proceso, 200);
     }
@@ -345,16 +348,28 @@ class ProcesoController extends Controller
         return response()->json($response, $response['code']);
     }
 
-    public function cambia_nota_global(Request $request)
+    public function cambia_nota_global(Request $request): JsonResponse
     {
+        $ausente =  false;
+        if (is_numeric($request['nota_global']) || $request['nota_global'] === 0) {
+            $rules = ['required', 'numeric', 'max:10'];
+        } else {
+            $rules = ['required', 'string', 'regex:/^[A?a?]/'];
+            $ausente = true;
+        }
+
         $validate = Validator::make($request->all(), [
             'proceso_id' => ['required', 'integer'],
-            'nota_global' => ['required', 'integer', 'max:10'],
+            'nota_global' => $rules,
         ]);
+        $nota_global = $request['nota_global'];
+        if($ausente){
+            $nota_global = -1;
+        }
 
         if (!$validate->fails()) {
             $proceso = Proceso::find($request['proceso_id']);
-            $proceso->nota_global = $request['nota_global'];
+            $proceso->nota_global = $nota_global;
             $proceso->update();
 
             $response = [
