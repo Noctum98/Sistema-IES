@@ -20,10 +20,6 @@ class CreateProcesosCargosTable extends Migration
             $table->bigInteger('proceso_id')->unsigned();
             $table->bigInteger('cargo_id')->unsigned();
             $table->timestamps();
-
-            $table->foreign('operador_id')->references('id')->on('users');
-            $table->foreign('proceso_id')->references('id')->on('procesos');
-            $table->foreign('cargo_id')->references('id')->on('cargos');
         });
     }
 
