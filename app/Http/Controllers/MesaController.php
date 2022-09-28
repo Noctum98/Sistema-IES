@@ -207,6 +207,15 @@ class MesaController extends Controller
         ]);
     }
 
+    public function updateLibroFolio(Request $request,$id)
+    {
+        $mesa = Mesa::find($id);
+
+        $mesa->update($request->all());
+
+        return redirect()->back()->with(['alumno_success'=>'Libro y Folio establecidos']);
+    }
+
     public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera)
     {
             $data = [

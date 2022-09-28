@@ -40,7 +40,7 @@
                             {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
                         </td>
                         <td class="input-group">
-                            <form action="" class="col-md-12 m-0 p-0 calificacion-alumnos form-calificacion input-group"
+                            <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-calificacion input-group"
                                   id="{{ $proceso->id }}" method="POST">
                                 <input type="hidden" name="calificacion_id" id="calificacion_id"
                                        value="{{ $calificacion->id }}">
@@ -73,7 +73,7 @@
 
                             <td>
                                 <form action=""
-                                      class="col-md-12 m-0 p-0 calificacion-alumnos form-recuperatorio"
+                                      class="col-md-6 m-0 p-0 calificacion-alumnos form-recuperatorio"
                                       id="{{ $proceso->id }}" method="POST">
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">

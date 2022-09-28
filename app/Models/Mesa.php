@@ -21,6 +21,8 @@ class Mesa extends Model
         'presidente_segundo',
         'primer_vocal_segundo',
         'segundo_vocal_segundo',
+        'libro',
+        'folio'
     ];
 
     public function materia(){

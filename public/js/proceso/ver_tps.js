@@ -42,6 +42,6 @@ $(document).ready(function () {
                 }
             });
         })
-    }, 1500)
+    }, 3500)
 
 });

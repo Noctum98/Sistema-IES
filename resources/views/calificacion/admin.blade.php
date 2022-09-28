@@ -3,7 +3,7 @@
     <div class="container">
         <h4 class="text-dark">
             Calificaciones <br/>
-            Carrera: <i>{{$materia->carrera->nombre}},{{$materia->carrera->sede->nombre}}, Turno: {{$materia->carrera->turno}}</i><br/>
+            Carrera: <i>{{$materia->carrera->nombre}}, {{$materia->carrera->sede->nombre}}, Turno: {{$materia->carrera->turno}}</i><br/>
             Materia: <i>{{ $materia->nombre }}</i>
         </h4>
 

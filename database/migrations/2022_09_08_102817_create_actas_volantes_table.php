@@ -22,8 +22,6 @@ class CreateActasVolantesTable extends Migration
             $table->string('nota_escrito')->nullable();
             $table->string('nota_oral')->nullable();
             $table->string('promedio');
-            $table->string('libro')->nullable();
-            $table->string('folio')->nullable();
             $table->timestamps();
         });
     }
