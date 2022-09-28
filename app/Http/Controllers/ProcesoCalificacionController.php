@@ -224,35 +224,45 @@ class ProcesoCalificacionController extends Controller
             'proceso_id' => $proceso->id,
         ])->whereHas('calificacion', function ($query) {
             return $query->where('tipo_id', 2);
-        })
-            ->get();
+        })->get();
 
         if (count($calificaciones) > 0) {
             $array_calificaciones = [];
+            $array_promedios = [];
 
             foreach ($calificaciones as $calificacion) {
                 if ($calificacion->nota == -1) {
                     array_push($array_calificaciones, 0);
+                    array_push($array_promedios,0);
                 } else {
                     array_push($array_calificaciones, $calificacion->nota);
+                    array_push($array_promedios,$calificacion->porcentaje);
                 }
             }
 
-            $valorInicial = 0; // Valor inicial de array_reduce
+            $valorInicial = 0;
+            $valorInicial2 = 0;
             $suma = array_reduce($array_calificaciones, function ($acarreo, $numero) {
                 return $acarreo + $numero;
             }, $valorInicial);
 
+            $suma_porcentajes = array_reduce($array_promedios, function ($acarreo, $numero) {
+                return $acarreo + $numero;
+            }, $valorInicial2);
+
             // Obtener longitud
-            $cantidadDeElementos = count($array_calificaciones);
+            $cantidadPromedio = count($array_calificaciones);
+            $cantidadPorcentaje = count($array_promedios);
 
             // Dividir, y listo
-            $promedio = $suma / $cantidadDeElementos;
+            $promedio = $suma / $cantidadPromedio;
+            $promedio_porcentaje = $suma_porcentajes / $cantidadPorcentaje;
 
             $proceso->final_trabajos = number_format((float)$promedio, 2, '.', '');
+            $proceso->porcentaje_final_trabajos = number_format((float)$promedio_porcentaje, 2, '.', '');
             $proceso->update();
         }
-
+ 
 
         return response()->json($proceso, 200);
     }

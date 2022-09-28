@@ -50,9 +50,17 @@ class InstanciaController extends Controller
         $sede = Sede::find($sede_id);
         $instancia = Instancia::find($instancia_id);
 
+        if(Session::has('admin'))
+        {
+            $carreras = $sede->carreras;
+        }else{
+            $carreras = Auth::user()->carreras;
+        }
+
         return view('mesa.carreras', [
             'sede'  =>  $sede,
-            'instancia' => $instancia
+            'instancia' => $instancia,
+            'carreras' => $carreras
         ]);
     }
     //Funcionalidades

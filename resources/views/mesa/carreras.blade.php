@@ -22,7 +22,8 @@
 	@endif
 
 	<div id="accordion">
-		@foreach($sede->carreras as $carrera)
+		@if(count($carreras) > 0)
+		@foreach($carreras as $carrera)
 		<div class="card">
 			<div class="card-header" id="heading{{$carrera->id}}">
 					<h6 style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#collapse{{$carrera->id}}" aria-expanded="false" aria-controls="collapse{{$carrera->id}}" class="font-weight-bold text-secondary">
@@ -103,6 +104,9 @@
 				</div>
 			</div>
 			@endforeach
+			@else
+			<h3>No tienes carreras asignadas.</h3>
+			@endif
 		</div>
 	</div>
 	@endsection

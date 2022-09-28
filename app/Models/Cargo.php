@@ -119,4 +119,12 @@ class Cargo extends Model
         }
        return ( self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador);
     }
+
+    public function obtenerProcesoCargo(int $proceso)
+    {
+        return ProcesosCargos::where([
+            'cargo_id' => $this->id,
+            'proceso_id' => $proceso
+        ])->first();
+    }
 }

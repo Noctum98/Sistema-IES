@@ -61,8 +61,8 @@
                 </span>
 
                 @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
-                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                    - R: {{$proceso->$proceso->procesoCalificacion($cc->id)->nota_recuperatorio.' '.$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                <span>
+                    - R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
                 </span>
                 @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
                 %
@@ -79,15 +79,10 @@
             </td>
             @endif
 
-            @if($proceso->final_trabajos && $proceso->final_trabajos >=4)
-            <td style="color:#025827">
-                {{ $proceso->final_trabajos ?? '-' }}
+            <td>
+                {{ $proceso->porcentaje_final_trabajos ?? '-' }}
             </td>
-            @else
-            <td style="color:red">
-                {{ $proceso->final_trabajos ?? '-' }}
-            </td>
-            @endif
+           
 
             <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
             @if($carrera->tipo == 'tradicional2')

@@ -23,8 +23,16 @@
     </div>
     @endif
 
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#inscribirAlumno">Inscribir alumno</button>
-    @include('mesa.modals.inscribir_alumno')
+    <div class="mb-3">
+        <button class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#inscribirAlumno">Inscribir alumno</button>
+        @include('mesa.modals.inscribir_alumno')
+
+        @if($mesa)
+        <button class="btn btn-sm btn-secondary"  data-bs-toggle="modal" data-bs-target="#libro_folio">Libro/Folio</button>
+        @include('mesa.modals.libro_folio')
+        @endif
+    </div>
+   
     
     <h2 class="text-info">Primer llamado</h2>
     @if( count($primer_llamado) > 0)
