@@ -314,6 +314,18 @@ class ProcesoController extends Controller
         } else {
             $proceso->operador_id = $user->id;
             $proceso->update();
+
+            if($proceso->materia()->first()){
+                if($proceso->materia()->first()->cargos()->get()){
+                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo){
+                        $procesoService = new ProcesosCargosService();
+                        $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
+                    }
+                }
+
+            }
+
+
         }
 
 
