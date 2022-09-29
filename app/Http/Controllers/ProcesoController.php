@@ -11,8 +11,12 @@ use App\Models\Materia;
 use App\Models\Proceso;
 
 use App\Services\ProcesosCargosService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -81,7 +85,7 @@ class ProcesoController extends Controller
 //        $procesos = $procesos->dd();
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
-            'tipo_id' => 1
+            'tipo_id' => 1,
         ]);
         if ($comision_id) {
             $calificacion->where([
@@ -103,24 +107,14 @@ class ProcesoController extends Controller
 
     public function vista_listadoCargo($materia_id, $cargo_id, $comision_id = null)
     {
-        $procesos = Proceso::select('procesos.*')
-            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+        $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
-        if ($comision_id) {
-            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
-                $query->whereHas('comisiones', function ($query) use ($comision_id) {
-                    $query->where('comisiones.id', $comision_id);
-                });
-            });
-        }
-        $materia = Materia::find($materia_id);
+
         $comision = null;
         if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
-        $procesos->orderBy('alumnos.apellidos', 'asc');
-        $procesos = $procesos->get();
+        $materia = Materia::find($materia_id);
 
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
@@ -141,7 +135,7 @@ class ProcesoController extends Controller
             'comision' => $comision,
             'calificaciones' => $calificaciones,
             'estados' => $estados,
-            'cargo' => $cargo
+            'cargo' => $cargo,
         ]);
     }
 
@@ -190,8 +184,7 @@ class ProcesoController extends Controller
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('procesos.alumno_id', $alumno_id)
-            //            ->where('procesos.cargo_id', $cargo_id);
+            ->where('procesos.alumno_id', $alumno_id)//            ->where('procesos.cargo_id', $cargo_id);
         ;
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -231,7 +224,7 @@ class ProcesoController extends Controller
             'estados' => $estados,
             'cargo' => $cargo,
             'alumno' => $alumno,
-            'cargos' => $cargos
+            'cargos' => $cargos,
         ]);
     }
 
@@ -280,8 +273,7 @@ class ProcesoController extends Controller
         $proceso->estado_id = $estado->id;
         $proceso->operador_id = $user->id;
 
-        if($estado->identificador != 5)
-        {
+        if ($estado->identificador != 5) {
             $proceso->nota_global = null;
         }
 
@@ -289,7 +281,7 @@ class ProcesoController extends Controller
 
         $data = [
             'message' => '¡Proceso actualizado!',
-            'estado' => $proceso->estado
+            'estado' => $proceso->estado,
         ];
 
         return response()->json($data, 200);
@@ -306,8 +298,7 @@ class ProcesoController extends Controller
             $proceso->cierre = 0;
         }
 
-        if($request['tipo'] and  $request['tipo'] == 'modular' and $request['cargo'])
-        {
+        if ($request['tipo'] and $request['tipo'] == 'modular' and $request['cargo']) {
             $cargo_id = $request['cargo'];
             $procesoService = new ProcesosCargosService();
             $procesoService->actualizar($proceso->id, $cargo_id, $user->id);
@@ -315,23 +306,65 @@ class ProcesoController extends Controller
             $proceso->operador_id = $user->id;
             $proceso->update();
 
-            if($proceso->materia()->first()){
-                if($proceso->materia()->first()->cargos()->get()){
-                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo){
+            if ($proceso->materia()->first()) {
+                if ($proceso->materia()->first()->cargos()->get()) {
+                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
                         $procesoService = new ProcesosCargosService();
                         $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
                     }
                 }
-
             }
-
-
         }
-
 
 
         return response()->json($proceso, 200);
     }
+
+    /**
+     * @param $materia_id
+     * @param $cargo_id
+     * @param $comision_id
+     */
+    public function cambiaCierreGeneral(
+        $materia_id,
+        $cargo_id = null,
+        $comision_id = null
+    ) {
+        $user = Auth::user();
+        $procesos = $this->getProcesosMateria($materia_id, $comision_id);
+
+        if ($cargo_id) {
+            $procesoService = new ProcesosCargosService();
+            foreach ($procesos as $proceso) {
+                $procesoService->cierraProcesoCargo($cargo_id, $proceso->id, $user->id, true);
+            }
+
+        } else {
+            foreach ($procesos as $proceso) {
+                $procesos->cierre = 1;
+                $proceso->operador_id = $user->id;
+                $proceso->update();
+
+                if ($proceso->materia()->first()) {
+                    if ($proceso->materia()->first()->cargos()->get()) {
+                        foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                            $procesoService = new ProcesosCargosService();
+                            $procesoService->cierraProcesoCargo($cargo->id, $proceso->id, $user->id, true);
+                        }
+                    }
+                }
+            }
+        }
+
+        return redirect()
+            ->route('proceso.listadoCargo', [
+                $materia_id,
+                $cargo_id,
+                 $comision_id,]
+            )
+        ->with('mensaje_exitoso', 'Se cerraron los procesos');
+    }
+
 
     public function cambia_nota_final(Request $request)
     {
@@ -362,7 +395,7 @@ class ProcesoController extends Controller
 
     public function cambia_nota_global(Request $request): JsonResponse
     {
-        $ausente =  false;
+        $ausente = false;
         if (is_numeric($request['nota_global']) || $request['nota_global'] === 0) {
             $rules = ['required', 'numeric', 'max:10'];
         } else {
@@ -375,7 +408,7 @@ class ProcesoController extends Controller
             'nota_global' => $rules,
         ]);
         $nota_global = $request['nota_global'];
-        if($ausente){
+        if ($ausente) {
             $nota_global = -1;
         }
 
@@ -397,5 +430,30 @@ class ProcesoController extends Controller
         }
 
         return response()->json($response, $response['code']);
+    }
+
+    /**
+     * @param $materia_id <integer> <i>id</i> de la materia.
+     * @param $comision_id <integer | null> <i>id</i> de la comisión, puede ser null.
+     * @return Collection
+     */
+    protected function getProcesosMateria($materia_id, $comision_id): Collection
+    {
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id);
+
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
+                });
+            });
+        }
+
+
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+
+        return $procesos->get();
     }
 }

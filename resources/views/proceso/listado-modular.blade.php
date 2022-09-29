@@ -39,6 +39,10 @@
            class="btn btn-secondary">
             Ver Módulo {{$materia->nombre}}
         </a>
+        <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
+           class="btn btn-warning">
+            Cerrar Notas {{ $cargo->nombre }} @if($comision)<br/><small>{{$comision->nombre}}</small>@endif
+        </a>
         @if(count($procesos) > 0)
             <div class="table-responsive tableFixHead">
 

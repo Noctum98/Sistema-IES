@@ -26,32 +26,55 @@ class ProcesosCargosService{
      */
     public function actualizar(int $proceso, int $cargo, int $user){
 
-        $pc = ProcesosCargos::where([
-           'proceso_id'=>$proceso,
-           'cargo_id'=>$cargo,
-        ])->first();
+        $pc = $this->getProcesoCargo($proceso, $cargo);
 
         if($pc){
-            if($pc->isClose()){
-                $pc->cierre = null;
-            }else{
-                $pc->cierre = new \DateTime('now');
-
-                $pm = ProcesoModular::where([
-                    'proceso_id'=>$proceso,
-                ])->first();
-
-                $pms = new ProcesoModularService();
-
-                $pms->grabaEstadoPorProcesoModular($pm);
-
-
-
-            };
-            $pc->operador_id =  $user;
-            $pc->update();
+            $this->cierraProcesoCargo($cargo, $proceso, $user);
         }else{
             $this->crear($proceso, $cargo, $user);
         }
+    }
+
+    /**
+     * @param int $cargo
+     * @param int $proceso
+     * @param int $user
+     * @param bool $cierra
+     * @return void
+     */
+    public function cierraProcesoCargo(int $cargo, int $proceso, int $user, bool $cierra = false): void
+    {
+        $pc = $this->getProcesoCargo($proceso, $cargo);
+
+        if ($pc->isClose() and !$cierra) {
+            $pc->cierre = null;
+        } else {
+            $pc->cierre = new \DateTime('now');
+
+            $pm = ProcesoModular::where([
+                'proceso_id' => $proceso,
+            ])->first();
+
+            $pms = new ProcesoModularService();
+
+            $pms->grabaEstadoPorProcesoModular($pm);
+
+
+        };
+        $pc->operador_id = $user;
+        $pc->update();
+    }
+
+    /**
+     * @param int $proceso
+     * @param int $cargo
+     * @return mixed
+     */
+    protected function getProcesoCargo(int $proceso, int $cargo)
+    {
+        return ProcesosCargos::where([
+            'proceso_id' => $proceso,
+            'cargo_id' => $cargo,
+        ])->first();
     }
 }
