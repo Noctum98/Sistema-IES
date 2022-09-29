@@ -14,7 +14,7 @@ class ProcesosCargosService{
         $data['operador_id'] = $user;
         $data['cierre'] =  new \DateTime('now');
 
-            ProcesosCargos::create($data);
+           return ProcesosCargos::create($data);
 
     }
 
@@ -45,6 +45,10 @@ class ProcesosCargosService{
     public function cierraProcesoCargo(int $cargo, int $proceso, int $user, bool $cierra = false): void
     {
         $pc = $this->getProcesoCargo($proceso, $cargo);
+
+        if(!$pc){
+            $pc = $this->crear($proceso, $cargo, $user);
+        }
 
         if ($pc->isClose() and !$cierra) {
             $pc->cierre = null;

@@ -330,6 +330,8 @@ class ProcesoController extends Controller
         $cargo_id = null,
         $comision_id = null
     ) {
+
+
         $user = Auth::user();
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
@@ -356,13 +358,17 @@ class ProcesoController extends Controller
             }
         }
 
-        return redirect()
-            ->route('proceso.listadoCargo', [
-                $materia_id,
-                $cargo_id,
-                 $comision_id,]
-            )
-        ->with('mensaje_exitoso', 'Se cerraron los procesos');
+        $data = '/'.$materia_id;
+        if($cargo_id){
+            $data .= '/'.$cargo_id;
+        }
+        if($comision_id){
+            $data .= '/'.$comision_id;
+        }
+
+
+
+        return redirect("proceso/listado-cargo". $data)->with('status', 'Procesos Cerrados');
     }
 
 
