@@ -320,6 +320,9 @@ Route::prefix('proceso')->group(function () {
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
+    Route::get('cambia/cierre-general/{materia_id}/{cargo_id}/{comision_id?}', [ProcesoController::class, 'cambiaCierreGeneral'])->name(
+        'proceso.cambiaCierreGeneral'
+    );
     Route::post('cambia/nota_final', [ProcesoController::class, 'cambia_nota_final'])->name('proceso.nota_final');
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
     Route::post('calcularPorcentaje', [ProcesoCalificacionController::class, 'calcularPorcentaje']);
@@ -405,10 +408,12 @@ Route::prefix('mesas')->group(function () {
         'mesa.tribunal'
     );
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
-    Route::post('/inscribir_alumno',[AlumnoMesaController::class,'inscribir_alumno'])->name('mesa.inscribir_alumno');
-    Route::post('/confirmar/{mesa_alumno_id}',[AlumnoMesaController::class,'confirmar'])->name('mesa.confirmar');
-    Route::get('generar-pdf-mesa/{instancia}/{carrera}', [MesaController::class, 'generar_pdf_mesa'])->name('generar_pdf_mesa');
-    Route::post('/updateLibroFolio/{id}',[MesaController::class,'updateLibroFolio'])->name('mesa.librofolio');
+    Route::post('/inscribir_alumno', [AlumnoMesaController::class, 'inscribir_alumno'])->name('mesa.inscribir_alumno');
+    Route::post('/confirmar/{mesa_alumno_id}', [AlumnoMesaController::class, 'confirmar'])->name('mesa.confirmar');
+    Route::get('generar-pdf-mesa/{instancia}/{carrera}', [MesaController::class, 'generar_pdf_mesa'])->name(
+        'generar_pdf_mesa'
+    );
+    Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
 
 });
 
