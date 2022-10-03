@@ -63,7 +63,7 @@ class PreinscripcionController extends Controller
         
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [3,7,8,38,10,16,13,12,17,19,23,20,21,22];
+        $carreras_abiertas = [];
 
         if(!in_array($carrera->id,$carreras_abiertas))
         {
