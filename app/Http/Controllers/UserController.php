@@ -139,7 +139,7 @@ class UserController extends Controller
                 ->get();
         }
 
-        if ($auth->hasRole('coordinador')) {
+        if (Session::has('coordinador') && !Session::has('admin')) {
             $roles_primarios = Rol::select('nombre', 'id', 'descripcion')
             ->where('nombre', 'profesor')
             ->orWhere('nombre','planillas')

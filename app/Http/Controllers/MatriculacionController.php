@@ -7,6 +7,7 @@ use App\Mail\MatriculacionDeleted;
 use App\Mail\MatriculacionSuccessEmail;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
+use App\Models\Asistencia;
 use App\Models\Carrera;
 use App\Models\MailCheck;
 use App\Models\Proceso;
@@ -197,19 +198,12 @@ class MatriculacionController extends Controller
             'carrera_id' => $carrera->id
         ])->delete();
 
-        if($alumno->asistencias())
-        {
-            $alumno->asistencias()->delete();
-        }
+        Asistencia::where('alumno_id',$alumno->id)->delete();
+        Proceso::where('alumno_id',$alumno->id)->delete();
 
         if($alumno->comisiones())
         {
             $alumno->comisiones()->detach();
-        }
-
-        if($alumno->procesos())
-        {
-            $alumno->procesos()->detach();
         }
 
         if($alumno->user_id)
@@ -224,9 +218,6 @@ class MatriculacionController extends Controller
             }
 
         }
-
-
-       
 
         $alumno->delete();
 

@@ -29,13 +29,22 @@
     <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
     <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
     <p><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
+    <p><i>Al cerrar el proceso este será definitivo, para poder abrirlo nuevamente comuniquese con su coordinador.</i></p>
 
     @if($comision)
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
     @else
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success"> <i class="fas fa-download"></i> Descargar Planilla</a>
-
     @endif
+
+    @if(Session::has('coordinador') || Session::has('admin'))
+        @if(!$comision)
+        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+        @else
+        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+        @endif
+    @endif
+
     @if(count($procesos) > 0)
     <div class="table-responsive tableFixHead">
 
@@ -101,7 +110,7 @@
                     </td>
                     <td class="col-md-3">
 
-                        <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1) disabled @endif >
+                        <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1 || $materia->cierre) disabled @endif >
                             <option value="">Seleccione estado</option>
                             @foreach($estados as $estado)
                             @if($estado->id == $proceso->estado_id)
@@ -114,8 +123,8 @@
                     </td>
                     <td>
                         <form action="" id="{{ $proceso->id }}" class="form_nota_global col-md-6">
-                            <input type="number" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global ? $proceso->nota_global : '' }}" @if(($proceso->estado && $proceso->estado->identificador != 5) || $proceso->cierre) disabled @endif>
-                            <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text" id="btn-global-{{ $proceso->id }}" @if(!Session::has('profesor') or $proceso->cierre) disabled @endif>
+                            <input type="number" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global ? $proceso->nota_global : '' }}" @if(!$proceso->estado || ($proceso->estado && $proceso->estado->identificador != 5) || $proceso->cierre) disabled @endif>
+                            <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text" id="btn-global-{{ $proceso->id }}" @if(!Session::has('profesor') || $proceso->cierre || $materia->cierre) disabled @endif >
                                 <i class="fa fa-save"></i></button>
                         </form>
                     </td>
@@ -127,7 +136,7 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </span>
 
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}}>
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ $proceso->cierre && (Session::has('coordinador') || Session::has('admin')) ? '' : 'disabled' }}>
                     </td>
 
                 </tr>

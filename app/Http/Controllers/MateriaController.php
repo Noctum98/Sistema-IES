@@ -37,12 +37,11 @@ class MateriaController extends Controller
         $carrera = Carrera::find($carrera_id);
         $materias = Materia::where('carrera_id', $carrera_id)->orderBy('año')->get();
 
-        if($carrera->tipo == 'modular' || $carrera->tipo == 'modular2' )
-        {
+        if ($carrera->tipo == 'modular' || $carrera->tipo == 'modular2') {
             $ruta = 'materia.admin-modular';
         }
 
-        return view( $ruta, [
+        return view($ruta, [
             'carrera' => $carrera,
             'materias' => $materias,
         ]);
@@ -110,7 +109,7 @@ class MateriaController extends Controller
 
     public function selectMaterias($id)
     {
-        $materias = Materia::select('nombre','id')->where('carrera_id',$id)->get();
+        $materias = Materia::select('nombre', 'id')->where('carrera_id', $id)->get();
 
         return response()->json($materias, 200);
     }
@@ -129,26 +128,45 @@ class MateriaController extends Controller
         if ($pprocesos) {
             return Excel::download(
                 new AlumnosMateriaExport($pprocesos),
-                'Alumnos '.$materia->nombre.'.xlsx'
+                'Alumnos ' . $materia->nombre . '.xlsx'
             );
         } else {
             return redirect()->route('materia.admin', $materia->carrera->id)->with([
                 'error_procesos' => 'No hay alumnos en esa materia',
             ]);
         }
+    }
+
+    public function cierre_tradicional(Request $request, $materia_id, $comision_id = null)
+    {
+        $procesos = Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id);
 
 
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
+                });
+            });
+        }
+
+        $procesos->update(['cierre'=>true]);
+
+
+        return redirect()->back();
     }
 
     public function vista_listado()
     {
         $materias = Materia::orderBy(
-            'nombre','Asc',
+            'nombre',
+            'Asc',
 
-        )->orderBy('año', 'Asc') ->paginate(10);
+        )->orderBy('año', 'Asc')->paginate(10);
         return view('materia.listado', [
             'materias' => $materias,
         ]);
-
     }
 }
