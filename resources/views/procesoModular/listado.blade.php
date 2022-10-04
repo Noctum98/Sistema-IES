@@ -41,6 +41,9 @@
                     <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
                        class="btn btn-info" title="Ver proceso cargo">
                         {{$cargo->nombre}}
+                        @if(Session::has('admin'))
+                            {{$cargo->id}}
+                        @endif
                     </a>
                 @endforeach
 
@@ -142,12 +145,12 @@
                                 </form>
                             </td>
                             <td>
-                        <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
-                            <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
-                        </span>
+    <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
+        <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
+    </span>
                                 <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
-                            <i class="fa fa-spinner fa-spin"></i>
-                        </span>
+        <i class="fa fa-spinner fa-spin"></i>
+    </span>
 
                                 <input type="checkbox" class="check-cierre"
                                        id="{{$proceso->procesoRelacionado->id}}" {{!$proceso->procesoRelacionado->cierre ? 'unchecked':'checked'}} />

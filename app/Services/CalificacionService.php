@@ -15,10 +15,31 @@ class CalificacionService
             ->get();
     }
 
+    public function calificacionesByProceso($proceso_id, $calificacion_id)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->where('proceso_calificacion.calificacion_id', $calificacion_id)
+            ->where('proceso_calificacion.proceso_id', $proceso_id)
+            ->get();
+    }
+
     public function calificacionParcialByAlumno($alumno_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByAlumno($alumno_id, $calificacion_id);
 //        dd($proceso_calificacion);
+
+        $pp = $pr = 0;
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->porcentaje??0;
+            $pr = $proceso_calificacion[0]->porcentaje_recuperatorio??0;
+        }
+
+        return max($pp, $pr);
+    }
+
+    public function calificacionParcialByProceso($proceso_id, $calificacion_id)
+    {
+        $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {

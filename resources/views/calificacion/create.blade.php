@@ -4,12 +4,19 @@
         <a href="{{url()->previous()}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
-        <h2 class="text-info">
-            {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}}
+        <h3 class="text-info">
+            {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}} <small>{{$calificacion->tipo()->first()->nombre}}</small>
             @if($calificacion->comision)
-                {{$calificacion->comision->nombre}}
+                <h4> Comisión: {{$calificacion->comision->nombre}}</h4>
             @endif
-        </h2>
+            @if($calificacion->modelCargo()->first())
+                <h4>Cargo: {{$calificacion->modelCargo()->first()->nombre}}</h4>
+            @endif
+            @if($calificacion->modelCargo()->first())
+                <h4>Cargo: {{$calificacion->modelCargo()->first()->nombre}}</h4>
+            @endif
+
+        </h3>
         <hr>
         <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el botón de guardar debajo de cada
                 recuadro.</i></p>
@@ -51,7 +58,6 @@
                                            placeholder="%"
                                            @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id or
                                     optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
-//                                               )
                                            disabled
                                             @endif>
                                     <div class="input-group-append">
