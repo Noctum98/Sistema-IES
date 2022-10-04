@@ -11,9 +11,11 @@
         <table class="table table-striped f30">
             <colgroup>
                 <col class="col-md-2">
+                <col class="col-">
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <col class="col-">
                 @endforeach
+                <col class="col-">
                 <col class="col-">
                 <col class="col-">
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
@@ -25,11 +27,13 @@
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
+                <th>TP's</th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% x̄</th>
                 <th>% Asist.</th>
+                <th>P's</th>
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
@@ -43,6 +47,7 @@
                 <td>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
+                <td></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
                         @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
@@ -64,6 +69,7 @@
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
                     %
                 </td>
+                <td></td>
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
                     <td>

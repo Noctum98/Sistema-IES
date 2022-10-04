@@ -118,10 +118,10 @@ class ProcesoModularService
                     'cargo_id' => $cargo->id,
                     'materia_id' => $materia->id,
                 ])->first();
-                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargo(
+                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
                     $cargo,
                     $materia->id,
-                    $proceso->alumnoRelacionado()->id
+                    $proceso->procesoRelacionado()->first()->id
                 ) ?? 0;
                 $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
                 $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
