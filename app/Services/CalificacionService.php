@@ -43,7 +43,12 @@ class CalificacionService
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {
+
+
             $pp = $proceso_calificacion[0]->porcentaje??0;
+            if($pp == -1){
+                $pp = 0;
+            }
             $pr = $proceso_calificacion[0]->porcentaje_recuperatorio??0;
         }
 

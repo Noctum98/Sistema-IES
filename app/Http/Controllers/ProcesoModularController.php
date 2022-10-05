@@ -48,6 +48,7 @@ class ProcesoModularController extends Controller
             $serviceModular->cargarPonderacionEnProcesoModular($materia);
             $acciones[] = "Procesando % modulares para {$materia->nombre}";
         }
+
         if ($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
             if ($serviceModular->obtenerTimeUltimaCalificacion(
                     $materia->id
@@ -56,6 +57,7 @@ class ProcesoModularController extends Controller
                 $acciones[] = "Procesando % modulares para {$materia->nombre}";
             }
         }
+
         $asistenciaModular = new AsistenciaModularService();
 
         $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia);
