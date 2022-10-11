@@ -16,7 +16,6 @@
                 @endforeach
                 <col class="col-">
                 <col class="col-">
-                {{--                    <col class="col-">--}}
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
                     <col class="col-">
                 @endforeach
@@ -31,7 +30,7 @@
                 @endforeach
                 <th>% x̄</th>
                 <th>% Asist.</th>
-                {{--                    <th>Parcial</th>--}}
+
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
@@ -68,9 +67,9 @@
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
                     <td>
-                        {{number_format($calificacionP->obtenerParcial($alumno->id), 2, '.', ',')??'-'}}
+                        {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')??'-'}}
                         @php
-                            $pparcial = $calificacionP->obtenerParcial($alumno->id);
+                            $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
                         @endphp
                     </td>
                 @endforeach

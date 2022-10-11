@@ -6,6 +6,7 @@ use App\Exports\AlumnosMateriaExport;
 use App\Services\MateriaService;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
+use App\Models\Estados;
 use App\Models\Personal;
 use App\Models\Materia;
 use App\Models\Proceso;
@@ -152,8 +153,19 @@ class MateriaController extends Controller
             });
         }
 
-        $procesos->update(['cierre'=>true]);
+        $procesos = $procesos->get();
 
+        $estadoNoRegular = Estados::where('identificador',2)->first();
+        foreach($procesos as $proceso)
+        {
+            if(!$proceso->estado_id)
+            {
+                $proceso->estado_id = $estadoNoRegular->id;
+            }
+
+            $proceso->cierre = true;
+            $proceso->update();
+        }
 
         return redirect()->back();
     }

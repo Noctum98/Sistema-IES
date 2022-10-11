@@ -29,7 +29,6 @@
     <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
     <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
     <p><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
-    <p><i>Al cerrar el proceso este será definitivo, para poder abrirlo nuevamente comuniquese con su coordinador.</i></p>
 
     @if($comision)
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
@@ -136,7 +135,8 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </span>
 
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ $proceso->cierre && (Session::has('coordinador') || Session::has('admin')) ? '' : 'disabled' }}>
+                        <input type="hidden" name="checkcoordinador" id="coordinador" value="{{ Session::has('coordinador') ? 1 : 0 }}">
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ $proceso->cierre && !Session::has('coordinador') ? 'disabled' : '' }}>
                     </td>
 
                 </tr>

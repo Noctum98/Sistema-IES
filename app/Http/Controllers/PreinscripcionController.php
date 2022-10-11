@@ -65,7 +65,7 @@ class PreinscripcionController extends Controller
         $error = '';
         $carreras_abiertas = [];
 
-        if(!in_array($carrera->id,$carreras_abiertas) && !Session::has('planillas'))
+        if(!in_array($carrera->id,$carreras_abiertas) && !Session::has('preinscripciones'))
         {
             $carrera = null;
             $error = 'Página deshabilitada';

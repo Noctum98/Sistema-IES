@@ -84,9 +84,7 @@ class ProcesoModularService
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
             ->orderBy('alumnos.apellidos', 'asc')
-            ->get()
-
-            ;
+            ->get();
     }
 
     public function ponderarCargos(Materia $materia)

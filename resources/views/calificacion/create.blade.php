@@ -1,19 +1,26 @@
 @extends('layouts.app-prueba')
 @section('content')
-<div class="container">
-    <a href="{{url()->previous()}}">
-        <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
-    </a>
-    <h2 class="text-info">
-        {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}}
-        @if($calificacion->comision)
-        {{$calificacion->comision->nombre}}
-        @endif
-    </h2>
-    <hr>
-    <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el botón de guardar debajo de cada
-            recuadro.</i></p>
-    <div id="alerts">
+    <div class="container">
+        <a href="{{url()->previous()}}">
+            <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+        </a>
+        <h3 class="text-info">
+            {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}} <small>{{$calificacion->tipo()->first()->nombre}}</small>
+            @if($calificacion->comision)
+                <h4> Comisión: {{$calificacion->comision->nombre}}</h4>
+            @endif
+            @if($calificacion->modelCargo()->first())
+                <h4>Cargo: {{$calificacion->modelCargo()->first()->nombre}}</h4>
+            @endif
+            @if($calificacion->modelCargo()->first())
+                <h4>Cargo: {{$calificacion->modelCargo()->first()->nombre}}</h4>
+            @endif
+
+        </h3>
+        <hr>
+        <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el botón de guardar debajo de cada
+                recuadro.</i></p>
+        <div id="alerts">
 
     </div>
     <div class="col-md-12">
@@ -35,22 +42,31 @@
             </thead>
             <tbody>
                 @foreach($procesos as $proceso)
-                <tr>
-                    <td>
-                        {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
-                    </td>
-                    <td class="input-group">
-                        <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-calificacion input-group" id="{{ $proceso->id }}" method="POST">
-                            <input type="hidden" name="calificacion_id" id="calificacion_id" value="{{ $calificacion->id }}">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" id="calificacion-procentaje-{{ $proceso->id }}" value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}" placeholder="%" @if(!Session::has('profesor') or $proceso->cierre == 1 or Auth::user()->id != $calificacion->user_id or
-                                optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
-                                // )
-                                disabled
-                                @endif>
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-info btn-sm  input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
-                                        <i class="fa fa-save"></i></button>
+                    <tr>
+                        <td>
+                            {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
+                        </td>
+                        <td class="input-group">
+                            <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-calificacion input-group"
+                                  id="{{ $proceso->id }}" method="POST">
+                                <input type="hidden" name="calificacion_id" id="calificacion_id"
+                                       value="{{ $calificacion->id }}">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control"
+                                           id="calificacion-procentaje-{{ $proceso->id }}"
+                                           value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
+                                           placeholder="%"
+                                           @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id or
+                                    optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
+                                           disabled
+                                            @endif>
+                                    <div class="input-group-append">
+                                        <button type="submit"
+                                                class="btn btn-info btn-sm  input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
+                                            <i class="fa fa-save"></i></button>
+                                    </div>
+                                </div>
+                                <div id="spinner-{{$proceso->id}}">
                                 </div>
                             </div>
                             <div id="spinner-{{$proceso->id}}">

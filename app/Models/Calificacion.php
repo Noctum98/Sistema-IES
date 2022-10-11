@@ -71,4 +71,10 @@ class Calificacion extends Model
         return $calificaion_service->calificacionParcialByAlumno($alumno_id, $this->id);
     }
 
+    public function obtenerParcialByProceso($proceso_id)
+    {
+        $calificaion_service = new CalificacionService();
+        return $calificaion_service->calificacionParcialByProceso($proceso_id, $this->id);
+    }
+
 }
