@@ -32,7 +32,7 @@ class CalificacionController extends Controller
         return view('calificacion.home', [
             'materias' => $materias,
             'cargos' => $cargos,
-            'ruta' => $ruta
+            'ruta' => $ruta,
         ]);
     }
 
@@ -41,22 +41,21 @@ class CalificacionController extends Controller
         $materia = Materia::find($materia_id);
 
 
-
         $user = Auth::user();
         $calificaciones = Calificacion::select()
-        ->where('materia_id', $materia->id);
-        if($cargo_id){
-            $cargo = Cargo::select('nombre','id')->where('id',$cargo_id)->first();
-            if($cargo){
+            ->where('materia_id', $materia->id);
+        if ($cargo_id) {
+            $cargo = Cargo::select('nombre', 'id')->where('id', $cargo_id)->first();
+            if ($cargo) {
                 $calificaciones->where('cargo_id', $cargo_id);
             }
         }
 
         if ($materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2') {
             /** @var Cargo $cargo */
-            if($cargo->responsableTFI($materia->id) === 1){
+            if ($cargo->responsableTFI($materia->id) === 1) {
                 $tiposCalificaciones = TipoCalificacion::all();
-            }else{
+            } else {
                 $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
             }
 
@@ -65,15 +64,14 @@ class CalificacionController extends Controller
         }
 
 
-
         $calificaciones = $calificaciones->orderBy('tipo_id')->get();
 
 
         return view('calificacion.admin', [
             'materia' => $materia,
-            'tiposCalificaciones' =>  $tiposCalificaciones,
+            'tiposCalificaciones' => $tiposCalificaciones,
             'calificaciones' => $calificaciones,
-            'cargo' => $cargo ?? null
+            'cargo' => $cargo ?? null,
         ]);
     }
 
@@ -84,11 +82,11 @@ class CalificacionController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $calificacion->materia_id);
 
-            
+
         if ($calificacion->comision_id) {
-            $procesos = $procesos->whereHas('alumno',function($query) use ($calificacion){
-                $query->whereHas('comisiones',function($query) use ($calificacion){
-                    $query->where('comisiones.id',$calificacion->comision_id);
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($calificacion) {
+                $query->whereHas('comisiones', function ($query) use ($calificacion) {
+                    $query->where('comisiones.id', $calificacion->comision_id);
                 });
             });
         }
@@ -99,7 +97,7 @@ class CalificacionController extends Controller
         if ($calificacion) {
             return view('calificacion.create', [
                 'calificacion' => $calificacion,
-                'procesos' => $procesos
+                'procesos' => $procesos,
             ]);
         }
     }
@@ -107,17 +105,17 @@ class CalificacionController extends Controller
     public function store(Request $request)
     {
         $validate = $this->validate($request, [
-            'nombre' =>  ['required'],
+            'nombre' => ['required'],
             'tipo_id' => ['required'],
-            'fecha' => ['required']
+            'fecha' => ['required'],
         ]);
 
-        if($request['comision_id'] && !Auth::user()->hasComision($request['comision_id'])){
-            $mensaje = ['error_comision'=>'No tienes permiso para trabajar en esta comisión'];
+        if ($request['comision_id'] && !Auth::user()->hasComision($request['comision_id'])) {
+            $mensaje = ['error_comision' => 'No tienes permiso para trabajar en esta comisión'];
 
             return redirect()->route('calificacion.admin', [
                 'materia_id' => $request['materia_id'],
-                'cargo_id' => $request['cargo_id']
+                'cargo_id' => $request['cargo_id'],
             ])->with($mensaje);
         }
 
@@ -132,7 +130,7 @@ class CalificacionController extends Controller
 
         return redirect()->route('calificacion.admin', [
             'materia_id' => $request['materia_id'],
-            'cargo_id' => $request['cargo_id']
+            'cargo_id' => $request['cargo_id'],
         ])->with($mensaje);
     }
 
@@ -147,38 +145,35 @@ class CalificacionController extends Controller
 
         return view('calificacion.modals.form_edit_calificacion')->with([
             'calificacion' => $calificacion,
-            'tiposCalificaciones' =>  $tiposCalificaciones,
+            'tiposCalificaciones' => $tiposCalificaciones,
         ]);
     }
 
-    public function update(Request $request, Calificacion $calificacion )
+    public function update(Request $request, Calificacion $calificacion)
     {
         $validate = $this->validate($request, [
-            'nombre' =>  ['required'],
+            'nombre' => ['required'],
             'tipo_id' => ['required'],
-            'fecha' => ['required']
+            'fecha' => ['required'],
         ]);
 
-        if($calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)){
-            $mensaje = ['error_comision'=>'No tienes permiso para trabajar en esta comisión'];
+        if ($calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) {
+            $mensaje = ['error_comision' => 'No tienes permiso para trabajar en esta comisión'];
 
             return redirect()->route('calificacion.admin', [
                 'materia_id' => $calificacion->materia_id,
-                'cargo_id' => $calificacion->cargo_id
+                'cargo_id' => $calificacion->cargo_id,
             ])->with($mensaje);
         }
 
 
-
-
-
-            $calificacion->update($request->all());
-            $mensaje = ['calificacion_creada' => '¡Calificación actualizada!'];
+        $calificacion->update($request->all());
+        $mensaje = ['calificacion_creada' => '¡Calificación actualizada!'];
 
 
         return redirect()->route('calificacion.admin', [
             'materia_id' => $request['materia_id'],
-            'cargo_id' => $request['cargo_id']
+            'cargo_id' => $request['cargo_id'],
         ])->with($mensaje);
     }
 
@@ -191,22 +186,33 @@ class CalificacionController extends Controller
         $calificacion->delete();
 
         return redirect()->route('calificacion.admin', [
-            'materia_id' => $calificacion->materia_id
+            'materia_id' => $calificacion->materia_id,
         ])->with('calificacion_eliminada', 'La calificación ha sido eliminada');
     }
 
-    private function verificarFinalIntegrador(Request $request)
+    /**
+     * Busca si el módulo o materia ya tienen un TFI cargado
+     * @param Request $request
+     * @return bool
+     */
+    private function verificarFinalIntegrador(Request $request): bool
     {
-        $calificacionFinal = Calificacion::select('calificaciones.*')
-            ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
-            ->where('calificaciones.materia_id', $request['materia_id'])
-            ->where('tipo_calificaciones.descripcion', 3)
+        $tipoCalificacion = TipoCalificacion::select('tipo_calificaciones.*')
+            ->where('tipo_calificaciones.id', $request['tipo_id'])
             ->first();
+        if($tipoCalificacion->descripcion == 3) {
+            $calificacionFinal = Calificacion::select('calificaciones.*')
+                ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
+                ->where('calificaciones.materia_id', $request['materia_id'])
+                ->where('tipo_calificaciones.descripcion', 3)
+                ->first();
 
-        if ($calificacionFinal) {
-            return $calificacionFinal;
-        } else {
-            return false;
+            if ($calificacionFinal) {
+                return true;
+            }
         }
+
+        return false;
+
     }
 }
