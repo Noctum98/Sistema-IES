@@ -128,7 +128,11 @@ class CargoService
         $percent = 0;
         foreach ($cargo->calificacionesTPByCargoByMateria($materia_id) as $calificacion) {
             if (count($calificacion->procesosCalificacionByProceso($proceso_id)) > 0) {
-                $suma += $calificacion->procesosCalificacionByProceso($proceso_id)[0]->porcentaje;
+                $sumaCalificacion = 0;
+                if($calificacion->procesosCalificacionByProceso($proceso_id)[0]->porcentaje > 0){
+                    $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso_id)[0]->porcentaje;
+                }
+                $suma += $sumaCalificacion;
             }
         }
         if ($cant > 0) {
