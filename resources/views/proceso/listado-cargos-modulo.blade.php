@@ -28,13 +28,13 @@
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
-                <th>TP's</th>
+                <th class="border border-1 border-right">TP's </th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% x̄</th>
 
-                <th>P's</th>
+                <th class="border border-1 border-right">P's</th>
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
@@ -49,13 +49,24 @@
                 <td>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
-                <td></td>
+                <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
                         @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
+                            @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje >=0)
                             {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
+                                @php
+                                $sumaCalificacion = $calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje
+                                        @endphp
+                            @endif
+                                @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje == -1)
+                                    A
+                                    @php
+                                        $sumaCalificacion = 0
+                                    @endphp
+                                @endif
                             @php
-                                $suma+=$calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje;
+                                $suma+=$sumaCalificacion;
                             @endphp
                         @else
                             -
