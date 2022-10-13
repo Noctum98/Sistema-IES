@@ -159,7 +159,6 @@ class CargoService
         return $percent;
     }
 
-
     public function calculoPorcentajeCargoByParcialAndProceso(Cargo $cargo, int $materia_id, int $proceso_id)
     {
         $cant = count($cargo->calificacionesParcialByCargoByMateria($materia_id));
@@ -190,8 +189,6 @@ class CargoService
         $parc = $this->calculoPorcentajeCargoByParcialAndProceso($cargo, $materia_id, $proceso_id) * 0.3;
         return $parc + $tp;
     }
-
-
 
     public function calculoPorcentajeTFIPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
     {
