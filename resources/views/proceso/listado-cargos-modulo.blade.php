@@ -11,31 +11,36 @@
         <table class="table table-striped f30">
             <colgroup>
                 <col class="col-md-2">
+                <col class="col-">
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <col class="col-">
                 @endforeach
                 <col class="col-">
+
                 <col class="col-">
-                {{--                    <col class="col-">--}}
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
                     <col class="col-">
                 @endforeach
+                <col class="col-">
                 <col class="col-">
                 <col class="col-">
             </colgroup>
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
+                <th class="border border-1 border-right">TP's </th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% x̄</th>
-                <th>% Asist.</th>
-                {{--                    <th>Parcial</th>--}}
+
+                <th class="border border-1 border-right">P's</th>
+
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% Final</th>
+                <th>% Asist.</th>
                 <th>Cerrado</th>
             </tr>
             </thead>
@@ -44,12 +49,24 @@
                 <td>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
+                <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
                         @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
+                            @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje >=0)
                             {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
+                                @php
+                                $sumaCalificacion = $calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje
+                                        @endphp
+                            @endif
+                                @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje == -1)
+                                    A
+                                    @php
+                                        $sumaCalificacion = 0
+                                    @endphp
+                                @endif
                             @php
-                                $suma+=$calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje;
+                                $suma+=$sumaCalificacion;
                             @endphp
                         @else
                             -
@@ -61,16 +78,24 @@
                         {{number_format($suma/$cant , 2, '.', ',')}}
                     @endif
                 </td>
-                <td>
-                    {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
-                    %
-                </td>
+
+                <td></td>
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
                     <td>
-                        {{number_format($calificacionP->obtenerParcial($alumno->id), 2, '.', ',')??'-'}}
+                        @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
+                            @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) >= 0)
+                                {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
+                            @endif
+                              @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) == -1)
+                                A
+                            @endif
+                        @else
+                            -
+                        @endif
+
                         @php
-                            $pparcial = $calificacionP->obtenerParcial($alumno->id);
+                            $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
                         @endphp
                     </td>
                 @endforeach
@@ -83,6 +108,10 @@
                             $pfinal =($pparcial * 0.3) + $p70
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
+                </td>
+                <td>
+                    {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
+                    %
                 </td>
                 <td>
                     @if (optional($cargo->obtenerProcesoCargo(optional($proceso->procesoRelacionado()->first())->id))->isClose())

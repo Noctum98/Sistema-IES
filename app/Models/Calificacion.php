@@ -60,6 +60,13 @@ class Calificacion extends Model
 
     }
 
+    public function procesosCalificacionByProceso($proceso_id)
+    {
+            $calificaion_service = new CalificacionService();
+            return $calificaion_service->calificacionesByProceso($proceso_id, $this->id);
+
+    }
+
     public function modelCargo(): BelongsTo
     {
         return $this->belongsTo(Cargo::class,'cargo_id');
@@ -69,6 +76,12 @@ class Calificacion extends Model
     {
         $calificaion_service = new CalificacionService();
         return $calificaion_service->calificacionParcialByAlumno($alumno_id, $this->id);
+    }
+
+    public function obtenerParcialByProceso($proceso_id)
+    {
+        $calificaion_service = new CalificacionService();
+        return $calificaion_service->calificacionParcialByProceso($proceso_id, $this->id);
     }
 
 }

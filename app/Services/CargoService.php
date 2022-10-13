@@ -2,11 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Alumno;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
-use App\Models\Materia;
-use App\Models\User;
 
 class CargoService
 {
@@ -124,6 +121,27 @@ class CargoService
         return $percent;
     }
 
+    public function calculoPorcentajeCargoByTPPorProceso(Cargo $cargo, int $materia_id, int $proceso_id)
+    {
+        $cant = count($cargo->calificacionesTPByCargoByMateria($materia_id));
+        $suma = 0;
+        $percent = 0;
+        foreach ($cargo->calificacionesTPByCargoByMateria($materia_id) as $calificacion) {
+            if (count($calificacion->procesosCalificacionByProceso($proceso_id)) > 0) {
+                $sumaCalificacion = 0;
+                if($calificacion->procesosCalificacionByProceso($proceso_id)[0]->porcentaje > 0){
+                    $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso_id)[0]->porcentaje;
+                }
+                $suma += $sumaCalificacion;
+            }
+        }
+        if ($cant > 0) {
+            $percent = $suma / $cant;
+        }
+
+        return $percent;
+    }
+
     public function calculoPorcentajeCargoByParcial(Cargo $cargo, int $materia_id, int $alumno_id)
     {
         $cant = count($cargo->calificacionesParcialByCargoByMateria($materia_id));
@@ -141,12 +159,39 @@ class CargoService
         return $percent;
     }
 
+
+    public function calculoPorcentajeCargoByParcialAndProceso(Cargo $cargo, int $materia_id, int $proceso_id)
+    {
+        $cant = count($cargo->calificacionesParcialByCargoByMateria($materia_id));
+        $suma = 0;
+        $percent = 0;
+        foreach ($cargo->calificacionesParcialByCargoByMateria($materia_id) as $calificacion) {
+            if (count($calificacion->procesosCalificacionByProceso($proceso_id)) > 0) {
+                $suma += $calificacion->procesosCalificacionByProceso($proceso_id)[0]->porcentaje;
+            }
+        }
+        if ($cant > 0) {
+            $percent = $suma / $cant;
+        }
+
+        return $percent;
+    }
+
     public function calculoPorcentajeCalificacionPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
     {
         $tp = $this->calculoPorcentajeCargoByTPPorAlumno($cargo, $materia_id, $alumno_id) * 0.7;
         $parc = $this->calculoPorcentajeCargoByParcial($cargo, $materia_id, $alumno_id) * 0.3;
         return $parc + $tp;
     }
+
+    public function calculoPorcentajeCalificacionPorCargoAndProceso(Cargo $cargo, int $materia_id, int $proceso_id): float
+    {
+        $tp = $this->calculoPorcentajeCargoByTPPorProceso($cargo, $materia_id, $proceso_id) * 0.7;
+        $parc = $this->calculoPorcentajeCargoByParcialAndProceso($cargo, $materia_id, $proceso_id) * 0.3;
+        return $parc + $tp;
+    }
+
+
 
     public function calculoPorcentajeTFIPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
     {

@@ -49,6 +49,7 @@ class ProcesoCalificacionService
                 break;
             case ($porcentaje >= 96 && $porcentaje <= 100) :
                 $nota = 10;
+                break;
         }
 
         return $nota;

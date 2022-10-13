@@ -92,6 +92,7 @@ class Cargo extends Model
             ->select('calificaciones.*')
             ->join('tipo_calificaciones', 'calificaciones.tipo_id','tipo_calificaciones.id')
             ->where('calificaciones.materia_id',$materia_id)
+            ->where('calificaciones.cargo_id',$this->id)
             ->where('tipo_calificaciones.descripcion','=', 1)
             ->get()
             ;

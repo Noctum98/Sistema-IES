@@ -116,7 +116,7 @@
 
                             @if (Session::has('profesor') && $calificacion->user_id == Auth::user()->id)
 
-                                <a class="btn btn-warning" data-bs-toggle="modal" id="editButton"
+                                <a class="btn btn-sm btn-warning" data-bs-toggle="modal" id="editButton"
                                    data-bs-target="#editModal"
                                    data-loader="{{$calificacion->id}}"
                                    data-attr="{{ route('calificacion.edit', $calificacion) }}">

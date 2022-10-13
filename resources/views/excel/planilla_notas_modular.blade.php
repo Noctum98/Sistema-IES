@@ -51,14 +51,14 @@
 
             <!--Parciales-->
 
+            @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
             <td>
-                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
-                {{number_format($calificacionP->obtenerParcial($proceso->alumno->id), 2, '.', ',')}}
+                {{number_format($calificacionP->obtenerParcial($proceso->alumno->id), 2, '.', ',')??'-'}}
                 @php
                 $pparcial = $calificacionP->obtenerParcial($proceso->alumno->id);
                 @endphp
-                @endforeach
             </td>
+            @endforeach
             <td>
                 @php
                 $p70 = 0;

@@ -23,7 +23,7 @@ class ProcesosCargos extends Model
     ];
 
 
-    public function isClose()
+    public function isClose(): bool
     {
         return (bool)optional($this->cierre)->lte(now());
     }

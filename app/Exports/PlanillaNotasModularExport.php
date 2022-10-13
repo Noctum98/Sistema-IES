@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Exports\Sheets\PlanillaModularAlumnosSheet;
 use App\Exports\Sheets\PlanillaModularAsistenciaSheet;
 use App\Exports\Sheets\PlanillaModularCargoSheet;
 use App\Models\Materia;
@@ -36,6 +37,8 @@ class PlanillaNotasModularExport implements WithMultipleSheets
             $sheets[] = new PlanillaModularCargoSheet($data_array);
         }
 
+        $data_array['cargos'] = $this->materia->cargos;
+        $sheets[] = new PlanillaModularAlumnosSheet($data_array);
         return $sheets;
     }
 }

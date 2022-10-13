@@ -51,7 +51,7 @@ class ProcesoCalificacionController extends Controller
                     $procesoCalificacion->nota = $this->calcularNota((int)$request['porcentaje']);
                 } else {
                     $procesoCalificacion->porcentaje = -1;
-                    $procesoCalificacion->nota = -1;
+                    $procesoCalificacion->nota = 0;
                 }
                 $procesoCalificacion->update();
             } else {
