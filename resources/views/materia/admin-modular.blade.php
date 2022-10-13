@@ -95,10 +95,19 @@
                                     <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"
                                        class="btn btn-sm btn-warning">Editar</a>
                                 @endif
-                                <a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}"
-                                   class="btn btn-sm btn-secondary">Ver calificaciones</a>
-                                <a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar
-                                    Alumnos</a>
+                                @empty($cargo)
+                                    {{$cargo = null}}
+                                @else
+                                    {{$cargo = $cargo->id}}
+                                @endif
+                                <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo]) }}"
+                                   class="btn btn-info btn-sm">
+                                    <small>Ver Planilla de Calificaciones Módulo {{$materia->nombre}}</small>
+                                </a>
+                                <a href="{{ route('modulos.ver',['materia'=>$materia->id]) }}"
+                                   class="btn btn-sm btn-secondary">Ver Módulo</a>
+                                <a href="{{ route('descargar_planilla',$materia->id) }}"
+                                   class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>
                                 <sup class="badge badge-info" title="Total Comisiones">
                                     {{$materia->getTotalAttribute()}}
                                     @if($materia->getTotalAttribute() > 0)
@@ -117,11 +126,11 @@
             <h3 class="text-secondary">Tercer Año</h3>
             <table class="table table-hover mt-4">
                 <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Materia</th>
-                    <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i>
-                    </th>
-                </tr>
+                    <tr>
+                        <th scope="col">Materia</th>
+                        <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach($materias as $materia)
@@ -133,23 +142,27 @@
                                     <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"
                                        class="btn btn-sm btn-warning">Editar</a>
                                 @endif
-                                <a href="{{ route('calificacion.admin',['materia_id'=>$materia->id]) }}"
-                                   class="btn btn-sm btn-secondary">Ver calificaciones</a>
-                                <a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar
-                                    Alumnos</a>
-
+                                @empty($cargo)
+                                    {{$cargo = null}}
+                                @else
+                                    {{$cargo = $cargo->id}}
+                                @endif
+                                <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo]) }}"
+                                   class="btn btn-info btn-sm">
+                                    <small>Ver Planilla de Calificaciones Módulo {{$materia->nombre}}</small>
+                                </a>
+                                <a href="{{ route('modulos.ver',['materia'=>$materia->id]) }}"
+                                   class="btn btn-sm btn-secondary">Ver Módulo</a>
+                                <a href="{{ route('descargar_planilla',$materia->id) }}"
+                                   class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>
                                 <sup class="badge badge-info" title="Total Comisiones">
                                     {{$materia->getTotalAttribute()}}
+                                    @if($materia->getTotalAttribute() > 0)
+                                        <a href="{{ route('comisiones.ver',$carrera->id)}}/?año={{$materia->año}}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    @endif
                                 </sup>
-                                @if($materia->getTotalAttribute() > 0)
-
-                                    <a href="{{ route('comisiones.ver',$carrera->id)}}/?año={{$materia->año}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-
-                                @endif
-
-
                             </td>
                         </tr>
                     @endif
