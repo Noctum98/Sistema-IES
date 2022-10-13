@@ -126,11 +126,11 @@
             <h3 class="text-secondary">Tercer Año</h3>
             <table class="table table-hover mt-4">
                 <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Materia</th>
-                    <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i>
-                    </th>
-                </tr>
+                    <tr>
+                        <th scope="col">Materia</th>
+                        <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach($materias as $materia)
