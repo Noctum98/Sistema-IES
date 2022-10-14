@@ -109,7 +109,6 @@ class ProcesoController extends Controller
     {
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
-
         $comision = null;
         if ($comision_id) {
             $comision = Comision::find($comision_id);
