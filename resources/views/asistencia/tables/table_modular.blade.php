@@ -18,7 +18,7 @@
                     <input type="hidden" name="materia_id" class="materia_id" value="{{$materia->id}}">
                     <div class="input-group mb-1">
                         <input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}"
-                               @if(!Session::has('profesor') or $proceso->cierre == 1 or $cargo->obtenerProcesoCargo($proceso->id)->isClose() ) disabled
+                               @if(!Session::has('profesor') or $proceso->cierre == 1 or optional($cargo->obtenerProcesoCargo($proceso->id))->isClose()) disabled
                                @endif required>
                         <div class="input-group-append">
                             <button type="submit"
