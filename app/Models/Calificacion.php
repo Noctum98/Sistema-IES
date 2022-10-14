@@ -84,4 +84,10 @@ class Calificacion extends Model
         return $calificaion_service->calificacionParcialByProceso($proceso_id, $this->id);
     }
 
+    public function obtenerAusenteParcialByProceso($proceso_id)
+    {
+        $calificaion_service = new CalificacionService();
+        return $calificaion_service->calificacionAusenteParcialByProceso($proceso_id, $this->id);
+    }
+
 }

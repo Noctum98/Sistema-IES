@@ -121,8 +121,13 @@ class ProcesoModularService
                     $materia->id,
                     $proceso->procesoRelacionado()->first()->id
                 ) ?? 0;
+                if ($porcentaje_cargo < -1) {
+                    $porcentaje_cargo = 0;
+                }
+
                 $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
                 $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
+
             }
             $proceso->promedio_final_porcentaje = $promedio_final_p;
             $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
@@ -170,7 +175,6 @@ class ProcesoModularService
         $estados_procesados = [];
 
         $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id);
-
 
 
         foreach ($procesosModulares as $pm) {
