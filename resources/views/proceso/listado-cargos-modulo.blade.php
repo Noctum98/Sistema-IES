@@ -84,11 +84,16 @@
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
                     <td>
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
-                            @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) >= 0)
+                            @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
                                 {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
                             @endif
-                              @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) == -1)
-                                A
+                              @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
+                                @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
+                                    A
+                                    @else
+                        {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
+                                    @endif
+
                             @endif
                         @else
                             -
