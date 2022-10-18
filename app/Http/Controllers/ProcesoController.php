@@ -332,9 +332,12 @@ class ProcesoController extends Controller
         bool $cierre_coordinador = false
     ) {
 
-dd($cierre_coordinador);
+
 
         $user = Auth::user();
+        if($comision_id == 0){
+            $comision_id = null;
+        }
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
 
