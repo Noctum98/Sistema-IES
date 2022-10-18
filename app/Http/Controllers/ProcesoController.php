@@ -327,7 +327,8 @@ class ProcesoController extends Controller
     public function cambiaCierreGeneral(
         $materia_id,
         $cargo_id = null,
-        $comision_id = null
+        $comision_id = null,
+        $cierre_coordinador= false
     ) {
 
 
@@ -336,7 +337,7 @@ class ProcesoController extends Controller
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
 
-        if ($cargo_id) {
+        if ($cargo_id and !$cierre_coordinador) {
             $procesoService = new ProcesosCargosService();
             foreach ($procesos as $proceso) {
                 $procesoService->cierraProcesoCargo($cargo_id, $proceso->id, $user->id, true);
@@ -367,7 +368,7 @@ class ProcesoController extends Controller
             $data .= '/'.$comision_id;
         }
 
-        if(!$cargo_id){
+        if($cierre_coordinador){
             return redirect("proceso-modular/listado". $data)->with('status', 'Procesos Cerrados');
         }
 

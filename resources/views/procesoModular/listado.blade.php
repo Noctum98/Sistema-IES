@@ -67,7 +67,7 @@
                         class="fas fa-download"></i> Descargar
                 planilla</a>
             @if($puede_procesar)
-                <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id]) }}"
+                <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id, 'cierre_coordinador' => true]) }}"
                    class="btn btn-warning">
                     Cerrar Notas
                 </a>
