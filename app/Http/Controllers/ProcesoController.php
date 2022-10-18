@@ -322,16 +322,17 @@ class ProcesoController extends Controller
      * @param $materia_id
      * @param null $cargo_id
      * @param null $comision_id
+     * @param bool $cierre_coordinador
      * @return Application|RedirectResponse|Redirector
      */
     public function cambiaCierreGeneral(
         $materia_id,
         $cargo_id = null,
         $comision_id = null,
-        $cierre_coordinador= false
+        bool $cierre_coordinador = false
     ) {
 
-
+dd($cierre_coordinador);
 
         $user = Auth::user();
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
