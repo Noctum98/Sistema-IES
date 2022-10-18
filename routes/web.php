@@ -320,7 +320,7 @@ Route::prefix('proceso')->group(function () {
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
-    Route::get('cambia/cierre-general/{materia_id}/{cargo_id}/{comision_id?}', [ProcesoController::class, 'cambiaCierreGeneral'])->name(
+    Route::get('cambia/cierre-general/{materia_id}/{cargo_id?}/{comision_id?}', [ProcesoController::class, 'cambiaCierreGeneral'])->name(
         'proceso.cambiaCierreGeneral'
     );
     Route::post('cambia/nota_final', [ProcesoController::class, 'cambia_nota_final'])->name('proceso.nota_final');
