@@ -128,6 +128,9 @@
 							<option value="virtual" {{$carrera->turno == 'virtual' ? 'selected="selected"':''}}>
 								Virtual
 							</option>
+                            <option value="sin turno" {{$carrera->turno == 'sin turno' ? 'selected="selected"':''}}>
+								Sin Turno
+							</option>
 						</select>
 					</div>
 					<div class="form-group">

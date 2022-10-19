@@ -291,6 +291,26 @@
 							    </label>
 							</div>
 						</div>
+                        <div class="form-group">
+						<label>Alguna tuviste un trabajo relacionado a la carrera? </label>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
+							<label class="form-check-label" for="trabajo_relacionado1">
+								Si
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" value="no" name="trabajo_relacionado" id="trabajo_relacionado2" {{ old('trabajo_relacionado') == 'no' ? 'checked' : '' }}>
+							<label class="form-check-label" for="trabajo_relacionado2">
+								No
+							</label>
+						</div>
+						@error('trabajo')
+						<span class="invalid-feedback d-block" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+						@enderror
+					</div>
 						<br>
 						<h4 class="text-secondary">Documentación a adjuntar</h4>
 						<hr>
@@ -375,7 +395,7 @@
 								</span>
 							@enderror
 						</div>
-						<div id="7mo" style="display: none;">
+						<div id="7mo" class="d-none">
 							<br>
 							<h4 class="text-secondary">Artículo 7mo</h4>
 							<hr>
@@ -446,4 +466,7 @@
 			</div>
 		</div>
 	</div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/preinscripcion/preinscripcion.js') }}"></script>
 @endsection
