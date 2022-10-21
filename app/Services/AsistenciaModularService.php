@@ -76,12 +76,7 @@ class AsistenciaModularService
         return 100 / $total;
     }
 
-    public function ponderarAsistencias(Materia $materia, Cargo $cargo)
-    {
 
-        return $cargo->ponderacion($materia->id);
-
-    }
 
     public function cargarPonderacionEnAsistenciaModular(Materia $materia): int
     {
@@ -154,6 +149,22 @@ class AsistenciaModularService
             ->where('procesos.materia_id', $materia_id)
             ->orderBy('proceso_modular.updated_at', 'desc')
             ->first();
+    }
+
+    /**
+     * Obtiene el porcentaje de asistencia por cargo
+     * @param Materia $materia
+     * @param Cargo $cargo
+     * @return float|int
+     */
+    public function getPorcentajeCargoAsistencia(Materia $materia, Cargo $cargo)
+    {
+        $pondera = $materia->asistencia_ponderada;
+        if($pondera == 0){
+            $cantidadCargos = count($materia->cargos()->get());
+            return 100 / $cantidadCargos;
+        }
+        return  $cargo->ponderacion($materia->id);
     }
 
 

@@ -103,16 +103,7 @@ class ProcesoModularService
         return $materia->cargos()->get();
     }
 
-    public function ponderarAsistencia(Materia $materia)
-    {
-        $cargos = $materia->cargos()->get();
-        foreach ($cargos as $cargo) {
-            /** @var Cargo $cargo */
-            $cargo->calificacionesTPByCargoByMateria($materia->id);
-        }
 
-        return $materia->cargos()->get();
-    }
 
     public function cargarPonderacionEnProcesoModular(Materia $materia)
     {
