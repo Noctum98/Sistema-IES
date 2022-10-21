@@ -26,7 +26,7 @@
         <p><strong><i>Importante:</i></strong></p>
         <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
         <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
-
+{{--
         @if($comision)
             <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
@@ -34,7 +34,7 @@
             <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar
                 Planilla</a>
 
-        @endif
+        @endif --}}
         <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
            class="btn btn-secondary">
             Ver Módulo {{$materia->nombre}}
