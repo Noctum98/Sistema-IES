@@ -14,15 +14,16 @@ class ProcesoModularService
 {
     /**
      * Mirando👆 Módulos sería Acreditación Directa si
-     *  [X] Asist >75%,
+     *  [X] Asistencia Módulo > 75%,
      *  [X] Proceso >60%,
      *  [X] Promedio >78% y
      *  [X] TFI >78%
      * Regular si
-     *  [X] Asist entre 60 y 75% y
+     *  [X] Asistencia Módulo >= 60
      *  [X] PP 100%,
-     *  [X] Promedio entre 60 y 78,
-     *  [] TFI entre 60 y 78
+     *  [X] Promedio Proceso >= 60,
+     *  [ ] Asistencia por cargo >= 40
+     *  [ ] TFI >= 60
      */
     const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
     const PROCESO_ACCREDITATION_DIRECTA = 60;
@@ -31,7 +32,11 @@ class ProcesoModularService
 
     const ASISTENCIA_MIN_REGULAR = 60;
     const ASISTENCIA_MAX_REGULAR = 75;
+    const ASISTENCIA_MIN_CARGO_REGULAR = 75;
     const ASISTENCIA_PRACTICA_PROFESIONAL = 100;
+
+
+
     const PROMEDIO_MIN_REGULAR = 60;
     const PROMEDIO_MAX_REGULAR = 78;
     const TFI_MIN_REGULAR = 60;
@@ -88,6 +93,17 @@ class ProcesoModularService
     }
 
     public function ponderarCargos(Materia $materia)
+    {
+        $cargos = $materia->cargos()->get();
+        foreach ($cargos as $cargo) {
+            /** @var Cargo $cargo */
+            $cargo->calificacionesTPByCargoByMateria($materia->id);
+        }
+
+        return $materia->cargos()->get();
+    }
+
+    public function ponderarAsistencia(Materia $materia)
     {
         $cargos = $materia->cargos()->get();
         foreach ($cargos as $cargo) {
