@@ -3,7 +3,7 @@ window.addEventListener("load", function () {
 	urlActual = window.location;
 
 	// BUSCADOR DE ALUMNOS
-
+	/*
 	if (document.getElementById('buscador-alumnos')) {
 		let buscador_alumno = document.getElementById('buscador-alumnos');
 		buscador_alumno.addEventListener('submit', function () {
@@ -24,10 +24,10 @@ window.addEventListener("load", function () {
 			this.submit();
 		});
 	}
+	*/
 
 	// BOTON LOADING
 	if (document.getElementById('loading')) {
-		console.log('Hay un boton de loading');
 		let boton = document.getElementById('loading');
 
 		boton.addEventListener('click',function(){
@@ -153,7 +153,6 @@ window.addEventListener("load", function () {
 				let alumno_id = params_split[0];
 				let trabajo_id = params_split[1];
 				let prefijo = params_split[2] + '/' + params_split[3];
-				console.log(prefijo);
 
 				urlpath = url + prefijo + '/' + alumno_id + '/' + trabajo_id + '/' + nota + '/' + nota_final;
 				const http = new XMLHttpRequest();
@@ -210,7 +209,6 @@ window.addEventListener("load", function () {
 	}
 	// Cambiar estado Mesas
 	if (document.getElementsByClassName('switchinsta')) {
-		console.log('Entreee');
 		var iswitches = document.getElementsByClassName('switchinsta');
 
 		for (let i = 0; i < iswitches.length; i++) {
@@ -228,11 +226,6 @@ window.addEventListener("load", function () {
 				const http = new XMLHttpRequest();
 				http.open("GET", urlpath);
 				http.onreadystatechange = function () {
-					if (this.readyState == 4 && this.status == 200) {
-						console.log('Estado cambiado');
-					} else {
-						console.log('No se cambio nada!');
-					}
 				}
 				http.send();
 			});

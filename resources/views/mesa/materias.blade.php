@@ -52,6 +52,7 @@
 									<thead class="thead-white">
 										<tr>
 											<th scope="col">Nombre</th>
+											<th>Comision</th>
 											@if($instancia->tipo == 0)
 											<th scope="col">Fecha y hora</th>
 											<th scope="col">Inscripción</th>
@@ -70,49 +71,38 @@
 										<tr>
 											<td>
 												<div class="form-check">
-
-													@if(time() < $mesa->cierre)
+													@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
 														<input class="form-check-input" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
 														<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
 															{{$materia->nombre}}
 														</label>
-													@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) || time() > $mesa->cierre_segundo))
+													@elseif(time() > $mesa->cierre || (time() <= strtotime($mesa->fecha) && time() > $mesa->cierre_segundo))
 														<label class="form-check-label text-secondary" for="{{$materia->id}}">
 															{{$materia->nombre}}
 														</label>
-													@endif
-													<br>
-													@if($mesa->fecha_segundo)
-														@if($mesa->cierre_segundo > 0 && time() < $mesa->cierre_segundo)
-															<input class="form-check-input inputs" name="{{$mesa->materia->nombre}}" type="checkbox" value="{{$mesa->id}}" id="{{$materia->id}}">
-															<label class="form-check-label {{$materia->año == 1 ? 'text-success' : ''}} {{$materia->año == 2 ? 'text-primary' : ''}}" for="{{$materia->id}}">
-																{{$materia->nombre}} - 2° mesa
-															</label>
-															<div id="segundo-{{$mesa->id}}">
-
-															</div>
-														@else
-														<label class="form-check-label text-secondary" for="{{$materia->id}}">
-																{{$materia->nombre}}
-															</label>
-														@endif
 													@endif
 												</div>
 
 											</td>
 											<td>
+												<span style="font-size: 0.8em;">
+												@if($mesa->comision_id)
+												{{ $mesa->comision->nombre }}
+												@else
+												-
+												@endif
+												</span>
+											</td>
+											<td>
 												@if(time() <= strtotime($mesa->fecha))
 													<span class="font-weight-bold">
-														{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i:s')}}
+														{{date_format(new DateTime($mesa->fecha), 'd-m-Y H:i')}}
 													</span>
-													@endif
-													<br>
-													@if($mesa->fecha_segundo && time() <= strtotime($mesa->fecha))
-														<span class="font-weight-bold">
-
-															| {{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i:s')}}
-														</span>
-														@endif
+												@elseif(time() > strtotime($mesa->cierre) && $mesa->fecha_segundo)
+												<span class="font-weight-bold">
+														{{date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y H:i')}}
+													</span>
+												@endif
 											</td>
 											<td>
 												@if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
@@ -181,7 +171,7 @@
 			<ul class="list-group list-group-flush">
 				@foreach($inscripciones as $inscripcion)
 				<li class="list-group-item">
-					{{
+						{{
 							$instancia->tipo != 0 ?
 							$inscripcion->materia->nombre :
 							$inscripcion['mesa']['materia']['nombre']

@@ -66,7 +66,6 @@ $(document).ready(function () {
             data: data,
             //dataType: "dataType",
             success: function (response) {
-                console.log(response.asistencia);
                 if (response.asistencia) {
                     $(".porcentaje-" + proceso_id).html("<p>" + response.asistencia.porcentaje_final + " %</p>");
                     $("#alerts").html("");

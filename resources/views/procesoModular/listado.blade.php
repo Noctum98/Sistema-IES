@@ -58,7 +58,7 @@
                     Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
                     Los procesos se editan desde cada cargo individualmente.
                 </small></i></p>
-
+        {{--
         @if(isset($comision))
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
@@ -67,7 +67,7 @@
                         class="fas fa-download"></i> Descargar
                 planilla</a>
 
-        @endif
+        @endif --}}
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}

@@ -43,7 +43,7 @@ class MesaController extends Controller
         ];
     }
     // Vistas
-    public function vista_inscripciones($instancia_id,$materia_id)
+    public function vista_inscripciones(Request $request,$instancia_id, $materia_id,$comision_id=null)
     {
         $primer_llamado = [];
         $primer_llamado_bajas = [];
@@ -51,32 +51,42 @@ class MesaController extends Controller
         $segundo_llamado_bajas = [];
 
         $procesos = $procesos = Proceso::select('procesos.*')
-        ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-        ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
 
-
-        $mesa = Mesa::where([
+        $dataQuery = [
             'instancia_id' => $instancia_id,
             'materia_id' => $materia_id
-        ])->first();
-        
-        if($mesa)
+        ];
+
+        if($comision_id)
         {
+            $dataQuery['comision_id'] = $comision_id;
+        }
+
+
+        $mesa = Mesa::where($dataQuery)->first();
+
+        //dd($mesa);
+
+        if ($mesa) {
             foreach ($mesa->mesa_inscriptos as $inscripcion) {
                 if ($inscripcion->segundo_llamado) {
-                    if($inscripcion->estado_baja){
+                    if ($inscripcion->estado_baja) {
                         array_push($segundo_llamado_bajas, $inscripcion);
-                    }else{
+                    } else {
                         array_push($segundo_llamado, $inscripcion);
                     }
                 } else {
-                    if($inscripcion->estado_baja){
+                    if ($inscripcion->estado_baja) {
                         array_push($primer_llamado_bajas, $inscripcion);
-                    }else{
+                    } else {
                         array_push($primer_llamado, $inscripcion);
                     }
                 }
             }
+        }else{
+            return redirect()->back()->with(['error_fecha'=>'La mesa indicada no existe.']);
         }
 
         return view('mesa.inscripciones', [
@@ -84,11 +94,12 @@ class MesaController extends Controller
             'primer_llamado' => $primer_llamado,
             'segundo_llamado' => $segundo_llamado,
             'primer_llamado_bajas' => $primer_llamado_bajas,
-            'segundo_llamado_bajas' => $segundo_llamado_bajas, 
+            'segundo_llamado_bajas' => $segundo_llamado_bajas,
             'instancia' => $mesa->instancia,
             'procesos' => $procesos
         ]);
     }
+
     // Funcionalidades
     public function crear(Request $request, $materia_id, $instancia_id)
     {
@@ -124,10 +135,17 @@ class MesaController extends Controller
             ]);
         }
 
-        $mesa_verified = Mesa::where([
+        $condicion = [
             'materia_id' => $materia->id,
             'instancia_id' => $instancia->id
-        ])->first();
+        ];
+
+        if($request['comision_id'])
+        {
+            $condicion['comision_id'] = $request['comision_id'];
+        }
+
+        $mesa_verified = Mesa::where($condicion)->first();
 
         $request['instancia_id'] = $instancia->id;
         $request['materia_id'] = $materia->id;
@@ -137,17 +155,16 @@ class MesaController extends Controller
         } else {
             $request['cierre'] = strtotime($request['fecha'] . "-2 days");
         }
-        if($request['fecha_segundo'])
-        {
+        if ($request['fecha_segundo']) {
             if ($request['fecha_segundo'] && date('D', strtotime($request['fecha_segundo'])) == 'Mon' || date('D', strtotime($request['fecha_segundo'])) == 'Tue') {
                 $request['cierre_segundo'] = strtotime($request['fecha_segundo'] . "-4 days");
             } else {
                 $request['cierre_segundo'] = strtotime($request['fecha_segundo'] . "-2 days");
             }
-        }else{
+        } else {
             $request['cierre_segundo'] = null;
         }
-        
+
 
         if ($mesa_verified) {
             $mesa = $mesa_verified->update($request->all());
@@ -163,73 +180,40 @@ class MesaController extends Controller
         ]);
     }
 
-    public function editar(Request $request, $materia_id, $instancia_id)
-    {
-
-        $validate = $this->validate($request, [
-            'fecha' => ['required'],
-            'presidente'    => ['required', 'string'],
-            'primer_vocal'  => ['required', 'string'],
-            'segundo_vocal' => ['required', 'string']
-        ]);
-
-        $mesa = Mesa::where([
-            'materia_id' => $materia_id,
-            'instancia_id' => $instancia_id
-        ])->first();
-
-        $mesa->presidente = $request->input('presidente');
-        $mesa->primer_vocal = $request->input('primer_vocal');
-        $mesa->segundo_vocal = $request->input('segundo_vocal');
-        $mesa->fecha = $request->input('fecha');
-        $mesa->fecha_segundo = $request->input('fecha_segundo');
-        $mesa->presidente_segundo = $request->input('presidente_segundo');
-        $mesa->primer_vocal_segundo = $request->input('primer_vocal_segundo');
-        $mesa->segundo_vocal_segundo = $request->input('segundo_vocal_segundo');
-
-        if (date('D', strtotime($mesa->fecha)) == 'Mon' || date('D', strtotime($mesa->fecha)) == 'Tue') {
-            $mesa->cierre = strtotime($mesa->fecha . "-4 days");
-        } else {
-            $mesa->cierre = strtotime($mesa->fecha . "-2 days");
-        }
-        if (date('D', strtotime($mesa->fecha_segundo)) == 'Mon' || date('D', strtotime($mesa->fecha_segundo)) == 'Tue') {
-            $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-4 days");
-        } else {
-            $mesa->cierre_segundo = strtotime($mesa->fecha_segundo . "-2 days");
-        }
-        $mesa->update();
-
-        return redirect()->route('mesa.carreras', [
-            'sede_id' => $mesa->materia->carrera->sede->id,
-            'instancia_id' => $mesa->instancia_id
-        ])->with([
-            'message_edit' => 'Mesa ' . $mesa->materia->nombre . ' editada correctamente'
-        ]);
-    }
-
-    public function updateLibroFolio(Request $request,$id)
+    public function updateLibroFolio(Request $request, $id)
     {
         $mesa = Mesa::find($id);
 
         $mesa->update($request->all());
 
-        return redirect()->back()->with(['alumno_success'=>'Libro y Folio establecidos']);
+        return redirect()->back()->with(['alumno_success' => 'Libro y Folio establecidos']);
     }
 
     public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera)
     {
-            $data = [
-                'instancia' => $instancia,
-                'carrera' => $carrera
-            ];
+        $data = [
+            'instancia' => $instancia,
+            'carrera' => $carrera
+        ];
 
-            $pdf = \App::make('dompdf.wrapper');
-            $pdf->loadView('pdfs.mesa_generar_pdf', $data);
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadView('pdfs.mesa_generar_pdf', $data);
 
-            return $pdf->download('Tribunal Mesa ' . $instancia->nombre . '.pdf');
-
-//            return view('error.error');
-
+        return $pdf->download('Tribunal Mesa ' . $instancia->nombre . '.pdf');
     }
-    
+
+    public function mesaByComision(Request $request,$materia_id,$comision_id,$instancia_id)
+    {
+        $mesa = Mesa::where(['materia_id'=>$materia_id,'comision_id'=>$comision_id,'instancia_id'=>$instancia_id])->first();
+
+        if($mesa)
+        {
+            $respuesta = ['status'=>'success','mesa'=>$mesa];
+        }else{
+            $respuesta = ['status'=>'error'];
+        }
+
+        return response()->json($respuesta,200);
+    }
+
 }
