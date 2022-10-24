@@ -95,6 +95,7 @@
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>
+					@if(count($alumno->carreras) > 0 )
 					@foreach($alumno->carreras as $carrera)
                         _ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
                         <br>
@@ -117,6 +118,7 @@
                             @endif
                         </div>
 					@endforeach
+					@endif
 				</li>
 			</ul>
 		</div>

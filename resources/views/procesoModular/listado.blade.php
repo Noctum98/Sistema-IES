@@ -66,6 +66,12 @@
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
                         class="fas fa-download"></i> Descargar
                 planilla</a>
+            @if($puede_procesar)
+                <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
+                   class="btn btn-warning">
+                    Cerrar Notas
+                </a>
+            @endif
 
         @endif --}}
         @if($cargo_id)
@@ -93,7 +99,12 @@
                         <th class="sticky-top">Nota Final %</th>
                         <th class="sticky-top">Nota Final #</th>
                         <th class="sticky-top col-sm-1">Global #</th>
-                        <th class="sticky-top">Cierre</th>
+                        <th class="sticky-top">Cierre <br/>
+                            {{--        <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"--}}
+                            {{--           class="btn btn-warning">--}}
+                            {{--            Cerrar Notas {{ $cargo->nombre }} @if($comision)<br/><small>{{$comision->nombre}}</small>@endif--}}
+                            {{--        </a>--}}
+                        </th>
                         {{--                        <th><a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>--}}
                     </tr>
                     </thead>

@@ -191,6 +191,9 @@ class MatriculacionController extends Controller
             if ($proceso->materia->carrera_id == $carrera->id) {
                 $proceso->delete();
             }
+
+            $proceso->asistencia()->delete();
+            $proceso->delete();
         }
 
         AlumnoCarrera::where([
@@ -198,8 +201,8 @@ class MatriculacionController extends Controller
             'carrera_id' => $carrera->id
         ])->delete();
 
-        Asistencia::where('alumno_id',$alumno->id)->delete();
-        Proceso::where('alumno_id',$alumno->id)->delete();
+        //Asistencia::where('alumno_id',$alumno->id)->delete();
+        //Proceso::where('alumno_id',$alumno->id)->delete();
 
         if($alumno->comisiones())
         {

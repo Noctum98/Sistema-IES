@@ -422,8 +422,31 @@ class AlumnoMesaController extends Controller
         return response()->json($data, 200);
     }
 
-    // Funciones privadas
+    public function moverComision(Request $request,$inscripcion_id)
+    {
+        $mesaActual = Mesa::find($request['mesa_id']);
+        $inscripcion = MesaAlumno::find($inscripcion_id);
 
+        $mesaNueva = Mesa::where([
+            'instancia_id' => $mesaActual->instancia_id,
+            'materia_id' => $mesaActual->materia_id,
+            'comision_id' => $request['comision_id']
+        ])->first();
+
+        if($mesaNueva)
+        {
+            $inscripcion->mesa_id = $mesaNueva->id;
+            $mensaje = ['alumno_success'=>'Se ha movido correctamente la inscripción de comisión.'];
+        }else{
+            $mensaje = ['alumno_error'=>'No se ha creado una mesa para la comisión seleccionada'];
+        }
+
+        $inscripcion->update();
+
+        return redirect()->back()->with($mensaje);
+    }
+
+    // Funciones privadas
     private function comprobacionInscripcion($mesas_alumnos, $instancia, $dato)
     {
         //dd($mesas_alumnos,$dato);

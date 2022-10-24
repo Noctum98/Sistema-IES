@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Mesa extends Model
 {
@@ -11,6 +12,7 @@ class Mesa extends Model
     protected $fillable = [
         'instancia_id',
         'materia_id',
+        'comision_id',
         'fecha',
         'cierre',
         'fecha_segundo',
@@ -35,5 +37,10 @@ class Mesa extends Model
 
     public function instancia(){
         return $this->belongsTo(Instancia::class,'instancia_id');
+    }
+
+    public function comision(): BelongsTo
+    {
+        return $this->belongsTo(Comision::class,'comision_id');
     }
 }

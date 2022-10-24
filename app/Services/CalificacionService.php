@@ -43,8 +43,6 @@ class CalificacionService
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {
-
-
             $pp = $proceso_calificacion[0]->porcentaje??0;
             if($pp == -1){
                 $pp = 0;
@@ -53,6 +51,25 @@ class CalificacionService
         }
 
         return max($pp, $pr);
+    }
+
+    public function calificacionAusenteParcialByProceso($proceso_id, $calificacion_id)
+    {
+        $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
+
+        $ausente = 'P';
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->porcentaje??0;
+            if($pp == -1){
+                $pp = 'A';
+            }
+            $pr = $proceso_calificacion[0]->porcentaje_recuperatorio??'A';
+        }
+            if($pp == 'A' or $pr =='A'){
+                $ausente = 'A';
+            }
+
+        return ($ausente);
     }
 
     public function calcularPorcentaje($proceso_id)
