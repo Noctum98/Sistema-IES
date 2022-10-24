@@ -299,10 +299,41 @@
 								Si
 							</label>
 						</div>
+<<<<<<< HEAD
+=======
+                        <div class="form-group">
+						<label>Alguna tuviste un trabajo relacionado a la carrera? </label>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
+							<label class="form-check-label" for="trabajo_relacionado1">
+								Si
+							</label>
+						</div>
+>>>>>>> b0d2b008be232ea741e35f421e06b41fcfcd7180
 						<div class="form-check">
 							<input class="form-check-input" type="radio" value="no" name="trabajo_relacionado" id="trabajo_relacionado2" {{ old('trabajo_relacionado') == 'no' ? 'checked' : '' }}>
 							<label class="form-check-label" for="trabajo_relacionado2">
 								No
+<<<<<<< HEAD
+=======
+							</label>
+						</div>
+						@error('trabajo')
+						<span class="invalid-feedback d-block" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+						@enderror
+					</div>
+						<br>
+						<h4 class="text-secondary">Documentación a adjuntar</h4>
+						<hr>
+						<div class="form-group">
+							<label for="dni_archivo_file">
+								DNI:
+								@if($preinscripcion->dni_archivo)
+									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+								@endif
+>>>>>>> b0d2b008be232ea741e35f421e06b41fcfcd7180
 							</label>
 						</div>
 						@error('trabajo')

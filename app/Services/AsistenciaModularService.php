@@ -83,7 +83,6 @@ class AsistenciaModularService
 
     }
 
-
     public function cargarPonderacionEnAsistenciaModular(Materia $materia): int
     {
         $serviceCargo = new CargoService();

@@ -109,7 +109,6 @@ class ProcesoController extends Controller
     {
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
-
         $comision = null;
         if ($comision_id) {
             $comision = Comision::find($comision_id);
@@ -321,20 +320,28 @@ class ProcesoController extends Controller
 
     /**
      * @param $materia_id
-     * @param $cargo_id
-     * @param $comision_id
+     * @param null $cargo_id
+     * @param null $comision_id
+     * @param bool $cierre_coordinador
+     * @return Application|RedirectResponse|Redirector
      */
     public function cambiaCierreGeneral(
         $materia_id,
         $cargo_id = null,
-        $comision_id = null
+        $comision_id = null,
+        bool $cierre_coordinador = false
     ) {
 
 
+
         $user = Auth::user();
+        if($comision_id == 0){
+            $comision_id = null;
+        }
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
 
-        if ($cargo_id) {
+
+        if ($cargo_id and !$cierre_coordinador) {
             $procesoService = new ProcesosCargosService();
             foreach ($procesos as $proceso) {
                 $procesoService->cierraProcesoCargo($cargo_id, $proceso->id, $user->id, true);
@@ -342,7 +349,7 @@ class ProcesoController extends Controller
 
         } else {
             foreach ($procesos as $proceso) {
-                $procesos->cierre = 1;
+                $proceso->cierre = 1;
                 $proceso->operador_id = $user->id;
                 $proceso->update();
 
@@ -365,7 +372,9 @@ class ProcesoController extends Controller
             $data .= '/'.$comision_id;
         }
 
-
+        if($cierre_coordinador){
+            return redirect("proceso-modular/listado". $data)->with('status', 'Procesos Cerrados');
+        }
 
         return redirect("proceso/listado-cargo". $data)->with('status', 'Procesos Cerrados');
     }
@@ -442,7 +451,7 @@ class ProcesoController extends Controller
      * @param $comision_id <integer | null> <i>id</i> de la comisión, puede ser null.
      * @return Collection
      */
-    protected function getProcesosMateria($materia_id, $comision_id): Collection
+    protected function getProcesosMateria($materia_id, $comision_id=null): Collection
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
