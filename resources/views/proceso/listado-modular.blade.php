@@ -27,8 +27,8 @@
         <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
         <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
 
-        {{--
-        @if($comision)
+        
+        {{-- @if($comision)
             <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
         @else
