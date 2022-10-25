@@ -8,6 +8,7 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
+use Illuminate\Database\Eloquent\Collection;
 
 
 class ProcesoModularService
@@ -32,7 +33,7 @@ class ProcesoModularService
 
     const ASISTENCIA_MIN_REGULAR = 60;
     const ASISTENCIA_MAX_REGULAR = 75;
-    const ASISTENCIA_MIN_CARGO_REGULAR = 75;
+    const ASISTENCIA_MIN_CARGO_REGULAR = 40;
     const ASISTENCIA_PRACTICA_PROFESIONAL = 100;
 
 
@@ -92,7 +93,13 @@ class ProcesoModularService
             ->get();
     }
 
-    public function ponderarCargos(Materia $materia)
+    /**
+     * Revisar porque no devuelve lo que se espera
+     * @param Materia $materia
+     * @return Collection
+     */
+
+    public function ponderarCargos(Materia $materia): Collection
     {
         $cargos = $materia->cargos()->get();
         foreach ($cargos as $cargo) {
@@ -102,8 +109,6 @@ class ProcesoModularService
 
         return $materia->cargos()->get();
     }
-
-
 
     public function cargarPonderacionEnProcesoModular(Materia $materia)
     {
@@ -201,7 +206,7 @@ class ProcesoModularService
     {
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
-
+return false;
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
             and
@@ -221,7 +226,11 @@ class ProcesoModularService
     {
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
-
+dd(
+    $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR),
+    $this->getCalificacionModularBoolean(self::PROMEDIO_MIN_REGULAR, $proceso),
+    $this->getTFIModularBoolean(self::TFI_MIN_REGULAR, $pm->promedio_final_porcentaje)
+);
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
             and
@@ -252,7 +261,7 @@ class ProcesoModularService
                 if ($porcentaje_min) {
 
                     if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
-                        < $porcentaje_min) {
+                        < self::ASISTENCIA_MIN_CARGO_REGULAR) {
                         return false;
                     }
                     if ($cargo->isPracticaProfesional()) {

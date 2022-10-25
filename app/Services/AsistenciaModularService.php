@@ -153,6 +153,7 @@ class AsistenciaModularService
 
     /**
      * Obtiene el porcentaje de asistencia por cargo
+     * Por ponderación o por simple promedio
      * @param Materia $materia
      * @param Cargo $cargo
      * @return float|int
