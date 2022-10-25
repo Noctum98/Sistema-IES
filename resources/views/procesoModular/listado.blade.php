@@ -73,8 +73,7 @@
                 </a>
             @endif
 
-        @endif
-
+        @endif --}}
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}

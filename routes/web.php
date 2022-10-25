@@ -226,6 +226,7 @@ Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsu
 Route::prefix('alumnos')->group(function () {
     // Vistas
     Route::get('/{busqueda?}', [AlumnoController::class, 'vista_admin'])->name('alumno.admin');
+    Route::post('/',[AlumnoController::class,'vista_admin'])->name('alumno.adminp');
     Route::get('agregar/{id}', [AlumnoController::class, 'vista_crear'])->name('alumno.crear');
     Route::get('carrera/elegir', [AlumnoController::class, 'vista_elegir'])->name('alumno.elegir');
     Route::get('editar/{id}', [AlumnoController::class, 'vista_editar'])->name('alumno.editar');
@@ -381,7 +382,7 @@ Route::prefix('mesas')->group(function () {
         'mesa.carreras'
     );
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
-    Route::get('/inscriptos/{instancia_id}/{materia_id}', [MesaController::class, 'vista_inscripciones'])->name(
+    Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones'])->name(
         'mesa.inscriptos'
     );
     Route::get('/especial/inscriptos/{id}/{instancia_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name(
@@ -401,6 +402,9 @@ Route::prefix('mesas')->group(function () {
     Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
         'mesa.borrar'
     );
+    Route::post('/moverComision/{inscripcion_id}',[AlumnoMesaController::class,'moverComision'])->name('mesa.moverComision');
+
+
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}', [AlumnoMesaController::class, 'email_session'])->name('edit.mesa');
     Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel']
     )->name('mesa.descargar');
@@ -414,6 +418,7 @@ Route::prefix('mesas')->group(function () {
         'generar_pdf_mesa'
     );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
+    Route::get('/mesaByComision/{materia_id}/{comision_id}/{instancia_id}',[MesaController::class,'mesaByComision']);
 
 });
 
@@ -512,6 +517,7 @@ Route::prefix('excel')->group(function () {
         'excel.procesosModular'
     );
     Route::get('alumnosDatos/{carrera_id}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
+    Route::get('/descargarFiltro',[ExcelController::class,'filtro_alumnos']);
 });
 
 Route::prefix('estadistica')->group(function () {

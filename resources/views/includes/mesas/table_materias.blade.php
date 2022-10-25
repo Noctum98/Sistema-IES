@@ -5,39 +5,62 @@
 
     <td>
         @if($materia->mesas)
-        @if($materia->mesa($instancia->id) && $materia->mesa($instancia->id)->fecha)
-        <strong>
-            {{
-                date_format(new DateTime($materia->mesa($instancia->id)->fecha),
-                'd-m-Y H:i:s'
-            )}}
-        </strong>
+        @foreach($materia->mesas as $mesa)
+            @if($mesa->instancia_id == $instancia->id && $mesa->fecha)
+                <div class="d-block" style="font-size:0.9em">
+                @if($mesa->comision_id)
+                    <span>{{$mesa->comision->nombre}}:</span>
+                @endif
+                <small style="font-size:0.9em">
+                        {{date_format(new DateTime($mesa->fecha),'d-m-Y H:i')}}
+                </small>
+                </div>
+                
+            @endif
+        @endforeach
         @endif
-        @endif
+
     </td>
     <td>
-        @if($materia->mesas)
-        @if($materia->mesa($instancia->id) && $materia->mesa($instancia->id)->fecha_segundo)
-        <strong>
-            {{
-                date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo),
-                'd-m-Y H:i:s'
-            )}}
-        </strong>
-        @endif
+    @if($materia->mesas)
+        @foreach($materia->mesas as $mesa)
+            @if($mesa->instancia_id == $instancia->id && $mesa->fecha_segundo)
+                <div class="d-block" style="font-size:0.9em">
+                @if($mesa->comision_id)
+                    <span>{{$mesa->comision->nombre}}:</span>
+                @endif
+                <small style="font-size:0.9em">
+                        {{date_format(new DateTime($mesa->fecha_segundo),'d-m-Y H:i')}}
+                </small>
+                </div>
+                
+            @endif
+        @endforeach
         @endif
     </td>
 
     <td>
         @if($instancia->tipo == 0)
-        <a class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
-        <a href="{{route('mesa.inscriptos',['materia_id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
-        @include('includes.mesas.config_mesa')
+            <a class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
+            @if($materia->getTotalAttribute() > 0)
+                <a class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#comisiones{{$materia->id}}">Ver inscriptos</a>
+                @include('includes.mesas.mesa_comision')
+            @else
+                <a href="{{route('mesa.inscriptos',['materia_id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
+            @endif            
+            
+            @include('includes.mesas.config_mesa')
         @else
-        <a class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
-        <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
-        @include('includes.mesas.config_mesa')
+            <a class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}">Configurar mesa</a>
 
+            @if($materia->getTotalAttribute() > 0)
+                <a class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#comisiones{{$materia->id}}">Ver inscriptos</a>
+                @include('includes.mesas.mesa_comision')
+            @else
+                <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
+            @endif
+
+            @include('includes.mesas.config_mesa')
         @endif
 
     </td>

@@ -24,23 +24,31 @@ class AlumnoController extends Controller
         $this->alumnoService = $alumnoService;
     }
     // Vistas
-    public function vista_admin($busqueda = null)
+    public function vista_admin(Request $request)
     {
         $user = Auth::user();
         $alumnos = [];
         $sedes = null;
+        $busqueda = null;
+        $sedes = $user->sedes;
 
-        if (!empty($busqueda)) {
-            $alumnos = $this->alumnoService->buscarAlumnos($busqueda);
-        } else {
-            $sedes = $user->sedes;
-        }
+        if ( isset($request['busqueda'])) {
+            $alumnos = $this->alumnoService->buscarAlumnos($request);
+            $busqueda = $request['busqueda'] ?? true;
+        } 
 
-        return view('alumno.admin', [
+
+        //dd($alumnos);
+        $data = [
             'alumnos' => $alumnos,
             'sedes' => $sedes,
-            'busqueda' => $busqueda
-        ]);
+            'busqueda' => $busqueda,
+            'carrera_id' => $request['carrera_id'],
+            'materia_id' => $request['materia_id'],
+            'cohorte' => $request['cohorte']
+        ];
+
+        return view('alumno.admin', $data);
     }
 
     public function vista_elegir()
