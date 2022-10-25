@@ -14,13 +14,19 @@ use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Services\AlumnoService;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelController extends Controller
 {
-    public function __construct()
+    protected $alumnoService;
+
+    public function __construct(
+        AlumnoService $alumnoService
+    )
     {
         $this->middleware('app.auth');
+        $this->alumnoService = $alumnoService;
     }
 
     public function alumnos_year($carrera_id, $year)
@@ -134,5 +140,15 @@ class ExcelController extends Controller
         $procesos = $procesos->get();
 
         return Excel::download(new PlanillaNotasModularExport($materia,$procesos),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
+    }
+
+    public function filtro_alumnos(Request $request)
+    {
+        //dd($request->all());
+
+        $alumnos = $this->alumnoService->buscarAlumnos($request);
+
+        return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos.xlsx');
+        //dd($alumnos);
     }
 }

@@ -25,6 +25,7 @@
         @foreach($procesos as $key => $proceso)
         <tr>
             <td>{{ $key + 1 }}</td>
+            <td>{{ $proceso->alumno->dni }}</td>
             <td>{{mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos)}}</td>
             @foreach($materia->cargos as $cargo)
             <td>{{$cargo->ponderacion($materia->id)}}</td>

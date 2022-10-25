@@ -110,3 +110,6 @@
 		</div>
 	</div>
 	@endsection
+	@section('scripts')
+		<script src="{{ asset('js/mesas/configuracion.js') }}"></script>
+	@endsection

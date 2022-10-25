@@ -3,6 +3,12 @@
 <div class="container">
 
     @if($mesa)
+    <a href="{{ route('mesa.carreras',['sede_id'=>$mesa->materia->carrera->sede->id,'instancia_id'=>$instancia->id]) }}">
+        <button class="btn btn-outline-info mb-2">
+            <i class="fas fa-angle-left"></i>
+            Volver
+        </button>
+    </a>
     <h2 class="h1 text-info">
         Inscripciones en {{$mesa->materia->nombre}}
     </h2>
@@ -28,17 +34,17 @@
         @include('mesa.modals.inscribir_alumno')
 
         @if($mesa)
-        <button class="btn btn-sm btn-secondary"  data-bs-toggle="modal" data-bs-target="#libro_folio">Libro/Folio</button>
+        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#libro_folio">Libro/Folio</button>
         @include('mesa.modals.libro_folio')
         @endif
     </div>
-   
-    
+
+
     <h2 class="text-info">Primer llamado</h2>
     @if( count($primer_llamado) > 0)
     <div class="row">
         <a href="{{route('mesa.descargar',['id'=>$mesa->id,'instancia_id'=>$mesa->instancia_id,'llamado'=>'primero'])}}" class="btn btn-sm btn-success ml-3 col-md-2">
-        <i class="fas fa-download"></i> Descargar 1<sup>er</sup> llamado
+            <i class="fas fa-download"></i> Descargar 1<sup>er</sup> llamado
         </a>
     </div>
     <table class="table mt-4">
@@ -64,6 +70,9 @@
 
                     <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
+                    </a>
+                    <a href="" class="btn btn-sm btn-primary">
+                        Mover
                     </a>
                 </td>
 
@@ -113,7 +122,7 @@
 
     <div class="row">
         <a href="{{route('mesa.descargar',['id'=>$mesa->id,'instancia_id'=>$mesa->instancia_id,'llamado'=>'segundo'])}}" class="btn btn-sm btn-success ml-3 col-md-2">
-        <i class="fas fa-download"></i> Descargar 2<sup>do</sup> llamado
+            <i class="fas fa-download"></i> Descargar 2<sup>do</sup> llamado
         </a>
     </div>
     <table class="table mt-4">
@@ -137,13 +146,18 @@
                 <td>{{ $inscripcion->telefono }}</td>
 
                 <td>
-                @include('mesa.modals.dar_baja_mesa')
+
 
                     <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
+                    <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
+                        Mover
+                    </a>
+                    @include('mesa.modals.dar_baja_mesa')
+                    @include('mesa.modals.mover')
                 </td>
-  
+
             </tr>
             @endforeach
         </tbody>
