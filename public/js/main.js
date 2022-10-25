@@ -12,7 +12,7 @@ window.addEventListener("load", function () {
 			this.submit();
 		});
 	}
-
+*/
 	// Buscador Preinscripciones
 	if (document.getElementById('buscador')) {
 
@@ -24,7 +24,7 @@ window.addEventListener("load", function () {
 			this.submit();
 		});
 	}
-	*/
+	
 
 	// BOTON LOADING
 	if (document.getElementById('loading')) {
