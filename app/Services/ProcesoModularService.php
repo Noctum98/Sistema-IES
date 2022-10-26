@@ -4,25 +4,28 @@ namespace App\Services;
 
 use App\Models\Cargo;
 use App\Models\CargoMateria;
+use App\Models\Configuration;
 use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
+use Illuminate\Database\Eloquent\Collection;
 
 
 class ProcesoModularService
 {
     /**
      * Mirando👆 Módulos sería Acreditación Directa si
-     *  [X] Asist >75%,
+     *  [X] Asistencia Módulo > 75%,
      *  [X] Proceso >60%,
      *  [X] Promedio >78% y
      *  [X] TFI >78%
      * Regular si
-     *  [X] Asist entre 60 y 75% y
+     *  [X] Asistencia Módulo >= 60
      *  [X] PP 100%,
-     *  [X] Promedio entre 60 y 78,
-     *  [] TFI entre 60 y 78
+     *  [X] Promedio Proceso >= 60,
+     *  [X] Asistencia por cargo >= 40
+     *  [X] TFI >= 60
      */
     const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
     const PROCESO_ACCREDITATION_DIRECTA = 60;
@@ -31,7 +34,10 @@ class ProcesoModularService
 
     const ASISTENCIA_MIN_REGULAR = 60;
     const ASISTENCIA_MAX_REGULAR = 75;
+    const ASISTENCIA_MIN_CARGO_REGULAR = 40;
     const ASISTENCIA_PRACTICA_PROFESIONAL = 100;
+
+
     const PROMEDIO_MIN_REGULAR = 60;
     const PROMEDIO_MAX_REGULAR = 78;
     const TFI_MIN_REGULAR = 60;
@@ -87,7 +93,13 @@ class ProcesoModularService
             ->get();
     }
 
-    public function ponderarCargos(Materia $materia)
+    /**
+     * Revisar porque no devuelve lo que se espera
+     * @param Materia $materia
+     * @return Collection
+     */
+
+    public function ponderarCargos(Materia $materia): Collection
     {
         $cargos = $materia->cargos()->get();
         foreach ($cargos as $cargo) {
@@ -192,9 +204,9 @@ class ProcesoModularService
      */
     public function regularityDirectAccreditation(ProcesoModular $pm): bool
     {
+
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
-
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
             and
@@ -212,6 +224,7 @@ class ProcesoModularService
      */
     public function regularityRegular(ProcesoModular $pm): bool
     {
+
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
 
@@ -236,37 +249,36 @@ class ProcesoModularService
     {
         $cargos = $proceso->materia()->first()->cargos()->get();
 
+        $asistencia_modular = 0;
+
+$asistencia_modular_service = new AsistenciaModularService();
         foreach ($cargos as $cargo) {
 
+            $pondera_cargo = $asistencia_modular_service->getPorcentajeCargoAsistencia($proceso->materia()->first(), $cargo);
             /** @var Cargo $cargo */
-
             if ($proceso->asistencia() and $proceso->asistencia()->getByAsistenciaCargo($cargo->id)) {
-
+                if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
+                    < self::ASISTENCIA_MIN_CARGO_REGULAR) {
+                    return false;
+                }
                 if ($porcentaje_min) {
-
-                    if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
-                        < $porcentaje_min) {
-                        return false;
-                    }
                     if ($cargo->isPracticaProfesional()) {
                         if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
                             < self::ASISTENCIA_PRACTICA_PROFESIONAL) {
                             return false;
                         }
                     }
-
-                } else {
-                    if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
-                        < $porcentaje_max) {
-                        return false;
-                    }
                 }
             } else {
                 return false;
             }
+            $asistencia_modular += $pondera_cargo * $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
         }
 
-        return true;
+        $porcentaje = $porcentaje_min??$porcentaje_max;
+
+
+        return $asistencia_modular >= $porcentaje;
     }
 
     /**
@@ -296,12 +308,12 @@ class ProcesoModularService
 
     /**
      * @param int $porcentaje_max
-     * @param int $promedio_final
+     * @param float $promedio_final
      * @return bool
      */
-    public function getPromedioModularBoolean(int $porcentaje_max, int $promedio_final): bool
+    public function getPromedioModularBoolean(int $porcentaje_max, float $promedio_final): bool
     {
-        return $porcentaje_max > $promedio_final;
+        return $promedio_final >= self::PROMEDIO_ACCREDITATION_DIRECTA;
     }
 
     /**
@@ -311,7 +323,7 @@ class ProcesoModularService
      */
     public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje): bool
     {
-        return $porcentaje_max > $trabajo_final_porcentaje;
+        return $trabajo_final_porcentaje >= $porcentaje_max;
     }
 
     /**
