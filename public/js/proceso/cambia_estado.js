@@ -1,8 +1,10 @@
 $(document).ready(function () {
     console.log('ff')
     $('.select-estado').on('change', function () {
+
         const campo = $(this);
         const proceso_id = campo.attr('id');
+
         const estado_id = campo.val();
         $('#span-' + proceso_id).removeClass('d-block')
         $('#span-' + proceso_id).addClass('d-none')
@@ -51,7 +53,5 @@ $(document).ready(function () {
         $('#span-' + proceso_id).addClass('d-block')
         $('#spin-' + proceso_id).removeClass('d-block')
         $('#spin-' + proceso_id).addClass('d-none')
-        console.log($('#span-' + proceso_id))
-
     });
 });
