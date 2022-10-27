@@ -12,6 +12,7 @@
 			Descargar verificadas
 		</a>
 		<a href="{{route('pre.articulo')}}" class="m-1 btn btn-secondary">Articulo 7mo</a>
+		<a href="{{ route('pre.eliminadas') }}" class="m-1 btn btn-danger">Eliminadas</a>
 	</div>
 	<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="#" id="buscador">
 		<div class="input-group mt-3">

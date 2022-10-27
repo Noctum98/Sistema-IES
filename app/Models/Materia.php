@@ -17,7 +17,9 @@ class Materia extends Model
         'año',
         'nombre',
         'regimen',
-        'tipo_materia_id'
+        'tipo_materia_id',
+        'asistencia_ponderada',
+        'proceso_ponderado',
     ];
 
     public function carrera()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
@@ -68,12 +69,15 @@ class ProcesoModularController extends Controller
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
 
+        $estados =  Estados::all();
+
         return view('procesoModular.listado', [
                 'materia' => $materia,
                 'cargo_id' => $cargo_id,
                 'acciones' => $acciones,
                 'procesos' => $procesos,
-                'puede_procesar' => $puedeProcesar
+                'puede_procesar' => $puedeProcesar,
+                'estados' => $estados
             ]
         );
     }
