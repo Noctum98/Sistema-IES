@@ -210,6 +210,24 @@ class PreinscripcionController extends Controller
         ]);
     }
 
+    public function vista_eliminadas()
+    {
+        $preinscripciones = Preinscripcion::withTrashed()->get();
+
+        $preinscripcionesEliminadas = [];
+        foreach($preinscripciones as $preinscripcion)
+        {
+            if($preinscripcion->deleted_at)
+            {
+                array_push($preinscripcionesEliminadas,$preinscripcion);
+            }
+        }
+
+        return view('preinscripcion.eliminadas', [
+            'preinscripciones' => $preinscripcionesEliminadas
+        ]);
+    }
+
     // Funcionalidades
     public function crear(Request $request, int $carrera_id)
     {
@@ -519,6 +537,15 @@ class PreinscripcionController extends Controller
     
             $this->disk->deleteDirectory($directory['path']);
         }
+
+        if(Auth::user())
+        {
+            $preinscripcion->responsable_delete = Auth::user()->nombre.' '.Auth::user()->apellido;
+        }else{
+            $preinscripcion->responsable_delete = $preinscripcion->nombres.' '.$preinscripcion->apellidos;
+        }
+
+        $preinscripcion->update();
 
         $preinscripcion->delete();
 
