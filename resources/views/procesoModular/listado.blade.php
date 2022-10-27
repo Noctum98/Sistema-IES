@@ -46,8 +46,6 @@
                         @endif
                     </a>
                 @endforeach
-
-
             </h5>
         @endif
         <hr>
@@ -113,7 +111,25 @@
                         <tr class="bg-secondary text-white font-weight-bold">
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
-                                <small><br/>{{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                <small><br/>
+                                    <select name="estado" id="estado" class="custom-select custom-select-sm estados"
+                                    @if(!$puede_procesar || $proceso->procesoRelacionado->cierre) disabled=disabled @endif
+
+                                    data-estado="{{$proceso->procesoRelacionado->id}}">
+                                        @foreach($estados as $estado)
+                                            <option value="{{ $estado->id }}"
+                                                    @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
+                                                        selected="selected"
+                                                    @endif
+                                            >
+                                                {{ $estado->nombre }}
+
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </small>
+
                             </td>
                             <td class="text-center">
                                 {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|
