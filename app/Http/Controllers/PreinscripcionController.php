@@ -63,7 +63,7 @@ class PreinscripcionController extends Controller
         
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [18,9,1,15,6,2,27,24,39,25,37,40,41];
+        $carreras_abiertas = [18,9,1,15,6,2,27,25,37,40,41];
 
         if(!in_array($carrera->id,$carreras_abiertas) && !Session::has('preinscripciones'))
         {
@@ -84,14 +84,31 @@ class PreinscripcionController extends Controller
     }
     public function vista_editar($timecheck, $id)
     {
-        $preinscripcion = Preinscripcion::where([
+       $preinscripcion = Preinscripcion::where([
             'id'    =>  $id,
             'timecheck' =>  $timecheck
         ])->first();
 
-        return view('alumno.edit_pre_enroll', [
-            'preinscripcion'    =>  $preinscripcion
-        ]);
+        if(Session::has('admin') || Session::has('areaSocial'))
+        {
+            $ruta = 'alumno.edit_pre_enroll';
+            $datos =  ['preinscripcion'    =>  $preinscripcion];
+        }else{
+            if($preinscripcion && $preinscripcion->estado == 'verificado')
+            {
+                $ruta = 'error.error';
+                $datos = ['mensaje'=>'Tu preinscripción ya fue verificada'];
+            }else if(!$preinscripcion)
+            {
+                $ruta = 'error.error';
+                $datos = ['mensaje'=>'Error en la página'];
+            }else{
+                $ruta = 'alumno.edit_pre_enroll';
+                $datos =  ['preinscripcion'    =>  $preinscripcion];
+            }
+        }
+        
+        return view($ruta,$datos);
     }
     public function vista_inscripto($timecheck, int $id)
     {
