@@ -56,7 +56,7 @@ class Carrera extends Model
             ->join('mesas','materias.id','mesas.materia_id')
             ->where('mesas.instancia_id',$instancia)
             ->groupBy('carreras.id', 'carreras.nombre', 'sedes.nombre')
-//            ->orderBy('materias.año','asc')
+            ->orderBy('sedes.nombre','asc')
 //            ->orderBy('materias.nombre','asc')
             ->get();
     }
