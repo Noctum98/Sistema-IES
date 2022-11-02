@@ -195,11 +195,23 @@ class MesaController extends Controller
         return redirect()->back()->with(['alumno_success' => 'Libro y Folio establecidos']);
     }
 
-    public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera)
+    public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera, int $llamado = null)
     {
+        $texto_llamado = 'Primer llamado';
+
+        if($llamado == 2){
+            $texto_llamado = 'Segundo llamado';
+        }
+        if(!$llamado){
+            $llamado = 1;
+        }
+
         $data = [
             'instancia' => $instancia,
             'carrera' => $carrera,
+            'texto_llamado' => $texto_llamado,
+            'llamado' => $llamado
+
         ];
 
         $pdf = \App::make('dompdf.wrapper');
