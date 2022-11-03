@@ -103,12 +103,13 @@ class MesaController extends Controller
     // Funcionalidades
     public function crear(Request $request, $materia_id, $instancia_id)
     {
+    //dd($request->all());
         $validate = $this->validate($request, [
             'fecha'         => ['required'],
-            'presidente'    => ['required', 'string'],
-            'primer_vocal'  => ['required', 'string'],
-            'segundo_vocal' => ['required', 'string']
+            'presidente_id'    => ['required'],
         ]);
+
+        //dd($request->all());
 
         $materia = Materia::find($materia_id);
         $instancia = Instancia::find($instancia_id);
@@ -202,9 +203,18 @@ class MesaController extends Controller
         return $pdf->download('Tribunal Mesa ' . $instancia->nombre . '.pdf');
     }
 
-    public function mesaByComision(Request $request,$materia_id,$comision_id,$instancia_id)
+    public function mesaByComision(Request $request,$materia_id,$instancia_id,$comision_id=null)
     {
-        $mesa = Mesa::where(['materia_id'=>$materia_id,'comision_id'=>$comision_id,'instancia_id'=>$instancia_id])->first();
+        $datos = ['materia_id'=>$materia_id,'instancia_id'=>$instancia_id];
+
+        if($comision_id)
+        {
+            $datos['comision_id'] = $comision_id;
+        }
+
+        $mesa = Mesa::where($datos)
+        ->with('presidente','primer_vocal','segundo_vocal','presidente_segundo','primer_vocal_segundo','segundo_vocal_segundo')
+        ->first();
 
         if($mesa)
         {

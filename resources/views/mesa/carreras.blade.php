@@ -111,5 +111,7 @@
 	</div>
 	@endsection
 	@section('scripts')
+		<script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
+
 		<script src="{{ asset('js/mesas/configuracion.js') }}"></script>
 	@endsection

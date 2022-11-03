@@ -16,6 +16,7 @@ use App\Models\Carrera;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -57,12 +58,18 @@ class InstanciaController extends Controller
             $carreras = Auth::user()->carreras;
         }
 
+        $profesores = User::select('id','nombre','apellido')->whereHas('sedes',function($query) use ($sede_id){
+            $query->where('sede_id',$sede_id);
+        })->get();
+
         return view('mesa.carreras', [
             'sede'  =>  $sede,
             'instancia' => $instancia,
-            'carreras' => $carreras
+            'carreras' => $carreras,
+            'profesores' => $profesores
         ]);
     }
+    
     //Funcionalidades
     public function crear(Request $request)
     {
