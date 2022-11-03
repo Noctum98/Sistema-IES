@@ -195,6 +195,7 @@ Route::prefix('carreras')->group(function () {
         ->name('agregar_personal');
     Route::post('editar-carrera/{id}', [CarreraController::class, 'editar'])->name('editar_carrera');
     Route::get('vista-carreras/{instancia}', [CarreraController::class, 'vistaCarrera'])->name('carrera.vista_carrera');
+    Route::get('verProfesores/{carrera_id}', [CarreraController::class, 'verProfesores'])->name('carrera.ver_profesores');
 });
 
 // Rutas de Materias

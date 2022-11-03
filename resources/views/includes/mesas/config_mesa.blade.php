@@ -59,6 +59,7 @@
                             <label for="segundo_vocal">Segundo Vocal (Segundo llamado):</label>
                             <input type="text" id="segundo_vocal_segundo-{{$materia->id}}" name="segundo_vocal_segundo" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->segundo_vocal_segundo : '' }}" class="form-control">
                         </div>
+                        <select class="js-data-example-ajax" id="{{$materia->carrera}}"></select>
 
                         <input type="submit" value="Configurar" class="btn btn-success mt-2" id="loading">
                     </div>

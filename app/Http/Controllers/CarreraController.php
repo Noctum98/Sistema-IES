@@ -139,4 +139,12 @@ class CarreraController extends Controller
 
         return array($user, $carreras);
     }
+
+    protected function verProfesores($carrera_id)
+    {
+        $carrera = Carrera::find($carrera_id)->firtst();
+            $profesores = $carrera->users()->get();
+        dd(json_encode($profesores));
+        return json_encode($profesores);
+    }
 }
