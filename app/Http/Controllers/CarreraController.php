@@ -144,7 +144,6 @@ class CarreraController extends Controller
     {
         $carrera = Carrera::find($carrera_id)->first();
             $profesores = $carrera->users()->get();
-        dd(json_encode($profesores));
         return json_encode($profesores);
     }
 }
