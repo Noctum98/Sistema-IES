@@ -112,10 +112,10 @@
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
                                 <small><br/>
-                                    <select name="estado" id="estado" class="custom-select custom-select-sm estados"
-                                    @if(!$puede_procesar || $proceso->procesoRelacionado->cierre) disabled=disabled @endif
-
-                                    data-estado="{{$proceso->procesoRelacionado->id}}">
+                                    <select name="estado"  class="custom-select custom-select-sm select-estado" id="{{$proceso->procesoRelacionado->id}}"
+                                            @if(!$puede_procesar || $proceso->procesoRelacionado->cierre) disabled=disabled
+                                            @endif
+                                            data-estado="{{$proceso->procesoRelacionado->id}}">
                                         @foreach($estados as $estado)
                                             <option value="{{ $estado->id }}"
                                                     @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
@@ -129,6 +129,12 @@
                                     </select>
 
                                 </small>
+                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
+                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>
+                                </span>
+                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </span>
 
                             </td>
                             <td class="text-center">
@@ -201,5 +207,6 @@
             @section('scripts')
                 <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
+                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
 
 @endsection

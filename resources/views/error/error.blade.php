@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <h2 class="h1 text-muted">
-           {{$mensaje}}
+           {{ $mensaje }}
         </h2>
     </div>
 @endsection
