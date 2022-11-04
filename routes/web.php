@@ -421,7 +421,7 @@ Route::prefix('mesas')->group(function () {
         'generar_pdf_mesa'
     );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
-    Route::get('/mesaByComision/{materia_id}/{comision_id}/{instancia_id}',[MesaController::class,'mesaByComision']);
+    Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}',[MesaController::class,'mesaByComision']);
 
 });
 

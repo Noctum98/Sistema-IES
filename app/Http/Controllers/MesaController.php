@@ -107,12 +107,13 @@ class MesaController extends Controller
     // Funcionalidades
     public function crear(Request $request, $materia_id, $instancia_id)
     {
+        //dd($request->all());
         $validate = $this->validate($request, [
-            'fecha' => ['required'],
-            'presidente' => ['required', 'string'],
-            'primer_vocal' => ['required', 'string'],
-            'segundo_vocal' => ['required', 'string'],
+            'fecha'         => ['required'],
+            'presidente_id'    => ['required'],
         ]);
+
+        //dd($request->all());
 
         $materia = Materia::find($materia_id);
         $instancia = Instancia::find($instancia_id);
@@ -124,11 +125,11 @@ class MesaController extends Controller
 
         if ($comp_primer_llamado || $comp_segundo_llamado) {
             if ($comp_primer_llamado && $comp_segundo_llamado) {
-                $mensaje = "Las fechas ".$fecha_dia." y ".$fecha_dia_segundo." están bloqueadas introduce otra fecha.";
+                $mensaje = "Las fechas " . $fecha_dia . " y " . $fecha_dia_segundo . " están bloqueadas introduce otra fecha.";
             } elseif ($comp_primer_llamado && !$comp_segundo_llamado) {
-                $mensaje = "La fecha ".$fecha_dia." está bloqueada, prueba con otra.";
+                $mensaje = "La fecha " . $fecha_dia . " está bloqueada, prueba con otra.";
             } else {
-                $mensaje = "La fecha ".$fecha_dia_segundo." está bloqueada, prueba con otra.";
+                $mensaje = "La fecha " . $fecha_dia_segundo . " está bloqueada, prueba con otra.";
             }
 
             return redirect()->route('mesa.carreras', [
@@ -154,18 +155,18 @@ class MesaController extends Controller
         $request['materia_id'] = $materia->id;
 
         if (date('D', strtotime($request['fecha'])) == 'Mon' || date('D', strtotime($request['fecha'])) == 'Tue') {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
+            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha']) . "-4 days");
         } else {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
+            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha']) . "-2 days");
         }
         if ($request['fecha_segundo']) {
             if ($request['fecha_segundo'] && date('D', strtotime($request['fecha_segundo'])) == 'Mon' || date(
-                    'D',
-                    strtotime($request['fecha_segundo'])
-                ) == 'Tue') {
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
+                'D',
+                strtotime($request['fecha_segundo'])
+            ) == 'Tue') {
+                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha']) . "-4 days");
             } else {
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
+                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha']) . "-2 days");
             }
         } else {
             $request['cierre_segundo'] = null;
@@ -182,7 +183,7 @@ class MesaController extends Controller
             'sede_id' => $materia->carrera->sede->id,
             'instancia_id' => $instancia->id,
         ])->with([
-            'message' => 'Mesa '.$materia->nombre.' configurada correctamente',
+            'message' => 'Mesa ' . $materia->nombre . ' configurada correctamente',
         ]);
     }
 
@@ -199,10 +200,10 @@ class MesaController extends Controller
     {
         $texto_llamado = 'Primer llamado';
 
-        if($llamado == 2){
+        if ($llamado == 2) {
             $texto_llamado = 'Segundo llamado';
         }
-        if(!$llamado){
+        if (!$llamado) {
             $llamado = 1;
         }
 
@@ -217,24 +218,23 @@ class MesaController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf', $data);
 
-        return $pdf->download('Tribunal Mesa '.$instancia->nombre.'.pdf');
+        return $pdf->download('Tribunal Mesa ' . $instancia->nombre . '.pdf');
     }
 
-    public function mesaByComision(Request $request, $materia_id, $comision_id, $instancia_id)
+    public function mesaByComision(Request $request, $materia_id, $instancia_id, $comision_id = null)
     {
-        $mesa = Mesa::where(
-            ['materia_id' => $materia_id, 'comision_id' => $comision_id, 'instancia_id' => $instancia_id]
-        )->first();
+        $datos = ['materia_id' => $materia_id, 'instancia_id' => $instancia_id];
 
-        if ($mesa) {
-            $respuesta = ['status' => 'success', 'mesa' => $mesa];
-        } else {
-            $respuesta = ['status' => 'error'];
+        if ($comision_id) {
+            $datos['comision_id'] = $comision_id;
         }
 
-        return response()->json($respuesta, 200);
-    }
+        $mesa = Mesa::where($datos)
+            ->with('presidente', 'primer_vocal', 'segundo_vocal', 'presidente_segundo', 'primer_vocal_segundo', 'segundo_vocal_segundo')
+            ->first();
 
+        return response()->json($mesa,200);
+    }
     private function setFechaTurno($materia, $fecha)
     {
 
@@ -245,16 +245,14 @@ class MesaController extends Controller
                 $hora = $this::T_M;
                 break;
             case 'tarde':
-                 $hora = $this::T_T;
+                $hora = $this::T_T;
                 break;
             case 'vespertino':
                 $hora = $this::T_V;
         }
 
-        $fecha_inicial = substr($fecha, 0,-5);
+        $fecha_inicial = substr($fecha, 0, -5);
 
-        return $fecha_inicial.$hora;
-
+        return $fecha_inicial . $hora;
     }
-
 }
