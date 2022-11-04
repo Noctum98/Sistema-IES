@@ -95,8 +95,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <select class="js-data-example-ajax" id="{{$materia->carrera}}"></select>
-
                         <input type="submit" value="Configurar" class="btn btn-success mt-2" id="loading">
                     </div>
                 </form>
@@ -104,4 +102,3 @@
         </div>
     </div>
 </div>
-
