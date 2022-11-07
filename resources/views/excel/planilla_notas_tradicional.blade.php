@@ -18,7 +18,9 @@
             </th>
             @if(count($calificaciones) > 0)
             @foreach($calificaciones as $calificacion)
-            <th>{{$calificacion->nombre}}</th>
+            <th>{{'% '.$calificacion->nombre}}</th>
+            <th>{{'# '.$calificacion->nombre.'#'}}</th>
+
             @endforeach
             @else
             <th>
@@ -61,12 +63,26 @@
                 </span>
 
                 @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
-                <span>
-                    - R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
-                </span>
-                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                %
+                    <span>
+                        - R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                    </span>
+                    @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                    %
+                    @endif
                 @endif
+                @else
+                -
+                @endif
+            </td>
+            <td>
+            @if($proceso->procesoCalificacion($cc->id))
+                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
+                    {{$proceso->procesoCalificacion($cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}
+                </span>
+                @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
+                    <span>
+                        - R: {{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}
+                    </span>
                 @endif
                 @else
                 -
@@ -82,7 +98,7 @@
             <td>
                 {{ $proceso->porcentaje_final_trabajos ?? '-' }}
             </td>
-           
+
 
             <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
             @if($carrera->tipo == 'tradicional2')
