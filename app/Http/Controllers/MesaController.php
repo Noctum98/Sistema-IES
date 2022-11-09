@@ -13,9 +13,9 @@ class MesaController extends Controller
 {
     protected $feriados;
 
-    const T_M = '12:30';
-    const T_T = '18:30';
-    const T_V = '22:30';
+    const T_M = '14:00';
+    const T_T = '23:59';
+    const T_V = '23:59';
 
     public function __construct()
     {
