@@ -420,6 +420,10 @@ Route::prefix('mesas')->group(function () {
     Route::get('generar-pdf-mesa/{instancia}/{carrera}/{llamado?}', [MesaController::class, 'generar_pdf_mesa'])->name(
         'generar_pdf_mesa'
     );
+
+    Route::get('generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado?}', [MesaController::class, 'generar_pdf_acta_volante'])->name(
+        'generar_pdf_acta_volante'
+    );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}',[MesaController::class,'mesaByComision']);
 
