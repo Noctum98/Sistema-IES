@@ -67,4 +67,10 @@ class UserService{
             return $users->get();
         }
     }
+
+    public function getUserById(int $idUser): User
+    {
+        return User::find($idUser);
+
+    }
 }

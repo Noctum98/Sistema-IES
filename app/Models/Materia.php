@@ -65,6 +65,23 @@ class Materia extends Model
         ])->first();
     }
 
+    public function mesasByMateria($instancia_id, $materias, $comision = null)
+    {
+
+        $mesas =  Mesa::select('mesas.*')
+            ->where('mesas.instancia_id', $instancia_id)
+            ->whereIn('mesas.materia_id', $materias)
+            ;
+
+        if ($comision) {
+            $mesas = $mesas->where('mesas.comision_id', $comision);
+        }
+
+        $mesas->orderBy('mesas.instancia_id', 'asc');
+
+        return $mesas->get();
+    }
+
     public function comisiones()
     {
         return $this->belongsToMany(Comision::class);
