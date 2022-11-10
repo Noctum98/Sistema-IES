@@ -67,13 +67,19 @@
 
                 <td>
                     @include('mesa.modals.dar_baja_mesa')
+                    @include('mesa.modals.mover')
 
                     <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
-                    <a href="" class="btn btn-sm btn-primary">
+                    @if($mesa->materia->getTotalAttribute() > 0)
+                    <a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
                         Mover
                     </a>
+                    @endif
+                    
+                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" id="{{$inscripcion->id}}">Confirmar</button>
+                    <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled>Confirmado</button>  
                 </td>
 
             </tr>
@@ -146,14 +152,18 @@
                 <td>{{ $inscripcion->telefono }}</td>
 
                 <td>
-
-
-                    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
+                <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
-                    <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
+                    @if($mesa->materia->getTotalAttribute() > 0)
+                    <a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
                         Mover
                     </a>
+                    @endif
+                    
+                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" id="{{$inscripcion->id}}">Confirmar</button>
+                    <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled>Confirmado</button>
+
                     @include('mesa.modals.dar_baja_mesa')
                     @include('mesa.modals.mover')
                 </td>
@@ -205,4 +215,5 @@
 @endsection
 @section('scripts')
 <script src="{{ asset('js/mesas/inscripcion.js') }}"></script>
+<script src="{{ asset('js/mesas/confirmacion.js') }}"></script>
 @endsection

@@ -35,6 +35,7 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Models\ActaVolante;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Calificacion;
 use App\Models\Comision;
@@ -423,6 +424,8 @@ Route::prefix('mesas')->group(function () {
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}',[MesaController::class,'mesaByComision']);
 
 });
+
+Route::resource('actasVolantes',ActaVolanteController::class);
 
 Route::prefix('matriculacion')->group(function () {
     Route::get('/carrera/{id}/{year}/{timecheck?}', [MatriculacionController::class, 'create'])->name(

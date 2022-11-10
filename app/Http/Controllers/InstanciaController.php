@@ -28,9 +28,9 @@ class InstanciaController extends Controller
     }
     // Vistas
 
-    public function vista_admin()
+    public function vista_admin(Request $request)
     {
-        $instancia = Instancia::all();
+        $instancia = Instancia::orderBy('id','desc')->get();
 
         $sedes = Auth::user()->sedes;
         /*
@@ -83,6 +83,7 @@ class InstanciaController extends Controller
         $instancia->nombre = $request->input('nombre');
         $instancia->tipo = $request->input('tipo');
         $instancia->limite = $request->input('limite');
+        $instancia->año = date('Y');
         if ($instancia->tipo == 0) {
             $instancia->segundo_llamado = $request->input('segundo_llamado');
         }

@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Mesa;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserService{
     public function buscador($busqueda,$rol=null)
@@ -66,5 +68,22 @@ class UserService{
         }else{
             return $users->get();
         }
+    }
+
+    public function mesasPresidente()
+    {
+        $user = Auth::user();
+        $mesas = Mesa::whereHas('instancia',function($query){
+            $query->where('estado','activa');
+        })->where('presidente_id',$user->id)->get();
+        
+        /*
+        Mesa::select('mesas.*','instancias.nombre','instancias.año','carreras.nombre')
+        ->join('instancias','instancias.id','mesas.instancia_id')
+        ->join('carreras','carreras.id','mesas.carrera_id')
+        ->where('mesas.presidente_id','=',$user->id)
+        ->where('instancias.estado','=','activa')->get();*/
+
+        return $mesas;
     }
 }
