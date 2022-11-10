@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
+use App\Models\Comision;
 use App\Models\Instancia;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -227,23 +228,25 @@ class MesaController extends Controller
         Instancia $instancia,
         Carrera $carrera,
         Materia $materia,
-        int $llamado = null
+        int $llamado,
+        Comision $comision = null
     ) {
         $texto_llamado = 'Primer llamado';
 
         if ($llamado == 2) {
             $texto_llamado = 'Segundo llamado';
         }
-        if (!$llamado) {
-            $llamado = 1;
-        }
+
         $mesa = Mesa::where([
             'instancia_id' => $instancia->id,
             'materia_id' => $materia->id,
-        ])->first();
+        ]);
+        if ($comision) {
+            $mesa = $mesa->where('mesas.comision_id', $comision);
+        }
+        $mesa = $mesa->first();
 
-        if(!$mesa)
-        {
+        if (!$mesa) {
             throw new HttpResponseException(new Response('No se encontró la instancia correspondiente'));
         }
 
@@ -252,8 +255,8 @@ class MesaController extends Controller
             'carrera' => $carrera,
             'texto_llamado' => $texto_llamado,
             'llamado' => $llamado,
-            'materia' => $materia
-
+            'materia' => $materia,
+            'mesa' => $mesa,
         ];
 
         $pdf = \App::make('dompdf.wrapper');

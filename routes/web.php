@@ -97,6 +97,7 @@ Route::resource('estados', EstadosController::class);
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
     Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name('materia.cierre');
+    Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
 });
 
 //Rutas de sedes
@@ -421,7 +422,7 @@ Route::prefix('mesas')->group(function () {
         'generar_pdf_mesa'
     );
 
-    Route::get('generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado?}', [MesaController::class, 'generar_pdf_acta_volante'])->name(
+    Route::get('generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado}/{comision}', [MesaController::class, 'generar_pdf_acta_volante'])->name(
         'generar_pdf_acta_volante'
     );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
