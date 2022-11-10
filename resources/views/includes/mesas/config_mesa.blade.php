@@ -95,7 +95,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <input type="submit" value="Configurar" class="btn btn-success mt-2" id="loading">
                     </div>
                 </form>
@@ -103,4 +102,3 @@
         </div>
     </div>
 </div>
-
