@@ -41,6 +41,22 @@ class Mesa extends Model
         return $this->hasMany('App\Models\MesaAlumno');
     }
 
+    public function mesa_inscriptos_primero(){
+        return $this->hasMany('App\Models\MesaAlumno')->where('segundo_llamado',false); 
+    }
+
+    public function mesa_inscriptos_segundo(){
+        return $this->hasMany('App\Models\MesaAlumno')->where('segundo_llamado',true);
+    }
+
+    public function bajas_primero(){
+        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja'=>true,'segundo_llamado'=>false]);
+    }
+
+    public function bajas_segundo(){
+        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja'=>true,'segundo_llamado'=>true]);
+    }
+
     public function instancia(){
         return $this->belongsTo(Instancia::class,'instancia_id');
     }

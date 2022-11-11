@@ -24,6 +24,7 @@
                     <tr>
                         <th scope="col">Nombre</th>
                         <th scope="col">Tipo</th>
+                        <th scope="col">Año</th>
                         <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                         @if(Session::has('admin'))
                             <th scope="col">Inactiva/Activa</th>
@@ -35,6 +36,7 @@
                         <tr style="cursor:pointer;">
                             <td><b>{{ $instancia->nombre }}</b></td>
                             <td><b>{{ $instancia->tipo == 0 ? 'Común' : 'Especial' }}</b></td>
+                            <td><b>{{ $instancia->año }}</b></td>
                             <td>
                                 <button type="button" class="btn-sm btn-secondary" data-bs-toggle="modal"
                                         data-bs-target="#modal{{$instancia->id}}">

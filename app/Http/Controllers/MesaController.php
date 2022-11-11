@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\Proceso;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response;
 
 class MesaController extends Controller
@@ -20,6 +21,7 @@ class MesaController extends Controller
     const T_T = '23:59';
     const T_V = '23:59';
 
+   
     public function __construct()
     {
         /**
@@ -107,16 +109,15 @@ class MesaController extends Controller
         ]);
     }
 
+    
+
     // Funcionalidades
     public function crear(Request $request, $materia_id, $instancia_id)
     {
-        //dd($request->all());
         $validate = $this->validate($request, [
             'fecha' => ['required'],
             'presidente_id' => ['required'],
         ]);
-
-        //dd($request->all());
 
         $materia = Materia::find($materia_id);
         $instancia = Instancia::find($instancia_id);
@@ -283,8 +284,20 @@ class MesaController extends Controller
                 'segundo_vocal_segundo'
             )
             ->first();
+        if($mesa)
+        {
+            $datos = [
+                'status'=>'success',
+                'mesa' => $mesa
+            ];
+        }else{
+            $datos = [
+                'status'=>'error',
+                'mesa' => 'No existe una mesa creada'
+            ];
+        }
 
-        return response()->json($mesa, 200);
+        return response()->json($datos,200);
     }
 
     private function setFechaTurno($materia, $fecha)

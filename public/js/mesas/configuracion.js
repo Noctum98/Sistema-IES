@@ -11,13 +11,12 @@ $(document).ready(function () {
         });
 
         let url = '/mesas/mesaByComision/' + materia_id + '/' + instancia_id;
-console.log(url);
         $.ajax({
             method: "GET",
             url: url,
             //dataType: "dataType",
             success: function (response) {
-
+                console.log(response);
                 if (response.status == 'success') {
                     setFormData(response.mesa, materia_id);
                 } else {
@@ -70,6 +69,7 @@ console.log(url);
         });
 
         function setFormData(mesa, materia_id) {
+            
             if (mesa.presidente) {
                 $('#presidente-' + materia_id).append('<option selected="selected" value="' + mesa.presidente.id + '">' + mesa.presidente.apellido.toUpperCase() + ' ' + mesa.presidente.nombre + '</option>').trigger('change');
             }

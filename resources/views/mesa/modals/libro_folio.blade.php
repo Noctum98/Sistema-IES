@@ -8,6 +8,9 @@
                 </button>
             </div>
             <div class="modal-body">
+                @if(!$mesa->cierre_profesor)
+                <p class="text-danger"><i>Para poder guardar libro y folio el profesor debe cerrar las notas.</i></p>
+                @endif
                 <form method="POST" action="{{ route('mesa.librofolio',$mesa->id) }}">
 
                     <div class="form-group">
@@ -19,7 +22,7 @@
                         <label for="libro">Folio</label>
                         <input type="text" name="folio" class="form-control" value="{{ $mesa->folio ?? '' }}">
                     </div>
-                    <input type="submit" class="btn btn-success" value="Guardar">
+                    <input type="submit" class="btn btn-success" value="Guardar" {{ !$mesa->cierre_profesor ? 'disabled' : '' }}>
                 </form>
             </div>
         </div>
