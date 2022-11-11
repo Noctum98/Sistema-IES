@@ -422,7 +422,7 @@ Route::prefix('mesas')->group(function () {
         'generar_pdf_mesa'
     );
 
-    Route::get('generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado}/{comision}', [MesaController::class, 'generar_pdf_acta_volante'])->name(
+    Route::get('generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado}/{comision?}', [MesaController::class, 'generar_pdf_acta_volante'])->name(
         'generar_pdf_acta_volante'
     );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
