@@ -36,6 +36,16 @@
         @if($mesa)
         <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#libro_folio">Libro/Folio</button>
         @include('mesa.modals.libro_folio')
+            <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
+               class="btn btn-sm btn-success">
+                <i>1° llamado</i>
+                <small style="font-size: 0.6em">Descargar Acta Volante</small>
+            </a>
+            <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
+               class="btn btn-sm btn-success">
+                <i>2° llamado</i>
+                <small style="font-size: 0.6em">Descargar Acta Volante</small>
+            </a>
         @endif
     </div>
 
