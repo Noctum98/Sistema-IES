@@ -118,10 +118,10 @@
         </thead>
         <tbody>
         @php
-        $cant_file = count($mesa->mesa_inscriptos);
+        $cant_file = count($mesa->mesa_inscriptos_props($llamado)->get());
         $faltan_file = 26 - $cant_file;
         @endphp
-        @foreach($mesa->mesa_inscriptos->where() as $mesa_inscripto)
+        @foreach($mesa->mesa_inscriptos_props($llamado)->get() as $mesa_inscripto)
             <tr>
                 <td>{{ $loop->index+1 }}</td>
                 <td>{{$mesa_inscripto->apellidos}}, {{$mesa_inscripto->nombres}}</td>
@@ -156,6 +156,7 @@
             Observaciones - Situaciones
         </div>
         <div class="col-12 text-left" style="height: 30%; border: 1px solid black;margin: 0; padding: 0 5px">
+
         </div>
     </div>
 
