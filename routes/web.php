@@ -35,6 +35,7 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Models\ActaVolante;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Calificacion;
 use App\Models\Comision;
@@ -97,6 +98,7 @@ Route::resource('estados', EstadosController::class);
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
     Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name('materia.cierre');
+    Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
 });
 
 //Rutas de sedes
@@ -195,6 +197,7 @@ Route::prefix('carreras')->group(function () {
         ->name('agregar_personal');
     Route::post('editar-carrera/{id}', [CarreraController::class, 'editar'])->name('editar_carrera');
     Route::get('vista-carreras/{instancia}', [CarreraController::class, 'vistaCarrera'])->name('carrera.vista_carrera');
+    Route::get('verProfesores/{carrera_id}', [CarreraController::class, 'verProfesores'])->name('carrera.ver_profesores');
 });
 
 // Rutas de Materias
@@ -416,13 +419,19 @@ Route::prefix('mesas')->group(function () {
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
     Route::post('/inscribir_alumno', [AlumnoMesaController::class, 'inscribir_alumno'])->name('mesa.inscribir_alumno');
     Route::post('/confirmar/{mesa_alumno_id}', [AlumnoMesaController::class, 'confirmar'])->name('mesa.confirmar');
-    Route::get('generar-pdf-mesa/{instancia}/{carrera}', [MesaController::class, 'generar_pdf_mesa'])->name(
+    Route::get('generar-pdf-mesa/{instancia}/{carrera}/{llamado?}', [MesaController::class, 'generar_pdf_mesa'])->name(
         'generar_pdf_mesa'
     );
+
+    Route::get('generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado}/{comision?}', [MesaController::class, 'generar_pdf_acta_volante'])->name(
+        'generar_pdf_acta_volante'
+    );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
-    Route::get('/mesaByComision/{materia_id}/{comision_id}/{instancia_id}',[MesaController::class,'mesaByComision']);
+    Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}',[MesaController::class,'mesaByComision']);
 
 });
+
+Route::resource('actasVolantes',ActaVolanteController::class);
 
 Route::prefix('matriculacion')->group(function () {
     Route::get('/carrera/{id}/{year}/{timecheck?}', [MatriculacionController::class, 'create'])->name(

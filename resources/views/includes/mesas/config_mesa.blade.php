@@ -33,15 +33,33 @@
                         </div>
                         <div class="form-group">
                             <label for="presidente">Presidente (Primer llamado):</label>
-                            <input type="text" id="presidente-{{$materia->id}}" name="presidente" class="form-control" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->presidente : '' }}" required />
+                            <select name="presidente_id" id="presidente-{{$materia->id}}" class="form-select select2">
+                                <option value="">-- Seleccionar presidente --</option>
+
+                                @foreach($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">{{ mb_strtoupper($profesor->apellido).' '.ucwords($profesor->nombre) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="primer_vocal">Primer Vocal (Primer llamado):</label>
-                            <input type="text" id="primer_vocal-{{$materia->id}}" name="primer_vocal" class="form-control" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->primer_vocal : '' }}" required />
+                            <select name="primer_vocal_id" id="primer_vocal-{{$materia->id}}" class="form-select select2">
+                                <option value="">-- Seleccionar primer vocal --</option>
+
+                                @foreach($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">{{ mb_strtoupper($profesor->apellido).' '.ucwords($profesor->nombre) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="segundo_vocal">Segundo Vocal (Primer llamado):</label>
-                            <input type="text" id="segundo_vocal-{{$materia->id}}" name="segundo_vocal" class="form-control" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->segundo_vocal : '' }}" required />
+                            <select name="segundo_vocal_id" id="segundo_vocal-{{$materia->id}}" class="form-select select2">
+                                <option value="">-- Seleccionar segundo vocal --</option>
+
+                                @foreach($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">{{ mb_strtoupper($profesor->apellido).' '.ucwords($profesor->nombre) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="fecha_segundo">Fecha y Hora (Segundo llamado):</label>
@@ -49,17 +67,34 @@
                         </div>
                         <div class="form-group">
                             <label for="presidente">Presidente (Segundo llamado):</label>
-                            <input type="text" id="presidente_segundo-{{$materia->id}}" name="presidente_segundo" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->presidente_segundo : '' }}" class="form-control">
+                            <select name="presidente_segundo_id" id="presidente_segundo-{{$materia->id}}" class="form-select select2">
+                                <option value="">-- Seleccionar presidente --</option>
+
+                                    @foreach($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">{{ mb_strtoupper($profesor->apellido).' '.ucwords($profesor->nombre) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="primer_vocal">Primer Vocal (Segundo llamado):</label>
-                            <input type="text" id="primer_vocal_segundo-{{$materia->id}}" name="primer_vocal_segundo" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->primer_vocal_segundo : '' }}" class="form-control">
+                            <select name="primer_vocal_segundo_id" id="primer_vocal_segundo-{{$materia->id}}" class="form-select select2">
+                                <option value="">-- Seleccionar primer vocal --</option>
+
+                                @foreach($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">{{ mb_strtoupper($profesor->apellido).' '.ucwords($profesor->nombre) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="segundo_vocal">Segundo Vocal (Segundo llamado):</label>
-                            <input type="text" id="segundo_vocal_segundo-{{$materia->id}}" name="segundo_vocal_segundo" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->segundo_vocal_segundo : '' }}" class="form-control">
-                        </div>
+                            <select name="segundo_vocal_segundo_id" id="segundo_vocal_segundo-{{$materia->id}}" class="form-select select2">
+                            <option value="">-- Seleccionar segundo vocal --</option>
 
+                                @foreach($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">{{ mb_strtoupper($profesor->apellido).' '.ucwords($profesor->nombre) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <input type="submit" value="Configurar" class="btn btn-success mt-2" id="loading">
                     </div>
                 </form>

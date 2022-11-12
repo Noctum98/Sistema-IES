@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AlumnosMateriaExport;
+use App\Models\User;
 use App\Services\MateriaService;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
@@ -10,6 +11,7 @@ use App\Models\Estados;
 use App\Models\Personal;
 use App\Models\Materia;
 use App\Models\Proceso;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -180,5 +182,33 @@ class MateriaController extends Controller
         return view('materia.listado', [
             'materias' => $materias,
         ]);
+    }
+
+    public function vistaMateria(int $instancia, $comision = null)
+    {
+        $user = Auth::user();
+        /** @var  User $user */
+        $materias = $this->getIdsByModel($user->materias()->get());
+
+        $materia = new Materia();
+        $mesas = $materia->mesasByMateria($instancia, $materias, $comision);
+
+        return view('mesa.components.vista_materia')->with([
+            'mesas' => $mesas,
+            'instancia' => $instancia,
+            'comision' => $comision
+        ]);
+    }
+
+    private function getIdsByModel($models): array
+    {
+         $ids = [];
+
+         foreach ($models as $model){
+             array_push($ids, $model->id) ;
+         }
+
+         return$ids;
+
     }
 }

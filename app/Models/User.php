@@ -57,6 +57,7 @@ class User extends Authenticatable
 
         return $users;
     }
+
     public function alumnos()
     {
         return $this->belongsToMany(Alumno::class)->withTimestamps();
@@ -74,6 +75,7 @@ class User extends Authenticatable
     public function sedes(){
         return $this->belongsToMany(Sede::class)->withTimestamps();
     }
+
     public function hasSede($sede)
     {
 

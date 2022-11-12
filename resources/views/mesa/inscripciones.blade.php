@@ -36,6 +36,16 @@
         @if($mesa)
         <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#libro_folio">Libro/Folio</button>
         @include('mesa.modals.libro_folio')
+            <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
+               class="btn btn-sm btn-success">
+                <i>1° llamado</i>
+                <small style="font-size: 0.6em">Descargar Acta Volante</small>
+            </a>
+            <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
+               class="btn btn-sm btn-success">
+                <i>2° llamado</i>
+                <small style="font-size: 0.6em">Descargar Acta Volante</small>
+            </a>
         @endif
     </div>
 
@@ -67,13 +77,19 @@
 
                 <td>
                     @include('mesa.modals.dar_baja_mesa')
+                    @include('mesa.modals.mover')
 
                     <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
-                    <a href="" class="btn btn-sm btn-primary">
+                    @if($mesa->materia->getTotalAttribute() > 0)
+                    <a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
                         Mover
                     </a>
+                    @endif
+                    
+                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" id="{{$inscripcion->id}}">Confirmar</button>
+                    <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled>Confirmado</button>  
                 </td>
 
             </tr>
@@ -146,14 +162,18 @@
                 <td>{{ $inscripcion->telefono }}</td>
 
                 <td>
-
-
-                    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
+                <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         Dar baja
                     </a>
-                    <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
+                    @if($mesa->materia->getTotalAttribute() > 0)
+                    <a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#mover{{$inscripcion->id}}">
                         Mover
                     </a>
+                    @endif
+                    
+                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" id="{{$inscripcion->id}}">Confirmar</button>
+                    <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled>Confirmado</button>
+
                     @include('mesa.modals.dar_baja_mesa')
                     @include('mesa.modals.mover')
                 </td>
@@ -205,4 +225,5 @@
 @endsection
 @section('scripts')
 <script src="{{ asset('js/mesas/inscripcion.js') }}"></script>
+<script src="{{ asset('js/mesas/confirmacion.js') }}"></script>
 @endsection

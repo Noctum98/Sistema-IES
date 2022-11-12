@@ -1,4 +1,7 @@
 @extends('layouts.app-prueba')
+
+	<link href="{{ asset('vendors/select2/css/select2.min.css') }}" rel="stylesheet">
+
 @section('content')
 <div class="container">
 	<h2 class="h1 text-info">
@@ -111,5 +114,19 @@
 	</div>
 	@endsection
 	@section('scripts')
+		<script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
+
 		<script src="{{ asset('js/mesas/configuracion.js') }}"></script>
+		<script src="{{asset('vendors/select2/js/select2.min.js')}}"></script>
+		<script>
+			$('.js-data-example-ajax').select2({
+
+				ajax: {
+					url: 'carrera/verProfesores/'+$(this).attr('id'),
+					dataType: 'json'
+					// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+				}
+			});
+		</script>
+
 	@endsection
