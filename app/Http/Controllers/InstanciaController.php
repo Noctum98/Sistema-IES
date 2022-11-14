@@ -58,14 +58,24 @@ class InstanciaController extends Controller
             $carreras = Auth::user()->carreras;
         }
 
-        $profesores = User::select('id','nombre','apellido')->whereHas('sedes',function($query) use ($sede_id){
-            $query->where('sede_id',$sede_id);
-        })->get();
-
         return view('mesa.carreras', [
             'sede'  =>  $sede,
             'instancia' => $instancia,
             'carreras' => $carreras,
+        ]);
+    }
+
+    public function vista_mesas(Request $request,$id,$instancia_id)
+    {
+        $carrera = Carrera::find($id);
+        $instancia = Instancia::find($instancia_id);
+        $profesores = User::select('id','nombre','apellido')->whereHas('carreras',function($query) use ($id){
+            $query->where('carrera_id',$id);
+        })->get();
+
+        return view('mesa.admin_mesa',[
+            'carrera' => $carrera,
+            'instancia' => $instancia,
             'profesores' => $profesores
         ]);
     }

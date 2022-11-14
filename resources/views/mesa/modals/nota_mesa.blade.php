@@ -9,12 +9,12 @@
             </div>
             <div class="modal-body">
                 <p class="text-danger"><i>Si solo quiere poner una sola nota debe colocar un guión medio en el campo que no corresponde la nota.</i></p>
-                <form action="{{ !$inscripcion->acta_volante ? route('actas_volantes.store') :  route('actas_volantes.update',$inscripcion->acta_volante->id)}}" method="POST">
+                <form action="{{ !$inscripcion->acta_volante ? route('actas_volantes.store') :  route('actas_volantes.update',$inscripcion->acta_volante->id)}}" method="POST" >
                     @if($inscripcion->acta_volante)
                     {{ METHOD_FIELD('PUT') }}
                     @endif
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="ausente" name="ausente" data-id="{{$inscripcion->id}}">
+                        <input class="form-check-input" type="checkbox" value="1" id="ausente" name="ausente" data-id="{{$inscripcion->id}}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
                         <label class="form-check-label" for="ausente">
                             Marcar como AUSENTE
                         </label>
@@ -22,17 +22,17 @@
                     <div class="form-group">
                         <label for="nota_escrito">Escrito</label>
                         @if($inscripcion->acta_volante)
-                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}">
+                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
                         @else
-                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}">
+                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
                         @endif
                     </div>
                     <div class="form-group">
                         <label for="nota_escrito">Oral</label>
                         @if($inscripcion->acta_volante)
-                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}">
+                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
                         @else
-                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}">
+                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
                         @endif
                     </div>
                     @if($inscripcion->acta_volante)
@@ -45,7 +45,7 @@
                 <input type="hidden" name="alumno_id" value="{{$inscripcion->alumno_id}}">
                 <input type="hidden" name="mesa_alumno_id" value="{{$inscripcion->id}}">
             </div>
-            <input type="submit" value="Guardar" class="btn btn-success">
+            <input type="submit" value="Guardar" class="btn btn-success" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
             </form>
         </div>
     </div>
@@ -70,4 +70,6 @@
             $("#oral-"+inscripcion_id).prop('readonly',false);
         }
     });
+
+    $("#escrito")
 </script>

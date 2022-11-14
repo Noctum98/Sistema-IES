@@ -3,7 +3,7 @@
 <div class="container">
 
     @if($mesa)
-    <a href="{{ route('mesa.carreras',['sede_id'=>$mesa->materia->carrera->sede->id,'instancia_id'=>$instancia->id]) }}">
+    <a href="{{ route('mesa.mesas',['id'=>$mesa->materia->carrera->id,'instancia_id'=>$instancia->id]) }}">
         <button class="btn btn-outline-info mb-2">
             <i class="fas fa-angle-left"></i>
             Volver

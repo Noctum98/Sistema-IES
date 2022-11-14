@@ -47,7 +47,7 @@ class ActaVolanteController extends Controller
 
         $acta_volante = ActaVolante::create($request->all());
 
-        return redirect()->back()->with(['alumno_success'=>'Se han colocado correctamente las notas']);
+        return redirect()->back()->with(['alert_success'=>'Se han colocado correctamente las notas']);
     }
 
     public function update(Request $request, $id)
@@ -57,15 +57,13 @@ class ActaVolanteController extends Controller
             'nota_oral' => ['required'],
         ]);
 
-        //dd($request->all());
-
         $request = $this->verificar_nota($request);
 
         $acta_volante = ActaVolante::find($id);
 
         $acta_volante->update($request->all());
 
-        return redirect()->back()->with(['alumno_success'=>'Se han editado correctamente las notas']);
+        return redirect()->back()->with(['alert_success'=>'Se han editado correctamente las notas']);
     }
 
     private function verificar_nota(Request $request)

@@ -386,6 +386,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name(
         'mesa.carreras'
     );
+    Route::get('/carrera/admin/{id}/{instancia_id}',[InstanciaController::class,'vista_mesas'])->name(('mesa.mesas'));
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
     Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones'])->name(
         'mesa.inscriptos'
@@ -428,7 +429,7 @@ Route::prefix('mesas')->group(function () {
     );
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}',[MesaController::class,'mesaByComision']);
-
+    Route::put('/cerrarActaVolante/{mesa_id}',[MesaController::class,'cierreProfesor'])->name('mesa.cerrar_acta');
 });
 
 Route::resource('actasVolantes',ActaVolanteController::class);

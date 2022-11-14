@@ -122,10 +122,10 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca
                 </a>
-                @if(Session::has('admin'))
+                @if(Session::has('profesor'))
                 <a class="nav-link" href="{{ route('actasVolantes.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                    Mesas Profesor
+                    Mesas de Examenes
                 </a>
                 @endif
             </div>
