@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mesa extends Model
 {
@@ -47,6 +48,17 @@ class Mesa extends Model
 
     public function mesa_inscriptos_segundo(){
         return $this->hasMany('App\Models\MesaAlumno')->where('segundo_llamado',true);
+    }
+
+    public function mesa_inscriptos_props(int $prop = null): HasMany
+    {
+        if($prop == 1){
+            return $this->mesa_inscriptos_primero();
+        }
+        if($prop == 2){
+            return $this->mesa_inscriptos_segundo();
+        }
+        return $this->mesa_inscriptos();
     }
 
     public function bajas_primero(){
