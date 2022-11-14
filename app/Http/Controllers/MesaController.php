@@ -11,6 +11,7 @@ use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\Proceso;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
 class MesaController extends Controller
@@ -183,10 +184,7 @@ class MesaController extends Controller
             $mesa = Mesa::create($request->all());
         }
 
-        return redirect()->route('mesa.carreras', [
-            'sede_id' => $materia->carrera->sede->id,
-            'instancia_id' => $instancia->id,
-        ])->with([
+        return redirect()->back()->with([
             'message' => 'Mesa '.$materia->nombre.' configurada correctamente',
         ]);
     }
@@ -298,6 +296,16 @@ class MesaController extends Controller
         }
 
         return response()->json($datos,200);
+    }
+
+    public function cierreProfesor(Request $request,$id)
+    {
+        $mesa = Mesa::find($id);
+        $mesa->cierre_profesor = true;
+        $mesa->fecha_cierre_profesor = Carbon::now();
+        $mesa->update();
+
+        return redirect()->back()->with(['alert_success'=>'El acta volante se ha cerrado correctamente.']);
     }
 
     private function setFechaTurno($materia, $fecha)

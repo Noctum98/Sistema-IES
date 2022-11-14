@@ -5,11 +5,14 @@
         Mesa {{ $mesa->materia->nombre }}
     </h2>
     <hr>
-    @if(@session('alumno_success'))
-    <div class="alert alert-success">
-        {{@session('alumno_success')}}
-    </div>
+
+    @include('layouts.alerts')
+
+    @if(!$mesa->cierre_profesor)
+        <button class="btn btn-sm btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#cerrarActa{{$mesa->id}}">Cerrar Acta Volante</button>
+        @include('mesa.modals.alerta_acta_volante')
     @endif
+
     <h2 class="text-info">Primer llamado</h2>
 
     @if( count($mesa->mesa_inscriptos_primero) > 0)

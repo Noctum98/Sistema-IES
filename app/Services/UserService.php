@@ -74,11 +74,12 @@ class UserService
         })->where('presidente_id', $user->id)->get();
 
         /*
-    Mesa::select('mesas.*','instancias.nombre','instancias.año','carreras.nombre')
-    ->join('instancias','instancias.id','mesas.instancia_id')
-    ->join('carreras','carreras.id','mesas.carrera_id')
-    ->where('mesas.presidente_id','=',$user->id)
-    ->where('instancias.estado','=','activa')->get();*/
+            Mesa::select('mesas.*','instancias.nombre','instancias.año','carreras.nombre')
+            ->join('instancias','instancias.id','mesas.instancia_id')
+            ->join('carreras','carreras.id','mesas.carrera_id')
+            ->where('mesas.presidente_id','=',$user->id)
+            ->where('instancias.estado','=','activa')->get();
+        */
 
         return $mesas;
     }
