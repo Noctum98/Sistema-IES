@@ -194,4 +194,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(CargoMateria::class, 'modulo_profesor', 'user_id', 'modulo_id');
     }
+
+    public function getApellidoNombre(): string
+    {
+        return $this->getAttribute('apellido'). ', '. $this->getAttribute('nombre');
+    }
 }
