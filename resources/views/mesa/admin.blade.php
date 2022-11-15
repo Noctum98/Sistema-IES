@@ -68,6 +68,8 @@
                                         Carreras PDF
                                     </a>
                                     @include('mesa.modals.vista_seleccion_carreras')
+                                @endif
+                                @if(Session::has('admin') or Session::has('coordinador') )
                                     <a class="btn btn-sm btn-success" data-bs-toggle="modal"
                                        data-bs-target="#vistaSeleccionMateria" id="vistaMateria"
                                        data-loader="{{$instancia->id}}-materia"
