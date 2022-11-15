@@ -30,8 +30,8 @@
     }
 </style>
 
-<div class="container alumno">
-    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 70%; align-items: center;  margin: 0 15% 3px 15%; padding-bottom: 0" alt="DATA-IESVU">
+<div class="container alumno" style="margin: 0 5px">
+    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 60%; align-items: center;  margin: 0 20% 3px 20%; padding-bottom: 0" alt="DATA-IESVU">
     <table class="outborder m-0 py-0" border="0" cellpadding="0" cellspacing="0"
            style="width: 100%; border-spacing: 0; border-collapse: collapse; border-style: outset; border-color: #ffffff;
            margin: 0; padding: 0 "
@@ -123,14 +123,14 @@
         @endphp
         @foreach($mesa->mesa_inscriptos_props($llamado)->get() as $mesa_inscripto)
             <tr>
-                <td>{{ $loop->index+1 }}</td>
-                <td>{{$mesa_inscripto->apellidos}}, {{$mesa_inscripto->nombres}}</td>
-                <td>{{$mesa_inscripto->dni}}</td>
-                <td>{{$mesa_inscripto->correo}}</td>
-                <td>{{$mesa_inscripto->telefono}}</td>
-                <td>{{optional($mesa_inscripto->acta_volante)->nota_escrito}}</td>
-                <td>{{optional($mesa_inscripto->acta_volante)->nota_oral}}</td>
-                <td> {{optional($mesa_inscripto->acta_volante)->promedio}}</td>
+                <td style="font-size: 0.85em">{{ $loop->index+1 }}</td>
+                <td style="font-size: 0.85em">{{$mesa_inscripto->apellidos}}, {{$mesa_inscripto->nombres}}</td>
+                <td style="font-size: 0.85em">{{$mesa_inscripto->dni}}</td>
+                <td style="font-size: 0.85em">{{$mesa_inscripto->correo}}</td>
+                <td style="font-size: 0.85em">{{$mesa_inscripto->telefono}}</td>
+                <td style="font-size: 0.85em">{{optional($mesa_inscripto->acta_volante)->nota_escrito}}</td>
+                <td style="font-size: 0.85em">{{optional($mesa_inscripto->acta_volante)->nota_oral}}</td>
+                <td style="font-size: 0.85em"> {{optional($mesa_inscripto->acta_volante)->promedio}}</td>
             </tr>
 
         @endforeach
@@ -163,21 +163,21 @@
     @if($llamado == 1)
         @php
             $presidente = $materia->mesa($instancia->id)->presidente;
-            $presidente_id = $materia->mesa($instancia->id)->presidente_id;
+            $presidente_id = $materia->mesa($instancia->id)->presidente()->first();
             $primer_vocal = $materia->mesa($instancia->id)->primer_vocal;
-            $primer_vocal_id = $materia->mesa($instancia->id)->primer_vocal_id;
+            $primer_vocal_id = $materia->mesa($instancia->id)->primer_vocal()->first();
             $segundo_vocal = $materia->mesa($instancia->id)->segundo_vocal;
-            $segundo_vocal_id = $materia->mesa($instancia->id)->segundo_vocal_id;
+            $segundo_vocal_id = $materia->mesa($instancia->id)->segundo_vocal()->first();
         @endphp
 
     @else
         @php
             $presidente = $materia->mesa($instancia->id)->presidente;
-            $presidente_id = $materia->mesa($instancia->id)->presidente_segundo_id;
+            $presidente_id = $materia->mesa($instancia->id)->presidente_segundo()->first();
             $primer_vocal = $materia->mesa($instancia->id)->primer_vocal;
-            $primer_vocal_id = $materia->mesa($instancia->id)->primer_vocal_segundo_id;
+            $primer_vocal_id = $materia->mesa($instancia->id)->primer_vocal_segundo()->first();
             $segundo_vocal = $materia->mesa($instancia->id)->segundo_vocal;
-            $segundo_vocal_id = $materia->mesa($instancia->id)->segundo_vocal_segundo_id;
+            $segundo_vocal_id = $materia->mesa($instancia->id)->segundo_vocal_segundo()->first();
         @endphp
     @endif
     <div class="container" style="width: 100%; margin: 0 5px; padding: 0 5px">
@@ -190,13 +190,13 @@
                     Presidente de mesa
                 </th>
                 <th scope="col" width="50%" style="text-align: left">
-                    {{$presidente}}
+
                     @if($presidente_id)
-                        @inject('userService', 'App\Services\UserService')
-                        @php
-                            $user = $userService->getUserById($presidente_id);
-                        @endphp
-                        <small><br/>{{$user->email}}</small>
+                        <small>
+                            {{$presidente_id->getApellidoNombre()}}
+                            <br/>{{$presidente_id->email}}</small>
+                    @else
+                        {{$presidente}}
                     @endif
                 </th>
                 <th scope="col" width="15%">
@@ -211,13 +211,14 @@
                     Vocal 1
                 </th>
                 <th scope="col" width="50%" style="text-align: left">
-                    {{$primer_vocal}}
+
                     @if($primer_vocal_id)
-                        @inject('userService', 'App\Services\UserService')
-                        @php
-                            $user = $userService->getUserById($primer_vocal_id);
-                        @endphp
-                        <small><br/>{{$user->email}}</small>
+
+                        <small>
+                            {{$primer_vocal_id->getApellidoNombre()}}
+                            <br/>{{$primer_vocal_id->email}}</small>
+                    @else
+                        {{$primer_vocal}}
                     @endif
 
                 </th>
@@ -233,13 +234,13 @@
                     Vocal 2
                 </th>
                 <th scope="col" width="50%" style="text-align: left">
-                    {{$segundo_vocal}}
+
                     @if($segundo_vocal_id)
-                        @inject('userService', 'App\Services\UserService')
-                        @php
-                            $user = $userService->getUserById($segundo_vocal_id);
-                        @endphp
-                        <small><br/>{{$user->email}}</small>
+                        <small>
+                            {{$segundo_vocal_id->getApellidoNombre()}}
+                            <br/>{{$segundo_vocal_id->email}}</small>
+                    @else
+                        {{$segundo_vocal}}
                     @endif
                 </th>
                 <th scope="col" width="15%">

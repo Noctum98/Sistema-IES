@@ -41,7 +41,7 @@
                 <i>1° llamado</i>
                 <small style="font-size: 0.6em">Descargar Acta Volante</small>
             </a>
-            <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
+            <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 2, 'comision' => optional($mesa->comision()->first())->id]) }}"
                class="btn btn-sm btn-success">
                 <i>2° llamado</i>
                 <small style="font-size: 0.6em">Descargar Acta Volante</small>
