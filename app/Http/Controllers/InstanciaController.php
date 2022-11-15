@@ -69,8 +69,11 @@ class InstanciaController extends Controller
     {
         $carrera = Carrera::find($id);
         $instancia = Instancia::find($instancia_id);
-        $profesores = User::select('id','nombre','apellido')->whereHas('carreras',function($query) use ($id){
-            $query->where('carrera_id',$id);
+        $profesores = User::select('id','nombre','apellido')->whereHas('carreras',function($query) use ($carrera){
+            $query->where([
+                'carreras.resolucion'=>$carrera->resolucion,
+                'carreras.sede_id'=>$carrera->sede_id
+            ]);
         })->get();
 
         return view('mesa.admin_mesa',[
