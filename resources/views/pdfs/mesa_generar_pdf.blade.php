@@ -63,13 +63,13 @@
 
                                 <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
                                 @if($llamado == 1)
-                                    <td>{{$materia->mesa($instancia->id)->presidente}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->primer_vocal}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre()}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre()}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal()->first()->getApellidoNombre()}}</td>
                                 @else
-                                    <td>{{$materia->mesa($instancia->id)->presidente_segundo}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->primer_vocal_segundo}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal_segundo}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->presidente_segundo()->first()->getApellidoNombre()}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->primer_vocal_segundo()->first()->getApellidoNombre()}}</td>
+                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal_segundo()->first()->getApellidoNombre()}}</td>
                                 @endif
 
                             @endif
