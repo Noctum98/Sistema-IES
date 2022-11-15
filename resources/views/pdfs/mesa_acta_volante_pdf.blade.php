@@ -192,9 +192,9 @@
                 <th scope="col" width="50%" style="text-align: left">
 
                     @if($presidente_id)
-                        {{$presidente_id->getApellidoNombre()}}
-
-                        <small><br/>{{$presidente_id->email}}</small>
+                        <small>
+                            {{$presidente_id->getApellidoNombre()}}
+                            <br/>{{$presidente_id->email}}</small>
                     @else
                         {{$presidente}}
                     @endif
@@ -214,8 +214,9 @@
 
                     @if($primer_vocal_id)
 
-                    {{$primer_vocal_id->getApellidoNombre()}}
-                        <small><br/>{{$primer_vocal_id->email}}</small>
+                        <small>
+                            {{$primer_vocal_id->getApellidoNombre()}}
+                            <br/>{{$primer_vocal_id->email}}</small>
                     @else
                         {{$primer_vocal}}
                     @endif
@@ -235,12 +236,9 @@
                 <th scope="col" width="50%" style="text-align: left">
 
                     @if($segundo_vocal_id)
-                        @inject('userService', 'App\Services\UserService')
-                        @php
-                            $user = $userService->getUserById($segundo_vocal_id);
-                        @endphp
-                    {{$segundo_vocal_id->getApellidoNombre()}}
-                        <small><br/>{{$user->email}}</small>
+                        <small>
+                            {{$segundo_vocal_id->getApellidoNombre()}}
+                            <br/>{{$segundo_vocal_id->email}}</small>
                     @else
                         {{$segundo_vocal}}
                     @endif
