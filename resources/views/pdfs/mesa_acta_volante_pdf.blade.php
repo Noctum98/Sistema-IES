@@ -30,8 +30,8 @@
     }
 </style>
 
-<div class="container alumno">
-    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 70%; align-items: center;  margin: 0 15% 3px 15%; padding-bottom: 0" alt="DATA-IESVU">
+<div class="container alumno" style="margin: 0 5px">
+    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 60%; align-items: center;  margin: 0 20% 3px 20%; padding-bottom: 0" alt="DATA-IESVU">
     <table class="outborder m-0 py-0" border="0" cellpadding="0" cellspacing="0"
            style="width: 100%; border-spacing: 0; border-collapse: collapse; border-style: outset; border-color: #ffffff;
            margin: 0; padding: 0 "
