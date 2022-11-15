@@ -58,16 +58,6 @@
                                             Borrar datos
                                         </a>
                                     @endif
-
-                                    <a class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                       data-bs-target="#vistaSeleccionCarrera" id="vistaCarrera"
-                                       data-loader="{{$instancia->id}}"
-                                       data-attr="{{ route('carrera.vista_carrera', ['instancia' => $instancia->id]) }}">
-                                        <i class="fa fa-spinner fa-spin" style="display: none"
-                                           id="loader{{$instancia->id}}"></i>
-                                        Carreras PDF
-                                    </a>
-                                    @include('mesa.modals.vista_seleccion_carreras')
                                 @endif
                                 @if(Session::has('admin') or Session::has('coordinador') )
                                     <a class="btn btn-sm btn-success" data-bs-toggle="modal"
@@ -79,6 +69,15 @@
                                         Acta Volante
                                     </a>
                                     @include('mesa.modals.vista_seleccion_materia')
+                                    <a class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                       data-bs-target="#vistaSeleccionCarrera" id="vistaCarrera"
+                                       data-loader="{{$instancia->id}}"
+                                       data-attr="{{ route('carrera.vista_carrera', ['instancia' => $instancia->id]) }}">
+                                        <i class="fa fa-spinner fa-spin" style="display: none"
+                                           id="loader{{$instancia->id}}"></i>
+                                        Carreras PDF
+                                    </a>
+                                    @include('mesa.modals.vista_seleccion_carreras')
                                 @endif
                             </td>
                             @if(Session::has('admin'))

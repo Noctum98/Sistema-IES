@@ -30,7 +30,9 @@
     </div>
     @endif
 
-    <a href="{{ route('mesa.tribunal',['id'=>$carrera->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success mb-3">Descargar tribunal</a>
+    <a href="{{ route('generar_pdf_mesa',['instancia'=>$instancia->id,'carrera'=>$carrera->id,'llamado'=>1]) }}" class="btn btn-sm btn-danger mb-3">PDF 1er Llamado</a>
+    <a href="{{ route('generar_pdf_mesa',['instancia'=>$instancia->id,'carrera'=>$carrera->id,'llamado'=>2]) }}" class="btn btn-sm btn-danger mb-3">PDF 2do Llamado</a>
+
 
     @if($carrera->estado != 1)
     <table class="table">
