@@ -13,6 +13,7 @@
             <div class="modal-footer">
                 <form action="{{route('mesa.cerrar_acta',['mesa_id'=>$mesa->id])}}" method="POST">
                     {{method_field('PUT')}}
+                    <input type="hidden" name="llamado" value="" id="llamado">
                     <input type="submit" value="Cerrar Acta Volante" class="btn btn-sm btn-warning">
                 </form>
             </div>

@@ -24,10 +24,9 @@
         @if(count($cargos) > 0)
             <hr>
             <h5 class="text-secondary">Cargos</h5>
+            @include('calificacion.componentes.materia')
             @if(count(Auth::user()->cargo_materia()->get()) > 0)
                 @include('calificacion.componentes.cargo_materia')
-            @else
-                @include('calificacion.componentes.materia')
             @endif
         @endif
     </div>

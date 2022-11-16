@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\excelMultipleTribunalExport;
 use App\Exports\excelTribunalExport;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Instancia;
 use App\Models\Sede;

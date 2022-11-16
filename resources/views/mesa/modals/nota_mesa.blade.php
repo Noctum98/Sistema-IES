@@ -14,7 +14,7 @@
                     {{ METHOD_FIELD('PUT') }}
                     @endif
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="ausente" name="ausente" data-id="{{$inscripcion->id}}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
+                        <input class="form-check-input" type="checkbox" value="1" id="ausente" name="ausente" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
                         <label class="form-check-label" for="ausente">
                             Marcar como AUSENTE
                         </label>
@@ -22,17 +22,17 @@
                     <div class="form-group">
                         <label for="nota_escrito">Escrito</label>
                         @if($inscripcion->acta_volante)
-                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
+                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}" {{ $cierre ? 'disabled' : '' }}>
                         @else
-                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
+                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
                         @endif
                     </div>
                     <div class="form-group">
                         <label for="nota_escrito">Oral</label>
                         @if($inscripcion->acta_volante)
-                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
+                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}" {{ $cierre ? 'disabled' : '' }}>
                         @else
-                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
+                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
                         @endif
                     </div>
                     @if($inscripcion->acta_volante)
@@ -45,7 +45,7 @@
                 <input type="hidden" name="alumno_id" value="{{$inscripcion->alumno_id}}">
                 <input type="hidden" name="mesa_alumno_id" value="{{$inscripcion->id}}">
             </div>
-            <input type="submit" value="Guardar" class="btn btn-success" {{ $mesa->cierre_profesor ? 'disabled' : '' }}>
+            <input type="submit" value="Guardar" class="btn btn-success" {{ $cierre ? 'disabled' : '' }}>
             </form>
         </div>
     </div>

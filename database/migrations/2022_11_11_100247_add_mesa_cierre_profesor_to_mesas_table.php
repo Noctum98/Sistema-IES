@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMesaCierreToMesasTable extends Migration
+class AddMesaCierreProfesorToMesasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class AddMesaCierreToMesasTable extends Migration
     {
         Schema::table('mesas', function (Blueprint $table) {
             $table->after('libro',function($table){
-                $table->boolean('cierre_profesor')->default(false);
                 $table->string('fecha_cierre_profesor')->nullable();
             });
 

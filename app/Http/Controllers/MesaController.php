@@ -301,8 +301,16 @@ class MesaController extends Controller
     public function cierreProfesor(Request $request,$id)
     {
         $mesa = Mesa::find($id);
-        $mesa->cierre_profesor = true;
-        $mesa->fecha_cierre_profesor = Carbon::now();
+
+        if($request['llamado'] == "1")
+        {
+            $mesa->cierre_profesor = true;
+            $mesa->fecha_cierre_profesor = Carbon::now();
+        }else{
+            $mesa->cierre_profesor_segundo = true;
+            $mesa->fecha_cierre_profesor_segundo = Carbon::now();
+        }
+        
         $mesa->update();
 
         return redirect()->back()->with(['alert_success'=>'El acta volante se ha cerrado correctamente.']);

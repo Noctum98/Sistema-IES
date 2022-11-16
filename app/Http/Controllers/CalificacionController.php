@@ -27,7 +27,13 @@ class CalificacionController extends Controller
         $cargos = $user->cargos;
         $ruta = 'calificacion.admin';
 
-        // dd($materias,$cargos);
+        $cargos_materia = [];
+        if(count($user->cargo_materia()->get()) > 0){
+            foreach($user->cargo_materia()->get() as $cargo_materia){
+                $cargos_materia[] = $cargo_materia->cargo->id;
+            }
+        }
+        $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
 
         return view('calificacion.home', [
             'materias' => $materias,

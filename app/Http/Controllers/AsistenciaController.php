@@ -28,9 +28,17 @@ class AsistenciaController extends Controller
     public function vista_carreras()
     {
         $materias = Auth::user()->materias;
-        $cargos = Auth::user()->cargos;
+        $user = Auth::user();
 
         $ruta = 'asis.admin';
+
+        $cargos_materia = [];
+        if(count($user->cargo_materia()->get()) > 0){
+            foreach($user->cargo_materia()->get() as $cargo_materia){
+                $cargos_materia[] = $cargo_materia->cargo->id;
+            }
+        }
+        $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
 
         return view('asistencia.home', [
             'materias' => $materias,

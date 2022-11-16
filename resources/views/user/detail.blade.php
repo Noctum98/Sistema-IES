@@ -115,6 +115,11 @@
             </button>
             @include('user.modals.admin_carreras')
 
+            <button type="button" class="ml-2 btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#carrerasModal{{$user->id}}">
+                    Asignar Carreras
+            </button>
+            @include('user.modals.admin_carreras')
+
 
         </div>
     </div>

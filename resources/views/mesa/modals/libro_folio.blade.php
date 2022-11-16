@@ -13,6 +13,7 @@
                 @endif
                 <form method="POST" action="{{ route('mesa.librofolio',$mesa->id) }}">
 
+                    <input type="hidden" name="llamado" value="{{ $llamado }}">
                     <div class="form-group">
                         <label for="libro">Libro</label>
                         <input type="text" name="libro" class="form-control" value="{{ $mesa->libro ?? '' }}">
