@@ -13,13 +13,13 @@ class AddMesaCierreToMesasTable extends Migration
      */
     public function up()
     {
-        Schema::table('mesas', function (Blueprint $table) {
-            $table->after('libro',function($table){
-                $table->boolean('cierre_profesor')->default(false);
-                $table->string('fecha_cierre_profesor')->nullable();
-            });
-           
-        });
+//        Schema::table('mesas', function (Blueprint $table) {
+//            $table->after('libro',function($table){
+//                $table->boolean('cierre_profesor')->default(false);
+//                $table->string('fecha_cierre_profesor')->nullable();
+//            });
+//
+//        });
     }
 
     /**
