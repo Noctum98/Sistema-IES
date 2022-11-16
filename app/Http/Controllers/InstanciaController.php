@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\excelMultipleTribunalExport;
 use App\Exports\excelTribunalExport;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Instancia;
 use App\Models\Sede;
@@ -67,14 +65,14 @@ class InstanciaController extends Controller
 
     public function vista_mesas(Request $request,$id,$instancia_id)
     {
-        $carrera = Carrera::find($id);
-        $instancia = Instancia::find($instancia_id);
-        $profesores = User::select('id','nombre','apellido')->whereHas('carreras',function($query) use ($carrera){
+       $carrera = Carrera::find($id);
+       $instancia = Instancia::find($instancia_id);
+       $profesores = User::select('id','nombre','apellido')->whereHas('carreras',function($query) use ($carrera){
             $query->where([
                 'carreras.resolucion'=>$carrera->resolucion,
                 'carreras.sede_id'=>$carrera->sede_id
             ]);
-        })->get();
+       })->get();
 
         return view('mesa.admin_mesa',[
             'carrera' => $carrera,
