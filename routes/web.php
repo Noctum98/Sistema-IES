@@ -386,7 +386,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name(
         'mesa.carreras'
     );
-    Route::get('/carrera/admin/{id}/{instancia_id}',[InstanciaController::class,'vista_mesas'])->name(('mesa.mesas'));
+    Route::get('/carrera/admin/{id}/{instancia_id}',[InstanciaController::class,'vista_mesas'])->name('mesa.mesas');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
     Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones'])->name(
         'mesa.inscriptos'
