@@ -21,13 +21,15 @@
             @endforeach
         @endif
 
-        @if(count($cargos) > 0)
+       
             <hr>
             <h5 class="text-secondary">Cargos</h5>
+            @if(count($cargos) > 0)
             @include('calificacion.componentes.materia')
+            @endif
             @if(count(Auth::user()->cargo_materia()->get()) > 0)
                 @include('calificacion.componentes.cargo_materia')
             @endif
-        @endif
+        
     </div>
 @endsection
