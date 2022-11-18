@@ -15,16 +15,16 @@
                 @endif
                 <form method="POST" action="{{ route('mesa.librofolio',$mesa->id) }}">
 
-{{--                    <input type="hidden" name="llamado" value="{{ $llamado }}">--}}
+                    <input type="hidden" name="llamado" value="2">
                     <div class="form-group">
-                        <label for="libro">Libro
-                            <input type="text" name="libro" class="form-control" value="{{ $mesa->libro_segundo ?? '' }}">
-                        </label>
+                        <label for="libro">Libro</label>
+                        <input type="text" name="libro_segundo" class="form-control" value="{{ $mesa->libro_segundo ?? '' }}">
+
                     </div>
 
                     <div class="form-group">
                         <label for="libro">Folio</label>
-                        <input type="text" name="folio" class="form-control" value="{{ $mesa->folio_segundo ?? '' }}">
+                        <input type="text" name="folio_segundo" class="form-control" value="{{ $mesa->folio_segundo ?? '' }}">
                     </div>
                     <input type="submit" class="btn btn-success"
                            value="Guardar" {{ !$mesa->cierre_profesor_segundo ? 'disabled' : '' }}>

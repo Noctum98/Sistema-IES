@@ -31,7 +31,9 @@ class Mesa extends Model
         'primer_vocal_segundo_id',
         'segundo_vocal_segundo_id',
         'libro',
-        'folio'
+        'folio',
+        'libro_segundo',
+        'folio_segundo'
     ];
 
     public function materia(){

@@ -45,9 +45,17 @@ class ActaVolanteController extends Controller
 
         $request = $this->verificar_nota($request);
 
-        $acta_volante = ActaVolante::create($request->all());
+        if($request['error'])
+        {
+            $alerta = ['alert_danger'=>'Error en los datos enviados'];
+        }else{
+            $acta_volante = ActaVolante::create($request->all());
 
-        return redirect()->back()->with(['alert_success'=>'Se han colocado correctamente las notas']);
+            $alerta = ['alert_success'=>'Se han colocado correctamente las notas'];
+        }
+
+
+        return redirect()->back()->with($alerta);
     }
 
     public function update(Request $request, $id)
@@ -59,11 +67,20 @@ class ActaVolanteController extends Controller
 
         $request = $this->verificar_nota($request);
 
-        $acta_volante = ActaVolante::find($id);
+        if($request['error'])
+        {
+            $alerta = ['alert_danger'=>'Error en los datos enviados'];
+        }else{
+            $acta_volante = ActaVolante::find($id);
 
-        $acta_volante->update($request->all());
+            $acta_volante->update($request->all());
 
-        return redirect()->back()->with(['alert_success'=>'Se han editado correctamente las notas']);
+            $alerta = ['alert_success'=>'Se han editado correctamente las notas.'];
+        }
+
+       
+
+        return redirect()->back()->with($alerta);
     }
 
     private function verificar_nota(Request $request)
@@ -79,19 +96,20 @@ class ActaVolanteController extends Controller
             if(trim($request['nota_escrito']) != '-'){
                 $suma = $suma + (int) $request['nota_escrito'];
                 $contador++;
-            }else{
-                $request['nota_rescrito'] = null;
             }
     
             if(trim($request['nota_oral']) != '-'){
                 $suma = $suma + (int) $request['nota_oral'];
                 $contador++;
 
-            }else{
-                $request['nota_oral'] = null;
             }
             
-            $request['promedio'] = $suma / $contador;
+            if($contador > 0 && $suma > 0)
+            {
+                $request['promedio'] = $suma / $contador;
+            }else{
+                $request['error'] = true;
+            }
         }
         
         return $request;

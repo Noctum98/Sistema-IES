@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMesaCierreToMesasTable extends Migration
+class AddObservacionGlobalToProcesos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class AddMesaCierreToMesasTable extends Migration
      */
     public function up()
     {
-        Schema::table('mesas', function (Blueprint $table) {
-            $table->after('libro',function($table){
-                $table->boolean('cierre_profesor')->default(false);
-            });
-
+        Schema::table('procesos', function (Blueprint $table) {
+            $table->text('observacion_global')->after('nota_recuperatorio')->nullable();
         });
     }
 
@@ -28,8 +25,8 @@ class AddMesaCierreToMesasTable extends Migration
      */
     public function down()
     {
-        Schema::table('mesas', function (Blueprint $table) {
-            $table->dropColumn('cierre_profesor');
+        Schema::table('procesos', function (Blueprint $table) {
+            $table->dropColumn('observacion_global');
         });
     }
 }

@@ -43,8 +43,8 @@
                         Libro/Folio 2do Llamado
                     </button>
 
-                    @include('mesa.modals.libro_folio_2')
-                    @include('mesa.modals.libro_folio_1')
+                    @include('mesa.modals.libro_folio_2',['llamado'=>1])
+                    @include('mesa.modals.libro_folio_1',['llamado'=>2])
 
                     <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
                        class="btn btn-sm btn-success">
