@@ -29,7 +29,6 @@
                     <td>
                         <a href="{{ route('actasVolantes.show',$mesa->id) }}" class="btn btn-sm btn-secondary">
                             <i class="fa fa-eye"></i>
-
                             Ver inscriptos
                         </a>
                     </td>

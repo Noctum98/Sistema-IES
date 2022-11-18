@@ -83,15 +83,15 @@ class MesaController extends Controller
             foreach ($mesa->mesa_inscriptos as $inscripcion) {
                 if ($inscripcion->segundo_llamado) {
                     if ($inscripcion->estado_baja) {
-                        array_push($segundo_llamado_bajas, $inscripcion);
+                        $segundo_llamado_bajas[] = $inscripcion;
                     } else {
-                        array_push($segundo_llamado, $inscripcion);
+                        $segundo_llamado[] = $inscripcion;
                     }
                 } else {
                     if ($inscripcion->estado_baja) {
-                        array_push($primer_llamado_bajas, $inscripcion);
+                        $primer_llamado_bajas[] = $inscripcion;
                     } else {
-                        array_push($primer_llamado, $inscripcion);
+                        $primer_llamado[] = $inscripcion;
                     }
                 }
             }
