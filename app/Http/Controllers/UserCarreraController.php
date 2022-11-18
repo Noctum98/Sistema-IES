@@ -10,7 +10,7 @@ class UserCarreraController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('app.roles:admin');
+        $this->middleware('app.roles:admin-coordinador');
     }
 
     public function store(Request $request,$user_id)

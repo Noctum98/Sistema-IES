@@ -34,7 +34,7 @@
                         @else
                             -
                         @endif
-                          {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}
+                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}
                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
                         @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
@@ -73,6 +73,30 @@
                             @endif
                         @endif
                     </li>
+
+                    @if($inscripcion->acta_volante()->first())
+                        <div class="card text-white bg-info mb-3 w-50 align-self-center">
+                            <div class="card-header text-center">Notas de la Mesa</div>
+                            <div class="card-body" style="font-size: 0.85em">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <p class="card-text font-weight-bolder">Oral</p>
+                                        <h6 class="card-title font-italic">{{$inscripcion->acta_volante()->first()->nota_oral}}</h6>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="card-text font-weight-bolder">Escrito</p>
+                                        <h6 class="card-title font-italic">{{$inscripcion->acta_volante()->first()->nota_escrito}}</h6>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="card-text font-weight-bolder">Promedio</p>
+                                        <h6 class="card-title font-italic">{{$inscripcion->acta_volante()->first()->promedio}}</h6>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    @endif
                 @endforeach
             </ul>
         @else

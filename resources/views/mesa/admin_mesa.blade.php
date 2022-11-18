@@ -10,9 +10,9 @@
             Volver
         </button>
     </a>
-    <h2 class="h1 text-info">
+    <h3 class="text-info">
         Mesas {{$carrera->nombre}}
-    </h2>
+    </h3>
     <hr>
     @if(@session('message'))
     <div class="alert alert-success">
