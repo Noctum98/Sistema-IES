@@ -5,7 +5,7 @@
             @if(isset($materia))
                 <a type="button" href="
                 {{ route($ruta,['id'=>$materia->id,'cargo_id'=>$cargo->id]) }}"
-                   class="list-group-item list-group-item-action border-top mt-2 text-primary"
+                   class="list-group-item list-group-item-action border-top mt-2 text-success"
                    title="Ver calificaciones"
                 >
                     <strong>

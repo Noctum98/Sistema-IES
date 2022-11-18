@@ -42,9 +42,14 @@ $(document).ready(function () {
 
                 if (response.estado && response.estado.identificador == 5) {
                     $("#global-" + proceso_id).attr('disabled', false);
+                    $("#observacion-"+proceso_id).removeClass('d-none');
                 } else {
                     $("#global-" + proceso_id).attr('disabled', true);
                     $("#global-" + proceso_id).val('');
+
+                    if(!$("#observacion-"+proceso_id).hasClass('d-none')){
+                        $("#observacion-"+proceso_id).addClass('d-none');
+                    }
                 }
             }
         });

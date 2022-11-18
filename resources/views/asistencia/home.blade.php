@@ -29,10 +29,9 @@
         @if(count($cargos) > 0)
         <hr>
             <h5 class="text-secondary">Cargos</h5>
+            @include('asistencia.componentes.materia')
             @if(count(Auth::user()->cargo_materia()->get()) > 0)
                 @include('asistencia.componentes.cargo_materia')
-            @else
-                @include('asistencia.componentes.materia')
             @endif
 {{--            @foreach(Auth::user()->cargo_materia()->get() as $cargo_materia)--}}
 {{--                @foreach($cargo->materias as $materia)--}}
