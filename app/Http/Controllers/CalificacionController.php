@@ -8,6 +8,7 @@ use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,7 @@ class CalificacionController extends Controller
 
     public function home()
     {
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
         // dd($user_id);
         $materias = $user->materias;
         $cargos = $user->cargos;
