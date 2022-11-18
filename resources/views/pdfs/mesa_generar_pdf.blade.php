@@ -65,7 +65,11 @@
                         </td>
                         @if($materia->mesa($instancia->id))
 
-                        <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                            @if ($llamado == 1)
+                                <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                            @else
+                                <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo), 'H:i') }}</td>
+                            @endif
                         @if($llamado == 1)
                         <td>{{$materia->mesa($instancia->id)->presidente()->first() ? $materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre() : ''}}</td>
                         <td>{{$materia->mesa($instancia->id)->primer_vocal()->first() ? $materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre():''}}</td>
@@ -103,7 +107,11 @@
                         </td>
                         @if($materia->mesa($instancia->id))
 
-                        <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                            @if ($llamado == 1)
+                                <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                            @else
+                                <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo), 'H:i') }}</td>
+                            @endif
                         @if($llamado == 1)
                         <td>{{$materia->mesa($instancia->id)->presidente()->first() ? $materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre() : ''}}</td>
                         <td>{{$materia->mesa($instancia->id)->primer_vocal()->first() ? $materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre():''}}</td>
@@ -140,8 +148,11 @@
                             @endif
                         </td>
                         @if($materia->mesa($instancia->id))
-
+                            @if ($llamado == 1)
                         <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
+                            @else
+                        <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo), 'H:i') }}</td>
+                            @endif
                         @if($llamado == 1)
                         <td>{{$materia->mesa($instancia->id)->presidente()->first() ? $materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre() : ''}}</td>
                         <td>{{$materia->mesa($instancia->id)->primer_vocal()->first() ? $materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre():''}}</td>
