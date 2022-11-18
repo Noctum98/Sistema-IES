@@ -14,6 +14,7 @@ use App\Models\Cargo;
 use App\Models\Comision;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AsistenciaController extends Controller
@@ -31,6 +32,9 @@ class AsistenciaController extends Controller
         $user = Auth::user();
 
         $ruta = 'asis.admin';
+
+        Log::info('AsistenciaController - vista_carreras: '.$user->nombre.' '.$user->apellido);
+        Log::info($user->cargo_materia()->get());
 
         $cargos_materia = [];
         if(count($user->cargo_materia()->get()) > 0){

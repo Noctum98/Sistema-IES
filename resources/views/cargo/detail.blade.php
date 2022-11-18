@@ -150,8 +150,13 @@
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
     <script src="{{ asset('js/cargos/pondera.js') }}"></script>
-    <script>
+    <script src="{{ asset('vendors/select2/js/select2.min.js') }}"></script>
 
+    <script>
+        $(".carreras").select2({
+            dropdownParent: $('#agregarUser'),
+            width: "100%"
+        });
         $(document).on('click', '#formAgregar', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');

@@ -60,7 +60,6 @@ class ModuloProfesorController extends Controller
             $modulo->delete();
         }
 
-
         if (isset($request['materia_id'])) {
             foreach ($request['materia_id'] as $materia) {
                 $cargo_modulo = CargoMateria::where([
