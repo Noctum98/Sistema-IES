@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="nota_escrito">Escrito</label>
                         @if($inscripcion->acta_volante)
-                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_escrito >= 0 ? $inscripcion->acta_volante->nota_escrito : 'A' }}" {{ $cierre ? 'disabled' : '' }}>
+                        <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_escrito != -1 ? $inscripcion->acta_volante->nota_escrito : 'A' }}" {{ $cierre ? 'disabled' : '' }} pattern="(^[Aa]$)|([-]$)|([0-9]{1,2})">
                         @else
                         <input type="text" name="nota_escrito" class="form-control" id="escrito-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
                         @endif
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label for="nota_escrito">Oral</label>
                         @if($inscripcion->acta_volante)
-                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_oral >= 0 ? $inscripcion->acta_volante->nota_oral : 'A' }}" {{ $cierre ? 'disabled' : '' }}>
+                        <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" value="{{ $inscripcion->acta_volante->nota_oral != -1 ? $inscripcion->acta_volante->nota_oral : 'A' }}" {{ $cierre ? 'disabled' : '' }} pattern="(^[Aa]$)|([-]$)|([0-9]{1,2})">
                         @else
                         <input type="text" name="nota_oral" class="form-control" id="oral-{{$inscripcion->id}}" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
                         @endif

@@ -15,11 +15,10 @@
                 @endif
                 <form method="POST" action="{{ route('mesa.librofolio',$mesa->id) }}">
 
-{{--                    <input type="hidden" name="llamado" value="{{ $llamado }}">--}}
+                    <input type="hidden" name="llamado" value="1">
                     <div class="form-group">
-                        <label for="libro">Libro
-                            <input type="text" name="libro" class="form-control" value="{{ $mesa->libro ?? '' }}">
-                        </label>
+                        <label for="libro">Libro</label>
+                        <input type="text" name="libro" class="form-control" value="{{ $mesa->libro ?? '' }}">
                     </div>
 
                     <div class="form-group">
