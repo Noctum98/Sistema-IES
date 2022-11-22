@@ -62,12 +62,6 @@
 
             <h2 class="text-info">Primer llamado</h2>
             @if( count($primer_llamado) > 0)
-                <div class="row">
-                    <a href="{{route('mesa.descargar',['id'=>$mesa->id,'instancia_id'=>$mesa->instancia_id,'llamado'=>'primero'])}}"
-                       class="btn btn-sm btn-success ml-3 col-md-2">
-                        <i class="fas fa-download"></i> Descargar 1<sup>er</sup> llamado
-                    </a>
-                </div>
                 <table class="table mt-4">
                     <thead class="thead-dark">
                     <tr>
