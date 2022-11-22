@@ -7,7 +7,7 @@
                 Volver
             </button>
         </a>
-        <h2 class="text-info">Configurar Cargo</h2>
+        <h3 class="text-info">Configurar Cargo</h3>
         <hr>
         <p><i>{{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->sede->nombre.' )' }}</i></p>
         <h3 class="text-secondary mb-3">Módulos</h3>
@@ -45,18 +45,18 @@
                         </td>
                         <td>
                             @if(!$cargo->ponderacion($materia->id))
-                            <form action="" id="pondera-cargo-materia" class="pondera-cargo">
-                                <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
+                                <form action="" id="pondera-cargo-materia" class="pondera-cargo">
+                                    <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
                         "
-                                       id="ponderacion" value="{{$cargo->ponderacion($materia->id)??'0' }}"/>
-                                <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
-                                <input type="hidden" id="materia" value="{{$materia->id}}"/>
-                                <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
+                                           id="ponderacion" value="{{$cargo->ponderacion($materia->id)??'0' }}"/>
+                                    <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
+                                    <input type="hidden" id="materia" value="{{$materia->id}}"/>
+                                    <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
                         @if(!Session::has('coordinador') && !Session::has('admin') ) disabled @endif
                         ">
-                                    <i class="fa fa-save"></i></button>
-                            </form>
+                                        <i class="fa fa-save"></i></button>
+                                </form>
                             @else
                                 {{$cargo->ponderacion($materia->id)}}
                             @endif
@@ -69,7 +69,8 @@
                                title="Ver módulo" class="text-info btn-sm d-inline">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <div class="d-inline" id="cargo-{{$cargo->id}}-materia-{{$materia->id}}">{{$materia->totalModulo()}}</div>
+                            <div class="d-inline"
+                                 id="cargo-{{$cargo->id}}-materia-{{$materia->id}}">{{$materia->totalModulo()}}</div>
                         </td>
 
                         <td>
@@ -117,18 +118,32 @@
                         <td>{{ $usuario->nombre.' '.$usuario->apellido }}</td>
                         <td>
                             @foreach($usuario->cargo_materia()->get() as $cargo_materia)
-                                {{$cargo_materia->materia->nombre}}<br/>
-                            @endforeach
-                                <a class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarCargoModulo"
-                                        id="formAgregar"
-                                        data-loader="{{$usuario->id}}"
-                                        data-attr="{{ route('modulo_profesor.form_agregar_cargo_modulo', ['cargo' => $cargo->id, 'usuario' => $usuario->id]) }}">
-                                    <i class="fa fa-spinner fa-spin" style="display: none"
-                                       id="loader{{$usuario->id}}"></i>
 
-                                    Vincular Cargo-Modulo
-                                </a>
-                                @include('cargo.modals.agregar_cargo-modulo')
+                                <small>({{$cargo_materia->cargo()->first()->nombre}})</small>
+                                <b>{{$cargo_materia->materia->nombre}}</b>
+                                <small>{{$cargo_materia->materia->carrera()->first()->nombre}}</small>
+                                <small >
+                                    <form action="{{ route('modulo_profesor.destroy',['materia' => $cargo_materia->materia->id, 'cargo' => $cargo_materia->cargo()->first()->id, 'user' => $usuario->id] ) }}" method="POST"
+                                          class="d-inline-block"
+                                    >
+                                        {{ method_field('DELETE') }}
+                                        <input type="submit" value="X" class="btn btn-sm btn-danger py-0 px-1">
+                                    </form>
+                                </small>
+
+                                <br/>
+                            @endforeach
+                            <a class="btn btn-sm btn-success" data-bs-toggle="modal"
+                               data-bs-target="#agregarCargoModulo"
+                               id="formAgregar"
+                               data-loader="{{$usuario->id}}"
+                               data-attr="{{ route('modulo_profesor.form_agregar_cargo_modulo', ['cargo' => $cargo->id, 'usuario' => $usuario->id]) }}">
+                                <i class="fa fa-spinner fa-spin" style="display: none"
+                                   id="loader{{$usuario->id}}"></i>
+
+                                Vincular Cargo-Modulo
+                            </a>
+                            @include('cargo.modals.agregar_cargo-modulo')
 
                         </td>
                         <td>{{$cargo->nombre}}</td>
@@ -153,9 +168,17 @@
     <script src="{{ asset('vendors/select2/js/select2.min.js') }}"></script>
 
     <script>
-        $(".carreras").select2({
-            dropdownParent: $('#agregarUser'),
-            width: "100%"
+        $(document).ready(function () {
+            $(".carreras").select2({
+                dropdownParent: $('#agregarUser'),
+                width: "100%"
+            });
+        });
+        $(document).ready(function () {
+            $("#materia_id").select2({
+                // dropdownParent: $('#agregarCargoModulo'),
+                width: "100%"
+            });
         });
         $(document).on('click', '#formAgregar', function (event) {
             event.preventDefault();
@@ -181,7 +204,7 @@
 
                     $laoder.hide();
                 },
-                timeout: 8000
+                timeout: 15000
             })
         });
     </script>
