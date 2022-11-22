@@ -12,6 +12,7 @@ use App\Models\Mesa;
 use App\Models\Proceso;
 use App\Services\UserService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class MesaController extends Controller
@@ -248,6 +249,12 @@ class MesaController extends Controller
         if (!$mesa) {
             throw new HttpResponseException(new Response('No se encontró la instancia correspondiente'));
         }
+
+        Log::info('MesaController - acta_volante');
+        Log::info($mesa);
+        Log::info($comision);
+        Log::info($instancia);
+        Log::info($carrera);
 
         $data = [
             'instancia' => $instancia,
