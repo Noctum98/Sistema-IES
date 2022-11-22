@@ -514,6 +514,7 @@ Route::prefix('moduloProfesor')->group(function () {
     );
     Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo']
     )->name('modulo_profesor.form_agregar_cargo_modulo');
+    Route::delete('delete/{materia}/{cargo}/{user}', [ModuloProfesorController::class, 'destroy'])->name('modulo_profesor.destroy');
 });
 
 Route::prefix('procesoCalificacion')->group(function () {

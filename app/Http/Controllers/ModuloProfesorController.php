@@ -10,13 +10,14 @@ use App\Models\Proceso;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ModuloProfesorController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -26,7 +27,7 @@ class ModuloProfesorController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -37,7 +38,7 @@ class ModuloProfesorController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -56,9 +57,9 @@ class ModuloProfesorController extends Controller
             ->where('modulo_profesor.user_id', $request['usuario_id'])
             ->get();
 
-        foreach ($modulos as $modulo) {
-            $modulo->delete();
-        }
+//        foreach ($modulos as $modulo) {
+//            $modulo->delete();
+//        }
 
         if (isset($request['materia_id'])) {
             foreach ($request['materia_id'] as $materia) {
@@ -67,10 +68,17 @@ class ModuloProfesorController extends Controller
                     'materia_id' => $materia,
                 ])->first();
 
-                ModuloProfesor::create([
+                $isActivo = ModuloProfesor::where([
                     'user_id' => $request['usuario_id'],
                     'modulo_id' => $cargo_modulo->id,
-                ]);
+                ])->first();
+
+                if (!$isActivo) {
+                    ModuloProfesor::create([
+                        'user_id' => $request['usuario_id'],
+                        'modulo_id' => $cargo_modulo->id,
+                    ]);
+                }
             }
         }
 
@@ -89,7 +97,7 @@ class ModuloProfesorController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\ModuloProfesor $moduloProfesor
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(ModuloProfesor $moduloProfesor)
     {
@@ -100,7 +108,7 @@ class ModuloProfesorController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\ModuloProfesor $moduloProfesor
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(ModuloProfesor $moduloProfesor)
     {
@@ -112,7 +120,7 @@ class ModuloProfesorController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\ModuloProfesor $moduloProfesor
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, ModuloProfesor $moduloProfesor)
     {
@@ -122,11 +130,38 @@ class ModuloProfesorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\ModuloProfesor $moduloProfesor
-     * @return \Illuminate\Http\Response
+     * @param $materia
+     * @param $cargo
+     * @param $user
+     * @return RedirectResponse
      */
-    public function destroy(ModuloProfesor $moduloProfesor)
+    public function destroy($materia, $cargo, $user): RedirectResponse
     {
-        //
+
+        $message = "Los datos no coinciden";
+
+        $cargo_modulo = CargoMateria::where([
+            'cargo_id' => $cargo,
+            'materia_id' => $materia,
+        ])->first();
+
+
+        if ($cargo_modulo) {
+            $moduloProfesor = ModuloProfesor::where([
+                'user_id' => $user,
+                'modulo_id' => $cargo_modulo->id,
+            ])->first();
+
+            if ($moduloProfesor) {
+                $moduloProfesor->delete();
+                $message = "El Módulo fue desasociado correctamente";
+            }
+        }
+
+        return redirect()->route('cargo.show', [
+            'id' => $cargo,
+        ])->withSuccess(
+            $message
+        );
     }
 }
