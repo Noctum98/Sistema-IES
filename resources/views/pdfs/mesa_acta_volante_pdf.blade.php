@@ -69,7 +69,7 @@
 
             </td>
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 5px">Libro No: {{ $lamado == 1 ? $mesa->libro : $mesa->libro_segundo }}
+        border-collapse: collapse !important; margin: 0; padding: 5px">Libro No: {{ $llamado == 1 ? $mesa->libro : $mesa->libro_segundo }}
             </td>
         </tr>
         <tr style="margin: 0;">
@@ -88,7 +88,7 @@
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>Turno: </u> {{ucfirst($carrera->turno)}}</h5>
             </td>
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{ $lamado == 1 ? $mesa->folio : $mesa->folio_segundo }}
+        border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{ $llamado == 1 ? $mesa->folio : $mesa->folio_segundo }}
             </td>
 
         </tr>
