@@ -46,7 +46,7 @@
                     @include('mesa.modals.libro_folio_2',['llamado'=>1])
                     @include('mesa.modals.libro_folio_1',['llamado'=>2])
 
-                    <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia($mesa->materia_id)->first()->carrera()->first()->id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => optional($mesa->comision()->first())->id]) }}"
+                    <a href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia->carrera_id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => $mesa->comision_id ?? null]) }}"
                        class="btn btn-sm btn-success">
                         <i>1° llamado</i>
                         <small style="font-size: 0.6em">Descargar Acta Volante</small>
