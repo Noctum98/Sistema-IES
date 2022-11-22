@@ -241,7 +241,7 @@ class MesaController extends Controller
             'materia_id' => $materia->id,
         ]);
         if ($comision) {
-            $mesa = $mesa->where('mesas.comision_id', $comision);
+            $mesa = $mesa->where('comision_id', $comision);
         }
         $mesa = $mesa->first();
 
