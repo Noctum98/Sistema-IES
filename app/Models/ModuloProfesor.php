@@ -23,4 +23,12 @@ class ModuloProfesor extends Model
     {
         return $this->belongsTo(Materia::class, 'modulo_id', 'id', 'cargo_materia');
     }
+
+    /**
+     * El cargoMateria Módulo Profesor.
+     */
+    public function cargo()
+    {
+        return $this->belongsTo(Cargo::class, 'modulo_id', 'id', 'cargo_materia');
+    }
 }

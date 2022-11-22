@@ -3,7 +3,7 @@
     <input type="hidden" name="usuario_id" value="{{ $usuario->id }}">
     <div class="form-group">
         <label for="materia_id">Módulos</label>
-        <select name="materia_id[]  " id="materia_id" class="form-select" multiple>
+        <select name="materia_id[]" id="materia_id" class="form-select" multiple="multiple" >
             @foreach($cargo->materias as $materia)
                 <option value="{{ $materia->id }}">{{ $materia->nombre }}</option>
             @endforeach
@@ -15,3 +15,13 @@
         <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
 </form>
+
+<script>
+
+    $(document).ready(function () {
+        $("#materia_id").select2({
+            dropdownParent: $('#agregarCargoModulo'),
+            width: "100%"
+        });
+    });
+</script>
