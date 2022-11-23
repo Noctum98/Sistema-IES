@@ -113,7 +113,8 @@
 
                     @endphp
                     @if(is_float($pfinal))
-                        {{number_format($pfinal, 2, '.', ',')}}
+{{--                        {{number_format($pfinal, 2, '.', ',')}}--}}
+                        {{$pfinal}}
                     @else
                         {{$pfinal}}
                     @endif
