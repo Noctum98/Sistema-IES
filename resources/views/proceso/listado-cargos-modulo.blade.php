@@ -112,7 +112,7 @@
                             $pfinal = ($pparcial * 0.3) + $p70;
 
                     @endphp
-                    @if(is_numeric($pfinal))
+                    @if(is_float($pfinal))
                         {{number_format($pfinal, 2, '.', ',')}}
                     @else
                         {{$pfinal}}
