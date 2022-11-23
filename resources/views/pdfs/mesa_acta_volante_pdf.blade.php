@@ -128,9 +128,9 @@
                 <td style="font-size: 0.85em">{{$mesa_inscripto->dni}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->correo}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->telefono}}</td>
-                <td style="font-size: 0.85em">{{optional($mesa_inscripto->acta_volante)->nota_escrito}}</td>
-                <td style="font-size: 0.85em">{{optional($mesa_inscripto->acta_volante)->nota_oral}}</td>
-                <td style="font-size: 0.85em"> {{optional($mesa_inscripto->acta_volante)->promedio}}</td>
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? $mesa_inscripto->acta_volante->nota_escrito :''}}</td>
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? $mesa_inscripto->acta_volante->nota_oral :''}}</td>
+                <td style="font-size: 0.85em"> {{$mesa_inscripto->acta_volante ? $mesa_inscripto->acta_volante->promedio :''}}</td>
             </tr>
 
         @endforeach
