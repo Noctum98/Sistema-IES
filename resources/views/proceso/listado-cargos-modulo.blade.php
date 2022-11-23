@@ -66,7 +66,7 @@
                                 @endphp
                             @endif
                             @php
-                                $suma+=$sumaCalificacion;
+                                $suma+=(int)$sumaCalificacion;
                             @endphp
                         @else
                             -
@@ -75,7 +75,7 @@
                 @endforeach
                 <td>
                     @if($cant > 0)
-                        {{number_format($suma/$cant , 2, '.', ',')}}
+                        {{number_format((int)$suma/(int)$cant , 2, '.', ',')}}
                     @endif
                 </td>
 
@@ -90,9 +90,7 @@
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
                                 @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
                                     A
-                                        @php
-                                            $sumaCalificacion = 0
-                                        @endphp
+
                                 @else
                                     {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
                                 @endif
@@ -111,7 +109,7 @@
                 <td>
                     @php
                         $p70 = 0;
-                        if($cant > 0) $p70 = ($suma/$cant * 0.7);
+                        if($cant > 0) $p70 = ((int)$suma/(int)$cant * 0.7);
                             $pfinal = ($pparcial * 0.3) + $p70;
 
                     @endphp
