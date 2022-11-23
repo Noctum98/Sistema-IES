@@ -108,16 +108,17 @@
                 <td>
                     @php
                         $p70 = 0;
-                        if($cant > 0) $p70 = ($suma/$cant * 0.7);
+                        if($cant > 0){
+                            $p70 = ($suma/$cant * 0.7);
+                        }
                             $pfinal = ($pparcial * 0.3) + $p70;
 
                     @endphp
-                    @if(is_float($pfinal))
-{{--                        {{number_format($pfinal, 2, '.', ',')}}--}}
-                        {{$pfinal}}
-                    @else
-                        {{$pfinal}}
-                    @endif
+
+
+                    {{$pfinal}}
+
+
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
