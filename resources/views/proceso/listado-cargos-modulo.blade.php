@@ -28,7 +28,7 @@
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
-                <th class="border border-1 border-right">TP's </th>
+                <th class="border border-1 border-right">TP's</th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
@@ -54,17 +54,17 @@
                     <td>
                         @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
                             @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje >=0)
-                            {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
+                                {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
                                 @php
-                                $sumaCalificacion = $calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje
-                                        @endphp
+                                    $sumaCalificacion = $calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje
+                                @endphp
                             @endif
-                                @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje == -1)
-                                    A
-                                    @php
-                                        $sumaCalificacion = 0
-                                    @endphp
-                                @endif
+                            @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje == -1)
+                                A
+                                @php
+                                    $sumaCalificacion = 0
+                                @endphp
+                            @endif
                             @php
                                 $suma+=$sumaCalificacion;
                             @endphp
@@ -87,12 +87,12 @@
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
                                 {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
                             @endif
-                              @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
+                            @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
                                 @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
                                     A
-                                    @else
-                        {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
-                                    @endif
+                                @else
+                                    {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
+                                @endif
 
                             @endif
                         @else
@@ -109,10 +109,14 @@
                     @php
                         $p70 = 0;
                         if($cant > 0) $p70 = ($suma/$cant * 0.7);
+                            $pfinal = ($pparcial * 0.3) + $p70;
 
-                            $pfinal =($pparcial * 0.3) + $p70;
                     @endphp
-                    {{number_format($pfinal, 2, '.', ',')}}
+                    @if(is_numeric($pfinal))
+                        {{number_format($pfinal, 2, '.', ',')}}
+                    @else
+                        {{$pfinal}}
+                    @endif
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
