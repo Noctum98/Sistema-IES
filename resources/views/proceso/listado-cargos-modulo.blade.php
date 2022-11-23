@@ -110,7 +110,7 @@
                         $p70 = 0;
                         if($cant > 0) $p70 = ($suma/$cant * 0.7);
 
-                            $pfinal =($pparcial * 0.3) + $p70
+                            $pfinal =($pparcial * 0.3) + $p70;
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
                 </td>
