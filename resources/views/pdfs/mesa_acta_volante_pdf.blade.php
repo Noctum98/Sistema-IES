@@ -69,7 +69,7 @@
 
             </td>
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 5px">Libro No: {{ $lamado == 1 ? $mesa->libro : $mesa->libro_segundo }}
+        border-collapse: collapse !important; margin: 0; padding: 5px">Libro No: {{ $llamado == 1 ? $mesa->libro : $mesa->libro_segundo }}
             </td>
         </tr>
         <tr style="margin: 0;">
@@ -88,9 +88,13 @@
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>Turno: </u> {{ucfirst($carrera->turno)}}</h5>
             </td>
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{ $lamado == 1 ? $mesa->folio : $mesa->folio_segundo }}
+        border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{ $llamado == 1 ? $mesa->folio : $mesa->folio_segundo }}
             </td>
-
+            <td style="width: 30%; border:none !important; border: 0.01rem solid white !important;
+        border-collapse: collapse !important; margin: 0;">
+                <h5 style="margin: 0; padding: 0; text-align: center" ><u>Fecha: </u> {{ $llamado == 1 ? date('d-m-Y', strtotime($mesa->fecha) ) : date('d-m-Y', strtotime($mesa->fecha) ) }}</h5>
+            </td>
+           
         </tr>
     </table>
 </div>
@@ -124,7 +128,7 @@
         @foreach($mesa->mesa_inscriptos_props($llamado)->get() as $mesa_inscripto)
             <tr>
                 <td style="font-size: 0.85em">{{ $loop->index+1 }}</td>
-                <td style="font-size: 0.85em">{{$mesa_inscripto->apellidos}}, {{$mesa_inscripto->nombres}}</td>
+                <td style="font-size: 0.85em">{{mb_strtoupper($mesa_inscripto->apellidos)}}, {{$mesa_inscripto->nombres}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->dni}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->correo}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->telefono}}</td>

@@ -90,13 +90,13 @@ class UserController extends Controller
 
     public function vista_detalle($id)
     {
-        $auth = Auth::user();
+        $auth = User::find(Auth::user()->id);
         $user = User::find($id);
 
         if (Session::get('admin')) {
             $sedes = Sede::all();
         } else {
-            $sedes = $auth->sedes;
+            $sedes = $auth->sedes ?? [];
         }
 
         if (Session::get('admin')) {
@@ -232,10 +232,6 @@ class UserController extends Controller
 
         if ($user->materias()) {
             $user->materias()->detach();
-        }
-
-        if ($user->alumnos()) {
-            $user->alumnos()->detach();
         }
 
         $user->delete();
