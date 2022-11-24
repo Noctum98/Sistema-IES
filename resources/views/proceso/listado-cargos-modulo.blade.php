@@ -119,6 +119,7 @@
                         echo $cant . ' - ';
                     echo $suma. ' - ';
                     echo $pparcial. ' -* ';
+                    echo $pparcial * 0.3;
 
                     @endphp
 
