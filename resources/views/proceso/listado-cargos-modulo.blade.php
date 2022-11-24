@@ -117,11 +117,11 @@
 
                     @endphp
                     <i>{{$pfinal}}</i>
-                    @if ($pfinal > 0)
+{{--                    @if ($pfinal > 0)--}}
 {{--                        {{number_format($pfinal, 2, '.', ',')}}--}}
-                    @else
-                        0
-                    @endif
+{{--                    @else--}}
+{{--                        0--}}
+{{--                    @endif--}}
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
