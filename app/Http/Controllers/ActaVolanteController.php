@@ -77,9 +77,6 @@ class ActaVolanteController extends Controller
 
             $alerta = ['alert_success'=>'Se han editado correctamente las notas.'];
         }
-
-       
-
         return redirect()->back()->with($alerta);
     }
 
