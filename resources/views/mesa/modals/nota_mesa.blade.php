@@ -14,8 +14,8 @@
                     {{ METHOD_FIELD('PUT') }}
                     @endif
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="1" id="ausente" name="ausente" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
-                        <label class="form-check-label" for="ausente">
+                        <input class="form-check-input ausente" type="checkbox" value="1" name="ausente" data-id="{{$inscripcion->id}}" {{ $cierre ? 'disabled' : '' }}>
+                        <label class="form-check-label ausente" for="ausente">
                             Marcar como AUSENTE
                         </label>
                     </div>
@@ -41,7 +41,12 @@
             </div>
             <div>
                 <input type="hidden" name="instancia_id" value="{{$inscripcion->mesa->instancia_id}}">
-                <input type="hidden" name="materia_id" value="{{$inscripcion->materia_id}}">
+                @if($inscripcion->materia_id)
+                <input type="hidden" name="materia_id" value="{{$inscripcion->materia_id }}">
+                @elseif($inscripcion->mesa)
+                <input type="hidden" name="materia_id" value="{{$inscripcion->mesa->materia_id }}">
+                <input type="hidden" name="mesa_id" value="{{ $inscripcion->mesa->id }}">
+                @endif
                 <input type="hidden" name="alumno_id" value="{{$inscripcion->alumno_id}}">
                 <input type="hidden" name="mesa_alumno_id" value="{{$inscripcion->id}}">
             </div>
@@ -51,25 +56,3 @@
     </div>
 </div>
 </div>
-
-<script>
-    $("#ausente").change(function(e) {
-        let checked = $(this).is(':checked')
-        var inscripcion_id = $(this).data('id');
-
-        if(checked)
-        {
-            $("#escrito-"+inscripcion_id).val('A');
-            $("#escrito-"+inscripcion_id).prop('readonly',true);
-            $("#oral-"+inscripcion_id).val('A');
-            $("#oral-"+inscripcion_id).prop('readonly',true);
-        }else{
-            $("#escrito-"+inscripcion_id).val('');
-            $("#escrito-"+inscripcion_id).prop('readonly',false);
-            $("#oral-"+inscripcion_id).val('');
-            $("#oral-"+inscripcion_id).prop('readonly',false);
-        }
-    });
-
-    $("#escrito")
-</script>
