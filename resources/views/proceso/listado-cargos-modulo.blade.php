@@ -104,7 +104,11 @@
                         @endif
 
                         @php
-                            $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                        echo '-- ' .$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) . ' --';
+                            if(is_numeric($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))){
+                                $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                            }
+
                         @endphp
                     </td>
                 @endforeach
@@ -115,12 +119,12 @@
                         if($cant > 0){ $p70 = ($suma/$cant * 0.7);}
 //                            $pfinal = ($pparcial * 0.3) + $p70;
                     echo '* - ';
-                    echo $p70. ' - ';
-                        echo $cant . ' - ';
-                    echo $suma. ' - ';
+//                    echo $p70. ' - ';
+//                        echo $cant . ' - ';
+//                    echo $suma. ' - ';
                     echo $pparcial. ' -* ';
-                     {{$data = $pparcial * 0.3;}}
-                    echo $data;
+//                     {{$data = $pparcial * 0.3;}}
+//                    echo $data;
                     @endphp
 
 {{--                    @if ($pfinal > 0)--}}
