@@ -66,7 +66,11 @@
                                 @endphp
                             @endif
                             @php
+                            if(is_numeric($sumaCalificacion)){
                                 $suma+=$sumaCalificacion;
+                                }else{
+                                $suma+= 0;
+                                }
                             @endphp
                         @else
                             -
