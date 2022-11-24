@@ -119,8 +119,8 @@
                         echo $cant . ' - ';
                     echo $suma. ' - ';
                     echo $pparcial. ' -* ';
-                    echo $pparcial * 0.3;
-
+                     {{$data = $pparcial * 0.3;}}
+                    echo $data;
                     @endphp
 
 {{--                    @if ($pfinal > 0)--}}
