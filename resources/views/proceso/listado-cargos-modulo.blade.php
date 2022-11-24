@@ -112,7 +112,11 @@
                             $pfinal = ($pparcial * 0.3) + $p70;
 
                     @endphp
-                    {{number_format($pfinal, 2, '.', ',')}}
+                    @if ($pfinal > 0)
+                        {{number_format($pfinal, 2, '.', ',')}}
+                    @else
+                        0
+                    @endif
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
