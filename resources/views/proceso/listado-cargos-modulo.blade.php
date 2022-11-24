@@ -114,10 +114,10 @@
                         $p70 = 0;
                         if($cant > 0){ $p70 = ($suma/$cant * 0.7);}
 //                            $pfinal = ($pparcial * 0.3) + $p70;
-                    echo '117';
-                    echo $cant;
-                    echo $p70;
-                    echo $suma;
+                    echo '117 - ';
+                    echo $cant . ' - ';
+                    echo $p70. ' - ';
+                    echo $suma. ' - ';
 
                     @endphp
 
