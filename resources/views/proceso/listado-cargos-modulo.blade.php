@@ -104,7 +104,6 @@
                         @endif
 
                         @php
-                        echo '-- ' .$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) . ' --';
                             if(is_numeric($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))){
                                 $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
                             }
@@ -117,21 +116,9 @@
                     @php
                         $p70 = 0;
                         if($cant > 0){ $p70 = ($suma/$cant * 0.7);}
-//                            $pfinal = ($pparcial * 0.3) + $p70;
-                    echo '* - ';
-//                    echo $p70. ' - ';
-//                        echo $cant . ' - ';
-//                    echo $suma. ' - ';
-                    echo $pparcial. ' -* ';
-//                     {{$data = $pparcial * 0.3;}}
-//                    echo $data;
+                            $pfinal = ($pparcial * 0.3) + $p70;
                     @endphp
-
-{{--                    @if ($pfinal > 0)--}}
-{{--                        {{number_format($pfinal, 2, '.', ',')}}--}}
-{{--                    @else--}}
-{{--                        0--}}
-{{--                    @endif--}}
+                    {{number_format($pfinal, 2, '.', ',')}}
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
