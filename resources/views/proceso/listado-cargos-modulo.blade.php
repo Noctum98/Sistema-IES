@@ -66,11 +66,11 @@
                                 @endphp
                             @endif
                             @php
-                            if(is_numeric($sumaCalificacion)){
-                                $suma+=$sumaCalificacion;
-                                }else{
-                                $suma+= 0;
-                                }
+                                if(is_numeric($sumaCalificacion)){
+                                    $suma+=$sumaCalificacion;
+                                    }else{
+                                    $suma+= 0;
+                                    }
                             @endphp
                         @else
                             -
@@ -112,12 +112,13 @@
                 <td>
                     @php
                         $p70 = 0;
-                        if($cant > 0) $p70 = ($suma/$cant * 0.7);
+                        if($cant > 0){ $p70 = ($suma/$cant * 0.7);}
                             $pfinal = ($pparcial * 0.3) + $p70;
 
                     @endphp
+                    <i>{{$pfinal}}</i>
                     @if ($pfinal > 0)
-                        {{number_format($pfinal, 2, '.', ',')}}
+{{--                        {{number_format($pfinal, 2, '.', ',')}}--}}
                     @else
                         0
                     @endif
