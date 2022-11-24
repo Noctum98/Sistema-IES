@@ -67,6 +67,17 @@ class Proceso extends Model
         return $procesosCalificaciones;
     }
 
+    public function calificacionTFI()
+    {
+        $calificacion_tfi = ProcesoCalificacion::join('calificaciones','calificaciones.id','proceso_calificacion.calificacion_id')
+        ->where('proceso_id' , $this->id)
+        ->where('calificacion.materia_id',$this->materia_id)
+        ->where('calificacion.tipo_id',3)
+        ->first();
+
+        return $calificacion_tfi;
+    }
+
     public function cargos()
     {
         return $this->belongsTo(Cargo::class,'cargo_id');
