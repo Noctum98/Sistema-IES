@@ -16,9 +16,11 @@
             <th>N°</th>
             <th>DNI</th>
             <th scope="col">Apeliido y Nombre</th>
-            @foreach($materia->cargos as $cargo)
-            <th scope="col">Ponderación {{$cargo->nombre}}</th>
-            @endforeach
+            <th>Promedio Final %</th>
+            <th>Promedio Final #</th>
+            <th>TIF</th>
+            <th>Asistencia</th>
+            <th>Condición</th>
         </tr>
     </thead>
     <tbody>
@@ -27,9 +29,11 @@
             <td>{{ $key + 1 }}</td>
             <td>{{ $proceso->alumno->dni }}</td>
             <td>{{mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos)}}</td>
-            @foreach($materia->cargos as $cargo)
-            <td>{{$cargo->ponderacion($materia->id)}}</td>
-            @endforeach
+            <td>{{ $proceso->promedio_final_nota }}</td>
+            <td>{{ $proceso->promedio_final_porcentaje }}</td>
+            <td>{{ $proceso->calificacionTFI() ? $proceso->calificacionTFI()->nota : '-' }}</td>
+            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}</td>
+            <td>{{ $proceso->estado ? mb_strtoupper($proceso->estado->nombre) : '-' }}</td>
         </tr>
         @endforeach
     </tbody>

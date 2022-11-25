@@ -132,9 +132,24 @@
                 <td style="font-size: 0.85em">{{$mesa_inscripto->dni}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->correo}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->telefono}}</td>
-                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? $mesa_inscripto->acta_volante->nota_escrito :''}}</td>
-                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? $mesa_inscripto->acta_volante->nota_oral :''}}</td>
-                <td style="font-size: 0.85em"> {{$mesa_inscripto->acta_volante ? $mesa_inscripto->acta_volante->promedio :''}}</td>
+                
+                @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->nota_escrito != -1)
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->nota_escrito}}</td>
+                @else
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? 'A' : ''}}</td>
+                @endif
+
+                @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->nota_oral != -1)
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->nota_oral}}</td>
+                @else
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? 'A' : ''}}</td>
+                @endif
+
+                @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->promedio != -1)
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->promedio}}</td>
+                @else
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? 'A' : ''}}</td>
+                @endif
             </tr>
 
         @endforeach

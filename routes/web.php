@@ -445,6 +445,8 @@ Route::prefix('mesas')->group(function () {
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
+    Route::put('/abrirActaVolante/{mesa_id}', [MesaController::class, 'abrirProfesor'])->name('mesa.abrir_acta');
+
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);

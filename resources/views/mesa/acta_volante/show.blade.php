@@ -46,4 +46,5 @@
 
     @section('scripts')
     <script src="/js/mesas/cierre.js"></script>
+    <script src="/js/mesas/nota.js"></script>
     @endsection
