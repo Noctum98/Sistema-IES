@@ -48,12 +48,14 @@ class RepararActasVolantes extends Command
             {
                 $inscripcion = MesaAlumno::where(['alumno_id'=>$acta_volante->alumno_id]);
 
-                if($acta_volante->materia_id && $inscripcion->mesa && $inscripcion->mesa->instancia_id == $acta_volante->instancia_id)
+                if($acta_volante->materia_id && $inscripcion->mesa_id)
                 {
-                    $inscripcion = $inscripcion->where('materia_id',$acta_volante->materia_id)->first();
+                    if( $inscripcion->mesa->instancia_id == $acta_volante->instancia_id){
+                        $inscripcion = $inscripcion->where('materia_id',$acta_volante->materia_id)->first();
 
-                    $acta_volante->mesa_alumno_id = $inscripcion->id;
-                    $acta_volante->update();
+                        $acta_volante->mesa_alumno_id = $inscripcion->id;
+                        $acta_volante->update();
+                    }
                 }
             }
         }
