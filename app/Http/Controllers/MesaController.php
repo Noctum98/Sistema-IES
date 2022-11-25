@@ -400,7 +400,6 @@ class MesaController extends Controller
             print_r(377);
             $this->isHoliday($fecha);
         }
-dd($fecha_3);
         return $fecha;
 
     }
