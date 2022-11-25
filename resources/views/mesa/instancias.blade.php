@@ -38,8 +38,8 @@
                                         @endif
                                     </div>
                                     <div class="col-4 m-0 p-0">
-                                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}
-                                        - {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
+                                        {{--                                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}--}}
+                                        {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
                                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
                                     </div>
                                     <div class="col-4 m-0 p-0">
@@ -48,7 +48,7 @@
                                                 @if($inscripcion->estado_baja)
                                                     <span class="text-secondary">Dada de baja</span>
                                                 @else
-                                                    <span class="text-secondary">Se presenta</span>
+                                                    <span class="text-secondary">Inscripto</span>
                                                     @if($inscripcion->instancia->estado == 'activa' || $inscripcion->instancia->cierre == 1)
                                                         <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                                            class="text-danger">Bajarme</a>
