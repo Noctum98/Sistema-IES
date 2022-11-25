@@ -56,6 +56,21 @@
                         <i>2° llamado</i>
                         <small style="font-size: 0.6em">Descargar Acta Volante</small>
                     </a>
+
+                    @if($mesa->cierre_profesor)
+                    <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="mt-2">
+                    {{method_field('PUT')}}
+                    <input type="hidden" name="llamado" value="1" id="llamado">
+                    <input type="submit" value="Abrir 1er llamado" class="btn btn-sm btn-warning">
+                    @endif
+
+                    @if($mesa->cierre_profesor_segundo)
+                    <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="mt-2">
+                    {{method_field('PUT')}}
+                    <input type="hidden" name="llamado" value="2" id="llamado">
+                    <input type="submit" value="Abrir 2do llamado" class="btn btn-sm btn-warning">
+                </form>
+                @endif
                 @endif
             </div>
 
