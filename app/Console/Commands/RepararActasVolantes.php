@@ -46,16 +46,20 @@ class RepararActasVolantes extends Command
         {
             if($acta_volante->alumno_id == $acta_volante->mesa_alumno_id)
             {
-                $inscripcion = MesaAlumno::where(['alumno_id'=>$acta_volante->alumno_id])->get();
+                $inscripciones = MesaAlumno::where(['alumno_id'=>$acta_volante->alumno_id])->get();
 
-                if($acta_volante->materia_id && $inscripcion->mesa_id)
+                foreach($inscripciones as $inscripcion)
                 {
-                    if( $inscripcion->mesa->instancia_id == $acta_volante->instancia_id && $inscripcion->mesa->materia_id == $acta_volante->materia_id){
-
-                        $acta_volante->mesa_alumno_id = $inscripcion->id;
-                        $acta_volante->update();
+                    if($acta_volante->materia_id && $inscripcion->mesa_id)
+                    {
+                        if( $inscripcion->mesa->instancia_id == $acta_volante->instancia_id && $inscripcion->mesa->materia_id == $acta_volante->materia_id){
+    
+                            $acta_volante->mesa_alumno_id = $inscripcion->id;
+                            $acta_volante->update();
+                        }
                     }
                 }
+                
             }
         }
 
