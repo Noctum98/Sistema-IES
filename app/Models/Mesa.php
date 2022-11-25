@@ -45,11 +45,13 @@ class Mesa extends Model
     }
 
     public function mesa_inscriptos_primero(){
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja'=>false,'segundo_llamado'=>false]); 
+        return $this->hasMany('App\Models\MesaAlumno')
+        ->where(['estado_baja'=>false,'segundo_llamado'=>false]); 
     }
 
     public function mesa_inscriptos_segundo(){
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja'=>false,'segundo_llamado'=>true]);
+        return $this->hasMany('App\Models\MesaAlumno')
+        ->where(['estado_baja'=>false,'segundo_llamado'=>true]); 
     }
 
     public function mesa_inscriptos_props(int $prop = null): HasMany

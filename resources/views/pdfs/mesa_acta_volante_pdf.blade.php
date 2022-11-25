@@ -31,7 +31,7 @@
 </style>
 
 <div class="container alumno" style="margin: 0 5px">
-    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 60%; align-items: center;  margin: 0 20% 3px 20%; padding-bottom: 0" alt="DATA-IESVU">
+    <img src="{{ 'images/logo-dge-iesvu.png' }}" style="width: 50%; align-items: center;  margin: 0 25% 3px 25%; padding-bottom: 0" alt="DATA-IESVU">
     <table class="outborder m-0 py-0" border="0" cellpadding="0" cellspacing="0"
            style="width: 100%; border-spacing: 0; border-collapse: collapse; border-style: outset; border-color: #ffffff;
            margin: 0; padding: 0 "
@@ -90,7 +90,11 @@
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{ $llamado == 1 ? $mesa->folio : $mesa->folio_segundo }}
             </td>
-
+            <td style="width: 30%; border:none !important; border: 0.01rem solid white !important;
+        border-collapse: collapse !important; margin: 0;">
+                <h5 style="margin: 0; padding: 0; text-align: center" ><u>Fecha: </u> {{ $llamado == 1 ? date('d-m-Y', strtotime($mesa->fecha) ) : date('d-m-Y', strtotime($mesa->fecha) ) }}</h5>
+            </td>
+           
         </tr>
     </table>
 </div>
@@ -102,12 +106,12 @@
     >
         <thead class="thead-dark">
         <tr >
-            <th rowspan="2" scope="col">N° de<br/> orden</th>
-            <th rowspan="2" scope="col">Apellidos y Nombres</th>
-            <th rowspan="2" scope="col">Documento de <br/> identidad</th>
-            <th rowspan="2" scope="col">Correo electrónico</th>
-            <th rowspan="2" scope="col">Teléfono</th>
-            <th colspan="3" scope="col">Calificación</th>
+            <th style="font-size: 0.85em" rowspan="2" scope="col">N° de<br/> orden</th>
+            <th style="font-size: 0.85em" rowspan="2" scope="col">Apellidos y Nombres</th>
+            <th style="font-size: 0.85em" rowspan="2" scope="col">Documento de <br/> identidad</th>
+            <th style="font-size: 0.85em" rowspan="2" scope="col">Correo electrónico</th>
+            <th style="font-size: 0.85em" rowspan="2" scope="col">Teléfono</th>
+            <th style="font-size: 0.85em" colspan="3" scope="col">Calificación</th>
         </tr>
         <tr>
             <th scope="col">Escrito</th>
@@ -124,13 +128,28 @@
         @foreach($mesa->mesa_inscriptos_props($llamado)->get() as $mesa_inscripto)
             <tr>
                 <td style="font-size: 0.85em">{{ $loop->index+1 }}</td>
-                <td style="font-size: 0.85em">{{$mesa_inscripto->apellidos}}, {{$mesa_inscripto->nombres}}</td>
+                <td style="font-size: 0.85em">{{mb_strtoupper($mesa_inscripto->apellidos)}}, {{$mesa_inscripto->nombres}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->dni}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->correo}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->telefono}}</td>
-                <td style="font-size: 0.85em">{{optional($mesa_inscripto->acta_volante)->nota_escrito}}</td>
-                <td style="font-size: 0.85em">{{optional($mesa_inscripto->acta_volante)->nota_oral}}</td>
-                <td style="font-size: 0.85em"> {{optional($mesa_inscripto->acta_volante)->promedio}}</td>
+                
+                @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->nota_escrito != -1)
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->nota_escrito}}</td>
+                @else
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? 'A' : ''}}</td>
+                @endif
+
+                @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->nota_oral != -1)
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->nota_oral}}</td>
+                @else
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? 'A' : ''}}</td>
+                @endif
+
+                @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->promedio != -1)
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->promedio}}</td>
+                @else
+                <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante ? 'A' : ''}}</td>
+                @endif
             </tr>
 
         @endforeach
@@ -151,15 +170,6 @@
 
         </tbody>
     </table>
-    <div class="container" style="width: 100%;   margin: 0 0 1px 0; padding: 0 5px">
-        <div class="col-12 text-left" style="margin: 0 5px; padding: 0 5px">
-            Observaciones - Situaciones
-        </div>
-        <div class="col-12 text-left" style="height: 30%; border: 1px solid black;margin: 0; padding: 0 5px">
-
-        </div>
-    </div>
-
     @if($llamado == 1)
         @php
             $presidente = $materia->mesa($instancia->id)->presidente;
@@ -186,10 +196,10 @@
         >
             <tbody class="thead-dark">
             <tr>
-                <th scope="col" width="25%">
+                <th style="font-size: 0.85em" scope="col" width="25%">
                     Presidente de mesa
                 </th>
-                <th scope="col" width="50%" style="text-align: left">
+                <th style="font-size: 0.85em" scope="col" width="50%" style="text-align: left">
 
                     @if($presidente_id)
                         <small>
@@ -199,18 +209,18 @@
                         {{$presidente}}
                     @endif
                 </th>
-                <th scope="col" width="15%">
+                <th style="font-size: 0.85em" scope="col" width="15%">
                     Aprobados
                 </th>
-                <th scope="col" width="10%">
+                <th style="font-size: 0.85em" scope="col" width="10%">
 
                 </th>
             </tr>
             <tr>
-                <th scope="col" width="25%">
+                <th style="font-size: 0.85em" scope="col" width="25%">
                     Vocal 1
                 </th>
-                <th scope="col" width="50%" style="text-align: left">
+                <th style="font-size: 0.85em" scope="col" width="50%" style="text-align: left">
 
                     @if($primer_vocal_id)
 
@@ -222,18 +232,18 @@
                     @endif
 
                 </th>
-                <th scope="col" width="15%">
+                <th style="font-size: 0.85em" scope="col" width="15%">
                     Aplazados
                 </th>
-                <th scope="col" width="10%">
+                <th style="font-size: 0.85em" scope="col" width="10%">
 
                 </th>
             </tr>
             <tr>
-                <th scope="col" width="25%">
+                <th style="font-size: 0.85em" scope="col" width="25%">
                     Vocal 2
                 </th>
-                <th scope="col" width="50%" style="text-align: left">
+                <th style="font-size: 0.85em" scope="col" width="50%" style="text-align: left">
 
                     @if($segundo_vocal_id)
                         <small>
@@ -243,18 +253,18 @@
                         {{$segundo_vocal}}
                     @endif
                 </th>
-                <th scope="col" width="15%">
+                <th style="font-size: 0.85em" scope="col" width="15%">
                     Ausentes
                 </th>
-                <th scope="col" width="10%">
+                <th style="font-size: 0.85em" scope="col" width="10%">
 
                 </th>
             </tr>
             <tr>
-                <th scope="col" width="25%">
+                <th style="font-size: 0.85em" scope="col" width="25%">
                     Coordinador
                 </th>
-                <th scope="col" width="50%" style="text-align: left">
+                <th style="font-size: 0.85em" scope="col" width="50%" style="text-align: left">
                     @if($carrera->coordinador)
                         @inject('userService', 'App\Services\UserService')
                         @php
@@ -265,10 +275,10 @@
                     @endif
 
                 </th>
-                <th scope="col" width="15%">
+                <th style="font-size: 0.85em" scope="col" width="15%">
                     Total
                 </th>
-                <th scope="col" width="10%">
+                <th style="font-size: 0.85em" scope="col" width="10%">
 
                 </th>
             </tr>

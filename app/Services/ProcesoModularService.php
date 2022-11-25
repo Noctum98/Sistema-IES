@@ -251,7 +251,7 @@ class ProcesoModularService
 
         $asistencia_modular = 0;
 
-$asistencia_modular_service = new AsistenciaModularService();
+        $asistencia_modular_service = new AsistenciaModularService();
         foreach ($cargos as $cargo) {
 
             $pondera_cargo = $asistencia_modular_service->getPorcentajeCargoAsistencia($proceso->materia()->first(), $cargo);

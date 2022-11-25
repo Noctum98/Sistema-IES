@@ -219,7 +219,7 @@ class MesaController extends Controller
         ];
 
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView('pdfs.mesa_generar_pdf', $data);
+        $pdf->loadView('pdfs. ', $data);
 
         return $pdf->download('Tribunal Mesa '.$instancia->nombre.'.pdf');
     }
@@ -321,6 +321,24 @@ class MesaController extends Controller
         $mesa->update();
 
         return redirect()->back()->with(['alert_success'=>'El acta volante se ha cerrado correctamente.']);
+    }
+
+    public function abrirProfesor(Request $request,$id)
+    {
+        $mesa = Mesa::find($id);
+
+        if($request['llamado'] == "1")
+        {
+            $mesa->cierre_profesor = false;
+            $mesa->fecha_cierre_profesor = null;
+        }else{
+            $mesa->cierre_profesor_segundo = false;
+            $mesa->fecha_cierre_profesor_segundo = null;
+        }
+        
+        $mesa->update();
+
+        return redirect()->back()->with(['alert_success'=>'El acta volante se ha abierto correctamente.']);
     }
 
     private function setFechaTurno($materia, $fecha)
