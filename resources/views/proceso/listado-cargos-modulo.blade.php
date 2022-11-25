@@ -66,7 +66,11 @@
                                 @endphp
                             @endif
                             @php
-                                $suma+=$sumaCalificacion;
+                                if(is_numeric($sumaCalificacion)){
+                                    $suma+=$sumaCalificacion;
+                                    }else{
+                                    $suma+= 0;
+                                    }
                             @endphp
                         @else
                             -
@@ -100,7 +104,10 @@
                         @endif
 
                         @php
-                            $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                            if(is_numeric($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))){
+                                $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                            }
+
                         @endphp
                     </td>
                 @endforeach
@@ -108,9 +115,8 @@
                 <td>
                     @php
                         $p70 = 0;
-                        if($cant > 0) $p70 = ($suma/$cant * 0.7);
+                        if($cant > 0){ $p70 = ($suma/$cant * 0.7);}
                             $pfinal = ($pparcial * 0.3) + $p70;
-
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
                 </td>
