@@ -6,7 +6,7 @@
         @php
             $suma=0;
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
-            $pparcial = 0;
+            $pparcial = null;
         @endphp
         <table class="table table-striped f30">
             <colgroup>
@@ -113,10 +113,9 @@
                 @endforeach
 
                 <td>
+                    @inject('cargoService', 'App\Services\CargoService')
                     @php
-                        $p70 = 0;
-                        if($cant > 0){ $p70 = ($suma/$cant * 0.7);}
-                            $pfinal = ($pparcial * 0.3) + $p70;
+                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $pparcial);
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
                 </td>

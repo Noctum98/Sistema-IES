@@ -14,5 +14,6 @@ class Configuration extends Model
     protected $fillable = [
         'asistencia_ponderada',
         'proceso_ponderado',
+        'value_parcial'
     ];
 }
