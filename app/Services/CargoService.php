@@ -206,7 +206,7 @@ class CargoService
      * @param $parcial
      * @return float
      */
-    public function calculoPorcentajeCalificacionFromBlade(int $cantidad, float $suma, $parcial): float
+    public function calculoPorcentajeCalificacionFromBlade(int $cantidad, float $suma, $parcial=null): float
     {
         $valueParcial = Configuration::select('value_parcial')->first();
         $resultado = 0;
