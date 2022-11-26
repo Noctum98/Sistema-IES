@@ -5,7 +5,9 @@
     @foreach($cargos as $cargo )
         @php
             $suma=0;
+            $suma_parcial = null;
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
+            $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
             $pparcial = null;
         @endphp
         <table class="table table-striped f30">
@@ -90,10 +92,14 @@
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
                                 {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
+                                @php
+                                    $suma_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                                @endphp
                             @endif
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
                                 @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
                                     A
+
                                 @else
                                     {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
                                 @endif
@@ -104,18 +110,33 @@
                         @endif
 
                         @php
-                            if(is_numeric($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))){
-                                $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
-                            }
+//                            if(is_numeric($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))){
+//                                $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+//                            }
+
+                                if(is_numeric($suma_parcial)){
+                                    $suma_parcial+=$suma_parcial;
+                                    }else{
+                                    $suma_parcial+= 0;
+                                    }
+
 
                         @endphp
                     </td>
                 @endforeach
+                <td>
+                    @if($cant_parciales > 0)
+                        {{number_format($suma_parcial/$cant_parciales , 2, '.', ',')}}
+                    @endif
+                </td>
 
                 <td>
                     @inject('cargoService', 'App\Services\CargoService')
                     @php
-                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $pparcial);
+                    if($cant_parciales > 0){
+                        $parciales =  $suma_parcial/$cant_parciales;
+                    }
+                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $parciales);
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
                 </td>
