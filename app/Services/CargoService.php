@@ -181,9 +181,9 @@ class CargoService
     {
         $valueParcial = Configuration::select('value_parcial')->first();
         $resultado = 0;
-        if ($valueParcial) {
-            $tp = $this->calculoPorcentajeCargoByTPPorAlumno($cargo, $materia_id, $alumno_id) * (1 - $valueParcial/100) ;
-            $parc = $this->calculoPorcentajeCargoByParcial($cargo, $materia_id, $alumno_id) * ($valueParcial/100);
+        if ($valueParcial->value_parcial) {
+            $tp = $this->calculoPorcentajeCargoByTPPorAlumno($cargo, $materia_id, $alumno_id) * (1 - $valueParcial->value_parcial/100) ;
+            $parc = $this->calculoPorcentajeCargoByParcial($cargo, $materia_id, $alumno_id) * ($valueParcial->value_parcial/100);
             $resultado = $parc + $tp;
         }else{
             $cantTp = $this->getCantTpByCargoMateria($cargo, $materia_id);
@@ -210,10 +210,10 @@ class CargoService
     {
         $valueParcial = Configuration::select('value_parcial')->first();
         $resultado = 0;
-        if ($valueParcial) {
+        if ($valueParcial->value_parcial) {
             if($cantidad > 0){
-                $tp = ($suma/$cantidad)* (1 - $valueParcial/100);
-                $resultado = ($parcial * ($valueParcial/100)) + $tp;
+                $tp = ($suma/$cantidad)* (1 - $valueParcial->value_parcial/100);
+                $resultado = ($parcial * ($valueParcial->value_parcial/100)) + $tp;
             }
 
         }else{
