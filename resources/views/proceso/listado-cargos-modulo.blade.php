@@ -9,6 +9,7 @@
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
             $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
             $pparcial = null;
+            $valor_parcial = 0;
         @endphp
         <table class="table table-striped f30">
             <colgroup>
