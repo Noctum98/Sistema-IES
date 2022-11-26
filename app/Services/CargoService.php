@@ -211,7 +211,8 @@ class CargoService
     /**
      * @param $cantidad_tp
      * @param $suma_tp
-     * @param null $parcial
+     * @param $cantidad_p
+     * @param $suma_p
      * @return float
      */
     public function calculoPorcentajeCalificacionFromBlade($cantidad_tp, $suma_tp, $cantidad_p, $suma_p): float
