@@ -6,7 +6,7 @@
         @php
             $suma=0;
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
-            $pparcial = 0;
+            $pparcial = null;
         @endphp
         <table class="table table-striped f30">
             <colgroup>
