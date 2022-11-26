@@ -210,24 +210,95 @@ class CargoService
     {
         $valueParcial = Configuration::select('value_parcial')->first();
         $resultado = 0;
-        if($cantidad > 0) {
-            if ($valueParcial->value_parcial) {
-
-                $tp = ($suma / $cantidad) * (1 - $valueParcial->value_parcial / 100);
-                $resultado = ($parcial * ($valueParcial->value_parcial / 100)) + $tp;
-
-
-            } else {
-                if (is_numeric($parcial)) {
-                    $suma += $parcial;
-                    $cantidad += 1;
-                }
-                $resultado = $suma / $cantidad;
-
-            }
+        /** El factorDivision en 2 por trabajos prácticos y parciales */
+        $practicalJobs = 0;
+        $parciales = 0;
+        $factorDivision = 2;
+        if(!$cantidad or !$parcial) {
+            $factorDivision = 1;
         }
 
-        return $resultado;
+        /** El valor de los parciales es evaluado al inicio de la fn */
+        /** Pongo el valor de los trabajos prácticos a null  */
+        $practicalJobs = null;
+
+        /**
+         * Pregunto si hay proporcionalidad entre parciales y trabajos prácticos
+         */
+
+            if ($valueParcial->value_parcial) {
+                /** Caso Positivo de ponderación de parciales */
+
+
+                /** Consulto si hay trabajos prácticos y obtengo su valor*/
+                if($cantidad > 0) {
+                    /** Obtengo el % de trabajos prácticos */
+                    // Sin parciales
+                    $percentPracticalHobs = 1;
+                    // Con parciales
+                    if ($parcial) {
+                        $percentPracticalHobs = 1 - $valueParcial->value_parcial / 100;
+                    }
+
+                    /** Obtengo el valor de los trabajos prácticos */
+                    $practicalJobs = ($suma / $cantidad) * $percentPracticalHobs;
+                }
+
+                /** Consulto si hay parciales y obtengo su valor */
+                if($parcial) {
+                    /** Obtengo % de parciales sin trabajos prácticos */
+                    $percentPartial = 1;
+                    if($cantidad > 0) {
+                        /** Obtengo % de parciales con trabajos prácticos */
+                        $percentPartial = $valueParcial->value_parcial / 100;
+                    }
+                    /** Obtengo el valor de los parciales */
+                    $parciales = $parcial * $percentPartial;
+                }
+
+
+
+
+
+
+        }
+            else {
+                /** Caso Negativo de ponderación de parciales */
+
+                /** Consulto si hay trabajos prácticos y obtengo su valor*/
+                if($cantidad > 0) {
+                    /** Obtengo el % de trabajos prácticos */
+                    // Sin parciales
+                    $percentPracticalHobs = 1;
+                    // Con parciales
+                    if ($parcial) {
+                        $percentPracticalHobs = 0.5;
+                    }
+
+                    /** Obtengo el valor de los trabajos prácticos */
+                    $practicalJobs = ($suma / $cantidad) * $percentPracticalHobs;
+                }
+
+                /** Consulto si hay parciales y obtengo su valor */
+                if($parcial) {
+                    /** Obtengo % de parciales sin trabajos prácticos */
+                    $percentPartial = 1;
+                    if($cantidad > 0) {
+                        /** Obtengo % de parciales con trabajos prácticos */
+                        $percentPartial = 0.5;
+                    }
+                    /** Obtengo el valor de los parciales */
+                    $parciales = $parcial * $percentPartial;
+                }
+
+
+
+            }
+
+        /** Obtengo resultados */
+//        return ($practicalJobs + $parciales)/ $factorDivision;
+
+        return $practicalJobs + $parciales;
     }
 
     public function calculoPorcentajeCalificacionPorCargoAndProceso(
