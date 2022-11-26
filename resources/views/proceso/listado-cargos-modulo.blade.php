@@ -124,19 +124,19 @@
                         @endphp
                     </td>
                 @endforeach
-                <td>
-                    @if($cant_parciales > 0)
-                        {{number_format($suma_parcial/$cant_parciales , 2, '.', ',')}}
-                    @endif
-                </td>
+{{--                <td>--}}
+{{--                    @if($cant_parciales > 0)--}}
+{{--                        {{number_format($suma_parcial/$cant_parciales , 2, '.', ',')}}--}}
+{{--                    @endif--}}
+{{--                </td>--}}
 
                 <td>
                     @inject('cargoService', 'App\Services\CargoService')
                     @php
-                    $parciales = null;
-                    if($cant_parciales > 0){
-                        $parciales =  $suma_parcial/$cant_parciales;
-                    }
+//                    $parciales = null;
+//                    if($cant_parciales > 0){
+//                        $parciales =  $suma_parcial/$cant_parciales;
+//                    }
                         $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
