@@ -282,7 +282,9 @@ class CargoService
                 $suma_total += $suma_p;
             }
 
-            $resultado = $suma_total / $cantidad_total;
+            if($cantidad_total > 0) {
+                $resultado = $suma_total / $cantidad_total;
+            }
 
         }
 
