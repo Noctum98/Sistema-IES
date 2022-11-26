@@ -133,6 +133,7 @@
                 <td>
                     @inject('cargoService', 'App\Services\CargoService')
                     @php
+                    $parciales = null;
                     if($cant_parciales > 0){
                         $parciales =  $suma_parcial/$cant_parciales;
                     }
