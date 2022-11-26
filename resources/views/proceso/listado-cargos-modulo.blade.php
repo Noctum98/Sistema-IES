@@ -137,7 +137,7 @@
                     if($cant_parciales > 0){
                         $parciales =  $suma_parcial/$cant_parciales;
                     }
-                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $parciales);
+                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
                 </td>
