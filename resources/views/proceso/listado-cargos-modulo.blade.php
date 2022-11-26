@@ -139,7 +139,8 @@
 //                    }
                         $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
                     @endphp
-                    {{number_format($pfinal, 2, '.', ',')}}
+                    <small>({{$pfinal}} - {{$cant}}, - {{$suma}}, - {{$cant_parciales}}, - {{$suma_parcial}})</small>
+                    {{number_format($pfinal, 2, '.', ',')}}()
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
