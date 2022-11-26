@@ -201,28 +201,30 @@ class CargoService
 
 
     /**
-     * @param int $cantidad
-     * @param float $suma
-     * @param $parcial
+     * @param $cantidad
+     * @param $suma
+     * @param null $parcial
      * @return float
      */
-    public function calculoPorcentajeCalificacionFromBlade(int $cantidad, float $suma, $parcial=null): float
+    public function calculoPorcentajeCalificacionFromBlade($cantidad, $suma, $parcial=null): float
     {
         $valueParcial = Configuration::select('value_parcial')->first();
         $resultado = 0;
-        if ($valueParcial->value_parcial) {
-            if($cantidad > 0){
-                $tp = ($suma/$cantidad)* (1 - $valueParcial->value_parcial/100);
-                $resultado = ($parcial * ($valueParcial->value_parcial/100)) + $tp;
-            }
+        if($cantidad > 0) {
+            if ($valueParcial->value_parcial) {
 
-        }else{
-            if(is_numeric($parcial)){
-                $suma += $parcial;
-                $cantidad +=1;
-            }
-            $resultado = $suma / $cantidad;
+                $tp = ($suma / $cantidad) * (1 - $valueParcial->value_parcial / 100);
+                $resultado = ($parcial * ($valueParcial->value_parcial / 100)) + $tp;
 
+
+            } else {
+                if (is_numeric($parcial)) {
+                    $suma += $parcial;
+                    $cantidad += 1;
+                }
+                $resultado = $suma / $cantidad;
+
+            }
         }
 
         return $resultado;
