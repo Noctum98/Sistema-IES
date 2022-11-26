@@ -93,7 +93,7 @@
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
                                 {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
                                 @php
-                                    $suma_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                                    $valor_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
                                 @endphp
                             @endif
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
@@ -114,8 +114,8 @@
 //                                $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
 //                            }
 
-                                if(is_numeric($suma_parcial)){
-                                    $suma_parcial+=$suma_parcial;
+                                if(is_numeric($valor_parcial)){
+                                    $suma_parcial+=$valor_parcial;
                                     }else{
                                     $suma_parcial+= 0;
                                     }
