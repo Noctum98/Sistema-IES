@@ -8,7 +8,6 @@
             $suma_parcial = null;
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
             $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
-            $pparcial = null;
             $valor_parcial = 0;
         @endphp
         <table class="table table-striped f30">
@@ -111,37 +110,21 @@
                         @endif
 
                         @php
-//                            if(is_numeric($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))){
-//                                $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
-//                            }
-
                                 if(is_numeric($valor_parcial)){
                                     $suma_parcial+=$valor_parcial;
                                     }else{
                                     $suma_parcial+= 0;
                                     }
-
-
                         @endphp
                     </td>
                 @endforeach
-{{--                <td>--}}
-{{--                    @if($cant_parciales > 0)--}}
-{{--                        {{number_format($suma_parcial/$cant_parciales , 2, '.', ',')}}--}}
-{{--                    @endif--}}
-{{--                </td>--}}
 
                 <td>
                     @inject('cargoService', 'App\Services\CargoService')
                     @php
-//                    $parciales = null;
-//                    if($cant_parciales > 0){
-//                        $parciales =  $suma_parcial/$cant_parciales;
-//                    }
                         $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
                     @endphp
-                    <small>({{$pfinal}} - {{$cant}}, - {{$suma}}, - {{$cant_parciales}}, - {{$suma_parcial}})</small>
-                    {{number_format($pfinal, 2, '.', ',')}}()
+                    {{number_format($pfinal, 2, '.', ',')}}
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
