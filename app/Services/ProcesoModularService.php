@@ -42,6 +42,25 @@ class ProcesoModularService
     const PROMEDIO_MAX_REGULAR = 78;
     const TFI_MIN_REGULAR = 60;
     const TFI_MAX_REGULAR = 78;
+    /**
+     * @var CalificacionService
+     */
+    private $calificacionService;
+    /**
+     * @var ProcesoCalificacionService
+     */
+    private $procesoCalificacionService;
+
+
+//    /**
+//     * @param CalificacionService $calificacionService
+//     * @param ProcesoCalificacionService $procesoCalificacionService
+//     */
+//    public function __construct(CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService)
+//    {
+//        $this->calificacionService = $calificacionService;
+//        $this->procesoCalificacionService = $procesoCalificacionService;
+//    }
 
     /**
      * @param $materia_id <b>id</b> materia
@@ -80,6 +99,7 @@ class ProcesoModularService
     }
 
     /**
+     * ProcesoModularService.php:147
      * @param $materia_id <b>id</b> de la materia
      * @return mixed
      */
@@ -110,34 +130,42 @@ class ProcesoModularService
         return $materia->cargos()->get();
     }
 
-    public function cargarPonderacionEnProcesoModular(Materia $materia)
+    /**
+     * ProcesoModularController.php:57
+     * @param Materia $materia
+     * @return int
+     */
+    public function cargarPonderacionEnProcesoModular(Materia $materia): int
     {
+
         $this->crearProcesoModular($materia->id);
 
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
         $cant = 0;
-        $cargos = $this->obtenerCargosPorModulo($materia);
+//        $cargos = $this->obtenerCargosPorModulo($materia);
+
+        $cargosMateria = CargoMateria::where([
+            'materia_id' => $materia->id,
+        ])->get();
         $promedio_final_p = 0;
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
         foreach ($procesos as $proceso) {
             $promedio_final_p = 0;
-            foreach ($cargos as $cargo) {
-                /** @var ProcesoModular $proceso */
-                $ponderacion_cargo_materia = CargoMateria::where([
-                    'cargo_id' => $cargo->id,
-                    'materia_id' => $materia->id,
-                ])->first();
-                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
-                    $cargo,
-                    $materia->id,
-                    $proceso->procesoRelacionado()->first()->id
-                ) ?? 0;
-                if ($porcentaje_cargo < -1) {
-                    $porcentaje_cargo = 0;
-                }
+            foreach ($cargosMateria as $cargo_materia) {
 
-                $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
+//                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
+//                    $cargo_materia->cargo()->first(),
+//                    $materia->id,
+//                    $proceso->procesoRelacionado()->first()->id
+//                ) ?? 0;
+//                if ($porcentaje_cargo < -1) {
+//                    $porcentaje_cargo = 0;
+//                }
+
+                $porcentaje_cargo = $this->processProceso($proceso, $materia->id, $cargo_materia->cargo()->first()->id);
+
+                $ponderacion_asignada = $cargo_materia->ponderacion ?? 0;
                 $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
 
             }
@@ -156,7 +184,11 @@ class ProcesoModularService
 
     }
 
-    public function obtenerCargosPorModulo(Materia $modulo)
+    /**
+     * @param Materia $modulo
+     * @return Collection
+     */
+    public function obtenerCargosPorModulo(Materia $modulo): Collection
     {
         return $modulo->cargos()->get();
     }
@@ -168,6 +200,10 @@ class ProcesoModularService
         return $serviceProcesoCalificacion->obtenerTimeUltimaCalificacionPorModulo($materia_id);
     }
 
+    /**
+     * @param $materia_id
+     * @return mixed
+     */
     public function obtenerTimeUltimoProcesoModular($materia_id)
     {
         return ProcesoModular::select('proceso_modular.updated_at')
@@ -207,6 +243,7 @@ class ProcesoModularService
 
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
+
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
             and
@@ -254,7 +291,10 @@ class ProcesoModularService
         $asistencia_modular_service = new AsistenciaModularService();
         foreach ($cargos as $cargo) {
 
-            $pondera_cargo = $asistencia_modular_service->getPorcentajeCargoAsistencia($proceso->materia()->first(), $cargo);
+            $pondera_cargo = $asistencia_modular_service->getPorcentajeCargoAsistencia(
+                $proceso->materia()->first(),
+                $cargo
+            );
             /** @var Cargo $cargo */
             if ($proceso->asistencia() and $proceso->asistencia()->getByAsistenciaCargo($cargo->id)) {
                 if ($proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje
@@ -272,10 +312,12 @@ class ProcesoModularService
             } else {
                 return false;
             }
-            $asistencia_modular += $pondera_cargo * $proceso->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
+            $asistencia_modular += $pondera_cargo * $proceso->asistencia()->getByAsistenciaCargo(
+                    $cargo->id
+                )->porcentaje;
         }
 
-        $porcentaje = $porcentaje_min??$porcentaje_max;
+        $porcentaje = $porcentaje_min ?? $porcentaje_max;
 
 
         return $asistencia_modular >= $porcentaje;
@@ -357,5 +399,70 @@ class ProcesoModularService
 
         return $estado->id;
     }
+
+
+    public function obtengoPorcentajeFinalProcesoPorProcesoMateriaCargo($proceso, $materia, $cargo)
+    {
+        $parciales = $this->procesoCalificacionService->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            $this->calificacionService::TIPO_PARCIAL
+        );
+        $trabajos_p = $this->procesoCalificacionService->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            $this->calificacionService::TIPO_TP
+        );
+        $trabajos_f = $this->procesoCalificacionService->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            $this->calificacionService::TIPO_TFI
+        );
+
+    }
+
+    /**
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @return float
+     */
+    public function processProceso($proceso, $materia, $cargo): float
+    {
+        $pCS = new ProcesoCalificacionService();
+        $final_cargo = 0;
+        $cant_p = 0;
+        $cant_tp = 0;
+        $total_p = 0;
+        $total_tp= 0;
+        $parciales = $pCS->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso, $materia, $cargo, CalificacionService::TIPO_PARCIAL
+        );
+        $tps = $pCS->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso, $materia, $cargo, CalificacionService::TIPO_TP
+        )->pluck('porcentaje');
+        $cant_p = count($parciales);
+        foreach ($parciales as $parcial) {
+            $total_p += max($parcial->porcentaje, $parcial->porcentaje_recuperatorio);
+        }
+        $cant_tp = count($tps);
+        foreach ($tps as $tp) {
+            $total_tp += $tp;
+        }
+
+        $cargoService = new CargoService();
+
+        return $cargoService->calculoPorcentajeCalificacionFromBlade($cant_tp, $total_tp, $cant_p, $total_p);
+
+    }
+
 
 }
