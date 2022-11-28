@@ -137,35 +137,32 @@ class ProcesoModularService
      */
     public function cargarPonderacionEnProcesoModular(Materia $materia): int
     {
-
         $this->crearProcesoModular($materia->id);
 
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
         $cant = 0;
-//        $cargos = $this->obtenerCargosPorModulo($materia);
-
-        $cargosMateria = CargoMateria::where([
-            'materia_id' => $materia->id,
-        ])->get();
+        $cargos = $this->obtenerCargosPorModulo($materia);
         $promedio_final_p = 0;
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
         foreach ($procesos as $proceso) {
             $promedio_final_p = 0;
-            foreach ($cargosMateria as $cargo_materia) {
+            foreach ($cargos as $cargo) {
+                /** @var ProcesoModular $proceso */
+                $ponderacion_cargo_materia = CargoMateria::where([
+                    'cargo_id' => $cargo->id,
+                    'materia_id' => $materia->id,
+                ])->first();
+                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
+                    $cargo,
+                    $materia->id,
+                    $proceso->procesoRelacionado()->first()->id
+                ) ?? 0;
+                if ($porcentaje_cargo < -1) {
+                    $porcentaje_cargo = 0;
+                }
 
-//                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
-//                    $cargo_materia->cargo()->first(),
-//                    $materia->id,
-//                    $proceso->procesoRelacionado()->first()->id
-//                ) ?? 0;
-//                if ($porcentaje_cargo < -1) {
-//                    $porcentaje_cargo = 0;
-//                }
-
-                $porcentaje_cargo = $this->processProceso($proceso, $materia->id, $cargo_materia->cargo()->first()->id);
-
-                $ponderacion_asignada = $cargo_materia->ponderacion ?? 0;
+                $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
                 $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
 
             }
