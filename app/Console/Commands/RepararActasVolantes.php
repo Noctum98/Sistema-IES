@@ -58,11 +58,8 @@ class RepararActasVolantes extends Command
                             $acta_volante->update();
                         }
                     }
-                }
-                
+                }  
             }
         }
-
-        Mesa::where('cierre_profesor',1)->update(['cierre_profesor',0]);
     }
 }
