@@ -302,18 +302,21 @@ class CargoService
     public function calculoPorcentajeCalificacionPorCargoAndProceso(
         Cargo $cargo, int $materia_id, int $proceso_id): float
     {
-        $calcPTP = $this->calculoPorcentajeCargoByTPPorProceso(
-            $cargo, $materia_id, $proceso_id
-        ) < 0 ? 0 : $this->calculoPorcentajeCargoByTPPorProceso($cargo, $materia_id, $proceso_id);
-        $tp = $calcPTP * 0.7;
-        $calcPP = $this->calculoPorcentajeCargoByParcialAndProceso(
-            $cargo,
-            $materia_id,
-            $proceso_id
-        ) < 0 ? 0 : $this->calculoPorcentajeCargoByParcialAndProceso($cargo, $materia_id, $proceso_id);
-        $parc = $calcPP * 0.3;
+//        $calcPTP = $this->calculoPorcentajeCargoByTPPorProceso(
+//            $cargo, $materia_id, $proceso_id
+//        ) < 0 ? 0 : $this->calculoPorcentajeCargoByTPPorProceso($cargo, $materia_id, $proceso_id);
+//        $tp = $calcPTP * 0.7;
+//        $calcPP = $this->calculoPorcentajeCargoByParcialAndProceso(
+//            $cargo,
+//            $materia_id,
+//            $proceso_id
+//        ) < 0 ? 0 : $this->calculoPorcentajeCargoByParcialAndProceso($cargo, $materia_id, $proceso_id);
+//        $parc = $calcPP * 0.3;
+//
+//        return $parc + $tp;
+        $calcular = new ProcesoModularService();
 
-        return $parc + $tp;
+        return $calcular->processProceso($proceso_id, $materia_id, $cargo->id);
     }
 
     public function calculoPorcentajeTFIPorCargo(Cargo $cargo, int $materia_id, int $alumno_id): float
