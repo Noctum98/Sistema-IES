@@ -5,8 +5,10 @@
     @foreach($cargos as $cargo )
         @php
             $suma=0;
+            $suma_parcial = null;
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
-            $pparcial = 0;
+            $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
+            $valor_parcial = 0;
         @endphp
         <table class="table table-striped f30">
             <colgroup>
@@ -28,7 +30,7 @@
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
-                <th class="border border-1 border-right">TP's </th>
+                <th class="border border-1 border-right">TP's</th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
@@ -52,21 +54,28 @@
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
-                        @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
-                            @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje >=0)
-                            {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
+{{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                        @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
+
+                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje >= 0)
+                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje, 2, '.', ',') }}
                                 @php
-                                $sumaCalificacion = $calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje
-                                        @endphp
+                                    $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje
+                                @endphp
+
                             @endif
-                                @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje == -1)
-                                    A
-                                    @php
-                                        $sumaCalificacion = 0
-                                    @endphp
-                                @endif
+                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje == -1)
+                                A
+                                @php
+                                    $sumaCalificacion = 0;
+                                @endphp
+                            @endif
                             @php
-                                $suma+=$sumaCalificacion;
+                                if(is_numeric($sumaCalificacion)){
+                                    $suma+=$sumaCalificacion;
+                                    }else{
+                                    $suma+= 0;
+                                    }
                             @endphp
                         @else
                             -
@@ -86,13 +95,17 @@
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
                                 {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
+                                @php
+                                    $valor_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                                @endphp
                             @endif
-                              @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
+                            @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0)
                                 @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
                                     A
-                                    @else
-                        {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
-                                    @endif
+
+                                @else
+                                    {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
+                                @endif
 
                             @endif
                         @else
@@ -100,17 +113,19 @@
                         @endif
 
                         @php
-                            $pparcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
+                                if(is_numeric($valor_parcial)){
+                                    $suma_parcial+=$valor_parcial;
+                                    }else{
+                                    $suma_parcial+= 0;
+                                    }
                         @endphp
                     </td>
                 @endforeach
 
                 <td>
+                    @inject('cargoService', 'App\Services\CargoService')
                     @php
-                        $p70 = 0;
-                        if($cant > 0) $p70 = ($suma/$cant * 0.7);
-
-                            $pfinal =($pparcial * 0.3) + $p70
+                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
                     @endphp
                     {{number_format($pfinal, 2, '.', ',')}}
                 </td>

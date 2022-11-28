@@ -8,6 +8,9 @@ use App\Models\Sede;
 use App\Models\Carrera;
 use App\Models\MesaAlumno;
 use App\Models\Mesa;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
@@ -44,6 +47,9 @@ class AlumnoMesaController extends Controller
         }
     }
 
+    /**
+     * @return Application|Factory|View
+     */
     public function vista_instancias()
     {
         $instancias = Instancia::where('estado', 'activa')->get();

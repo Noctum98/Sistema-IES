@@ -56,6 +56,10 @@ class ProcesoCalificacionService
 
     }
 
+    /**
+     * @param $materia
+     * @return mixed
+     */
     public function obtenerTimeUltimaCalificacionPorModulo($materia)
     {
          return ProcesoCalificacion::select('proceso_calificacion.updated_at')
@@ -64,5 +68,23 @@ class ProcesoCalificacionService
             ->orderBy('proceso_calificacion.updated_at', 'desc')
             ->first();
     }
+
+    public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo)
+    {
+        $calificacionService = new CalificacionService();
+        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo)->pluck('id')->toArray();
+
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->get();
+    }
+
+    public function cuentaProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo): int
+    {
+        return count($this->obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo));
+    }
+
+
 
 }
