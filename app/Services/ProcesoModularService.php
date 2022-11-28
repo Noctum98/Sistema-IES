@@ -329,14 +329,22 @@ class ProcesoModularService
     {
         $serviceCargo = new CargoService();
         $materia_id = $proceso->materia()->first()->id;
-        $alumno_id = $proceso->alumno()->first()->id;
+//        $alumno_id = $proceso->alumno()->first()->id;
+        $proceso_id = $proceso->id;
         $cargos = $proceso->materia()->first()->cargos()->get();
         foreach ($cargos as $cargo) {
 
-            if ($porcentaje > $serviceCargo->calculoPorcentajeCalificacionPorCargo(
-                    $cargo,
+//            if ($porcentaje > $serviceCargo->calculoPorcentajeCalificacionPorCargo(
+//                    $cargo,
+//                    $materia_id,
+//                    $proceso_id
+//                )) {
+//                return false;
+//            }
+            if ($porcentaje > $this->processProceso(
+                    $proceso_id,
                     $materia_id,
-                    $alumno_id
+                    $cargo->id
                 )) {
                 return false;
             }
