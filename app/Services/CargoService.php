@@ -292,15 +292,18 @@ class CargoService
         return $resultado;
     }
 
+    /**
+     * ProcesoModularService.php:157
+     * @param Cargo $cargo
+     * @param int $materia_id
+     * @param int $proceso_id
+     * @return float
+     */
     public function calculoPorcentajeCalificacionPorCargoAndProceso(
-        Cargo $cargo,
-        int $materia_id,
-        int $proceso_id
-    ): float {
+        Cargo $cargo, int $materia_id, int $proceso_id): float
+    {
         $calcPTP = $this->calculoPorcentajeCargoByTPPorProceso(
-            $cargo,
-            $materia_id,
-            $proceso_id
+            $cargo, $materia_id, $proceso_id
         ) < 0 ? 0 : $this->calculoPorcentajeCargoByTPPorProceso($cargo, $materia_id, $proceso_id);
         $tp = $calcPTP * 0.7;
         $calcPP = $this->calculoPorcentajeCargoByParcialAndProceso(

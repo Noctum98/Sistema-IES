@@ -54,14 +54,17 @@
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
-                        @if(count($calificacion->procesosCalificacionByAlumno($alumno->id)) > 0)
-                            @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje >=0)
-                                {{number_format($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje, 2, '.', ',') }}
+{{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                        @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
+
+                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje >= 0)
+                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje, 2, '.', ',') }}
                                 @php
-                                    $sumaCalificacion = $calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje
+                                    $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje
                                 @endphp
+
                             @endif
-                            @if($calificacion->procesosCalificacionByAlumno($alumno->id)[0]->porcentaje == -1)
+                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje == -1)
                                 A
                                 @php
                                     $sumaCalificacion = 0;

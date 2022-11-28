@@ -69,6 +69,8 @@ class ProcesoModularController extends Controller
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
 
+
+
         $estados =  Estados::all();
 
         return view('procesoModular.listado', [
