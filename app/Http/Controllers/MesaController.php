@@ -12,6 +12,7 @@ use App\Models\Mesa;
 use App\Models\Proceso;
 use App\Services\UserService;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -170,9 +171,12 @@ class MesaController extends Controller
                     'D',
                     strtotime($request['fecha_segundo'])
                 ) == 'Tue') {
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
+                    
+                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-4 days");
+                dd(time() < $request['cierre_segundo']);
+
             } else {
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
+                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-2 days");
             }
         } else {
             $request['cierre_segundo'] = null;

@@ -383,8 +383,6 @@ class ProcesoModularService
             $estado = Estados::where(
                 ['identificador' => 4]
             )->first();
-
-
         } else {
 
             if ($this->regularityRegular($pm)) {
