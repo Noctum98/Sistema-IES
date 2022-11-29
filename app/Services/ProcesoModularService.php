@@ -454,7 +454,7 @@ class ProcesoModularService
         )->pluck('porcentaje');
         $cant_p = count($parciales);
         foreach ($parciales as $parcial) {
-            $total_p += max($parcial->porcentaje, $parcial->porcentaje_recuperatorio);
+            $total_p += max(max($parcial->porcentaje, 0), max($parcial->porcentaje_recuperatorio, 0));
         }
         $cant_tp = count($tps);
         foreach ($tps as $tp) {
