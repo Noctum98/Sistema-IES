@@ -172,22 +172,22 @@
     </table>
     @if($llamado == 1)
         @php
-            $presidente = $materia->mesa($instancia->id)->presidente;
-            $presidente_id = $materia->mesa($instancia->id)->presidente()->first();
-            $primer_vocal = $materia->mesa($instancia->id)->primer_vocal;
-            $primer_vocal_id = $materia->mesa($instancia->id)->primer_vocal()->first();
-            $segundo_vocal = $materia->mesa($instancia->id)->segundo_vocal;
-            $segundo_vocal_id = $materia->mesa($instancia->id)->segundo_vocal()->first();
+            $presidente = $mesa->presidente;
+            $presidente_id = $mesa->presidente()->first();
+            $primer_vocal = $mesa->primer_vocal;
+            $primer_vocal_id = $mesa->primer_vocal()->first();
+            $segundo_vocal = $mesa->segundo_vocal;
+            $segundo_vocal_id = $mesa->segundo_vocal()->first();
         @endphp
 
     @else
         @php
-            $presidente = $materia->mesa($instancia->id)->presidente;
-            $presidente_id = $materia->mesa($instancia->id)->presidente_segundo()->first();
-            $primer_vocal = $materia->mesa($instancia->id)->primer_vocal;
-            $primer_vocal_id = $materia->mesa($instancia->id)->primer_vocal_segundo()->first();
-            $segundo_vocal = $materia->mesa($instancia->id)->segundo_vocal;
-            $segundo_vocal_id = $materia->mesa($instancia->id)->segundo_vocal_segundo()->first();
+            $presidente = $mesa->presidente;
+            $presidente_id = $mesa->presidente_segundo()->first();
+            $primer_vocal = $mesa->primer_vocal;
+            $primer_vocal_id = $mesa->primer_vocal_segundo()->first();
+            $segundo_vocal = $mesa->segundo_vocal;
+            $segundo_vocal_id = $mesa->segundo_vocal_segundo()->first();
         @endphp
     @endif
     <div class="container" style="width: 100%; margin: 0 5px; padding: 0 5px">

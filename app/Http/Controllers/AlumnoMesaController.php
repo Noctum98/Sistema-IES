@@ -322,6 +322,19 @@ class AlumnoMesaController extends Controller
         return redirect()->back();
     }
 
+    public function alta_mesa(Request $request,$id)
+    {
+        $inscripcion = MesaAlumno::find($id);
+
+        $inscripcion->estado_baja = false;
+        $inscripcion->confirmado = false;
+        $inscripcion->user_id = null;
+        $inscripcion->motivo_baja = null;
+        $inscripcion->update();
+
+        return redirect()->back();
+    }
+
     public function borrar_inscripcion(Request $request, $id, $instancia_id = null)
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');

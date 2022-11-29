@@ -235,6 +235,7 @@ class MesaController extends Controller
         int $llamado,
         Comision $comision = null
     ) {
+        
         $texto_llamado = 'Primer llamado';
 
         if ($llamado == 2) {
