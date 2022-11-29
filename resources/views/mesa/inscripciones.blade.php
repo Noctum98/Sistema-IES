@@ -193,7 +193,7 @@
                             <td>
                                 <a class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                    data-bs-target="#baja{{$inscripcion->id}}">
-                                    Dar baja
+                                   <i class="fas fa-chevron-circle-down"></i> Dar baja
                                 </a>
                                 @if($mesa->materia->getTotalAttribute() > 0)
                                     <a class="btn btn-sm btn-primary" data-bs-toggle="modal"
