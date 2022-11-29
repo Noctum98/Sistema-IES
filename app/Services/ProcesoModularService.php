@@ -458,7 +458,7 @@ class ProcesoModularService
         }
         $cant_tp = count($tps);
         foreach ($tps as $tp) {
-            $total_tp += $tp;
+            $total_tp += max($tp, 0);
         }
 
         $cargoService = new CargoService();
