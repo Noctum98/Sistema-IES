@@ -173,7 +173,7 @@ class MesaController extends Controller
                 ) == 'Tue') {
                     
                 $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-4 days");
-                dd(time() < $request['cierre_segundo']);
+          
 
             } else {
                 $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-2 days");
