@@ -415,6 +415,7 @@ Route::prefix('mesas')->group(function () {
     Route::post('/alumno/crear', [AlumnoMesaController::class, 'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
+    Route::get('/alta_mesa/{id}',[AlumnoMesaController::class,'alta_mesa'])->name('alta.mesa');
     Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
         'mesa.borrar'
     );
