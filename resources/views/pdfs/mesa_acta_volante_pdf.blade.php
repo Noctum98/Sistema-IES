@@ -92,7 +92,7 @@
             </td>
             <td style="width: 30%; border:none !important; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0;">
-                <h5 style="margin: 0; padding: 0; text-align: center" ><u>Fecha: </u> {{ $llamado == 1 ? date('d-m-Y', strtotime($mesa->fecha) ) : date('d-m-Y', strtotime($mesa->fecha) ) }}</h5>
+                <h5 style="margin: 0; padding: 0; text-align: center" ><u>Fecha: </u> {{ $llamado == 1 ? date('d-m-Y', strtotime($mesa->fecha) ) : date('d-m-Y', strtotime($mesa->fecha_segundo) ) }}</h5>
             </td>
            
         </tr>
