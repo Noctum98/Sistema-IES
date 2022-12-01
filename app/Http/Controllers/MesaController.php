@@ -223,7 +223,7 @@ class MesaController extends Controller
         ];
 
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView('pdfs. ', $data);
+        $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
 
         return $pdf->download('Tribunal Mesa '.$instancia->nombre.'.pdf');
     }
