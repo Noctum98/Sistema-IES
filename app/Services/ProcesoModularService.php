@@ -443,18 +443,33 @@ class ProcesoModularService
         $cant_p = 0;
         $cant_tp = 0;
         $total_p = 0;
-        $total_tp= 0;
+        $total_tp = 0;
         $parciales = $pCS->
         obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
-            $proceso, $materia, $cargo, CalificacionService::TIPO_PARCIAL
+            $proceso,
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_PARCIAL
         );
         $tps = $pCS->
         obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
-            $proceso, $materia, $cargo, CalificacionService::TIPO_TP
+            $proceso,
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_TP
         )->pluck('porcentaje');
         $cant_p = count($parciales);
         foreach ($parciales as $parcial) {
-            $total_p += max(max($parcial->porcentaje, 0), max($parcial->porcentaje_recuperatorio, 0));
+            $pp = 0;
+            $ppr = 0;
+            if(is_numeric($parcial->porcentaje)){
+                $pp = $parcial->porcentaje;
+            }
+            if(is_numeric($parcial->porcentaje_recuperatorio)){
+                $ppr = $parcial->porcentaje_recuperatorio;
+            }
+
+            $total_p += max($pp, $ppr);
         }
         $cant_tp = count($tps);
         foreach ($tps as $tp) {
