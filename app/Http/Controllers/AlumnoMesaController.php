@@ -170,7 +170,7 @@ class AlumnoMesaController extends Controller
             ])->get();
         } else {
             $insc = MesaAlumno::where([
-                'dni' => $alumno['dni'],
+                'dni' => $alumno['dni']
             ])->whereNotNull('mesa_id')->get();
 
             $mesas_alumnos = [];
@@ -200,11 +200,6 @@ class AlumnoMesaController extends Controller
                             ])->with([
                                 'error_materia' => 'No puedes inscribirte 2 veces a la misma materia'
                             ]);
-                        }
-                    } else {
-                        if ($inscripcion['mesa_id'] == $dato) {
-
-                            return redirect()->back()->with(['error_materia'=>'Ya estás inscripto a esta materia']);
                         }
                     }
                 }
