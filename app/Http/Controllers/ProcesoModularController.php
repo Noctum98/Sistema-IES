@@ -40,6 +40,9 @@ class ProcesoModularController extends Controller
         if($cargo and Auth::user()->hasCargo($cargo_id) and $cargo->responsableTFI($materia->id)){
             $puedeProcesar = true;
         };
+        if(Auth::user()->hasAnyRole('coordinador') or Auth::user()->hasAnyRole('admin')){
+            $puedeProcesar = true;
+        }
 
         $acciones = [];
         $serviceModular = new ProcesoModularService();
