@@ -204,7 +204,7 @@ class AlumnoMesaController extends Controller
                     } else {
                         if ($inscripcion['mesa_id'] == $dato) {
 
-                            $inscripcion->delete();
+                            return redirect()->back()->with(['error_materia'=>'Ya estás inscripto a esta materia']);
                         }
                     }
                 }
