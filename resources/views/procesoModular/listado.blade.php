@@ -31,11 +31,11 @@
             </div>
         @endif
 
-        <h3 class="text-info">
+        <h4 class="text-info">
             Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
-        </h3>
+        </h4>
         @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
-            <h5>
+            <h6>
                 Cargos:
                 @foreach($materia->cargos()->get() as $cargo)
                     <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
@@ -46,7 +46,7 @@
                         @endif
                     </a>
                 @endforeach
-            </h5>
+            </h6>
         @endif
         <hr>
         <div id="alerts">
@@ -55,6 +55,10 @@
         <p><i><small>
                     Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
                     Los procesos se editan desde cada cargo individualmente.
+
+                    @if($puede_procesar)
+                        <b>Usted tiene permisos de edición</b>
+                    @endif
                 </small></i></p>
         {{--
         @if(isset($comision))
@@ -97,13 +101,7 @@
                         <th class="sticky-top">Nota Final %</th>
                         <th class="sticky-top">Nota Final #</th>
                         <th class="sticky-top col-sm-1">Global #</th>
-                        <th class="sticky-top">Cierre <br/>
-                            {{--        <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"--}}
-                            {{--           class="btn btn-warning">--}}
-                            {{--            Cerrar Notas {{ $cargo->nombre }} @if($comision)<br/><small>{{$comision->nombre}}</small>@endif--}}
-                            {{--        </a>--}}
-                        </th>
-                        {{--                        <th><a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>--}}
+                        <th class="sticky-top">Cierre</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -112,7 +110,8 @@
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
                                 <small><br/>
-                                    <select name="estado"  class="custom-select custom-select-sm select-estado" id="{{$proceso->procesoRelacionado->id}}"
+                                    <select name="estado" class="custom-select custom-select-sm select-estado"
+                                            id="{{$proceso->procesoRelacionado->id}}"
                                             @if(!$puede_procesar || $proceso->procesoRelacionado->cierre) disabled=disabled
                                             @endif
                                             data-estado="{{$proceso->procesoRelacionado->id}}">
@@ -175,18 +174,26 @@
                                                 <i class="fa fa-save"></i>
                                             </button>
                                         </div>
+                                    </div>
                                 </form>
                             </td>
                             <td>
-    <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
-        <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
-    </span>
+                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
+                                    <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
+                                </span>
                                 <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
-        <i class="fa fa-spinner fa-spin"></i>
-    </span>
-
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </span>
+{{$proceso->procesoRelacionado->cierre}}
                                 <input type="checkbox" class="check-cierre"
-                                       id="{{$proceso->procesoRelacionado->id}}" {{!$proceso->procesoRelacionado->cierre ? 'unchecked':'checked'}} />
+                                       id="{{$proceso->procesoRelacionado->id}}"
+                                       @if($proceso->procesoRelacionado->cierre == 1)
+                                           checked
+                                        @endif
+                                       @if($proceso->procesoRelacionado->cierre == 0)
+                                           unchecked
+                                        @endif
+                                />
                             </td>
 
 
@@ -205,7 +212,7 @@
             </div>
             @endsection
             @section('scripts')
-                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
+                <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
 
