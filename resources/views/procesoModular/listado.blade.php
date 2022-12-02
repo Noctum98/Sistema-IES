@@ -109,23 +109,31 @@
                         <tr class="bg-secondary text-white font-weight-bold">
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
-                                <small><br/>
-                                    <select name="estado" class="custom-select custom-select-sm select-estado"
-                                            id="{{$proceso->procesoRelacionado->id}}"
-                                            @if(!$puede_procesar || $proceso->procesoRelacionado->cierre) disabled=disabled
-                                            @endif
-                                            data-estado="{{$proceso->procesoRelacionado->id}}">
-                                        @foreach($estados as $estado)
-                                            <option value="{{ $estado->id }}"
-                                                    @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
-                                                        selected="selected"
-                                                    @endif
-                                            >
-                                                {{ $estado->nombre }}
 
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <small><br/>
+                                    <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                    @if($puede_procesar)
+                                        <br/>
+                                        <div class="d-inline-flex">
+                                            <small><sup>*</sup> Cambiar condición</small>
+                                            <select name="estado" class="custom-select custom-select-sm select-estado"
+                                                    id="{{$proceso->procesoRelacionado->id}}"
+                                                    @if(!$puede_procesar || $proceso->procesoRelacionado->cierre == 1) disabled=disabled
+                                                    @endif
+                                                    data-estado="{{$proceso->procesoRelacionado->id}}">
+                                                @foreach($estados as $estado)
+                                                    <option value="{{ $estado->id }}"
+                                                            @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
+                                                                selected="selected"
+                                                            @endif
+                                                    >
+                                                        {{ $estado->nombre }}
+
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
 
                                 </small>
                                 <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
@@ -184,12 +192,12 @@
                                 <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
-{{$proceso->procesoRelacionado->cierre}}
+                                {{$proceso->procesoRelacionado->cierre}}
                                 <input type="checkbox" class="check-cierre"
                                        id="{{$proceso->procesoRelacionado->id}}"
                                        @if($proceso->procesoRelacionado->cierre == 1)
                                            checked
-                                        @endif
+                                       @endif
                                        @if($proceso->procesoRelacionado->cierre == 0)
                                            unchecked
                                         @endif
