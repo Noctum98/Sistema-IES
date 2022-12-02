@@ -49,16 +49,17 @@ class ProcesoModularController extends Controller
         if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id);
-            $serviceModular->cargarPonderacionEnProcesoModular($materia);
-            $acciones[] = "Procesando % modulares para {$materia->nombre}";
+
         }
 
+        $serviceModular->cargarPonderacionEnProcesoModular($materia);
+        $acciones[] = "Procesando % modulares para {$materia->nombre}";
 //        if ($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
 //            if ($serviceModular->obtenerTimeUltimaCalificacion(
 //                    $materia->id
 //                )->updated_at >= $serviceModular->obtenerTimeUltimoProcesoModular($materia->id)->updated_at) {
-                $serviceModular->cargarPonderacionEnProcesoModular($materia);
-                $acciones[] = "Procesando % modulares para {$materia->nombre}";
+//                $serviceModular->cargarPonderacionEnProcesoModular($materia);
+//                $acciones[] = "Procesando % modulares para {$materia->nombre}";
 //            }
 //        }
 

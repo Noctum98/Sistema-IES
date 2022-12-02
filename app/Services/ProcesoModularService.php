@@ -177,6 +177,8 @@ class ProcesoModularService
 
         }
 
+        $this->grabaEstadoCursoEnModulo($materia->id);
+
         return $cant;
 
     }
