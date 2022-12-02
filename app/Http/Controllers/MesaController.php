@@ -162,7 +162,7 @@ class MesaController extends Controller
         $request['materia_id'] = $materia->id;
 
         if (date('D', strtotime($request['fecha'])) == 'Mon' || date('D', strtotime($request['fecha'])) == 'Tue') {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
+            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
         } else {
             $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
         }

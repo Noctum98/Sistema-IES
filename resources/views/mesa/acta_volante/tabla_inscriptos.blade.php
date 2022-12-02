@@ -6,6 +6,7 @@
             <th scope="col">D.N.I</th>
             <th scope="col">Teléfono</th>
             <th scope="col">Confirmado</th>
+            <th scope="col">Nota</th>
             <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
         </tr>
     </thead>
@@ -21,6 +22,15 @@
                 <i class="fas fa-check text-success"></i>
                 @else
                 <i class="fas fa-times text-danger"></i>
+                @endif
+            </td>
+            <td>
+                @if($inscripcion->acta_volante && $inscripcion->acta_volante->promedio != -1)
+                <b><span class="{{ $inscripcion->acta_volante->promedio >= 4 ? 'text-success' : 'text-danger' }}">{{ $inscripcion->acta_volante->promedio }}</span></b>
+                @elseif ($inscripcion->acta_volante && $inscripcion->acta_volante->promedio == -1)
+                <b><span class="text-danger"> A </span></b>
+                @else
+                <b> -</b>
                 @endif
             </td>
             <td>
