@@ -204,7 +204,6 @@ class AlumnoMesaController extends Controller
                     }
                 }
 
-                //dd("Legue aca");
                 $inscripcion = new MesaAlumno();
                 $inscripcion->alumno_id = Auth::user() ? Auth::user()->alumno()->id : null;
                 $inscripcion->nombres = $alumno['nombres'];

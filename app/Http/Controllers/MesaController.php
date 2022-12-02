@@ -162,7 +162,7 @@ class MesaController extends Controller
         $request['materia_id'] = $materia->id;
 
         if (date('D', strtotime($request['fecha'])) == 'Mon' || date('D', strtotime($request['fecha'])) == 'Tue') {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
+            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
         } else {
             $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
         }
@@ -362,51 +362,9 @@ class MesaController extends Controller
                 $hora = $this::T_V;
         }
 
-        $fecha_inicial = substr($fecha, 0, -6);
+        $fecha = substr($fecha, 0, -6);
 
-        $fecha =  $this->isHoliday($fecha_inicial);
         return $fecha.'T'.$hora;
 
     }
-
-    private function isHoliday($fecha)
-    {
-
-        $fecha_dia = date("d-m-Y", strtotime($fecha));
-        $fecha_2 = strtotime($fecha_dia."-2 days");
-        $fecha_3 = date("d-m-Y", $fecha_2);
-        echo $fecha_dia . '<br/>';
-
-        print_r($fecha_2 . '<br/>');
-        print_r($fecha_3 . '<br/>');
-        echo  ' 359 <br/>';
-        if(in_array($fecha_3, $this->feriados)){
-            $fecha = strtotime($fecha."-1 days");
-            print_r(357);
-            $this->isHoliday(date("d-m-Y",$fecha));
-        }
-//        if(date('D', strtotime($fecha_3)) == 'Tue'){
-//            $fecha = strtotime($fecha."-4 days");
-//            print_r(362);
-//            $this->isHoliday(date("d-m-Y",$fecha));
-//        }
-//        if(date('D', strtotime($fecha_3)) == 'Mon'){
-//            $fecha = strtotime($fecha."-3 days");
-//            print_r(367);
-//            $this->isHoliday(date("d-m-Y",$fecha));
-//        }
-        if(date('D', strtotime($fecha_3)) == 'Sun'){
-            $fecha = strtotime($fecha."-2 days");
-            print_r(372);
-            $this->isHoliday(date("d-m-Y",$fecha));
-        }
-        if(date('D', strtotime($fecha_3)) == 'Sat'){
-            $fecha = $fecha."-1 days";
-            print_r(377);
-            $this->isHoliday($fecha);
-        }
-        return $fecha;
-
-    }
-
 }
