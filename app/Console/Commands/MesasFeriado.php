@@ -66,13 +66,24 @@ class MesasFeriado extends Command
      */
     public function handle()
     {
-        $mesas = Mesa::where('instancia_id',12)->get();
+        $mesas = Mesa::where([
+            'instancia_id'=>12
+        ])->get();
 
 
         foreach($mesas as $mesa)
         {
             $fecha = date("d-m-Y", strtotime($mesa->fecha));
-            
+            $cierre = date("d-m-Y",$mesa->cierre);
+
+            $this->info($fecha.' - '.$cierre);
+
+            /*
+            if(in_array($cierre,$this->feriados))
+            {
+                
+            }
+           
             $contador = 0;
             
             while($contador <= 2)
@@ -85,6 +96,7 @@ class MesasFeriado extends Command
             }
             $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$fecha));
             $mesa->update();
+            */
         }
         
     }
@@ -113,7 +125,6 @@ class MesasFeriado extends Command
             case 'vespertino':
                 $hora = $this::T_V;
         }
-
         return $fecha.'T'.$hora;
     }
 }
