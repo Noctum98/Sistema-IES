@@ -8,6 +8,10 @@ use Illuminate\Console\Command;
 class MesasFeriado extends Command
 {
     protected $feriados;
+    const T_M = '14:00';
+    const T_T = '23:59';
+    const T_V = '23:59';
+
     /**
      * The name and signature of the console command.
      *
@@ -64,11 +68,52 @@ class MesasFeriado extends Command
     {
         $mesas = Mesa::where('instancia_id',12)->get();
 
+
         foreach($mesas as $mesa)
         {
-            $fecha_dia_segundo = date("d-m-Y", strtotime($mesa->fecha_segundo));
-
-            $comp_segundo_llamado = in_array($fecha_dia_segundo, $this->feriados);
+            $fecha = date("d-m-Y", strtotime($mesa->fecha));
+            
+            $contador = 0;
+            
+            while($contador <= 2)
+            {
+                if($this->isHabil($fecha)){
+                    $contador++;
+                }else{
+                    $fecha = date("d-m-Y", strtotime($fecha.'-1 day'));
+                }
+            }
+            $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$fecha));
+            $mesa->update();
         }
+        
+    }
+
+    private function isHabil($fecha)
+    {
+        if(in_array($fecha,$this->feriados) || date('D', strtotime($fecha) == 'Sat') || date('D', strtotime($fecha) == 'Sun')){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    private function setFechaTurno($materia, $fecha)
+    {
+
+        $turno = $materia->carrera->turno;
+        $hora = '00:00';
+        switch ($turno) {
+            case 'mañana':
+                $hora = $this::T_M;
+                break;
+            case 'tarde':
+                $hora = $this::T_T;
+                break;
+            case 'vespertino':
+                $hora = $this::T_V;
+        }
+
+        return $fecha.'T'.$hora;
     }
 }
