@@ -146,7 +146,7 @@
                     @foreach ($primer_llamado_bajas as $inscripcion)
                         <tr style="cursor:pointer;">
                             <td>{{ $inscripcion->alumno ? $inscripcion->alumno->nombres : $inscripcion->nombres }}</td>
-                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellido : $inscripcion->apellido  }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellidos : $inscripcion->apellidos  }}</td>
                             <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
                             <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
                             <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
