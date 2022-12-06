@@ -90,10 +90,10 @@
                     <tbody>
                     @foreach ($primer_llamado as $inscripcion)
                         <tr style="cursor:pointer;">
-                            <td>{{ $inscripcion->nombres }}</td>
-                            <td>{{ $inscripcion->apellidos }}</td>
-                            <td>{{ $inscripcion->dni }}</td>
-                            <td>{{ $inscripcion->telefono }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->nombres : $inscripcion->nombres }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellidos : $inscripcion->apellidos }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
 
                             <td>
                                 @include('mesa.modals.dar_baja_mesa')
@@ -145,10 +145,10 @@
                     <tbody>
                     @foreach ($primer_llamado_bajas as $inscripcion)
                         <tr style="cursor:pointer;">
-                            <td>{{ $inscripcion->nombres }}</td>
-                            <td>{{ $inscripcion->apellidos }}</td>
-                            <td>{{ $inscripcion->dni }}</td>
-                            <td>{{ $inscripcion->telefono }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->nombres : $inscripcion->nombres }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellido : $inscripcion->apellido  }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
                             <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
                             <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
                             <td>
@@ -178,10 +178,10 @@
                     <tbody>
                     @foreach ($segundo_llamado as $inscripcion)
                         <tr style="cursor:pointer;">
-                            <td>{{ $inscripcion->nombres }}</td>
-                            <td>{{ $inscripcion->apellidos }}</td>
-                            <td>{{ $inscripcion->dni }}</td>
-                            <td>{{ $inscripcion->telefono }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->nombres : $inscripcion->nombres }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellidos : $inscripcion->apellidos }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
 
                             <td>
                                 <a class="btn btn-sm btn-danger" data-bs-toggle="modal"
@@ -230,10 +230,10 @@
                     <tbody>
                     @foreach ($segundo_llamado_bajas as $inscripcion)
                         <tr style="cursor:pointer;">
-                            <td>{{ $inscripcion->nombres }}</td>
-                            <td>{{ $inscripcion->apellidos }}</td>
-                            <td>{{ $inscripcion->dni }}</td>
-                            <td>{{ $inscripcion->telefono }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->nombres : $inscripcion->nombres }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellidos : $inscripcion->apellidos }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
+                            <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
                             <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
                             <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
 
