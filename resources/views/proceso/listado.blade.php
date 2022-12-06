@@ -123,7 +123,11 @@
                     </td>
                     <td>
                         <form action="" id="{{ $proceso->id }}" class="row form_nota_global col-md-6">
-                            <input type="number" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global ? $proceso->nota_global : '' }}" @if(!$proceso->estado || ($proceso->estado && $proceso->estado->identificador != 5) || $proceso->cierre) disabled @endif>
+                            @if($proceso->nota_global)
+                            <input type="text" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global > 0 ? $proceso->nota_global : 'A' }}" @if(!$proceso->estado || ($proceso->estado && $proceso->estado->identificador != 5) || $proceso->cierre) disabled @endif>
+                            @else
+                            <input type="text" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="" @if(!$proceso->estado || ($proceso->estado && $proceso->estado->identificador != 5) || $proceso->cierre) disabled @endif>
+                            @endif
                             <button type="submit" class="btn btn-info btn-sm col-md-12 input-group-text" id="btn-global-{{ $proceso->id }}" @if(!Session::has('profesor') || $proceso->cierre || $materia->cierre) disabled @endif >
                                 <i class="fa fa-save"></i></button>
                         </form>
