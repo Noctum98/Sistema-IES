@@ -67,45 +67,51 @@ class MesasFeriado extends Command
     public function handle()
     {
         $mesas = Mesa::where([
-            'instancia_id'=>12
+            'instancia_id' => 12
         ])->get();
 
+
+        foreach ($mesas as $mesa) {
+            $fecha = date("d-m-Y", strtotime($mesa->fecha));
+            $cierre = date("d-m-Y", $mesa->cierre);
+
+            //
+            
+            if (in_array($cierre, $this->feriados)) {
+                
+                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+                $contador = 0;
+                while ($contador < 2) {
+                    $this->info($inicio_fecha);
+
+                    if ($this->isHabil($inicio_fecha)) {
+                        $this->info("Sumé");
+                        $contador++;
+                    }
+                    $this->info($contador);
+
+                    if($contador != 2){
+                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                    }
+                }
+                $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
+                $mesa->update();
+            }
+        }
 
         foreach($mesas as $mesa)
         {
             $fecha = date("d-m-Y", strtotime($mesa->fecha));
-            $cierre = date("d-m-Y",$mesa->cierre);
-
-            $this->info($fecha.' - '.$cierre);
-
-            /*
-            if(in_array($cierre,$this->feriados))
-            {
-                
-            }
-           
-            $contador = 0;
-            
-            while($contador <= 2)
-            {
-                if($this->isHabil($fecha)){
-                    $contador++;
-                }else{
-                    $fecha = date("d-m-Y", strtotime($fecha.'-1 day'));
-                }
-            }
-            $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$fecha));
-            $mesa->update();
-            */
+            $cierre = date("d-m-Y", $mesa->cierre);
+            $this->info($fecha.'  '.$cierre);
         }
-        
     }
 
     private function isHabil($fecha)
     {
-        if(in_array($fecha,$this->feriados) || date('D', strtotime($fecha) == 'Sat') || date('D', strtotime($fecha) == 'Sun')){
+        if (in_array($fecha, $this->feriados) || date('D', strtotime($fecha))  == 'Sat' || date('D', strtotime($fecha)) == 'Sun') {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -125,6 +131,6 @@ class MesasFeriado extends Command
             case 'vespertino':
                 $hora = $this::T_V;
         }
-        return $fecha.'T'.$hora;
+        return $fecha . 'T' . $hora;
     }
 }
