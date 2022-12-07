@@ -158,7 +158,7 @@
                                 {{$proceso->trabajo_final_porcentaje}} %|
                             </td>
                             <td class="text-center">
-                                {{$proceso->trabajo_final_porcentaje}} %|
+                                {{$proceso->trabajo_final_nota}} |
                             </td>
                             <td class="text-center">
                                 {{$proceso->nota_final_porcentaje}} %|
