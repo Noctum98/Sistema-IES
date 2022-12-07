@@ -381,28 +381,33 @@ class ProcesoModularService
      */
     public function grabaEstadoPorProcesoModular(ProcesoModular $pm): int
     {
-        if ($this->regularityDirectAccreditation($pm)) {
-            $estado = Estados::where(
-                ['identificador' => 4]
-            )->first();
-        } else {
-
-            if ($this->regularityRegular($pm)) {
+        $idEstado = $pm->procesoRelacionado()->first()->estado_id;
+        if ($pm->procesoRelacionado()->first()->cierre != 1) {
+            if ($this->regularityDirectAccreditation($pm)) {
                 $estado = Estados::where(
-                    ['identificador' => 1]
+                    ['identificador' => 4]
                 )->first();
             } else {
-                $estado = Estados::where(
-                    ['identificador' => 5]
-                )->first();
+
+                if ($this->regularityRegular($pm)) {
+                    $estado = Estados::where(
+                        ['identificador' => 1]
+                    )->first();
+                } else {
+                    $estado = Estados::where(
+                        ['identificador' => 5]
+                    )->first();
+                }
+
             }
 
-        }
         $proceso = $pm->procesoRelacionado()->first();
         $proceso->estado_id = $estado->id;
         $proceso->update();
+        $idEstado = $estado->id;
+        }
 
-        return $estado->id;
+        return $idEstado;
     }
 
 
