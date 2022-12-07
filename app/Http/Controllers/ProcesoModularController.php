@@ -58,8 +58,8 @@ class ProcesoModularController extends Controller
 //            if ($serviceModular->obtenerTimeUltimaCalificacion(
 //                    $materia->id
 //                )->updated_at >= $serviceModular->obtenerTimeUltimoProcesoModular($materia->id)->updated_at) {
-                $serviceModular->cargarPonderacionEnProcesoModular($materia);
-                $acciones[] = "Procesando % modulares para {$materia->nombre}";
+//                $serviceModular->cargarPonderacionEnProcesoModular($materia);
+//                $acciones[] = "Procesando % modulares para {$materia->nombre}";
 //            }
 //        }
 
