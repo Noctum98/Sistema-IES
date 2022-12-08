@@ -390,10 +390,10 @@ class ProcesoModularService
 
     /**
      * @param int $porcentaje_max
-     * @param int $trabajo_final_porcentaje
+     * @param int|null $trabajo_final_porcentaje
      * @return bool
      */
-    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje): bool
+    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje = null): bool
     {
         if(!$trabajo_final_porcentaje){
             return false;
