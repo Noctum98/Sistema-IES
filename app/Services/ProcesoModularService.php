@@ -139,6 +139,8 @@ class ProcesoModularService
     {
         $this->crearProcesoModular($materia->id);
 
+        $procesoCalificacionService = new ProcesoCalificacionService();
+
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
         $cant = 0;
@@ -174,7 +176,7 @@ class ProcesoModularService
 
             if (!$proceso->trabajo_final_porcentaje) {
                 if ($cargo->responsableTFI($materia->id)) {
-                    $tfp = $this->procesoCalificacionService->obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+                    $tfp = $procesoCalificacionService->obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
                         $proceso->procesoRelacionado()->first()->id,
                         $materia->id,
                         $cargo->id,
