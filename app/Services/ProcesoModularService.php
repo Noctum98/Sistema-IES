@@ -182,8 +182,10 @@ class ProcesoModularService
                         $cargo->id,
                         CalificacionService::TIPO_TFI
                     )->first();
-                    $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
-                    $proceso->trabajo_final_nota = $tfp->nota;
+                    if($tfp) {
+                        $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
+                        $proceso->trabajo_final_nota = $tfp->nota;
+                    }
                 }
             }
 
