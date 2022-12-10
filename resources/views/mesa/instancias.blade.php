@@ -83,11 +83,22 @@
                                                 @endif
                                             @endif
                                             @if($inscripcion->acta_volante()->first())
-                                                <div class="col-6 m-0 p-0">
+                                                <div class="sol-sm-12 col-md-6 m-0 p-0">
                                                     <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->updated_at->format('d-m-Y')}}</h6>
                                                 </div>
-                                                <div class="col-6 m-0 p-0">
+                                                <div class="col-sm-12 col-md-3 m-0 p-0">
                                                     <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->promedio}}</h6>
+                                                </div>
+                                                <div class="col-sm-12 col-md-3 m-0 p-0">
+                                                    @if($inscripcion->segundo_llamado)
+                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro_segundo}}<br/>
+                                                             {{$inscripcion->mesa()->first()->folio_segundo}}
+                                                        </h6>
+                                                    @else
+                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro}}<br/>
+                                                            {{$inscripcion->mesa()->first()->folio}}
+                                                        </h6>
+                                                    @endif
                                                 </div>
                                             @endif
                                         </div>
