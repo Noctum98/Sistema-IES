@@ -53,7 +53,7 @@
                                             @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
                                                 @if($inscripcion->estado_baja)
                                                     <span class="text-secondary col-4 mr-1 px-0">Dada de baja</span>
-                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{$inscripcion->user()->first()->getApellidoNombre()}}</span>
+                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
                                                     <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
                                                 @else
                                                     <span class="text-secondary">Inscripto</span>
@@ -65,7 +65,7 @@
                                             @else
                                                 @if($inscripcion->estado_baja)
                                                     <span class="text-secondary col-4 mr-1 px-0">Dada de baja</span>
-                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{$inscripcion->user()->first()->getApellidoNombre()}}</span>
+                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
                                                     <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
 
                                                 @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre_segundo)
