@@ -139,6 +139,8 @@ class ProcesoModularService
     {
         $this->crearProcesoModular($materia->id);
 
+        $procesoCalificacionService = new ProcesoCalificacionService();
+
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
         $cant = 0;
@@ -147,6 +149,7 @@ class ProcesoModularService
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
         foreach ($procesos as $proceso) {
             $promedio_final_p = 0;
+            /** @var Cargo $cargo */
             foreach ($cargos as $cargo) {
                 /** @var ProcesoModular $proceso */
                 $ponderacion_cargo_materia = CargoMateria::where([
@@ -169,6 +172,26 @@ class ProcesoModularService
             $proceso->promedio_final_porcentaje = $promedio_final_p;
             $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
                 $promedio_final_p
+            );
+
+            if (!$proceso->trabajo_final_porcentaje) {
+                if ($cargo->responsableTFI($materia->id)) {
+                    $tfp = $procesoCalificacionService->obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+                        $proceso->procesoRelacionado()->first()->id,
+                        $materia->id,
+                        $cargo->id,
+                        CalificacionService::TIPO_TFI
+                    )->first();
+                    if($tfp) {
+                        $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
+                        $proceso->trabajo_final_nota = $tfp->nota;
+                    }
+                }
+            }
+
+            $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
+            $proceso->nota_final_nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
+                $proceso->nota_final_porcentaje
             );
 
             $proceso->update();
@@ -250,7 +273,7 @@ class ProcesoModularService
             and
             $this->getPromedioModularBoolean(self::PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
             and
-            $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
+            $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_porcentaje)
         );
     }
 
@@ -367,11 +390,14 @@ class ProcesoModularService
 
     /**
      * @param int $porcentaje_max
-     * @param int $trabajo_final_porcentaje
+     * @param int|null $trabajo_final_porcentaje
      * @return bool
      */
-    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje): bool
+    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje = null): bool
     {
+        if(!$trabajo_final_porcentaje){
+            return false;
+        }
         return $trabajo_final_porcentaje >= $porcentaje_max;
     }
 
@@ -381,28 +407,33 @@ class ProcesoModularService
      */
     public function grabaEstadoPorProcesoModular(ProcesoModular $pm): int
     {
-        if ($this->regularityDirectAccreditation($pm)) {
-            $estado = Estados::where(
-                ['identificador' => 4]
-            )->first();
-        } else {
-
-            if ($this->regularityRegular($pm)) {
+        $idEstado = $pm->procesoRelacionado()->first()->estado_id;
+        if ($pm->procesoRelacionado()->first()->cierre != 1) {
+            if ($this->regularityDirectAccreditation($pm)) {
                 $estado = Estados::where(
-                    ['identificador' => 1]
+                    ['identificador' => 4]
                 )->first();
             } else {
-                $estado = Estados::where(
-                    ['identificador' => 5]
-                )->first();
+
+                if ($this->regularityRegular($pm)) {
+                    $estado = Estados::where(
+                        ['identificador' => 1]
+                    )->first();
+                } else {
+                    $estado = Estados::where(
+                        ['identificador' => 5]
+                    )->first();
+                }
+
             }
 
+            $proceso = $pm->procesoRelacionado()->first();
+            $proceso->estado_id = $estado->id;
+            $proceso->update();
+            $idEstado = $estado->id;
         }
-        $proceso = $pm->procesoRelacionado()->first();
-        $proceso->estado_id = $estado->id;
-        $proceso->update();
 
-        return $estado->id;
+        return $idEstado;
     }
 
 
@@ -464,10 +495,10 @@ class ProcesoModularService
         foreach ($parciales as $parcial) {
             $pp = 0;
             $ppr = 0;
-            if(is_numeric($parcial->porcentaje)){
+            if (is_numeric($parcial->porcentaje)) {
                 $pp = $parcial->porcentaje;
             }
-            if(is_numeric($parcial->porcentaje_recuperatorio)){
+            if (is_numeric($parcial->porcentaje_recuperatorio)) {
                 $ppr = $parcial->porcentaje_recuperatorio;
             }
 

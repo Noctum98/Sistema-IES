@@ -15,6 +15,7 @@ class Proceso extends Model
         'materia_id',
         'estado_id',
         'cierre',
+        'final_calificaciones',
         'porcentaje_final_calificaciones',
         'nota_global',
         'nota_recuperatorio',

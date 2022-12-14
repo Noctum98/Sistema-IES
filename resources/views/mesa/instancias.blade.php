@@ -1,9 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h4 class="text-info">
+        <h5 class="text-info">
             Elige la mesa que deseas rendir
-        </h4>
+        </h5>
         <hr>
         @if(count($instancias) > 0)
             @foreach($instancias as $instancia)
@@ -18,9 +18,9 @@
             <h3 class="text-secondary">No hay mesas abiertas</h3>
         @endif
         <hr>
-        <h4 class="text-info">
+        <h5 class="text-info">
             Mesas en las que ya te has inscripto
-        </h4>
+        </h5>
         @if(count($inscripciones)>0)
             <ul class="list-group list-group-flush">
                 @foreach($inscripciones as $inscripcion)
@@ -41,12 +41,20 @@
                                         {{--                                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}--}}
                                         {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
                                         - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
+                                        @if ($inscripcion->segundo_llamado)
+                                            (2do llamado)
+                                        @else
+                                            (1er llamado)
+                                        @endif
+
                                     </div>
                                     <div class="col-4 m-0 p-0">
                                         <div class="row">
                                             @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
                                                 @if($inscripcion->estado_baja)
-                                                    <span class="text-secondary">Dada de baja</span>
+                                                    <span class="text-secondary col-4 mr-1 px-0">Dada de baja</span>
+                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
+                                                    <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
                                                 @else
                                                     <span class="text-secondary">Inscripto</span>
                                                     @if($inscripcion->instancia->estado == 'activa' || $inscripcion->instancia->cierre == 1)
@@ -56,7 +64,9 @@
                                                 @endif
                                             @else
                                                 @if($inscripcion->estado_baja)
-                                                    <span class="text-secondary">Dada de baja</span>
+                                                    <span class="text-secondary col-4 mr-1 px-0">Dada de baja</span>
+                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
+                                                    <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
 
                                                 @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre_segundo)
                                                     -
@@ -73,11 +83,22 @@
                                                 @endif
                                             @endif
                                             @if($inscripcion->acta_volante()->first())
-                                                <div class="col-6 m-0 p-0">
+                                                <div class="sol-sm-12 col-md-6 m-0 p-0">
                                                     <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->updated_at->format('d-m-Y')}}</h6>
                                                 </div>
-                                                <div class="col-6 m-0 p-0">
+                                                <div class="col-sm-12 col-md-3 m-0 p-0">
                                                     <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->promedio}}</h6>
+                                                </div>
+                                                <div class="col-sm-12 col-md-3 m-0 p-0">
+                                                    @if($inscripcion->segundo_llamado)
+                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro_segundo}}<br/>
+                                                             {{$inscripcion->mesa()->first()->folio_segundo}}
+                                                        </h6>
+                                                    @else
+                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro}}<br/>
+                                                            {{$inscripcion->mesa()->first()->folio}}
+                                                        </h6>
+                                                    @endif
                                                 </div>
                                             @endif
                                         </div>
