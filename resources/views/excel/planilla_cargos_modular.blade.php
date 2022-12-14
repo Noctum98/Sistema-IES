@@ -28,7 +28,7 @@
         <tr>
             <td>{{ $key + 1 }}</td>
             <td>{{ $proceso->alumno->dni }}</td>
-            <td>{{mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos)}}</td>
+            <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos) }}</td>
             <td>{{ $proceso->promedio_final_nota }}</td>
             <td>{{ $proceso->promedio_final_porcentaje }}</td>
             <td>{{ $proceso->calificacionTFI() ? $proceso->calificacionTFI()->nota : '-' }}</td>
