@@ -60,7 +60,7 @@
                         <b>Usted tiene permisos de edición</b>
                     @endif
                 </small></i></p>
-        {{--
+        
         @if(isset($comision))
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
@@ -68,14 +68,15 @@
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
                         class="fas fa-download"></i> Descargar
                 planilla</a>
+                {{--
             @if($puede_procesar)
                 <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
                    class="btn btn-warning">
                     Cerrar Notas
                 </a>
-            @endif
+            @endif--}}
 
-        @endif --}}
+        @endif 
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}

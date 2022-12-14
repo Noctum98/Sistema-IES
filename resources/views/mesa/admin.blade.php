@@ -6,7 +6,7 @@
         </h2>
         <hr>
         @if(Auth::user()->rol == 'rol_admin')
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Crear Instancia
             </button>
         @endif
@@ -17,6 +17,12 @@
         @endif
         <!-- Modal Crear-->
         @include('mesa.modals.crear_instancia')
+
+        @if($todos)
+        <br>
+        <a href="{{ route('mesa.admin') }}" class="mt-3 btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver menos</a>
+        @endif
+
         @if(count($instancias) != 0)
             <div class="table-responsive">
                 <table class="table mt-4">
@@ -36,7 +42,7 @@
                         <tr style="cursor:pointer;">
                             <td><b>{{ $instancia->nombre }}</b></td>
                             <td><b>{{ $instancia->tipo == 0 ? 'Común' : 'Especial' }}</b></td>
-                            <td><b>{{ $instancia->año }}</b></td>
+                            <td><b class="text-primary">{{ $instancia->año }}</b></td>
                             <td>
                                 <button type="button" class="btn-sm btn-secondary" data-bs-toggle="modal"
                                         data-bs-target="#modal{{$instancia->id}}">
@@ -105,6 +111,11 @@
         @else
             <p>No existen instancias creadas</p>
         @endif
+
+        @if(!$todos)
+        <a href="{{ route('mesa.admin',['todos'=>true]) }}" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Ver todos</a>
+        @endif
+
     </div>
 @endsection
 @section('scripts')

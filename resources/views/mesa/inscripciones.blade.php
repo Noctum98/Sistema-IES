@@ -161,8 +161,8 @@
                 </table>
             @endif
 
+            <h2 class="text-info">Segundo llamado</h2>
             @if( count($segundo_llamado) > 0)
-                <h2 class="text-info">Segundo llamado</h2>
                 <table class="table mt-4">
                     <thead class="thead-dark">
                     <tr>
@@ -210,6 +210,8 @@
                     @endforeach
                     </tbody>
                 </table>
+                @else
+                <p>No existen inscripciones para este llamado.</p>
             @endif
             @if(count($segundo_llamado_bajas) > 0)
                 <h2 class="text-info">Segundo llamado bajas</h2>

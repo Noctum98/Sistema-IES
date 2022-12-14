@@ -26,20 +26,23 @@ class InstanciaController extends Controller
     }
     // Vistas
 
-    public function vista_admin(Request $request)
+    public function vista_admin(Request $request,$todos = null)
     {
-        $instancia = Instancia::orderBy('id','desc')->get();
+        if(!$todos)
+        {
+            $instancia = Instancia::orderBy('id','desc')->take(4)->get();
+        }else{
+            $instancia = Instancia::orderBy('id','desc')->get();
+        }
 
         $sedes = Auth::user()->sedes;
-        /*
-        $sedes = Sede::where('id',7)
-        ->orWhere('id',8)
-        ->orWhere('id',13)
-        ->get();
-        */
+
+        //dd($instancia);
+        
         return view('mesa.admin', [
             'instancias' => $instancia,
-            'sedes' =>  $sedes
+            'sedes' =>  $sedes,
+            'todos' => $todos
         ]);
     }
 
