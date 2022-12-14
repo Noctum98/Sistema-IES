@@ -104,6 +104,7 @@ class ActaVolanteController extends Controller
             if($contador > 0 && $suma > 0)
             {
                 $request['promedio'] = $suma / $contador;
+                $request['promedio'] = round($request['promedio'],0,PHP_ROUND_HALF_UP);
             }else{
                 $request['error'] = true;
             }

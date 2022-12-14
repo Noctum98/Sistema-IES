@@ -391,7 +391,7 @@ Route::prefix('alumno/parci')->group(function () {
 Route::prefix('mesas')->group(function () {
     Route::get('/inscripcion/{id}', [AlumnoMesaController::class, 'vista_home'])->name('mesa.welcome');
     Route::get('/instancias', [AlumnoMesaController::class, 'vista_instancias'])->name('mesa.instancias');
-    Route::get('/administrar', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
+    Route::get('/administrar/{todos?}', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name(
         'mesa.carreras'
     );
