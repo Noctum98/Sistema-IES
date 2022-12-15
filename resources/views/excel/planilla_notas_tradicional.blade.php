@@ -94,10 +94,15 @@
                 -
             </td>
             @endif
-
+            @if($proceso->porcentaje_final_trabajos && $proceso->porcentaje_final_trabajos >= 0)
             <td>
                 {{ $proceso->porcentaje_final_trabajos ?? '-' }}
             </td>
+            @elseif($proceso->porcentaje_final_trabajos && $proceso->porcentaje_final_trabajos == -1)
+            <td>
+                A
+            </td>
+            @endif
 
 
             <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}%</td>
@@ -113,9 +118,13 @@
             <td style="color:#025827">
                 {{$proceso->nota_global ?? '-'}}
             </td>
-            @else
+            @elseif($proceso->nota_global && $proceso->nota_global < 4 && $proceso->nota_global >= 0)
             <td style="color:red">
                 {{$proceso->nota_global ?? '-'}}
+            </td>
+            @elseif($proceso->nota_global && $proceso->nota_global == -1)
+            <td style="color:red">
+                A
             </td>
             @endif
             <td>
