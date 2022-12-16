@@ -583,8 +583,8 @@ class ProcesoModularService
             }
         }
 
-        if($total_aprobados > 0){
-            $porcentaje_aprobado = $cantidad_total / $total_aprobados * 100;
+        if($cantidad_total > 0){
+            $porcentaje_aprobado = $total_aprobados * 100 / $cantidad_total;
         }
 
         $cargoService = new CargoService();
