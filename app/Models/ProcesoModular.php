@@ -26,7 +26,8 @@ class ProcesoModular extends Model
         'operador_id',
         'proceso_id',
         'asistencia_final_porcentaje',
-        'asistencia_practica_profesional'
+        'asistencia_practica_profesional',
+        'porcentaje_actividades_aprobado'
     ];
 
     public function procesoRelacionado()

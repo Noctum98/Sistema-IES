@@ -42,6 +42,8 @@ class ProcesoModularService
     const PROMEDIO_MAX_REGULAR = 78;
     const TFI_MIN_REGULAR = 60;
     const TFI_MAX_REGULAR = 78;
+
+    const PERCENT_RAI = 70;
     /**
      * @var CalificacionService
      */
@@ -512,6 +514,63 @@ class ProcesoModularService
         $cargoService = new CargoService();
 
         return $cargoService->calculoPorcentajeCalificacionFromBlade($cant_tp, $total_tp, $cant_p, $total_p);
+
+    }
+
+    public function obtenerPorcentajeProceso($proceso, $materia, $cargo): float
+    {
+        $pCS = new ProcesoCalificacionService();
+        $total_aprobados = 0;
+        $cantidad_total = 0;
+        $porcentaje_aprobado= 0;
+
+        $parciales = $pCS->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_PARCIAL
+        );
+        $tps = $pCS->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_TP
+        )->pluck('porcentaje');
+        $cantidad_total += count($parciales);
+        foreach ($parciales as $parcial) {
+            $pp = 0;
+            $ppr = 0;
+            if (is_numeric($parcial->porcentaje)) {
+                $pp = $parcial->porcentaje;
+            }
+            if (is_numeric($parcial->porcentaje_recuperatorio)) {
+                $ppr = $parcial->porcentaje_recuperatorio;
+            }
+            $total_p = max($pp, $ppr);
+
+            if($total_p >= self::PERCENT_RAI ){
+                $total_aprobados ++;
+            }
+        }
+        $cantidad_total += count($tps);
+        foreach ($tps as $tp) {
+            $total_tp = max($tp, 0);
+            if($total_tp >= self::PERCENT_RAI){
+                $total_aprobados ++;
+            }
+        }
+
+        if($total_aprobados > 0){
+            $porcentaje_aprobado = $cantidad_total / $total_aprobados;
+        }
+
+        $cargoService = new CargoService();
+
+        return $porcentaje_aprobado;
+
+
 
     }
 
