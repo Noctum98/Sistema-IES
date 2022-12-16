@@ -60,6 +60,7 @@
                         <b>Usted tiene permisos de edición</b>
                     @endif
                 </small></i></p>
+        <p><small>* % Act. Ap.: Porcentaje de actividades del cargo aprobadas</small></p>
                 {{--
         @if(isset($comision))
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
@@ -94,8 +95,8 @@
                         <th class="sticky-top">
                             Alumno
                         </th>
-                        <th class="sticky-top">Prom. Final %</th>
-                        <th class="sticky-top">Prom. Final #</th>
+                        <th class="sticky-top">Pros. Final %</th>
+                        <th class="sticky-top">Pros. Final #</th>
                         <th class="sticky-top">Asis. Final %</th>
                         <th class="sticky-top">TFI %</th>
                         <th class="sticky-top">TFI #</th>

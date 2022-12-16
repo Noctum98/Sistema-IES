@@ -44,6 +44,8 @@ class ProcesoModularService
     const TFI_MAX_REGULAR = 78;
 
     const PERCENT_RAI = 70;
+
+    const PERCENT_APROBADO = 60;
     /**
      * @var CalificacionService
      */
@@ -196,6 +198,13 @@ class ProcesoModularService
                 $proceso->nota_final_porcentaje
             );
 
+            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
+                $proceso->procesoRelacionado()->first()->id,
+                $materia->id,
+                $cargo->id,
+            );
+
+
             $proceso->update();
 
             $cant += 1;
@@ -276,6 +285,8 @@ class ProcesoModularService
             $this->getPromedioModularBoolean(self::PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
             and
             $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_porcentaje)
+            and
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
         );
     }
 
@@ -295,6 +306,8 @@ class ProcesoModularService
             $this->getCalificacionModularBoolean(self::PROMEDIO_MIN_REGULAR, $proceso)
             and
             $this->getTFIModularBoolean(self::TFI_MIN_REGULAR, $pm->promedio_final_porcentaje)
+            and
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
         );
 
     }
@@ -401,6 +414,14 @@ class ProcesoModularService
             return false;
         }
         return $trabajo_final_porcentaje >= $porcentaje_max;
+    }
+
+    public function getActividadesAprobadosBool(int $porcentaje_para_aprobar, float $porcentaje_obtenido = null): bool
+    {
+        if(!$porcentaje_obtenido){
+            return false;
+        }
+        return $porcentaje_para_aprobar >= $porcentaje_obtenido;
     }
 
     /**
@@ -517,7 +538,7 @@ class ProcesoModularService
 
     }
 
-    public function obtenerPorcentajeProceso($proceso, $materia, $cargo): float
+    public function obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo): float
     {
         $pCS = new ProcesoCalificacionService();
         $total_aprobados = 0;
@@ -550,14 +571,14 @@ class ProcesoModularService
             }
             $total_p = max($pp, $ppr);
 
-            if($total_p >= self::PERCENT_RAI ){
+            if($total_p >= self::PERCENT_APROBADO ){
                 $total_aprobados ++;
             }
         }
         $cantidad_total += count($tps);
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
-            if($total_tp >= self::PERCENT_RAI){
+            if($total_tp >= self::PERCENT_APROBADO){
                 $total_aprobados ++;
             }
         }
@@ -568,10 +589,13 @@ class ProcesoModularService
 
         $cargoService = new CargoService();
 
+
         return $porcentaje_aprobado;
+    }
 
-
-
+    public function esAprobadoRai($proceso, $materia, $cargo): bool
+    {
+        return self::PERCENT_RAI >= $this->obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo);
     }
 
 

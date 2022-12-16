@@ -14,6 +14,7 @@
             <colgroup>
                 <col class="col-md-2">
                 <col class="col-">
+                <col class="col-">
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <col class="col-">
                 @endforeach
@@ -30,6 +31,7 @@
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
+                <th scope="col">% Act. Ap.</th>
                 <th class="border border-1 border-right">TP's</th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
@@ -50,6 +52,9 @@
             <tr>
                 <td>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
+                </td>
+                <td>
+{{--                    {{$proceso->porcentaje_actividades_aprobado}}--}}
                 </td>
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
