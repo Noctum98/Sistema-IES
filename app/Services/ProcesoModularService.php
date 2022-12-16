@@ -570,7 +570,7 @@ class ProcesoModularService
                 $ppr = $parcial->porcentaje_recuperatorio;
             }
             $total_p = max($pp, $ppr);
-
+print_r($total_p);
             if($total_p >= self::PERCENT_APROBADO ){
                 $total_aprobados +=1;
             }
@@ -578,6 +578,7 @@ class ProcesoModularService
         $cantidad_total += count($tps);
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
+            print_r($total_tp);
             if($total_tp >= self::PERCENT_APROBADO){
                 $total_aprobados +=1;
             }
@@ -586,6 +587,9 @@ class ProcesoModularService
         if($cantidad_total > 0){
             $porcentaje_aprobado = $total_aprobados * 100 / $cantidad_total;
         }
+
+        print_r($cantidad_total);
+        print_r($total_aprobados);
 
         $cargoService = new CargoService();
 
