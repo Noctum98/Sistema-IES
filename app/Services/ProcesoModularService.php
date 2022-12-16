@@ -572,14 +572,14 @@ class ProcesoModularService
             $total_p = max($pp, $ppr);
 
             if($total_p >= self::PERCENT_APROBADO ){
-                $total_aprobados ++;
+                $total_aprobados +=1;
             }
         }
         $cantidad_total += count($tps);
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
             if($total_tp >= self::PERCENT_APROBADO){
-                $total_aprobados ++;
+                $total_aprobados +=1;
             }
         }
 
