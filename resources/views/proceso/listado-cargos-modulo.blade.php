@@ -54,12 +54,16 @@
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
                 <td>
-{{--                    {{$proceso->porcentaje_actividades_aprobado}}--}}
+                    @if($proceso->porcentaje_actividades_aprobado)
+                        {{number_format($proceso->porcentaje_actividades_aprobado , 2, '.', ',')}} %
+                    @else
+                        0 %
+                    @endif
                 </td>
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
-{{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                        {{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje >= 0)
@@ -118,11 +122,11 @@
                         @endif
 
                         @php
-                                if(is_numeric($valor_parcial)){
-                                    $suma_parcial+=$valor_parcial;
-                                    }else{
-                                    $suma_parcial+= 0;
-                                    }
+                            if(is_numeric($valor_parcial)){
+                                $suma_parcial+=$valor_parcial;
+                                }else{
+                                $suma_parcial+= 0;
+                                }
                         @endphp
                     </td>
                 @endforeach
