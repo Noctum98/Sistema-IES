@@ -9,7 +9,7 @@
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
             $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
             $valor_parcial = 0;
-        @endphp
+//        @endphp
         <table class="table table-striped f30">
             <colgroup>
                 <col class="col-md-2">
@@ -55,7 +55,8 @@
                 </td>
                 <td>
                     @if($proceso->porcentaje_actividades_aprobado)
-                        {{number_format($proceso->porcentaje_actividades_aprobado , 2, '.', ',')}} %
+                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %
+
                     @else
                         0 %
                     @endif

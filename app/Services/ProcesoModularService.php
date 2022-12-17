@@ -198,19 +198,18 @@ class ProcesoModularService
                 $proceso->nota_final_porcentaje
             );
 
-            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
-                $proceso->procesoRelacionado()->first()->id,
-                $materia->id,
-                $cargo->id,
-            );
-
-
+//            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
+//                $proceso->procesoRelacionado()->first()->id,
+//                $materia->id,
+//                $cargo->id,
+//            );
+//            print_r('-- ');
+//print_r($proceso->porcentaje_actividades_aprobado);
             $proceso->update();
 
             $cant += 1;
 
         }
-
         $this->grabaEstadoCursoEnModulo($materia->id);
 
         return $cant;
@@ -572,22 +571,20 @@ class ProcesoModularService
             $total_p = max($pp, $ppr);
 
             if($total_p >= self::PERCENT_APROBADO ){
-                $total_aprobados ++;
+                $total_aprobados +=1;
             }
         }
         $cantidad_total += count($tps);
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
             if($total_tp >= self::PERCENT_APROBADO){
-                $total_aprobados ++;
+                $total_aprobados +=1;
             }
         }
 
-        if($total_aprobados > 0){
-            $porcentaje_aprobado = $cantidad_total / $total_aprobados * 100;
+        if($cantidad_total > 0){
+            $porcentaje_aprobado = $total_aprobados * 100 / $cantidad_total;
         }
-
-        $cargoService = new CargoService();
 
 
         return $porcentaje_aprobado;
