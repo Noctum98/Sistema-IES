@@ -55,10 +55,10 @@
                 </td>
                 <td>
                     @if($proceso->porcentaje_actividades_aprobado)
-                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %
+{{--                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %--}}
 
                     @else
-                        0 %
+{{--                        0 %--}}
                     @endif
                 </td>
                 <td class="border border-1 border-right"></td>
