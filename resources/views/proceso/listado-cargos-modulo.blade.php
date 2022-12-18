@@ -54,12 +54,12 @@
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
                 <td>
-                    @if($proceso->porcentaje_actividades_aprobado)
-{{--                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %--}}
+{{--                    @if($proceso->porcentaje_actividades_aprobado)--}}
+                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %
 
-                    @else
+{{--                    @else--}}
 {{--                        0 %--}}
-                    @endif
+{{--                    @endif--}}
                 </td>
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)

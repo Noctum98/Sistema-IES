@@ -541,8 +541,20 @@ class ProcesoModularService
     {
         $pCS = new ProcesoCalificacionService();
         $total_aprobados = 0;
-        $cantidad_total = 0;
         $porcentaje_aprobado= 0;
+        $calificacionService = new CalificacionService();
+        $total_parciales = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_PARCIAL
+        );
+        $total_tps = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_TP
+        );
+
+        $total_actividades = $total_parciales + $total_tps;
 
         $parciales = $pCS->
         obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
@@ -558,7 +570,7 @@ class ProcesoModularService
             $cargo,
             CalificacionService::TIPO_TP
         )->pluck('porcentaje');
-        $cantidad_total += count($parciales);
+
         foreach ($parciales as $parcial) {
             $pp = 0;
             $ppr = 0;
@@ -571,19 +583,21 @@ class ProcesoModularService
             $total_p = max($pp, $ppr);
 
             if($total_p >= self::PERCENT_APROBADO ){
-                $total_aprobados +=1;
-            }
-        }
-        $cantidad_total += count($tps);
-        foreach ($tps as $tp) {
-            $total_tp = max($tp, 0);
-            if($total_tp >= self::PERCENT_APROBADO){
-                $total_aprobados +=1;
+                $total_aprobados ++;
             }
         }
 
-        if($cantidad_total > 0){
-            $porcentaje_aprobado = $total_aprobados * 100 / $cantidad_total;
+        foreach ($tps as $tp) {
+            $total_tp = max($tp, 0);
+
+            if($total_tp >= self::PERCENT_APROBADO){
+                $total_aprobados ++;
+            }
+
+        }
+
+        if($total_actividades > 0){
+            $porcentaje_aprobado = $total_aprobados * 100 / $total_actividades;
         }
 
 
