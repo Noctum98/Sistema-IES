@@ -589,9 +589,12 @@ class ProcesoModularService
 
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
+            print_r('<br/>');
+            print_r($total_tp);
             if($total_tp >= self::PERCENT_APROBADO){
                 $total_aprobados ++;
             }
+            print_r(' - ta: ' . $total_aprobados);
         }
 
         if($total_actividades > 0){
