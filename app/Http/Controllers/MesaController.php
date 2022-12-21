@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Instancia;
+use App\Models\Sede;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use App\Models\Materia;
@@ -225,7 +226,9 @@ class MesaController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
 
-        return $pdf->download('Tribunal Mesa '.$instancia->nombre.'.pdf');
+
+
+        return $pdf->download('Tribunal Mesa '.$carrera->sede->nombre.'-'.$carrera->nombre.'-'.$carrera->resolucion.'-'.$llamado.'-'. $instancia->nombre.'.pdf');
     }
 
     public function generar_pdf_acta_volante(
