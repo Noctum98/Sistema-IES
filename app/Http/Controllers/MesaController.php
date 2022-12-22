@@ -215,11 +215,21 @@ class MesaController extends Controller
             $llamado = 1;
         }
 
+        $etiqueta_espacio = 'Espacio Curricular';
+        $etiquetas_espacios = 'Espacios Curriculares';
+
+        if($carrera->tipo == 'modular' || $carrera->tipo == 'modular2'){
+            $etiqueta_espacio = 'Módulo';
+            $etiquetas_espacios = 'Módulos';
+        }
+
         $data = [
             'instancia' => $instancia,
             'carrera' => $carrera,
             'texto_llamado' => $texto_llamado,
             'llamado' => $llamado,
+            'etiqueta' => $etiqueta_espacio,
+            'etiquetas' => $etiquetas_espacios,
 
         ];
 
