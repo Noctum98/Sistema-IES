@@ -28,7 +28,7 @@
             <table class="table" border="0">
                 <thead class="thead-dark">
                     <tr>
-                        <th rowspan="2" scope="col">{{etiqueta}}</th>
+                        <th rowspan="2" scope="col">{{$etiqueta}}</th>
                         <th colspan="2" scope="col">{{ $texto_llamado }}</th>
                         <th colspan="3" scope="col">Integrante</th>
                     </tr>
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="6" align="center"><b>{{etiquetas}} 1 <sup>er</sup> Año </b></td>
+                        <td colspan="6" align="center"><b>{{$etiquetas}} 1 <sup>er</sup> Año </b></td>
                     </tr>
                     @foreach($carrera->materias()->get() as $materia )
                     @if($materia->año == 1)
