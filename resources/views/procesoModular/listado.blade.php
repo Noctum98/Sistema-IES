@@ -95,8 +95,8 @@
                         <th class="sticky-top">
                             Alumno
                         </th>
-                        <th class="sticky-top">Pros. Final %</th>
-                        <th class="sticky-top">Pros. Final #</th>
+                        <th class="sticky-top">Proc. Final %</th>
+                        <th class="sticky-top">Proc. Final #</th>
                         <th class="sticky-top">Asis. Final %</th>
                         <th class="sticky-top">TFI %</th>
                         <th class="sticky-top">TFI #</th>
