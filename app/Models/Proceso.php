@@ -45,11 +45,9 @@ class Proceso extends Model
 
     public function procesoCalificacion($calificacion_id)
     {
-        $procesoCalificacion = ProcesoCalificacion::where(
+        return ProcesoCalificacion::where(
             ['proceso_id' => $this->id, 'calificacion_id' => $calificacion_id]
         )->first();
-
-        return $procesoCalificacion;
     }
 
     public function procesosCalificaciones()

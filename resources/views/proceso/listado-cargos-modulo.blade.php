@@ -32,12 +32,12 @@
             <tr>
                 <th scope="col">Cargo</th>
                 <th scope="col">% Act. Ap.</th>
+                <th scope="col">% TP's</th>
+                <th scope="col">% P's</th>
                 <th class="border border-1 border-right">TP's</th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
-                <th>% x̄</th>
-
                 <th class="border border-1 border-right">P's</th>
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
@@ -54,12 +54,11 @@
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
                 <td>
-{{--                    @if($proceso->porcentaje_actividades_aprobado)--}}
-                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %
+                    {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}}
+                    %
+                </td>
+                <td>
 
-{{--                    @else--}}
-{{--                        0 %--}}
-{{--                    @endif--}}
                 </td>
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
@@ -156,3 +155,6 @@
     @endforeach
 
 </div>
+@section('scripts')
+    <script src="{{ asset('js/proceso/ver_tps.js') }}"></script>
+@endsection
