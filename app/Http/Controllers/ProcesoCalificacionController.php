@@ -258,8 +258,8 @@ class ProcesoCalificacionController extends Controller
             $promedio = $suma / $cantidadPromedio;
             $promedio_porcentaje = $suma_porcentajes / $cantidadPorcentaje;
 
-            $proceso->final_trabajos = number_format((float)$promedio, 2, '.', '');
-            $proceso->porcentaje_final_trabajos = number_format((float)$promedio_porcentaje, 2, '.', '');
+            $proceso->final_trabajos = round($promedio,0,PHP_ROUND_HALF_UP);
+            $proceso->porcentaje_final_trabajos = round($promedio_porcentaje,0,PHP_ROUND_HALF_UP);
             $proceso->update();
         }
  
