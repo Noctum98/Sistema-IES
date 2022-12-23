@@ -609,5 +609,15 @@ class ProcesoModularService
         return self::PERCENT_RAI >= $this->obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo);
     }
 
+    public function getPorcentajeByCalificacionesProcesos($proceso, $materia, $cargo, $tipo)
+    {
+        $calificacionesService  = new CalificacionService();
+        $calificacionesService->calificacionesByMateriaCargoTipo($materia, $cargo, $tipo);
+
+
+
+
+    }
+
 
 }

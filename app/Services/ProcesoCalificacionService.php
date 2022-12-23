@@ -86,5 +86,14 @@ class ProcesoCalificacionService
     }
 
 
+    public function obtenerNotaByProcesoTipoCalificacion($proceso, $calificacion)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->where('proceso_calificacion.calificacion_id', $calificacion)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->first();
+    }
+
+
 
 }
