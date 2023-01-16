@@ -72,8 +72,8 @@ class Proceso extends Model
     {
         $calificacion_tfi = ProcesoCalificacion::join('calificaciones','calificaciones.id','proceso_calificacion.calificacion_id')
         ->where('proceso_id' , $this->id)
-        ->where('calificacion.materia_id',$this->materia_id)
-        ->where('calificacion.tipo_id',3)
+        ->where('calificaciones.materia_id',$this->materia_id)
+        ->where('calificaciones.tipo_id',3)
         ->first();
 
         return $calificacion_tfi;

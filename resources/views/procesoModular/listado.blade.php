@@ -60,7 +60,8 @@
                         <b>Usted tiene permisos de edición</b>
                     @endif
                 </small></i></p>
-        {{--
+        <p><small style="font-size: 0.8em">Aclaraciones: '% Act. Ap.': Porcentaje de actividades del cargo aprobadas</small></p>
+                {{--
         @if(isset($comision))
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
@@ -68,6 +69,7 @@
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
                         class="fas fa-download"></i> Descargar
                 planilla</a>
+              
             @if($puede_procesar)
                 <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
                    class="btn btn-warning">
@@ -93,8 +95,8 @@
                         <th class="sticky-top">
                             Alumno
                         </th>
-                        <th class="sticky-top">Prom. Final %</th>
-                        <th class="sticky-top">Prom. Final #</th>
+                        <th class="sticky-top">Proc. Final %</th>
+                        <th class="sticky-top">Proc. Final #</th>
                         <th class="sticky-top">Asis. Final %</th>
                         <th class="sticky-top">TFI %</th>
                         <th class="sticky-top">TFI #</th>

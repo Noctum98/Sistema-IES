@@ -42,6 +42,10 @@ class ProcesoModularService
     const PROMEDIO_MAX_REGULAR = 78;
     const TFI_MIN_REGULAR = 60;
     const TFI_MAX_REGULAR = 78;
+
+    const PERCENT_RAI = 70;
+
+    const PERCENT_APROBADO = 60;
     /**
      * @var CalificacionService
      */
@@ -194,12 +198,18 @@ class ProcesoModularService
                 $proceso->nota_final_porcentaje
             );
 
+//            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
+//                $proceso->procesoRelacionado()->first()->id,
+//                $materia->id,
+//                $cargo->id,
+//            );
+//            print_r('-- ');
+//print_r($proceso->porcentaje_actividades_aprobado);
             $proceso->update();
 
             $cant += 1;
 
         }
-
         $this->grabaEstadoCursoEnModulo($materia->id);
 
         return $cant;
@@ -274,6 +284,8 @@ class ProcesoModularService
             $this->getPromedioModularBoolean(self::PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
             and
             $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_porcentaje)
+            and
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
         );
     }
 
@@ -293,6 +305,8 @@ class ProcesoModularService
             $this->getCalificacionModularBoolean(self::PROMEDIO_MIN_REGULAR, $proceso)
             and
             $this->getTFIModularBoolean(self::TFI_MIN_REGULAR, $pm->promedio_final_porcentaje)
+            and
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
         );
 
     }
@@ -399,6 +413,14 @@ class ProcesoModularService
             return false;
         }
         return $trabajo_final_porcentaje >= $porcentaje_max;
+    }
+
+    public function getActividadesAprobadosBool(int $porcentaje_para_aprobar, float $porcentaje_obtenido = null): bool
+    {
+        if(!$porcentaje_obtenido){
+            return false;
+        }
+        return $porcentaje_para_aprobar >= $porcentaje_obtenido;
     }
 
     /**
@@ -513,6 +535,78 @@ class ProcesoModularService
 
         return $cargoService->calculoPorcentajeCalificacionFromBlade($cant_tp, $total_tp, $cant_p, $total_p);
 
+    }
+
+    public function obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo): float
+    {
+        $pCS = new ProcesoCalificacionService();
+        $total_aprobados = 0;
+        $porcentaje_aprobado= 0;
+        $calificacionService = new CalificacionService();
+        $total_parciales = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_PARCIAL
+        );
+        $total_tps = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_TP
+        );
+
+        $total_actividades = $total_parciales + $total_tps;
+
+        $parciales = $pCS->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_PARCIAL
+        );
+        $tps = $pCS->
+        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+            $proceso,
+            $materia,
+            $cargo,
+            CalificacionService::TIPO_TP
+        )->pluck('porcentaje');
+
+        foreach ($parciales as $parcial) {
+            $pp = 0;
+            $ppr = 0;
+            if (is_numeric($parcial->porcentaje)) {
+                $pp = $parcial->porcentaje;
+            }
+            if (is_numeric($parcial->porcentaje_recuperatorio)) {
+                $ppr = $parcial->porcentaje_recuperatorio;
+            }
+            $total_p = max($pp, $ppr);
+
+            if($total_p >= self::PERCENT_APROBADO ){
+                $total_aprobados ++;
+            }
+        }
+
+        foreach ($tps as $tp) {
+            $total_tp = max($tp, 0);
+
+            if($total_tp >= self::PERCENT_APROBADO){
+                $total_aprobados ++;
+            }
+
+        }
+
+        if($total_actividades > 0){
+            $porcentaje_aprobado = $total_aprobados * 100 / $total_actividades;
+        }
+
+
+        return $porcentaje_aprobado;
+    }
+
+    public function esAprobadoRai($proceso, $materia, $cargo): bool
+    {
+        return self::PERCENT_RAI >= $this->obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo);
     }
 
 

@@ -26,7 +26,8 @@ class ProcesoModular extends Model
         'operador_id',
         'proceso_id',
         'asistencia_final_porcentaje',
-        'asistencia_practica_profesional'
+        'asistencia_practica_profesional',
+        'porcentaje_actividades_aprobado',
     ];
 
     public function procesoRelacionado()
@@ -36,20 +37,35 @@ class ProcesoModular extends Model
 
     public function alumnoRelacionado()
     {
-        $proceso =  $this->procesoRelacionado()->first();
+        $proceso = $this->procesoRelacionado()->first();
+
         return $proceso->alumno()->first();
     }
 
     public function timeUltimaModificacionModulo($materia_id)
     {
         $service = new ProcesoModularService();
+
         return $service->obtenerTimeUltimoProcesoModular($materia_id);
     }
 
     public function timeUltimaCalificacionModulo($materia_id)
     {
         $service = new ProcesoModularService();
+
         return $service->obtenerTimeUltimaCalificacion($materia_id);
+    }
+
+    public function obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia_id, $cargo_id): float
+    {
+        $service = new ProcesoModularService();
+
+        return $service->obtenerPorcentajeProcesoAprobado(
+            $this->procesoRelacionado()->first()->id,
+            $materia_id,
+            $cargo_id
+        );
+
     }
 
 

@@ -9,10 +9,11 @@
             $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
             $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
             $valor_parcial = 0;
-        @endphp
+//        @endphp
         <table class="table table-striped f30">
             <colgroup>
                 <col class="col-md-2">
+                <col class="col-">
                 <col class="col-">
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <col class="col-">
@@ -30,6 +31,7 @@
             <thead>
             <tr>
                 <th scope="col">Cargo</th>
+                <th scope="col">% Act. Ap.</th>
                 <th class="border border-1 border-right">TP's</th>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
@@ -51,10 +53,18 @@
                 <td>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
+                <td>
+{{--                    @if($proceso->porcentaje_actividades_aprobado)--}}
+                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %
+
+{{--                    @else--}}
+{{--                        0 %--}}
+{{--                    @endif--}}
+                </td>
                 <td class="border border-1 border-right"></td>
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
                     <td>
-{{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                        {{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje >= 0)
@@ -113,11 +123,11 @@
                         @endif
 
                         @php
-                                if(is_numeric($valor_parcial)){
-                                    $suma_parcial+=$valor_parcial;
-                                    }else{
-                                    $suma_parcial+= 0;
-                                    }
+                            if(is_numeric($valor_parcial)){
+                                $suma_parcial+=$valor_parcial;
+                                }else{
+                                $suma_parcial+= 0;
+                                }
                         @endphp
                     </td>
                 @endforeach
