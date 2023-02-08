@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class RepararCierresMesas extends Command
 {
-
+    protected $feriados;
     const T_M = '14:00';
     const T_T = '23:59';
     const T_V = '23:59';
@@ -16,7 +16,7 @@ class RepararCierresMesas extends Command
      *
      * @var string
      */
-    protected $signature = 'command:repararCierresMesas';
+    protected $signature = 'command:repararCierresMesas {instancia_id}';
 
     /**
      * The console command description.
@@ -33,6 +33,28 @@ class RepararCierresMesas extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->feriados = [
+            '19-02-2023',
+            '20-02-2023',
+            '26-02-2023',
+            '27-02-2023',
+            '28-02-2023',
+            '01-03-2023',
+            '05-03-2023',
+            '06-03-2023',
+            '12-03-2023',
+            '13-03-2023',
+            '09-07-2023',
+            '15-08-2023',
+            '25-08-2023',
+            '02-09-2023',
+            '07-10-2023',
+            '10-10-2023',
+            '20-11-2023',
+            '21-11-2023',
+            '08-12-2023',
+            '09-12-2023',
+        ];
     }
 
     /**
@@ -42,22 +64,35 @@ class RepararCierresMesas extends Command
      */
     public function handle()
     {
-        $mesas = Mesa::where('instancia_id', 12)->get();
+        $instancia_id = (int) $this->argument('instancia_id');
+
+        $mesas = Mesa::where('instancia_id', $instancia_id)->get();
 
         foreach ($mesas as $mesa) {
-            $materia = $mesa->materia;
-            if ($mesa->fecha_segundo) {
-                if ($mesa->fecha_segundo && date('D', strtotime($mesa->fecha_segundo)) == 'Mon' || date(
-                    'D',
-                    strtotime($mesa->fecha_segundo)
-                ) == 'Tue') {
-
-                    $mesa->cierre_segundo = strtotime($this->setFechaTurno($materia, $mesa->fecha_segundo) . "-4 days");
-                } else {
-                    $mesa->cierre_segundo = strtotime($this->setFechaTurno($materia, $mesa->fecha_segundo) . "-2 days");
+            
+            $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+            $contador = 0;
+            while ($contador < 2) {
+                
+                if ($this->isHabil($inicio_fecha)) {
+                    $contador++;
                 }
-            } 
+
+                if($contador != 2){
+                    $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                }
+            }
+            $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
             $mesa->update();
+        }
+    }
+
+    private function isHabil($fecha)
+    {
+        if (in_array($fecha, $this->feriados) || date('D', strtotime($fecha))  == 'Sat' || date('D', strtotime($fecha)) == 'Sun') {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -76,9 +111,6 @@ class RepararCierresMesas extends Command
             case 'vespertino':
                 $hora = $this::T_V;
         }
-
-        $fecha_inicial = substr($fecha, 0, -5);
-
-        return $fecha_inicial.$hora;
+        return $fecha . 'T' . $hora;
     }
 }
