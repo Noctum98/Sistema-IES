@@ -17,7 +17,7 @@ class MesasFeriado extends Command
      *
      * @var string
      */
-    protected $signature = 'command:mesasFeriados';
+    protected $signature = 'command:mesasFeriados {instancia_id}';
 
     /**
      * The console command description.
@@ -66,8 +66,9 @@ class MesasFeriado extends Command
      */
     public function handle()
     {
+        $instancia_id = (int) $this->argument('instancia_id');
         $mesas = Mesa::where([
-            'instancia_id' => 12
+            'instancia_id' => $instancia_id
         ])->get();
 
 
