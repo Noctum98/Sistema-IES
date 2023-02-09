@@ -220,7 +220,7 @@ class MesaController extends Controller
             $etiqueta_espacio = 'Módulo';
             $etiquetas_espacios = 'Módulos';
         }
-
+dd($carrera->materias()->get()[1]->mesa($instancia->id)->comision);
         $data = [
             'instancia' => $instancia,
             'carrera' => $carrera,
@@ -233,8 +233,6 @@ class MesaController extends Controller
 
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
-
-
 
         return $pdf->download('Tribunal Mesa '.$carrera->sede->nombre.'-'.$carrera->nombre.'-'.$carrera->resolucion.'-'.$llamado.'-'. $instancia->nombre.'.pdf');
     }
