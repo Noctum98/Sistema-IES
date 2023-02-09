@@ -128,6 +128,7 @@ class MesaController extends Controller
 
         $fecha_dia = date("d-m-Y", strtotime($request['fecha']));
         $fecha_dia_segundo = date("d-m-Y", strtotime($request['fecha_segundo']));
+        
         $comp_primer_llamado = in_array($fecha_dia, $this->feriados);
         $comp_segundo_llamado = in_array($fecha_dia_segundo, $this->feriados);
 
@@ -140,10 +141,7 @@ class MesaController extends Controller
                 $mensaje = "La fecha ".$fecha_dia_segundo." está bloqueada, prueba con otra.";
             }
 
-            return redirect()->route('mesa.carreras', [
-                'sede_id' => $materia->carrera->sede->id,
-                'instancia_id' => $instancia->id,
-            ])->with([
+            return redirect()->back()->with([
                 'error_fecha' => $mensaje,
             ]);
         }
