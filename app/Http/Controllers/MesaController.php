@@ -220,7 +220,8 @@ class MesaController extends Controller
             $etiqueta_espacio = 'Módulo';
             $etiquetas_espacios = 'Módulos';
         }
-dd($carrera->materias()->get()[1]->mesa($instancia->id)->comision);
+//dd($carrera->materias()->get()[0]->mesas_instancias($instancia->id)[1]->comision()->get());
+//dd($carrera->materias()->get()[0]->comisiones()->get());
         $data = [
             'instancia' => $instancia,
             'carrera' => $carrera,

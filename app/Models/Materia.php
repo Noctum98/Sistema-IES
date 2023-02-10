@@ -65,6 +65,14 @@ class Materia extends Model
         ])->first();
     }
 
+    public function mesas_instancias($instancia_id)
+    {
+        return Mesa::where([
+            'instancia_id' => $instancia_id,
+            'materia_id' => $this->id
+        ])->get();
+    }
+
     public function mesasByMateria($instancia_id, $materias, $comision = null)
     {
 
