@@ -283,7 +283,7 @@ class MesaController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_acta_volante_pdf', $data);
 
-        return $pdf->download('Acta Volante: '.$instancia->nombre.'.pdf');
+        return $pdf->download('Acta Volante: '.$materia->nombre .'-'.$instancia->nombre.'.pdf');
     }
 
     public function mesaByComision(Request $request, $materia_id, $instancia_id, $comision_id = null)
