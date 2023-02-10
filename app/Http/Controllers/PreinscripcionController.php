@@ -28,45 +28,42 @@ class PreinscripcionController extends Controller
 
     public function __construct(
         MailService $mailService
-    )
-    {
+    ) {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all']]);
+        $this->middleware('app.roles:admin-areaSocial-regente-coordinador-seccionAlumnos', ['only' => ['vista_admin', 'vista_all']]);
         $this->disk = Storage::disk('google');
         $this->mailService = $mailService;
     }
 
-    public function email_check(Request $request,$timecheck,$carrera_id)
-    {   
+    public function email_check(Request $request, $timecheck, $carrera_id)
+    {
         $mailcheck = $this->mailService->checkEmail($timecheck);
 
-        return redirect()->route('alumno.pre',[
+        return redirect()->route('alumno.pre', [
             'id' => $carrera_id,
             'timecheck' => $timecheck
         ]);
     }
 
     // Vistas
-    public function vista_preinscripcion($id,$timecheck=null)
+    public function vista_preinscripcion($id, $timecheck = null)
     {
         $checked = null;
 
-        if($timecheck)
-        {
+        if ($timecheck) {
             $email_check = MailCheck::where([
-                'timecheck'=>$timecheck,
+                'timecheck' => $timecheck,
                 'checked' => true
             ])->first();
 
             $checked = $email_check ?? null;
         }
-        
+
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [18,9,1,15,6,2,27,25,37,41,3];
+        $carreras_abiertas = [18, 9, 1, 15, 6, 2, 27, 25, 37, 41];
 
-        if(!in_array($carrera->id,$carreras_abiertas) && !Session::has('preinscripciones'))
-        {
+        if (!in_array($carrera->id, $carreras_abiertas) && !Session::has('preinscripciones')) {
             $carrera = null;
             $error = 'Página deshabilitada';
         }
@@ -84,31 +81,28 @@ class PreinscripcionController extends Controller
     }
     public function vista_editar($timecheck, $id)
     {
-       $preinscripcion = Preinscripcion::where([
+        $preinscripcion = Preinscripcion::where([
             'id'    =>  $id,
             'timecheck' =>  $timecheck
         ])->first();
 
-        if(Session::has('admin') || Session::has('areaSocial'))
-        {
+        if (Session::has('admin') || Session::has('areaSocial')) {
             $ruta = 'alumno.edit_pre_enroll';
             $datos =  ['preinscripcion'    =>  $preinscripcion];
-        }else{
-            if($preinscripcion && $preinscripcion->estado == 'verificado')
-            {
+        } else {
+            if ($preinscripcion && $preinscripcion->estado == 'verificado') {
                 $ruta = 'error.error';
-                $datos = ['mensaje'=>'Tu preinscripción ya fue verificada'];
-            }else if(!$preinscripcion)
-            {
+                $datos = ['mensaje' => 'Tu preinscripción ya fue verificada'];
+            } else if (!$preinscripcion) {
                 $ruta = 'error.error';
-                $datos = ['mensaje'=>'Error en la página'];
-            }else{
+                $datos = ['mensaje' => 'Error en la página'];
+            } else {
                 $ruta = 'alumno.edit_pre_enroll';
                 $datos =  ['preinscripcion'    =>  $preinscripcion];
             }
         }
-        
-        return view($ruta,$datos);
+
+        return view($ruta, $datos);
     }
     public function vista_inscripto($timecheck, int $id)
     {
@@ -147,15 +141,31 @@ class PreinscripcionController extends Controller
     {
         $preinscripciones = [];
         $carreras = [];
+        $carreras_id = [];
 
         if (!empty($busqueda)) {
-            $preinscripciones = Preinscripcion::where('dni', 'LIKE', '%' . $busqueda . '%')
+            $preinscripciones = Preinscripcion::where(function($query) use ($busqueda){
+                return $query->where('dni', 'LIKE', '%' . $busqueda . '%')
                 ->orWhere('nombres', 'LIKE', '%' . $busqueda . '%')
                 ->orWhere('apellidos', 'LIKE', '%' . $busqueda . '%')
-                ->orWhere('email', 'LIKE', '%' . $busqueda . '%')
-                ->get();
+                ->orWhere('email', 'LIKE', '%' . $busqueda . '%');
+            });
+
+            if (Session::has('coordinador') || Session::has('seccionAlumnos')) {
+                foreach (Auth::user()->carreras as $carrera) {
+                    array_push($carreras_id,$carrera->id);
+                }
+
+                $preinscripciones = $preinscripciones->whereIn('carrera_id',$carreras_id);
+            }
+
+            $preinscripciones = $preinscripciones->get();
         } else {
-            $carreras = Carrera::all();
+            if (Session::has('coordinador') || Session::has('seccionAlumnos')) {
+                $carreras = Auth::user()->carreras;
+            } else {
+                $carreras = Carrera::all();
+            }
         }
 
 
@@ -170,7 +180,7 @@ class PreinscripcionController extends Controller
             'carrera_id' => $carrera_id,
             'estado'    => 'sin verificar'
         ])->get();
-        
+
         $carrera = Carrera::find($carrera_id);
 
         return view('preinscripcion.all', [
@@ -232,11 +242,9 @@ class PreinscripcionController extends Controller
         $preinscripciones = Preinscripcion::withTrashed()->get();
 
         $preinscripcionesEliminadas = [];
-        foreach($preinscripciones as $preinscripcion)
-        {
-            if($preinscripcion->deleted_at)
-            {
-                array_push($preinscripcionesEliminadas,$preinscripcion);
+        foreach ($preinscripciones as $preinscripcion) {
+            if ($preinscripcion->deleted_at) {
+                array_push($preinscripcionesEliminadas, $preinscripcion);
             }
         }
 
@@ -256,7 +264,7 @@ class PreinscripcionController extends Controller
             'dni'           =>  ['required', 'numeric'],
             'cuil'          =>  ['required', 'numeric'],
             'fecha'         =>  ['required'],
-            'email'         =>  ['required','email'],
+            'email'         =>  ['required', 'email'],
             'edad'          =>  ['required', 'numeric'],
             'nacionalidad'  =>  ['required'],
             'domicilio'     =>  ['required'],
@@ -268,25 +276,23 @@ class PreinscripcionController extends Controller
             'escuela_s'     =>  ['required'],
             'materias_s'     =>  ['required'],
             'conexion'      =>  ['required'],
-            'dni_archivo_file'   =>  ['required','file','mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo_file'   =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'comprobante_file'           =>  ['required','file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'dni_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'dni_archivo_file'   =>  ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'certificado_archivo_file'   =>  ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'comprobante_file'           =>  ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'dni_archivo_2_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'certificado_archivo_2_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'primario_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'ctrabajo_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'curriculum_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'nota_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
         ]);
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],
         ])->get();
 
-        foreach($exists as $exist)
-        {
-            if($exist->carrera->resolucion == $carrera->resolucion)
-            {
+        foreach ($exists as $exist) {
+            if ($exist->carrera->resolucion == $carrera->resolucion) {
                 return redirect()->route('alumno.pre', [
                     'id' => $carrera_id
                 ])->with([
@@ -312,8 +318,7 @@ class PreinscripcionController extends Controller
             ->where('filename', '=', $request['dni'])
             ->first();
 
-        if(!$dir)
-        {
+        if (!$dir) {
             $path_folder = $this->disk->makeDirectory($request['dni']);
             $contents = collect($this->disk->listContents($dir, $recursive));
             $dir = $contents->where('type', '=', 'dir')
@@ -414,15 +419,15 @@ class PreinscripcionController extends Controller
             'escuela_s'     =>  ['required'],
             'materia_s'     =>  ['required'],
             'conexion'      =>  ['required'],
-            'dni_archivo_file'   =>  ['file','mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo_file'   =>  ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'comprobante_file'           =>  ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'dni_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'certificado_archivo_2_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'primario_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'ctrabajo_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'curriculum_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
-            'nota_file' => ['file' ,'mimes:jpg,jpeg,png,pdf','max:5000'],
+            'dni_archivo_file'   =>  ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'certificado_archivo_file'   =>  ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'comprobante_file'           =>  ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'dni_archivo_2_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'certificado_archivo_2_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'primario_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'ctrabajo_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'curriculum_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'nota_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
         ]);
 
         $preinscripcion = Preinscripcion::find($id);
@@ -444,36 +449,34 @@ class PreinscripcionController extends Controller
             ->where('filename', '=', $request['dni'])
             ->first();
 
-        if(!$dir)
-        {
+        if (!$dir) {
             $this->disk->makeDirectory($request['dni']);
 
             $contents = collect($this->disk->listContents($dir, $recursive));
             $dir = $contents->where('type', '=', 'dir')
-            ->where('filename', '=', $request['dni'])
-            ->first();
-
+                ->where('filename', '=', $request['dni'])
+                ->first();
         }
 
         if ($dni_archivo) {
             $dni_nombre = time() . $dni_archivo->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->dni_archivo);
-            $this->disk->put($dir['path'].'/'.$dni_nombre, File::get($dni_archivo));
+            $this->disk->put($dir['path'] . '/' . $dni_nombre, File::get($dni_archivo));
             $request['dni_archivo'] = $dni_nombre;
         }
         if ($dni_archivo_2) {
             $dni_nombre2 = time() . $dni_archivo_2->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->dni_archivo_2);
-            $this->disk->put($dir['path'].'/'.$dni_nombre2, File::get($dni_archivo_2));
+            $this->disk->put($dir['path'] . '/' . $dni_nombre2, File::get($dni_archivo_2));
             $request['dni_archivo_2'] = $dni_nombre2;
         }
         if ($comprobante) {
             $comprobante_nombre = time() . $comprobante->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->comprobante);
-            $this->disk->put($dir['path'].'/'.$comprobante_nombre, File::get($comprobante));
+            $this->disk->put($dir['path'] . '/' . $comprobante_nombre, File::get($comprobante));
             $request['comprobante'] = $comprobante_nombre;
         }
 
@@ -481,14 +484,14 @@ class PreinscripcionController extends Controller
             $certificado_nombre = time() . $certificado_archivo->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->certificado_archivo);
-            $this->disk->put($dir['path'].'/'.$certificado_nombre, File::get($certificado_archivo));
+            $this->disk->put($dir['path'] . '/' . $certificado_nombre, File::get($certificado_archivo));
             $request['certificado_archivo'] = $certificado_nombre;
         }
         if ($certificado_archivo_2) {
             $certificado_nombre2 = time() . $certificado_archivo_2->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->certificado_archivo_2);
-            $this->disk->put($dir['path'].'/'.$certificado_nombre2, File::get($certificado_archivo_2));
+            $this->disk->put($dir['path'] . '/' . $certificado_nombre2, File::get($certificado_archivo_2));
             $request['certificado_archivo_2'] = $certificado_nombre2;
         }
 
@@ -496,28 +499,28 @@ class PreinscripcionController extends Controller
             $primario_nombre = time() . $primario->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->primario);
-            $this->disk->put($dir['path'].'/'.$primario_nombre, File::get($primario));
+            $this->disk->put($dir['path'] . '/' . $primario_nombre, File::get($primario));
             $request['primario'] = $primario_nombre;
         }
         if ($curriculum) {
             $curriculum_nombre = time() . $curriculum->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->curriculum);
-            $this->disk->put($dir['path'].'/'.$curriculum_nombre, File::get($curriculum));
+            $this->disk->put($dir['path'] . '/' . $curriculum_nombre, File::get($curriculum));
             $request['curriculum'] = $curriculum_nombre;
         }
         if ($ctrabajo) {
             $ctrabajo_nombre = time() . $ctrabajo->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->ctrabajo);
-            $this->disk->put($dir['path'].'/'.$ctrabajo_nombre, File::get($ctrabajo));
+            $this->disk->put($dir['path'] . '/' . $ctrabajo_nombre, File::get($ctrabajo));
             $request['ctrabajo'] = $ctrabajo_nombre;
         }
         if ($nota) {
             $nota_nombre = time() . $nota->getClientOriginalName();
 
             //$this->disk->delete($dir['path'].'/'.$preinscripcion->nota);
-            $this->disk->put($dir['path'].'/'.$nota_nombre, File::get($nota));
+            $this->disk->put($dir['path'] . '/' . $nota_nombre, File::get($nota));
             $request['nota'] = $nota_nombre;
         }
 
@@ -539,27 +542,25 @@ class PreinscripcionController extends Controller
             'timecheck' => $timecheck
         ])->first();
 
-        $preinscripciones = Preinscripcion::where('dni',$preinscripcion->dni)->count();
+        $preinscripciones = Preinscripcion::where('dni', $preinscripcion->dni)->count();
 
-        if($preinscripciones == 1)
-        {
+        if ($preinscripciones == 1) {
             $dir = '/';
             $recursive = false; // Get subdirectories also?
             $contents = collect($this->disk->listContents($dir, $recursive));
-        
+
             $directory = $contents
                 ->where('type', '=', 'dir')
                 ->where('filename', '=', $preinscripcion->dni)
                 ->first();
-    
+
             $this->disk->deleteDirectory($directory['path']);
         }
 
-        if(Auth::user())
-        {
-            $preinscripcion->responsable_delete = Auth::user()->nombre.' '.Auth::user()->apellido;
-        }else{
-            $preinscripcion->responsable_delete = $preinscripcion->nombres.' '.$preinscripcion->apellidos;
+        if (Auth::user()) {
+            $preinscripcion->responsable_delete = Auth::user()->nombre . ' ' . Auth::user()->apellido;
+        } else {
+            $preinscripcion->responsable_delete = $preinscripcion->nombres . ' ' . $preinscripcion->apellidos;
         }
 
         $preinscripcion->update();

@@ -5,7 +5,7 @@
 		Preinscripciones: Elegir la carrera
 	</h2>
 	<hr>
-
+	@if(Session::has('admin') || Session::has('regente') || Session::has('areaSocial'))
 	<div class="col-md-12">
 		<a href="{{route('pre.excelv')}}" class="m-1 btn btn-success" class="">
 			<i class="fas fa-download"></i>
@@ -14,6 +14,7 @@
 		<a href="{{route('pre.articulo')}}" class="m-1 btn btn-secondary">Articulo 7mo</a>
 		<a href="{{ route('pre.eliminadas') }}" class="m-1 btn btn-danger">Eliminadas</a>
 	</div>
+	@endif
 	<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="#" id="buscador">
 		<div class="input-group mt-3">
 			<input class="form-control ml-3" type="text" id="busqueda" placeholder="Buscar preinscripcion" aria-label="Search for..." aria-describedby="btnNavbarSearch" />
@@ -50,6 +51,7 @@
 		</table>
 		@else
 
+		@if(count($preinscripciones) > 0)
 		<table class="table mt-4">
 			<thead class="thead-dark">
 				<tr>
@@ -80,11 +82,14 @@
 				@endforeach
 			</tbody>
 		</table>
+		@endif
+		@if(count($preinscripciones) == 0)
+		<p></p>
+		<p>No existen coincidencias</p>
+		@endif
 	</div>
 
-	@if(count($preinscripciones) == 0)
-	<p>No existen coincidencias</p>
-	@endif
+	
 	@endif
 </div>
 @endsection
