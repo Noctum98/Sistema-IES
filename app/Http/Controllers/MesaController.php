@@ -220,7 +220,8 @@ class MesaController extends Controller
             $etiqueta_espacio = 'Módulo';
             $etiquetas_espacios = 'Módulos';
         }
-
+//dd($carrera->materias()->get()[0]->mesas_instancias($instancia->id)[1]->comision()->get());
+//dd($carrera->materias()->get()[0]->comisiones()->get());
         $data = [
             'instancia' => $instancia,
             'carrera' => $carrera,
@@ -233,8 +234,6 @@ class MesaController extends Controller
 
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
-
-
 
         return $pdf->download('Tribunal Mesa '.$carrera->sede->nombre.'-'.$carrera->nombre.'-'.$carrera->resolucion.'-'.$llamado.'-'. $instancia->nombre.'.pdf');
     }
@@ -284,7 +283,7 @@ class MesaController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_acta_volante_pdf', $data);
 
-        return $pdf->download('Acta Volante: '.$instancia->nombre.'.pdf');
+        return $pdf->download('Acta Volante: '.$materia->nombre .'-'.$instancia->nombre.'.pdf');
     }
 
     public function mesaByComision(Request $request, $materia_id, $instancia_id, $comision_id = null)
