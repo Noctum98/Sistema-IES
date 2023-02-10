@@ -137,6 +137,7 @@ Route::prefix('usuarios')->group(function () {
     Route::get('crear_alumno_usuario/{id}', [UserController::class, 'crear_usuario_alumno'])->name(
         'crear_usuario_alumno'
     );
+    Route::get('reestablecer_password/{id}',[UserController::class,'regenerar_contra']);
 });
 
 Route::prefix('usuario_materia')->group(function () {

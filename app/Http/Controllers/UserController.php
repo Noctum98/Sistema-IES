@@ -253,9 +253,7 @@ class UserController extends Controller
         $user->password = $new_password;
         $user->update();
 
-        return redirect()->route('usuarios.editar', [
-            'user' => $user,
-        ])->with([
+        return redirect()->back()->with([
             'contraseña_nueva' => 'La contraseña ha sido actualizada',
         ]);
     }
@@ -383,6 +381,16 @@ class UserController extends Controller
             'mensaje_exitoso' => 'El usuario para el alumno '.$alumno->nombres.' '.$alumno->apellidos.' se ha creado exitosamente.',
         ]);
 
+    }
+
+    public function regenerar_contra(Request $request,$id)
+    {
+        $user = User::find($id);
+        $new_password = Hash::make('12345678');
+        $user->password = $new_password;
+        $user->update();
+
+        return response()->json(['status'=>'success']);
     }
 
     public function getUsuarioByUsernameOrNull($busqueda)
