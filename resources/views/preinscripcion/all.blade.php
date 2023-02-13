@@ -5,10 +5,12 @@
 		Preinscripciones de {{ $carrera->nombre.' ('.$carrera->sede->nombre.'-'.ucwords($carrera->turno).')' }}
 	</h2>
 	<hr>
+	@if(Session::has('admin') || Session::has('regente') || Session::has('areaSocial'))
 	<a class="btn btn-success col-sm-12 col-md-2" href="{{route('pre.excel',['carrera_id'=>$carrera->id])}}"><i class="fas fa-download"></i> Descargar Excel</a>
 	<a class="btn btn-secondary col-sm-12 col-md-2" href="{{route('pre.verificadas',['id'=>$carrera->id])}}">Ver verificadas</a>
 	<a class="btn btn-danger col-sm-12 col-md-2" href="{{route('pre.sincorregir',['id'=>$carrera->id])}}">Ver sin corregir</a>
 	<br>
+	@endif
 	@if(count($preinscripciones) == 0)
 	<br>
 	<p>No hay preinscripciones sin verificar para esta carrera.</p>
