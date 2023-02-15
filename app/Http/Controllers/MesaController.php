@@ -202,16 +202,16 @@ class MesaController extends Controller
         return redirect()->back()->with(['alumno_success' => 'Libro y Folio establecidos']);
     }
 
-    public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera, int $llamado = null)
+    public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera, int $llamado = 1, int $comision = null)
     {
         $texto_llamado = 'Primer llamado';
 
         if ($llamado == 2) {
             $texto_llamado = 'Segundo llamado';
         }
-        if (!$llamado) {
-            $llamado = 1;
-        }
+//        if (!$llamado) {
+//            $llamado = 1;
+//        }
 
         $etiqueta_espacio = 'Espacio Curricular';
         $etiquetas_espacios = 'Espacios Curriculares';
@@ -376,5 +376,15 @@ class MesaController extends Controller
 
         return $fecha.'T'.$hora;
 
+    }
+
+    public function vistaCronograma(int $instancia)
+    {
+        $carrera = new Carrera();
+        $carreras = $carrera->obtenerInstanciasCarrera($instancia);
+        return view('mesa.cronograma')->with([
+            'carreras' => $carreras,
+            'instancia' => $instancia
+        ]);
     }
 }
