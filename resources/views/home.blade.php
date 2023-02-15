@@ -22,22 +22,27 @@
                         Si has iniciado sesión con los datos por defecto, recomendamos cambiar
                         tu contraseña en la sección “Mi Perfil” del menú desplegable.
                     </div>
-                    <div class="card-footer">
-                        <div class="card-title">
-                            Navegadores soportados
+                    <div class="card bg-primary bg-opacity-25">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i><b>Información importante</b></i>
+                            </div>
+                            <div class="card-subtitle ml-5">Navegadores soportados</div>
                         </div>
-                        <p>
-                            Chrome versión >= 60<br/>
-                            Firefox versión >= 60 <br/>
-                            Firefox versión ESR <br/>
-                            iOS versión >= 12 <br/>
-                            Safari versión >= 12 <br/>
-                            No es soportado Internet Explorer versiones menores o iguales a la v11
-                        </p>
-                        <p>
+                        <div class="card-body">
+                            <ul>
+                                <li>Chrome versión mayor o igual a 60</li>
+                                <li>Firefox versión mayor o igual a 60 </li>
+                                <li>Firefox versión ESR </li>
+                                <li>iOS versión mayor o igual a 12 </li>
+                                <li>Safari versión mayor o igual a 12 </li>
+                                <li>No es soportado Internet Explorer versiones menores o iguales a la v11</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
                             Para optimizar los últimos resultados se aconseja refrescar el navegador con la combinación
                             de teclas “Ctrl + F5” o “Ctrl + R”
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
