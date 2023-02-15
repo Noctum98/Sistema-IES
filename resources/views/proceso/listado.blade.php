@@ -26,9 +26,11 @@
 
     </div>
     <p><strong><i>Importante:</i></strong></p>
-    <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
-    <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
-    <p><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
+    <p class="text-primary"><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
+    <p class="text-primary"><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
+    <p class="text-primary"><i>Al posar el mouse sobre el nombre de la calificación, muestra el nombre completo.</i></p>
+    <p class="text-primary"><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
+
 
     @if($comision)
     <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
@@ -56,7 +58,10 @@
                     <th>Promedio TP</th>
                     @if(count($calificaciones) > 0)
                     @foreach($calificaciones as $calificacion)
-                    <th><a href="{{ route('calificacion.create',$calificacion->id) }}" class="text-white">{{$calificacion->nombre}}</a></th>
+                    <th><a href="{{ route('calificacion.create',$calificacion->id) }}"  title="{{$calificacion->nombre}}" class="text-white">
+                        {{ substr($calificacion->nombre, 0, 9) }}
+                        {{ strlen($calificacion->nombre) > 9 ? '...' : '' }}
+                    </a></th>
                     @endforeach
                     @endif
                     <th> <a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>
