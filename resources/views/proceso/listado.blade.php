@@ -127,7 +127,7 @@
                         {{-- <button id="observacion-{{$proceso->id}}" class="btn btn-sm btn-warning mt-1 d-none">Observación</button>--}}
                     </td>
                     <td>
-                        <form action="" id="{{ $proceso->id }}" class="row form_nota_global col-md-10">
+                        <form action="" id="{{ $proceso->id }}" class="row form_nota_global col-md-12">
                             @if($proceso->nota_global)
                             <input type="text" class="form-control nota_global {{ $proceso->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->nota_global < 4 ? 'text-danger' : '' }}" id="global-{{ $proceso->id }}" value="{{ $proceso->nota_global > 0 ? $proceso->nota_global : 'A' }}" @if(!$proceso->estado || ($proceso->estado && $proceso->estado->identificador != 5) || $proceso->cierre) disabled @endif>
                             @else
