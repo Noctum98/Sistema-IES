@@ -221,7 +221,7 @@ class MesaController extends Controller
             $etiquetas_espacios = 'Módulos';
         }
 //dd($carrera->materias()->get()[0]->mesas_instancias($instancia->id)[1]->comision()->get());
-//dd($carrera->materias()->get()[0]->comisiones()->get());
+//dd($carrera->materias()->get()[5]->comisiones()->get());
         $data = [
             'instancia' => $instancia,
             'carrera' => $carrera,
@@ -380,11 +380,11 @@ class MesaController extends Controller
 
     public function vistaCronograma(int $instancia)
     {
-        $carrera = new Carrera();
-        $carreras = $carrera->obtenerInstanciasCarrera($instancia);
+        $mesa = new Mesa();
+        $carreras = $mesa->obtenerCarrerasByInstancia($instancia);
         return view('mesa.cronograma')->with([
             'carreras' => $carreras,
-            'instancia' => $instancia
+            'instancia' => $instancia,
         ]);
     }
 }

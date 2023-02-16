@@ -111,4 +111,22 @@ class Mesa extends Model
     {
         return $this->belongsTo(User::class,'segundo_vocal_segundo_id');
     }
+
+    public function obtenerCarrerasByInstancia(int $instancia)
+    {
+        return   Carrera::select(
+            'carreras.id as id',
+            'carreras.nombre as nombre',
+            'carreras.resolucion as resolucion',
+            'sedes.nombre as sede'
+        )
+            ->join('sedes','carreras.sede_id','sedes.id')
+            ->join('materias','carreras.id','materias.carrera_id')
+            ->join('mesas','materias.id','mesas.materia_id')
+            ->where('mesas.instancia_id',$instancia)
+            ->groupBy('carreras.id', 'carreras.nombre', 'sedes.nombre')
+            ->orderBy('sedes.nombre','asc')
+//            ->orderBy('materias.nombre','asc')
+            ->get();
+    }
 }

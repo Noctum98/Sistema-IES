@@ -49,21 +49,22 @@
                     @if($materia->año == 1)
                         <tr>
                             <td>{{$materia->nombre}}</td>
-                            <td align="center" @empty($materia->mesa($instancia->id))
-                                colspan="5"
-                                    @endempty
-                            >
-                                @if($materia->mesa($instancia->id))
+
+                            @if(count($materia->mesas_instancias($instancia->id)) === 0)
+                                <td align="center" colspan="5">
+                                    No tiene mesa asignada
+                                </td>
+                            @else
+                                <td align="center">
+
                                     @if ($llamado == 1)
                                         {{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'd-m-Y') }}
                                     @else
                                         {{ date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo), 'd-m-Y') }}
                                     @endif
-                                @else
-                                    No tiene mesa asignada
-                                @endif
-                            </td>
-                            @if($materia->mesa($instancia->id))
+
+                                </td>
+
 
                                 @if ($llamado == 1)
                                     <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
@@ -72,11 +73,6 @@
                                 @endif
                                 @if($llamado == 1)
                                     <td>
-{{--                                        @if(count($materia->mesas_instancias($instancia->id)) > 1)--}}
-{{--                                            /*/*/*--}}
-{{--                                        @else--}}
-{{--                                            /-/-/---}}
-{{--                                        @endif--}}
                                         {{$materia->mesa($instancia->id)->presidente()->first() ? $materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre() : ''}}</td>
                                     <td>{{$materia->mesa($instancia->id)->primer_vocal()->first() ? $materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre():''}}</td>
                                     <td>{{$materia->mesa($instancia->id)->segundo_vocal()->first() ? $materia->mesa($instancia->id)->segundo_vocal()->first()->getApellidoNombre():''}}</td>
