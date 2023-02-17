@@ -57,7 +57,10 @@
                         @else
                             @foreach($materia->mesas_instancias($instancia->id) as $mesa)
                                 <tr>
-                                    <td>{{$materia->nombre}} (<small>{{optional($mesa->comision()->first())->nombre}}</small>)
+                                    <td>{{$materia->nombre}}
+                                        @if($mesa->comision()->first())
+                                        (<small>{{$mesa->comision()->first()->nombre}}</small>)
+                                        @endif
                                     </td>
                                     @if ($llamado == 1)
                                         <td align="center">
