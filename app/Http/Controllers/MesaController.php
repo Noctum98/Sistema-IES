@@ -380,11 +380,13 @@ class MesaController extends Controller
 
     public function vistaCronograma(int $instancia)
     {
+        $instanciaGet = Instancia::find($instancia);
         $mesa = new Mesa();
         $carreras = $mesa->obtenerCarrerasByInstancia($instancia);
         return view('mesa.cronograma')->with([
             'carreras' => $carreras,
             'instancia' => $instancia,
+            'instancia_model' => $instanciaGet
         ]);
     }
 }

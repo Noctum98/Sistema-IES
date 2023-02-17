@@ -1,6 +1,15 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
+        <h4 class="text-info">
+            Cronograma: {{$instancia_model->nombre}}
+        </h4>
+        <hr>
+        @if(@session('message'))
+            <div class="alert alert-success">
+                {{@session('message')}}
+            </div>
+        @endif
         <div class="row text-center bg-info">
 
                 <div class="col-sm-5">SEDE/UNIDAD ACADÉMICA</div>
@@ -33,5 +42,4 @@
                 @endforeach
             </div>
         </div>
-    </div>
 @endsection
