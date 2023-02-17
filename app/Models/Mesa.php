@@ -124,7 +124,7 @@ class Mesa extends Model
             ->join('materias','carreras.id','materias.carrera_id')
             ->join('mesas','materias.id','mesas.materia_id')
             ->where('mesas.instancia_id',$instancia)
-            ->groupBy('carreras.id', 'carreras.nombre', 'sedes.nombre')
+            ->groupBy('carreras.id', 'carreras.nombre', 'carreras.resolucion', 'sedes.nombre')
             ->orderBy('sedes.nombre','asc')
 //            ->orderBy('materias.nombre','asc')
             ->get();
