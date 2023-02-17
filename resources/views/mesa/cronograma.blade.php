@@ -15,10 +15,9 @@
                     <div class="col-sm-5"><b>{{$carrera['nombre']}} - Res {{$carrera['resolucion']}}</b></div>
                     <div class="col">
                         <a href="{{ route('generar_pdf_mesa', ['instancia' => $instancia, 'carrera'=>$carrera->id, 'llamado' => 1]) }}"
-                           class="btn">
+                           class="btn btn-link" target="_blank">
 
-                            <i>1° llamado</i> <br/>
-{{--                            <small style="font-size: 0.6em">DESCARGAR PDF</small>--}}
+                            <i>1° llamado</i>
                         </a>
                     </div>
                     <div class="col-sm-5"><i>{{$carrera['sede']}}</i></div>
@@ -26,9 +25,8 @@
                     <div class="col">
 
                         <a href="{{ route('generar_pdf_mesa', ['instancia' => $instancia, 'carrera'=>$carrera->id, 'llamado' => 2]) }}"
-                           class="btn">
-                            <i>2° llamado</i> <br/>
-{{--                            <small style="font-size: 0.6em">DESCARGAR PDF</small>--}}
+                           class="btn btn-link" target="_blank">
+                            <i>2° llamado</i>
                         </a>
                     </div>
 
