@@ -47,43 +47,48 @@
                 </tr>
                 @foreach($carrera->materias()->get() as $materia )
                     @if($materia->año == 1)
-                        <tr>
-                            <td>{{$materia->nombre}}</td>
+                        @if(count($materia->mesas_instancias($instancia->id)) === 0)
+                            <tr>
+                                <td>{{$materia->nombre}}</td>
 
-                            @if(count($materia->mesas_instancias($instancia->id)) === 0)
+
                                 <td align="center" colspan="5">
                                     No tiene mesa asignada
                                 </td>
-                            @else
-                                <td align="center">
+                            </tr>
+                        @endif
+                        @if(count($materia->mesas_instancias($instancia->id)) >= 1)
+                            @foreach($materia->mesas_instancias($instancia->id) as $mesa)
+                                <tr>
+                                    <td>{{$materia->nombre}} (<small>{{$mesa->comision()->first()->nombre}}</small>)</td>
+                                    <td align="center">
+                                        @if ($llamado == 1)
+                                            {{ date_format(new DateTime($mesa->fecha), 'd-m-Y') }}
+                                        @else
+                                            {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
+                                        @endif
+                                    </td>
 
                                     @if ($llamado == 1)
-                                        {{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'd-m-Y') }}
+                                        <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                     @else
-                                        {{ date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo), 'd-m-Y') }}
+                                        <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
                                     @endif
+                                    @if($llamado == 1)
+                                        <td>
+                                            {{$mesa->presidente()->first() ? $materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre() : ''}}
+                                        </td>
+                                        <td>{{$mesa->primer_vocal()->first() ? $materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre():''}}</td>
+                                        <td>{{$mesa->segundo_vocal()->first() ? $materia->mesa($instancia->id)->segundo_vocal()->first()->getApellidoNombre():''}}</td>
+                                    @else
+                                        <td>{{$mesa->presidente_segundo()->first() ? $materia->mesa($instancia->id)->presidente_segundo()->first()->getApellidoNombre():''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo()->first() ? $materia->mesa($instancia->id)->primer_vocal_segundo()->first()->getApellidoNombre():''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo()->first() ? $materia->mesa($instancia->id)->segundo_vocal_segundo()->first()->getApellidoNombre():''}}</td>
+                                    @endif
+                                </tr>
+                            @endforeach
 
-                                </td>
-
-
-                                @if ($llamado == 1)
-                                    <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha), 'H:i') }}</td>
-                                @else
-                                    <td align="center">{{ date_format(new DateTime($materia->mesa($instancia->id)->fecha_segundo), 'H:i') }}</td>
-                                @endif
-                                @if($llamado == 1)
-                                    <td>
-                                        {{$materia->mesa($instancia->id)->presidente()->first() ? $materia->mesa($instancia->id)->presidente()->first()->getApellidoNombre() : ''}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->primer_vocal()->first() ? $materia->mesa($instancia->id)->primer_vocal()->first()->getApellidoNombre():''}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal()->first() ? $materia->mesa($instancia->id)->segundo_vocal()->first()->getApellidoNombre():''}}</td>
-                                @else
-                                    <td>{{$materia->mesa($instancia->id)->presidente_segundo()->first() ? $materia->mesa($instancia->id)->presidente_segundo()->first()->getApellidoNombre():''}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->primer_vocal_segundo()->first() ? $materia->mesa($instancia->id)->primer_vocal_segundo()->first()->getApellidoNombre():''}}</td>
-                                    <td>{{$materia->mesa($instancia->id)->segundo_vocal_segundo()->first() ? $materia->mesa($instancia->id)->segundo_vocal_segundo()->first()->getApellidoNombre():''}}</td>
-                                @endif
-
-                            @endif
-                        </tr>
+                        @endif
                     @endif
                 @endforeach
                 <tr>
@@ -127,6 +132,7 @@
                             @endif
                         </tr>
                     @endif
+
                 @endforeach
                 <tr>
                     <td colspan="6" align="center"><b>Espacios curriculares 3 <sup>er</sup> Año </b></td>
