@@ -49,6 +49,7 @@ class Carrera extends Model
      return   Carrera::select(
             'carreras.id as id',
             'carreras.nombre as nombre',
+            'carreras.resolucion as resolucion',
             'sedes.nombre as sede'
         )
             ->join('sedes','carreras.sede_id','sedes.id')
