@@ -398,6 +398,7 @@ Route::prefix('mesas')->group(function () {
         'mesa.carreras'
     );
     Route::get('/carrera/admin/{id}/{instancia_id}', [InstanciaController::class, 'vista_mesas'])->name('mesa.mesas');
+    Route::get('/cronograma/{instancia_id}', [MesaController::class, 'vistaCronograma'])->name('mesa.cronograma');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
     Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones']
     )->name(
@@ -435,7 +436,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/descargar_total/{id}', [InstanciaController::class, 'descargar_total'])->name('mesa.total.descargar');
     Route::post('/inscribir_alumno', [AlumnoMesaController::class, 'inscribir_alumno'])->name('mesa.inscribir_alumno');
     Route::post('/confirmar/{mesa_alumno_id}', [AlumnoMesaController::class, 'confirmar'])->name('mesa.confirmar');
-    Route::get('generar-pdf-mesa/{instancia}/{carrera}/{llamado?}', [MesaController::class, 'generar_pdf_mesa'])->name(
+    Route::get('generar-pdf-mesa/{instancia}/{carrera}/{llamado?}/{comision?}', [MesaController::class, 'generar_pdf_mesa'])->name(
         'generar_pdf_mesa'
     );
 
