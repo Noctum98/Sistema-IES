@@ -28,6 +28,7 @@ use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\LibrosController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
@@ -439,7 +440,7 @@ Route::prefix('mesas')->group(function () {
     );
 
     Route::get(
-        'generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado}/{comision?}',
+        'generar-pdf-acta-volante/{instancia}/{carrera}/{materia}/{llamado}/{orden}/{comision?}',
         [MesaController::class, 'generar_pdf_acta_volante']
     )->name(
         'generar_pdf_acta_volante'
@@ -562,6 +563,7 @@ Route::prefix('mail')->group(function () {
 });
 
 Route::resource('actas_volantes', ActaVolanteController::class);
+Route::resource('libros',LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
     dd(ini_get('post_max_size'));

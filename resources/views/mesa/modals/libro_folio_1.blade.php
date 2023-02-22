@@ -1,5 +1,4 @@
-<div class="modal fade" id="libro_folio_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="libro_folio_{{$llamado}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,24 +9,41 @@
             </div>
             <div class="modal-body">
                 @if(!$mesa->cierre_profesor)
-                    <p class="text-danger"><i>Para poder guardar libro y folio el profesor debe cerrar las notas.</i>
-                    </p>
+                <p class="text-danger"><i>Para poder guardar libro y folio el profesor debe cerrar las notas.</i>
+                </p>
                 @endif
-                <form method="POST" action="{{ route('mesa.librofolio',$mesa->id) }}">
 
-                    <input type="hidden" name="llamado" value="1">
+                <input type="hidden" name="mesa_id" id="mesa_id" value="{{$mesa->id}}">
+                <input type="hidden" name="llamado" id="llamado" value="{{$llamado}}">
+                <form method="POST" action="#" class="mt-3">
+                <div class="form-group">
+                    <label for="libro">Libro</label>
+                    <input type="number" name="numero" id="libro-{{$llamado}}" class="form-control" value="{{ $mesa->libro($llamado) ? $mesa->libro($llamado)->numero : '' }}">
+                </div>
+
+                @php
+                $contador = 1;
+                @endphp
+                @while($contador <= $folios) 
+
                     <div class="form-group">
-                        <label for="libro">Libro</label>
-                        <input type="text" name="libro" class="form-control" value="{{ $mesa->libro ?? '' }}">
+                        <label for="folio">Folio {{ $contador }}</label>
+                        <input type="number" name="folios[]" class="form-control folios_{{$llamado}} {{$contador > 1 ? 'readonly_'.$llamado : 'writeonly_'.$llamado}}" id="folio-{{$llamado.'-'.$contador}}" value="{{ $mesa->libro($llamado,$contador) ? $mesa->libro($llamado,$contador)->folio : '' }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="libro">Folio</label>
-                        <input type="text" name="folio" class="form-control" value="{{ $mesa->folio ?? '' }}">
-                    </div>
-                    <input type="submit" class="btn btn-success"
-                           value="Guardar" {{ !$mesa->cierre_profesor ? 'disabled' : '' }}>
-                </form>
+
+                    @php
+                    $contador++;
+                    @endphp
+                @endwhile
+                    <input type="submit" class="btn btn-success btn-guardar" data-folio="{{ $llamado.'-'.$contador }}" value="Guardar" {{ !$mesa->cierre_profesor ? 'disabled' : '' }}>
+                    <span class="d-none" id="spin-{{$llamado}}">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </span>
+                    <span class="d-none text-success" id="check-{{$llamado}}">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    </form>
             </div>
         </div>
     </div>

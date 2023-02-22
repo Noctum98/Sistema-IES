@@ -69,7 +69,7 @@
 
             </td>
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 5px">Libro No: {{ $llamado == 1 ? $mesa->libro : $mesa->libro_segundo }}
+        border-collapse: collapse !important; margin: 0; padding: 5px">Libro No: {{ $libro ? $libro->numero : '' }}
             </td>
         </tr>
         <tr style="margin: 0;">
@@ -88,7 +88,7 @@
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>Turno: </u> {{ucfirst($carrera->turno)}}</h5>
             </td>
             <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{ $llamado == 1 ? $mesa->folio : $mesa->folio_segundo }}
+        border-collapse: collapse !important; margin: 0; padding: 5px">Folio No: {{  $libro ? $libro->folio : ''  }}
             </td>
             <td style="width: 30%; border:none !important; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0;">
@@ -122,10 +122,10 @@
         </thead>
         <tbody>
         @php
-        $cant_file = count($mesa->mesa_inscriptos_props($llamado)->get());
+        $cant_file = count($mesa->mesa_inscriptos_props($llamado,$libro->orden)->get());
         $faltan_file = 26 - $cant_file;
         @endphp
-        @foreach($mesa->mesa_inscriptos_props($llamado)->get() as $mesa_inscripto)
+        @foreach($mesa->mesa_inscriptos_props($llamado,$libro->orden)->get() as $mesa_inscripto)
             <tr>
                 <td style="font-size: 0.85em">{{ $loop->index+1 }}</td>
                 <td style="font-size: 0.85em">{{mb_strtoupper($mesa_inscripto->apellidos)}}, {{$mesa_inscripto->nombres}}</td>

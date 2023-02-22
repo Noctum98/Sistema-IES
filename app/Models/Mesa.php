@@ -44,23 +44,33 @@ class Mesa extends Model
         return $this->hasMany('App\Models\MesaAlumno');
     }
 
-    public function mesa_inscriptos_primero(){
+    public function mesa_inscriptos_primero($orden = 1){
+        $take = 5;
+        $skip = $take * ($orden - 1);
+        
         return $this->hasMany('App\Models\MesaAlumno')
-        ->where(['estado_baja'=>false,'segundo_llamado'=>false]); 
+        ->where(['estado_baja'=>false,'segundo_llamado'=>false])
+        ->skip($skip)
+        ->take($take);  
     }
 
-    public function mesa_inscriptos_segundo(){
+    public function mesa_inscriptos_segundo($orden = 1){
+        $take = 5;
+        $skip = $take * ($orden - 1);
+
         return $this->hasMany('App\Models\MesaAlumno')
-        ->where(['estado_baja'=>false,'segundo_llamado'=>true]); 
+        ->where(['estado_baja'=>false,'segundo_llamado'=>true])
+        ->skip($skip)
+        ->take($take); 
     }
 
-    public function mesa_inscriptos_props(int $prop = null): HasMany
+    public function mesa_inscriptos_props(int $prop = null,$orden = 1): HasMany
     {
         if($prop == 1){
-            return $this->mesa_inscriptos_primero();
+            return $this->mesa_inscriptos_primero($orden);
         }
         if($prop == 2){
-            return $this->mesa_inscriptos_segundo();
+            return $this->mesa_inscriptos_segundo($orden);
         }
         return $this->mesa_inscriptos();
     }
@@ -110,5 +120,15 @@ class Mesa extends Model
     public function segundo_vocal_segundo(): BelongsTo
     {
         return $this->belongsTo(User::class,'segundo_vocal_segundo_id');
+    }
+
+    public function libros(): HasMany
+    {
+        return $this->hasMany(Libro::class,'mesa_id');
+    }
+
+    public function libro($llamado,$orden = 1)
+    {
+        return Libro::where(['llamado'=>$llamado,'orden'=>$orden,'mesa_id'=>$this->id])->first();
     }
 }

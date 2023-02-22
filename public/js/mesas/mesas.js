@@ -1,12 +1,83 @@
 $(document).ready(function () {
-    $(".inputs").change(function(){
+    var llamado = 0;
+    $(".inputs").change(function () {
         const segundo = $(this).prop('checked');
         const mesa_id = $(this).val();
-        if(segundo)
-        {
-            $("#segundo-"+mesa_id).append("<input type='hidden' name='segundo-"+mesa_id+"'  value='1'/>")
-        }else{
-            $("#segundo-"+mesa_id).html("");
+        if (segundo) {
+            $("#segundo-" + mesa_id).append("<input type='hidden' name='segundo-" + mesa_id + "'  value='1'/>")
+        } else {
+            $("#segundo-" + mesa_id).html("");
         }
     });
+
+    $(".button-modal").click(function (param) {
+        llamado = $(this).attr('id');
+
+
+        $('.readonly_' + llamado).attr('readonly', true);
+        $('.writeonly_' + llamado).keyup(function (e) {
+            let data = $(this).attr('id').split('-');
+            let llamado = data[1];
+
+            let folios = $(".readonly_" + llamado).get();
+
+            for (let index = 1; index <= folios.length; index++) {
+                let valor = parseInt($(this).val());
+                if (valor && valor > 0 && valor != NaN) {
+                    $("#folio-" + llamado + '-' + (index + 1)).val(valor + index);
+                } else {
+                    $("#folio-" + llamado + '-' + (index + 1)).val("");
+                }
+            }
+        });
+    });
+
+
+
+
+
+    $('.btn-guardar').click(function (e) {
+        e.preventDefault();
+
+        let data = $(this).data('folio').split('-');
+        let llamado = data[0];
+        let orden = data[1];
+        let libro = $("#libro-" + llamado).val();
+        let mesa_id = $("#mesa_id").val();
+        $("#spin-" + llamado).removeClass('d-none');
+
+        if (!$("#check-" + llamado).hasClass('d-none')) {
+            $("#check-" + llamado).addClass('d-none');
+        }
+        let folios = $(".folios_"+llamado).get();
+
+        let folios_array = [];
+
+        for (let index = 1; index <= folios.length; index++) {
+            folios_array.push( $("#folio-" + llamado + '-' + index).val() +'-'+ index );
+        }
+        let data_json = {
+            'numero': libro,
+            'folios': folios_array,
+            'orden': orden,
+            'llamado': llamado,
+            'mesa_id': mesa_id
+        };
+
+        console.log(data_json);
+        
+        let url = '/libros';
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: data_json,
+            success: function (response) {
+                console.log(response);
+                $("#spin-" + llamado).addClass('d-none');
+                $("#check-" + llamado).removeClass('d-none');
+            }
+        });
+        
+    })
 });
