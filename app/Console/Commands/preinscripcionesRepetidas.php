@@ -40,7 +40,6 @@ class preinscripcionesRepetidas extends Command
     public function handle()
     {
         $preinscripciones_repetidas = DB::select('SELECT dni,carrera_id, count(*) as cantidad FROM `preinscripciones` group by dni,carrera_id having count(*) >1 order by cantidad DESC');
-        dd($preinscripciones_repetidas);
         foreach($preinscripciones_repetidas as $preinscripcion_repetida)
         {
             $preinscripciones = Preinscripcion::where([
@@ -48,9 +47,15 @@ class preinscripcionesRepetidas extends Command
                 'carrera_id' => $preinscripcion_repetida->carrera_id
             ])->get();
 
-            
+            $preinscripcion_ok = $preinscripciones->first();
 
-
+            foreach($preinscripciones as $preinscripcion)
+            {
+                if($preinscripcion->id != $preinscripcion_ok->id)
+                {
+                    $preinscripcion->delete();
+                }
+            }
         }
     }
 }
