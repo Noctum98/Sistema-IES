@@ -28,6 +28,7 @@ class ProcesoModular extends Model
         'asistencia_final_porcentaje',
         'asistencia_practica_profesional',
         'porcentaje_actividades_aprobado',
+        'ciclo_lectivo'
     ];
 
     public function procesoRelacionado()
