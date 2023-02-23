@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\ActaVolante;
+use App\Models\Libro;
+use App\Models\Mesa;
 use Illuminate\Console\Command;
 
 class insertLibroActasVolantes extends Command
@@ -38,26 +40,31 @@ class insertLibroActasVolantes extends Command
      */
     public function handle()
     {
-        $actas_volantes = ActaVolante::all();
-        
-        foreach($actas_volantes as $acta_volante)
-        {
-            if($acta_volante->inscripcion)
-            {
-                if($acta_volante->inscripcion->segundo_llamado)
-                {
-                    $libro = $acta_volante->inscripcion->mesa->libro(2,1) ?? null;
-                }else{
-                    $libro = $acta_volante->inscripcion->mesa->libro(1,1) ?? null;
-    
-                }
-    
-                $acta_volante->libro_id = $libro ? $libro->id : null;
-                $acta_volante->update();
-            }
-            
-        }
-       
+        $mesas = Mesa::where('libro','!=',null)->get();
 
+        foreach($mesas as $mesa)
+        {
+            if($mesa->libro)
+            {
+                Libro::create([
+                    'mesa_id'=> $mesa->id,
+                    'llamado'=> 1,
+                    'numero' => $mesa->libro,
+                    'folio' => $mesa->folio,
+                    'orden' => 1
+                ]);
+            }
+
+            if($mesa->libro_segundo)
+            {
+                Libro::create([
+                    'mesa_id'=> $mesa->id,
+                    'llamado'=> 2,
+                    'numero' => $mesa->libro_segundo,
+                    'folio' => $mesa->folio_segundo,
+                    'orden' => 1
+                ]);
+            }
+        }
     }
 }
