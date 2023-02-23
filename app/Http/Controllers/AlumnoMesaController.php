@@ -340,7 +340,7 @@ class AlumnoMesaController extends Controller
 
         if ($instancia->tipo == 1) {
             if ($request['motivos']) {
-                Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
+                //Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
             } else {
                 $request['motivos'] = "Baja realizada por el alumno.";
             }

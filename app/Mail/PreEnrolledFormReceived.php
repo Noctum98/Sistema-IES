@@ -11,6 +11,8 @@ class PreEnrolledFormReceived extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $preinscripcion;
+    
     /**
      * Create a new message instance.
      *

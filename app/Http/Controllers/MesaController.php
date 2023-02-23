@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Instancia;
+use App\Models\Libro;
 use App\Models\Sede;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -83,21 +84,41 @@ class MesaController extends Controller
         //dd($mesa);
 
         if ($mesa) {
+            $contador_segundo_llamado = 0;
+            $contador_primer_llamado = 0;
             foreach ($mesa->mesa_inscriptos as $inscripcion) {
                 if ($inscripcion->segundo_llamado) {
                     if ($inscripcion->estado_baja) {
                         $segundo_llamado_bajas[] = $inscripcion;
                     } else {
+                        $contador_segundo_llamado++;
                         $segundo_llamado[] = $inscripcion;
                     }
                 } else {
                     if ($inscripcion->estado_baja) {
                         $primer_llamado_bajas[] = $inscripcion;
                     } else {
+                        $contador_primer_llamado++;
                         $primer_llamado[] = $inscripcion;
                     }
                 }
             }
+
+            $folios_segundo = 1;
+            $folios = 1;
+            if($contador_primer_llamado > 5)
+            {
+                $division_primero = $contador_primer_llamado / 5;
+                $folios = ceil($division_primero);
+            }
+
+            if($contador_segundo_llamado > 25)
+            {
+                $division_segundo = $contador_segundo_llamado / 5;
+                $folios_segundo = ceil($division_segundo);
+            }
+
+            //dd($folios,$folios_segundo);
         } else {
             return redirect()->back()->with(['error_fecha' => 'La mesa indicada no existe.']);
         }
@@ -110,6 +131,8 @@ class MesaController extends Controller
             'segundo_llamado_bajas' => $segundo_llamado_bajas,
             'instancia' => $mesa->instancia,
             'procesos' => $procesos,
+            'folios' => $folios,
+            'folios_segundo' => $folios_segundo
         ]);
     }
 
@@ -243,6 +266,7 @@ class MesaController extends Controller
         Carrera $carrera,
         Materia $materia,
         int $llamado,
+        int $orden,
         Comision $comision = null
     ) {
         
@@ -265,6 +289,8 @@ class MesaController extends Controller
             throw new HttpResponseException(new Response('No se encontró la instancia correspondiente'));
         }
 
+        $libro = Libro::where(['mesa_id'=>$mesa->id,'orden'=>$orden,'llamado'=>$llamado])->first();
+
         Log::info('MesaController - acta_volante');
         Log::info($mesa);
         Log::info($comision);
@@ -278,6 +304,7 @@ class MesaController extends Controller
             'llamado' => $llamado,
             'materia' => $materia,
             'mesa' => $mesa,
+            'libro' => $libro
         ];
 
         $pdf = \App::make('dompdf.wrapper');

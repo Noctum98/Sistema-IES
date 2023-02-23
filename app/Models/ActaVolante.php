@@ -18,12 +18,18 @@ class ActaVolante extends Model
         'mesa_id',
         'alumno_id',
         'materia_id',
-        'mesa_alumno_id'
+        'mesa_alumno_id',
+        'libro_id'
     ];
 
 
     public function inscripcion(): BelongsTo
     {
         return $this->belongsTo(MesaAlumno::class,'mesa_alumno_id');
+    }
+
+    public function mesa(): BelongsTo
+    {
+        return $this->belongsTo(Mesa::class,'mesa_id');
     }
 }

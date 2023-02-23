@@ -36,82 +36,108 @@ class Mesa extends Model
         'folio_segundo'
     ];
 
-    public function materia(){
-        return $this->belongsTo('App\Models\Materia','materia_id');
+    public function materia()
+    {
+        return $this->belongsTo('App\Models\Materia', 'materia_id');
     }
 
-    public function mesa_inscriptos(){
+    public function mesa_inscriptos()
+    {
         return $this->hasMany('App\Models\MesaAlumno');
     }
 
-    public function mesa_inscriptos_primero(){
-        return $this->hasMany('App\Models\MesaAlumno')
-        ->where(['estado_baja'=>false,'segundo_llamado'=>false]); 
-    }
-
-    public function mesa_inscriptos_segundo(){
-        return $this->hasMany('App\Models\MesaAlumno')
-        ->where(['estado_baja'=>false,'segundo_llamado'=>true]); 
-    }
-
-    public function mesa_inscriptos_props(int $prop = null): HasMany
+    public function mesa_inscriptos_primero($orden = 1)
     {
-        if($prop == 1){
-            return $this->mesa_inscriptos_primero();
+        $take = 5;
+        $skip = $take * ($orden - 1);
+
+        return $this->hasMany('App\Models\MesaAlumno')
+            ->where(['estado_baja' => false, 'segundo_llamado' => false])
+            ->skip($skip)
+            ->take($take);
+    }
+
+    public function mesa_inscriptos_segundo($orden = 1)
+    {
+        $take = 5;
+        $skip = $take * ($orden - 1);
+
+        return $this->hasMany('App\Models\MesaAlumno')
+            ->where(['estado_baja' => false, 'segundo_llamado' => true])
+            ->skip($skip)
+            ->take($take);
+    }
+
+    public function mesa_inscriptos_props(int $prop = null, $orden = 1): HasMany
+    {
+        if ($prop == 1) {
+            return $this->mesa_inscriptos_primero($orden);
         }
-        if($prop == 2){
-            return $this->mesa_inscriptos_segundo();
+        if ($prop == 2) {
+            return $this->mesa_inscriptos_segundo($orden);
         }
         return $this->mesa_inscriptos();
     }
 
-    public function bajas_primero(){
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja'=>true,'segundo_llamado'=>false]);
+    public function bajas_primero()
+    {
+        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);
     }
 
-    public function bajas_segundo(){
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja'=>true,'segundo_llamado'=>true]);
+    public function bajas_segundo()
+    {
+        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => true]);
     }
 
-    public function instancia(){
-        return $this->belongsTo(Instancia::class,'instancia_id');
+    public function instancia()
+    {
+        return $this->belongsTo(Instancia::class, 'instancia_id');
     }
 
     public function comision(): BelongsTo
     {
-        return $this->belongsTo(Comision::class,'comision_id');
+        return $this->belongsTo(Comision::class, 'comision_id');
     }
 
     public function presidente(): BelongsTo
     {
-        return $this->belongsTo(User::class,'presidente_id');
+        return $this->belongsTo(User::class, 'presidente_id');
     }
 
     public function primer_vocal(): BelongsTo
     {
-        return $this->belongsTo(User::class,'primer_vocal_id');
+        return $this->belongsTo(User::class, 'primer_vocal_id');
     }
 
     public function segundo_vocal(): BelongsTo
     {
-        return $this->belongsTo(User::class,'segundo_vocal_id');
+        return $this->belongsTo(User::class, 'segundo_vocal_id');
     }
 
     public function presidente_segundo(): BelongsTo
     {
-        return $this->belongsTo(User::class,'presidente_segundo_id');
+        return $this->belongsTo(User::class, 'presidente_segundo_id');
     }
 
     public function primer_vocal_segundo(): BelongsTo
     {
-        return $this->belongsTo(User::class,'primer_vocal_segundo_id');
+        return $this->belongsTo(User::class, 'primer_vocal_segundo_id');
     }
 
     public function segundo_vocal_segundo(): BelongsTo
     {
-        return $this->belongsTo(User::class,'segundo_vocal_segundo_id');
+        return $this->belongsTo(User::class, 'segundo_vocal_segundo_id');
     }
 
+    public function libros(): HasMany
+    {
+        return $this->hasMany(Libro::class, 'mesa_id');
+    }
+
+    public function libro($llamado, $orden = 1)
+    {
+        return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
+    }
     public function obtenerCarrerasByInstancia(int $instancia)
     {
         return   Carrera::select(
@@ -120,13 +146,13 @@ class Mesa extends Model
             'carreras.resolucion as resolucion',
             'sedes.nombre as sede'
         )
-            ->join('sedes','carreras.sede_id','sedes.id')
-            ->join('materias','carreras.id','materias.carrera_id')
-            ->join('mesas','materias.id','mesas.materia_id')
-            ->where('mesas.instancia_id',$instancia)
+            ->join('sedes', 'carreras.sede_id', 'sedes.id')
+            ->join('materias', 'carreras.id', 'materias.carrera_id')
+            ->join('mesas', 'materias.id', 'mesas.materia_id')
+            ->where('mesas.instancia_id', $instancia)
             ->groupBy('carreras.id', 'carreras.nombre', 'carreras.resolucion', 'sedes.nombre')
-            ->orderBy('sedes.nombre','asc')
-//            ->orderBy('materias.nombre','asc')
+            ->orderBy('sedes.nombre', 'asc')
+            //            ->orderBy('materias.nombre','asc')
             ->get();
     }
 }
