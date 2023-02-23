@@ -17,6 +17,7 @@ class Comision extends Model
         'carrera_id',
         'año',
         'nombre',
+        'ciclo_lectivo'
     ];
 
     public function carrera(): BelongsTo
