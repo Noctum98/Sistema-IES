@@ -53,6 +53,8 @@ class preinscripcionesRepetidas extends Command
             {
                 if($preinscripcion->id != $preinscripcion_ok->id)
                 {
+                    $preinscripcion->responsable_delete = 'Comando (Repetida)';
+                    $preinscripcion->update();
                     $preinscripcion->delete();
                 }
             }
