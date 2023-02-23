@@ -122,7 +122,7 @@
         </thead>
         <tbody>
         @php
-        $cant_file = count($mesa->mesa_inscriptos_props($llamado,$libro->orden)->get());
+        $cant_file = count($mesa->mesa_inscriptos_props($llamado,$orden)->get());
         $faltan_file = 26 - $cant_file;
         @endphp
         @foreach($mesa->mesa_inscriptos_props($llamado,$orden)->get() as $mesa_inscripto)
