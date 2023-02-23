@@ -304,7 +304,8 @@ class MesaController extends Controller
             'llamado' => $llamado,
             'materia' => $materia,
             'mesa' => $mesa,
-            'libro' => $libro
+            'libro' => $libro,
+            'orden' => $orden
         ];
 
         $pdf = \App::make('dompdf.wrapper');
