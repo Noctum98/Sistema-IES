@@ -125,7 +125,7 @@
         $cant_file = count($mesa->mesa_inscriptos_props($llamado,$libro->orden)->get());
         $faltan_file = 26 - $cant_file;
         @endphp
-        @foreach($mesa->mesa_inscriptos_props($llamado,$libro->orden)->get() as $mesa_inscripto)
+        @foreach($mesa->mesa_inscriptos_props($llamado,$orden)->get() as $mesa_inscripto)
             <tr>
                 <td style="font-size: 0.85em">{{ $loop->index+1 }}</td>
                 <td style="font-size: 0.85em">{{mb_strtoupper($mesa_inscripto->apellidos)}}, {{$mesa_inscripto->nombres}}</td>
