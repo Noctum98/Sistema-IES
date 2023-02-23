@@ -106,15 +106,15 @@ class MesaController extends Controller
 
             $folios_segundo = 1;
             $folios = 1;
-            if($contador_primer_llamado > 5)
+            if($contador_primer_llamado > 25)
             {
-                $division_primero = $contador_primer_llamado / 5;
+                $division_primero = $contador_primer_llamado / 25;
                 $folios = ceil($division_primero);
             }
 
             if($contador_segundo_llamado > 25)
             {
-                $division_segundo = $contador_segundo_llamado / 5;
+                $division_segundo = $contador_segundo_llamado / 25;
                 $folios_segundo = ceil($division_segundo);
             }
 
