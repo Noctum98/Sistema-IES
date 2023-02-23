@@ -20,7 +20,8 @@ class Proceso extends Model
         'nota_global',
         'nota_recuperatorio',
         'operador_id',
-        'cargo_id'
+        'cargo_id',
+        'ciclo_lectivo'
     ];
 
     public function materia(): BelongsTo
