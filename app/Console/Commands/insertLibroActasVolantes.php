@@ -42,18 +42,20 @@ class insertLibroActasVolantes extends Command
         
         foreach($actas_volantes as $acta_volante)
         {
-            $mesa =  $acta_volante->inscripcion->mesa;
-
-            if($acta_volante->inscripcion->segundo_llamado)
+            if($acta_volante->inscripcion)
             {
-                $libro = $acta_volante->inscripcion->mesa->libro(2,1) ?? null;
-            }else{
-                $libro = $acta_volante->inscripcion->mesa->libro(1,1) ?? null;
-
+                if($acta_volante->inscripcion->segundo_llamado)
+                {
+                    $libro = $acta_volante->inscripcion->mesa->libro(2,1) ?? null;
+                }else{
+                    $libro = $acta_volante->inscripcion->mesa->libro(1,1) ?? null;
+    
+                }
+    
+                $acta_volante->libro_id = $libro ? $libro->id : null;
+                $acta_volante->update();
             }
-
-            $acta_volante->libro_id = $libro ? $libro->id : null;
-            $acta_volante->update();
+            
         }
        
 
