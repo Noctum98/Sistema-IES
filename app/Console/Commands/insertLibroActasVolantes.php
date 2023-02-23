@@ -38,7 +38,7 @@ class insertLibroActasVolantes extends Command
      */
     public function handle()
     {
-        $actas_volantes = ActaVolante::with('inscripcion')->get();
+        $actas_volantes = ActaVolante::all();
         
         foreach($actas_volantes as $acta_volante)
         {
