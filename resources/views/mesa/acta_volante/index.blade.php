@@ -36,6 +36,10 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-center" style="font-size: 0.8em">
+        {{ $mesas->links() }}
+    </div>
     </div>
 
 </div>

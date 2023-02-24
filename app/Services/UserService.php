@@ -19,13 +19,13 @@ class UserService
         });
 
         if ($rol) {
-            $lista->whereHas('roles', function ($query) use ($rol) {
+            $lista = $lista->whereHas('roles', function ($query) use ($rol) {
                 return $query->where('nombre', $rol);
             });
         }
 
 
-        $lista->whereDoesntHave('roles', function ($query) {
+        $lista = $lista->whereDoesntHave('roles', function ($query) {
             return $query->where('nombre', 'alumno');
         });
 
@@ -69,7 +69,7 @@ class UserService
     public function mesasPresidente()
     {
         $user = Auth::user();
-        $mesas = Mesa::where('presidente_id', $user->id)->orderBy('id','DESC')->get();
+        $mesas = Mesa::where('presidente_id', $user->id)->orderBy('id','DESC')->paginate(10);
 
         /*
             Mesa::select('mesas.*','instancias.nombre','instancias.año','carreras.nombre')
