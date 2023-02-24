@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Mesa;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class RepararCierresMesas extends Command
 {
@@ -85,6 +86,7 @@ class RepararCierresMesas extends Command
             }
             $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
             $mesa->update();
+            Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre.' '.$mesa->fecha);
         }
     }
 

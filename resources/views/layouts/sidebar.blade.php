@@ -125,7 +125,7 @@
                 @if(Session::has('profesor'))
                 <a class="nav-link" href="{{ route('actasVolantes.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                    Mesas de Examenes
+                    Mesas de Exámenes
                 </a>
                 @endif
             </div>
