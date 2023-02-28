@@ -11,15 +11,18 @@ class MesaUnsubscribe extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $inscripcion;
+    public $instancia;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($inscripcion)
+    public function __construct($inscripcion,$instancia)
     {
         $this->inscripcion = $inscripcion;
-        $this->instancia = session('instancia');
+        $this->instancia = $instancia;
         $this->subject('Baja en Mesas de Examenes');
     }
 

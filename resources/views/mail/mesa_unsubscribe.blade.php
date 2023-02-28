@@ -57,8 +57,7 @@
 			<div class="detalle-pre">
 				<br>
 				<p>Te has bajado de la mesa de {{ $instancia->tipo == 0 ? $inscripcion->mesa->materia->nombre : $inscripcion->materia->nombre}}</p>
-				<p>Para bajarte de alguna mesa, ve al siguiente enlace</p>
-				<br>
+				
 				<p>Datos del estudiante:</p>
 				<ul>
 					<li>Sede: {{ $inscripcion->mesa->materia->carrera->sede->nombre }}</li>
@@ -68,15 +67,10 @@
 					<li>Correo: {{ $inscripcion->correo }}</li>
 					<li>D.N.I: {{$inscripcion->dni}}</li>
 					<li>Teléfono: {{$inscripcion->telefono}}</li>
-					<li>Fecha:
-						{{date_format(new DateTime($inscripcion->created_at),'d-m-Y H:i:s')}}
+					<li>Fecha Baja:
+						{{date_format(new DateTime($inscripcion->updated_at),'d-m-Y H:i:s')}}
 					</li>
 				</ul>
-				@if($instancia->tipo == 1)
-				<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->materia->carrera->sede->id])}}" class="btn">Mis inscripciones</a>
-				@else
-				<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->mesa->materia->carrera->sede->id])}}" class="btn">Mis inscripciones</a>
-				@endif
 			</div>
 		</div>
 	</div>

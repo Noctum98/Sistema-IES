@@ -57,6 +57,9 @@
 			<div class="detalle-pre">
 				<br>
 				<p>Se te ha dado de baja en la mesa de {{ $instancia->tipo == 0 ? $inscripcion->mesa->materia->nombre : $inscripcion->materia->nombre}}</p>
+				<p>Carrera: {{$inscripcion->mesa->materia->carrera->nombre}}</p>
+				<p>Turno: {{$inscripcion->mesa->materia->carrera->turno}}</p>
+				<p>Fecha: {{ $inscripcion->updated_at }}</p>
 				<p><strong>Motivos:</p>
                 @foreach($motivos as $motivo)
                     <p>{{ $motivo }}</p>
