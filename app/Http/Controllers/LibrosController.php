@@ -53,9 +53,8 @@ class LibrosController extends Controller
                 $request['orden'] = $numero_folio[1];
 
                 $libro = Libro::where([
-                    'folio' => $request['folio'],
-                    'numero' => $request['numero'],
-                    'mesa_id' => $request['mesa_id']
+                    'mesa_id' => $request['mesa_id'],
+                    'llamado' => $request['llamado']
                 ])->first();
             
 
