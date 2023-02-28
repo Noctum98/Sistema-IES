@@ -465,9 +465,7 @@ Route::prefix('matriculacion')->group(function () {
     Route::delete('/delete/{id}/{carrera_id}/{year?}', [MatriculacionController::class, 'delete'])->name(
         'matriculacion.delete'
     );
-    Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
-        'matriculacion.checked'
-    );
+    Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name('matriculacion.checked');
     Route::get('finalizada', function () {
         return view('matriculacion.card_email_check');
     });
