@@ -340,23 +340,24 @@ class AlumnoMesaController extends Controller
 
         if ($instancia->tipo == 1) {
             if ($request['motivos']) {
-                //Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
+                foreach ($request['motivos'] as $motivo) {
+                    $inscripcion->motivo_baja = $inscripcion->motivo_baja . ' | ' . $motivo;
+                }
             } else {
                 $request['motivos'] = "Baja realizada por el alumno.";
             }
 
-            foreach ($request['motivos'] as $motivo) {
-                $inscripcion->motivo_baja = $inscripcion->motivo_baja . ' | ' . $motivo;
-            }
+
             $inscripcion->estado_baja = true;
             $inscripcion->update();
+            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
+
             $ruta = 'mesa.especial.inscriptos';
             $id = $inscripcion->materia_id;
         }
 
         if ($instancia->tipo == 0) {
             if ($request['motivos']) {
-                // Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
                 foreach ($request['motivos'] as $motivo) {
                     $inscripcion->motivo_baja = $inscripcion->motivo_baja . ' | ' . $motivo;
                 }
@@ -366,6 +367,8 @@ class AlumnoMesaController extends Controller
             }
             $inscripcion->estado_baja = true;
             $inscripcion->update();
+            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
+
             $ruta = 'mesa.inscriptos';
             $id = $inscripcion->materia_id;
         }
