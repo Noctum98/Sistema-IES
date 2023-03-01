@@ -232,6 +232,9 @@ class AlumnoMesaController extends Controller
                 Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
                 $mensaje = 'Ya estas inscripto correctamente, se ha enviado un comprobante a tu correo electrónico.';
             }
+
+            Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
+
             return redirect()->route('mesa.mate', [
                 'instancia_id' => $instancia->id
             ])->with([
@@ -292,7 +295,7 @@ class AlumnoMesaController extends Controller
                 } else {
                     $inscripcion->estado_baja = true;
 
-                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion,$instancia));
                 }
             } else {
                 if (time() > $inscripcion->mesa->cierre) {
@@ -301,11 +304,13 @@ class AlumnoMesaController extends Controller
                     ]);
                 } else {
                     $inscripcion->estado_baja = true;
-                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion,$instancia));
                 }
             }
         } else {
             $inscripcion->estado_baja = true;
+            Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion,$instancia));
+
         }
         if (Auth::user()) {
             $inscripcion->user_id = Auth::user()->id;

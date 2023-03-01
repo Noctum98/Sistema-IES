@@ -11,6 +11,10 @@ class BajaMesaMotivos extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $motivos;
+    public $instancia;
+    public $inscripcion;
+
     /**
      * Create a new message instance.
      *

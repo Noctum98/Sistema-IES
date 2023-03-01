@@ -67,26 +67,30 @@ class RepararCierresMesas extends Command
     public function handle()
     {
         $instancia_id = (int) $this->argument('instancia_id');
+        $llamado = 1;
 
         $mesas = Mesa::where('instancia_id', $instancia_id)->get();
 
         foreach ($mesas as $mesa) {
             
-            $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
-            $contador = 0;
-            while ($contador < 2) {
-                
-                if ($this->isHabil($inicio_fecha)) {
-                    $contador++;
+            if($llamado == 1){
+                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+                $contador = 0;
+                while ($contador < 2) {
+                    
+                    if ($this->isHabil($inicio_fecha)) {
+                        $contador++;
+                    }
+    
+                    if($contador != 2){
+                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                    }
                 }
-
-                if($contador != 2){
-                    $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
-                }
+                $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
+                $mesa->update();
+                Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre.' '.$mesa->fecha);
             }
-            $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
-            $mesa->update();
-            Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre.' '.$mesa->fecha);
+
         }
     }
 

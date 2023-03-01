@@ -80,16 +80,6 @@
 						{{date_format(new DateTime($inscripcion->created_at),'d-m-Y H:i:s')}}
 					</li>
 				</ul>
-				<p>Para bajarte de alguna mesa, ve al siguiente enlace</p>
-				<br>
-
-				@if($instancia->tipo == 0)
-				<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->mesa->materia->carrera->sede_id])}}" class="btn">Mis inscripciones</a>
-				@else
-				<a href="{{route('edit.mesa',['dni'=>$inscripcion->dni,'id'=>$instancia->id,'sede_id'=>$inscripcion->materia->carrera->sede_id])}}" class="btn">Mis inscripciones</a>
-
-				@endif
-
 			</div>
 		</div>
 	</div>
