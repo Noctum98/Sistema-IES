@@ -12,16 +12,14 @@
     <h2 class="h1 text-info">
         Inscripciones en {{$mesa->materia->nombre}}
     </h2>
-    @if(Session::has('admin'))
     @if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
         <span class="text-success font-weight-bold">
-            Abierta - Cierre Primero:{{ date("d-m-Y", $mesa->cierre)}} Cierre Segundo: {{ date("d-m-Y", $mesa->cierre_segundo)}}
+            Abierta - Cierre 1er llamado:{{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do: {{ date("d-m-Y", $mesa->cierre_segundo)}}
         </span>
     @else
         <span class="text-secondary font-weight-bold">
-            Cerrada - Cierre Primero:{{ date("d-m-Y", $mesa->cierre)}} Cierre Segundo: {{ date("d-m-Y", $mesa->cierre_segundo)}}
+            Cerrada - Cierre 1er llamado:{{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do: {{ date("d-m-Y", $mesa->cierre_segundo)}}
         </span>
-    @endif
     @endif
             <hr>
             @if(@session('baja_exitosa'))
