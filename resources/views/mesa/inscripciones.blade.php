@@ -15,11 +15,11 @@
     @if(Session::has('admin'))
     @if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
         <span class="text-success font-weight-bold">
-            Abierta - Cierre Primero:{{ date("d-m-Y", strtotime($mesa->cierre))}} Cierre Segundo: {{ date("d-m-Y", strtotime($mesa->cierre_segundo))}}
+            Abierta - Cierre Primero:{{ date("d-m-Y", $mesa->cierre)}} Cierre Segundo: {{ date("d-m-Y", $mesa->cierre_segundo)}}
         </span>
     @else
         <span class="text-secondary font-weight-bold">
-            Cerrada - Cierre Primero:{{ date("d-m-Y", strtotime($mesa->cierre))}} Cierre Segundo: {{ date("d-m-Y", strtotime($mesa->cierre_segundo))}}
+            Cerrada - Cierre Primero:{{ date("d-m-Y", $mesa->cierre)}} Cierre Segundo: {{ date("d-m-Y", $mesa->cierre_segundo)}}
         </span>
     @endif
     @endif
