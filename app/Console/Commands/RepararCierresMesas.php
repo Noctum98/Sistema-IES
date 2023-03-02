@@ -97,7 +97,7 @@ class RepararCierresMesas extends Command
                         $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
-                $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
+                $mesa->cierre_segundo = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
                 Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre_segundo.' '.$mesa->fecha_segundo);
             }
