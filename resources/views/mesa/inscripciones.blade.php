@@ -19,7 +19,7 @@
         </span>
     @else
         <span class="text-secondary font-weight-bold">
-            Cerrada
+            Cerrada - Cierre Primero:{{ date("d-m-Y", strtotime($mesa->cierre))}} Cierre Segundo: {{ date("d-m-Y", strtotime($mesa->cierre_segundo))}}
         </span>
     @endif
     @endif
