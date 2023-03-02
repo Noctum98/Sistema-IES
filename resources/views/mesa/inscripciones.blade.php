@@ -14,11 +14,11 @@
     </h2>
     @if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
         <span class="text-success font-weight-bold">
-            Abierta - Cierre 1er llamado:{{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do: {{ date("d-m-Y", $mesa->cierre_segundo)}}
+            Abierta - Cierre 1er llamado:{{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do llamado: {{ date("d-m-Y", $mesa->cierre_segundo)}}
         </span>
     @else
         <span class="text-secondary font-weight-bold">
-            Cerrada - Cierre 1er llamado:{{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do: {{ date("d-m-Y", $mesa->cierre_segundo)}}
+            Cerrada - Cierre 1er llamado:{{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do llamado: {{ date("d-m-Y", $mesa->cierre_segundo)}}
         </span>
     @endif
             <hr>
