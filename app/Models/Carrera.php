@@ -44,6 +44,18 @@ class Carrera extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
+    public function hasMaterias($año){
+        $materias = $this->materias->where('año',$año)->count();
+
+        if($materias > 0)
+        {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     public function obtenerInstanciasCarrera(int $instancia)
     {
      return   Carrera::select(

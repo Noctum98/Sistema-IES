@@ -37,6 +37,11 @@ class MatriculacionController extends Controller
         // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
     }
 
+    public function index(Request $request)
+    {
+        return view('matriculacion.index');
+    }
+
     public function create($carrera_id, $year, $timecheck = false)
     {
         $carrera = Carrera::find($carrera_id);

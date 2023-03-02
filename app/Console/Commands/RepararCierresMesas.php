@@ -17,7 +17,7 @@ class RepararCierresMesas extends Command
      *
      * @var string
      */
-    protected $signature = 'command:repararCierresMesas {instancia_id}';
+    protected $signature = 'command:repararCierresMesas {instancia_id} {llamado}';
 
     /**
      * The console command description.
@@ -41,11 +41,6 @@ class RepararCierresMesas extends Command
             '26-02-2023',
             '27-02-2023',
             '28-02-2023',
-            '01-03-2023',
-            '05-03-2023',
-            '06-03-2023',
-            '12-03-2023',
-            '13-03-2023',
             '09-07-2023',
             '15-08-2023',
             '25-08-2023',
@@ -67,7 +62,7 @@ class RepararCierresMesas extends Command
     public function handle()
     {
         $instancia_id = (int) $this->argument('instancia_id');
-        $llamado = 1;
+        $llamado = (int) $this->argument('llamado');
 
         $mesas = Mesa::where('instancia_id', $instancia_id)->get();
 
@@ -89,6 +84,22 @@ class RepararCierresMesas extends Command
                 $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
                 Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre.' '.$mesa->fecha);
+            }else{
+                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha_segundo.'-1 day'));
+                $contador = 0;
+                while ($contador < 2) {
+                    
+                    if ($this->isHabil($inicio_fecha)) {
+                        $contador++;
+                    }
+    
+                    if($contador != 2){
+                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                    }
+                }
+                $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
+                $mesa->update();
+                Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre_segundo.' '.$mesa->fecha_segundo);
             }
 
         }
