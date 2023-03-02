@@ -15,7 +15,7 @@
     @if(Session::has('admin'))
     @if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
         <span class="text-success font-weight-bold">
-            Abierta
+            Abierta - Cierre Primero:{{ date("d-m-Y", strtotime($mesa->cierre))}} Cierre Segundo: {{ date("d-m-Y", strtotime($mesa->cierre_segundo))}}
         </span>
     @else
         <span class="text-secondary font-weight-bold">

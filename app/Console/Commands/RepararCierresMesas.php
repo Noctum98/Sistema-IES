@@ -70,6 +70,7 @@ class RepararCierresMesas extends Command
             
             if($llamado == 1){
                 $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+
                 $contador = 0;
                 while ($contador < 2) {
                     
@@ -129,6 +130,7 @@ class RepararCierresMesas extends Command
             case 'vespertino':
                 $hora = $this::T_V;
         }
+        
         return $fecha . 'T' . $hora;
     }
 }
