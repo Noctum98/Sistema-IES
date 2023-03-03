@@ -14,9 +14,6 @@ class AddCicloLectivoCalificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::table('calificaciones', function (Blueprint $table) {
-            $table->integer('ciclo_lectivo')->unsigned()->nullable();
-        });
         DB::statement('UPDATE calificaciones SET ciclo_lectivo = 2022');
 
     }
