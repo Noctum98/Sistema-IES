@@ -12,7 +12,8 @@ class AlumnoCarrera extends Model
     protected $fillable = [
         'alumno_id',
         'carrera_id',
-        'año'
+        'año',
+        'ciclo_lectivo'
     ];
 
     public function getCarrera($alumno_id,$carrera_id)
