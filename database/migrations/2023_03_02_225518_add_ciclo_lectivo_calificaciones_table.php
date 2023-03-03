@@ -17,7 +17,8 @@ class AddCicloLectivoCalificacionesTable extends Migration
         Schema::table('calificaciones', function (Blueprint $table) {
             $table->integer('ciclo_lectivo')->unsigned()->nullable();
         });
-        DB::statement('UPDATE comisiones SET ciclo_lectivo = 2022');
+        DB::statement('UPDATE calificaciones SET ciclo_lectivo = 2022');
+
     }
 
     /**
