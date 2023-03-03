@@ -132,6 +132,10 @@ class CalificacionController extends Controller
             $mensaje = ['calificacion_fallo' => 'Ya existe un trabajo integrador final en esta materia'];
         } else {
             $calificacion = Calificacion::create($request->all());
+            $year = substr($calificacion->fecha, 0, 4) ;
+
+            $calificacion->ciclo_lectivo = $year;
+            $calificacion->update();
             $mensaje = ['calificacion_creada' => 'Calificación creada!'];
         }
 
