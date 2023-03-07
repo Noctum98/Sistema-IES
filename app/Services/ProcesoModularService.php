@@ -17,20 +17,23 @@ class ProcesoModularService
     /**
      * Mirando👆 Módulos sería Acreditación Directa si
      *  [X] Asistencia Módulo > 75%,
-     *  [X] Proceso >60%,
-     *  [X] Promedio >78% y
-     *  [X] TFI >78%
+     *  [X] Proceso >60%, nota >= 4
+     *  [X] Promedio >78%, nota >= 7
+     *  [X] TFI >78%, nota >= 7
      * Regular si
      *  [X] Asistencia Módulo >= 60
      *  [X] PP 100%,
-     *  [X] Promedio Proceso >= 60,
+     *  [X] Promedio Proceso >= 60, nota > 4
      *  [X] Asistencia por cargo >= 40
-     *  [X] TFI >= 60
+     *  [X] TFI >= 60, nota >=4
      */
     const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
     const PROCESO_ACCREDITATION_DIRECTA = 60;
+    const NOTA_PROCESO_ACCREDITATION_DIRECTA = 4;
     const PROMEDIO_ACCREDITATION_DIRECTA = 78;
+    const NOTA_PROMEDIO_ACCREDITATION_DIRECTA = 7;
     const TFI_ACCREDITATION_DIRECTA = 78;
+    const NOTA_TFI_ACCREDITATION_DIRECTA = 7;
 
     const ASISTENCIA_MIN_REGULAR = 60;
     const ASISTENCIA_MAX_REGULAR = 75;
@@ -39,13 +42,18 @@ class ProcesoModularService
 
 
     const PROMEDIO_MIN_REGULAR = 60;
+    const NOTA_PROMEDIO_MIN_REGULAR = 4;
     const PROMEDIO_MAX_REGULAR = 78;
+    const NOTA_PROMEDIO_MAX_REGULAR = 7;
     const TFI_MIN_REGULAR = 60;
+    const NOTA_TFI_MIN_REGULAR = 4;
     const TFI_MAX_REGULAR = 78;
+    const NOTA_TFI_MAX_REGULAR = 4;
 
     const PERCENT_RAI = 70;
 
     const PERCENT_APROBADO = 60;
+    const NOTA_PERCENT_APROBADO = 4;
     /**
      * @var CalificacionService
      */
@@ -67,17 +75,18 @@ class ProcesoModularService
 //    }
 
     /**
+     * Asocia los procesos son procesos modulares
+     *
      * @param $materia_id <b>id</b> materia
      * @return void
      */
     public function crearProcesoModular(int $materia_id)
     {
         $pm_sin_vincular = $this->obtenerProcesosModularesNoVinculados($materia_id);
-        $inicio = 0;
         foreach ($pm_sin_vincular as $pm) {
             $data['proceso_id'] = $pm->id;
+            $data['ciclo_lectivo'] = $pm->ciclo_lectivo;
             ProcesoModular::create($data);
-            $inicio += 1;
         }
 
     }
@@ -107,12 +116,13 @@ class ProcesoModularService
      * @param $materia_id <b>id</b> de la materia
      * @return mixed
      */
-    public function obtenerProcesosModularesByMateria($materia_id)
+    public function obtenerProcesosModularesByMateriaAndCicloLectivo($materia_id, $ciclo_lectivo)
     {
         return ProcesoModular::select('proceso_modular.*')
             ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
+            ->andWhere('procesos.ciclo_lectivo', $ciclo_lectivo)
             ->orderBy('alumnos.apellidos', 'asc')
             ->get();
     }
@@ -139,7 +149,7 @@ class ProcesoModularService
      * @param Materia $materia
      * @return int
      */
-    public function cargarPonderacionEnProcesoModular(Materia $materia): int
+    public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo): int
     {
         $this->crearProcesoModular($materia->id);
 
@@ -150,9 +160,10 @@ class ProcesoModularService
         $cant = 0;
         $cargos = $this->obtenerCargosPorModulo($materia);
         $promedio_final_p = 0;
-        $procesos = $this->obtenerProcesosModularesByMateria($materia->id);
+        $nota_final_p = 0;
+        $procesos = $this->obtenerProcesosModularesByMateriaAndCicloLectivo($materia->id, $ciclo_lectivo);
         foreach ($procesos as $proceso) {
-            $promedio_final_p = 0;
+            $nota_final_p = 0;
             /** @var Cargo $cargo */
             foreach ($cargos as $cargo) {
                 /** @var ProcesoModular $proceso */
@@ -186,7 +197,7 @@ class ProcesoModularService
                         $cargo->id,
                         CalificacionService::TIPO_TFI
                     )->first();
-                    if($tfp) {
+                    if ($tfp) {
                         $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
                         $proceso->trabajo_final_nota = $tfp->nota;
                     }
@@ -409,17 +420,19 @@ class ProcesoModularService
      */
     public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje = null): bool
     {
-        if(!$trabajo_final_porcentaje){
+        if (!$trabajo_final_porcentaje) {
             return false;
         }
+
         return $trabajo_final_porcentaje >= $porcentaje_max;
     }
 
     public function getActividadesAprobadosBool(int $porcentaje_para_aprobar, float $porcentaje_obtenido = null): bool
     {
-        if(!$porcentaje_obtenido){
+        if (!$porcentaje_obtenido) {
             return false;
         }
+
         return $porcentaje_para_aprobar >= $porcentaje_obtenido;
     }
 
@@ -499,6 +512,7 @@ class ProcesoModularService
         $cant_tp = 0;
         $total_p = 0;
         $total_tp = 0;
+
         $parciales = $pCS->
         obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
             $proceso,
@@ -541,7 +555,7 @@ class ProcesoModularService
     {
         $pCS = new ProcesoCalificacionService();
         $total_aprobados = 0;
-        $porcentaje_aprobado= 0;
+        $porcentaje_aprobado = 0;
         $calificacionService = new CalificacionService();
         $total_parciales = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
             $materia,
@@ -582,21 +596,21 @@ class ProcesoModularService
             }
             $total_p = max($pp, $ppr);
 
-            if($total_p >= self::PERCENT_APROBADO ){
-                $total_aprobados ++;
+            if ($total_p >= self::PERCENT_APROBADO) {
+                $total_aprobados++;
             }
         }
 
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
 
-            if($total_tp >= self::PERCENT_APROBADO){
-                $total_aprobados ++;
+            if ($total_tp >= self::PERCENT_APROBADO) {
+                $total_aprobados++;
             }
 
         }
 
-        if($total_actividades > 0){
+        if ($total_actividades > 0) {
             $porcentaje_aprobado = $total_aprobados * 100 / $total_actividades;
         }
 

@@ -158,6 +158,14 @@ class CalificacionService
 
     //// Calificaciones por materia, cargo y tipo
 
+    /**
+     * Obtengo una calificación específica
+     *
+     * @param $materia_id
+     * @param $cargo_id
+     * @param $tipo_id
+     * @return mixed
+     */
     public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id)
     {
         return Calificacion::select('calificaciones.*')
