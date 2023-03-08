@@ -149,11 +149,11 @@ class MatriculacionController extends Controller
         } else {
             $carrera = Carrera::find($carrera_id);
 
-
             AlumnoCarrera::create([
                 'alumno_id' => $alumno->id,
                 'carrera_id' => $carrera->id,
-                'año'   => $año
+                'año'   => $año,
+                'ciclo_lectivo' => date('Y')
             ]);
 
             if (isset($request['materias'])) {
