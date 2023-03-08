@@ -2,7 +2,7 @@
 @section('content')
 <div class="container col-md-8">
     <h2 class="h1 mb-4 text-info">
-        Matriculación a {{ $carrera->sede->nombre }} - {{ $carrera->nombre }}: {{ ucwords($carrera->turno) }}
+        Inscripción a {{ $carrera->sede->nombre }} - {{ $carrera->nombre }}: {{ ucwords($carrera->turno) }}
     </h2>
     @if(@session('alumno_deleted'))
 		<div class="alert alert-warning">
@@ -34,6 +34,7 @@
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
+
         <input type="submit" value="Matricularme" class="btn btn-primary mt-3 col-md-12">
     </form>
     @else

@@ -1,6 +1,7 @@
 <div class="card mt-3">
     <h5 class="card-header text-secondary">INFORMACIÓN DISCAPACIDAD</h5>
     <div class="card-body">
+        
         <h5 class="card-title text-secondary">Los datos que se solicitan están destinados a establecer mecanismos de acompañamiento y seguimiento Institucional. </h5>
 
         <div class="mt-4 row">
@@ -134,6 +135,8 @@
                 </div>
             </div>
             @endif
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe7N0_2Cvr-itraS9o5b5FC7nMnroZIxIbi2vKiIBCPZzN6XA/viewform?embedded=true" width="640" height="2173" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+
         </div>
 
     </div>
