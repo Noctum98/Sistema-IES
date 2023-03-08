@@ -13,7 +13,7 @@ class ProcesoCalificacionService
     /**
      * Calcula la nota desde un porcentaje dado
      * @param int $porcentaje
-     * @return int
+     * @return int nota
      */
     public function calculoPorcentajeNota(int $porcentaje): int
     {

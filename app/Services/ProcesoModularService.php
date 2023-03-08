@@ -204,9 +204,9 @@ class ProcesoModularService
                 }
             }
 
-            $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
+            $proceso->nota_final_porcentaje = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
             $proceso->nota_final_nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
-                $proceso->nota_final_porcentaje
+                $proceso->nota_final_nota
             );
 
 //            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
@@ -290,11 +290,11 @@ class ProcesoModularService
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
             and
-            $this->getCalificacionModularBoolean(self::PROCESO_ACCREDITATION_DIRECTA, $proceso)
+            $this->getCalificacionModularBoolean(self::NOTA_PROCESO_ACCREDITATION_DIRECTA, $proceso)
             and
-            $this->getPromedioModularBoolean(self::PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_porcentaje)
+            $this->getPromedioModularBoolean(self::NOTA_PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_nota)
             and
-            $this->getTFIModularBoolean(self::TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_porcentaje)
+            $this->getTFIModularBoolean(self::NOTA_TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_nota)
             and
             $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
         );
@@ -313,9 +313,9 @@ class ProcesoModularService
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
             and
-            $this->getCalificacionModularBoolean(self::PROMEDIO_MIN_REGULAR, $proceso)
+            $this->getCalificacionModularBoolean(self::NOTA_PROMEDIO_MIN_REGULAR, $proceso)
             and
-            $this->getTFIModularBoolean(self::TFI_MIN_REGULAR, $pm->promedio_final_porcentaje)
+            $this->getTFIModularBoolean(self::NOTA_TFI_MIN_REGULAR, $pm->promedio_final_nota)
             and
             $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
         );
@@ -375,7 +375,7 @@ class ProcesoModularService
      * @param Proceso $proceso
      * @return bool
      */
-    public function getCalificacionModularBoolean(int $porcentaje, Proceso $proceso): bool
+    public function getCalificacionModularBoolean(int $nota, Proceso $proceso): bool
     {
         $serviceCargo = new CargoService();
         $materia_id = $proceso->materia()->first()->id;
@@ -391,7 +391,7 @@ class ProcesoModularService
 //                )) {
 //                return false;
 //            }
-            if ($porcentaje > $this->processProceso(
+            if ($nota > $this->processProceso(
                     $proceso_id,
                     $materia_id,
                     $cargo->id
@@ -404,36 +404,41 @@ class ProcesoModularService
     }
 
     /**
-     * @param int $porcentaje_max
-     * @param float $promedio_final
+     * @param int $nota_max
+     * @param float $nota_final
      * @return bool
      */
-    public function getPromedioModularBoolean(int $porcentaje_max, float $promedio_final): bool
+    public function getPromedioModularBoolean(int $nota_max, float $nota_final): bool
     {
-        return $promedio_final >= self::PROMEDIO_ACCREDITATION_DIRECTA;
+        return $nota_final >= self::NOTA_PROMEDIO_ACCREDITATION_DIRECTA;
     }
 
     /**
-     * @param int $porcentaje_max
-     * @param int|null $trabajo_final_porcentaje
+     * @param int $nota_max
+     * @param int|null $trabajo_final_nota
      * @return bool
      */
-    public function getTFIModularBoolean(int $porcentaje_max, int $trabajo_final_porcentaje = null): bool
+    public function getTFIModularBoolean(int $nota_max, int $trabajo_final_nota = null): bool
     {
-        if (!$trabajo_final_porcentaje) {
+        if (!$trabajo_final_nota) {
             return false;
         }
 
-        return $trabajo_final_porcentaje >= $porcentaje_max;
+        return $trabajo_final_nota >= $nota_max;
     }
 
-    public function getActividadesAprobadosBool(int $porcentaje_para_aprobar, float $porcentaje_obtenido = null): bool
+    /**
+     * @param int $nota_para_aprobar
+     * @param float|null $nota_obtenida
+     * @return bool
+     */
+    public function getActividadesAprobadosBool(int $nota_para_aprobar, float $nota_obtenida = null): bool
     {
-        if (!$porcentaje_obtenido) {
+        if (!$nota_obtenida) {
             return false;
         }
 
-        return $porcentaje_para_aprobar >= $porcentaje_obtenido;
+        return $nota_para_aprobar >= $nota_obtenida;
     }
 
     /**
@@ -531,11 +536,11 @@ class ProcesoModularService
         foreach ($parciales as $parcial) {
             $pp = 0;
             $ppr = 0;
-            if (is_numeric($parcial->porcentaje)) {
-                $pp = $parcial->porcentaje;
+            if (is_numeric($parcial->nota)) {
+                $pp = $parcial->nota;
             }
-            if (is_numeric($parcial->porcentaje_recuperatorio)) {
-                $ppr = $parcial->porcentaje_recuperatorio;
+            if (is_numeric($parcial->nota_recuperatorio)) {
+                $ppr = $parcial->nota_recuperatorio;
             }
 
             $total_p += max($pp, $ppr);
@@ -588,15 +593,15 @@ class ProcesoModularService
         foreach ($parciales as $parcial) {
             $pp = 0;
             $ppr = 0;
-            if (is_numeric($parcial->porcentaje)) {
-                $pp = $parcial->porcentaje;
+            if (is_numeric($parcial->nota)) {
+                $pp = $parcial->nota;
             }
-            if (is_numeric($parcial->porcentaje_recuperatorio)) {
-                $ppr = $parcial->porcentaje_recuperatorio;
+            if (is_numeric($parcial->nota_recuperatorio)) {
+                $ppr = $parcial->nota_recuperatorio;
             }
             $total_p = max($pp, $ppr);
 
-            if ($total_p >= self::PERCENT_APROBADO) {
+            if ($total_p >= self::NOTA_PERCENT_APROBADO) {
                 $total_aprobados++;
             }
         }
@@ -604,7 +609,7 @@ class ProcesoModularService
         foreach ($tps as $tp) {
             $total_tp = max($tp, 0);
 
-            if ($total_tp >= self::PERCENT_APROBADO) {
+            if ($total_tp >= self::NOTA_PERCENT_APROBADO) {
                 $total_aprobados++;
             }
 
