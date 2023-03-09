@@ -241,6 +241,22 @@ class UserController extends Controller
         ]);
     }
 
+    public function activarDesactivar(Request $request,$id)
+    {
+        $user = User::find($id);
+
+        if($user->activo)
+        {
+            $user->activo = false;
+        }else{
+            $user->activo = true;
+        }
+
+        $user->update();
+
+        return response()->json($user,200);
+    }
+
     public function cambiar_contra(Request $request)
     {
         $user = Auth::user();

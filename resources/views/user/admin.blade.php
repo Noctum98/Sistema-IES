@@ -43,12 +43,22 @@
                         <a href="{{ route('usuarios.detalle',$user->id) }}">{{ $user->nombre.' '.$user->apellido }}</a>
                     </td>
                     <td>
+                        <!---
                         <form action="{{ route('usuario.eliminar',$user->id) }}" method="POST" class="d-inline">
                             {{ method_field('DELETE') }}
                             <button type="submit" class="ml-2 btn btn-sm btn-danger">
                                 Eliminar
                             </button>
                         </form>
+                        -->
+                        <button class="ml-2 btn btn-sm btn-danger {{ !$user->activo ? 'd-none' : '' }} desactivar" id="desactivar-{{$user->id}}">
+                            Desactivar 
+                        </button>
+
+                        <button class="ml-2 btn btn-sm btn-success {{ $user->activo == 1 ? 'd-none' : '' }} activar" id="activar-{{$user->id}}">
+                            Activar 
+                        </button>
+
                         <button class="ml-2 btn btn-sm btn-primary btn-password" id="{{$user->id}}">
                             Reestablecer Contraseña 
                         </button>
@@ -67,4 +77,6 @@
 
 @section('scripts')
 <script src="{{ asset('js/user/carreras.js') }}"></script>
+<script src="{{ asset('js/user/activar.js') }}"></script>
+
 @endsection
