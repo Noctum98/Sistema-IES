@@ -20,8 +20,12 @@ class CalificacionController extends Controller
         $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos');
     }
 
-    public function home()
+    public function home($ciclo_lectivo =  null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
         $user = User::find(Auth::user()->id);
         // dd($user_id);
         $materias = $user->materias;
@@ -35,11 +39,16 @@ class CalificacionController extends Controller
             }
         }
         $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
+        $last = '2022';
+        $now = date('Y');
 
         return view('calificacion.home', [
             'materias' => $materias,
             'cargos' => $cargos,
             'ruta' => $ruta,
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'last' =>$last,
+            'ahora' =>$now,
         ]);
     }
 

@@ -505,7 +505,7 @@ Route::delete('deleteMateria/{cargo_id}', [CargoController::class, 'deleteModulo
 Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 
 Route::prefix('calificacion')->group(function () {
-    Route::get('home', [CalificacionController::class, 'home'])->name('calificacion.home');
+    Route::get('home/{ciclo_lectivo?}', [CalificacionController::class, 'home'])->name('calificacion.home');
     Route::get('admin/{materia_id}/{cargo_id?}', [CalificacionController::class, 'admin'])->name('calificacion.admin');
     Route::get('create/{id}', [CalificacionController::class, 'create'])->name('calificacion.create');
 

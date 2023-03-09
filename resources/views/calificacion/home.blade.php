@@ -1,9 +1,28 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h3 class="text-info">
-            Planilla de Calificaciones: Elige la materia
-        </h3>
+        <div class="row">
+            <div class="col-8">
+                <h4 class="text-info">
+                    Planilla de Calificaciones<br/>
+                    <small> Seleccione materia/cargo {{$ciclo_lectivo}}</small>
+
+                </h4>
+            </div>
+            <div class="col-4">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1" data-bs-toggle="dropdown">
+                        Ciclo lectivo
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $ahora; $i >= $last; $i--)
+                            <li>  <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('calificacion.home', ['ciclo_lectivo'=> $i])}}">{{$i}}</a></li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+
+        </div>
         <hr>
         @if(count($materias) > 0)
             <h5 class="text-secondary">Materias</h5>
@@ -32,4 +51,5 @@
             @endif
         
     </div>
+
 @endsection
