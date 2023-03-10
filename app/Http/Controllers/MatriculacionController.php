@@ -46,12 +46,30 @@ class MatriculacionController extends Controller
     {
         $carrera = Carrera::find($carrera_id);
         $email_checked = $timecheck;
+        $check_year = false;
+
+        if($year == 2 || $year == 3)
+        {
+            if(Auth::user())
+            {
+                $check_year = true;
+            }
+        }else{
+            $check_year = true;
+        }
         
-        return view('matriculacion.create', [
-            'carrera' => $carrera,
-            'año' => $year,
-            'email_checked' => $email_checked
-        ]);
+        if($check_year)
+        {
+            return view('matriculacion.create', [
+                'carrera' => $carrera,
+                'año' => $year,
+                'email_checked' => $email_checked
+            ]);
+        }else{
+            return redirect('/');
+        }
+
+
     }
 
     public function edit($alumno_id, $carrera_id, $año = null)
