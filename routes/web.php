@@ -139,6 +139,7 @@ Route::prefix('usuarios')->group(function () {
         'crear_usuario_alumno'
     );
     Route::get('reestablecer_password/{id}',[UserController::class,'regenerar_contra']);
+    Route::get('activarDesactivar/{id}',[UserController::class,'activarDesactivar']);
 });
 
 Route::prefix('usuario_materia')->group(function () {
@@ -497,6 +498,7 @@ Route::post('agregarModulo', [CargoController::class, 'agregarModulo'])->name('c
 Route::post('agregarUser', [CargoController::class, 'agregarUser'])->name('cargo.agregarUser');
 Route::delete('deleteUser/{cargo_id}', [CargoController::class, 'deleteUser'])->name('cargo.delUser');
 Route::delete('deleteMateria/{cargo_id}', [CargoController::class, 'deleteModulo'])->name('cargo.delMateria');
+
 
 
 /**

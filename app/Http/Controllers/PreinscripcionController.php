@@ -296,7 +296,7 @@ class PreinscripcionController extends Controller
                 return redirect()->route('alumno.pre', [
                     'id' => $carrera_id
                 ])->with([
-                    'error_carrera' => 'Ya estas inscripto en esta carrera.'
+                    'error_carrera' => 'Ya estas inscripto a la carrera '.$carrera->nombre.' - '.$carrera->sede->nombre
                 ]);
             }
         }
