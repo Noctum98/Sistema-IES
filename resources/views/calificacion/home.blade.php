@@ -5,7 +5,7 @@
             <div class="col-8">
                 <h4 class="text-info">
                     Planilla de Calificaciones<br/>
-                    <small> Seleccione materia/cargo {{$ciclo_lectivo}}</small>
+                    <small>Por favor seleccione materia/cargo {{$ciclo_lectivo}}</small>
 
                 </h4>
             </div>
@@ -28,7 +28,7 @@
             <h5 class="text-secondary">Materias</h5>
             @foreach($materias as $materia)
                 @if($materia)
-                    <a type="button" href="{{ route($ruta,['materia_id'=>$materia->id]) }}"
+                    <a type="button" href="{{ route($ruta,['materia_id'=>$materia->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
                        class="list-group-item list-group-item-action border-top mt-2 text-primary"
                        title="Ver calificaciones"
                     >

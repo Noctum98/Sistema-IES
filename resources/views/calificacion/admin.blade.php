@@ -1,15 +1,46 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h4 class="text-dark">
-            Calificaciones <br/>
-            Carrera: <i>{{$materia->carrera->nombre}}, {{$materia->carrera->sede->nombre}}, Turno: {{$materia->carrera->turno}}</i><br/>
-            Materia: <i>{{ $materia->nombre }}</i>
-        </h4>
+        <div class="row">
+            <div class="col-8">
+                <h6 class="text-dark">
+                    Calificaciones
+                </h6>
+                <h4>
+                    <small>Carrera:</small> <i>{{$materia->carrera->nombre}}, {{$materia->carrera->sede->nombre}}<br/>
+                    <small>Turno:</small> {{$materia->carrera->turno}}</i><br/>
+                    <small>Materia:</small> <i>{{ $materia->nombre }}</i>
+                </h4>
+            </div>
+            <div class="col-4">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $ahora; $i >= $last; $i--)
+                            <li>
+                                @if(isset($cargo))
+                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                       href="{{route('calificacion.admin', ['materia_id'=>$materia->id,'ciclo_lectivo' =>$i,'cargo_id'=>$cargo->id])}}">{{$i}}</a>
+                                @else
+                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                       href="{{route('calificacion.admin', ['materia_id'=>$materia->id,'ciclo_lectivo'=> $i])}}">{{$i}}</a>
+                                @endif
+                            </li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12">
 
-        @if(isset($cargo))
-            Cargo: <i> {{ $cargo->nombre }}</i>
-        @endif
+                @if(isset($cargo))
+                    Cargo: <b><i> {{ $cargo->nombre }}</i></b>
+                @endif
+                Ciclo lectivo: <b><i>{{$ciclo_lectivo}}</i></b>
+            </div>
+        </div>
         <hr>
         @if(Session::has('profesor'))
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearCalificacion">
@@ -21,12 +52,13 @@
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
                         @if($cargo)
-                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, 'comision_id' => $comision->id]) }}" class="btn btn-info">
-                                Ver Planilla de Calificaciones / {{$cargo->nombre}}  / {{$comision->nombre}}
+                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, 'comision_id' => $comision->id]) }}"
+                               class="btn btn-info">
+                                Ver Planilla de Calificaciones / {{$cargo->nombre}} / {{$comision->nombre}}
                             </a>
                         @else
-                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
-                           class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
+                            <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                               class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                         @endif
                     @elseif(Session::has('coordinador') || Session::has('seccionAlumnos'))
                         <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
@@ -35,11 +67,13 @@
                 @endforeach
             @else
                 @if($cargo && $materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2')
-                    
-                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}" class="btn btn-info">
+
+                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                       class="btn btn-info">
                         Ver Planilla de Calificaciones {{$cargo->nombre}}
                     </a>
-                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}" class="btn btn-secondary">
+                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
+                       class="btn btn-secondary">
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
                 @else

@@ -14,15 +14,18 @@ use Illuminate\Support\Facades\Auth;
 
 class CalificacionController extends Controller
 {
+
+    const CICLO_LECTIVO_INICIAL = 2022;
+
     public function __construct()
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos');
     }
 
-    public function home($ciclo_lectivo =  null)
+    public function home($ciclo_lectivo = null)
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -33,33 +36,33 @@ class CalificacionController extends Controller
         $ruta = 'calificacion.admin';
 
         $cargos_materia = [];
-        if(count($user->cargo_materia()->get()) > 0){
-            foreach($user->cargo_materia()->get() as $cargo_materia){
+        if (count($user->cargo_materia()->get()) > 0) {
+            foreach ($user->cargo_materia()->get() as $cargo_materia) {
                 $cargos_materia[] = $cargo_materia->cargo->id;
             }
         }
-        $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
-        $last = '2022';
-        $now = date('Y');
+        $cargos = $user->cargos->whereNotIn('id', $cargos_materia);
+        list($last, $ahora) = $this->getLastNow();
 
         return view('calificacion.home', [
             'materias' => $materias,
             'cargos' => $cargos,
             'ruta' => $ruta,
             'ciclo_lectivo' => $ciclo_lectivo,
-            'last' =>$last,
-            'ahora' =>$now,
+            'last' => $last,
+            'ahora' => $ahora,
         ]);
     }
 
-    public function admin($materia_id, $cargo_id = null)
+    public function admin($materia_id, $ciclo_lectivo, $cargo_id = null)
     {
         $materia = Materia::find($materia_id);
 
 
         $user = Auth::user();
         $calificaciones = Calificacion::select()
-            ->where('materia_id', $materia->id);
+            ->where('materia_id', $materia->id)
+            ->where('ciclo_lectivo', $ciclo_lectivo);
         if ($cargo_id) {
             $cargo = Cargo::select('nombre', 'id')->where('id', $cargo_id)->first();
             if ($cargo) {
@@ -79,15 +82,17 @@ class CalificacionController extends Controller
             $tiposCalificaciones = TipoCalificacion::where('descripcion', '!=', 3)->get();
         }
 
-
         $calificaciones = $calificaciones->orderBy('tipo_id')->get();
 
-
+        list($last, $ahora) = $this->getLastNow();
         return view('calificacion.admin', [
             'materia' => $materia,
             'tiposCalificaciones' => $tiposCalificaciones,
             'calificaciones' => $calificaciones,
             'cargo' => $cargo ?? null,
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'last'=>$last,
+            'ahora'=>$ahora
         ]);
     }
 
@@ -126,6 +131,8 @@ class CalificacionController extends Controller
             'fecha' => ['required'],
         ]);
 
+        $ciclo_lectivo = substr($request['fecha'], 0, 4,);
+
         if ($request['comision_id'] && !Auth::user()->hasComision($request['comision_id'])) {
             $mensaje = ['error_comision' => 'No tienes permiso para trabajar en esta comisión'];
 
@@ -141,15 +148,14 @@ class CalificacionController extends Controller
             $mensaje = ['calificacion_fallo' => 'Ya existe un trabajo integrador final en esta materia'];
         } else {
             $calificacion = Calificacion::create($request->all());
-            $year = substr($calificacion->fecha, 0, 4) ;
-
-            $calificacion->ciclo_lectivo = $year;
+            $calificacion->ciclo_lectivo = $ciclo_lectivo;
             $calificacion->update();
             $mensaje = ['calificacion_creada' => 'Calificación creada!'];
         }
 
         return redirect()->route('calificacion.admin', [
             'materia_id' => $request['materia_id'],
+            'ciclo_lectivo' => $ciclo_lectivo,
             'cargo_id' => $request['cargo_id'],
         ])->with($mensaje);
     }
@@ -176,6 +182,7 @@ class CalificacionController extends Controller
             'tipo_id' => ['required'],
             'fecha' => ['required'],
         ]);
+        $ciclo_lectivo = substr($request['fecha'], 0, 4,);
 
         if ($calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) {
             $mensaje = ['error_comision' => 'No tienes permiso para trabajar en esta comisión'];
@@ -183,17 +190,17 @@ class CalificacionController extends Controller
             return redirect()->route('calificacion.admin', [
                 'materia_id' => $calificacion->materia_id,
                 'cargo_id' => $calificacion->cargo_id,
+                'ciclo_lectivo' => $ciclo_lectivo
             ])->with($mensaje);
         }
-
 
         $calificacion->update($request->all());
         $mensaje = ['calificacion_creada' => '¡Calificación actualizada!'];
 
-
         return redirect()->route('calificacion.admin', [
             'materia_id' => $request['materia_id'],
             'cargo_id' => $request['cargo_id'],
+            'ciclo_lectivo' => $ciclo_lectivo
         ])->with($mensaje);
     }
 
@@ -202,12 +209,11 @@ class CalificacionController extends Controller
         $calificacion = Calificacion::find($id);
 
         ProcesoCalificacion::where('calificacion_id', $calificacion->id)->delete();
-
         $calificacion->delete();
-
-        return redirect()->route('calificacion.admin', [
-            'materia_id' => $calificacion->materia_id,
-        ])->with('calificacion_eliminada', 'La calificación ha sido eliminada');
+        return redirect()->back();
+//        route('calificacion.admin', [
+//            'materia_id' => $calificacion->materia_id,
+//        ])->with('calificacion_eliminada', 'La calificación ha sido eliminada');
     }
 
     /**
@@ -220,7 +226,7 @@ class CalificacionController extends Controller
         $tipoCalificacion = TipoCalificacion::select('tipo_calificaciones.*')
             ->where('tipo_calificaciones.id', $request['tipo_id'])
             ->first();
-        if($tipoCalificacion->descripcion == 3) {
+        if ($tipoCalificacion->descripcion == 3) {
             $calificacionFinal = Calificacion::select('calificaciones.*')
                 ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
                 ->where('calificaciones.materia_id', $request['materia_id'])
@@ -234,5 +240,16 @@ class CalificacionController extends Controller
 
         return false;
 
+    }
+
+    /**
+     * @return array
+     */
+    protected function getLastNow(): array
+    {
+        $last = self::CICLO_LECTIVO_INICIAL;
+        $ahora = date('Y');
+
+        return array($last, $ahora);
     }
 }

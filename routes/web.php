@@ -508,7 +508,7 @@ Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 
 Route::prefix('calificacion')->group(function () {
     Route::get('home/{ciclo_lectivo?}', [CalificacionController::class, 'home'])->name('calificacion.home');
-    Route::get('admin/{materia_id}/{cargo_id?}', [CalificacionController::class, 'admin'])->name('calificacion.admin');
+    Route::get('admin/{materia_id}/{ciclo_lectivo}/{cargo_id?}', [CalificacionController::class, 'admin'])->name('calificacion.admin');
     Route::get('create/{id}', [CalificacionController::class, 'create'])->name('calificacion.create');
 
     Route::post('/', [CalificacionController::class, 'store'])->name('calificacion.store');
