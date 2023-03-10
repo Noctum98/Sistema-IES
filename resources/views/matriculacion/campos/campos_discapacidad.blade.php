@@ -135,8 +135,6 @@
                 </div>
             </div>
             @endif
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe7N0_2Cvr-itraS9o5b5FC7nMnroZIxIbi2vKiIBCPZzN6XA/viewform?embedded=true" width="640" height="2173" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
-
         </div>
 
     </div>
