@@ -90,6 +90,16 @@
 						</select>
 					</div>
 					<div class="form-group">
+						<label for="link_inscripcion">Link de Inscripción:</label>
+						<input type="text" id="link_inscripcion" name="link_inscripcion" class="form-control @error('link_inscripcion') is-invalid @enderror" value="{{ $carrera->link_inscripcion }}">
+
+						@error('link_inscripcion')
+						<span class="invalid-feedback d-block" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+						@enderror
+					</div>
+					<div class="form-group">
 						<input type="submit" value="Editar carrera" class="btn btn-success">
 					</div>
 				</div>
@@ -194,6 +204,31 @@
 						</select>
 
 						@error('referente_p')
+						<span class="invalid-feedback d-block" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+						@enderror
+					</div>
+					<div class="form-group">
+						<label for="referente_s">Referente Social:</label>
+						<select id="referente_s" name="referente_s" class="form-control">
+							@if($carrera->referente_s == null || $carrera->referente_s == '')
+							<option value=''>Ninguno</option>
+							@endif
+							@foreach($personal as $persona)
+							@if($persona->id == $carrera->referente_s)
+							<option value="{{$persona->id}}" selected="selected">
+								{{$persona->nombres.' '.$persona->apellidos}}
+							</option>
+							@else
+							<option value="{{$persona->id}}">
+								{{$persona->nombres.' '.$persona->apellidos}}
+							</option>
+							@endif
+							@endforeach
+						</select>
+
+						@error('referente_s')
 						<span class="invalid-feedback d-block" role="alert">
 							<strong>{{ $message }}</strong>
 						</span>

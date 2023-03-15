@@ -34,7 +34,7 @@ class UserController extends Controller
     public function __construct(
         UserService $userService
     ) {
-        //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
+        $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
         $this->userService = $userService;
     }
 
@@ -239,6 +239,22 @@ class UserController extends Controller
         return redirect()->route('usuarios.admin')->with([
             'user_deleted' => 'El usuario eliminado exitosamente',
         ]);
+    }
+
+    public function activarDesactivar(Request $request,$id)
+    {
+        $user = User::find($id);
+
+        if($user->activo)
+        {
+            $user->activo = false;
+        }else{
+            $user->activo = true;
+        }
+
+        $user->update();
+
+        return response()->json($user,200);
     }
 
     public function cambiar_contra(Request $request)

@@ -14,8 +14,8 @@ class ProcesoService{
         foreach ($materias as $materia) {
             $data['materia_id'] = $materia;
             $data['estado'] = 'en curso';
+            $data['ciclo_lectivo'] = date('Y');
             Proceso::create($data);
         }
-
     }
 }
