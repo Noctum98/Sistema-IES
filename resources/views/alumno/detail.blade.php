@@ -36,7 +36,7 @@
 		<div class="row col-md-12">
 			<ul class="datos-generales col-md-6">
 				<li>
-                    <h2 class="text-info"><u>Datos Generales</u></h2>
+					<h2 class="text-info"><u>Datos Generales</u></h2>
 				</li>
 				<li><strong>Email:</strong> {{ $alumno->email ? : 'Sin Asignar' }}</li>
 				<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha ? : 'Sin Asignar' }}</li>
@@ -49,7 +49,7 @@
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
-                    <h2 class="text-info"><u>Datos Domicilio</u></h2>
+					<h2 class="text-info"><u>Datos Domicilio</u></h2>
 				</li>
 				<li><strong>Localidad:</strong> {{ $alumno->localidad ? : 'Sin Asignar' }}</li>
 				<li><strong>Calle: </strong> {{ $alumno->calle ? : 'Sin Asignar' }}</li>
@@ -62,7 +62,7 @@
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
-                    <h2 class="text-info"><u>Datos Personales</u></h2>
+					<h2 class="text-info"><u>Datos Personales</u></h2>
 				</li>
 				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil? :'Sin Asignar') }}</li>
 				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion? :'Sin Asignar') }}</li>
@@ -87,7 +87,7 @@
 
 			<ul class="datos-academicos col-md-6">
 				<li>
-                    <h2 class="text-info"><u>Datos de Inscripción</u></h2>
+					<h2 class="text-info"><u>Datos de Inscripción</u></h2>
 				</li>
 				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }} </li>
 				<li> <strong>Cohorte: </strong>{{ $alumno->cohorte?? 'No indicada'}} </li>
@@ -97,26 +97,26 @@
 					<br>
 					@if(count($alumno->carreras) > 0 )
 					@foreach($alumno->carreras as $carrera)
-                        _ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
-                        <br>
-                        Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
-                        <br>
+					_ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
+					<br>
+					Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
+					<br>
 
-                        <div class="row">
-                            @if(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin'))
-                                <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
-                                @include('alumno.modals.carreras_matriculacion')
+					<div class="row">
+						@if(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin'))
+						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
+						@include('alumno.modals.carreras_matriculacion')
 
-                                <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año</button>
-                                @include('alumno.modals.carreras_year')
-                            @endif
+						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año</button>
+						@include('alumno.modals.carreras_year')
+						@endif
 
-							
-                            @if(Session::has('regente') || Session::has('coordinador') || Session::has('admin'))
-                                <button class="btn btn-sm btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar</button>
-                                @include('alumno.modals.correo_eliminar')
-                            @endif
-                        </div>
+
+						@if(Session::has('regente') || Session::has('coordinador') || Session::has('admin'))
+						<button class="btn btn-sm btn-danger col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar</button>
+						@include('alumno.modals.correo_eliminar')
+						@endif
+					</div>
 					@endforeach
 					@endif
 				</li>
@@ -126,19 +126,39 @@
 		<div class="d-inline col-md-12">
 			@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
 
-				@if(!$alumno->user_id)
-				<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-2 mt-4 btn btn-sm btn-success">
-					Crear Usuario
-				</a>
-				@endif
-				@if(isset($carrera) && $carrera)
-				<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="col-md-2 ml-2 mr-2 mt-4 btn btn-sm btn-warning">
-					Corregir datos
-				</a>
-				@endif
+			@if(!$alumno->user_id)
+			<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-2 mt-4 btn btn-sm btn-success">
+				Crear Usuario
+			</a>
 			@endif
+			@if(isset($carrera) && $carrera)
+			<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="col-md-2 ml-2 mr-2 mt-4 btn btn-sm btn-warning">
+				Corregir datos
+			</a>
+			@endif
+			@endif
+			
 			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-primary"><i class="fas fa-download"></i> Descargar PDF</a>
+		
+			@if((Session::has('coordinador') || Session::has('admin')) && $alumno->user_id != null)
+			<button class="ml-2 mt-4 btn btn-sm btn-danger {{ !$alumno->user->activo ? 'd-none' : '' }} desactivar" id="desactivar-{{$alumno->user->id}}">
+				Desactivar
+			</button>
+
+			<button class="ml-2 mt-4 btn btn-sm btn-success {{ $alumno->user->activo == 1 ? 'd-none' : '' }} activar" id="activar-{{$alumno->user->id}}">
+				Activar
+			</button>
+
+			<button class="ml-2 mt-4 btn btn-sm btn-info btn-password" id="{{$alumno->user->id}}">
+				Reestablecer Contraseña
+			</button>
+			@endif
 		</div>
 	</div>
 </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/user/carreras.js') }}"></script>
+<script src="{{ asset('js/user/activar.js') }}"></script>
+
 @endsection
