@@ -61,7 +61,7 @@ class PreinscripcionController extends Controller
 
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [18, 1, 15, 2, 25, 37];
+        $carreras_abiertas = [];
 
         if (!in_array($carrera->id, $carreras_abiertas) && !Session::has('preinscripciones')) {
             $carrera = null;
