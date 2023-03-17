@@ -34,7 +34,7 @@ class UserController extends Controller
     public function __construct(
         UserService $userService
     ) {
-        //$this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
+        $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
         $this->userService = $userService;
     }
 

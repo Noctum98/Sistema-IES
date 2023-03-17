@@ -34,8 +34,9 @@
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
+        <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
 
-        <input type="submit" value="Matricularme" class="btn btn-primary mt-3 col-md-12">
+        <input type="submit" value="Matricularme" class="btn btn-primary col-md-12">
     </form>
     @else
         @include('matriculacion.check_email')

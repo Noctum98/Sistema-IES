@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Log;
 use ProcesoService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class MatriculacionController extends Controller
 {
     protected $procesoService;
@@ -30,8 +32,8 @@ class MatriculacionController extends Controller
     ) {
         $this->procesoService = $procesoService;
         $this->mailService = $mailService;
-        // $this->middleware('app.auth',['only'=>['create','edit']]);
-        // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit']]);
+        //$this->middleware('app.auth',['only'=>['create','edit','index']]);
+        // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit','index']]);
 
         // $this->middleware('app.auth',['only'=>['edit','update']]);
         // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
@@ -39,7 +41,18 @@ class MatriculacionController extends Controller
 
     public function index(Request $request)
     {
-        return view('matriculacion.index');
+        $user_id = Auth::user()->id;
+        
+        $carreras = Carrera::
+        whereHas('alumnos',function($query) use ($user_id){
+            $query->where('alumnos.user_id',$user_id);
+        })
+        ->with(['alumnos'=>function($query) use ($user_id){
+            $query->where('alumnos.user_id',$user_id);
+        },'sede'])->get();
+
+        
+        return view('matriculacion.index',['carreras'=>$carreras]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)
@@ -208,7 +221,7 @@ class MatriculacionController extends Controller
 
         $procesos = Proceso::where('alumno_id', $alumno->id)->get();
 
-        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno,$carrera,$request));
+        Mail::to($alumno->email)->queue(new MatriculacionDeleted($alumno,$carrera,$request));
 
         foreach ($procesos as $proceso) {
             if ($proceso->materia->carrera_id == $carrera->id) {

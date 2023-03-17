@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Carrera extends Model
 {
@@ -19,7 +20,8 @@ class Carrera extends Model
         'turno',
         'vacunas',
         'estado',
-        'tipo'
+        'tipo',
+        'link_inscripcion'
     ];
 
     public function sede(){
