@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarrerasRequest;
 use App\Models\Cargo;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -58,27 +59,9 @@ class CarreraController extends Controller
     }
 
     // Funcionalidades
-    public function crear(Request $request){
-        $validate = $this->validate($request,[
-            'sede_id'   =>  ['required','numeric'],
-            'turno'     =>  ['required','string'],
-            'nombre'    =>  ['required'],
-            'titulo'    =>  ['required'],
-            'años'      =>  ['required','numeric','max:4'],
-            'modalidad' =>  ['required','alpha'],
-            'vacunas'   =>  ['required','alpha']
-        ]);
+    public function crear(CarrerasRequest $request){
 
-        $carrera = new Carrera();
-        $carrera->sede_id = $request->input('sede_id');
-        $carrera->nombre = $request->input('nombre');
-        $carrera->titulo = $request->input('titulo');
-        $carrera->años = $request->input('años');
-        $carrera->modalidad = $request->input('modalidad');
-        $carrera->resolucion = $request->input('resolucion');
-        $carrera->turno = $request->input('turno');
-        $carrera->vacunas = $request->input('vacunas');
-        $carrera->save();
+        $carrera = Carrera::create($request->all());
 
         return redirect()->route('carrera.personal',[
             'id'=>$carrera->id
@@ -98,15 +81,8 @@ class CarreraController extends Controller
 
     }
 
-    public function editar(int $id,Request $request){
-        $validate = $this->validate($request,[
-            'sede_id'   =>  ['required','numeric'],
-            'nombre'    =>  ['required'],
-            'titulo'    =>  ['required'],
-            'años'      =>  ['required','numeric','max:4'],
-            'modalidad' =>  ['required','alpha'],
-            'vacunas'   =>  ['required','alpha']
-        ]);
+    public function editar(int $id,CarrerasRequest $request){
+
         $carrera = Carrera::find($id);
         $carrera->update($request->all());
         

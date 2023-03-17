@@ -95,8 +95,7 @@ class AlumnoController extends Controller
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'El alumno no existe'
             ]);
-        }
-
+        }   
         return view('alumno.detail', [
             'alumno'    =>  $alumno
         ]);

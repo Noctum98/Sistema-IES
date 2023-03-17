@@ -23,7 +23,7 @@
         @include('matriculacion.campos.campos_procesos')
         @endif
 
-        @if(Auth::user() && isset($matriculacion))
+        @if(Session::has('coordinador') && isset($matriculacion))
         @if($matriculacion->procesoCarrera($carrera->id,$matriculacion->id)->año == 1)
         <div class="form-group">
             <label for="regularidad">Condición</label>
@@ -112,7 +112,13 @@
 
         @include('matriculacion.campos')
         <hr>
-
+        @if($año == 1)
+        @include('matriculacion.campos.campos_primero')
+        @elseif($año == 2)
+        @include('matriculacion.campos.campos_segundo')
+        @elseif($año == 3)
+        @include('matriculacion.campos.campos_tercero')
+        @endif
         @include('matriculacion.campos.campos_generales')
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
