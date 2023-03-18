@@ -75,4 +75,18 @@ class Carrera extends Model
 //            ->orderBy('materias.nombre','asc')
             ->get();
     }
+
+    public function obtenerAlumnosCicloLectivo(int $ciclo_lectivo)
+    {
+        return   Alumno::select(
+            'alumnos.*',
+
+        )
+            ->join('alumno_carrera','alumnos.id','alumno_carrera.alumno_id')
+            ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo)
+            ->where('alumno_carrera.carrera_id',$this)
+            ->orderBy('alumnos.apellidos','asc')
+//            ->orderBy('materias.nombre','asc')
+            ->get();
+    }
 }

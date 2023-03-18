@@ -1,9 +1,10 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">
-			Alumnos de {{ $carrera->nombre }} <small>{{ucwords($carrera->turno)}} - {{$carrera->resolucion}}</small>
-        </h2>
+        <h4 class="text-primary">
+			Alumnos de {{ $carrera->nombre }}<br/>
+			<small class="text-dark" style="font-size: .8em">Turno: {{ucwords($carrera->turno)}} - Resolución Nro.:  {{$carrera->resolucion}} - Ciclo Lectivo: {{$ciclo_lectivo}}  </small>
+        </h4>
         <p>
             Selecciona el año para mostrar los alumnos de cada uno
         </p>
@@ -58,7 +59,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
+								@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
 								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 1)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
@@ -104,7 +105,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
+							@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
 								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 2)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
@@ -150,7 +151,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
+							@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
 								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 3)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>

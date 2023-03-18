@@ -101,7 +101,9 @@ class CalificacionController extends Controller
         $calificacion = Calificacion::find($calificacion_id);
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $calificacion->materia_id);
+            ->where('procesos.materia_id', $calificacion->materia_id)
+            ->where('procesos.ciclo_lectivo', $calificacion->ciclo_lectivo)
+        ;
 
 
         if ($calificacion->comision_id) {

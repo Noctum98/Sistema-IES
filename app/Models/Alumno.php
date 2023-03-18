@@ -95,11 +95,13 @@ class Alumno extends Model
         return false;
     }
 
-    public function procesoCarrera($carrera_id,$alumno_id)
+    public function procesoCarrera($carrera_id,$alumno_id,$ciclo_lectivo = null)
     {
+
         $procesoCarrera = AlumnoCarrera::where([
             'carrera_id' => $carrera_id,
-            'alumno_id' => $alumno_id
+            'alumno_id' => $alumno_id,
+            'ciclo_lectivo' => $ciclo_lectivo??date('Y')
         ])->first();
 
         return $procesoCarrera;

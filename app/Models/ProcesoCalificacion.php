@@ -19,7 +19,8 @@ class ProcesoCalificacion extends Model
         'close_profesor',
         'close_coordinador',
         'open_profesor',
-        'close_coordinador',
+        'open_coordinador',
+        'close'
     ];
 
     public function calificacion(): BelongsTo
