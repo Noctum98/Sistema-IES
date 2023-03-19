@@ -43,13 +43,13 @@
     </div>
     
 	<h1 class="h1 pt-4">
-		Matriculación de : {{ $alumno->nombres.' '.$alumno->apellidos }}
+		Inscripción de : {{ $alumno->nombres.' '.$alumno->apellidos }}
 	</h1>
 	<hr>
 	<div class="row">
 		<div class="detalle-pre">
 			<br>
-			<p>Se ha eliminado tu matriculación de {{ $carrera->nombre." ".$carrera->sede->nombre }}</p>
+			<p>Se ha eliminado tu inscripción de {{ $carrera->nombre." ".$carrera->sede->nombre }}</p>
 			<p><strong>MOTIVOS:</strong></p>
 			@if($errores)
 				@foreach($errores as $error)

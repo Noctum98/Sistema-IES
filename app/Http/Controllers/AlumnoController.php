@@ -90,14 +90,22 @@ class AlumnoController extends Controller
     public function vista_detalle(int $id)
     {
         $alumno = Alumno::find($id);
-
+        
+        $carreras = $carreras = Carrera::select('carreras.*')
+        ->distinct()
+        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where('alumnos.id', $alumno->id)
+        ->get();
+    
         if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'El alumno no existe'
             ]);
         }   
         return view('alumno.detail', [
-            'alumno'    =>  $alumno
+            'alumno'    =>  $alumno,
+            'carreras' => $carreras
         ]);
     }
 
@@ -254,16 +262,23 @@ class AlumnoController extends Controller
     public function descargar_ficha(int $id)
     {
         $alumno = Alumno::find($id);
+        $carreras = $carreras = $carreras = Carrera::select('carreras.*')
+        ->distinct()
+        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where('alumnos.id', $alumno->id)
+        ->get();
 
         if ($alumno) {
             $data = [
-                'alumno' => $alumno
+                'alumno' => $alumno,
+                'carreras' => $carreras
             ];
 
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadView('pdfs.alumno_ficha', $data);
 
-            return $pdf->download('Ficha ' . $alumno->nombres . ' ' . $alumno->apellidos . '.pdf');
+            return $pdf->stream('Ficha ' . $alumno->nombres . ' ' . $alumno->apellidos . '.pdf');
         } else {
             return view('error.error');
         }

@@ -21,7 +21,9 @@ class Carrera extends Model
         'vacunas',
         'estado',
         'tipo',
-        'link_inscripcion'
+        'link_inscripcion',
+        'preinscripcion_habilitada',
+        'matriculacion_habilitada'
     ];
 
     public function sede(){

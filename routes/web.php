@@ -314,6 +314,7 @@ Route::prefix('proceso')->group(function () {
         'inscribir_proceso'
     );
     Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
+    Route::get('eliminar/{id}/{alumno_id}',[ProcesoController::class,'delete']);
     Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
         'proceso.listado'
     );
