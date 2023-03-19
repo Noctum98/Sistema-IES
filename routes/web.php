@@ -236,12 +236,12 @@ Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsu
 Route::prefix('alumnos')->group(function () {
     // Vistas
     Route::get('/{busqueda?}', [AlumnoController::class, 'vista_admin'])->name('alumno.admin');
-    Route::post('/', [AlumnoController::class, 'vista_admin'])->name('alumno.adminp');
+    Route::post('/{ciclo_lectivo?}', [AlumnoController::class, 'vista_admin'])->name('alumno.adminp');
     Route::get('agregar/{id}', [AlumnoController::class, 'vista_crear'])->name('alumno.crear');
     Route::get('carrera/elegir', [AlumnoController::class, 'vista_elegir'])->name('alumno.elegir');
     Route::get('editar/{id}', [AlumnoController::class, 'vista_editar'])->name('alumno.editar');
-    Route::get('carrera/{carrera_id}', [AlumnoController::class, 'vista_alumnos'])->name('alumno.carrera');
-    Route::get('alumno/{id}', [AlumnoController::class, 'vista_detalle'])->name('alumno.detalle');
+    Route::get('carrera/{carrera_id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_alumnos'])->name('alumno.carrera');
+    Route::get('alumno/{id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_detalle'])->name('alumno.detalle');
 
     // Acciones
     Route::post('crear-alumno/{carrera_id}', [AlumnoController::class, 'crear'])->name('crear_alumno');
@@ -507,8 +507,8 @@ Route::delete('deleteMateria/{cargo_id}', [CargoController::class, 'deleteModulo
 Route::resource('tipoCalificaciones', TipoCalificacionesController::class);
 
 Route::prefix('calificacion')->group(function () {
-    Route::get('home', [CalificacionController::class, 'home'])->name('calificacion.home');
-    Route::get('admin/{materia_id}/{cargo_id?}', [CalificacionController::class, 'admin'])->name('calificacion.admin');
+    Route::get('home/{ciclo_lectivo?}', [CalificacionController::class, 'home'])->name('calificacion.home');
+    Route::get('admin/{materia_id}/{ciclo_lectivo}/{cargo_id?}', [CalificacionController::class, 'admin'])->name('calificacion.admin');
     Route::get('create/{id}', [CalificacionController::class, 'create'])->name('calificacion.create');
 
     Route::post('/', [CalificacionController::class, 'store'])->name('calificacion.store');

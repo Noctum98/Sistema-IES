@@ -1,9 +1,35 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">
-			Alumnos de {{ $carrera->nombre }} <small>{{ucwords($carrera->turno)}} - {{$carrera->resolucion}}</small>
-        </h2>
+		<div class="row">
+			<div class="col-8">
+			<h4 class="text-primary">
+				Alumnos de {{ $carrera->nombre }}<br/>
+				<small class="text-dark" style="font-size: .8em">Turno: {{ucwords($carrera->turno)}} - Resolución Nro.:  {{$carrera->resolucion}} - Ciclo Lectivo: {{$ciclo_lectivo}}  </small>
+			</h4>
+			</div>
+			<div class="col-4">
+				<div class="dropdown">
+					<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+							data-bs-toggle="dropdown">
+						Ciclo lectivo
+					</button>
+					<ul class="dropdown-menu">
+						@for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+							<li>
+								<a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+										href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id, 'ciclo_lectivo' => $i]) }}">
+									{{$i}}
+								</a>
+
+							</li>
+						@endfor
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
         <p>
             Selecciona el año para mostrar los alumnos de cada uno
         </p>
@@ -58,8 +84,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 1)
+								@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
+								@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 1)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
@@ -71,7 +97,7 @@
 										@endif
 									</td>
 									<td class="text-center">
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary mr-1">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary mr-1">
 											Ver datos
 										</a>
 									</td>
@@ -104,8 +130,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 2)
+							@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
+								@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 2)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
@@ -150,8 +176,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 3)
+							@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
+								@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 3)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
