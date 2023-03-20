@@ -120,11 +120,11 @@
             </div>
             @if(!isset($matriculacion))
             <div class="form-group col-md-12">
-                <label for="pase">SOLICITUD DE MATRICULACIÓN</label>
+                <label for="pase">SOLICITUD DE INSCRIPCIÓN</label>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="1" id="matriculacion" name="matriculacion" {{ isset($matriculacion) && $matriculacion->matriculacion == 1 || old('matriculacion') ? 'checked' : '' }}>
                     <label class="form-check-label" for="matriculacion">
-                        Acepto la matriculación
+                        Acepto la inscripción
                     </label>
 
                     @error('matriculacion')

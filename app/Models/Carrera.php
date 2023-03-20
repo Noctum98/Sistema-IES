@@ -21,7 +21,9 @@ class Carrera extends Model
         'vacunas',
         'estado',
         'tipo',
-        'link_inscripcion'
+        'link_inscripcion',
+        'preinscripcion_habilitada',
+        'matriculacion_habilitada'
     ];
 
     public function sede(){
@@ -72,6 +74,17 @@ class Carrera extends Model
             ->where('mesas.instancia_id',$instancia)
             ->groupBy('carreras.id', 'carreras.nombre', 'sedes.nombre')
             ->orderBy('sedes.nombre','asc')
+//            ->orderBy('materias.nombre','asc')
+            ->get();
+    }
+
+    public function obtenerAlumnosCicloLectivo(int $ciclo_lectivo)
+    {
+        return   Alumno::select()
+            ->leftJoin('alumno_carrera','alumnos.id','alumno_carrera.alumno_id')
+            ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo)
+            ->where('alumno_carrera.carrera_id',$this->id)
+            ->orderBy('alumnos.apellidos','asc')
 //            ->orderBy('materias.nombre','asc')
             ->get();
     }

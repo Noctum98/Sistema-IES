@@ -81,6 +81,11 @@ class Alumno extends Model
         return $this->hasMany('App\Models\Proceso');
     }
 
+    public function procesos_actuales()
+    {
+        return $this->hasMany(Proceso::class)->where('ciclo_lectivo',date('Y'))->orderBy('id');
+    }
+
     public function asistencias()
     {
         return $this->hasMany('App\Models\AlumnoAsistencia');
@@ -95,14 +100,14 @@ class Alumno extends Model
         return false;
     }
 
-    public function procesoCarrera($carrera_id,$alumno_id)
+    public function procesoCarrera($carrera_id,$alumno_id,$ciclo_lectivo = null)
     {
-        $procesoCarrera = AlumnoCarrera::where([
-            'carrera_id' => $carrera_id,
-            'alumno_id' => $alumno_id
-        ])->first();
 
-        return $procesoCarrera;
+        return AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'alumno_id' => $alumno_id,
+            'ciclo_lectivo' => $ciclo_lectivo??date('Y')
+        ])->first();
     }
 
     public function proceso($carrera_id){

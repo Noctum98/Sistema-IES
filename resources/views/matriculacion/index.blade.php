@@ -8,6 +8,7 @@
     <hr>
     <h4>Elige la carrera:</h4>
     <div class="table-responsive">
+        @if($carreras->count() > 0)
         <table class="table mt-2">
             <thead class="thead-dark">
                 <tr>
@@ -38,6 +39,9 @@
                 @endforeach
             </tbody>
         </table>
+        @else
+        <p>No hay carreras habilitadas</p>
+        @endif
     </div>
 </div>
 @endsection

@@ -32,6 +32,7 @@
                 REGULAR
             </label>
         </div>
+        @if(Auth::user())
         <div class="form-check">
             <input class="form-check-input" type="radio" name="regularidad" id="condicional_primero" value="condicional_primero" {{ old('regularidad') == 'condicional_primero' ? 'checked' : '' }}>
             <label class="form-check-label" for="condicional_primero">
@@ -50,6 +51,7 @@
                 RECURSANTE CON TRAYECTORIA DIFERENCIADA DE CURSADO EN SEGUNDO AÑO
             </label>
         </div>
+        @endif
         @include('matriculacion.campos.campos_materias')
     </div>
 </div>

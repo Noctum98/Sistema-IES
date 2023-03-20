@@ -11,11 +11,21 @@ class ProcesoCalificacion extends Model
     use HasFactory;
 
     protected $table = "proceso_calificacion";
-    protected $fillable = ['proceso_id','calificacion_id','nota','porcentaje'];
+    protected $fillable = [
+        'proceso_id',
+        'calificacion_id',
+        'nota',
+        'porcentaje',
+        'close_profesor',
+        'close_coordinador',
+        'open_profesor',
+        'open_coordinador',
+        'close'
+    ];
 
     public function calificacion(): BelongsTo
     {
-        return $this->belongsTo(Calificacion::class,'calificacion_id');
+        return $this->belongsTo(Calificacion::class, 'calificacion_id');
     }
 
 }

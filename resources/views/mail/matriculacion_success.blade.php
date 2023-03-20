@@ -43,16 +43,16 @@
     </div>
     
 	<h1 class="h1 pt-4">
-		Matriculación de : {{ $alumno->nombres.' '.$alumno->apellidos }}
+		Inscripción de : {{ $alumno->nombres.' '.$alumno->apellidos }}
 	</h1>
 	<hr>
 	<div class="row">
 		<div class="detalle-pre">
 			<br>
-			<p>Te  has matriculado correctamente a {{ $carrera->nombre." ".$carrera->sede->nombre }}</p>
-			<p>No te olvides de completar la encuesta socioeconomica que está en el sitio web y también imprimir el siguiente archivo pdf y llevarlo a sección alumnos.</p>
+			<p>Te  has inscripto correctamente a {{ $carrera->nombre." ".$carrera->sede->nombre }}</p>
+			<p>No te olvides de imprimir el siguiente archivo pdf y llevarlo a sección alumnos.</p>
 			<br>
-			<a href="{{ $url.'/alumnos/descargar-ficha/'.$alumno->id }}" class="btn"><i class="fas fa-download"></i> DESCARGAR PDF</a>
+			<a href="{{ route('descargar_ficha',$alumno->id) }}" target="__blank" class="btn"><i class="fas fa-download"></i> DESCARGAR PDF</a>
 		</div>
 	</div>		
 </div>

@@ -111,12 +111,12 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                     Mesas
                 </a>
-                @if(env('APP_ENV') == 'local')
+                
                 <a class="nav-link" href="{{ route('matriculacion.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-paste"></i></i></div>
                     Inscripción
                 </a>
-                @endif
+       
                 <!-----
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
