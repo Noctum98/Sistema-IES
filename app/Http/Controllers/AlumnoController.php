@@ -110,6 +110,7 @@ class AlumnoController extends Controller
 
         $ciclo_lectivo = $ciclo_lectivo?? date('Y');
 
+
         return view('alumno.alumnos', [
             'carrera' => $carrera,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),

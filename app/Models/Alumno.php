@@ -106,7 +106,15 @@ class Alumno extends Model
         return AlumnoCarrera::where([
             'carrera_id' => $carrera_id,
             'alumno_id' => $alumno_id,
-            'ciclo_lectivo' => $ciclo_lectivo??date('Y')
+            'ciclo_lectivo' => $ciclo_lectivo ?? date('Y')
+        ])->first();
+    }
+
+    public function lastProcesoCarrera($carrera_id)
+    {
+        return AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'alumno_id' => $this->id,
         ])->first();
     }
 

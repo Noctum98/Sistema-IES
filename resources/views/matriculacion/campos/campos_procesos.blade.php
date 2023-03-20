@@ -10,7 +10,7 @@
         <hr>
         <strong> _ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }} </strong>
         <br>
-        _ Año: {{ $matriculacion->procesoCarrera($carrera->id,$matriculacion->id)->año }}
+        _ Año: {{ $matriculacion->lastProcesoCarrera($carrera->id)->año }}
         <br>
         <br>
         <p>Materias {{date('Y')}}: </p>

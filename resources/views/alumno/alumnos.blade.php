@@ -97,7 +97,7 @@
 										@endif
 									</td>
 									<td class="text-center">
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary mr-1">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary mr-1">
 											Ver datos
 										</a>
 									</td>
