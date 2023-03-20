@@ -33,8 +33,8 @@
 				@foreach($carreras as $carrera)
 				_ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }}
 				<br>
-				Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
-				Ciclo Lectivo: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->ciclo_lectivo }}
+				Año: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id)->año }}
+				Ciclo Lectivo: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id)->ciclo_lectivo }}
 				@endforeach
 			</li>
 			<li> <strong>Materias:</strong>
