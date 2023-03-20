@@ -99,7 +99,7 @@
 					@foreach($carreras as $carrera)
 					_ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
 					<br>
-					Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id, $ciclo_lectivo)->año }}
+					Año: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id, $ciclo_lectivo)->año }}
 					<br>
 
 					<div class="row">
