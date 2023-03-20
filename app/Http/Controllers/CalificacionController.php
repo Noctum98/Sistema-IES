@@ -50,7 +50,6 @@ class CalificacionController extends Controller
         }
         $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
 
-
         return view('calificacion.home', [
             'materias' => $materias,
             'cargos' => $cargos,
@@ -90,7 +89,6 @@ class CalificacionController extends Controller
 
 
         $calificaciones = $calificaciones->orderBy('tipo_id')->get();
-
 
         return view('calificacion.admin', [
             'materia' => $materia,
