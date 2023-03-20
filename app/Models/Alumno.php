@@ -115,7 +115,7 @@ class Alumno extends Model
         return AlumnoCarrera::where([
             'carrera_id' => $carrera_id,
             'alumno_id' => $this->id,
-        ])->first();
+        ])->latest()->first();
     }
 
     public function proceso($carrera_id){
