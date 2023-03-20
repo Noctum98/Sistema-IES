@@ -230,9 +230,9 @@ class MatriculacionController extends Controller
             $this->procesoService->inscribir($alumno->id, $request['materias']);
         }
 
-        Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
-
         $alumno->update($request->all());
+
+        Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
 
         return redirect()->route('matriculacion.edit', [
             'alumno_id' => $alumno->id,
