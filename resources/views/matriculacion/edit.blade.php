@@ -131,4 +131,6 @@
 @section('scripts')
 <script src="{{ asset('js/matriculacion/create.js') }}"></script>
 <script src="{{ asset('js/matriculacion/procesos.js') }}"></script>
+<script src="{{ asset('js/matriculacion/botones.js') }}"></script>
+
 @endsection
