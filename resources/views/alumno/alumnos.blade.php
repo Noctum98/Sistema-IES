@@ -42,6 +42,7 @@
             @endif
             <div class="col-md-12 row mb-3">
                 <div class="col-md-4">
+					 <!---
                     <form method="GET" action="#" id="buscador-alumnos" class="form-inline">
                         <div class="row">
                             <div class="input-group">
@@ -56,11 +57,13 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
 				<div class="col-md-3">
 				<a href="{{ route('excel.alumnosDatos',$carrera->id) }}" class="d-block btn btn-secondary" ><i class="fas fa-download"></i> Descargar Datos</a>
 
 				</div>
+				-->
             </div>
             <div id="accordion">
                 <div class="card">
