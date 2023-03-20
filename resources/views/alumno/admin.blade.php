@@ -39,7 +39,7 @@
         <div class="col-md-8 row">
             <div class="col-md-5">
                 <input type="hidden" id="materia_selected" name="materia_selected" value="{{ $materia_id ?? null }}">
-
+                <!---
                 <form method="GET" action="{{ route('alumno.adminp') }}" id="buscador-alumnos">
                     <div class="row form-inline">
                         <div class="input-group">
@@ -60,6 +60,7 @@
                     @include('alumno.modals.filtros')
 
                 </form>
+                --->
             </div>
         </div>
         <div class="col-md-12">
