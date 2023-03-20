@@ -90,7 +90,7 @@
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td class="text-center">
-										@if($alumno->user_id)
+										@if($alumno->aprobado)
 										<i class='fas fa-user-check' style='font-size:14px;color:green'></i>
 										@else
 										<i class='fas fa-user-times' style='font-size:14px;color:red'></i>
@@ -136,14 +136,14 @@
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td>
-										@if($alumno->user_id)
+										@if($alumno->aprobado)
 										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 										@else
 										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
 										@endif
 									</td>
 									<td>
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary">
 											Ver datos
 										</a>
 									</td>
@@ -182,14 +182,14 @@
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td>
-										@if($alumno->user_id)
+										@if($alumno->aprobado)
 										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 										@else
 										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
 										@endif
 									</td>
 									<td>
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary">
 											Ver datos
 										</a>
 									</td>
