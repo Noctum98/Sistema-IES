@@ -352,8 +352,8 @@ Route::prefix('proceso')->group(function () {
 // Rutas de Asistencia
 Route::prefix('asistencias')->group(function () {
     // Vistas
-    Route::get('carreras', [AsistenciaController::class, 'vista_carreras'])->name('asis.inicio');
-    Route::get('materia/{id}/{cargo_id?}', [AsistenciaController::class, 'vista_admin'])->name('asis.admin');
+    Route::get('carreras/{ciclo_lectivo?}', [AsistenciaController::class, 'vista_carreras'])->name('asis.inicio');
+    Route::get('materia/{id}/{ciclo_lectivo?}/{cargo_id?}', [AsistenciaController::class, 'vista_admin'])->name('asis.admin');
     Route::get('tomar/{id}', [AsistenciaController::class, 'vista_crear'])->name('asis.crear');
     Route::get('fecha/{id}', [AsistenciaController::class, 'vista_fecha'])->name('asis.fecha');
     Route::get('cerrada/{id}', [AsistenciaController::class, 'vista_cerrar'])->name('asis.cerrar');
