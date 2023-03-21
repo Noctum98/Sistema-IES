@@ -232,7 +232,7 @@ class MatriculacionController extends Controller
 
         $alumno->update($request->all());
 
-        if(!Session::has('coordinador') || !Session::has('seccionAlumnos') || !Session::has('admin')){
+        if(!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')){
             Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
         }
 
