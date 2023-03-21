@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CicloLectivoService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -19,19 +20,34 @@ use Illuminate\Support\Facades\Validator;
 
 class AsistenciaController extends Controller
 {
-    function __construct()
+    /**
+     * @var CicloLectivoService
+     */
+    private $cicloLectivoService;
+
+    /**
+     * @param CicloLectivoService $cicloLectivoService
+     */
+    function __construct(CicloLectivoService $cicloLectivoService)
     {
         // $this->middleware('app.admin');
         // $this->middleware('app.roles:admin-profesor');
+        $this->cicloLectivoService = $cicloLectivoService;
     }
 
     // Vistas
-    public function vista_carreras()
+    public function vista_carreras($ciclo_lectivo = null)
     {
+
         $materias = Auth::user()->materias;
         $user = Auth::user();
 
         $ruta = 'asis.admin';
+
+        if (!$ciclo_lectivo) {
+            $ciclo_lectivo = date('Y');
+        }
+
 
         Log::info('AsistenciaController - vista_carreras: '.$user->nombre.' '.$user->apellido);
         Log::info($user->cargo_materia()->get());
@@ -48,6 +64,8 @@ class AsistenciaController extends Controller
             'materias' => $materias,
             'ruta' => $ruta,
             'cargos' => $cargos,
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
         ]);
     }
 
@@ -57,14 +75,21 @@ class AsistenciaController extends Controller
      * @param $cargo_id <b>id</> del cargo.
      * @return Application|Factory|View
      */
-    public function vista_admin(Request $request, int $id, $cargo_id = null)
+    public function vista_admin(Request $request, int $id,$ciclo_lectivo = null, $cargo_id = null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+
 
         $comision_id = $request['comision_id'] ? $request['comision_id'] : null;
         $materia = Materia::find($id);
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia->id);
+            ->where('procesos.materia_id', $materia->id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
+        ;
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -90,8 +115,13 @@ class AsistenciaController extends Controller
         if ($comision_id) {
             $datos['comision'] = Comision::find($comision_id);
         }
+        $datos['ciclo_lectivo'] = $ciclo_lectivo;
+        $datos['changeCicloLectivo'] = $this->cicloLectivoService->getCicloInicialYActual();
 
-        return view('asistencia.admin', $datos);
+
+        return view('asistencia.admin',
+            $datos
+        );
     }
 
     public function vista_fecha(int $id)
