@@ -76,7 +76,7 @@
 
 				<div id="collapseOne" class="collapse show" aria-bs-labelledby="headingOne" data-bs-parent="#accordion">
 					<div class="card-body">
-						<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>1]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>
+						<!--<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>1]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>-->
 						<table class="table">
 							<thead>
 								<tr>
@@ -122,7 +122,7 @@
 				</div>
 				<div id="collapseTwo" class="collapse" aria-bs-labelledby="headingTwo" data-bs-parent="#accordion">
 					<div class="card-body">
-						<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>2]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>
+						<!---<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>2]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>-->
 						<table class="table">
 							<thead>
 								<tr>
@@ -168,7 +168,7 @@
 				</div>
 				<div id="collapseThree" class="collapse" aria-bs-labelledby="headingThree" data-bs-parent="#accordion">
 					<div class="card-body">
-						<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>3]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>
+						<!----<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>3]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>-->
 						<table class="table">
 							<thead>
 								<tr>
