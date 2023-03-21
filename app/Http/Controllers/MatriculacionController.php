@@ -71,11 +71,17 @@ class MatriculacionController extends Controller
         }
 
         if ($check_year) {
-            return view('matriculacion.create', [
-                'carrera' => $carrera,
-                'año' => $year,
-                'email_checked' => $email_checked
-            ]);
+            if($carrera->matriculacion_habilitada)
+            {
+                return view('matriculacion.create', [
+                    'carrera' => $carrera,
+                    'año' => $year,
+                    'email_checked' => $email_checked
+                ]);
+            }else{
+                return redirect('/');
+            }
+
         } else {
             return redirect('/');
         }
