@@ -4,12 +4,12 @@
             <h5>{{$cargo->nombre.' - '. $cargo->carrera->nombre.'('.$cargo->carrera->sede->nombre.')'}}</h5>
             @if(isset($materia))
                 <a type="button" href="
-                {{ route($ruta,['id'=>$materia->id,'cargo_id'=>$cargo->id]) }}"
+                {{ route($ruta,['id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo,'cargo_id'=>$cargo->id]) }}"
                    class="list-group-item list-group-item-action border-top mt-2 text-success"
                    title="Ver calificaciones"
                 >
                     <strong>
-                        Módulo: {{ $materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
+                      //  Módulo: {{ $materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
                     </strong>
                 </a>
             @endif

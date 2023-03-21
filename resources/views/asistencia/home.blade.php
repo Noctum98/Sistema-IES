@@ -1,10 +1,34 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h3 class="text-info">
+        <div class="row">
+            <div class="col-8">
+        <h4 class="text-info">
             Elige la materia para ver la planilla de asistencia
-        </h3>
-        <hr>
+            <br/> <small class="text-dark">Ciclo lectivo: <b>{{$ciclo_lectivo}}</b></small>
+        </h4>
+            </div>
+            <div class="col-4">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+
+                            <li>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                   href="{{route('asis.inicio', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
+                            </li>
+
+
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         @if(count($materias) > 0)
             <h4 class="text-secondary">Materias</h4>
             @foreach($materias as $materia)
@@ -17,7 +41,7 @@
                     </a>
                     @include('asistencia.modals.comisiones')
                 @else
-                    <a type="button" href="{{ route($ruta,['id'=>$materia->id]) }}"
+                    <a type="button" href="{{ route($ruta,['id'=>$materia->id, 'ciclo_lectivo' => $ciclo_lectivo] ) }}"
                     class="list-group-item list-group-item-action border-top mt-2 text-success">
                         <strong>
                             {{ $materia->carrera->sede->nombre.': '.$materia->carrera->nombre.' - '.$materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}

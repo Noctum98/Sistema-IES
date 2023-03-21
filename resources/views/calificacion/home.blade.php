@@ -18,9 +18,11 @@
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
 
-                            <li>  <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('calificacion.home', ['ciclo_lectivo'=> $i])}}">{{$i}}</a></li>
-
+                            <li>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('calificacion.home', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
                             </li>
+
+
                         @endfor
                     </ul>
                 </div>
