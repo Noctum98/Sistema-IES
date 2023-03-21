@@ -20,6 +20,7 @@ use ProcesoService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class MatriculacionController extends Controller
 {
@@ -42,17 +43,17 @@ class MatriculacionController extends Controller
     public function index(Request $request)
     {
         $user_id = Auth::user()->id;
-        
-        $carreras = Carrera::
-        whereHas('alumnos',function($query) use ($user_id){
-            $query->where('alumnos.user_id',$user_id);
-        })
-        ->with(['alumnos'=>function($query) use ($user_id){
-            $query->where('alumnos.user_id',$user_id);
-        },'sede'])->get();
 
-        
-        return view('matriculacion.index',['carreras'=>$carreras]);
+        $carreras = Carrera::whereHas('alumnos', function ($query) use ($user_id) {
+                $query->where('alumnos.user_id', $user_id);
+            })
+            ->with(['alumnos' => function ($query) use ($user_id) {
+                $query->where('alumnos.user_id', $user_id);
+            }, 'sede'])
+            ->where('matriculacion_habilitada',true)->get();
+
+
+        return view('matriculacion.index', ['carreras' => $carreras]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)
@@ -61,28 +62,23 @@ class MatriculacionController extends Controller
         $email_checked = $timecheck;
         $check_year = false;
 
-        if($year == 2 || $year == 3)
-        {
-            if(Auth::user())
-            {
+        if ($year == 2 || $year == 3) {
+            if (Auth::user()) {
                 $check_year = true;
             }
-        }else{
+        } else {
             $check_year = true;
         }
-        
-        if($check_year)
-        {
+
+        if ($check_year) {
             return view('matriculacion.create', [
                 'carrera' => $carrera,
                 'año' => $year,
                 'email_checked' => $email_checked
             ]);
-        }else{
+        } else {
             return redirect('/');
         }
-
-
     }
 
     public function edit($alumno_id, $carrera_id, $año = null)
@@ -90,15 +86,19 @@ class MatriculacionController extends Controller
         $alumno = Alumno::find($alumno_id);
         $carrera = Carrera::find($carrera_id);
 
-        if (!$año) {
-            $alumno_carrera = AlumnoCarrera::where([
-                'alumno_id' => $alumno_id,
-                'carrera_id' => $carrera_id
-            ])->first();
-
-            $año = $alumno_carrera->año;
+        if(!$alumno->aprobado || !Session::has('alumno'))
+        {
+            if (!$año) {
+                $alumno_carrera = AlumnoCarrera::where([
+                    'alumno_id' => $alumno_id,
+                    'carrera_id' => $carrera_id
+                ])->first();
+    
+                $año = $alumno_carrera->año;
+            }
+        }else{
+            return redirect('/')->with(['success'=>'']);
         }
-
 
         return view('matriculacion.edit', [
             'matriculacion' => $alumno,
@@ -112,7 +112,7 @@ class MatriculacionController extends Controller
         $validate = $this->validate($request, [
             'nombres'               => ['required'],
             'apellidos'             => ['required'],
-            'dni'                   => ['required','unique:alumnos'],
+            'dni'                   => ['required', 'unique:alumnos'],
             'edad'                  => ['required', 'numeric'],
             'email'                 => ['required', 'email'],
             'telefono'              => ['required'],
@@ -129,7 +129,7 @@ class MatriculacionController extends Controller
             'privacidad' => ['required'],
             'poblacion_indigena' => ['required']
         ]);
-        
+
         $mail_check = MailCheck::where([
             'email' => $request['email'],
             'checked' => true
@@ -173,7 +173,7 @@ class MatriculacionController extends Controller
                 $this->procesoService->inscribir($alumno->id, $request['materias']);
             }
 
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
+            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
 
 
             $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
@@ -203,7 +203,36 @@ class MatriculacionController extends Controller
 
         $alumno = Alumno::find($id);
 
+        $carrera = Carrera::find($carrera_id);
+
+        $alumno_carrera = AlumnoCarrera::where([
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id,
+            'ciclo_lectivo' => date('Y')
+        ])->first();
+
+        $datos = [
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id,
+            'año'   => $año,
+            'ciclo_lectivo' => date('Y')
+        ];
+
+        if(!$alumno_carrera)
+        {
+            $alumno_carrera = AlumnoCarrera::create($datos);
+        }else{
+            $alumno_carrera->update($datos);
+        }
+
+        if (isset($request['materias'])) {
+            Proceso::where(['alumno_id'=>$alumno->id,'ciclo_lectivo'=>date('Y')])->delete();
+            $this->procesoService->inscribir($alumno->id, $request['materias']);
+        }
+
         $alumno->update($request->all());
+
+        Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
 
         return redirect()->route('matriculacion.edit', [
             'alumno_id' => $alumno->id,
@@ -214,14 +243,14 @@ class MatriculacionController extends Controller
         ]);
     }
 
-    public function delete(Request $request,$id, $carrera_id, $año = null)
+    public function delete(Request $request, $id, $carrera_id, $año = null)
     {
         $alumno = Alumno::find($id);
         $carrera = Carrera::find($carrera_id);
 
         $procesos = Proceso::where('alumno_id', $alumno->id)->get();
 
-        Mail::to($alumno->email)->queue(new MatriculacionDeleted($alumno,$carrera,$request));
+        Mail::to($alumno->email)->queue(new MatriculacionDeleted($alumno, $carrera, $request));
 
         foreach ($procesos as $proceso) {
             if ($proceso->materia->carrera_id == $carrera->id) {
@@ -240,22 +269,18 @@ class MatriculacionController extends Controller
         //Asistencia::where('alumno_id',$alumno->id)->delete();
         //Proceso::where('alumno_id',$alumno->id)->delete();
 
-        if($alumno->comisiones())
-        {
+        if ($alumno->comisiones()) {
             $alumno->comisiones()->detach();
         }
 
-        if($alumno->user_id)
-        {
+        if ($alumno->user_id) {
             $user = User::find($alumno->user_id);
 
-            if($user)
-            {
+            if ($user) {
                 $user->carreras()->detach();
                 $user->roles()->detach();
                 $user->delete();
             }
-
         }
 
         $alumno->delete();

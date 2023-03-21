@@ -1,9 +1,35 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">
-			Alumnos de {{ $carrera->nombre }} <small>{{ucwords($carrera->turno)}} - {{$carrera->resolucion}}</small>
-        </h2>
+		<div class="row">
+			<div class="col-8">
+			<h4 class="text-primary">
+				Alumnos de {{ $carrera->nombre }}<br/>
+				<small class="text-dark" style="font-size: .8em">Turno: {{ucwords($carrera->turno)}} - Resolución Nro.:  {{$carrera->resolucion}} - Ciclo Lectivo: {{$ciclo_lectivo}}  </small>
+			</h4>
+			</div>
+			<div class="col-4">
+				<div class="dropdown">
+					<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+							data-bs-toggle="dropdown">
+						Ciclo lectivo
+					</button>
+					<ul class="dropdown-menu">
+						@for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+							<li>
+								<a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+										href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id, 'ciclo_lectivo' => $i]) }}">
+									{{$i}}
+								</a>
+
+							</li>
+						@endfor
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
         <p>
             Selecciona el año para mostrar los alumnos de cada uno
         </p>
@@ -16,6 +42,7 @@
             @endif
             <div class="col-md-12 row mb-3">
                 <div class="col-md-4">
+					 <!---
                     <form method="GET" action="#" id="buscador-alumnos" class="form-inline">
                         <div class="row">
                             <div class="input-group">
@@ -30,11 +57,13 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
 				<div class="col-md-3">
 				<a href="{{ route('excel.alumnosDatos',$carrera->id) }}" class="d-block btn btn-secondary" ><i class="fas fa-download"></i> Descargar Datos</a>
 
 				</div>
+				-->
             </div>
             <div id="accordion">
                 <div class="card">
@@ -58,20 +87,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 1)
+								@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
+								@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 1)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td class="text-center">
-										@if($alumno->user_id)
+										@if($alumno->aprobado)
 										<i class='fas fa-user-check' style='font-size:14px;color:green'></i>
 										@else
 										<i class='fas fa-user-times' style='font-size:14px;color:red'></i>
 										@endif
 									</td>
 									<td class="text-center">
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary mr-1">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary mr-1">
 											Ver datos
 										</a>
 									</td>
@@ -104,20 +133,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 2)
+							@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
+								@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 2)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td>
-										@if($alumno->user_id)
+										@if($alumno->aprobado)
 										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 										@else
 										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
 										@endif
 									</td>
 									<td>
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary">
 											Ver datos
 										</a>
 									</td>
@@ -150,20 +179,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($carrera->alumnos as $alumno)
-								@if($alumno->procesoCarrera($carrera->id,$alumno->id)->año == 3)
+							@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
+								@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 3)
 								<tr>
 									<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 									<td>{{ $alumno->dni }}</td>
 									<td>
-										@if($alumno->user_id)
+										@if($alumno->aprobado)
 										<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 										@else
 										<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
 										@endif
 									</td>
 									<td>
-										<a href="{{ route('alumno.detalle',['id'=>$alumno->id]) }}" class="btn btn-sm btn-secondary">
+										<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary">
 											Ver datos
 										</a>
 									</td>

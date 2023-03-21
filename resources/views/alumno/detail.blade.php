@@ -95,11 +95,11 @@
 				<li>
 					<strong>Inscripto a:</strong>
 					<br>
-					@if(count($alumno->carreras) > 0 )
-					@foreach($alumno->carreras as $carrera)
+					@if(count($carreras) > 0 )
+					@foreach($carreras as $carrera)
 					_ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
 					<br>
-					Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
+					Año: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id, $ciclo_lectivo)->año }}
 					<br>
 
 					<div class="row">
@@ -126,9 +126,9 @@
 		<div class="d-inline col-md-12">
 			@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
 
-			@if(!$alumno->user_id)
+			@if(!$alumno->user_id || !$alumno->aprobado)
 			<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-2 mt-4 btn btn-sm btn-success">
-				Crear Usuario
+				Confirmar alumno
 			</a>
 			@endif
 			@if(isset($carrera) && $carrera)

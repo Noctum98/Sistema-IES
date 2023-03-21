@@ -4,19 +4,19 @@
         <a href="{{url()->previous()}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
-        <h3 class="text-info">
+        <h4 class="text-info">
             {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}}
             <small>{{$calificacion->tipo()->first()->nombre}}</small>
-            @if($calificacion->comision)
-                <h4> Comisión: {{$calificacion->comision->nombre}}</h4>
-            @endif
-            @if($calificacion->modelCargo()->first())
-                <h4>Cargo: {{$calificacion->modelCargo()->first()->nombre}}</h4>
-            @endif
-        </h3>
+        </h4>
+        @if($calificacion->comision)
+            <h4> Comisión: {{$calificacion->comision->nombre}}</h4>
+        @endif
+        @if($calificacion->modelCargo()->first())
+            Cargo: <b><i>{{$calificacion->modelCargo()->first()->nombre}}</i></b>
+        @endif
         <hr>
-        <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el botón de guardar debajo de cada
-                recuadro.</i></p>
+        <p><i>Recordatorio: Para guardar la nota de cada alumno, pulse enter o el botón de guardar de cada
+                porcentaje.</i></p>
         <div id="alerts">
 
         </div>
@@ -40,15 +40,15 @@
                 <tbody>
                 @foreach($procesos as $proceso)
                     <tr>
-                        <td>
+                        <td class="py-auto">
                             {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
                         </td>
-                        <td class="input-group">
+                        <td class="input-group py-auto">
                             <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-calificacion input-group"
                                   id="{{ $proceso->id }}" method="POST">
                                 <input type="hidden" name="calificacion_id" id="calificacion_id"
                                        value="{{ $calificacion->id }}">
-                                <div class="input-group my-2">
+                                <div class="input-group my-0">
                                     <input type="text" class="form-control"
                                            id="calificacion-procentaje-{{ $proceso->id }}"
                                            value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"

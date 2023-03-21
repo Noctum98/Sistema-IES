@@ -100,6 +100,28 @@
 						@enderror
 					</div>
 					<div class="form-group">
+						<label for="vacunas">Preinscripción:</label>
+						<select class="form-select" name="preinscripcion_habilitada" id="preinscripcion_habilitada">
+						<option value="1" {{$carrera->preinscripcion_habilitada ? 'selected="selected"':''}}>
+								Habilitada
+							</option>
+							<option value="0" {{!$carrera->preinscripcion_habilitada ? 'selected="selected"':''}}>
+								Deshabilitada
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="vacunas">Inscripción:</label>
+						<select class="form-select" name="matriculacion_habilitada" id="matriculacion_habilitada">
+							<option value="1" {{$carrera->matriculacion_habilitada ? 'selected="selected"':''}}>
+								Habilitada
+							</option>
+							<option value="0" {{!$carrera->matriculacion_habilitada ? 'selected="selected"':''}}>
+								Deshabilitada
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
 						<input type="submit" value="Editar carrera" class="btn btn-success">
 					</div>
 				</div>

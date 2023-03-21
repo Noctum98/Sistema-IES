@@ -25,7 +25,7 @@ class ProcesoController extends Controller
     function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor');
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor',['except'=>'delete']);
     }
 
     // Vistas
@@ -261,6 +261,33 @@ class ProcesoController extends Controller
         ])->with([
             'mensaje_procesos' => 'Se han actualizado los procesos',
         ]);
+    }
+
+    public function delete(Request $request,$id,$alumno_id)
+    {
+        $alumno = Alumno::select('id')->where('id',$alumno_id)->first();
+
+        $proceso = Proceso::where([
+            'id' => $id,
+            'alumno_id' => $alumno_id
+        ])->first();
+
+        if($proceso)
+        {
+            $proceso->delete();
+
+            $data = [
+                'status' => 'success',
+                'message' => 'Proceso eliminado'
+            ];
+        }else{
+            $data = [
+                'status' => 'error',
+                'message' => 'Error'
+            ];
+        }
+
+        return response()->json($data,200);
     }
 
     public function cambiaEstado(Request $request): JsonResponse

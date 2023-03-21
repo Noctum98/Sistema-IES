@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Sede;
 use App\Services\AlumnoService;
+use App\Services\CicloLectivoService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +16,28 @@ class AlumnoController extends Controller
 {
 
     protected $alumnoService;
+    /**
+     * @var CicloLectivoService $cicloLectivoService
+     */
+    private $cicloLectivoService;
 
+    /**
+     * @param AlumnoService $alumnoService
+     * @param CicloLectivoService $cicloLectivoService
+     */
     public function __construct(
-        AlumnoService $alumnoService
+        AlumnoService $alumnoService,
+        CicloLectivoService $cicloLectivoService
     ) {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
-        $this->middleware('app.roles:admin-coordinador-regente-seccionAlumnos', ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir']]);
+        $this->middleware(
+            'app.roles:admin-coordinador-regente-seccionAlumnos',
+            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir']]
+        );
         $this->alumnoService = $alumnoService;
+        $this->cicloLectivoService = $cicloLectivoService;
     }
+
     // Vistas
     public function vista_admin(Request $request)
     {
@@ -31,11 +46,18 @@ class AlumnoController extends Controller
         $sedes = null;
         $busqueda = null;
         $sedes = $user->sedes;
+//        $ciclo_lectivo = date('Y');
 
-        if ( isset($request['busqueda'])) {
+        if (isset($request['busqueda'])) {
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
-        } 
+        }
+//        if (isset($request['ciclo_lectivo'])) {
+            $ciclo_lectivo = $request['ciclo_lectivo']?? date('Y');
+//        }
+
+
+//        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
 
 
         //dd($alumnos);
@@ -45,7 +67,9 @@ class AlumnoController extends Controller
             'busqueda' => $busqueda,
             'carrera_id' => $request['carrera_id'],
             'materia_id' => $request['materia_id'],
-            'cohorte' => $request['cohorte']
+            'cohorte' => $request['cohorte'],
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo'=>$ciclo_lectivo
         ];
 
         return view('alumno.admin', $data);
@@ -54,16 +78,18 @@ class AlumnoController extends Controller
     public function vista_elegir()
     {
         $carreras = Carrera::orderBy('sede_id')->get();
+
         return view('alumno.choice', [
-            'carreras' => $carreras
+            'carreras' => $carreras,
         ]);
     }
 
     public function vista_crear(int $id)
     {
         $carrera = Carrera::find($id);
+
         return view('alumno.create', [
-            'carrera' => $carrera
+            'carrera' => $carrera,
         ]);
     }
 
@@ -73,35 +99,52 @@ class AlumnoController extends Controller
         $carreras = Carrera::all();
 
         return view('alumno.edit', [
-            'alumno'    =>  $alumno,
-            'carreras'  =>  $carreras
+            'alumno' => $alumno,
+            'carreras' => $carreras,
         ]);
     }
 
-    public function vista_alumnos(Request $request, $carrera_id)
+    public function vista_alumnos(Request $request, $carrera_id, $ciclo_lectivo =  null)
     {
         $carrera = Carrera::find($carrera_id);
 
+        $ciclo_lectivo = $ciclo_lectivo?? date('Y');
+
+
         return view('alumno.alumnos', [
-            'carrera'   =>  $carrera
+            'carrera' => $carrera,
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
     }
 
-    public function vista_detalle(int $id)
+    public function vista_detalle(int $id, $ciclo_lectivo = null)
     {
         $alumno = Alumno::find($id);
-
+        
+        $carreras = $carreras = Carrera::select('carreras.*')
+        ->distinct()
+        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where('alumnos.id', $alumno->id)
+        ->get();
+    
         if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
-                'alumno_notIsset' => 'El alumno no existe'
+                'alumno_notIsset' => 'El alumno no existe',
             ]);
-        }   
+        }
+
+        $ciclo_lectivo = $ciclo_lectivo?? date('Y');
+
         return view('alumno.detail', [
-            'alumno'    =>  $alumno
+            'alumno'    =>  $alumno,
+            'carreras' => $carreras,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
     }
 
-    public function vista_datos(Request $request, $sede_id = null,$carrera_id=null, $localidad = null,$edad = null)
+    public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $localidad = null, $edad = null)
     {
         $data = [];
         if ($sede_id) {
@@ -148,11 +191,10 @@ class AlumnoController extends Controller
             }
 
             if ($edad && $edad != 0) {
-                $edades = Alumno::whereHas('carreras', function ($query) use ($sede_id,$carrera_id) {
-                    if($carrera_id && $carrera_id != 0)
-                    {
-                        return $query->where('carreras.id',$carrera_id);
-                    }else{
+                $edades = Alumno::whereHas('carreras', function ($query) use ($sede_id, $carrera_id) {
+                    if ($carrera_id && $carrera_id != 0) {
+                        return $query->where('carreras.id', $carrera_id);
+                    } else {
                         return $query->where('sede_id', $sede_id);
                     }
                 })->where('edad', $edad)->count();
@@ -191,12 +233,12 @@ class AlumnoController extends Controller
         if ($alumno) {
             $response = [
                 'status' => 'success',
-                'alumno' => $alumno
+                'alumno' => $alumno,
             ];
         } else {
             $response = [
                 'status' => 'error',
-                'message' => 'No existe alumno con este dni.'
+                'message' => 'No existe alumno con este dni.',
             ];
         }
 
@@ -216,26 +258,27 @@ class AlumnoController extends Controller
 
         return new Response($archivo, 200);
     }
+
     public function descargar_archivo(string $nombre, string $dni)
     {
         $disk = Storage::disk('google');
 
         $dir = '/';
-        $recursive = false; 
+        $recursive = false;
         $contents = collect($disk->listContents($dir, $recursive));
         $dir = $contents->where('type', '=', 'dir')
             ->where('filename', '=', $dni)
             ->first();
 
 
-        $dir_file = $dir['path'];        
+        $dir_file = $dir['path'];
         $contents = collect($disk->listContents($dir_file, $recursive));
 
         $file = $contents
             ->where('type', '=', 'file')
             ->where('filename', '=', pathinfo($nombre, PATHINFO_FILENAME))
             ->where('extension', '=', pathinfo($nombre, PATHINFO_EXTENSION))
-            ->first(); 
+            ->first();
 
 
         $rawData = $disk->getDriver()->readStream($file['path']);
@@ -251,19 +294,27 @@ class AlumnoController extends Controller
             return redirect()->route('alumno.detalle');
         }
     }
+
     public function descargar_ficha(int $id)
     {
         $alumno = Alumno::find($id);
+        $carreras = $carreras = $carreras = Carrera::select('carreras.*')
+        ->distinct()
+        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where('alumnos.id', $alumno->id)
+        ->get();
 
         if ($alumno) {
             $data = [
-                'alumno' => $alumno
+                'alumno' => $alumno,
+                'carreras' => $carreras
             ];
 
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadView('pdfs.alumno_ficha', $data);
 
-            return $pdf->download('Ficha ' . $alumno->nombres . ' ' . $alumno->apellidos . '.pdf');
+            return $pdf->stream('Ficha ' . $alumno->nombres . ' ' . $alumno->apellidos . '.pdf');
         } else {
             return view('error.error');
         }

@@ -1,7 +1,7 @@
 @extends('layouts.pdf')
 <div class="container alumno">
 	<h2 class="h1">
-		Matriculación de {{ $alumno->nombres.' '.$alumno->apellidos }}
+	Inscripción de {{ $alumno->nombres.' '.$alumno->apellidos }}
 	</h2>
 	<hr>
 	<div class="col-md-12">
@@ -30,16 +30,17 @@
 			<li>
 				<strong>Inscripto a:</strong>
 				<br>
-				@foreach($alumno->carreras as $carrera)
+				@foreach($carreras as $carrera)
 				_ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }}
 				<br>
-				Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
+				Año: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id)->año }}
+				Ciclo Lectivo: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id)->ciclo_lectivo }}
 				@endforeach
 			</li>
 			<li> <strong>Materias:</strong>
 				<br>
-				@foreach($alumno->procesos as $proceso)
-				<p>{{$proceso->materia->nombre}}</p>
+				@foreach($alumno->procesos_actuales as $proceso)
+				<p>{{$proceso->materia->nombre.' ('.$proceso->materia->año.'° año)'}}</p>
 				@endforeach
 			</li>
 
