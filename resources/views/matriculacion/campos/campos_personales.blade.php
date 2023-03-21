@@ -21,7 +21,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="telefono">Teléfono Celular</label>
-                <input type="text" name="telefono" id="telefono" value=" {{ isset($matriculacion) ? $matriculacion->telefono : old('telefono') }} " class="form-control"  required />
+                <input type="number" name="telefono" id="telefono" value=" {{ isset($matriculacion) ? $matriculacion->telefono : old('telefono') }} " class="form-control"  required />
 
                 @error('telefono')
                 <span class="invalid-feedback d-block" role="alert">
@@ -31,7 +31,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="telefono_fijo">Teléfono Fijo</label>
-                <input type="text" name="telefono_fijo" id="telefono_fijo" value=" {{ isset($matriculacion) ? $matriculacion->telefono_fijo : old('telefono') }} " class="form-control"  >
+                <input type="number" name="telefono_fijo" id="telefono_fijo" value=" {{ isset($matriculacion) ? $matriculacion->telefono_fijo : old('telefono') }} " class="form-control"  >
 
                 @error('telefono_fijo')
                 <span class="invalid-feedback d-block" role="alert">
