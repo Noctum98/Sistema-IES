@@ -232,7 +232,9 @@ class MatriculacionController extends Controller
 
         $alumno->update($request->all());
 
-        Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
+        if(!Session::has('coordinador') || !Session::has('seccionAlumnos')){
+            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
+        }
 
         return redirect()->route('matriculacion.edit', [
             'alumno_id' => $alumno->id,
