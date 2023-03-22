@@ -7,6 +7,7 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
+use App\Services\CicloLectivoService;
 use App\Services\ProcesoModularService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -17,6 +18,19 @@ use Illuminate\Support\Facades\Auth;
 
 class ProcesoModularController extends Controller
 {
+    /**
+     * @var CicloLectivoService
+     */
+    private $cicloLectivoService;
+
+    /**
+     * @param CicloLectivoService $cicloLectivoService
+     */
+    public function __construct(CicloLectivoService $cicloLectivoService)
+    {
+        $this->cicloLectivoService = $cicloLectivoService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,11 +44,17 @@ class ProcesoModularController extends Controller
     /**
      * Muestra los procesos de los cargos de cada módulo ponderados.
      * @param Materia $materia
+     * @param int|null $ciclo_lectivo
      * @param int|null $cargo_id
      * @return Application|Factory|View
      */
-    public function listado(Materia $materia, int $cargo_id = null)
+    public function listado(Materia $materia, int $ciclo_lectivo =  null, int $cargo_id = null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+
         $cargo = Cargo::find($cargo_id);
         $puedeProcesar = false;
         if($cargo and Auth::user()->hasCargo($cargo_id) and $cargo->responsableTFI($materia->id)){
@@ -46,13 +66,16 @@ class ProcesoModularController extends Controller
 
         $acciones = [];
         $serviceModular = new ProcesoModularService();
-        if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
-            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
-            $serviceModular->crearProcesoModular($materia->id);
 
+
+        if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id, $ciclo_lectivo)) > 0) {
+            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+            $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
         }
 
-        $serviceModular->cargarPonderacionEnProcesoModular($materia);
+        $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
+
+
         $acciones[] = "Procesando % modulares para {$materia->nombre}";
 //        if ($serviceModular->obtenerTimeUltimaCalificacion($materia->id)) {
 //            if ($serviceModular->obtenerTimeUltimaCalificacion(
@@ -71,7 +94,7 @@ class ProcesoModularController extends Controller
             $acciones[] = "Procesando % asistencia para {$materia->nombre}";
         }
 
-        $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id);
+        $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
 
         $estados =  Estados::all();
 
@@ -81,7 +104,9 @@ class ProcesoModularController extends Controller
                 'acciones' => $acciones,
                 'procesos' => $procesos,
                 'puede_procesar' => $puedeProcesar,
-                'estados' => $estados
+                'estados' => $estados,
+                'ciclo_lectivo' => $ciclo_lectivo,
+                'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
             ]
         );
     }
