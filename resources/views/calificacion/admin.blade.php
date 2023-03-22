@@ -16,7 +16,7 @@
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
                             data-bs-toggle="dropdown">
-                        Ciclo lectivo
+                        Ciclo lectivo {{$ciclo_lectivo}}
                     </button>
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
@@ -52,7 +52,7 @@
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
                         @if($cargo)
-                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, 'comision_id' => $comision->id]) }}"
+                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $ciclo_lectivo ,'comision_id' => $comision->id]) }}"
                                class="btn btn-info">
                                 Ver Planilla de Calificaciones / {{$cargo->nombre}} / {{$comision->nombre}}
                             </a>
@@ -68,7 +68,7 @@
             @else
                 @if($cargo && $materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2')
 
-                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id]) }}"
                        class="btn btn-info">
                         Ver Planilla de Calificaciones {{$cargo->nombre}}
                     </a>
