@@ -67,10 +67,7 @@ class MatriculacionController extends Controller
                 $check_year = true;
             }
         } else {
-            if($carrera->sede_id != 13)
-            {
-                $check_year = true;
-            }
+            $check_year = true;
         }
 
         if ($check_year) {
