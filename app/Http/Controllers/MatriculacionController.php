@@ -33,7 +33,7 @@ class MatriculacionController extends Controller
     ) {
         $this->procesoService = $procesoService;
         $this->mailService = $mailService;
-        $this->middleware('app.auth',['only'=>['index']);
+        $this->middleware('app.auth',['only'=>['index']]);
 
         //$this->middleware('app.roles:admin',['only'=>['create']]);
 
