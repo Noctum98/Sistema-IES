@@ -64,13 +64,11 @@ class ExcelController extends Controller
         return Excel::download(new AllAlumnosExport($carreras, $sede_id), 'Planilla de alumnos completa.xlsx');
     }
 
-    public function alumnos_datos($carrera_id)
+    public function alumnos_datos($carrera_id,$ciclo_lectivo = null)
     {
-        $carrera = Carrera::select('id','nombre')->where('id',$carrera_id)->first();
+        $carrera = Carrera::where('id',$carrera_id)->first();
         
-        $alumnos = Alumno::whereHas('carreras',function($query) use ($carrera_id){
-            return $query->where('carreras.id',$carrera_id);
-        })->get();
+        $alumnos = $carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo);
 
         return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos '.$carrera->nombre.'.xlsx');
     }

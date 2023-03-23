@@ -9,7 +9,7 @@
         <br>
         <p> Deberá inscribirse como <b>"ESTUDIANTE CONDICIONAL"</b> a Segundo Año, si:</p>
         <p>a- Tiene todos los espacios curriculares / módulos de primer año regulares.</p>
-        <p>b- Y adeuda la acreditación de uno o más espacio/s curricular/es / módulos de primer año para cumplir con la mitad de los espacios / módulos acreditados (Ud. deberá tener el pedido de condicionalidad "aprobado" en su solicitud de excepción al Consejo Académico)</p>
+        <p>b- Y adeuda la acreditación de uno espacio curricular/ módulo de primer año para cumplir con la mitad de los espacios / módulos acreditados (Ud. deberá tener el pedido de condicionalidad "aprobado" en su solicitud de excepción al Consejo Académico)</p>
         <br>
         <p>Deberá inscribirse como  <b>"ESTUDIANTE RECURSANTE"</b> a Segundo Año, si</p>
         <p>a- No regularizó todos los espacios curriculares/módulos de segundo año. </p>

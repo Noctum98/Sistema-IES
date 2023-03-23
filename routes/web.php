@@ -565,7 +565,7 @@ Route::prefix('excel')->group(function () {
     Route::get('procesosModular/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
         'excel.procesosModular'
     );
-    Route::get('alumnosDatos/{carrera_id}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
+    Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
     Route::get('/descargarFiltro', [ExcelController::class, 'filtro_alumnos']);
 });
 

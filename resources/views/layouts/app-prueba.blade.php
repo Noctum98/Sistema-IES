@@ -82,6 +82,7 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 p-3">
+                    @include('layouts.alerts')
                     @yield('content')
                 </div>
             </main>

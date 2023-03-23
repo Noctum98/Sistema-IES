@@ -45,12 +45,12 @@ class MatriculacionController extends Controller
         $user_id = Auth::user()->id;
 
         $carreras = Carrera::whereHas('alumnos', function ($query) use ($user_id) {
-                $query->where('alumnos.user_id', $user_id);
-            })
+            $query->where('alumnos.user_id', $user_id);
+        })
             ->with(['alumnos' => function ($query) use ($user_id) {
                 $query->where('alumnos.user_id', $user_id);
             }, 'sede'])
-            ->where('matriculacion_habilitada',true)->get();
+            ->where('matriculacion_habilitada', true)->get();
 
 
         return view('matriculacion.index', ['carreras' => $carreras]);
@@ -67,24 +67,19 @@ class MatriculacionController extends Controller
                 $check_year = true;
             }
         } else {
-            if($carrera->sede_id != 13)
-            {
-                $check_year = true;
-            }
+            $check_year = true;
         }
 
         if ($check_year) {
-            if($carrera->matriculacion_habilitada)
-            {
+            if ($carrera->matriculacion_habilitada) {
                 return view('matriculacion.create', [
                     'carrera' => $carrera,
                     'año' => $year,
                     'email_checked' => $email_checked
                 ]);
-            }else{
+            } else {
                 return redirect('/');
             }
-
         } else {
             return redirect('/');
         }
@@ -95,18 +90,18 @@ class MatriculacionController extends Controller
         $alumno = Alumno::find($alumno_id);
         $carrera = Carrera::find($carrera_id);
 
-        if(!$alumno->aprobado || !Session::has('alumno'))
-        {
+
+        if (!$alumno->aprobado || !Session::has('alumno')) {
             if (!$año) {
                 $alumno_carrera = AlumnoCarrera::where([
                     'alumno_id' => $alumno_id,
                     'carrera_id' => $carrera_id
-                ])->first();
-    
+                ])->latest()->first();
+
                 $año = $alumno_carrera->año;
             }
-        }else{
-            return redirect('/')->with(['success'=>'']);
+        } else {
+            return redirect()->back()->with(['alert_success' => 'Tu matriculación ya fue verificada, no puedes editarla.']);
         }
 
         return view('matriculacion.edit', [
@@ -227,22 +222,21 @@ class MatriculacionController extends Controller
             'ciclo_lectivo' => date('Y')
         ];
 
-        if(!$alumno_carrera)
-        {
+        if (!$alumno_carrera) {
             $alumno_carrera = AlumnoCarrera::create($datos);
-        }else{
+        } else {
             $alumno_carrera->update($datos);
         }
 
         if (isset($request['materias'])) {
-            Proceso::where(['alumno_id'=>$alumno->id,'ciclo_lectivo'=>date('Y')])->delete();
+            Proceso::where(['alumno_id' => $alumno->id, 'ciclo_lectivo' => date('Y')])->delete();
             $this->procesoService->inscribir($alumno->id, $request['materias']);
         }
 
         $alumno->update($request->all());
 
-        if(!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')){
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno,$carrera));
+        if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
+            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
         }
 
         return redirect()->route('matriculacion.edit', [
@@ -315,7 +309,7 @@ class MatriculacionController extends Controller
         if ($mail_check && $mail_check->checked) {
             $alumno = Alumno::where('email', $mail_check->email)->first();
 
-            if ($alumno) {
+            if ($alumno && $alumno->lastProcesoCarrera($carrera_id)) {
                 return redirect()->route('matriculacion.edit', [
                     'carrera_id' => $carrera_id,
                     'alumno_id'  => $alumno->id,
@@ -329,12 +323,12 @@ class MatriculacionController extends Controller
                 ]);
             }
         } elseif ($mail_check && !$mail_check->checked) {
-            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+            //Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         } else {
             $request['timecheck'] = time();
             $mail_check = MailCheck::create($request->all());
 
-            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+            //Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         }
 
         return view('matriculacion.card_email_check');
