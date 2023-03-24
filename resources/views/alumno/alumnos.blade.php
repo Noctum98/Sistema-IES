@@ -60,10 +60,11 @@
 
                 </div>
 				<div class="col-md-3">
-				<a href="{{ route('excel.alumnosDatos',$carrera->id) }}" class="d-block btn btn-secondary" ><i class="fas fa-download"></i> Descargar Datos</a>
 
 				</div>
 				-->
+				<a href="{{ route('excel.alumnosDatos',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="d-block btn btn-secondary mb-2" ><i class="fas fa-download"></i> Descargar Datos</a>
+
             </div>
             <div id="accordion">
                 <div class="card">

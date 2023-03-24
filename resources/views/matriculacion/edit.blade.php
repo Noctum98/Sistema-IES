@@ -19,8 +19,8 @@
     @endif
     <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">
 
-        @if(isset($matriculacion) && Auth::user())
-        @include('matriculacion.campos.campos_procesos')
+        @if(isset($matriculacion))
+            @include('matriculacion.campos.campos_procesos')
         @endif
 
         @if(Session::has('coordinador') && isset($matriculacion))
@@ -123,6 +123,10 @@
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
+
+        @if($año == 1 && !Auth::user())
+        <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+        @endif
 
         <input type="submit" value="Editar Inscripción" class="btn btn-primary mt-3 col-md-12">
     </form>

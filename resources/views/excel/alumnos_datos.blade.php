@@ -4,7 +4,6 @@
             <th scope="col">Apellido y Nombre</th>
             <th scope="col">D.N.I</th>
             <th scope="col">Email</th>
-            <th scope="col">Carrera</th>
             <th scope="col">Cohorte</th>
             <th scope="col">Localidad</th>
             <th scope="col">Provincia</th>
@@ -23,7 +22,6 @@
             <td>{{ mb_strtoupper($alumno->apellidos).', '.ucwords($alumno->nombres) }}</td>
             <td>{{ $alumno->dni }}</td>
             <td>{{ $alumno->email }}</td>
-            <td> {{$alumno->carreras()->first()->nombre }} </td>
             <td>{{ $alumno->cohorte ?? '-' }}</td>
             <td>{{ $alumno->localidad }}</td>
             <td>{{ $alumno->provincia }}</td>

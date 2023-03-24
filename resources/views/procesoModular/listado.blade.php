@@ -30,7 +30,8 @@
                 @endforeach
             </div>
         @endif
-
+<div class="row">
+    <div class="col-8">
         <h4 class="text-info">
             Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
         </h4>
@@ -48,7 +49,28 @@
                 @endforeach
             </h6>
         @endif
-        <hr>
+    </div>
+    <div class="col-4">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                    data-bs-toggle="dropdown">
+                Ciclo lectivo {{$ciclo_lectivo}}
+            </button>
+            <ul class="dropdown-menu">
+                @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                    <li>
+
+                            <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                               href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo->id]) }}">
+                                {{$i}}
+                        </a>
+
+                    </li>
+                @endfor
+            </ul>
+        </div>
+    </div>
+</div>
         <div id="alerts">
         </div>
         <p><strong><i>Importante:</i></strong></p>
