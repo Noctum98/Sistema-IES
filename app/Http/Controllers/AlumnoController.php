@@ -10,6 +10,7 @@ use App\Services\CicloLectivoService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class AlumnoController extends Controller
@@ -137,11 +138,25 @@ class AlumnoController extends Controller
 
         $ciclo_lectivo = $ciclo_lectivo?? date('Y');
 
-        return view('alumno.detail', [
-            'alumno'    =>  $alumno,
-            'carreras' => $carreras,
-            'ciclo_lectivo' => $ciclo_lectivo
-        ]);
+        $pase = true;
+        if(Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin')))
+        {
+            if(Auth::user()->id != $alumno->user_id)
+            {
+                $pase = false;
+            }
+        }
+
+        if($pase)
+        {
+            return view('alumno.detail', [
+                'alumno'    =>  $alumno,
+                'carreras' => $carreras,
+                'ciclo_lectivo' => $ciclo_lectivo
+            ]);
+        }else{
+            return redirect()->back();
+        }
     }
 
     public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $localidad = null, $edad = null)

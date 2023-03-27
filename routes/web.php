@@ -317,7 +317,7 @@ Route::prefix('proceso')->group(function () {
     );
     Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
-    Route::get('listado/{materia_id}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
+    Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
         'proceso.listado'
     );
 
@@ -559,7 +559,7 @@ Route::prefix('excel')->group(function () {
     Route::get('alumnos/{carrera_id}/{year}', [ExcelController::class, 'alumnos_year'])->name('excel.alumnosAño');
     Route::get('alumnos/all', [ExcelController::class, 'all_alumnos']);
     Route::get('alumnos/sedes/sede/{sede_id}', [ExcelController::class, 'all_alumnos']);
-    Route::get('procesos/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
+    Route::get('procesos/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
     Route::get('procesosModular/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(

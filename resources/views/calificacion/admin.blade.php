@@ -57,11 +57,11 @@
                                 Ver Planilla de Calificaciones / {{$cargo->nombre}} / {{$comision->nombre}}
                             </a>
                         @else
-                            <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                            <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'ciclo_lectivo'=>$ciclo_lectivo,'comision_id' => $comision->id]) }}"
                                class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                         @endif
                     @elseif(Session::has('coordinador') || Session::has('seccionAlumnos'))
-                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo ,'comision_id' => $comision->id]) }}"
                            class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                     @endif
                 @endforeach
@@ -77,7 +77,7 @@
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
                 @else
-                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
+                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-info">
                         Ver procesos
                     </a>
                 @endif

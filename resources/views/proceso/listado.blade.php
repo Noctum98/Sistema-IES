@@ -32,10 +32,11 @@
     <p class="text-primary"><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
 
 
+    @if(count($procesos) > 0)
     @if($comision)
-    <!-----<a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>-->
+    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
     @else
-    <!-----<a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success"> <i class="fas fa-download"></i> Descargar Planilla</a>-->
+    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-success"> <i class="fas fa-download"></i> Descargar Planilla</a>
     @endif
 
     @if(Session::has('coordinador') || Session::has('admin'))
@@ -46,7 +47,6 @@
         @endif
     @endif
 
-    @if(count($procesos) > 0)
     <div class="table-responsive tableFixHead">
 
         <table class="table mt-4">
