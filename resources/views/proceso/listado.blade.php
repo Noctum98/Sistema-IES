@@ -17,7 +17,7 @@
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
     <h2 class="h1 text-info">
-        Notas de Proceso de {{ $materia->nombre }} @if($comision)
+        Notas de Proceso de {{ $materia->nombre.' ('.$ciclo_lectivo.')' }} @if($comision)
         <br /><small>{{$comision->nombre}}</small>
         @endif
     </h2>
