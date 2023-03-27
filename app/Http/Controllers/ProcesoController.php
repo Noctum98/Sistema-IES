@@ -72,11 +72,12 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function vista_listado($materia_id, $comision_id = null)
+    public function vista_listado($materia_id,$ciclo_lectivo,$comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -112,6 +113,7 @@ class ProcesoController extends Controller
             'comision' => $comision,
             'calificaciones' => $calificaciones,
             'estados' => $estados,
+            'ciclo_lectivo'=>$ciclo_lectivo
         ]);
     }
 

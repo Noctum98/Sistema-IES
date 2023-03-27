@@ -73,11 +73,12 @@ class ExcelController extends Controller
         return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos '.$carrera->nombre.'.xlsx');
     }
 
-    public function planilla_notas_tradicional($materia_id, $comision_id = null)
+    public function planilla_notas_tradicional($materia_id, $ciclo_lectivo ,$comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
 
 
         if ($comision_id) {

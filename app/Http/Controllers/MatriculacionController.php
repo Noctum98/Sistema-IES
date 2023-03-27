@@ -38,7 +38,7 @@ class MatriculacionController extends Controller
         //$this->middleware('app.roles:admin',['only'=>['create']]);
 
         //$this->middleware('app.auth',['only'=>['create','edit','index']]);
-        // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['create','edit','index']]);
+        $this->middleware('app.roles:admin',['only'=>['create']]);
 
         // $this->middleware('app.auth',['only'=>['edit','update']]);
         // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
