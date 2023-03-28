@@ -10,6 +10,10 @@ use Illuminate\Queue\SerializesModels;
 class MatriculacionDeleted extends Mailable
 {
     use Queueable, SerializesModels;
+    public $alumno;
+    public $carrera;
+    public $errores;
+    public $motivo;
 
     /**
      * Create a new message instance.
