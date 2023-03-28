@@ -289,15 +289,19 @@ class MatriculacionController extends Controller
             }
     
             $alumno->delete();
+
+            return redirect()->route('alumno.carrera', [
+                'carrera_id' => $carrera->id
+            ])->with([
+                'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
+            ]);
+        }else{
+            return redirect()->back()->with(['alert_warning'=>'Se ha eliminado la matriculación, y se le ha enviado un correo con una notificación al alumno'])
         }
 
         Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno, $carrera, $request));
 
-        return redirect()->route('alumno.carrera', [
-            'carrera_id' => $carrera->id
-        ])->with([
-            'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
-        ]);
+        
     }
 
 
