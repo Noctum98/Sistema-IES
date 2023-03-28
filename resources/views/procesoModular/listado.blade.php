@@ -16,6 +16,11 @@
             top: 0;
             z-index: 10;
         }
+        .thead-dark th {
+            color: white;
+            background-color: #343a40;
+            border-color: rgba(52, 58, 64, 0.75);
+        }
     </style>
     <div class="container-fluid w-100" id="container-scroll">
         <a href="{{url()->previous()}}">
