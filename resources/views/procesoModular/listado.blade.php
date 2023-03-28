@@ -61,7 +61,7 @@
                     <li>
 
                             <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                               href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo->id]) }}">
+                               href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
                                 {{$i}}
                         </a>
 
