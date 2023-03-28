@@ -8,9 +8,11 @@ use App\Mail\MatriculacionSuccessEmail;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Asistencia;
+use App\Models\Calificacion;
 use App\Models\Carrera;
 use App\Models\MailCheck;
 use App\Models\Proceso;
+use App\Models\ProcesoCalificacion;
 use App\Models\User;
 use App\Services\MailService;
 use App\Services\ProcesoService as ServicesProcesoService;
@@ -33,15 +35,6 @@ class MatriculacionController extends Controller
     ) {
         $this->procesoService = $procesoService;
         $this->mailService = $mailService;
-        //$this->middleware('app.auth',['only'=>['index']]);
-
-        //$this->middleware('app.roles:admin',['only'=>['create']]);
-
-        //$this->middleware('app.auth',['only'=>['create','edit','index']]);
-        //$this->middleware('app.roles:admin',['only'=>['create']]);
-
-        // $this->middleware('app.auth',['only'=>['edit','update']]);
-        // $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente',['only'=>['edit','update']]);
     }
 
     public function index(Request $request)
@@ -259,15 +252,12 @@ class MatriculacionController extends Controller
 
         $procesos = Proceso::where('alumno_id', $alumno->id)->get();
 
-        Mail::to($alumno->email)->queue(new MatriculacionDeleted($alumno, $carrera, $request));
-
         foreach ($procesos as $proceso) {
             if ($proceso->materia->carrera_id == $carrera->id) {
+                Asistencia::where('proceso_id',$proceso->id)->delete();
+                ProcesoCalificacion::where('proceso_id',$proceso->id)->delete();
                 $proceso->delete();
             }
-
-            $proceso->asistencia()->delete();
-            $proceso->delete();
         }
 
         AlumnoCarrera::where([
@@ -275,24 +265,33 @@ class MatriculacionController extends Controller
             'carrera_id' => $carrera->id
         ])->delete();
 
-        //Asistencia::where('alumno_id',$alumno->id)->delete();
-        //Proceso::where('alumno_id',$alumno->id)->delete();
-
-        if ($alumno->comisiones()) {
-            $alumno->comisiones()->detach();
-        }
-
-        if ($alumno->user_id) {
-            $user = User::find($alumno->user_id);
-
-            if ($user) {
-                $user->carreras()->detach();
-                $user->roles()->detach();
-                $user->delete();
+        if($alumno->carreras()->count() == 0)
+        {
+            if ($alumno->comisiones()) {
+                $alumno->comisiones()->detach();
             }
+    
+            if ($alumno->user_id) {
+                $user = User::find($alumno->user_id);
+    
+                if ($user) {
+                    if($user->carreras())
+                    {
+                        $user->carreras()->detach();
+                    }
+
+                    if($user->roles())
+                    {
+                        $user->roles()->detach();
+                    }
+                    $user->delete();
+                }
+            }
+    
+            $alumno->delete();
         }
 
-        $alumno->delete();
+        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno, $carrera, $request));
 
         return redirect()->route('alumno.carrera', [
             'carrera_id' => $carrera->id
