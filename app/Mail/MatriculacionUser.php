@@ -11,6 +11,8 @@ class MatriculacionUser extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $alumno;
+
     /**
      * Create a new message instance.
      *

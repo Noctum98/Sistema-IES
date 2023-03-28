@@ -121,6 +121,8 @@
 					@endif
 				</li>
 			</ul>
+			<span class="text-success" id="password_rees"></span>
+
 		</div>
 
 		<div class="d-inline col-md-12">
