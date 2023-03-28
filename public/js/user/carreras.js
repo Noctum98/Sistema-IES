@@ -62,16 +62,16 @@ $(document).ready(function () {
     $(".btn-password").click(function(e){
         let user_id = $(this).attr('id');
         $("#spinner-"+user_id).removeClass('d-none');
-console.log($("#spinner-"+user_id));
+        console.log($("#spinner-"+user_id));
         let ruta = '/usuarios/reestablecer_password/'+user_id;
 
         $.get(ruta, function (response, state) {
             if(response.status == 'success'){
                 $("#spinner-"+user_id).addClass('d-none');
                 $("#check-"+user_id).removeClass('d-none');
+                $("#password_rees").html("La contraseña se ha restablecido a: <b>12345678</b>");
 
-
-            }
+            }   
         });
     });
 
