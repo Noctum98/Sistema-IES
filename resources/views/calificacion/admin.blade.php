@@ -72,7 +72,7 @@
                        class="btn btn-info">
                         Ver Planilla de Calificaciones {{$cargo->nombre}}
                     </a>
-                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
+                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id'=> $cargo->id]) }}"
                        class="btn btn-secondary">
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
