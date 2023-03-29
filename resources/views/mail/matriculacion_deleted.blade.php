@@ -49,7 +49,7 @@
 	<div class="row">
 		<div class="detalle-pre">
 			<br>
-			<p>Se ha eliminado tu inscripción de {{ $carrera->nombre." ".$carrera->sede->nombre.' ('.$carrera->turno.') ' }}</p>
+			<p>Se ha eliminado tu inscripción de {{ $carrera->nombre." ".$carrera->sede->nombre.' ('.$carrera->turno.') '.$carrera->resolucion }}</p>
 			<p><strong>MOTIVOS:</strong></p>
 			@if($errores)
 				@foreach($errores as $error)
