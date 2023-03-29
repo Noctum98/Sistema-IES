@@ -72,7 +72,7 @@
                        class="btn btn-info">
                         Ver Planilla de Calificaciones {{$cargo->nombre}}
                     </a>
-                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
+                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id'=> $cargo->id]) }}"
                        class="btn btn-secondary">
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
@@ -120,6 +120,7 @@
                         <th scope="col">Cargo</th>
                     @endif
                     <th scope="col">Comisión</th>
+                    <th scope="col">Descripción</th>
                     <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>-</th>
                 </tr>
                 </thead>
@@ -142,6 +143,7 @@
                         @else
                             <td>General</td>
                         @endif
+                        <td>{{ $calificacion->descripction }}</td>
                         <td>
                             <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary
                     @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">

@@ -6,7 +6,8 @@
         </a>
         <h4 class="text-info">
             {{ $calificacion->nombre.' - '.$calificacion->materia->nombre}}
-            <small>{{$calificacion->tipo()->first()->nombre}}</small>
+            <small>{{$calificacion->tipo()->first()->nombre}}</small><br/>
+            <small>{{$calificacion->description}}</small>
         </h4>
         @if($calificacion->comision)
             <h4> Comisión: {{$calificacion->comision->nombre}}</h4>

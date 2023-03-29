@@ -27,6 +27,13 @@
         <input type="date" name="fecha" id="fecha" class="form-control" value="{{ old('fecha') ?? $calificacion->fecha }}" required>
     </div>
 
+    <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea  name="description" id="description" class="form-control" required>
+            {{ old('description') ?? $calificacion->description }}
+        </textarea>
+    </div>
+
     @if($calificacion->materia->getTotalAttribute() > 0)
         <div class="form-group">
             <label for="comision_id">Comisión</label>
