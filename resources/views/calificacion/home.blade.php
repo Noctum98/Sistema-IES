@@ -6,7 +6,6 @@
                 <h4 class="text-info">
                     Planilla de Calificaciones<br/>
                     <small>Por favor seleccione materia/cargo {{$ciclo_lectivo}}</small>
-
                 </h4>
             </div>
             <div class="col-4">
@@ -17,12 +16,9 @@
                     </button>
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
-
                             <li>
                                 <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('calificacion.home', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
                             </li>
-
-
                         @endfor
                     </ul>
                 </div>
