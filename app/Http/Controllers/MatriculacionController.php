@@ -330,12 +330,12 @@ class MatriculacionController extends Controller
                 ]);
             }
         } elseif ($mail_check && !$mail_check->checked) {
-            //Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         } else {
             $request['timecheck'] = time();
             $mail_check = MailCheck::create($request->all());
 
-            //Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         }
 
         return view('matriculacion.card_email_check');
