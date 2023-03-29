@@ -36,7 +36,7 @@
                         <input type="date" name="fecha" id="fecha" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="description">Ddescripción</label>
+                        <label for="description">Descripción</label>
                         <textarea name="description" id="description" class="form-control" required></textarea>
                     </div>
 
