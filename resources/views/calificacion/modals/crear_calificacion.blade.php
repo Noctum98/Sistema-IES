@@ -35,6 +35,10 @@
                         <label for="fecha">Fecha</label>
                         <input type="date" name="fecha" id="fecha" class="form-control" required>
                     </div>
+                    <div class="form-group">
+                        <label for="description">Ddescripción</label>
+                        <textarea name="description" id="description" class="form-control" required></textarea>
+                    </div>
 
                     @if($materia->getTotalAttribute() > 0)
                     <div class="form-group">
