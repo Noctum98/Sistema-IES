@@ -29,7 +29,7 @@
     <p class="text-primary"><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
     <p class="text-primary"><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
     <p class="text-primary"><i>Al posar el mouse sobre el nombre de la calificación, muestra el nombre completo.</i></p>
-    <p class="text-primary"><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
+    <p class="text-primary"><i>Al hacer clic sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
 
 
     @if(count($procesos) > 0)
