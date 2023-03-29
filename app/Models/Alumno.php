@@ -169,7 +169,7 @@ class Alumno extends Model
 
     // Functiones Estáticas
 
-    public static function alumnosAño($year,$carrera_id)
+    public static function alumnosAño($year,$carrera_id,$ciclo_lectivo)
     {
         return Alumno::select(
             'alumnos.nombres',
@@ -183,6 +183,7 @@ class Alumno extends Model
         ->join('alumno_carrera','alumno_carrera.alumno_id','alumnos.id')
         ->where('alumno_carrera.año',$year)
         ->where('alumno_carrera.carrera_id',$carrera_id)
+        ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo)
         ->orderBy('alumnos.apellidos','asc')
         ->get();
     }

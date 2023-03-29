@@ -29,9 +29,9 @@ class ExcelController extends Controller
         $this->alumnoService = $alumnoService;
     }
 
-    public function alumnos_year($carrera_id, $year)
+    public function alumnos_year($carrera_id, $year,$ciclo_lectivo)
     {
-        $alumnos = Alumno::alumnosAño($year, $carrera_id);
+        $alumnos = Alumno::alumnosAño($year, $carrera_id,$ciclo_lectivo);
         $generos = [
             'hombres'   => 0,
             'mujeres'   => 0,
