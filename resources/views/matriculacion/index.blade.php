@@ -14,6 +14,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Carrera</th>
+                    <th scope="col">Res</th>
                     <th scope="col">UA</th>
                     <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 </tr>
@@ -26,6 +27,8 @@
 
 
                     <td>{{ $carrera->nombre.' - '.strtoupper($carrera->turno) }}</td>
+                                        <td>{{ $carrera->resolucion }}</td>
+
                     <td>{{ $carrera->sede->nombre}}</td>
 
                     <td>
