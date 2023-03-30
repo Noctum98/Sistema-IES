@@ -23,6 +23,7 @@ use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\SedeUser;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -370,9 +371,14 @@ class UserController extends Controller
 
             $user_exists = User::where('email', $alumno->email)
                 ->orWhere('username', $alumno->dni)->first();
-
+            
             if ($user_exists) {
-                return redirect()->back()->with(['error' => 'Ya existe un usuario con este email o nombre de usuario']);
+                if($user_exists->hasRole('profesor') && (!$user_exists->hasRole('coordinador') && !$user_exists->hasRole('seccionAlumnos')))
+                {
+                    $user = $user_exists;
+                }else{
+                    return redirect()->back()->with(['error' => 'Ya existe un usuario con este email o nombre de usuario']);
+                }
             } else {
                 $user = User::create($data);
             }

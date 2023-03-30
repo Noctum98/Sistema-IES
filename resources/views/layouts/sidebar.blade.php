@@ -99,6 +99,12 @@
                     </nav>
                 </div>
                 @endif
+                @if(Session::has('profesor'))
+                <a class="nav-link" href="{{ route('actasVolantes.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                    Mesas de Exámenes
+                </a>
+                @endif
 
 
                 @if(Session::has('alumno'))
@@ -128,12 +134,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca
                 </a>
-                @if(Session::has('profesor'))
-                <a class="nav-link" href="{{ route('actasVolantes.index') }}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                    Mesas de Exámenes
-                </a>
-                @endif
+                
             </div>
         </div>
     </nav>

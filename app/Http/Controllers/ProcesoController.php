@@ -269,6 +269,7 @@ class ProcesoController extends Controller
                         'alumno_id' => $alumno->id,
                         'estado' => 'en curso',
                         'materia_id' => $proceso,
+                        'ciclo_lectivo' => date('Y')
                     ]);
                 }
             }
