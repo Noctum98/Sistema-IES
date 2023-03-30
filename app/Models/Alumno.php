@@ -130,7 +130,7 @@ class Alumno extends Model
 
     public function hasProceso($materia_id)
     {
-        if($this->procesos->where('materia_id',$materia_id)->first())
+        if($this->procesos->where('materia_id',$materia_id)->where('ciclo_lectivo',date('Y'))->first())
         {
             return true;
         }
