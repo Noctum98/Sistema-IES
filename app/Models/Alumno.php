@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class Alumno extends Model
@@ -62,7 +63,7 @@ class Alumno extends Model
         'fecha_ultima_acreditacion'
     ];
 
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     public function user()
     {
@@ -129,7 +130,7 @@ class Alumno extends Model
 
     public function hasProceso($materia_id)
     {
-        if($this->procesos->where('materia_id',$materia_id)->first())
+        if($this->procesos->where('materia_id',$materia_id)->where('ciclo_lectivo',date('Y'))->first())
         {
             return true;
         }

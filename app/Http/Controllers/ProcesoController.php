@@ -250,8 +250,9 @@ class ProcesoController extends Controller
     {
         $alumno = Alumno::find($id);
         $procesos = $request['materias'];
+        $alumno_procesos = $alumno->procesos->where('ciclo_lectivo',date('Y'));
 
-        foreach ($alumno->procesos as $proceso) {
+        foreach ($alumno_procesos as $proceso) {
 
             if (!$procesos || !in_array($proceso->materia_id, $procesos)) {
                 $proceso->delete();
@@ -269,6 +270,7 @@ class ProcesoController extends Controller
                         'alumno_id' => $alumno->id,
                         'estado' => 'en curso',
                         'materia_id' => $proceso,
+                        'ciclo_lectivo' => date('Y')
                     ]);
                 }
             }

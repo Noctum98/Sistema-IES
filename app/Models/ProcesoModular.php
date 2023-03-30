@@ -6,10 +6,11 @@ use App\Services\ProcesoModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProcesoModular extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $table = "proceso_modular";
     protected $fillable = [
