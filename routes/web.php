@@ -42,6 +42,8 @@ use App\Models\Calificacion;
 use App\Models\Comision;
 use App\Models\Materia;
 use App\Models\Proceso;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -582,5 +584,42 @@ Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
-    dd(ini_get('post_max_size'));
+    $archivo = fopen('backups/procesos.csv', 'r');
+    $datos = [];
+    while ($fila = fgetcsv($archivo)) {
+        $datos[] = $fila;
+    }
+    fclose($archivo);
+    $contador = 0;
+    $procesos_all = Proceso::pluck('id')->toArray();
+
+    foreach($datos as $key => $proceso)
+    {
+        $proceso_id = $proceso[0];
+        if(!in_array($proceso_id,$procesos_all))
+        {
+            DB::table('procesos')->insert([
+                'id' => $proceso_id,
+                'materia_id' => $proceso[1] == "" ? null : $proceso[1],
+                'alumno_id' => $proceso[2] == "" ? null : $proceso[2],
+                'estado_id' => $proceso[3] == "" ? null : $proceso[3],
+                'operador_id' => $proceso[4] == "" ? null : $proceso[4],
+                'cierre' => $proceso[5] == "" ? null : $proceso[5],
+                'nota_global' => $proceso[6] == "" ? null : $proceso[6],
+                'final_asistencia' => $proceso[7] == "" ? null : $proceso[7],
+                'final_trabajos' => $proceso[8] == "" ? null : $proceso[8],
+                'porcentaje_final_trabajos' => $proceso[9] == "" ? null : $proceso[9],
+                'final_parciales' => $proceso[10] == "" ? null : $proceso[10],
+                'final_calificaciones' => $proceso[11] == "" ? null : $proceso[11],
+                'nota_recuperatorio' => $proceso[12] == "" ? null : $proceso[12],
+                'observacion_global' => $proceso[13] == "" ? null : $proceso[13],
+                'created_at' => $proceso[14] == "" ? null : $proceso[14],
+                'updated_at' => $proceso[15] == "" ? null : $proceso[15],
+                'ciclo_lectivo' => $proceso[16] == "" ? null : $proceso[16]
+            ]);
+            $contador++;
+            Log::info("$contador - Proceso $proceso_id: Creado");
+            echo "$contador - Proceso $proceso_id: Creado";
+        }
+    }
 });
