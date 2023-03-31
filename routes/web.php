@@ -591,12 +591,12 @@ Route::get('/prueba-post-size', function () {
     }
     fclose($archivo);
     $contador = 0;
-    $procesos_all = Proceso::pluck('id')->toArray();
 
     foreach($datos as $key => $proceso)
     {
         $proceso_id = $proceso[0];
-        if(!in_array($proceso_id,$procesos_all))
+        $proceso_exist = Proceso::find($proceso_id);
+        if(!$proceso_exist)
         {
             DB::table('procesos')->insert([
                 'id' => $proceso_id,
