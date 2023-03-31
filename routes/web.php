@@ -595,7 +595,7 @@ Route::get('/prueba-post-size', function () {
     foreach($datos as $key => $proceso)
     {
         $proceso_id = $proceso[0];
-        $proceso_exist = Proceso::withTrashed()->find($proceso_id);
+        $proceso_exist = Proceso::where('id',$proceso_id)->withTrashed()->first();
         if(!$proceso_exist)
         {
             DB::table('procesos')->insert([
