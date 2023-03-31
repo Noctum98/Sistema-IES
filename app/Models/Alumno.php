@@ -60,7 +60,8 @@ class Alumno extends Model
         'cohorte',
         'active',
         'fecha_primera_acreditacion',
-        'fecha_ultima_acreditacion'
+        'fecha_ultima_acreditacion',
+        'deleted_at'
     ];
 
     use HasFactory,SoftDeletes;

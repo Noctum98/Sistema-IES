@@ -370,7 +370,7 @@ class UserController extends Controller
             ];
 
             $user_exists = User::where('email', $alumno->email)
-                ->orWhere('username', $alumno->dni)->first();
+                ->orWhere('username', $alumno->dni)->withTrashed()->first();
             
             if ($user_exists) {
                 if($user_exists->hasRole('profesor') && (!$user_exists->hasRole('coordinador') && !$user_exists->hasRole('seccionAlumnos')))

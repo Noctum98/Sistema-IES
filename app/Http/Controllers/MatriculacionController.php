@@ -151,11 +151,16 @@ class MatriculacionController extends Controller
         $alumno = Alumno::where([
             'dni' => $request['dni'],
             'cuil' => $request['cuil']
-        ])->first();
+        ])->withTrashed()->first();
 
         if (!$alumno) {
 
             $alumno = Alumno::create($request->all());
+        }
+
+        if($alumno->deleted_at != null)
+        {
+            $alumno->restore();
         }
 
         if ($alumno->hasCarrera($carrera_id)) {
