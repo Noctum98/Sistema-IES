@@ -8,11 +8,13 @@
     <hr>
     <h4>Elige la carrera:</h4>
     <div class="table-responsive">
+        @if($carreras->count() > 0)
         <table class="table mt-2">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Carrera</th>
+                    <th scope="col">Res</th>
                     <th scope="col">UA</th>
                     <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 </tr>
@@ -25,6 +27,8 @@
 
 
                     <td>{{ $carrera->nombre.' - '.strtoupper($carrera->turno) }}</td>
+                                        <td>{{ $carrera->resolucion }}</td>
+
                     <td>{{ $carrera->sede->nombre}}</td>
 
                     <td>
@@ -38,6 +42,9 @@
                 @endforeach
             </tbody>
         </table>
+        @else
+        <p>No hay carreras habilitadas</p>
+        @endif
     </div>
 </div>
 @endsection

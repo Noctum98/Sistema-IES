@@ -6,21 +6,24 @@
                 <h4 class="text-info">
                     Planilla de Calificaciones<br/>
                     <small>Por favor seleccione materia/cargo {{$ciclo_lectivo}}</small>
-
                 </h4>
             </div>
             <div class="col-4">
                 <div class="dropdown">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1" data-bs-toggle="dropdown">
-                        Ciclo lectivo
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo {{$ciclo_lectivo}}
                     </button>
                     <ul class="dropdown-menu">
-                        @for ($i = $ahora; $i >= $last; $i--)
-                            <li>  <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('calificacion.home', ['ciclo_lectivo'=> $i])}}">{{$i}}</a></li>
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                            <li>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('calificacion.home', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
+                            </li>
                         @endfor
                     </ul>
                 </div>
             </div>
+
 
         </div>
         <hr>
@@ -51,5 +54,4 @@
             @endif
         
     </div>
-
 @endsection

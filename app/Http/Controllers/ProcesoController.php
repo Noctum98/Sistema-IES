@@ -10,6 +10,7 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 
+use App\Services\CicloLectivoService;
 use App\Services\ProcesosCargosService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,10 +23,19 @@ use Illuminate\Support\Facades\Validator;
 
 class ProcesoController extends Controller
 {
-    function __construct()
+    /**
+     * @var CicloLectivoService
+     */
+    private $cicloLectivoService;
+
+    /**
+     * @param CicloLectivoService $cicloLectivoService
+     */
+    function __construct(CicloLectivoService $cicloLectivoService)
     {
-        $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor');
+        $this->middleware('app.auth',['except'=>'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor',['except'=>'delete']);
+        $this->cicloLectivoService = $cicloLectivoService;
     }
 
     // Vistas
@@ -62,11 +72,12 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function vista_listado($materia_id, $comision_id = null)
+    public function vista_listado($materia_id,$ciclo_lectivo,$comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -102,12 +113,17 @@ class ProcesoController extends Controller
             'comision' => $comision,
             'calificaciones' => $calificaciones,
             'estados' => $estados,
+            'ciclo_lectivo'=>$ciclo_lectivo
         ]);
     }
 
-    public function vista_listadoCargo($materia_id, $cargo_id, $comision_id = null)
+    public function vista_listadoCargo($materia_id, $cargo_id,$ciclo_lectivo = null, $comision_id = null)
     {
-        $procesos = $this->getProcesosMateria($materia_id, $comision_id);
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+        $procesos = $this->getProcesosMateria($materia_id, $ciclo_lectivo,  $comision_id);
 
         $comision = null;
         if ($comision_id) {
@@ -118,6 +134,7 @@ class ProcesoController extends Controller
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
             'cargo_id' => $cargo_id,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
         if ($comision_id) {
             $calificacion->where([
@@ -135,6 +152,8 @@ class ProcesoController extends Controller
             'calificaciones' => $calificaciones,
             'estados' => $estados,
             'cargo' => $cargo,
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
         ]);
     }
 
@@ -231,8 +250,9 @@ class ProcesoController extends Controller
     {
         $alumno = Alumno::find($id);
         $procesos = $request['materias'];
+        $alumno_procesos = $alumno->procesos->where('ciclo_lectivo',date('Y'));
 
-        foreach ($alumno->procesos as $proceso) {
+        foreach ($alumno_procesos as $proceso) {
 
             if (!$procesos || !in_array($proceso->materia_id, $procesos)) {
                 $proceso->delete();
@@ -250,6 +270,7 @@ class ProcesoController extends Controller
                         'alumno_id' => $alumno->id,
                         'estado' => 'en curso',
                         'materia_id' => $proceso,
+                        'ciclo_lectivo' => date('Y')
                     ]);
                 }
             }
@@ -261,6 +282,33 @@ class ProcesoController extends Controller
         ])->with([
             'mensaje_procesos' => 'Se han actualizado los procesos',
         ]);
+    }
+
+    public function delete(Request $request,$id,$alumno_id)
+    {
+        $alumno = Alumno::select('id')->where('id',$alumno_id)->first();
+
+        $proceso = Proceso::where([
+            'id' => $id,
+            'alumno_id' => $alumno_id
+        ])->first();
+
+        if($proceso)
+        {
+            $proceso->delete();
+
+            $data = [
+                'status' => 'success',
+                'message' => 'Proceso eliminado'
+            ];
+        }else{
+            $data = [
+                'status' => 'error',
+                'message' => 'Error'
+            ];
+        }
+
+        return response()->json($data,200);
     }
 
     public function cambiaEstado(Request $request): JsonResponse
@@ -448,14 +496,16 @@ class ProcesoController extends Controller
 
     /**
      * @param $materia_id <integer> <i>id</i> de la materia.
-     * @param $comision_id <integer | null> <i>id</i> de la comisión, puede ser null.
+     * @param $ciclo_lectivo <integer> <i>ciclo lectivo</i>
+     * @param null $comision_id <integer | null> <i>id</i> de la comisión, puede ser null.
      * @return Collection
      */
-    protected function getProcesosMateria($materia_id, $comision_id=null): Collection
+    protected function getProcesosMateria($materia_id,$ciclo_lectivo, $comision_id=null): Collection
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -464,7 +514,6 @@ class ProcesoController extends Controller
                 });
             });
         }
-
 
         $procesos->orderBy('alumnos.apellidos', 'asc');
 

@@ -10,7 +10,7 @@
         <p> Deberá inscribirse como "ESTUDIANTE CONDICIONAL" a Tercer Año, si:</p>
         <p>a- Tiene todos los espacios curriculares / módulos de primer año acreditados</p>
         <p>b- A la vez, tiene todos los espacios curriculares / módulos de segundo año regulares.</p>
-        <p>c- Y adeuda la acreditación de un (o más) espacio curricular / módulo de segundo año para cumplir con la mitad de los espacios / módulo acreditados (Ud. deberá tener el pedido de condicionalidad "aprobado" en su solicitud de excepción al Consejo Académico)</p>
+        <p>c- Y adeuda la acreditación de un espacio curricular / módulo de segundo año para cumplir con la mitad de los espacios / módulo acreditados (Ud. deberá tener el pedido de condicionalidad "aprobado" en su solicitud de excepción al Consejo Académico)</p>
         <br>
         <p>Deberá inscribirse como  "ESTUDIANTE RECURSANTE" a Tercer Año, si</p>
         <p>a- No tiene todos los espacios curriculares / módulos regulares de tercer año. </p>

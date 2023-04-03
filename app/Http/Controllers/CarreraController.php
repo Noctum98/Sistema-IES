@@ -82,7 +82,6 @@ class CarreraController extends Controller
     }
 
     public function editar(int $id,CarrerasRequest $request){
-
         $carrera = Carrera::find($id);
         $carrera->update($request->all());
         

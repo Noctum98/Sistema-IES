@@ -23,6 +23,7 @@ use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\SedeUser;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -34,7 +35,7 @@ class UserController extends Controller
     public function __construct(
         UserService $userService
     ) {
-        $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente',['only'=>['vista_admin','set_roles','cambiar_sedes','crear_usuario_alumno']]);
+        $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente', ['only' => ['vista_admin', 'set_roles', 'cambiar_sedes', 'crear_usuario_alumno']]);
         $this->userService = $userService;
     }
 
@@ -72,13 +73,12 @@ class UserController extends Controller
         if ($busqueda) {
 
             $lista = $this->userService->buscador($busqueda, $rol);
-
         } else {
             $lista = User::whereHas('roles', function ($query) use ($rol) {
                 return $query->where('nombre', $rol);
             })->paginate(20);
         }
-        $rolListado = Rol::where(['descripcion'=>$rol])->first();
+        $rolListado = Rol::where(['descripcion' => $rol])->first();
 
 
 
@@ -141,12 +141,12 @@ class UserController extends Controller
 
         if (Session::has('coordinador') && !Session::has('admin')) {
             $roles_primarios = Rol::select('nombre', 'id', 'descripcion')
-            ->where('nombre', 'profesor')
-            ->orWhere('nombre','planillas')
-            ->get();
+                ->where('nombre', 'profesor')
+                ->orWhere('nombre', 'planillas')
+                ->get();
 
             $roles_secundarios = null;
-        }else{
+        } else {
             $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
             $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();
         }
@@ -241,20 +241,19 @@ class UserController extends Controller
         ]);
     }
 
-    public function activarDesactivar(Request $request,$id)
+    public function activarDesactivar(Request $request, $id)
     {
         $user = User::find($id);
 
-        if($user->activo)
-        {
+        if ($user->activo) {
             $user->activo = false;
-        }else{
+        } else {
             $user->activo = true;
         }
 
         $user->update();
 
-        return response()->json($user,200);
+        return response()->json($user, 200);
     }
 
     public function cambiar_contra(Request $request)
@@ -335,7 +334,6 @@ class UserController extends Controller
         if ($user->hasSede($carrera->sede_id)) {
             $user->carreras()->attach($carrera);
             $user->materias()->attach($materia);
-
         } else {
             return redirect()->route('usuarios.detalle', $user->id)->with(
                 ['error_sede' => 'El usuario no pertenece a esa sede']
@@ -351,62 +349,64 @@ class UserController extends Controller
     {
         $alumno = Alumno::find($alumno_id);
 
-        if ($alumno->user_id) {
+        if ($alumno->aprobado) {
             return redirect()->route('alumno.detalle', [
                 'id' => $alumno->id,
             ])->with([
-                'mensaje_error' => 'El alumno, ya tiene un usuario creado',
+                'mensaje_error' => 'El alumno, ya tiene esta aprobado',
             ]);
-        }
-
-        $data = [
-            'email' => $alumno->email,
-            'username' => $alumno->dni,
-            'nombre' => $alumno->nombres,
-            'apellido' => $alumno->apellidos,
-            'telefono' => $alumno->telefono,
-            'password' => Hash::make($alumno->dni),
-        ];
-
-        $user_exists = User::where('email', $alumno->email)
-            ->orWhere('username', $alumno->dni)->first();
-
-        if ($user_exists) {
-//            return redirect()->route('alumno.detalle', [
-//                'id' => $alumno->id,
-//            ])->with([
-//                'mensaje_error' => 'Ya existe un usuario con este email o username',
-//            ]);
-            $user = $user_exists;
-            $user->update($data);
         }else{
-            $user = User::create($data);
+            $alumno->aprobado = true;
         }
 
+        if (!$alumno->user_id) {
+            $data = [
+                'email' => $alumno->email,
+                'username' => $alumno->dni,
+                'nombre' => $alumno->nombres,
+                'apellido' => $alumno->apellidos,
+                'telefono' => $alumno->telefono,
+                'password' => Hash::make($alumno->dni),
+            ];
 
-        $user->roles()->attach(Rol::where('nombre', 'alumno')->first());
+            $user_exists = User::where('email', $alumno->email)
+                ->orWhere('username', $alumno->dni)->withTrashed()->first();
+            
+            if ($user_exists) {
+                if($user_exists->hasRole('profesor') && (!$user_exists->hasRole('coordinador') && !$user_exists->hasRole('seccionAlumnos')))
+                {
+                    $user = $user_exists;
+                }else{
+                    return redirect()->back()->with(['error' => 'Ya existe un usuario con este email o nombre de usuario']);
+                }
+            } else {
+                $user = User::create($data);
+            }
 
-        $alumno->user_id = $user->id;
+            $user->roles()->attach(Rol::where('nombre', 'alumno')->first());
+
+            $alumno->user_id = $user->id;
+        }
+
         $alumno->update();
 
-        // Mail::to($alumno->email)->send(new MatriculacionUser($alumno));
+        Mail::to($alumno->email)->send(new MatriculacionUser($alumno));
 
         return redirect()->route('alumno.detalle', [
             'id' => $alumno->id,
         ])->with([
-            'mensaje_exitoso' => 'El usuario para el alumno '.$alumno->nombres.' '.$alumno->apellidos.' se ha creado exitosamente.',
+            'mensaje_exitoso' => 'El usuario para el alumno ' . $alumno->nombres . ' ' . $alumno->apellidos . ' se ha creado exitosamente.',
         ]);
-
     }
 
-    public function regenerar_contra(Request $request,$id)
+    public function regenerar_contra(Request $request, $id)
     {
         $user = User::find($id);
         $new_password = Hash::make('12345678');
         $user->password = $new_password;
         $user->update();
 
-        return response()->json(['status'=>'success']);
+        return response()->json(['status' => 'success']);
     }
 
     public function getUsuarioByUsernameOrNull($busqueda)

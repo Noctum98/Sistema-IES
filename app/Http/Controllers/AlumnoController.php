@@ -10,6 +10,7 @@ use App\Services\CicloLectivoService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class AlumnoController extends Controller
@@ -110,6 +111,7 @@ class AlumnoController extends Controller
 
         $ciclo_lectivo = $ciclo_lectivo?? date('Y');
 
+
         return view('alumno.alumnos', [
             'carrera' => $carrera,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
@@ -117,9 +119,16 @@ class AlumnoController extends Controller
         ]);
     }
 
-    public function vista_detalle(int $id)
+    public function vista_detalle(int $id, $ciclo_lectivo = null)
     {
         $alumno = Alumno::find($id);
+
+        $carreras = $carreras = Carrera::select('carreras.*')
+        ->distinct()
+        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where('alumnos.id', $alumno->id)
+        ->get();
 
         if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
@@ -127,9 +136,27 @@ class AlumnoController extends Controller
             ]);
         }
 
-        return view('alumno.detail', [
-            'alumno' => $alumno,
-        ]);
+        $ciclo_lectivo = $ciclo_lectivo?? date('Y');
+
+        $pase = true;
+        if(Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin')))
+        {
+            if(Auth::user()->id != $alumno->user_id)
+            {
+                $pase = false;
+            }
+        }
+
+        if($pase)
+        {
+            return view('alumno.detail', [
+                'alumno'    =>  $alumno,
+                'carreras' => $carreras,
+                'ciclo_lectivo' => $ciclo_lectivo
+            ]);
+        }else{
+            return redirect()->back();
+        }
     }
 
     public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $localidad = null, $edad = null)
@@ -286,16 +313,23 @@ class AlumnoController extends Controller
     public function descargar_ficha(int $id)
     {
         $alumno = Alumno::find($id);
+        $carreras = $carreras = $carreras = Carrera::select('carreras.*')
+        ->distinct()
+        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where('alumnos.id', $alumno->id)
+        ->get();
 
         if ($alumno) {
             $data = [
                 'alumno' => $alumno,
+                'carreras' => $carreras
             ];
 
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadView('pdfs.alumno_ficha', $data);
 
-            return $pdf->download('Ficha '.$alumno->nombres.' '.$alumno->apellidos.'.pdf');
+            return $pdf->stream('Ficha ' . $alumno->nombres . ' ' . $alumno->apellidos . '.pdf');
         } else {
             return view('error.error');
         }

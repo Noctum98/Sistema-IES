@@ -16,6 +16,11 @@
             top: 0;
             z-index: 10;
         }
+        .thead-dark th {
+            color: white;
+            background-color: #343a40;
+            border-color: rgba(52, 58, 64, 0.75);
+        }
     </style>
     <div class="container-fluid w-100" id="container-scroll">
         <a href="{{url()->previous()}}">
@@ -30,7 +35,8 @@
                 @endforeach
             </div>
         @endif
-
+<div class="row">
+    <div class="col-8">
         <h4 class="text-info">
             Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
         </h4>
@@ -48,7 +54,28 @@
                 @endforeach
             </h6>
         @endif
-        <hr>
+    </div>
+    <div class="col-4">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                    data-bs-toggle="dropdown">
+                Ciclo lectivo {{$ciclo_lectivo}}
+            </button>
+            <ul class="dropdown-menu">
+                @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                    <li>
+
+                            <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                               href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
+                                {{$i}}
+                        </a>
+
+                    </li>
+                @endfor
+            </ul>
+        </div>
+    </div>
+</div>
         <div id="alerts">
         </div>
         <p><strong><i>Importante:</i></strong></p>
@@ -63,12 +90,14 @@
         <p><small style="font-size: 0.8em">Aclaraciones: '% Act. Ap.': Porcentaje de actividades del cargo aprobadas</small></p>
                 {{--
         @if(isset($comision))
+        <!-----
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
-               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
+               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>-->
         @else
+        <!-----
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
                         class="fas fa-download"></i> Descargar
-                planilla</a>
+                planilla</a>-->
               
             @if($puede_procesar)
                 <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"

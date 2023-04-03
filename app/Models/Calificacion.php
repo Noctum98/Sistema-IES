@@ -22,6 +22,7 @@ class Calificacion extends Model
         'fecha',
         'ciclo_lectivo',
         'comision_id',
+        'description'
     ];
 
     public function tipo(): BelongsTo

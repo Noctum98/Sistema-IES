@@ -21,7 +21,7 @@ class AlumnoCarreraController extends Controller
         $alumnoCarrera = AlumnoCarrera::where([
             'alumno_id' => $alumno_id,
             'carrera_id' => $carrera_id
-        ])->first();
+        ])->latest()->first();
 
         $request['año'] = $request['year'];
 

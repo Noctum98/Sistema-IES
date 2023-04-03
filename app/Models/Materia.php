@@ -122,5 +122,10 @@ class Materia extends Model
 
     }
 
+    public function proceso($alumno_id)
+    {
+        return Proceso::where(['materia_id'=>$this->id,'alumno_id',$alumno_id,'ciclo_lectivo'=>date('Y')])->first();
+    }
+
 
 }

@@ -60,6 +60,7 @@
                     @include('alumno.modals.filtros')
 
                 </form>
+
             </div>
         </div>
         <div class="col-md-12">
@@ -114,7 +115,7 @@
                                 <td>{{ $alumno->email }}</td>
                                 <td>{{ $alumno->cohorte ?? '-' }}</td>
                                 <td>
-                                    <a href="{{ route('alumno.detalle',$alumno->id) }}"
+                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
                                        class="btn btn-sm btn-secondary">
                                         Ver datos
                                     </a>

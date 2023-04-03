@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class Alumno extends Model
@@ -59,10 +60,11 @@ class Alumno extends Model
         'cohorte',
         'active',
         'fecha_primera_acreditacion',
-        'fecha_ultima_acreditacion'
+        'fecha_ultima_acreditacion',
+        'deleted_at'
     ];
 
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     public function user()
     {
@@ -79,6 +81,11 @@ class Alumno extends Model
     public function procesos()
     {
         return $this->hasMany('App\Models\Proceso');
+    }
+
+    public function procesos_actuales()
+    {
+        return $this->hasMany(Proceso::class)->where('ciclo_lectivo',date('Y'))->orderBy('id');
     }
 
     public function asistencias()
@@ -98,13 +105,19 @@ class Alumno extends Model
     public function procesoCarrera($carrera_id,$alumno_id,$ciclo_lectivo = null)
     {
 
-        $procesoCarrera = AlumnoCarrera::where([
+        return AlumnoCarrera::where([
             'carrera_id' => $carrera_id,
             'alumno_id' => $alumno_id,
-            'ciclo_lectivo' => $ciclo_lectivo??date('Y')
+            'ciclo_lectivo' => $ciclo_lectivo ?? date('Y')
         ])->first();
+    }
 
-        return $procesoCarrera;
+    public function lastProcesoCarrera($carrera_id)
+    {
+        return AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'alumno_id' => $this->id,
+        ])->latest()->first();
     }
 
     public function proceso($carrera_id){
@@ -118,7 +131,7 @@ class Alumno extends Model
 
     public function hasProceso($materia_id)
     {
-        if($this->procesos->where('materia_id',$materia_id)->first())
+        if($this->procesos->where('materia_id',$materia_id)->where('ciclo_lectivo',date('Y'))->first())
         {
             return true;
         }
@@ -158,7 +171,7 @@ class Alumno extends Model
 
     // Functiones Estáticas
 
-    public static function alumnosAño($year,$carrera_id)
+    public static function alumnosAño($year,$carrera_id,$ciclo_lectivo)
     {
         return Alumno::select(
             'alumnos.nombres',
@@ -172,6 +185,7 @@ class Alumno extends Model
         ->join('alumno_carrera','alumno_carrera.alumno_id','alumnos.id')
         ->where('alumno_carrera.año',$year)
         ->where('alumno_carrera.carrera_id',$carrera_id)
+        ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo)
         ->orderBy('alumnos.apellidos','asc')
         ->get();
     }

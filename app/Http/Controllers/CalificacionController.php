@@ -9,6 +9,7 @@ use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
 use App\Models\User;
+use App\Services\CicloLectivoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,7 @@ class CalificacionController extends Controller
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos');
+        $this->cicloLectivoService = $cicloLectivoService;
     }
 
     public function home($ciclo_lectivo = null)
@@ -36,21 +38,19 @@ class CalificacionController extends Controller
         $ruta = 'calificacion.admin';
 
         $cargos_materia = [];
-        if (count($user->cargo_materia()->get()) > 0) {
-            foreach ($user->cargo_materia()->get() as $cargo_materia) {
+        if(count($user->cargo_materia()->get()) > 0){
+            foreach($user->cargo_materia()->get() as $cargo_materia){
                 $cargos_materia[] = $cargo_materia->cargo->id;
             }
         }
-        $cargos = $user->cargos->whereNotIn('id', $cargos_materia);
-        list($last, $ahora) = $this->getLastNow();
+        $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
 
         return view('calificacion.home', [
             'materias' => $materias,
             'cargos' => $cargos,
             'ruta' => $ruta,
             'ciclo_lectivo' => $ciclo_lectivo,
-            'last' => $last,
-            'ahora' => $ahora,
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
         ]);
     }
 
@@ -84,15 +84,13 @@ class CalificacionController extends Controller
 
         $calificaciones = $calificaciones->orderBy('tipo_id')->get();
 
-        list($last, $ahora) = $this->getLastNow();
         return view('calificacion.admin', [
             'materia' => $materia,
             'tiposCalificaciones' => $tiposCalificaciones,
             'calificaciones' => $calificaciones,
             'cargo' => $cargo ?? null,
             'ciclo_lectivo' => $ciclo_lectivo,
-            'last'=>$last,
-            'ahora'=>$ahora
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
         ]);
     }
 
@@ -242,16 +240,5 @@ class CalificacionController extends Controller
 
         return false;
 
-    }
-
-    /**
-     * @return array
-     */
-    protected function getLastNow(): array
-    {
-        $last = self::CICLO_LECTIVO_INICIAL;
-        $ahora = date('Y');
-
-        return array($last, $ahora);
     }
 }

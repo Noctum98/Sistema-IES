@@ -16,10 +16,10 @@
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
                             data-bs-toggle="dropdown">
-                        Ciclo lectivo
+                        Ciclo lectivo {{$ciclo_lectivo}}
                     </button>
                     <ul class="dropdown-menu">
-                        @for ($i = $ahora; $i >= $last; $i--)
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
                             <li>
                                 @if(isset($cargo))
                                     <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
@@ -52,32 +52,32 @@
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
                         @if($cargo)
-                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, 'comision_id' => $comision->id]) }}"
+                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $ciclo_lectivo ,'comision_id' => $comision->id]) }}"
                                class="btn btn-info">
                                 Ver Planilla de Calificaciones / {{$cargo->nombre}} / {{$comision->nombre}}
                             </a>
                         @else
-                            <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                            <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'ciclo_lectivo'=>$ciclo_lectivo,'comision_id' => $comision->id]) }}"
                                class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                         @endif
                     @elseif(Session::has('coordinador') || Session::has('seccionAlumnos'))
-                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'comision_id' => $comision->id]) }}"
+                        <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo ,'comision_id' => $comision->id]) }}"
                            class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                     @endif
                 @endforeach
             @else
                 @if($cargo && $materia->carrera->tipo == 'modular' || $materia->carrera->tipo == 'modular2')
 
-                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id]) }}"
                        class="btn btn-info">
                         Ver Planilla de Calificaciones {{$cargo->nombre}}
                     </a>
-                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
+                    <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id'=> $cargo->id]) }}"
                        class="btn btn-secondary">
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
                 @else
-                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id]) }}" class="btn btn-info">
+                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-info">
                         Ver procesos
                     </a>
                 @endif
@@ -120,6 +120,7 @@
                         <th scope="col">Cargo</th>
                     @endif
                     <th scope="col">Comisión</th>
+                    <th scope="col">Descripción</th>
                     <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>-</th>
                 </tr>
                 </thead>
@@ -142,6 +143,7 @@
                         @else
                             <td>General</td>
                         @endif
+                        <td>{{ $calificacion->descripction }}</td>
                         <td>
                             <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary
                     @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">

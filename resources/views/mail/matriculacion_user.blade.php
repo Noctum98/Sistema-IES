@@ -43,7 +43,7 @@
     </div>
     
 	<h1 class="h1 pt-4">
-		Matriculación de : {{ $alumno->nombres.' '.$alumno->apellidos }}
+		Inscripción de : {{ $alumno->nombres.' '.$alumno->apellidos }}
 	</h1>
 	<hr>
 	<div class="row">

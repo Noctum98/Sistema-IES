@@ -78,15 +78,22 @@ class ProcesoModularService
      * Asocia los procesos son procesos modulares
      *
      * @param $materia_id <b>id</b> materia
+     * @param int|null $ciclo_lectivo <b>ciclo lectivo</b>
      * @return void
      */
-    public function crearProcesoModular(int $materia_id)
+    public function crearProcesoModular(int $materia_id, int $ciclo_lectivo = null)
     {
-        $pm_sin_vincular = $this->obtenerProcesosModularesNoVinculados($materia_id);
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+        $pm_sin_vincular = $this->obtenerProcesosModularesNoVinculados($materia_id, $ciclo_lectivo);
+        $inicio = 0;
         foreach ($pm_sin_vincular as $pm) {
             $data['proceso_id'] = $pm->id;
             $data['ciclo_lectivo'] = $pm->ciclo_lectivo;
             ProcesoModular::create($data);
+            $inicio += 1;
         }
 
     }
@@ -95,14 +102,22 @@ class ProcesoModularService
      * @param int $materia_id <b>id</b> materia
      * @return mixed
      */
-    public function obtenerProcesosModularesNoVinculados(int $materia_id)
+    public function obtenerProcesosModularesNoVinculados(int $materia_id, int $ciclo_lectivo = null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+
         $procesos = Proceso::select('procesos.id')
             ->where('materia_id', '=', $materia_id)
+            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
             ->get();
+
 
         return Proceso::select('procesos.id')
             ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
             ->whereNotIn(
                 'procesos.id',
                 ProcesoModular::select('proceso_modular.proceso_id')
@@ -116,13 +131,17 @@ class ProcesoModularService
      * @param $materia_id <b>id</b> de la materia
      * @return mixed
      */
-    public function obtenerProcesosModularesByMateriaAndCicloLectivo($materia_id, $ciclo_lectivo)
+    public function obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo = null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
         return ProcesoModular::select('proceso_modular.*')
             ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
-            ->andWhere('procesos.ciclo_lectivo', $ciclo_lectivo)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
             ->orderBy('alumnos.apellidos', 'asc')
             ->get();
     }
@@ -147,11 +166,16 @@ class ProcesoModularService
     /**
      * ProcesoModularController.php:57
      * @param Materia $materia
+     * @param null $ciclo_lectivo
      * @return int
      */
-    public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo): int
+    public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo = null): int
     {
-        $this->crearProcesoModular($materia->id);
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+        $this->crearProcesoModular($materia->id, $ciclo_lectivo);
 
         $procesoCalificacionService = new ProcesoCalificacionService();
 
@@ -160,8 +184,8 @@ class ProcesoModularService
         $cant = 0;
         $cargos = $this->obtenerCargosPorModulo($materia);
         $promedio_final_p = 0;
-        $nota_final_p = 0;
-        $procesos = $this->obtenerProcesosModularesByMateriaAndCicloLectivo($materia->id, $ciclo_lectivo);
+        $procesos = $this->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
+
         foreach ($procesos as $proceso) {
             $nota_final_p = 0;
             /** @var Cargo $cargo */
@@ -197,7 +221,7 @@ class ProcesoModularService
                         $cargo->id,
                         CalificacionService::TIPO_TFI
                     )->first();
-                    if ($tfp) {
+                    if($tfp) {
                         $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
                         $proceso->trabajo_final_nota = $tfp->nota;
                     }

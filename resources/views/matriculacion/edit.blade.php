@@ -1,11 +1,11 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container col-md-8">
-    <a href="{{route('alumno.detalle',$matriculacion->id)}}">
+    <a href="{{url()->previous()}}">
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
     <h2 class="h1 mb-4 text-info">
-        Editar matriculación de {{ $matriculacion->nombres.' '.$matriculacion->apellidos }}
+        Editar inscripción de {{ $matriculacion->nombres.' '.$matriculacion->apellidos }}
     </h2>
     @if(@session('mensaje_editado'))
     <div class="alert alert-success">
@@ -19,12 +19,12 @@
     @endif
     <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">
 
-        @if(isset($matriculacion) && !Auth::user())
-        @include('matriculacion.campos.campos_procesos')
+        @if(isset($matriculacion))
+            @include('matriculacion.campos.campos_procesos')
         @endif
 
         @if(Session::has('coordinador') && isset($matriculacion))
-        @if($matriculacion->procesoCarrera($carrera->id,$matriculacion->id)->año == 1)
+        @if($matriculacion->lastProcesoCarrera($carrera->id,$matriculacion->id)->año == 1)
         <div class="form-group">
             <label for="regularidad">Condición</label>
             <select name="regularidad" id="regularidad" class="form-select">
@@ -34,7 +34,7 @@
                 <option value="recursante_diferenciado_primero" {{ isset($matriculacion) && $matriculacion->regularidad == 'recursante_diferenciado_primero' ? "selected='selected'":'' }}>RECURSANTE CON TRAYECTORIA DIFERENCIADA</option>
             </select>
         </div>
-        @elseif($matriculacion->procesoCarrera($carrera->id,$matriculacion->id)->año == 2)
+        @elseif($matriculacion->lastProcesoCarrera($carrera->id,$matriculacion->id)->año == 2)
         <div class="form-group">
             <label for="regularidad">Condición</label>
             <select name="regularidad" id="regularidad" class="form-select">
@@ -44,7 +44,7 @@
                 <option value="recursante_diferenciado_segundo" {{ isset($matriculacion) && $matriculacion->regularidad == 'recursante_diferenciado_segundo' ? "selected='selected'":'' }}>RECURSANTE CON TRAYECTORIA DIFERENCIADA</option>
             </select>
         </div>
-        @elseif($matriculacion->procesoCarrera($carrera->id,$matriculacion->id)->año == 3)
+        @elseif($matriculacion->lastProcesoCarrera($carrera->id,$matriculacion->id)->año == 3)
         <div class="form-group">
             <label for="regularidad">Condición</label>
             <select name="regularidad" id="regularidad" class="form-select">
@@ -124,10 +124,17 @@
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
 
-        <input type="submit" value="Editar Matricula" class="btn btn-primary mt-3 col-md-12">
+        @if($año == 1 && !Auth::user())
+        <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+        @endif
+
+        <input type="submit" value="Editar Inscripción" class="btn btn-primary mt-3 col-md-12">
     </form>
 </div>
 @endsection
 @section('scripts')
 <script src="{{ asset('js/matriculacion/create.js') }}"></script>
+<script src="{{ asset('js/matriculacion/procesos.js') }}"></script>
+<script src="{{ asset('js/matriculacion/botones.js') }}"></script>
+
 @endsection

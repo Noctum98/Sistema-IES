@@ -17,7 +17,7 @@
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
     <h2 class="h1 text-info">
-        Notas de Proceso de {{ $materia->nombre }} @if($comision)
+        Notas de Proceso de {{ $materia->nombre.' ('.$ciclo_lectivo.')' }} @if($comision)
         <br /><small>{{$comision->nombre}}</small>
         @endif
     </h2>
@@ -29,13 +29,14 @@
     <p class="text-primary"><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
     <p class="text-primary"><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
     <p class="text-primary"><i>Al posar el mouse sobre el nombre de la calificación, muestra el nombre completo.</i></p>
-    <p class="text-primary"><i>Al clickear sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
+    <p class="text-primary"><i>Al hacer clic sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
 
 
+    @if(count($procesos) > 0)
     @if($comision)
-    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
+    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
     @else
-    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success"> <i class="fas fa-download"></i> Descargar Planilla</a>
+    <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-success"> <i class="fas fa-download"></i> Descargar Planilla</a>
     @endif
 
     @if(Session::has('coordinador') || Session::has('admin'))
@@ -46,7 +47,6 @@
         @endif
     @endif
 
-    @if(count($procesos) > 0)
     <div class="table-responsive tableFixHead">
 
         <table class="table mt-4">

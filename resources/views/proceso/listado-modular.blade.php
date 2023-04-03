@@ -6,20 +6,55 @@
             z-index: 1;
             top: 0;
         }
+        .thead-dark th {
+            color: white;
+            background-color: #343a40;
+            border-color: rgba(52, 58, 64, 0.75);
+        }
+
     </style>
     <div class="container" id="container-scroll">
         <a href="{{url()->previous()}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
-        <h3 class="text-info">
+        <div class="row">
+            <div class="col-8">
+        <h4 class="text-info">
             Notas de Proceso de {{ $cargo->nombre }} @if($comision)
                 <br/><small>{{$comision->nombre}}</small>
             @endif
-        </h3>
-        <h5>
+        </h4>
+        <h6>
             Correspondiente al módulo <i>{{$materia->nombre}}</i>
-        </h5>
-        <hr>
+        </h6>
+            </div>
+            <div class="col-4">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo {{$ciclo_lectivo}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                            <li>
+                                @if($comision)
+                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                     href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ,'comision_id' => $comision->id]) }}">
+                                        {{$i}}
+                                    </a>
+                                @else
+                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                       href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ]) }}">
+                                        {{$i}}
+                                    </a>
+                                @endif
+                            </li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div id="alerts">
 
         </div>
@@ -27,16 +62,17 @@
         <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
         <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
 
-        
+
         {{-- @if($comision)
-            <a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}"
-               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>
+            <!-----<a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}"
+               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>-->
         @else
+        <!---
             <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar
-                Planilla</a>
+                Planilla</a>-->
 
         @endif --}}
-        <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id, 'cargo_id'=> $cargo->id]) }}"
+        <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id]) }}"
            class="btn btn-secondary">
             Ver Módulo {{$materia->nombre}}
         </a>
@@ -61,7 +97,7 @@
                             </th>
                         @endif
                         <th>
-                            <a href="{{ route('asis.admin', ['id'=> $materia->id, 'cargo_id' => $cargo->id])}}"
+                            <a href="{{ route('asis.admin', ['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
                                class="text-white"> Asistencia % </a>
                         </th>
                         {{--                        <th>Nota Final</th>--}}

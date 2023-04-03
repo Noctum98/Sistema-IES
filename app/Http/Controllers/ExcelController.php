@@ -29,9 +29,9 @@ class ExcelController extends Controller
         $this->alumnoService = $alumnoService;
     }
 
-    public function alumnos_year($carrera_id, $year)
+    public function alumnos_year($carrera_id, $year,$ciclo_lectivo)
     {
-        $alumnos = Alumno::alumnosAño($year, $carrera_id);
+        $alumnos = Alumno::alumnosAño($year, $carrera_id,$ciclo_lectivo);
         $generos = [
             'hombres'   => 0,
             'mujeres'   => 0,
@@ -64,22 +64,21 @@ class ExcelController extends Controller
         return Excel::download(new AllAlumnosExport($carreras, $sede_id), 'Planilla de alumnos completa.xlsx');
     }
 
-    public function alumnos_datos($carrera_id)
+    public function alumnos_datos($carrera_id,$ciclo_lectivo = null)
     {
-        $carrera = Carrera::select('id','nombre')->where('id',$carrera_id)->first();
+        $carrera = Carrera::where('id',$carrera_id)->first();
         
-        $alumnos = Alumno::whereHas('carreras',function($query) use ($carrera_id){
-            return $query->where('carreras.id',$carrera_id);
-        })->get();
+        $alumnos = $carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo);
 
         return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos '.$carrera->nombre.'.xlsx');
     }
 
-    public function planilla_notas_tradicional($materia_id, $comision_id = null)
+    public function planilla_notas_tradicional($materia_id, $ciclo_lectivo ,$comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
 
 
         if ($comision_id) {
