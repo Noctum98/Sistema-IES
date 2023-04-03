@@ -228,9 +228,10 @@ class ProcesoModularService
                 }
             }
 
-            $proceso->nota_final_porcentaje = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
+            $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
+//            $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
             $proceso->nota_final_nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
-                $proceso->nota_final_nota
+                $proceso->nota_final_porcentaje
             );
 
 //            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
@@ -245,7 +246,7 @@ class ProcesoModularService
             $cant += 1;
 
         }
-        $this->grabaEstadoCursoEnModulo($materia->id);
+        $this->grabaEstadoCursoEnModulo($materia->id, $ciclo_lectivo);
 
         return $cant;
 
@@ -282,14 +283,15 @@ class ProcesoModularService
 
     /**
      * @param $materia_id <b>Módulo</b> a procesar
+     * @param $ciclo_lectivo
      * @return string[] <i>200</i> si generó todos los estados
      */
-    public function grabaEstadoCursoEnModulo($materia_id): array
+    public function grabaEstadoCursoEnModulo($materia_id, $ciclo_lectivo): array
     {
 
         $estados_procesados = [];
 
-        $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id);
+        $procesosModulares = $this->obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo);
 
 
         foreach ($procesosModulares as $pm) {

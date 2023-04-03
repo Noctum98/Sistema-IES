@@ -16,6 +16,7 @@
             top: 0;
             z-index: 10;
         }
+
         .thead-dark th {
             color: white;
             background-color: #343a40;
@@ -35,47 +36,47 @@
                 @endforeach
             </div>
         @endif
-<div class="row">
-    <div class="col-8">
-        <h4 class="text-info">
-            Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
-        </h4>
-        @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
-            <h6>
-                Cargos:
-                @foreach($materia->cargos()->get() as $cargo)
-                    <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
-                       class="btn btn-info" title="Ver proceso cargo">
-                        {{$cargo->nombre}}
-                        @if(Session::has('admin'))
-                            {{$cargo->id}}
-                        @endif
-                    </a>
-                @endforeach
-            </h6>
-        @endif
-    </div>
-    <div class="col-4">
-        <div class="dropdown">
-            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
-                    data-bs-toggle="dropdown">
-                Ciclo lectivo {{$ciclo_lectivo}}
-            </button>
-            <ul class="dropdown-menu">
-                @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
-                    <li>
+        <div class="row">
+            <div class="col-8">
+                <h4 class="text-info">
+                    Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
+                </h4>
+                @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
+                    <h6>
+                        Cargos:
+                        @foreach($materia->cargos()->get() as $cargo)
+                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                               class="btn btn-info" title="Ver proceso cargo">
+                                {{$cargo->nombre}}
+                                @if(Session::has('admin'))
+                                    {{$cargo->id}}
+                                @endif
+                            </a>
+                        @endforeach
+                    </h6>
+                @endif
+            </div>
+            <div class="col-4">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo {{$ciclo_lectivo}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                            <li>
 
-                            <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                               href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
-                                {{$i}}
-                        </a>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                   href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
+                                    {{$i}}
+                                </a>
 
-                    </li>
-                @endfor
-            </ul>
+                            </li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
         <div id="alerts">
         </div>
         <p><strong><i>Importante:</i></strong></p>
@@ -87,31 +88,32 @@
                         <b>Usted tiene permisos de edición</b>
                     @endif
                 </small></i></p>
-        <p><small style="font-size: 0.8em">Aclaraciones: '% Act. Ap.': Porcentaje de actividades del cargo aprobadas</small></p>
-                {{--
-        @if(isset($comision))
-        <!-----
-            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
-               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>-->
-        @else
-        <!-----
-            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
-                        class="fas fa-download"></i> Descargar
-                planilla</a>-->
-              
-            @if($puede_procesar)
-                <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
-                   class="btn btn-warning">
-                    Cerrar Notas
-                </a>
-            @endif
+        <p><small style="font-size: 0.8em">Aclaraciones: '% Act. Ap.': Porcentaje de actividades del cargo
+                aprobadas</small></p>
+        {{--
+@if(isset($comision))
+<!-----
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
+       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>-->
+@else
+<!-----
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
+                class="fas fa-download"></i> Descargar
+        planilla</a>-->
 
-        @endif --}}
+    @if($puede_procesar)
+        <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
+           class="btn btn-warning">
+            Cerrar Notas
+        </a>
+    @endif
+
+@endif --}}
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}
             @if($puede_procesar)
-                <a href="{{route('proceso_modular.procesa_estados_modular',['materia'=>$materia->id, 'cargo_id' => $cargo_id])}}"
+                <a href="{{route('proceso_modular.procesa_estados_modular',['materia'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo, 'cargo_id' => $cargo_id])}}"
                    class="btn btn-sm btn-info">Calcula Regularidad</a>
             @endif
         @endif
@@ -124,14 +126,14 @@
                         <th class="sticky-top">
                             Alumno
                         </th>
-                        <th class="sticky-top">Proc. Final %</th>
-                        <th class="sticky-top">Proc. Final #</th>
-                        <th class="sticky-top">Asis. Final %</th>
-                        <th class="sticky-top">TFI %</th>
-                        <th class="sticky-top">TFI #</th>
-                        <th class="sticky-top">Nota Final %</th>
-                        <th class="sticky-top">Nota Final #</th>
-                        <th class="sticky-top col-sm-1">Global #</th>
+{{--                        <th class="sticky-top">Proc. Final %</th>--}}
+                        <th class="sticky-top text-center">Nota Proceso</th>
+                        <th class="sticky-top text-center">% Asis. Final </th>
+{{--                        <th class="sticky-top">TFI %</th>--}}
+                        <th class="sticky-top text-center">Nota TFI</th>
+{{--                        <th class="sticky-top">Nota Final %</th>--}}
+                        <th class="sticky-top text-center">Nota Final</th>
+                        <th class="sticky-top col-sm-1">Nota Global</th>
                         <th class="sticky-top">Cierre</th>
                     </tr>
                     </thead>
@@ -175,27 +177,27 @@
                                 </span>
 
                             </td>
-                            <td class="text-center">
-                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|
-                            </td>
+{{--                            <td class="text-center">--}}
+{{--                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|--}}
+{{--                            </td>--}}
 
                             <td class="text-center">
-                                {{$proceso->promedio_final_nota}} |
+                                {{$proceso->promedio_final_nota}}
                             </td>
                             <td class="text-center">
-                                {{$proceso->asistencia_final_porcentaje}} % |
+                                {{$proceso->asistencia_final_porcentaje}} %
                             </td>
+{{--                            <td class="text-center">--}}
+{{--                                {{$proceso->trabajo_final_porcentaje}} %|--}}
+{{--                            </td>--}}
                             <td class="text-center">
-                                {{$proceso->trabajo_final_porcentaje}} %|
+                                {{$proceso->trabajo_final_nota}}
                             </td>
+{{--                            <td class="text-center">--}}
+{{--                                {{$proceso->nota_final_porcentaje}} %|--}}
+{{--                            </td>--}}
                             <td class="text-center">
-                                {{$proceso->trabajo_final_nota}} |
-                            </td>
-                            <td class="text-center">
-                                {{$proceso->nota_final_porcentaje}} %|
-                            </td>
-                            <td class="text-center">
-                                {{$proceso->nota_final_nota}} |
+                                {{$proceso->nota_final_nota}}
                             </td>
                             <td class="row">
                                 <form action="" id="{{ $proceso->procesoRelacionado->id }}" class="form_nota_global">

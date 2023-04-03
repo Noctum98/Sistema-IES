@@ -553,7 +553,7 @@ Route::prefix('proceso-modular')->group(function () {
     );
     Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
     )->name('proceso_modular.procesa_ponderacion_modular');
-    Route::get('/procesaEstados/{materia}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
+    Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
     )->name('proceso_modular.procesa_estados_modular');
 });
 
