@@ -15,10 +15,16 @@ use Illuminate\Support\Facades\Auth;
 
 class CalificacionController extends Controller
 {
-
     const CICLO_LECTIVO_INICIAL = 2022;
+    /**
+     * @var CicloLectivoService
+     */
+    private $cicloLectivoService;
 
-    public function __construct()
+    /**
+     * @param CicloLectivoService $cicloLectivoService
+     */
+    public function __construct(CicloLectivoService $cicloLectivoService)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos');
@@ -38,12 +44,12 @@ class CalificacionController extends Controller
         $ruta = 'calificacion.admin';
 
         $cargos_materia = [];
-        if(count($user->cargo_materia()->get()) > 0){
-            foreach($user->cargo_materia()->get() as $cargo_materia){
+        if (count($user->cargo_materia()->get()) > 0) {
+            foreach ($user->cargo_materia()->get() as $cargo_materia) {
                 $cargos_materia[] = $cargo_materia->cargo->id;
             }
         }
-        $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
+        $cargos = $user->cargos->whereNotIn('id', $cargos_materia);
 
         return view('calificacion.home', [
             'materias' => $materias,
@@ -100,8 +106,7 @@ class CalificacionController extends Controller
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $calificacion->materia_id)
-            ->where('procesos.ciclo_lectivo', $calificacion->ciclo_lectivo)
-        ;
+            ->where('procesos.ciclo_lectivo', $calificacion->ciclo_lectivo);
 
 
         if ($calificacion->comision_id) {
@@ -190,7 +195,7 @@ class CalificacionController extends Controller
             return redirect()->route('calificacion.admin', [
                 'materia_id' => $calificacion->materia_id,
                 'cargo_id' => $calificacion->cargo_id,
-                'ciclo_lectivo' => $ciclo_lectivo
+                'ciclo_lectivo' => $ciclo_lectivo,
             ])->with($mensaje);
         }
 
@@ -200,7 +205,7 @@ class CalificacionController extends Controller
         return redirect()->route('calificacion.admin', [
             'materia_id' => $request['materia_id'],
             'cargo_id' => $request['cargo_id'],
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
         ])->with($mensaje);
     }
 
@@ -210,6 +215,7 @@ class CalificacionController extends Controller
 
         ProcesoCalificacion::where('calificacion_id', $calificacion->id)->delete();
         $calificacion->delete();
+
         return redirect()->back();
 //        route('calificacion.admin', [
 //            'materia_id' => $calificacion->materia_id,
