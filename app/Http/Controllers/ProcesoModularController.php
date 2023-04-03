@@ -124,12 +124,12 @@ class ProcesoModularController extends Controller
 
     }
 
-    public function procesaEstadosModular(Materia $materia, int $cargo_id = null): RedirectResponse
+    public function procesaEstadosModular(Materia $materia, $ciclo_lectivo, int $cargo_id = null): RedirectResponse
     {
         $service = new ProcesoModularService();
-        $service->grabaEstadoCursoEnModulo($materia->id);
+        $service->grabaEstadoCursoEnModulo($materia->id, $ciclo_lectivo);
 
-        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'cargo_id' => $cargo_id]);
+        return redirect()->route('proceso_modular.list', ['materia' => $materia,'ciclo_lectivo' =>$ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
     }
 

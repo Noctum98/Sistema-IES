@@ -13,7 +13,7 @@ class ProcesoCalificacionService
     /**
      * Calcula la nota desde un porcentaje dado
      * @param int $porcentaje
-     * @return int
+     * @return int nota
      */
     public function calculoPorcentajeNota(int $porcentaje): int
     {
@@ -69,6 +69,16 @@ class ProcesoCalificacionService
             ->first();
     }
 
+    /**
+     * Obtengo procesos de calificación
+     * proceso_id, calificacion_id, nota y porcentaje
+     *
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $tipo
+     * @return mixed
+     */
     public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo)
     {
         $calificacionService = new CalificacionService();
@@ -80,6 +90,15 @@ class ProcesoCalificacionService
             ->get();
     }
 
+    /**
+     * Cuanto la cantidad de notas por proceso, según la calificación
+     *
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $tipo
+     * @return int
+     */
     public function cuentaProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo): int
     {
         return count($this->obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo));

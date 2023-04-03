@@ -32,12 +32,30 @@ class CalificacionService
     public function calificacionParcialByAlumno($alumno_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByAlumno($alumno_id, $calificacion_id);
-//        dd($proceso_calificacion);
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {
             $pp = $proceso_calificacion[0]->porcentaje ?? 0;
             $pr = $proceso_calificacion[0]->porcentaje_recuperatorio ?? 0;
+        }
+
+        return max($pp, $pr);
+    }
+
+
+    /**
+     * @param $alumno_id <b>id</b> del alumno
+     * @param $calificacion_id <i>La calificación</i> a procesar
+     * @return mixed La nota máxima del parcial o el recuperatorio
+     */
+    public function notaCalificacionParcialByAlumno($alumno_id, $calificacion_id)
+    {
+        $proceso_calificacion = $this->calificacionesByAlumno($alumno_id, $calificacion_id);
+
+        $pp = $pr = 0;
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->nota ?? 0;
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
         }
 
         return max($pp, $pr);
@@ -59,6 +77,35 @@ class CalificacionService
         return max($pp, $pr);
     }
 
+    /**
+     * Procesa las calificaciones desde el proceso.
+     *
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return mixed La nota máxima del parcial o el recuperatorio
+     */
+    public function notaCalificacionParcialByProceso($proceso_id, $calificacion_id)
+    {
+        $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
+
+        $pp = $pr = 0;
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->nota ?? 0;
+            if ($pp == -1) {
+                $pp = 0;
+            }
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
+        }
+
+        return max($pp, $pr);
+    }
+
+
+    /**
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return string
+     */
     public function calificacionAusenteParcialByProceso($proceso_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
@@ -70,6 +117,32 @@ class CalificacionService
                 $pp = 'A';
             }
             $pr = $proceso_calificacion[0]->porcentaje_recuperatorio ?? 'A';
+        }
+        if ($pp == 'A' or $pr == 'A') {
+            $ausente = 'A';
+        }
+
+        return ($ausente);
+    }
+
+    /**
+     * Cambia un '-1' en 'A'
+     *
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return string
+     */
+    public function notaCalificacionAusenteParcialByProceso($proceso_id, $calificacion_id): string
+    {
+        $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
+
+        $ausente = 'P';
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->nota ?? 0;
+            if ($pp == -1) {
+                $pp = 'A';
+            }
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 'A';
         }
         if ($pp == 'A' or $pr == 'A') {
             $ausente = 'A';
@@ -158,6 +231,14 @@ class CalificacionService
 
     //// Calificaciones por materia, cargo y tipo
 
+    /**
+     * Obtengo una calificación específica
+     *
+     * @param $materia_id
+     * @param $cargo_id
+     * @param $tipo_id
+     * @return mixed
+     */
     public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id)
     {
         return Calificacion::select('calificaciones.*')
