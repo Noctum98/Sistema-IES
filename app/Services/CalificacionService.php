@@ -67,11 +67,11 @@ class CalificacionService
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {
-            $pp = $proceso_calificacion[0]->porcentaje ?? 0;
+            $pp = $proceso_calificacion[0]->nota ?? 0;
             if ($pp == -1) {
                 $pp = 0;
             }
-            $pr = $proceso_calificacion[0]->porcentaje_recuperatorio ?? 0;
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
         }
 
         return max($pp, $pr);
@@ -239,19 +239,23 @@ class CalificacionService
      * @param $tipo_id
      * @return mixed
      */
-    public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id)
+    public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo)
     {
         return Calificacion::select('calificaciones.*')
             ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
             ->where('calificaciones.materia_id', $materia_id)
             ->where('calificaciones.cargo_id', $cargo_id)
+            ->where('calificaciones.ciclo_lectivo', $ciclo_lectivo)
             ->where('tipo_calificaciones.descripcion', $tipo_id)
             ->get();
     }
 
-    public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id): int
+    public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo = null): int
     {
-        return count($this->calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id));
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+        return count($this->calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo));
     }
 
 }

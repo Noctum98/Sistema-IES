@@ -582,8 +582,11 @@ class ProcesoModularService
 
     }
 
-    public function obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo): float
+    public function obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo, $ciclo_lectivo = null): float
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
         $pCS = new ProcesoCalificacionService();
         $total_aprobados = 0;
         $porcentaje_aprobado = 0;
@@ -591,7 +594,8 @@ class ProcesoModularService
         $total_parciales = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
             $materia,
             $cargo,
-            CalificacionService::TIPO_PARCIAL
+            CalificacionService::TIPO_PARCIAL,
+            $ciclo_lectivo
         );
         $total_tps = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
             $materia,

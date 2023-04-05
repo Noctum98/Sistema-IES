@@ -79,10 +79,13 @@ class ProcesoCalificacionService
      * @param $tipo
      * @return mixed
      */
-    public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo)
+    public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo, $ciclo_lectivo = null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
         $calificacionService = new CalificacionService();
-        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo)->pluck('id')->toArray();
+        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo, $ciclo_lectivo)->pluck('id')->toArray();
 
         return ProcesoCalificacion::select('proceso_calificacion.*')
             ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)

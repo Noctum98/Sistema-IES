@@ -15,13 +15,13 @@
                 <col class="col-md-2">
                 <col class="col-">
                 <col class="col-">
-                @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
+                @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <col class="col-">
                 @endforeach
                 <col class="col-">
 
                 <col class="col-">
-                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
+                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <col class="col-">
                 @endforeach
                 <col class="col-">
@@ -33,14 +33,14 @@
                 <th scope="col">Cargo</th>
                 <th scope="col">% Act. Ap.</th>
                 <th class="border border-1 border-right">TP's</th>
-                @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
+                @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% x̄</th>
 
                 <th class="border border-1 border-right">P's</th>
 
-                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacion)
+                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
                 <th>% Final</th>
@@ -55,26 +55,26 @@
                 </td>
                 <td>
 {{--                    @if($proceso->porcentaje_actividades_aprobado)--}}
-                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id) , 2, '.', ',')}} %
+                        {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id, $ciclo_lectivo) , 2, '.', ',')}} %
 
 {{--                    @else--}}
 {{--                        0 %--}}
 {{--                    @endif--}}
                 </td>
                 <td class="border border-1 border-right"></td>
-                @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
+                @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <td>
                         {{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
-                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje >= 0)
-                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje, 2, '.', ',') }}
+                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
+                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') }}
                                 @php
-                                    $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje
+                                    $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota
                                 @endphp
 
                             @endif
-                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->porcentaje == -1)
+                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                 A
                                 @php
                                     $sumaCalificacion = 0;
@@ -100,7 +100,7 @@
 
                 <td></td>
 
-                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
+                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacionP)
                     <td>
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
                             @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
