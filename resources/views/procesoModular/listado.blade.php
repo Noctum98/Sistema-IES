@@ -88,8 +88,20 @@
                         <b>Usted tiene permisos de edición</b>
                     @endif
                 </small></i></p>
-        <p><small style="font-size: 0.8em">Aclaraciones: '% Act. Ap.': Porcentaje de actividades del cargo
-                aprobadas</small></p>
+        <p><small style="font-size: 0.8em">
+                Aclaraciones:
+                <i>'N Proceso'</i>: Nota Proceso.
+                <i>'% Asist. Final'</i>: Porcentaje Asistencia Final.
+                <i>'N TFI'</i>: Nota Trabajo Final Integrador.
+                <i>'N Final'</i>: Nota Final.
+                <i>'N Global'</i>: Nota Global.
+                <i>'% Act. Ap.'</i>: Porcentaje de actividades del cargo aprobadas.
+                <i>'TP's'</i>: Trabajos Prácticos.
+                <i>'N x̄'</i>: Nota Promedio.
+                <i>'P's'</i>: Parciales.
+                <i>'% Asist.'</i>: Porcentaje asistencia.
+            </small>
+        </p>
         {{--
 @if(isset($comision))
 <!-----
@@ -126,14 +138,14 @@
                         <th class="sticky-top">
                             Alumno
                         </th>
-{{--                        <th class="sticky-top">Proc. Final %</th>--}}
-                        <th class="sticky-top text-center">Nota Proceso</th>
-                        <th class="sticky-top text-center">% Asis. Final </th>
-{{--                        <th class="sticky-top">TFI %</th>--}}
-                        <th class="sticky-top text-center">Nota TFI</th>
-{{--                        <th class="sticky-top">Nota Final %</th>--}}
-                        <th class="sticky-top text-center">Nota Final</th>
-                        <th class="sticky-top col-sm-1">Nota Global</th>
+                        {{--                        <th class="sticky-top">Proc. Final %</th>--}}
+                        <th class="sticky-top text-center">N Proceso</th>
+                        <th class="sticky-top text-center">% Asist. Final</th>
+                        {{--                        <th class="sticky-top">TFI %</th>--}}
+                        <th class="sticky-top text-center">N TFI</th>
+                        {{--                        <th class="sticky-top">Nota Final %</th>--}}
+                        <th class="sticky-top text-center">N Final</th>
+                        <th class="sticky-top col-sm-1">N Global</th>
                         <th class="sticky-top">Cierre</th>
                     </tr>
                     </thead>
@@ -177,9 +189,9 @@
                                 </span>
 
                             </td>
-{{--                            <td class="text-center">--}}
-{{--                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|--}}
-{{--                            </td>--}}
+                            {{--                            <td class="text-center">--}}
+                            {{--                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|--}}
+                            {{--                            </td>--}}
 
                             <td class="text-center">
                                 {{$proceso->promedio_final_nota}}
@@ -187,15 +199,15 @@
                             <td class="text-center">
                                 {{$proceso->asistencia_final_porcentaje}} %
                             </td>
-{{--                            <td class="text-center">--}}
-{{--                                {{$proceso->trabajo_final_porcentaje}} %|--}}
-{{--                            </td>--}}
+                            {{--                            <td class="text-center">--}}
+                            {{--                                {{$proceso->trabajo_final_porcentaje}} %|--}}
+                            {{--                            </td>--}}
                             <td class="text-center">
                                 {{$proceso->trabajo_final_nota}}
                             </td>
-{{--                            <td class="text-center">--}}
-{{--                                {{$proceso->nota_final_porcentaje}} %|--}}
-{{--                            </td>--}}
+                            {{--                            <td class="text-center">--}}
+                            {{--                                {{$proceso->nota_final_porcentaje}} %|--}}
+                            {{--                            </td>--}}
                             <td class="text-center">
                                 {{$proceso->nota_final_nota}}
                             </td>

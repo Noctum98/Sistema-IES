@@ -217,6 +217,8 @@ class CargoService
      */
     public function calculoPorcentajeCalificacionFromBlade($cantidad_tp, $suma_tp, $cantidad_p, $suma_p): float
     {
+
+
         $valueParcial = Configuration::select('value_parcial')->first();
         $resultado = 0;
         /** El factorDivision en 2 por trabajos prácticos y parciales */

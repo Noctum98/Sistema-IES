@@ -6,15 +6,15 @@
         @php
             $suma=0;
             $suma_parcial = null;
-            $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
-            $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id));
+            $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo));
+            $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo));
             $valor_parcial = 0;
 //        @endphp
         <table class="table table-striped f30">
             <colgroup>
-                <col class="col-md-2">
-                <col class="col-">
-                <col class="col-">
+                <col class="col-sm-2">
+                <col class="col-sm-1">
+                <col class="col-sm-1">
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <col class="col-">
                 @endforeach
@@ -24,9 +24,9 @@
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <col class="col-">
                 @endforeach
-                <col class="col-">
-                <col class="col-">
-                <col class="col-">
+                <col class="col-sm-1">
+                <col class="col-sm-1">
+                <col class="col-sm-1">
             </colgroup>
             <thead>
             <tr>
@@ -36,14 +36,14 @@
                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
-                <th>% x̄</th>
+                <th>N x̄</th>
 
                 <th class="border border-1 border-right">P's</th>
 
                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                     <th scope="col">{{$calificacion->nombre}}</th>
                 @endforeach
-                <th>% Final</th>
+                <th>N Final</th>
                 <th>% Asist.</th>
                 <th>Cerrado</th>
             </tr>
@@ -133,6 +133,7 @@
                 @endforeach
 
                 <td>
+
                     @inject('cargoService', 'App\Services\CargoService')
                     @php
                         $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
