@@ -83,7 +83,7 @@ class ProcesoModularService
      */
     public function crearProcesoModular(int $materia_id, int $ciclo_lectivo = null)
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -104,7 +104,7 @@ class ProcesoModularService
      */
     public function obtenerProcesosModularesNoVinculados(int $materia_id, int $ciclo_lectivo = null)
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -133,7 +133,7 @@ class ProcesoModularService
      */
     public function obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo = null)
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -171,7 +171,7 @@ class ProcesoModularService
      */
     public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo = null): int
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -221,7 +221,7 @@ class ProcesoModularService
                         $cargo->id,
                         CalificacionService::TIPO_TFI
                     )->first();
-                    if($tfp) {
+                    if ($tfp) {
                         $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
                         $proceso->trabajo_final_nota = $tfp->nota;
                     }
@@ -582,73 +582,95 @@ class ProcesoModularService
 
     }
 
-    public function obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo, $ciclo_lectivo = null): float
+    /**
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $ciclo_lectivo
+     * @return float
+     */
+    public function obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo, $ciclo_lectivo): float
     {
-        if(!$ciclo_lectivo){
-            $ciclo_lectivo = date('Y');
-        }
+        // Llamo a los servicios de procesos y calificaciones
         $pCS = new ProcesoCalificacionService();
+        $calificacionService = new CalificacionService();
+
+        // Inicializo las variables
         $total_aprobados = 0;
         $porcentaje_aprobado = 0;
-        $calificacionService = new CalificacionService();
+
+        // cuento los parciales
         $total_parciales = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
             $materia,
             $cargo,
             CalificacionService::TIPO_PARCIAL,
             $ciclo_lectivo
         );
+        // cuento los trabajos prácticos
         $total_tps = $calificacionService->cuentaCalificacionesByMateriaCargoTipo(
             $materia,
             $cargo,
-            CalificacionService::TIPO_TP
+            CalificacionService::TIPO_TP,
+            $ciclo_lectivo
         );
-
+        // sumo las actividades del cargo
         $total_actividades = $total_parciales + $total_tps;
 
+        //Obtengo los parciales
         $parciales = $pCS->
         obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
             $proceso,
             $materia,
             $cargo,
-            CalificacionService::TIPO_PARCIAL
+            CalificacionService::TIPO_PARCIAL,
+            $ciclo_lectivo
         );
+        //Obtengo los trabajos prácticos
         $tps = $pCS->
-        obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+        obtenerNotaProcesoCalificacionByProcesoMateriaCargoTipo(
             $proceso,
             $materia,
             $cargo,
-            CalificacionService::TIPO_TP
-        )->pluck('porcentaje');
+            CalificacionService::TIPO_TP,
+            $ciclo_lectivo
+        )->pluck('nota');
 
+        // Calculo parciales aprobados
         foreach ($parciales as $parcial) {
+            // Inicio las variables
             $pp = 0;
             $ppr = 0;
+            //busco la nota del parcial si existe
             if (is_numeric($parcial->nota)) {
                 $pp = $parcial->nota;
             }
+            //busco la nota del recuperatorio si existe
             if (is_numeric($parcial->nota_recuperatorio)) {
                 $ppr = $parcial->nota_recuperatorio;
             }
+            // Busco la nota mayor entre parcial y recuperatorio
             $total_p = max($pp, $ppr);
 
+            // Sumo parcial aprobado si fuere el caso
             if ($total_p >= self::NOTA_PERCENT_APROBADO) {
                 $total_aprobados++;
             }
         }
 
+        //calculo trabajos prácticos aprobados
         foreach ($tps as $tp) {
+            // Aseguro nota positiva ante posible ausente (-1)
             $total_tp = max($tp, 0);
-
+            // Sumo aprobado si fuere el caso
             if ($total_tp >= self::NOTA_PERCENT_APROBADO) {
                 $total_aprobados++;
             }
-
         }
 
+        // Calculo porcentaje de aprobados evitando división por cero
         if ($total_actividades > 0) {
             $porcentaje_aprobado = $total_aprobados * 100 / $total_actividades;
         }
-
 
         return $porcentaje_aprobado;
     }

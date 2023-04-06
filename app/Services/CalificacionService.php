@@ -250,11 +250,8 @@ class CalificacionService
             ->get();
     }
 
-    public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo = null): int
+    public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo): int
     {
-        if(!$ciclo_lectivo){
-            $ciclo_lectivo = date('Y');
-        }
         return count($this->calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo));
     }
 

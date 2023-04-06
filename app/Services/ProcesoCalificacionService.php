@@ -77,6 +77,7 @@ class ProcesoCalificacionService
      * @param $materia
      * @param $cargo
      * @param $tipo
+     * @param null $ciclo_lectivo
      * @return mixed
      */
     public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo, $ciclo_lectivo = null)
@@ -88,6 +89,31 @@ class ProcesoCalificacionService
         $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo, $ciclo_lectivo)->pluck('id')->toArray();
 
         return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->get();
+    }
+
+    /**
+     * Obtengo la nota de los procesos de calificación
+     * nota
+     *
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $tipo
+     * @param null $ciclo_lectivo
+     * @return mixed
+     */
+    public function obtenerNotaProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo, $ciclo_lectivo = null)
+    {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+        $calificacionService = new CalificacionService();
+        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo, $ciclo_lectivo)->pluck('id')->toArray();
+
+        return ProcesoCalificacion::select('proceso_calificacion.nota')
             ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
             ->where('proceso_calificacion.proceso_id', $proceso)
             ->get();
