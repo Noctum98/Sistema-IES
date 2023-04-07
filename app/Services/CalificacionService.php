@@ -200,17 +200,41 @@ class CalificacionService
     }
 
     //// Calificaciones por cargo
-    public function calificacionesByCargo($cargo_id)
+
+    /**
+     * @param $cargo_id
+     * @param $ciclo_lectivo
+     * @return mixed
+     */
+    public function calificacionesByCargo($cargo_id, $ciclo_lectivo)
     {
         return Calificacion::where([
             'cargo_id' => $cargo_id,
+            'ciclo_lectivo' => $ciclo_lectivo
         ])
             ->get();
     }
 
-    public function cuentaCalificacionesByCargo($cargo_id): int
+    /**
+     * @param $cargos <b>Cargos</b> del módulo
+     * @param int $ciclo_lectivo <b>Ciclo lectivo</b>
+     * @param array $tipos <b>Tipo</b> de calificación
+     * @return mixed
+     */
+    public function calificacionesInCargos($cargos , int $ciclo_lectivo, array $tipos)
     {
-        return count($this->calificacionesByCargo($cargo_id));
+        return Calificacion::select('calificaciones.*')
+            ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
+            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->whereIn('cargo_id', $cargos)
+            ->whereIn('tipo_calificaciones.descripcion', $tipos)
+            ->get()
+            ;
+    }
+
+    public function cuentaCalificacionesByCargo($cargo_id, $ciclo_lectivo): int
+    {
+        return count($this->calificacionesByCargo($cargo_id, $ciclo_lectivo));
     }
 
     //// Calificaciones por materia y cargo
@@ -237,6 +261,7 @@ class CalificacionService
      * @param $materia_id
      * @param $cargo_id
      * @param $tipo_id
+     * @param $ciclo_lectivo
      * @return mixed
      */
     public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo)

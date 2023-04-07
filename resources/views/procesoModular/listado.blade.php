@@ -22,6 +22,8 @@
             background-color: #343a40;
             border-color: rgba(52, 58, 64, 0.75);
         }
+
+
     </style>
     <div class="container-fluid w-100" id="container-scroll">
         <a href="{{url()->previous()}}">
@@ -97,7 +99,8 @@
                 <i>'N Global'</i>: Nota Global.
                 <i>'% Act. Ap.'</i>: Porcentaje de actividades del cargo aprobadas.
                 <i>'TP's'</i>: Trabajos Prácticos.
-                <i>'N x̄'</i>: Nota Promedio.
+                <i>'N TPs x̄'</i>: Nota Promedio Trabajos Prácticos.
+                <i>'N Ps x̄'</i>: Nota Promedio Parciales.
                 <i>'P's'</i>: Parciales.
                 <i>'% Asist.'</i>: Porcentaje asistencia.
             </small>
@@ -154,68 +157,24 @@
                         <tr class="bg-secondary text-white font-weight-bold">
                             <td>
                                 {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
-
-                                <small><br/>
-                                    <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
-                                    @if($puede_procesar)
-                                        <br/>
-                                        <div class="d-inline-flex">
-                                            <small><sup>*</sup> Cambiar condición</small>
-                                            <select name="estado" class="custom-select custom-select-sm select-estado"
-                                                    id="{{$proceso->procesoRelacionado->id}}"
-                                                    @if(!$puede_procesar || $proceso->procesoRelacionado->cierre == 1) disabled=disabled
-                                                    @endif
-                                                    data-estado="{{$proceso->procesoRelacionado->id}}">
-                                                @foreach($estados as $estado)
-                                                    <option value="{{ $estado->id }}"
-                                                            @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
-                                                                selected="selected"
-                                                            @endif
-                                                    >
-                                                        {{ $estado->nombre }}
-
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-
-                                </small>
-                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
-                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>
-                                </span>
-                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
-                                    <i class="fa fa-spinner fa-spin"></i>
-                                </span>
-
                             </td>
-                            {{--                            <td class="text-center">--}}
-                            {{--                                {{number_format($proceso->promedio_final_porcentaje, 2, '.', ',')}} %|--}}
-                            {{--                            </td>--}}
-
                             <td class="text-center">
                                 {{$proceso->promedio_final_nota}}
                             </td>
                             <td class="text-center">
                                 {{$proceso->asistencia_final_porcentaje}} %
                             </td>
-                            {{--                            <td class="text-center">--}}
-                            {{--                                {{$proceso->trabajo_final_porcentaje}} %|--}}
-                            {{--                            </td>--}}
                             <td class="text-center">
                                 {{$proceso->trabajo_final_nota}}
                             </td>
-                            {{--                            <td class="text-center">--}}
-                            {{--                                {{$proceso->nota_final_porcentaje}} %|--}}
-                            {{--                            </td>--}}
                             <td class="text-center">
                                 {{$proceso->nota_final_nota}}
                             </td>
                             <td class="row">
                                 <form action="" id="{{ $proceso->procesoRelacionado->id }}" class="form_nota_global">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <input type="text"
-                                               class="form-control nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
+                                               class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                                id="global-{{ $proceso->procesoRelacionado->id }}"
                                                value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
                                                @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
@@ -231,12 +190,6 @@
                                 </form>
                             </td>
                             <td>
-                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
-                                    <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
-                                </span>
-                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
-                                    <i class="fa fa-spinner fa-spin"></i>
-                                </span>
                                 {{$proceso->procesoRelacionado->cierre}}
                                 <input type="checkbox" class="check-cierre"
                                        id="{{$proceso->procesoRelacionado->id}}"
@@ -248,8 +201,61 @@
                                         @endif
                                 />
                             </td>
+                        </tr>
+                        <tr class="bg-secondary text-white font-weight-bold">
+                            <td>
+                                <small>
+                                    <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                </small>
+                            </td>
+                            <td colspan="2" class="text-center w-50">
 
+                                @if($puede_procesar)
+                                    <div class="d-inline-flex ml-3">
+                                        <label for="{{$proceso->procesoRelacionado->id}}" class="mr-2">
+                                            <small><sup>*</sup> Cambiar condición</small>
+                                        </label>
+                                        <select name="estado" class="custom-select custom-select-sm select-estado"
+                                                id="{{$proceso->procesoRelacionado->id}}"
+                                                @if(!$puede_procesar || $proceso->procesoRelacionado->cierre == 1) disabled=disabled
+                                                @endif
+                                                data-estado="{{$proceso->procesoRelacionado->id}}">
+                                            @foreach($estados as $estado)
+                                                <option value="{{ $estado->id }}"
+                                                        @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
+                                                            selected="selected"
+                                                        @endif
+                                                >
+                                                    {{ $estado->nombre }}
 
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="text-center" colspan="2">
+                                <a href="{{route('proceso_modular.procesa_notas_modular', ['materia' => $materia->id, 'proceso_id' => $proceso->procesoRelacionado->id, 'cargo' => $cargo_id ])}}"
+                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
+                                    Comprobar notas
+                                </a>
+                            </td>
+
+                            <td colspan="2">
+                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
+                                    <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
+                                </span>
+                                {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
+                                {{--                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>--}}
+                                {{--                                </span>--}}
+
+                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </span>
+                                {{--                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">--}}
+                                {{--                                    <i class="fa fa-spinner fa-spin"></i>--}}
+                                {{--                                </span>--}}
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="9" class="border-top-0 border-info">

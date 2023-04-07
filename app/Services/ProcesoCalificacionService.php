@@ -113,10 +113,7 @@ class ProcesoCalificacionService
         $calificacionService = new CalificacionService();
         $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo, $ciclo_lectivo)->pluck('id')->toArray();
 
-        return ProcesoCalificacion::select('proceso_calificacion.nota')
-            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
-            ->where('proceso_calificacion.proceso_id', $proceso)
-            ->get();
+        return $this->obtenerNotaProcesoCalificacion($calificaciones, $proceso);
     }
 
     /**
@@ -133,6 +130,36 @@ class ProcesoCalificacionService
         return count($this->obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo));
     }
 
+
+
+    /**
+     * @param $calificaciones
+     * @param $proceso
+     * @return mixed
+     */
+    public function obtenerNotaProcesoCalificacion($calificaciones, $proceso)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.nota', 'proceso_calificacion.nota_recuperatorio')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->orderBy('proceso_calificacion.id', 'DESC')
+            ->get()
+
+//            ->dd()
+            ;
+    }
+
+    public function obtenerNotaProcesoCalificacionModel($calificaciones, $proceso)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->orderBy('proceso_calificacion.id', 'DESC')
+            ->get()
+
+//            ->dd()
+            ;
+    }
 
 
 }

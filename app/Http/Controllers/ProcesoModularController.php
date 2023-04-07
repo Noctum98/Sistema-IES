@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Cargo;
 use App\Models\Estados;
 use App\Models\Materia;
+use App\Models\Proceso;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesoModularService;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Util\Exception;
 
 class ProcesoModularController extends Controller
 {
@@ -130,6 +133,21 @@ class ProcesoModularController extends Controller
         $service->grabaEstadoCursoEnModulo($materia->id, $ciclo_lectivo);
 
         return redirect()->route('proceso_modular.list', ['materia' => $materia,'ciclo_lectivo' =>$ciclo_lectivo, 'cargo_id' => $cargo_id]);
+
+    }
+
+    public function procesaNotaModular(Materia $materia,int $proceso_id, $cargo_id = null): RedirectResponse
+    {
+        $service = new ProcesoModularService();
+        $proceso = Proceso::find($proceso_id);
+        if(!$proceso){
+            throw new Exception('No se encontró el proceso');
+        }
+        $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
+
+        $service->setNotaProceso($proceso_id, $nota_proceso);
+
+        return redirect()->route('proceso_modular.list', ['materia' => $materia,'ciclo_lectivo' =>$proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
     }
 
