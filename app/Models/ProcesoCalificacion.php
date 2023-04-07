@@ -17,6 +17,8 @@ class ProcesoCalificacion extends Model
         'calificacion_id',
         'nota',
         'porcentaje',
+        'nota_recuperatorio',
+        'porcentaje_recuperatorio',
         'close_profesor',
         'close_coordinador',
         'open_profesor',

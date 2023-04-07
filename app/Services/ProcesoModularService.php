@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
 use App\Models\Configuration;
@@ -209,9 +210,10 @@ class ProcesoModularService
 
             }
             $proceso->promedio_final_porcentaje = $promedio_final_p;
-            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
-                $promedio_final_p
-            );
+//            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
+//                $promedio_final_p
+//            );
+            $proceso->promedio_final_nota = $this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first());
 
             if (!$proceso->trabajo_final_porcentaje) {
                 if ($cargo->responsableTFI($materia->id)) {
@@ -230,9 +232,7 @@ class ProcesoModularService
 
             $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
 //            $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
-            $proceso->nota_final_nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
-                $proceso->nota_final_porcentaje
-            );
+            $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
 
 //            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
 //                $proceso->procesoRelacionado()->first()->id,
@@ -678,6 +678,173 @@ class ProcesoModularService
     public function esAprobadoRai($proceso, $materia, $cargo): bool
     {
         return self::PERCENT_RAI >= $this->obtenerPorcentajeProcesoAprobado($proceso, $materia, $cargo);
+    }
+
+    /**
+     * @param Materia $materia
+     * @param Proceso $proceso
+     * @return float|int
+     */
+    public function revisaNotasProceso(Materia $materia, Proceso $proceso)
+    {
+        $materia->cargos();
+
+        $cargos = $materia->cargos()->get()->pluck('id');
+        $calificacionService = new CalificacionService();
+
+
+        $total_modulo = 0;
+        foreach ($materia->cargos()->get() as $cargo) {
+            $total_cargo = $this->getTotalCargo($cargo, $materia, $proceso);
+
+            $total_modulo += $total_cargo;
+        }
+
+        return $total_modulo;
+
+    }
+
+    /**
+     * @param ProcesoCalificacionService $procesoCalificacionService
+     * @param $calificaciones
+     * @param Proceso $proceso
+     * @param $weighing
+     * @return array
+     */
+    protected function obtenerNotaPonderadaTps(
+                                   $calificaciones,
+        Proceso                    $proceso,
+                                   $weighing
+    ): array
+    {
+        $procesoCalificacionService = new ProcesoCalificacionService();
+        $notaCalificacion = $procesoCalificacionService->obtenerNotaProcesoCalificacion(
+            $calificaciones,
+            $proceso->id
+        )->pluck('nota')->toArray();
+
+        $suma = array_sum($notaCalificacion);
+
+        $cuenta = count($notaCalificacion);
+        $promedio = 0;
+        if ($cuenta > 0) {
+            $promedio = $suma / $cuenta;
+        }
+        $total = $weighing / 100 * $promedio;
+
+        return [
+            'cuenta' => $cuenta,
+            'suma' => $suma,
+            'total' => $total,
+        ];
+    }
+
+    protected function obtenerNotaPonderadaParciales(
+        $calificaciones,
+        Proceso $proceso,
+        int $weighing
+    ): array
+    {
+
+        $procesoCalificacionService = new ProcesoCalificacionService();
+        $notaCalificacion = $procesoCalificacionService->obtenerNotaProcesoCalificacion(
+            $calificaciones,
+            $proceso->id
+        );
+
+        $cuenta = count($notaCalificacion);
+
+        $total_p = 0;
+        foreach ($notaCalificacion as $parcial) {
+
+            $pp = 0;
+            $ppr = 0;
+            if (is_numeric($parcial->nota)) {
+                $pp = $parcial->nota;
+            }
+            if (is_numeric($parcial->nota_recuperatorio)) {
+                $ppr = $parcial->nota_recuperatorio;
+            }
+
+            $total_p += max($pp, $ppr);
+
+        }
+
+
+        $suma = $total_p;
+
+
+        $promedio = 0;
+        if ($cuenta > 0) {
+            $promedio = $suma / $cuenta;
+        }
+        $total = $weighing / 100 * $promedio;
+
+        return [
+            'cuenta' => $cuenta,
+            'suma' => $suma,
+            'total' => $total,
+        ];
+    }
+
+
+    public function setNotaProceso($proceso, $nota)
+    {
+        $procesoModular = ProcesoModular::where([
+            'proceso_id' => $proceso
+        ])->first();
+
+        $procesoModular->promedio_final_nota = $nota;
+
+        $procesoModular->update();
+
+    }
+
+    /**
+     * @param $cargo
+     * @param Materia $materia
+     * @param Proceso $proceso
+     * @return float|int
+     */
+    public function getTotalCargo($cargo, Materia $materia, Proceso $proceso)
+    {
+        $calificacionService = new CalificacionService();
+        $weighing = $cargo->ponderacion($materia->id);
+        // Busco solo los parciales
+        $calificaciones_parcial = $calificacionService->calificacionesInCargos([$cargo->id],
+            $proceso->ciclo_lectivo,
+            [1])->pluck('id');
+
+        $parcial = $this->obtenerNotaPonderadaParciales(
+            $calificaciones_parcial,
+            $proceso,
+            $weighing
+        );
+
+        // Busco solo los tps
+        $calificaciones_tps = $calificacionService->calificacionesInCargos([$cargo->id],
+            $proceso->ciclo_lectivo,
+            [2])->pluck('id');
+        $tps = $this->obtenerNotaPonderadaTps(
+            $calificaciones_tps,
+            $proceso,
+            $weighing
+        );
+
+        $configuration = Configuration::first();
+        $total_cargo = 0;
+        if ($configuration->value_parcial != null) {
+            $value_parcial = $configuration->value_parcial / 100;
+
+            $total_cargo = $tps['total'] * (1 - $value_parcial) + $parcial['total'] * $value_parcial;
+        } else {
+            $cuenta = $tps['cuenta'] + $parcial['cuenta'];
+            $suma = $tps['suma'] + $parcial['suma'];
+            if ($cuenta > 0) {
+                $total_cargo = $weighing / 100 * $suma / $cuenta;
+            }
+        }
+        return $total_cargo;
     }
 
 
