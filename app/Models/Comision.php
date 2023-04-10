@@ -53,5 +53,13 @@ class Comision extends Model
         return false;
     }
 
+    public function hasAlumno($alumno_id)
+    {
+        if ($this->alumnos->where('id', $alumno_id)->first()) {
+            return true;
+        }
+        return false;
+    }
+
 
 }

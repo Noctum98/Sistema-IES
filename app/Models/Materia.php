@@ -27,6 +27,11 @@ class Materia extends Model
         return $this->belongsTo('App\Models\Carrera', 'carrera_id');
     }
 
+    public function profesores()
+    {
+        return $this->belongsToMany(User::class,'materia_user','materia_id','user_id');
+    }
+
     public function tipoMateria(): BelongsTo
     {
         return $this->belongsTo(TipoMateria::class,'tipo_materia_id');

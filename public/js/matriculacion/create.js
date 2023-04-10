@@ -85,6 +85,11 @@ $(document).ready(function () {
         $("#tercer_año").show();
         $("#primer_año").hide();
     });
+    $("#recursante_diferenciado_tercero").change(function (e) {
+        $("#segundo_año").show();
+        $("#tercer_año").show();
+        $("#primer_año").hide();
+    });
     //===========================================================//
     $("#otra").keyup(function (e) {
         $("#nacionalidad").prop("disabled", true);

@@ -37,6 +37,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use App\Models\ActaVolante;
+use App\Models\Alumno;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Calificacion;
 use App\Models\Comision;
@@ -323,7 +324,9 @@ Route::prefix('proceso')->group(function () {
         'proceso.listado'
     );
 
-    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo']
+    Route::get(
+        'listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
+        [ProcesoController::class, 'vista_listadoCargo']
     )->name(
         'proceso.listadoCargo'
     );
@@ -350,7 +353,6 @@ Route::prefix('proceso')->group(function () {
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
     Route::post('calcularPorcentaje', [ProcesoCalificacionController::class, 'calcularPorcentaje']);
     Route::get('procesosCalificaciones/{proceso_id}', [ProcesoCalificacionController::class, 'show']);
-
 });
 
 // Rutas de Asistencia
@@ -408,7 +410,9 @@ Route::prefix('mesas')->group(function () {
     Route::get('/carrera/admin/{id}/{instancia_id}', [InstanciaController::class, 'vista_mesas'])->name('mesa.mesas');
     Route::get('/cronograma/{instancia_id}', [MesaController::class, 'vistaCronograma'])->name('mesa.cronograma');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
-    Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones']
+    Route::get(
+        '/inscriptos/{instancia_id}/{materia_id}/{comision_id?}',
+        [MesaController::class, 'vista_inscripciones']
     )->name(
         'mesa.inscriptos'
     );
@@ -436,7 +440,9 @@ Route::prefix('mesas')->group(function () {
 
 
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}', [AlumnoMesaController::class, 'email_session'])->name('edit.mesa');
-    Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel']
+    Route::get(
+        '/descargar_excel/{id}/{instancia_id}/{llamado?}',
+        [InstanciaController::class, 'descargar_excel']
     )->name('mesa.descargar');
     Route::get('/descargar_tribunal/{id}/{instancia_id}', [InstanciaController::class, 'descargar_tribunal'])->name(
         'mesa.tribunal'
@@ -461,7 +467,6 @@ Route::prefix('mesas')->group(function () {
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
     Route::put('/abrirActaVolante/{mesa_id}', [MesaController::class, 'abrirProfesor'])->name('mesa.abrir_acta');
-
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
@@ -533,7 +538,9 @@ Route::prefix('moduloProfesor')->group(function () {
     Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name(
         'modulo_profesor.vincular_cargo_modulo'
     );
-    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo']
+    Route::get(
+        'formAgregarCargoModulo/{cargo}/{usuario}',
+        [ModuloProfesorController::class, 'formAgregarCargoModulo']
     )->name('modulo_profesor.form_agregar_cargo_modulo');
     Route::delete('delete/{materia}/{cargo}/{user}', [ModuloProfesorController::class, 'destroy'])->name(
         'modulo_profesor.destroy'
@@ -551,9 +558,13 @@ Route::prefix('proceso-modular')->group(function () {
     Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
-    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
+    Route::get(
+        '/procesaPonderacionModular/{materia}',
+        [ProcesoModularController::class, 'procesaPonderacionModular']
     )->name('proceso_modular.procesa_ponderacion_modular');
-    Route::get('/procesaEstados/{materia}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
+    Route::get(
+        '/procesaEstados/{materia}/{cargo_id?}',
+        [ProcesoModularController::class, 'procesaEstadosModular']
     )->name('proceso_modular.procesa_estados_modular');
 });
 
@@ -584,42 +595,13 @@ Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
-    $archivo = fopen('backups/procesos.csv', 'r');
-    $datos = [];
-    while ($fila = fgetcsv($archivo)) {
-        $datos[] = $fila;
-    }
-    fclose($archivo);
-    $contador = 0;
+    $comisiones = Comision::where('nombre', 'Única')->get();
 
-    foreach($datos as $key => $proceso)
-    {
-        $proceso_id = $proceso[0];
-        $proceso_exist = Proceso::where('id',$proceso_id)->withTrashed()->first();
-        if(!$proceso_exist)
-        {
-            DB::table('procesos')->insert([
-                'id' => $proceso_id,
-                'materia_id' => $proceso[1] == "" ? null : $proceso[1],
-                'alumno_id' => $proceso[2] == "" ? null : $proceso[2],
-                'estado_id' => $proceso[3] == "" ? null : $proceso[3],
-                'operador_id' => $proceso[4] == "" ? null : $proceso[4],
-                'cierre' => $proceso[5] == "" ? null : $proceso[5],
-                'nota_global' => $proceso[6] == "" ? null : $proceso[6],
-                'final_asistencia' => $proceso[7] == "" ? null : $proceso[7],
-                'final_trabajos' => $proceso[8] == "" ? null : $proceso[8],
-                'porcentaje_final_trabajos' => $proceso[9] == "" ? null : $proceso[9],
-                'final_parciales' => $proceso[10] == "" ? null : $proceso[10],
-                'final_calificaciones' => $proceso[11] == "" ? null : $proceso[11],
-                'nota_recuperatorio' => $proceso[12] == "" ? null : $proceso[12],
-                'observacion_global' => $proceso[13] == "" ? null : $proceso[13],
-                'created_at' => $proceso[14] == "" ? null : $proceso[14],
-                'updated_at' => $proceso[15] == "" ? null : $proceso[15],
-                'ciclo_lectivo' => $proceso[16] == "" ? null : $proceso[16]
-            ]);
-            $contador++;
-            Log::info("$contador - Proceso $proceso_id: Creado");
-            echo "$contador - Proceso $proceso_id: Creado";
+    foreach ($comisiones as $comision) {
+        foreach ($comision->procesos as $proceso) {
+            if (!$comision->hasAlumno($proceso->alumno_id)) {
+                $comision->alumnos()->attach(Alumno::find($proceso->alumno_id));
+            }
         }
     }
 });

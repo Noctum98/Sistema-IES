@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 
 class Carrera extends Model
@@ -46,6 +47,11 @@ class Carrera extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    public function comisiones(): HasMany
+    {
+        return $this->hasMany(Comision::class,'carrera_id');
     }
 
     public function hasMaterias($año){
