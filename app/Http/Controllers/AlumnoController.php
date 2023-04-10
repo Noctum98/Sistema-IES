@@ -32,7 +32,7 @@ class AlumnoController extends Controller
     ) {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
-            'app.roles:admin-coordinador-regente-seccionAlumnos',
+            'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial',
             ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir']]
         );
         $this->alumnoService = $alumnoService;
