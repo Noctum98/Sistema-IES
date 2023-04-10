@@ -122,14 +122,14 @@ class AlumnoController extends Controller
     public function vista_detalle(int $id, $ciclo_lectivo = null)
     {
         $alumno = Alumno::find($id);
-        
+
         $carreras = $carreras = Carrera::select('carreras.*')
         ->distinct()
         ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
         ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
         ->where('alumnos.id', $alumno->id)
         ->get();
-    
+
         if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'El alumno no existe',

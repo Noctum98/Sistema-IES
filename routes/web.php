@@ -562,10 +562,10 @@ Route::prefix('proceso-modular')->group(function () {
         '/procesaPonderacionModular/{materia}',
         [ProcesoModularController::class, 'procesaPonderacionModular']
     )->name('proceso_modular.procesa_ponderacion_modular');
-    Route::get(
-        '/procesaEstados/{materia}/{cargo_id?}',
-        [ProcesoModularController::class, 'procesaEstadosModular']
+    Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
     )->name('proceso_modular.procesa_estados_modular');
+    Route::get('/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}', [ProcesoModularController::class, 'procesaNotaModular']
+    )->name('proceso_modular.procesa_notas_modular');
 });
 
 Route::prefix('excel')->group(function () {

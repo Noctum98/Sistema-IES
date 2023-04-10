@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use phpDocumentor\Reflection\Types\Null_;
 
 class Cargo extends Model
 {
@@ -76,23 +77,31 @@ class Cargo extends Model
      * @param $materia_id
      * @return Collection
      */
-    public function calificacionesTPByCargoByMateria($materia_id): Collection
+    public function calificacionesTPByCargoByMateria($materia_id, $ciclo_lectivo = null): Collection
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
         return $this->hasMany(Calificacion::class)
             ->select('calificaciones.*')
             ->join('tipo_calificaciones', 'calificaciones.tipo_id','tipo_calificaciones.id')
             ->where('calificaciones.materia_id',$materia_id)
+            ->where('calificaciones.ciclo_lectivo',$ciclo_lectivo)
             ->where('tipo_calificaciones.descripcion','=', 2)
             ->get();
     }
 
-    public function calificacionesParcialByCargoByMateria($materia_id): Collection
+    public function calificacionesParcialByCargoByMateria($materia_id, $ciclo_lectivo = null): Collection
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
         return $this->hasMany(Calificacion::class)
             ->select('calificaciones.*')
             ->join('tipo_calificaciones', 'calificaciones.tipo_id','tipo_calificaciones.id')
             ->where('calificaciones.materia_id',$materia_id)
             ->where('calificaciones.cargo_id',$this->id)
+            ->where('calificaciones.ciclo_lectivo',$ciclo_lectivo)
             ->where('tipo_calificaciones.descripcion','=', 1)
             ->get()
             ;

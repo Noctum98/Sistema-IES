@@ -58,14 +58,19 @@ class ProcesoModular extends Model
         return $service->obtenerTimeUltimaCalificacion($materia_id);
     }
 
-    public function obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia_id, $cargo_id): float
+    public function obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia_id, $cargo_id, $ciclo_lectivo = null): float
     {
         $service = new ProcesoModularService();
+
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
 
         return $service->obtenerPorcentajeProcesoAprobado(
             $this->procesoRelacionado()->first()->id,
             $materia_id,
-            $cargo_id
+            $cargo_id,
+            $ciclo_lectivo
         );
 
     }
