@@ -170,11 +170,8 @@ class ProcesoModularService
      * @param null $ciclo_lectivo
      * @return int
      */
-    public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo = null): int
+    public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo): int
     {
-        if (!$ciclo_lectivo) {
-            $ciclo_lectivo = date('Y');
-        }
 
         $this->crearProcesoModular($materia->id, $ciclo_lectivo);
 
