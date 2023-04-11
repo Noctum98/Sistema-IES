@@ -32,12 +32,30 @@ class CalificacionService
     public function calificacionParcialByAlumno($alumno_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByAlumno($alumno_id, $calificacion_id);
-//        dd($proceso_calificacion);
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {
             $pp = $proceso_calificacion[0]->porcentaje ?? 0;
             $pr = $proceso_calificacion[0]->porcentaje_recuperatorio ?? 0;
+        }
+
+        return max($pp, $pr);
+    }
+
+
+    /**
+     * @param $alumno_id <b>id</b> del alumno
+     * @param $calificacion_id <i>La calificación</i> a procesar
+     * @return mixed La nota máxima del parcial o el recuperatorio
+     */
+    public function notaCalificacionParcialByAlumno($alumno_id, $calificacion_id)
+    {
+        $proceso_calificacion = $this->calificacionesByAlumno($alumno_id, $calificacion_id);
+
+        $pp = $pr = 0;
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->nota ?? 0;
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
         }
 
         return max($pp, $pr);
@@ -49,16 +67,45 @@ class CalificacionService
 
         $pp = $pr = 0;
         if (isset($proceso_calificacion)) {
-            $pp = $proceso_calificacion[0]->porcentaje ?? 0;
+            $pp = $proceso_calificacion[0]->nota ?? 0;
             if ($pp == -1) {
                 $pp = 0;
             }
-            $pr = $proceso_calificacion[0]->porcentaje_recuperatorio ?? 0;
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
         }
 
         return max($pp, $pr);
     }
 
+    /**
+     * Procesa las calificaciones desde el proceso.
+     *
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return mixed La nota máxima del parcial o el recuperatorio
+     */
+    public function notaCalificacionParcialByProceso($proceso_id, $calificacion_id)
+    {
+        $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
+
+        $pp = $pr = 0;
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->nota ?? 0;
+            if ($pp == -1) {
+                $pp = 0;
+            }
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
+        }
+
+        return max($pp, $pr);
+    }
+
+
+    /**
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return string
+     */
     public function calificacionAusenteParcialByProceso($proceso_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
@@ -70,6 +117,32 @@ class CalificacionService
                 $pp = 'A';
             }
             $pr = $proceso_calificacion[0]->porcentaje_recuperatorio ?? 'A';
+        }
+        if ($pp == 'A' or $pr == 'A') {
+            $ausente = 'A';
+        }
+
+        return ($ausente);
+    }
+
+    /**
+     * Cambia un '-1' en 'A'
+     *
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return string
+     */
+    public function notaCalificacionAusenteParcialByProceso($proceso_id, $calificacion_id): string
+    {
+        $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
+
+        $ausente = 'P';
+        if (isset($proceso_calificacion)) {
+            $pp = $proceso_calificacion[0]->nota ?? 0;
+            if ($pp == -1) {
+                $pp = 'A';
+            }
+            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 'A';
         }
         if ($pp == 'A' or $pr == 'A') {
             $ausente = 'A';
@@ -127,17 +200,41 @@ class CalificacionService
     }
 
     //// Calificaciones por cargo
-    public function calificacionesByCargo($cargo_id)
+
+    /**
+     * @param $cargo_id
+     * @param $ciclo_lectivo
+     * @return mixed
+     */
+    public function calificacionesByCargo($cargo_id, $ciclo_lectivo)
     {
         return Calificacion::where([
             'cargo_id' => $cargo_id,
+            'ciclo_lectivo' => $ciclo_lectivo
         ])
             ->get();
     }
 
-    public function cuentaCalificacionesByCargo($cargo_id): int
+    /**
+     * @param $cargos <b>Cargos</b> del módulo
+     * @param int $ciclo_lectivo <b>Ciclo lectivo</b>
+     * @param array $tipos <b>Tipo</b> de calificación
+     * @return mixed
+     */
+    public function calificacionesInCargos($cargos , int $ciclo_lectivo, array $tipos)
     {
-        return count($this->calificacionesByCargo($cargo_id));
+        return Calificacion::select('calificaciones.*')
+            ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
+            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->whereIn('cargo_id', $cargos)
+            ->whereIn('tipo_calificaciones.descripcion', $tipos)
+            ->get()
+            ;
+    }
+
+    public function cuentaCalificacionesByCargo($cargo_id, $ciclo_lectivo): int
+    {
+        return count($this->calificacionesByCargo($cargo_id, $ciclo_lectivo));
     }
 
     //// Calificaciones por materia y cargo
@@ -158,19 +255,29 @@ class CalificacionService
 
     //// Calificaciones por materia, cargo y tipo
 
-    public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id)
+    /**
+     * Obtengo una calificación específica
+     *
+     * @param $materia_id
+     * @param $cargo_id
+     * @param $tipo_id
+     * @param $ciclo_lectivo
+     * @return mixed
+     */
+    public function calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo)
     {
         return Calificacion::select('calificaciones.*')
             ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
             ->where('calificaciones.materia_id', $materia_id)
             ->where('calificaciones.cargo_id', $cargo_id)
+            ->where('calificaciones.ciclo_lectivo', $ciclo_lectivo)
             ->where('tipo_calificaciones.descripcion', $tipo_id)
             ->get();
     }
 
-    public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id): int
+    public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo): int
     {
-        return count($this->calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id));
+        return count($this->calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo));
     }
 
 }

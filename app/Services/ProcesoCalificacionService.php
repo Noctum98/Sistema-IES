@@ -13,7 +13,7 @@ class ProcesoCalificacionService
     /**
      * Calcula la nota desde un porcentaje dado
      * @param int $porcentaje
-     * @return int
+     * @return int nota
      */
     public function calculoPorcentajeNota(int $porcentaje): int
     {
@@ -69,10 +69,24 @@ class ProcesoCalificacionService
             ->first();
     }
 
-    public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo)
+    /**
+     * Obtengo procesos de calificación
+     * proceso_id, calificacion_id, nota y porcentaje
+     *
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $tipo
+     * @param null $ciclo_lectivo
+     * @return mixed
+     */
+    public function obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo, $ciclo_lectivo = null)
     {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
         $calificacionService = new CalificacionService();
-        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo)->pluck('id')->toArray();
+        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo, $ciclo_lectivo)->pluck('id')->toArray();
 
         return ProcesoCalificacion::select('proceso_calificacion.*')
             ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
@@ -80,11 +94,72 @@ class ProcesoCalificacionService
             ->get();
     }
 
+    /**
+     * Obtengo la nota de los procesos de calificación
+     * nota
+     *
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $tipo
+     * @param null $ciclo_lectivo
+     * @return mixed
+     */
+    public function obtenerNotaProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo, $ciclo_lectivo = null)
+    {
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+        $calificacionService = new CalificacionService();
+        $calificaciones = $calificacionService->calificacionesByMateriaCargoTipo($materia, $cargo,$tipo, $ciclo_lectivo)->pluck('id')->toArray();
+
+        return $this->obtenerNotaProcesoCalificacion($calificaciones, $proceso);
+    }
+
+    /**
+     * Cuanto la cantidad de notas por proceso, según la calificación
+     *
+     * @param $proceso
+     * @param $materia
+     * @param $cargo
+     * @param $tipo
+     * @return int
+     */
     public function cuentaProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo): int
     {
         return count($this->obtenerProcesoCalificacionByProcesoMateriaCargoTipo($proceso, $materia, $cargo,$tipo));
     }
 
+
+
+    /**
+     * @param $calificaciones
+     * @param $proceso
+     * @return mixed
+     */
+    public function obtenerNotaProcesoCalificacion($calificaciones, $proceso)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.nota', 'proceso_calificacion.nota_recuperatorio')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->orderBy('proceso_calificacion.id', 'DESC')
+            ->get()
+
+//            ->dd()
+            ;
+    }
+
+    public function obtenerNotaProcesoCalificacionModel($calificaciones, $proceso)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificaciones)
+            ->where('proceso_calificacion.proceso_id', $proceso)
+            ->orderBy('proceso_calificacion.id', 'DESC')
+            ->get()
+
+//            ->dd()
+            ;
+    }
 
 
 }

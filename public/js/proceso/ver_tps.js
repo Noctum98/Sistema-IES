@@ -34,7 +34,6 @@ $(document).ready(function () {
                             porcentaje = '';
                         }
 
-
                         $(".modal-body").append(
                             "<p><a href='/calificacion/create/"+trabajo.calificacion_id+"'>"+trabajo.nombre+"</a>: <span class='badge "+color+"'>"+trabajo.porcentaje+porcentaje+"</p>"
                         )
