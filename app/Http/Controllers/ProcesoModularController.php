@@ -70,13 +70,13 @@ class ProcesoModularController extends Controller
         $acciones = [];
         $serviceModular = new ProcesoModularService();
 
-        dd(count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id, $ciclo_lectivo)));
 
         if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id, $ciclo_lectivo)) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
         }
 
+        dd($serviceModular->obtenerProcesosModularesNoVinculados($materia->id, $ciclo_lectivo));
 
 
         $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
