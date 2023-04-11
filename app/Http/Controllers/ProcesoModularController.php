@@ -98,7 +98,6 @@ class ProcesoModularController extends Controller
         }
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
-        dd($procesos);
 
         $estados =  Estados::all();
 
