@@ -128,7 +128,6 @@ class ProcesoModularService
     public function obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo)
     {
 
-
         return ProcesoModular::select('proceso_modular.*')
             ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')

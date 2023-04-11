@@ -78,14 +78,14 @@ class AsistenciaModularService
 
 
 
-    public function cargarPonderacionEnAsistenciaModular(Materia $materia): int
+    public function cargarPonderacionEnAsistenciaModular(Materia $materia, $ciclo_lectivo): int
     {
         $serviceCargo = new CargoService();
         $serviceProcesoCalificacion = new ProcesoCalificacionService();
         $serviceProcesoModular = new ProcesoModularService();
         $cant = 0;
         $cargos = $this->obtenerCargosPorModulo($materia);
-        $procesos = $serviceProcesoModular->obtenerProcesosModularesByMateria($materia->id);
+        $procesos = $serviceProcesoModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
         foreach ($procesos as $proceso) {
             $asistencia_final_p = 0;
 
