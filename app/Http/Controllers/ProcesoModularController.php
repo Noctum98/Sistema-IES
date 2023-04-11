@@ -76,9 +76,6 @@ class ProcesoModularController extends Controller
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
         }
 
-
-
-
         $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
 
 
@@ -101,6 +98,7 @@ class ProcesoModularController extends Controller
         }
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
+        dd($procesos);
 
         $estados =  Estados::all();
 
