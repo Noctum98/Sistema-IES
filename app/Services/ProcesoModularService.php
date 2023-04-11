@@ -128,14 +128,15 @@ class ProcesoModularService
     public function obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo)
     {
         return ProcesoModular::select(
-            'proceso_modular.id', 'proceso_modular.promedio_final_porcentaje',
-            'proceso_modular.promedio_final_nota',
-            'proceso_modular.ponderacion_promedio_final', 'proceso_modular.trabajo_final_porcentaje',
-            'proceso_modular.trabajo_final_nota', 'proceso_modular.ponderacion_trabajo_final',
-            'proceso_modular.nota_final_porcentaje', 'proceso_modular.nota_final_nota',
-            'proceso_modular.cierre', 'proceso_modular.proceso_id', 'proceso_modular.asistencia_final_porcentaje',
-            'proceso_modular.operador_id', 'proceso_modular.asistencia_practica_profesional',
-            'proceso_modular.porcentaje_actividades_aprobado', 'proceso_modular.ciclo_lectivo'
+            'proceso_modular.*'
+//            , 'proceso_modular.promedio_final_porcentaje',
+//            'proceso_modular.promedio_final_nota',
+//            'proceso_modular.ponderacion_promedio_final', 'proceso_modular.trabajo_final_porcentaje',
+//            'proceso_modular.trabajo_final_nota', 'proceso_modular.ponderacion_trabajo_final',
+//            'proceso_modular.nota_final_porcentaje', 'proceso_modular.nota_final_nota',
+//            'proceso_modular.cierre', 'proceso_modular.proceso_id', 'proceso_modular.asistencia_final_porcentaje',
+//            'proceso_modular.operador_id', 'proceso_modular.asistencia_practica_profesional',
+//            'proceso_modular.porcentaje_actividades_aprobado', 'proceso_modular.ciclo_lectivo'
         )
             ->leftjoin('procesos', 'procesos.id', 'proceso_modular.proceso_id')
             ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
