@@ -154,117 +154,120 @@
                     </thead>
                     <tbody>
                     @foreach($procesos as $proceso)
-                        <tr class="bg-secondary text-white font-weight-bold">
-                            <td>
-                                {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
-                            </td>
-                            <td class="text-center">
-                                {{$proceso->promedio_final_nota}}
-                            </td>
-                            <td class="text-center">
-                                {{$proceso->asistencia_final_porcentaje}} %
-                            </td>
-                            <td class="text-center">
-                                {{$proceso->trabajo_final_nota}}
-                            </td>
-                            <td class="text-center">
-                                {{$proceso->nota_final_nota}}
-                            </td>
-                            <td class="row">
-                                <form action="" id="{{ $proceso->procesoRelacionado->id }}" class="form_nota_global">
-                                    <div class="input-group">
-                                        <input type="text"
-                                               class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
-                                               id="global-{{ $proceso->procesoRelacionado->id }}"
-                                               value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                               @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
-                                        <div class="input-group-append">
-                                            <button type="submit"
-                                                    class="btn btn-info btn-sm input-group-text"
-                                                    id="btn-global-{{ $proceso->procesoRelacionado->id }}"
-                                                    @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
-                                                <i class="fa fa-save"></i>
-                                            </button>
+                        @if($proceso)
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>
+                                    {{$proceso->procesoRelacionado->alumno->apellidos_nombres}}
+                                </td>
+                                <td class="text-center">
+                                    {{$proceso->promedio_final_nota}}
+                                </td>
+                                <td class="text-center">
+                                    {{$proceso->asistencia_final_porcentaje}} %
+                                </td>
+                                <td class="text-center">
+                                    {{$proceso->trabajo_final_nota}}
+                                </td>
+                                <td class="text-center">
+                                    {{$proceso->nota_final_nota}}
+                                </td>
+                                <td class="row">
+                                    <form action="" id="{{ $proceso->procesoRelacionado->id }}"
+                                          class="form_nota_global">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
+                                                   id="global-{{ $proceso->procesoRelacionado->id }}"
+                                                   value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
+                                                   @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                            <div class="input-group-append">
+                                                <button type="submit"
+                                                        class="btn btn-info btn-sm input-group-text"
+                                                        id="btn-global-{{ $proceso->procesoRelacionado->id }}"
+                                                        @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                    <i class="fa fa-save"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </td>
-                            <td>
-                                {{$proceso->procesoRelacionado->cierre}}
-                                <input type="checkbox" class="check-cierre"
-                                       id="{{$proceso->procesoRelacionado->id}}"
-                                       @if($proceso->procesoRelacionado->cierre == 1)
-                                           checked
-                                       @endif
-                                       @if($proceso->procesoRelacionado->cierre == 0)
-                                           unchecked
+                                    </form>
+                                </td>
+                                <td>
+                                    {{$proceso->procesoRelacionado->cierre}}
+                                    <input type="checkbox" class="check-cierre"
+                                           id="{{$proceso->procesoRelacionado->id}}"
+                                           @if($proceso->procesoRelacionado->cierre == 1)
+                                               checked
+                                           @endif
+                                           @if($proceso->procesoRelacionado->cierre == 0)
+                                               unchecked
                                         @endif
-                                />
-                            </td>
-                        </tr>
-                        <tr class="bg-secondary text-white font-weight-bold">
-                            <td>
-                                <small>
-                                    <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
-                                </small>
-                            </td>
-                            <td colspan="2" class="text-center w-50">
+                                    />
+                                </td>
+                            </tr>
+                            <tr class="bg-secondary text-white font-weight-bold">
+                                <td>
+                                    <small>
+                                        <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                    </small>
+                                </td>
+                                <td colspan="2" class="text-center w-50">
 
-                                @if($puede_procesar)
-                                    <div class="d-inline-flex ml-3">
-                                        <label for="{{$proceso->procesoRelacionado->id}}" class="mr-2">
-                                            <small><sup>*</sup> Cambiar condición</small>
-                                        </label>
-                                        <select name="estado" class="custom-select custom-select-sm select-estado"
-                                                id="{{$proceso->procesoRelacionado->id}}"
-                                                @if(!$puede_procesar || $proceso->procesoRelacionado->cierre == 1) disabled=disabled
-                                                @endif
-                                                data-estado="{{$proceso->procesoRelacionado->id}}">
-                                            @foreach($estados as $estado)
-                                                <option value="{{ $estado->id }}"
-                                                        @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
-                                                            selected="selected"
+                                    @if($puede_procesar)
+                                        <div class="d-inline-flex ml-3">
+                                            <label for="{{$proceso->procesoRelacionado->id}}" class="mr-2">
+                                                <small><sup>*</sup> Cambiar condición</small>
+                                            </label>
+                                            <select name="estado" class="custom-select custom-select-sm select-estado"
+                                                    id="{{$proceso->procesoRelacionado->id}}"
+                                                    @if(!$puede_procesar || $proceso->procesoRelacionado->cierre == 1) disabled=disabled
+                                                    @endif
+                                                    data-estado="{{$proceso->procesoRelacionado->id}}">
+                                                @foreach($estados as $estado)
+                                                    <option value="{{ $estado->id }}"
+                                                            @if(optional($proceso->procesoRelacionado->estado)->id === $estado->id)
+                                                                selected="selected"
                                                         @endif
-                                                >
-                                                    {{ $estado->nombre }}
+                                                    >
+                                                        {{ $estado->nombre }}
 
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endif
-                            </td>
-                            <td class="text-center" colspan="2">
-                                <a href="{{route('proceso_modular.procesa_notas_modular', ['materia' => $materia->id, 'proceso_id' => $proceso->procesoRelacionado->id, 'cargo' => $cargo_id ])}}"
-                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
-                                    Comprobar notas
-                                </a>
-                            </td>
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="text-center" colspan="2">
+                                    <a href="{{route('proceso_modular.procesa_notas_modular', ['materia' => $materia->id, 'proceso_id' => $proceso->procesoRelacionado->id, 'cargo' => $cargo_id ])}}"
+                                       class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
+                                        Comprobar notas
+                                    </a>
+                                </td>
 
-                            <td colspan="2">
+                                <td colspan="2">
                                 <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
-                                {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
-                                {{--                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>--}}
-                                {{--                                </span>--}}
+                                    {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
+                                    {{--                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>--}}
+                                    {{--                                </span>--}}
 
-                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
+                                    <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
-                                {{--                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">--}}
-                                {{--                                    <i class="fa fa-spinner fa-spin"></i>--}}
-                                {{--                                </span>--}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="9" class="border-top-0 border-info">
-                                @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
-                            </td>
-                        </tr>
+                                    {{--                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">--}}
+                                    {{--                                    <i class="fa fa-spinner fa-spin"></i>--}}
+                                    {{--                                </span>--}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="9" class="border-top-0 border-info">
+                                    @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
-{{--                    @include('proceso.modals.tps-mostrar')--}}
+                    {{--                    @include('proceso.modals.tps-mostrar')--}}
                     @else
                         'No se encontraron procesos'
                 @endif
