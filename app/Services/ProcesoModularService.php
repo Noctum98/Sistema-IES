@@ -82,11 +82,9 @@ class ProcesoModularService
      * @param int|null $ciclo_lectivo <b>ciclo lectivo</b>
      * @return void
      */
-    public function crearProcesoModular(int $materia_id, int $ciclo_lectivo = null)
+    public function crearProcesoModular(int $materia_id, int $ciclo_lectivo )
     {
-        if (!$ciclo_lectivo) {
-            $ciclo_lectivo = date('Y');
-        }
+
 
         $pm_sin_vincular = $this->obtenerProcesosModularesNoVinculados($materia_id, $ciclo_lectivo);
         $inicio = 0;
@@ -103,18 +101,13 @@ class ProcesoModularService
      * @param int $materia_id <b>id</b> materia
      * @return mixed
      */
-    public function obtenerProcesosModularesNoVinculados(int $materia_id, int $ciclo_lectivo = null)
+    public function obtenerProcesosModularesNoVinculados(int $materia_id, int $ciclo_lectivo )
     {
-        if (!$ciclo_lectivo) {
-            $ciclo_lectivo = date('Y');
-        }
-
 
         $procesos = Proceso::select('procesos.id')
             ->where('materia_id', '=', $materia_id)
             ->where('ciclo_lectivo', '=', $ciclo_lectivo)
             ->get();
-
 
         return Proceso::select('procesos.id')
             ->where('procesos.materia_id', $materia_id)
@@ -132,11 +125,9 @@ class ProcesoModularService
      * @param $materia_id <b>id</b> de la materia
      * @return mixed
      */
-    public function obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo = null)
+    public function obtenerProcesosModularesByMateria($materia_id, $ciclo_lectivo)
     {
-        if (!$ciclo_lectivo) {
-            $ciclo_lectivo = date('Y');
-        }
+
 
         return ProcesoModular::select('proceso_modular.*')
             ->join('procesos', 'procesos.id', 'proceso_modular.proceso_id')
