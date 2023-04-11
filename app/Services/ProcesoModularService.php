@@ -109,7 +109,16 @@ class ProcesoModularService
             ->where('ciclo_lectivo', '=', $ciclo_lectivo)
             ->get();
 
-        dd($materia_id, $ciclo_lectivo, $procesos);
+        dd(Proceso::select('procesos.id')
+            ->where('procesos.materia_id', $materia_id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
+            ->whereIn(
+                'procesos.id',
+                ProcesoModular::select('proceso_modular.proceso_id')
+                    ->whereIn('proceso_modular.proceso_id', $procesos)
+            )
+            ->get());
+
 
         return Proceso::select('procesos.id')
             ->where('procesos.materia_id', $materia_id)
