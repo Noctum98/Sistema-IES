@@ -91,7 +91,7 @@ class ProcesoModularController extends Controller
 
         $asistenciaModular = new AsistenciaModularService();
 
-        $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia);
+        $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia, $ciclo_lectivo);
 
         if ($asistencias > 0) {
             $acciones[] = "Procesando % asistencia para {$materia->nombre}";
