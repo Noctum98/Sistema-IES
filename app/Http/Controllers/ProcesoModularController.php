@@ -76,7 +76,7 @@ class ProcesoModularController extends Controller
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
         }
 
-        dd($serviceModular->obtenerProcesosModularesNoVinculados($materia->id, $ciclo_lectivo));
+
 
 
         $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
