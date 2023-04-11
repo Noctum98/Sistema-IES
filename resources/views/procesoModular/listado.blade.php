@@ -264,7 +264,7 @@
                         </tr>
                     @endforeach
                     </tbody>
-                    @include('proceso.modals.tps-mostrar')
+{{--                    @include('proceso.modals.tps-mostrar')--}}
                     @else
                         'No se encontraron procesos'
                 @endif
