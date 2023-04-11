@@ -185,51 +185,54 @@ class ProcesoModularService
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
 
         foreach ($procesos as $proceso) {
-            $nota_final_p = 0;
-            /** @var Cargo $cargo */
-            foreach ($cargos as $cargo) {
-                /** @var ProcesoModular $proceso */
-                $ponderacion_cargo_materia = CargoMateria::where([
-                    'cargo_id' => $cargo->id,
-                    'materia_id' => $materia->id,
-                ])->first();
-                $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
-                    $cargo,
-                    $materia->id,
-                    $proceso->procesoRelacionado()->first()->id
-                ) ?? 0;
-                if ($porcentaje_cargo < -1) {
-                    $porcentaje_cargo = 0;
+            if($proceso->procesoRelacionado()->first()) {
+
+
+                $nota_final_p = 0;
+                /** @var Cargo $cargo */
+                foreach ($cargos as $cargo) {
+                    /** @var ProcesoModular $proceso */
+                    $ponderacion_cargo_materia = CargoMateria::where([
+                        'cargo_id' => $cargo->id,
+                        'materia_id' => $materia->id,
+                    ])->first();
+                    $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
+                        $cargo,
+                        $materia->id,
+                        $proceso->procesoRelacionado()->first()->id
+                    ) ?? 0;
+                    if ($porcentaje_cargo < -1) {
+                        $porcentaje_cargo = 0;
+                    }
+
+                    $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
+                    $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
+
                 }
-
-                $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
-                $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
-
-            }
-            $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
+                $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
 //            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
 //                $promedio_final_p
 //            );
-            $proceso->promedio_final_nota = max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0);
+                $proceso->promedio_final_nota = max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0);
 
-            if (!$proceso->trabajo_final_porcentaje) {
-                if ($cargo->responsableTFI($materia->id)) {
-                    $tfp = $procesoCalificacionService->obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
-                        $proceso->procesoRelacionado()->first()->id,
-                        $materia->id,
-                        $cargo->id,
-                        CalificacionService::TIPO_TFI
-                    )->first();
-                    if ($tfp) {
-                        $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
-                        $proceso->trabajo_final_nota = $tfp->nota;
+                if (!$proceso->trabajo_final_porcentaje) {
+                    if ($cargo->responsableTFI($materia->id)) {
+                        $tfp = $procesoCalificacionService->obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
+                            $proceso->procesoRelacionado()->first()->id,
+                            $materia->id,
+                            $cargo->id,
+                            CalificacionService::TIPO_TFI
+                        )->first();
+                        if ($tfp) {
+                            $proceso->trabajo_final_porcentaje = $tfp->porcentaje;
+                            $proceso->trabajo_final_nota = $tfp->nota;
+                        }
                     }
                 }
-            }
 
-            $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
+                $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
 //            $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
-            $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
+                $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
 
 //            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
 //                $proceso->procesoRelacionado()->first()->id,
@@ -238,9 +241,10 @@ class ProcesoModularService
 //            );
 //            print_r('-- ');
 //print_r($proceso->porcentaje_actividades_aprobado);
-            $proceso->update();
+                $proceso->update();
 
-            $cant += 1;
+                $cant += 1;
+            }
 
         }
         $this->grabaEstadoCursoEnModulo($materia->id, $ciclo_lectivo);
