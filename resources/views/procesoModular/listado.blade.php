@@ -157,7 +157,7 @@
                         @if($proceso)
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <td>
-                                    {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
+                                    {{optional($proceso->procesoRelacionado)->alumno->apellidos_nombres}}
                                 </td>
                                 <td class="text-center">
                                     {{$proceso->promedio_final_nota}}
