@@ -474,7 +474,7 @@ class ProcesoModularService
      * @param ProcesoModular $pm
      * @return int
      */
-    public function grabaEstadoPorProcesoModular(ProcesoModular $pm): int
+    public function grabaEstadoPorProcesoModular(ProcesoModular $pm): ?int
     {
         $idEstado = $pm->procesoRelacionado()->first()->estado_id;
         if ($pm->procesoRelacionado()->first()->cierre != 1) {
