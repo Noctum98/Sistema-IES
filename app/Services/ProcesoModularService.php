@@ -185,7 +185,7 @@ class ProcesoModularService
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
 
         foreach ($procesos as $proceso) {
-            if($proceso->procesoRelacionado()->first()) {
+            if ($proceso->procesoRelacionado()->first()) {
 
 
                 $nota_final_p = 0;
@@ -297,8 +297,10 @@ class ProcesoModularService
 
         foreach ($procesosModulares as $pm) {
             /** @var ProcesoModular $pm */
-            $estado = $this->grabaEstadoPorProcesoModular($pm);
-            $estados_procesados[] = [$pm->id => $estado];
+            if ($pm->procesoRelacionado()->first()) {
+                $estado = $this->grabaEstadoPorProcesoModular($pm);
+                $estados_procesados[] = [$pm->id => $estado];
+            }
         }
 
         return $estados_procesados;
@@ -708,9 +710,9 @@ class ProcesoModularService
      * @return array
      */
     protected function obtenerNotaPonderadaTps(
-                                   $calificaciones,
-        Proceso                    $proceso,
-                                   $weighing
+        $calificaciones,
+        Proceso $proceso,
+        $weighing
     ): array
     {
         $procesoCalificacionService = new ProcesoCalificacionService();
