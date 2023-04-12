@@ -142,7 +142,7 @@
 			
 			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-primary"><i class="fas fa-download"></i> Descargar PDF</a>
 		
-			@if((Session::has('coordinador') || Session::has('admin')) && $alumno->user_id != null)
+			@if((Session::has('coordinador') || Session::has('admin')) && $alumno->user)
 			<button class="ml-2 mt-4 btn btn-sm btn-danger {{ !$alumno->user->activo ? 'd-none' : '' }} desactivar" id="desactivar-{{$alumno->user->id}}">
 				Desactivar
 			</button>

@@ -6,6 +6,7 @@
 			<th scope="col">Email</th>
 			<th scope="col">Teléfono</th>
 			<th scope="col">Regularidad</th>
+			<th scope="col">Materias</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,6 +17,11 @@
 			<td>{{ $alumno->email }}</td>
 			<td>{{ $alumno->telefono }}</td>
 			<td>{{ explode("_",ucwords($alumno->regularidad))[0] }}</td>
+			<td>
+				@foreach($alumno->procesos_date($ciclo_lectivo) as $proceso)
+					| {{ $proceso->materia->nombre }} 
+				@endforeach
+			</td>
 		</tr>
 		@endforeach
 		<tr></tr>
