@@ -74,7 +74,7 @@
                     <div class="row">
                         @foreach($materias as $nivel => $listado)
                             <div class="col-md-4">
-                                <h3>Nivel {{ $nivel }}</h3>
+                                <h3>{{ $nivel }}° Año</h3>
                                 <ul>
                                     @foreach($listado as $materia)
                                         <li>{{ $materia }}</li>
