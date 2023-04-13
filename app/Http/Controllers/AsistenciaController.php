@@ -72,7 +72,8 @@ class AsistenciaController extends Controller
     /**
      * @param Request $request
      * @param int $id <b>id</b> de la materia.
-     * @param $cargo_id <b>id</> del cargo.
+     * @param null $ciclo_lectivo
+     * @param null $cargo_id <b>id</> del cargo.
      * @return Application|Factory|View
      */
     public function vista_admin(Request $request, int $id,$ciclo_lectivo = null, $cargo_id = null)
@@ -80,8 +81,6 @@ class AsistenciaController extends Controller
         if(!$ciclo_lectivo){
             $ciclo_lectivo = date('Y');
         }
-
-
 
         $comision_id = $request['comision_id'] ? $request['comision_id'] : null;
         $materia = Materia::find($id);
