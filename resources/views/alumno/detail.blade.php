@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container alumno">
-	<h2 class="h1 text-info">
+	<h2 class="text-info">
 		Datos de {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
 	</h2>
 	<hr>
