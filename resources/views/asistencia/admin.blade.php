@@ -8,14 +8,13 @@
                     @if($cargo??'')
                         <br/>
                         <h5 class="text-dark ml-2 d-inline-block">Cargo: <i>{{$cargo->nombre}}</i></h5>
-                        <a href="{{route('proceso.listadoCargo', ['materia_id' => $materia->id, 'cargo_id'=> $cargo->id])}}"
+                        <a href="{{route('proceso.listadoCargo', ['materia_id' => $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id])}}"
                            class="btn btn-sm d-inline-block"
                         >
                             <i class="fa fa-external-link-alt"></i> Ver calificaciones
                         </a>
                     @endif
                 </h4>
-
             </div>
             <div class="col-4">
                 <div class="dropdown">
@@ -25,14 +24,14 @@
                     </button>
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
-
                             <li>
                                 <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
                                    @if($cargo??'')
                                        href="{{route('asis.admin', ['id'=>$materia->id,'ciclo_lectivo' => $i,'cargo_id'=>$cargo->id]) }}">{{$i}}
 
                                     @else
-                                        href="{{route('asis.admin', ['id'=>$materia->id, 'ciclo_lectivo' => $i] ) }}">{{$i}}
+                                        href="{{route('asis.admin', ['id'=>$materia->id, 'ciclo_lectivo' => $i] ) }}
+                                        ">{{$i}}
                                     @endif
                                 </a>
 
