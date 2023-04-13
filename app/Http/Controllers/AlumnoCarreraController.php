@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
+use App\Services\AlumnoService;
 use Illuminate\Http\Request;
 
 class AlumnoCarreraController extends Controller
 {
-    public function __construct()
+
+    protected $alumnoService;
+
+    public function __construct(
+        AlumnoService $alumnoService
+    )
     {
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
+        $this->alumnoService = $alumnoService;
     }
 
     public function changeAño(Request $request,$alumno_id,$carrera_id)
@@ -17,6 +25,7 @@ class AlumnoCarreraController extends Controller
         $validate = $this->validate($request,[
             'year' => ['required','numeric']
         ]);
+        
 
         $alumnoCarrera = AlumnoCarrera::where([
             'alumno_id' => $alumno_id,
@@ -26,6 +35,10 @@ class AlumnoCarreraController extends Controller
         $request['año'] = $request['year'];
 
         $alumnoCarrera->update($request->all());
+
+        $alumno = Alumno::find($alumno_id);
+
+        $this->alumnoService->cambiarSituacion($alumno,$request['year']);
 
         return redirect()->route('alumno.detalle',$alumno_id)->with('mensaje_exitoso','Año editado');
     }

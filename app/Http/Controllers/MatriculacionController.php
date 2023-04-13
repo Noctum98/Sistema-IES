@@ -292,6 +292,8 @@ class MatriculacionController extends Controller
                     $user->delete();
                 }
             }
+
+            $alumno->update(['aprobado'=>0]);
     
             $alumno->delete();
 
