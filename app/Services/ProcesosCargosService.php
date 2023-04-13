@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ProcesoModular;
 use App\Models\ProcesosCargos;
+use DateTime;
 
 class ProcesosCargosService{
 
@@ -12,7 +13,7 @@ class ProcesosCargosService{
         $data['proceso_id'] = $proceso;
         $data['cargo_id'] = $cargo;
         $data['operador_id'] = $user;
-        $data['cierre'] =  new \DateTime('now');
+        $data['cierre'] =  new DateTime('now');
 
            return ProcesosCargos::create($data);
 
@@ -53,7 +54,7 @@ class ProcesosCargosService{
         if ($pc->isClose() and !$cierra) {
             $pc->cierre = null;
         } else {
-            $pc->cierre = new \DateTime('now');
+            $pc->cierre = new DateTime('now');
 
             $pm = ProcesoModular::where([
                 'proceso_id' => $proceso,
@@ -62,6 +63,9 @@ class ProcesosCargosService{
             $pms = new ProcesoModularService();
 
             $pms->grabaEstadoPorProcesoModular($pm);
+
+            $procesoService = new ProcesoService();
+            $procesoService->cierraProcesoDesdeModular($proceso);
 
 
         };
@@ -72,7 +76,7 @@ class ProcesosCargosService{
     /**
      * @param int $proceso
      * @param int $cargo
-     * @return mixed
+     * @return ProcesosCargos
      */
     protected function getProcesoCargo(int $proceso, int $cargo)
     {

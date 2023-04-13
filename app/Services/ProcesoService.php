@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Alumno;
 use App\Models\Proceso;
+use App\Models\ProcesoModular;
 
 
 class ProcesoService{
@@ -16,6 +17,23 @@ class ProcesoService{
             $data['estado'] = 'en curso';
             $data['ciclo_lectivo'] = date('Y');
             Proceso::create($data);
+        }
+    }
+
+    public function cierraProcesoDesdeModular(int $proceso)
+    {
+        $proceso = Proceso::find($proceso);
+        if($proceso){
+            $procesoModular = ProcesoModular::where([
+               'proceso_id' => $proceso->id
+            ])->first();
+            if($procesoModular){
+                /** @var Proceso $proceso */
+                $proceso->cierre = 1;
+                $proceso->final_calificaciones = $procesoModular->nota_final_nota;
+                $proceso->porcentaje_final_calificaciones = $procesoModular->nota_final_porcentaje;
+                $proceso->update();
+            }
         }
     }
 }
