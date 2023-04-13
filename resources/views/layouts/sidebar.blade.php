@@ -113,16 +113,20 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
                     Mi matrícula
                 </a>
+                        <a class="nav-link" href="{{ route('alumno.historial',Auth::user()->alumno()) }}">
+                    <div class="sb-nav-link-icon"><i class="far fa-address-book"></i></div>
+                            Historial Académico
+                </a>
                 <a class="nav-link" href="{{ route('mesa.instancias') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                     Mesas
                 </a>
-                
+
                 <a class="nav-link" href="{{ route('matriculacion.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-paste"></i></i></div>
                     Inscripción
                 </a>
-       
+
                 <!-----
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
@@ -134,7 +138,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca
                 </a>
-                
+
             </div>
         </div>
     </nav>

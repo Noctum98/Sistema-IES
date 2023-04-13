@@ -246,6 +246,7 @@ Route::prefix('alumnos')->group(function () {
         'alumno.carrera'
     );
     Route::get('alumno/{id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_detalle'])->name('alumno.detalle');
+    Route::get('historial/{id}', [AlumnoController::class, 'vista_historial'])->name('alumno.historial');
 
     // Acciones
     Route::post('crear-alumno/{carrera_id}', [AlumnoController::class, 'crear'])->name('crear_alumno');
