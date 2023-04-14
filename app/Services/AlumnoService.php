@@ -67,4 +67,25 @@ class AlumnoService
             return null;
         }
     }
+
+    public function cambiarSituacion($alumno,$año)
+    {
+        if($año == 1)
+        {
+            $regularidad = str_replace(['_primero','_tercero','_segundo'],'_primero',$alumno->regularidad);
+
+        }
+
+        if($año == 2)
+        {
+            $regularidad = str_replace(['_primero','_tercero','_segundo'],'_segundo',$alumno->regularidad);
+        }
+
+        if($año == 3)
+        {
+            $regularidad = str_replace(['_primero','_tercero','_segundo'],'_tercero',$alumno->regularidad);
+        }
+
+        $alumno->update(['regularidad'=>$regularidad]);
+    }
 }
