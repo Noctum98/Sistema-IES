@@ -48,7 +48,7 @@
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('calificacion.admin',['materia_id'=>$materia->id,'ciclo_lectivo'=>date('Y')]) }}" class="btn btn-sm btn-secondary">Ver calificaciones</a>
-						<!-----<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>--->
+						<a href="{{ route('descargar_planilla',$materia->id) }}" class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>
 							<sup class="badge badge-info" title="Total Comisiones">
 								{{$materia->getTotalAttribute()}}
 								@if($materia->getTotalAttribute() > 0)

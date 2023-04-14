@@ -150,7 +150,6 @@ class MatriculacionController extends Controller
 
         $alumno = Alumno::where([
             'dni' => $request['dni'],
-            'cuil' => $request['cuil']
         ])->withTrashed()->first();
 
         if (!$alumno) {
