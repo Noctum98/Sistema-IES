@@ -203,14 +203,19 @@
                                                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio >= 0)
-                                                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio, 2, '.', ',') }}
+                                                                @if(is_numeric($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio))
+                                                                    {
+                                                                    {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio, 2, '.', ',') }}
+                                                                    }else{
+                                                                    {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio}}
+                                                                    }
+                                                                @endif
+                                                                @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio == -1)
+                                                                    A
+                                                                @endif
+                                                            @else
+                                                                -
                                                             @endif
-                                                            @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio == -1)
-                                                                A
-                                                            @endif
-                                                        @else
-                                                            -
-                                                        @endif
                                                     </h6>
                                                 </td>
                                             @endforeach
