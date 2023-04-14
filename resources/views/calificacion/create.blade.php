@@ -55,7 +55,7 @@
                                            value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                            placeholder="%"
                                            @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id or
-                                         $proceso->procesoCalificacion($calificacion->id)->cierre == 1 or optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
+                                         optional($proceso->procesoCalificacion($calificacion->id))->close == 1 or optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
                                                disabled
                                             @endif>
                                     <div class="input-group-append">
