@@ -150,7 +150,6 @@ class MatriculacionController extends Controller
 
         $alumno = Alumno::where([
             'dni' => $request['dni'],
-            'cuil' => $request['cuil']
         ])->withTrashed()->first();
 
         if (!$alumno) {
@@ -292,6 +291,8 @@ class MatriculacionController extends Controller
                     $user->delete();
                 }
             }
+
+            $alumno->update(['aprobado'=>0]);
     
             $alumno->delete();
 

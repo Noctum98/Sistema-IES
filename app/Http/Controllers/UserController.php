@@ -353,7 +353,7 @@ class UserController extends Controller
             return redirect()->route('alumno.detalle', [
                 'id' => $alumno->id,
             ])->with([
-                'mensaje_error' => 'El alumno, ya tiene esta aprobado',
+                'alert_warning' => 'El alumno, ya tiene esta aprobado',
             ]);
         }else{
             $alumno->aprobado = true;
@@ -377,7 +377,7 @@ class UserController extends Controller
                 {
                     $user = $user_exists;
                 }else{
-                    return redirect()->back()->with(['error' => 'Ya existe un usuario con este email o nombre de usuario']);
+                    return redirect()->back()->with(['alert_danger' => 'Ya existe un usuario con este email o nombre de usuario']);
                 }
             } else {
                 $user = User::create($data);
