@@ -128,7 +128,7 @@
 		<div class="d-inline col-md-12">
 			@if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
 
-			@if(!$alumno->user_id || !$alumno->aprobado)
+			@if(!$alumno->aprobado)
 			<a href="{{ route('crear_usuario_alumno',['id'=>$alumno->id]) }}" class="col-md-2 mt-4 btn btn-sm btn-success">
 				Confirmar alumno
 			</a>
