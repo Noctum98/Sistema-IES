@@ -62,6 +62,16 @@ class Materia extends Model
         return $this->hasMany('App\Models\Mesa');
     }
 
+    public function comisiones()
+    {
+        return $this->belongsToMany(Comision::class);
+    }
+
+    public function comisionesCiclo($ciclo_lectivo)
+    {   
+        return $this->comisiones->where('ciclo_lectivo',$ciclo_lectivo);
+    }
+
     public function mesa($instancia_id)
     {
         return Mesa::where([
@@ -95,10 +105,7 @@ class Materia extends Model
         return $mesas->get();
     }
 
-    public function comisiones()
-    {
-        return $this->belongsToMany(Comision::class);
-    }
+    
     public function getTotalAttribute(): int
     {
         return $this->comisiones()->count();

@@ -3,7 +3,7 @@
 @include('comision.modals.agregar_profesor')
 
 <div class="container p-3">
-    <a href="{{route('comisiones.ver',$comision->carrera_id)}}"><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
+    <a href="{{route('comisiones.ver',['carrera_id'=>$comision->carrera_id,'ciclo_lectivo'=>date('Y')])}}"><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
 
     <h2 class="h1 text-info">
         Comisión de {{ $comision->nombre.' - '.$comision->carrera->nombre }}
@@ -63,6 +63,7 @@
     @endif
     <h3 class="text-info">Alumnos</h3>
 
+    @if(count($alumnos) > 0 || count($recursantes) > 0)
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -74,6 +75,29 @@
             </tr>
         </thead>
         <tbody>
+            @if(count($comisiones) == 1 && count($alumnos) > 0)
+            <tr>
+                <th>Seleccionar Todos</th>
+                <th></th>
+                <th>
+                    
+                    @foreach($comisiones as $comision)
+                    
+                    <div class="form-check">
+                        
+                        <input class="form-check-input comision_todos" type="checkbox" id="{{'todos-'.$comision->id}}" value="{{'todos-'.$comision->id}}" @if($comision->unica == 1) disabled @endif>
+                        <label class="form-check-label" for="exampleRadios1">
+                            {{$comision->nombre}} 
+                        </label>
+                    </div>
+                    <i class="fa fa-spinner fa-spin d-none">
+
+
+                    @endforeach
+
+                </th>
+            </tr>
+            @endif
             @foreach ($alumnos as $alumno)
             <tr>
                 <th scope="row">{{ $alumno->id }}</th>
@@ -82,7 +106,7 @@
                     <form action="" id="{{$alumno->id}}" method="POST">
                         @foreach($comisiones as $comision)
                         <div class="form-check">
-                            <input class="form-check-input comision_id" type="checkbox" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->hasComision($comision->id)) checked @endif>
+                            <input class="form-check-input comision_id" type="checkbox" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->hasComision($comision->id)) checked @endif @if($comision->unica == 1) disabled @endif>
                             <label class="form-check-label" for="exampleRadios1">
                                 {{$comision->nombre}}
                             </label>
@@ -94,7 +118,7 @@
             @endforeach
             @if($recursantes && count($recursantes) > 0)
             <tr>
-            <td>RECURSANTES/CONDICIONALES DE AÑO ANTERIOR</td>
+                <td>RECURSANTES/CONDICIONALES DE AÑO ANTERIOR</td>
             </tr>
             @foreach ($recursantes as $alumno)
             <tr>
@@ -104,7 +128,7 @@
                     <form action="" id="{{$alumno->id}}" method="POST">
                         @foreach($comisiones as $comision)
                         <div class="form-check">
-                            <input class="form-check-input comision_id" type="checkbox" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->hasComision($comision->id)) checked @endif>
+                            <input class="form-check-input comision_id" type="checkbox" name="comision_id" id="{{$alumno->id.'-'.$comision->id}}" value="{{$comision->id}}" @if($alumno->hasComision($comision->id)) checked @endif {{ $comision->unica == 1 ? 'disabled':''}}>
                             <label class="form-check-label" for="exampleRadios1">
                                 {{$comision->nombre}}
                             </label>
@@ -117,7 +141,10 @@
             @endif
         </tbody>
     </table>
-    <hr>
+    @else
+    <p>No existen alumnos de {{ $comision->año }}° en {{ $comision->ciclo_lectivo }}</p>
+    @endif
+    
 </div>
 @endsection
 @section('scripts')

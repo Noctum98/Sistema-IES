@@ -41,10 +41,10 @@
                 <tbody>
                 @foreach($procesos as $proceso)
                     <tr>
-                        <td class="py-auto">
+                        <td>
                             {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
                         </td>
-                        <td class="input-group py-auto">
+                        <td>
                             <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-calificacion input-group"
                                   id="{{ $proceso->id }}" method="POST">
                                 <input type="hidden" name="calificacion_id" id="calificacion_id"
@@ -54,8 +54,8 @@
                                            id="calificacion-procentaje-{{ $proceso->id }}"
                                            value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                            placeholder="%"
-                                           @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id or
-                                         $proceso->procesoCalificacion($calificacion->id)->cierre == 1 or optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
+                                           @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id)  or
+                                         optional($proceso->procesoCalificacion($calificacion->id))->cierre == 1 or optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose()
                                                disabled
                                             @endif>
                                     <div class="input-group-append">
@@ -88,7 +88,7 @@
                                       method="POST">
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
-                                    <div class="input-group my-2">
+                                    <div class="input-group">
                                         <input type="text" class="form-control"
                                                id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}"
                                                value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio : '' }}"

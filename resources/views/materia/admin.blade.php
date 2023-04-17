@@ -10,7 +10,7 @@
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
-	<a href="{{ route('comisiones.ver',$carrera->id) }}" class="btn btn-warning mb-4">
+	<a href="{{ route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>date('Y')]) }}" class="btn btn-warning mb-4">
 		Ver comisiones
 	</a>
 		<button class="btn btn-info mb-4"
@@ -53,7 +53,7 @@
 								{{$materia->getTotalAttribute()}}
 								@if($materia->getTotalAttribute() > 0)
 
-										<a href="{{ route('comisiones.ver',$carrera->id)}}/?año={{$materia->año}}" >
+										<a href="{{ route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>date('Y')])}}/?año={{$materia->año}}" >
 											<i class="fa fa-eye"></i>
 										</a>
 
@@ -90,7 +90,7 @@
 							<sup class="badge badge-info" title="Total Comisiones">
 								{{$materia->getTotalAttribute()}}
 								@if($materia->getTotalAttribute() > 0)
-										<a href="{{ route('comisiones.ver',$carrera->id)}}/?año={{$materia->año}}" >
+								<a href="{{ route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>date('Y')])}}/?año={{$materia->año}}" >
 											<i class="fa fa-eye"></i>
 										</a>
 								@endif
@@ -128,7 +128,7 @@
 								</sup>
 								@if($materia->getTotalAttribute() > 0)
 
-										<a href="{{ route('comisiones.ver',$carrera->id)}}/?año={{$materia->año}}" >
+								<a href="{{ route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>date('Y')])}}/?año={{$materia->año}}" >
 											<i class="fa fa-eye"></i>
 										</a>
 
@@ -145,4 +145,7 @@
 	<a href="{{url()->previous()}}" ><button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button> </a>
 </div>
 @include('comision.modals.crear_comision')
+@endsection
+@section('scripts')
+<script src="{{ asset('js/comision/crear.js') }}"></script>
 @endsection

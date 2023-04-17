@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
+use App\Models\Mesa;
 use App\Models\Proceso;
 use Illuminate\Console\Command;
 
@@ -60,8 +61,7 @@ class ConfigComisiones extends Command
                 foreach($materias as $materia)
                 {
                     $procesos = Proceso::where('materia_id',$materia->id)->get();
-                    $profesores = $materia->profesores();
-
+                    $profesores = $materia->profesores; 
                     $materia->comisiones()->attach($comision);
 
                     foreach($procesos as $proceso)

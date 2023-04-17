@@ -67,4 +67,17 @@ class AlumnoService
             return null;
         }
     }
+
+    public function agregarComision($request,$alumno,$comision)
+    {
+        if($request['detach'] == 'true'){
+            $alumno->comisiones()->detach($comision);
+            $mensaje = "Comisión desasignada.";
+        }else{
+            $alumno->comisiones()->attach($comision);
+            $mensaje = "Comisión asignada.";
+        }
+
+        return $mensaje;
+    }
 }

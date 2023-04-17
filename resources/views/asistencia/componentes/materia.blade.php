@@ -7,12 +7,15 @@
                 {{ route($ruta,['id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo,'cargo_id'=>$cargo->id]) }}"
                    class="list-group-item list-group-item-action border-top mt-2 text-success"
                    title="Ver calificaciones"
-                >
+                   data-bs-toggle="modal" data-bs-target="#eligeComision{{$materia->id}}">
                     <strong>
                       //  Módulo: {{ $materia->nombre.' ( '.ucwords($materia->carrera->turno).' | Res: '.$materia->carrera->resolucion.' )' }}
                     </strong>
                 </a>
             @endif
+            @include('asistencia.modals.comisiones')
+
+
         @endforeach
     </div>
 @endforeach

@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <form action="" class="inscripciones_comision" data-materia_id="{{ $materia->id }}" data-instancia_id="{{$instancia->id}}">
-                    @foreach($materia->comisiones as $key => $comision)
+                    @foreach($materia->comisionesCiclo(date('Y')) as $key => $comision)
                     <div class="form-check">
                         <input class="form-check-input" name="comision"  type="radio" id="radio{{$comision->id}}" value="{{$comision->id}}" {{$key == 0 ? 'checked' : ''}}>
                         <label class="form-check-label" for="radio{{$comision->id}}">

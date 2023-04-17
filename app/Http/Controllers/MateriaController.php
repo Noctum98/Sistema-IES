@@ -11,6 +11,7 @@ use App\Models\Estados;
 use App\Models\Personal;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Services\CicloLectivoService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,15 +22,21 @@ class MateriaController extends Controller
      * @var MateriaService
      */
     private $materiaService;
+    protected $cicloLectivoService;
+
 
     /**
      * @param MateriaService $materiaService
      */
-    function __construct(MateriaService $materiaService)
+    function __construct(
+        MateriaService $materiaService,
+        CicloLectivoService $cicloLectivoService
+    )
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
         $this->materiaService = $materiaService;
+        $this->cicloLectivoService = $cicloLectivoService;
     }
 
     // Vistas
@@ -44,9 +51,12 @@ class MateriaController extends Controller
             $ruta = 'materia.admin-modular';
         }
 
+        $ciclos_lectivos = $this->cicloLectivoService->getCicloInicialYActual();
+
         return view($ruta, [
             'carrera' => $carrera,
             'materias' => $materias,
+            'ciclos_lectivos' => $ciclos_lectivos
         ]);
     }
 

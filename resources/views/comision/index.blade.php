@@ -8,11 +8,25 @@
         Comisiones de {{ $carrera->nombre }}
     </h2>
     <hr>
+    <div class="dropdown">
+        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1" data-bs-toggle="dropdown">
+            Ciclo lectivo {{$ciclo_lectivo}}
+        </button>
+        <ul class="dropdown-menu">
+            @for ($i = $ciclos_lectivos[1]; $i >= $ciclos_lectivos[0]; $i--)
+            <li>                
+                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif " href="{{route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>$i])}}">{{$i}}</a>                
+            </li>
+            @endfor
+        </ul>
+    </div>
     @if(@session('comision_eliminada'))
     <div class="alert alert-warning">
         {{ @session('comision_eliminada') }}
     </div>
     @endif
+
+    @if(count($comisiones) > 0)
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -31,8 +45,7 @@
                 </td>
                 <td>
                     <a href="{{ route('comisiones.show',$comision->id) }}" class="btn btn-sm btn-secondary">Ver</a>
-                    <a class="btn btn-warning " data-bs-toggle="modal" id="editButton" data-bs-target="#editModal"
-                       data-loader="{{$comision->id}}" data-attr="{{ route('comision.edit', $comision->id) }}">
+                    <a class="btn btn-warning " data-bs-toggle="modal" id="editButton" data-bs-target="#editModal" data-loader="{{$comision->id}}" data-attr="{{ route('comision.edit', $comision->id) }}">
                         <i class="fas fa-edit text-gray-300"></i>
                         <i class="fa fa-spinner fa-spin" style="display: none" id="loader{{$comision->id}}"></i>
                     </a>
@@ -45,6 +58,10 @@
             @endforeach
         </tbody>
     </table>
+    @else
+    <br>
+    <p>No existen comisiones para el ciclo lectivo {{ $ciclo_lectivo }}</p>
+    @endif
     <a href="{{url()->previous()}}">
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
@@ -52,35 +69,35 @@
 @include('comision.modals.editar_comision')
 @endsection
 @section('scripts')
-    <script>
+<script src="{{ asset('js/comision/crear.js') }}"></script>
+<script>
+    $(document).on('click', '#editButton', function(event) {
+        console.log('nada');
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        let referencia = $(this).attr('data-loader');
+        const $laoder = $('#loader' + referencia);
 
-        $(document).on('click', '#editButton', function(event) {
-            console.log('nada');
-            event.preventDefault();
-            let href = $(this).attr('data-attr');
-            let referencia = $(this).attr('data-loader');
-            const $laoder = $('#loader'+referencia);
+        $.ajax({
+            url: href,
+            beforeSend: function() {
+                $laoder.show();
+            },
+            // return the result
+            success: function(result) {
+                $('#editModal').modal("show");
+                $('#editBody').html(result).show();
+            },
+            complete: function() {
+                $laoder.hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
 
-            $.ajax({
-                url: href,
-                beforeSend: function() {
-                    $laoder.show();
-                },
-                // return the result
-                success: function(result) {
-                    $('#editModal').modal("show");
-                    $('#editBody').html(result).show();
-                },
-                complete: function() {
-                    $laoder.hide();
-                },
-                error: function(jqXHR, testStatus, error) {
-                    console.log(error);
-
-                    $laoder.hide();
-                },
-                timeout: 8000
-            })
-        });
-    </script>
+                $laoder.hide();
+            },
+            timeout: 8000
+        })
+    });
+</script>
 @endsection

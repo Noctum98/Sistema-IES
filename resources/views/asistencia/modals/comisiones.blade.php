@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('asis.admin',['id'=>$materia->id]) }}" method="GET">
-                    @foreach($materia->comisiones as $comision)
+                    @foreach($materia->comisionesCiclo($ciclo_lectivo) as $comision)
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="comision_id" id="{{$comision->id}}" value="{{$comision->id}}">
                         <label class="form-check-label" for="{{$comision->id}}">
@@ -17,8 +17,10 @@
                         </label>
                     </div>
                     @endforeach
-                    <hr>
-                    <input type="submit" value="Guardar" class="btn btn-primary">
+                    @if(count($materia->comisionesCiclo($ciclo_lectivo)) == 0)
+                        <p>La materia no tiene comisiones</p>
+                    @endif
+                    <input type="submit" value="Guardar" class="btn btn-primary mt-3">
                 </form>
             </div>
         </div>

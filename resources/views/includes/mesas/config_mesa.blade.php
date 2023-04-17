@@ -12,12 +12,12 @@
             <div class="modal-body">
                 <form method="POST" action="{{route('crear_mesa',['materia_id'=>$materia->id,'instancia_id'=>$instancia->id])}}">
                     @csrf
-                    @if($materia->getTotalAttribute() > 0)
+                   
                     <div class="form-group">
                         <label for="comision_id">Comisión</label>
                         <select name="comision_id" id="comision_id-{{ $materia->id }}" data-materia="{{$materia->id}}" data-instancia_id="{{$instancia->id}}" class="form-select comision_id">
                             <option value="">-- Seleccionar comisión --</option>
-                            @foreach($materia->comisiones as $comision)
+                            @foreach($materia->comisionesCiclo(date('Y')) as $comision)
                                 <option value="{{ $comision->id }}">{{ $comision->nombre }}</option>
                             @endforeach
                         </select>
@@ -25,8 +25,8 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </div>
                     </div>
-                    @endif
-                    <div id="form-config-{{$materia->id}}" class="{{$materia->getTotalAttribute() > 0 ? 'd-none' : ''}}">
+                    
+                    <div id="form-config-{{$materia->id}}" class="d-none">
                         <div class="form-group">
                             <label for="fecha">Fecha y Hora (Primer llamado):</label>
                             <input type="datetime-local" id="fecha-{{$materia->id}}" name="fecha" class="form-control" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->fecha : '' }}" required />

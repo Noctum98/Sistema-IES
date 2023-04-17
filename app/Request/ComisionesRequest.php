@@ -27,6 +27,7 @@ class ComisionesRequest extends FormRequest
             'carrera_id' => ['required'],
             'nombre' => ['required','max:255'],
             'año' => ['required','min:1'],
+            'ciclo_lectivo' => ['required']
         ];
     }
 

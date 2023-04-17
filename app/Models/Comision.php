@@ -16,6 +16,7 @@ class Comision extends Model
     protected $fillable = [
         'carrera_id',
         'año',
+        'unica',
         'nombre',
         'ciclo_lectivo'
     ];
@@ -47,7 +48,8 @@ class Comision extends Model
 
     //Has Relations
     public function hasProfesor($profesor_id){
-        if ($this->profesores->where('id', $profesor_id)->first()) {
+        $profesor = ComisionProfesor::where('profesor_id',$profesor_id)->where('comision_id',$this->id)->first();
+        if ($profesor) {
             return true;
         }
         return false;
@@ -56,6 +58,14 @@ class Comision extends Model
     public function hasAlumno($alumno_id)
     {
         if ($this->alumnos->where('id', $alumno_id)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasProceso($proceso_id)
+    {
+        if ($this->procesos->where('id', $proceso_id)->first()) {
             return true;
         }
         return false;

@@ -26,8 +26,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" name="nombre" id="nombre" class="form-control" required>
+                        <label for="nombre">Nombre </label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" maxlength="15" required>
+                        <sub class="text-primary">Máximo 15 caracteres</i>
                     </div>
 
                     
@@ -37,20 +38,19 @@
                     </div>
                     <div class="form-group">
                         <label for="description">Descripción</label>
-                        <textarea name="description" id="description" class="form-control" required></textarea>
+                        <textarea name="description" id="description" class="form-control" maxlength="255" required></textarea>
                     </div>
-
-                    @if($materia->getTotalAttribute() > 0)
+          
                     <div class="form-group">
                         <label for="comision_id">Comisión</label>
                         <select name="comision_id" id="comision_id" class="form-select" required>
-                            @foreach($materia->comisiones as $comisiones)
+                            <option value="">-- Seleccione la comisión --</option>
+                            @foreach($materia->comisionesCiclo($ciclo_lectivo) as $comisiones)
                                 <option value="{{ $comisiones->id }}">{{ $comisiones->nombre }}</option>
                             @endforeach
                         </select>
                     </div>
-                    @endif
-
+                
                     <input type="submit" value="Guardar" class="btn btn-primary">
                 </form>
             </div>

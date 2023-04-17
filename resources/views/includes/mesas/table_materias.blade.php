@@ -42,23 +42,17 @@
     <td>
         @if($instancia->tipo == 0)
             <a class="btn btn-sm btn-warning open_modal" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}" data-materia_id="{{$materia->id}}" data-instancia_id="{{$instancia->id}}" {{ !Session::get('admin') ? 'disabled':'' }}>Configurar mesa</a>
-            @if($materia->getTotalAttribute() > 0)
                 <a class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#comisiones{{$materia->id}}">Ver inscriptos</a>
                 @include('includes.mesas.mesa_comision')
-            @else
-                <a href="{{route('mesa.inscriptos',['materia_id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
-            @endif            
+         
             
             @include('includes.mesas.config_mesa')
         @else
             <a class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}" {{ !Session::get('admin') ? 'disabled':'' }}>Configurar mesa</a>
 
-            @if($materia->getTotalAttribute() > 0)
                 <a class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#comisiones{{$materia->id}}">Ver inscriptos</a>
                 @include('includes.mesas.mesa_comision')
-            @else
-                <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
-            @endif
+           
 
             @include('includes.mesas.config_mesa')
         @endif
