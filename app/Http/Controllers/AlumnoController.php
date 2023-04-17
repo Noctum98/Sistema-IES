@@ -32,7 +32,7 @@ class AlumnoController extends Controller
     ) {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
-            'app.roles:admin-coordinador-regente-seccionAlumnos',
+            'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial',
             ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir']]
         );
         $this->alumnoService = $alumnoService;
@@ -153,6 +153,61 @@ class AlumnoController extends Controller
                 'alumno'    =>  $alumno,
                 'carreras' => $carreras,
                 'ciclo_lectivo' => $ciclo_lectivo
+            ]);
+        }else{
+            return redirect()->back();
+        }
+    }
+
+    public function vista_historial(int $id)
+    {
+        $alumno = Alumno::find($id);
+
+        $carreras = Carrera::select('carreras.*')
+            ->distinct()
+            ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+            ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+            ->where('alumnos.id', $alumno->id)
+            ->get();
+
+        if (!$alumno) {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'El alumno no existe',
+            ]);
+        }
+
+        $ciclo_lectivo = $ciclo_lectivo?? date('Y');
+
+        $pase = true;
+        if(Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin')))
+        {
+            if(Auth::user()->id != $alumno->user_id)
+            {
+                $pase = false;
+            }
+        }
+        $materias = $carreras[0]->materias()->get()->pluck('año','nombre');
+        $materiasPorAño = [];
+        $sub = [];
+        foreach ($materias as $materia => $año) {
+            // Si el año no existe como índice en el nuevo array, lo creamos con un array vacío
+            if (!isset($materiasPorAño[$año])) {
+                $materiasPorAño[$año] = [];
+            }
+            // Agregamos la materia al año correspondiente en el nuevo array
+            $materiasPorAño[$año][] = $materia;
+        }
+
+
+
+
+        if($pase)
+        {
+            return view('alumno.historial', [
+                'alumno'    =>  $alumno,
+                'carreras' => $carreras,
+                'ciclo_lectivo' => $ciclo_lectivo,
+                'materias' => $materiasPorAño
             ]);
         }else{
             return redirect()->back();

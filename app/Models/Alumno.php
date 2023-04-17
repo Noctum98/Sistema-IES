@@ -88,9 +88,19 @@ class Alumno extends Model
         return $this->hasMany(Proceso::class)->where('ciclo_lectivo',date('Y'))->orderBy('id');
     }
 
+    public function procesos_date($date)
+    {
+        return $this->hasMany(Proceso::class)->where('ciclo_lectivo',$date)->orderBy('id')->get();
+    }
+
     public function asistencias()
     {
         return $this->hasMany('App\Models\AlumnoAsistencia');
+    }
+
+    public function alumno_carrera()
+    {
+        return $this->hasMany(AlumnoCarrera::class,'alumno_id');
     }
 
     public function hasCarrera($carrera_id)
@@ -173,19 +183,11 @@ class Alumno extends Model
 
     public static function alumnosAño($year,$carrera_id,$ciclo_lectivo)
     {
-        return Alumno::select(
-            'alumnos.nombres',
-            'alumnos.apellidos',
-            'alumnos.dni',
-            'alumnos.email',
-            'alumnos.telefono',
-            'alumnos.regularidad',
-            'alumnos.genero'
-        )
-        ->join('alumno_carrera','alumno_carrera.alumno_id','alumnos.id')
-        ->where('alumno_carrera.año',$year)
-        ->where('alumno_carrera.carrera_id',$carrera_id)
-        ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo)
+        return Alumno::whereHas('alumno_carrera', function($query) use ($year, $carrera_id, $ciclo_lectivo) {
+            $query->where('año', $year)
+                  ->where('carrera_id', $carrera_id)
+                  ->where('ciclo_lectivo', $ciclo_lectivo);
+        })
         ->orderBy('alumnos.apellidos','asc')
         ->get();
     }
