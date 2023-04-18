@@ -48,9 +48,9 @@ class ExcelController extends Controller
             }
         }
 
-        $carrera = Carrera::where('id', $carrera_id)->select('nombre')->first();
+        $carrera = Carrera::find($carrera_id);
 
-        return Excel::download(new AlumnosYearExport($alumnos, $generos,$ciclo_lectivo), 'Planilla de Alumnos de ' . $carrera->nombre . ' - Año ' . $year . '.xlsx');
+        return Excel::download(new AlumnosYearExport($alumnos, $generos,$ciclo_lectivo,$carrera), 'Planilla de Alumnos de ' . $carrera->nombre . ' - Año ' . $year . '.xlsx');
     }
 
     public function all_alumnos($sede_id = null)
