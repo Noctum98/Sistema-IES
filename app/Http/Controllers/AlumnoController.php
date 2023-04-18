@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AlumnoController extends Controller
 {
@@ -162,7 +163,11 @@ class AlumnoController extends Controller
     public function vista_historial(int $id)
     {
         $alumno = Alumno::find($id);
-
+        if (!$alumno) {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'El alumno no existe',
+            ]);
+        }
         $carreras = Carrera::select('carreras.*')
             ->distinct()
             ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
@@ -170,11 +175,7 @@ class AlumnoController extends Controller
             ->where('alumnos.id', $alumno->id)
             ->get();
 
-        if (!$alumno) {
-            return redirect()->route('alumno.admin')->with([
-                'alumno_notIsset' => 'El alumno no existe',
-            ]);
-        }
+
 
         $ciclo_lectivo = $ciclo_lectivo?? date('Y');
 
@@ -186,20 +187,19 @@ class AlumnoController extends Controller
                 $pase = false;
             }
         }
-        $materias = $carreras[0]->materias()->get()->pluck('año','nombre');
+        $materias = $carreras[0]->materias()->orderBy('nombre', 'ASC')->get();
+
         $materiasPorAño = [];
         $sub = [];
-        foreach ($materias as $materia => $año) {
+        foreach ($materias as $materia) {
+
             // Si el año no existe como índice en el nuevo array, lo creamos con un array vacío
-            if (!isset($materiasPorAño[$año])) {
-                $materiasPorAño[$año] = [];
+            if (!isset($materiasPorAño[$materia->año])) {
+                $materiasPorAño[$materia->año] = [];
             }
             // Agregamos la materia al año correspondiente en el nuevo array
-            $materiasPorAño[$año][] = $materia;
+            $materiasPorAño[$materia->año][] = $materia;
         }
-
-
-
 
         if($pase)
         {
