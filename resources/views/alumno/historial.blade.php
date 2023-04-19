@@ -50,7 +50,7 @@
                                     <div class="col-3 border-1 ">Materia</div>
                                     <div class="col-9 border-1">
                                         <div class="row ">
-                                            <div class="col-2 border-top-0 text-center">Estado</div>
+                                            <div class="col-2 border-1 border-left text-center border-bottom-0">Estado</div>
                                             <div class="col-2 border-1 border-left text-center border-bottom-0">Cierre</div>
                                             <div class="col-2 border-1 border-left text-center border-bottom-0">Nota Final</div>
                                             <div class="col-2 border-1 border-left text-center border-bottom-0">Global</div>
