@@ -26,7 +26,8 @@
                 <ul class="datos-academicos col-md-6">
                     <li>
                         <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }}
-                    <strong>Cohorte: </strong>{{ $alumno->cohorte?? 'No indicada'}} <strong>Activo: </strong>{{ $alumno->active?'Si': 'No'}}
+                        <strong>Cohorte: </strong>{{ $alumno->cohorte?? 'No indicada'}}
+                        <strong>Activo: </strong>{{ $alumno->active?'Si': 'No'}}
                         <strong>Inscripto a:</strong>
 
                         @if(count($carreras) > 0 )
@@ -43,48 +44,50 @@
                     <h4>Materias</h4>
                     <div class="row mt-1">
                         @foreach($materias as $nivel => $listado)
-                            <div class="col-md-12 mt-2 pt-1 border-1 border-bottom">
-                                <h5>{{ $nivel }}° Año</h5>
-                                <div class="row mt-1">
-                                    <div class="col-3">Materia</div>
-                                    <div class="col-9">
+                            <div class="col-md-12 mt-2 pt-1 ">
+                                <h5 class="text-center">{{ $nivel }}° Año</h5>
+                                <div class="row mt-1 border-1">
+                                    <div class="col-3 h-100 border ">Materia</div>
+                                    <div class="col-9 ">
                                         <div class="row">
-                                            <div class="col-2">Estado</div>
-                                            <div class="col-2">Cierre</div>
-                                            <div class="col-2">Nota Final</div>
-                                            <div class="col-2">Global</div>
-                                            <div class="col-2">Recuperatorio</div>
+                                            <div class="col-2 border-top-0 text-center">Estado</div>
+                                            <div class="col-2 border-1 border-left text-center border-bottom-0">Cierre</div>
+                                            <div class="col-2 border-1 border-left text-center border-bottom-0">Nota Final</div>
+                                            <div class="col-2 border-1 border-left text-center border-bottom-0">Global</div>
+                                            <div class="col-2 border-1 border-left text-center border-bottom-0">Recuperatorio</div>
                                             <div class="col-2">Ciclo Lectivo</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    @foreach($listado as $materia)
-                                        <div class="col-3">
+                                @foreach($listado as $materia)
+                                    <div class="row  ">
+                                        <div class="col-3 h-100 border">
                                             {{ $materia->nombre }}
                                         </div>
-                                        <div class="col-9">
-                                            <div class="row">
-                                                @if(count($materia->procesoAlumnoMateria($alumno->id)) > 0)
+                                        <div class="col-9 border">
+                                            <div class="row h-100">
+{{--                                                @if(count($materia->procesoAlumnoMateria($alumno->id)) > 0)--}}
                                                     <div
-                                                        class="col-2">{{$materia->procesoAlumnoMateria($alumno->id)[0]->estado_id}}</div>
+                                                        class="col-2 border-top-0 ">{{$materia->procesoAlumnoMateria($alumno->id)[0]->estado_id??'-'}}</div>
                                                     <div
-                                                        class="col-2">{{$materia->procesoAlumnoMateria($alumno->id)[0]->cierre}}</div>
+                                                        class="col-2 border-1 border-left text-center border-bottom-0">{{$materia->procesoAlumnoMateria($alumno->id)[0]->cierre??'-'}}</div>
                                                     <div
-                                                        class="col-2">{{$materia->procesoAlumnoMateria($alumno->id)[0]->final_calificaciones}}</div>
+                                                        class="col-2 border-1 border-left text-center border-bottom-0">{{$materia->procesoAlumnoMateria($alumno->id)[0]->final_calificaciones??'-'}}</div>
                                                     <div
-                                                        class="col-2">{{$materia->procesoAlumnoMateria($alumno->id)[0]->nota_global}}</div>
+                                                        class="col-2 border-1 border-left text-center border-bottom-0">{{$materia->procesoAlumnoMateria($alumno->id)[0]->nota_global??'-'}}</div>
                                                     <div
-                                                        class="col-2">{{$materia->procesoAlumnoMateria($alumno->id)[0]->nota_recuperatorio}}</div>
+                                                        class="col-2 border-1 border-left text-center border-bottom-0">{{$materia->procesoAlumnoMateria($alumno->id)[0]->nota_recuperatorio??'-'}}</div>
                                                     <div
-                                                        class="col-2">{{$materia->procesoAlumnoMateria($alumno->id)[0]->ciclo_lectivo}}</div>
-                                                @endif
+                                                        class="col-2 border-1 border-left text-center border-bottom-0">{{$materia->procesoAlumnoMateria($alumno->id)[0]->ciclo_lectivo??'-'}}</div>
+{{--                                                @else--}}
+{{--                                                    <div class="col-12 border-1 border-left text-center">--}}
+{{--                                                        No se encontraron procesos--}}
+{{--                                                    </div>--}}
+{{--                                                @endif--}}
                                             </div>
-
                                         </div>
-
-                                    @endforeach
-                                </div>
+                                    </div>
+                                @endforeach
                             </div>
                         @endforeach
                     </div>
