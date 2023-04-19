@@ -1,6 +1,9 @@
 <table>
     <thead>
         <tr>
+            {{ $carrera ? $carrera->nombre : '' }}
+        </tr>
+        <tr>
             <th scope="col">Apellido y Nombre</th>
             <th scope="col">D.N.I</th>
             <th scope="col">Email</th>

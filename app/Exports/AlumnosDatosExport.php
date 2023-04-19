@@ -14,16 +14,19 @@ class AlumnosDatosExport implements FromView,WithEvents
     use RegistersEventListeners;
     
     protected $alumnos;
+    protected $carrera;
 
-    public function __construct($alumnos)
+    public function __construct($alumnos,$carrera)
     {
         $this->alumnos = $alumnos;
+        $this->carrera = $carrera;
     }
 
     public function view(): View
     {
         return view('excel.alumnos_datos',[
-            'alumnos' => $this->alumnos
+            'alumnos' => $this->alumnos,
+            'carrera' => $this->carrera
         ]);
     }
 
