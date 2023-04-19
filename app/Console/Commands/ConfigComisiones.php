@@ -66,6 +66,7 @@ class ConfigComisiones extends Command
 
                     foreach($procesos as $proceso)
                     {
+                        if($comision->)
                         $comision->procesos()->attach($proceso);
                         
                         if(!$comision->hasAlumno($proceso->alumno_id))
@@ -76,7 +77,10 @@ class ConfigComisiones extends Command
 
                     foreach($profesores as $profesor)
                     {
-                        $comision->profesores()->attach($profesor);
+                        if(!$comision->hasProfesor($profesor->id))
+                        {
+                            $comision->profesores()->attach($profesor);
+                        }
                     }
                 }
             }
