@@ -81,13 +81,9 @@
                         @if($inscripcion->confirmado)
                         <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado </button>
                         @endif
-                        {{--
-                        <button class="btn btn-sm btn-primary {{!$inscripcion->confirmado ? 'd-none' : ''}}" id="nota-{{$inscripcion->id}}" data-bs-toggle="modal" data-bs-target="#nota{{$inscripcion->id}}"><i class="fas fa-clipboard"></i> Nota</button>--}}
 
                     </td>
                     @include('mesa.modals.dar_baja_mesa')
-                    @include('mesa.modals.nota_mesa')
-
 
                 </tr>
                 @endforeach
