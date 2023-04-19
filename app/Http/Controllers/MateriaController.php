@@ -123,6 +123,7 @@ class MateriaController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->join('materias', 'materias.id', 'procesos.materia_id')
             ->where('materias.id', $id)
+            ->where('procesos.ciclo_lectivo',date('Y'))
             ->orderBy('alumnos.apellidos', 'asc')
             ->get();
 

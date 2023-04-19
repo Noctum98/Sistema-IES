@@ -7,7 +7,7 @@
         <div class="mt-4 row">
             <div class="form-group col-md-6">
                 <label for="nombre">Nombres</label>
-                <input type="text" name="nombres" id="nombres" value=" {{ isset($matriculacion) ? $matriculacion->nombres : old('nombres') }} " class="form-control" required />
+                <input type="text" name="nombres" id="nombres" value="{{ isset($matriculacion) ? $matriculacion->nombres : old('nombres') }}" class="form-control" required />
 
                 @error('nombres')
                 <span class="invalid-feedback d-block" role="alert">
@@ -17,7 +17,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="apellidos">Apellidos</label>
-                <input type="text" name="apellidos" id="apellidos" value=" {{ isset($matriculacion) ? $matriculacion->apellidos : old('apellidos') }} " class="form-control" required />
+                <input type="text" name="apellidos" id="apellidos" value="{{ isset($matriculacion) ? $matriculacion->apellidos : old('apellidos') }}" class="form-control" required />
 
                 @error('apellidos')
                 <span class="invalid-feedback d-block" role="alert">
@@ -37,7 +37,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="cuil">CUIL</label>
-                <input type="text" name="cuil" id="cuil" value="{{ isset($matriculacion) ? $matriculacion->cuil : old('cuil') }} " class="form-control" required />
+                <input type="text" name="cuil" id="cuil" value="{{ isset($matriculacion) ? $matriculacion->cuil : old('cuil') }}" class="form-control" required />
 
                 @error('cuil')
                 <span class="invalid-feedback d-block" role="alert">

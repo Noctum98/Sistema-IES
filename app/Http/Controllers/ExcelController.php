@@ -48,9 +48,9 @@ class ExcelController extends Controller
             }
         }
 
-        $carrera = Carrera::where('id', $carrera_id)->select('nombre')->first();
+        $carrera = Carrera::find($carrera_id);
 
-        return Excel::download(new AlumnosYearExport($alumnos, $generos,$ciclo_lectivo), 'Planilla de Alumnos de ' . $carrera->nombre . ' - Año ' . $year . '.xlsx');
+        return Excel::download(new AlumnosYearExport($alumnos, $generos,$ciclo_lectivo,$carrera), 'Planilla de Alumnos de ' . $carrera->nombre . ' - Año ' . $year . '.xlsx');
     }
 
     public function all_alumnos($sede_id = null)
@@ -70,7 +70,7 @@ class ExcelController extends Controller
         
         $alumnos = $carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo);
 
-        return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos '.$carrera->nombre.'.xlsx');
+        return Excel::download(new AlumnosDatosExport($alumnos,$carrera),'Planilla de datos '.$carrera->nombre.'.xlsx');
     }
 
     public function planilla_notas_tradicional($materia_id, $ciclo_lectivo ,$comision_id = null)
@@ -147,7 +147,7 @@ class ExcelController extends Controller
 
         $alumnos = $this->alumnoService->buscarAlumnos($request);
 
-        return Excel::download(new AlumnosDatosExport($alumnos),'Planilla de datos.xlsx');
+        return Excel::download(new AlumnosDatosExport($alumnos,null),'Planilla de datos.xlsx');
         //dd($alumnos);
     }
 }
