@@ -59,7 +59,7 @@
                                     <div class="col-1 border-1 border-left text-center ">Global
                                     </div>
                                     <div class="col-1 border-1 border-left text-center ">
-                                        Recuperatorio
+                                        Recup.
                                     </div>
                                     <div class="col-1 border-1 border-left text-center ">Ciclo
                                         Lectivo
