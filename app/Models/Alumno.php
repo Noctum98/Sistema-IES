@@ -165,7 +165,7 @@ class Alumno extends Model
         ])->get();
 
         $respuesta = null;
-        
+
         if($comisiones)
         {
             foreach($comisiones as $comision)
@@ -176,7 +176,7 @@ class Alumno extends Model
                 }
             }
         }
-        
+
         return $respuesta;
     }
 
@@ -196,5 +196,19 @@ class Alumno extends Model
     public function getApellidosNombresAttribute()
     {
         return $this->apellidos .', '. $this->nombres;
+    }
+
+    /**
+     * @param $materia_id
+     * @return mixed
+     */
+    public function getActaVolanteMateria($materia_id)
+    {
+        return ActaVolante::where([
+            'materia_id' => $materia_id,
+            'alumno_id' => $this->id
+        ])
+            ->orderBy('actas_volantes.updated_at','DESC')
+            ->first();
     }
 }
