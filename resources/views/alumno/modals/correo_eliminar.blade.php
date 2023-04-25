@@ -28,6 +28,9 @@
                         <label for="motivo">Otro motivo (opcional): </label>
                         <textarea name="motivo" id="motivo" cols="20" rows="5" class="form-control"></textarea>
                     </div>
+                    <div class="alert alert-danger">
+                        !ATENCIÓN! Al pulsar "Eliminar matriculación" se borrará tanto el alumno, como los procesos y su notas en caso de tenerlas.
+                    </div>
                     <button type="submit" class="btn btn-sm btn-danger">Eliminar matriculación</button>
                     <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Cerrar</button>
 
