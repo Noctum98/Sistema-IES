@@ -118,6 +118,8 @@
 						@endif
 					</div>
 					@endforeach
+					@else
+					<p>Ninguna carrera.</p>
 					@endif
 				</li>
 			</ul>
@@ -138,6 +140,9 @@
 				Corregir datos
 			</a>
 			@endif
+
+			<button class="btn btn-sm mt-4 btn-secondary" data-bs-toggle="modal" data-bs-target="#eliminarAlumnoModal{{$alumno->id}}">Eliminar Alumno</button>
+			@include('alumno.modals.eliminar_alumno')
 			@endif
 
 			<a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2 mt-4 btn btn-sm btn-primary"><i class="fas fa-download"></i> Descargar PDF</a>
@@ -154,6 +159,7 @@
 			<button class="ml-2 mt-4 btn btn-sm btn-info btn-password" id="{{$alumno->user->id}}">
 				Restablecer Contraseña
 			</button>
+
 			@endif
 		</div>
 	</div>
