@@ -16,16 +16,17 @@ class CreateTableEquivalencias extends Migration
         Schema::create('equivalencias', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->foreignId('alumno_id')->constrained('alumnos');
+//            $table->foreignId('alumno_id')->constrained('alumnos');
             $table->foreignId('materia_id')->constrained('materias');
             $table->integer('nota');
             $table->string('fecha');
             $table->string('resolution');
             $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('alumno_id');
             $table->timestamps();
-//            $table->foreign('alumno_id')
-//                ->references('id')
-//                ->on('alumnos');
+            $table->foreign('alumno_id')
+                ->references('id')
+                ->on('alumnos');
             $table->foreign('user_id')->references('id')->on('users');
 
 
