@@ -77,6 +77,42 @@ class AlumnoController extends Controller
         return view('alumno.admin', $data);
     }
 
+    public function vista_equivalencias(Request $request)
+    {
+        $user = Auth::user();
+        $alumnos = [];
+        $sedes = null;
+        $busqueda = null;
+        $sedes = $user->sedes;
+//        $ciclo_lectivo = date('Y');
+
+        if (isset($request['busqueda'])) {
+            $alumnos = $this->alumnoService->buscarAlumnos($request);
+            $busqueda = $request['busqueda'] ?? true;
+        }
+//        if (isset($request['ciclo_lectivo'])) {
+            $ciclo_lectivo = $request['ciclo_lectivo']?? date('Y');
+//        }
+
+
+//        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
+
+
+        //dd($alumnos);
+        $data = [
+            'alumnos' => $alumnos,
+            'sedes' => $sedes,
+            'busqueda' => $busqueda,
+            'carrera_id' => $request['carrera_id'],
+            'materia_id' => $request['materia_id'],
+            'cohorte' => $request['cohorte'],
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo'=>$ciclo_lectivo
+        ];
+
+        return view('alumno.admin', $data);
+    }
+
     public function vista_elegir()
     {
         $carreras = Carrera::orderBy('sede_id')->get();
