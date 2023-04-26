@@ -77,6 +77,9 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="{{ route('alumno.admin') }}">Administrar</a>
+                        @if(Session::has('equivalencias'))
+                        <a class="nav-link" href="{{ route('alumno.equivalencias') }}">Equivalencias</a>
+                        @endif
                     </nav>
                 </div>
                 @endif
@@ -117,12 +120,12 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
                     Mesas
                 </a>
-                
+
                 <a class="nav-link" href="{{ route('matriculacion.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-paste"></i></i></div>
                     Inscripción
                 </a>
-       
+
                 <!-----
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
@@ -134,7 +137,7 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca
                 </a>
-                
+
             </div>
         </div>
     </nav>
