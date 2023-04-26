@@ -46,6 +46,7 @@
 
         </form>
         <br>
+        @if(Session::has('admin'))
         <p>
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearCargo">Crear Cargo</button>
             @if(Session::has('admin') || Session::has('regente'))
@@ -53,7 +54,9 @@
             @endif
 
         </p>
+        
         @include('cargo.modals.crear_cargo')
+        @endif
 
         @if(count($cargos) > 0)
             <div class="table-responsive">

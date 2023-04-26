@@ -479,9 +479,11 @@ Route::prefix('matriculacion')->group(function () {
     Route::get('/editar/{alumno_id}/{carrera_id}/{year?}', [MatriculacionController::class, 'edit'])->name(
         'matriculacion.edit'
     );
-    Route::delete('/delete/{id}/{carrera_id}/{year?}', [MatriculacionController::class, 'delete'])->name(
-        'matriculacion.delete'
+    Route::get('/delete/{id}', [MatriculacionController::class, 'delete'])->name(
+        'alumno.delete'
     );
+
+    Route::delete('/deleteAlumno/{id}/{carrera_id}',[MatriculacionController::class,'deleteInscripcion'])->name('matriculacion.delete');
 
     Route::get('/', [MatriculacionController::class, 'index'])->name('matriculacion.index');
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(

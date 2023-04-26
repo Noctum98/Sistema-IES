@@ -157,8 +157,7 @@ class MatriculacionController extends Controller
             $alumno = Alumno::create($request->all());
         }
 
-        if($alumno->deleted_at != null)
-        {
+        if ($alumno->deleted_at != null) {
             $alumno->restore();
         }
 
@@ -249,67 +248,82 @@ class MatriculacionController extends Controller
         ]);
     }
 
-    public function delete(Request $request, $id, $carrera_id, $año = null)
+    public function delete(Request $request, $id)
     {
         $alumno = Alumno::find($id);
-        $carrera = Carrera::find($carrera_id);
 
         $procesos = Proceso::where('alumno_id', $alumno->id)->get();
 
         foreach ($procesos as $proceso) {
-            if ($proceso->materia->carrera_id == $carrera->id) {
-                Asistencia::where('proceso_id',$proceso->id)->delete();
-                ProcesoCalificacion::where('proceso_id',$proceso->id)->delete();
-                $proceso->delete();
-            }
+
+            Asistencia::where('proceso_id', $proceso->id)->delete();
+            ProcesoCalificacion::where('proceso_id', $proceso->id)->delete();
+            $proceso->delete();
         }
 
         AlumnoCarrera::where([
             'alumno_id' => $alumno->id,
-            'carrera_id' => $carrera->id
         ])->delete();
 
-        if($alumno->carreras()->count() == 0)
-        {
+        if ($alumno->carreras()->count() == 0) {
             if ($alumno->comisiones()) {
                 $alumno->comisiones()->detach();
             }
-    
+
             if ($alumno->user_id) {
                 $user = User::find($alumno->user_id);
-    
+
                 if ($user) {
-                    if($user->carreras())
-                    {
+                    if ($user->carreras()) {
                         $user->carreras()->detach();
                     }
 
-                    if($user->roles())
-                    {
+                    if ($user->roles()) {
                         $user->roles()->detach();
                     }
                     $user->delete();
                 }
             }
 
-            $alumno->update(['aprobado'=>0]);
-    
+            $alumno->update(['aprobado' => 0]);
+
             $alumno->delete();
 
-            return redirect()->route('alumno.carrera', [
-                'carrera_id' => $carrera->id
-            ])->with([
-                'alumno_deleted' => 'Alumno eliminado, se le ha enviado un correo con una notificación'
+            return redirect()->route('alumno.admin')->with([
+                'alert_warning' => 'El alumno se ha eliminado correctamente'
             ]);
-        }else{
-            return redirect()->back()->with(['alert_warning'=>'Se ha eliminado la matriculación, y se le ha enviado un correo con una notificación al alumno']);
+        } else {
+            return redirect()->back()->with(['alert_warning' => 'Se ha eliminado la matriculación, y se le ha enviado un correo con una notificación al alumno']);
         }
+    }
+
+    public function deleteInscripcion(Request $request, $id, $carrera_id)
+    {
+        $alumno = Alumno::find($id);
+        $carrera = Carrera::find($carrera_id);
+
+        $alumno_carrera = AlumnoCarrera::where([
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id,
+        ])->latest()->first();
+
+
+        $procesos = Proceso::where('alumno_id', $alumno->id)->get();
+
+        foreach ($procesos as $proceso) {
+            if ($proceso->materia->carrera_id == $carrera->id && $proceso->ciclo_lectivo == $alumno_carrera->ciclo_lectivo) {
+                $proceso->delete();
+            }
+        }
+
+        $alumno_carrera->delete();
+
+        $alumno->update(['aprobado' => 0]);
 
         Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno, $carrera, $request));
 
-        
+        return redirect()->back()->with(['alert_warning' => 'Se ha eliminado la matriculación, y se le ha enviado un correo con una notificación al alumno']);
     }
-
 
     public function send_email(Request $request, $carrera_id, $año)
     {
