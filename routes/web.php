@@ -238,11 +238,11 @@ Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsu
 Route::prefix('alumnos')->group(function () {
     // Vistas
     Route::get('/{busqueda?}', [AlumnoController::class, 'vista_admin'])->name('alumno.admin');
-    Route::get('/equivalencias/{busqueda?}', [AlumnoController::class, 'vista_equivalencias'])->name('alumno.equivalencias');
     Route::post('/{ciclo_lectivo?}', [AlumnoController::class, 'vista_admin'])->name('alumno.adminp');
     Route::get('agregar/{id}', [AlumnoController::class, 'vista_crear'])->name('alumno.crear');
     Route::get('carrera/elegir', [AlumnoController::class, 'vista_elegir'])->name('alumno.elegir');
     Route::get('editar/{id}', [AlumnoController::class, 'vista_editar'])->name('alumno.editar');
+    Route::get('equivalencias/alumno/{busqueda?}', [AlumnoController::class, 'vista_equivalencias'])->name('alumno.equivalencias');
     Route::get('carrera/{carrera_id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_alumnos'])->name(
         'alumno.carrera'
     );

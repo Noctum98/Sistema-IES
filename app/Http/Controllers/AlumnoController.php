@@ -27,13 +27,14 @@ class AlumnoController extends Controller
      * @param CicloLectivoService $cicloLectivoService
      */
     public function __construct(
-        AlumnoService $alumnoService,
+        AlumnoService       $alumnoService,
         CicloLectivoService $cicloLectivoService
-    ) {
+    )
+    {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
-            'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial',
-            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir']]
+            'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial-equivalencias',
+            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir', 'vista_equivalencias']]
         );
         $this->alumnoService = $alumnoService;
         $this->cicloLectivoService = $cicloLectivoService;
@@ -42,6 +43,7 @@ class AlumnoController extends Controller
     // Vistas
     public function vista_admin(Request $request)
     {
+//        dd(46);
         $user = Auth::user();
         $alumnos = [];
         $sedes = null;
@@ -54,7 +56,7 @@ class AlumnoController extends Controller
             $busqueda = $request['busqueda'] ?? true;
         }
 //        if (isset($request['ciclo_lectivo'])) {
-            $ciclo_lectivo = $request['ciclo_lectivo']?? date('Y');
+        $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 //        }
 
 
@@ -70,7 +72,7 @@ class AlumnoController extends Controller
             'materia_id' => $request['materia_id'],
             'cohorte' => $request['cohorte'],
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
-            'ciclo_lectivo'=>$ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo
         ];
 
         return view('alumno.admin', $data);
@@ -78,20 +80,20 @@ class AlumnoController extends Controller
 
     public function vista_equivalencias(Request $request)
     {
+
         $user = Auth::user();
         $alumnos = [];
         $sedes = null;
         $busqueda = null;
         $sedes = $user->sedes;
-//        $ciclo_lectivo = date('Y');
+
 
         if (isset($request['busqueda'])) {
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
         }
-//        if (isset($request['ciclo_lectivo'])) {
-            $ciclo_lectivo = $request['ciclo_lectivo']?? date('Y');
-//        }
+
+        $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
 
 //        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
@@ -106,10 +108,10 @@ class AlumnoController extends Controller
             'materia_id' => $request['materia_id'],
             'cohorte' => $request['cohorte'],
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
-            'ciclo_lectivo'=>$ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo
         ];
 
-        return view('alumno.admin', $data);
+        return view('alumno.equivalencias', $data);
     }
 
     public function vista_elegir()
@@ -141,11 +143,11 @@ class AlumnoController extends Controller
         ]);
     }
 
-    public function vista_alumnos(Request $request, $carrera_id, $ciclo_lectivo =  null)
+    public function vista_alumnos(Request $request, $carrera_id, $ciclo_lectivo = null)
     {
         $carrera = Carrera::find($carrera_id);
 
-        $ciclo_lectivo = $ciclo_lectivo?? date('Y');
+        $ciclo_lectivo = $ciclo_lectivo ?? date('Y');
 
 
         return view('alumno.alumnos', [
@@ -160,11 +162,11 @@ class AlumnoController extends Controller
         $alumno = Alumno::find($id);
 
         $carreras = $carreras = Carrera::select('carreras.*')
-        ->distinct()
-        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
-        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
-        ->where('alumnos.id', $alumno->id)
-        ->get();
+            ->distinct()
+            ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+            ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+            ->where('alumnos.id', $alumno->id)
+            ->get();
 
         if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
@@ -172,25 +174,22 @@ class AlumnoController extends Controller
             ]);
         }
 
-        $ciclo_lectivo = $ciclo_lectivo?? date('Y');
+        $ciclo_lectivo = $ciclo_lectivo ?? date('Y');
 
         $pase = true;
-        if(Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin')))
-        {
-            if(Auth::user()->id != $alumno->user_id)
-            {
+        if (Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin'))) {
+            if (Auth::user()->id != $alumno->user_id) {
                 $pase = false;
             }
         }
 
-        if($pase)
-        {
+        if ($pase) {
             return view('alumno.detail', [
-                'alumno'    =>  $alumno,
+                'alumno' => $alumno,
                 'carreras' => $carreras,
                 'ciclo_lectivo' => $ciclo_lectivo
             ]);
-        }else{
+        } else {
             return redirect()->back();
         }
     }
@@ -350,11 +349,11 @@ class AlumnoController extends Controller
     {
         $alumno = Alumno::find($id);
         $carreras = $carreras = $carreras = Carrera::select('carreras.*')
-        ->distinct()
-        ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
-        ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
-        ->where('alumnos.id', $alumno->id)
-        ->get();
+            ->distinct()
+            ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
+            ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+            ->where('alumnos.id', $alumno->id)
+            ->get();
 
         if ($alumno) {
             $data = [
