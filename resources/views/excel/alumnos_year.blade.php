@@ -10,6 +10,8 @@
 			<th scope="col">Teléfono</th>
 			<th scope="col">Regularidad</th>
 			<th scope="col">Materias</th>
+			<th scope="col">Última actualización</th>
+
 		</tr>
 	</thead>
 	<tbody>
@@ -25,6 +27,7 @@
 					| {{ $proceso->materia->nombre }} 
 				@endforeach
 			</td>
+			<td>{{ $alumno->updated_at->format('d-m-Y') }}</td>
 		</tr>
 		@endforeach
 		<tr></tr>
