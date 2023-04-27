@@ -189,6 +189,7 @@ class Alumno extends Model
                   ->where('carrera_id', $carrera_id)
                   ->where('ciclo_lectivo', $ciclo_lectivo);
         })
+        ->where('aprobado',true)
         ->orderBy('alumnos.apellidos','asc')
         ->get();
     }
