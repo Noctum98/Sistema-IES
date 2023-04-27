@@ -377,7 +377,14 @@ class UserController extends Controller
                 {
                     $user = $user_exists;
                 }else{
-                    return redirect()->back()->with(['alert_danger' => 'Ya existe un usuario con este email o nombre de usuario']);
+                    $alumno_verification = Alumno::where('user_id',$user_exists->id)->first();
+
+                    if($alumno_verification)
+                    {
+                        return redirect()->back()->with(['alert_danger' => 'Ya existe un usuario con este email o nombre de usuario']);
+                    }else{
+                        $user = $user_exists;
+                    }
                 }
             } else {
                 $user = User::create($data);
