@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Alumno;
+use App\Models\Materia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class AlumnoService
 
         $alumnos = new Alumno();
 
-        if ($request['busqueda']) {
+        if ($request['busqueda'] and trim($request['busqueda']) != '' ) {
             $alumnos = $alumnos->where(function ($query) use ($request) {
                 $query->whereRaw(" CONCAT(nombres,' ',apellidos  ) like '" . $request['busqueda'] . "'")
                     ->orWhere('dni', 'LIKE', '%' . $request['busqueda'] . '%')
@@ -95,5 +96,10 @@ class AlumnoService
         }
 
         $alumno->update(['regularidad' => $regularidad]);
+    }
+
+    public function getMaterias($idAlumno)
+    {
+//        return Materia::
     }
 }

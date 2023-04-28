@@ -3,12 +3,14 @@
 use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
+use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
+use App\Models\Equivalencias;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -239,11 +241,11 @@ Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsu
 Route::prefix('alumnos')->group(function () {
     // Vistas
     Route::get('/{busqueda?}', [AlumnoController::class, 'vista_admin'])->name('alumno.admin');
-    Route::get('/equivalencias/{busqueda?}', [AlumnoController::class, 'vista_equivalencias'])->name('alumno.equivalencias');
     Route::post('/{ciclo_lectivo?}', [AlumnoController::class, 'vista_admin'])->name('alumno.adminp');
     Route::get('agregar/{id}', [AlumnoController::class, 'vista_crear'])->name('alumno.crear');
     Route::get('carrera/elegir', [AlumnoController::class, 'vista_elegir'])->name('alumno.elegir');
     Route::get('editar/{id}', [AlumnoController::class, 'vista_editar'])->name('alumno.editar');
+    Route::get('equivalencias/alumno/{busqueda?}', [AlumnoController::class, 'vista_equivalencias'])->name('alumno.equivalencias');
     Route::get('carrera/{carrera_id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_alumnos'])->name(
         'alumno.carrera'
     );
@@ -265,6 +267,11 @@ Route::prefix('alumno/carrera')->group(function () {
     Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
         'alumnoCarrera.year'
     );
+});
+Route::prefix('equivalencias')->group(function () {
+
+    Route::get('create/{id}', [EquivalenciasController::class, 'create'])->name('equivalencias.create');
+    Route::post('/', [EquivalenciasController::class, 'store'])->name('equivalencias_store');
 });
 
 // Rutas de preinscripciones
