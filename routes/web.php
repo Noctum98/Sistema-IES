@@ -3,12 +3,14 @@
 use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
+use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
+use App\Models\Equivalencias;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -263,6 +265,11 @@ Route::prefix('alumno/carrera')->group(function () {
     Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
         'alumnoCarrera.year'
     );
+});
+Route::prefix('equivalencias')->group(function () {
+
+    Route::get('create/{id}', [EquivalenciasController::class, 'create'])->name('equivalencias.create');
+    Route::post('/', [EquivalenciasController::class, 'store'])->name('equivalencias_store');
 });
 
 // Rutas de preinscripciones

@@ -93,8 +93,8 @@
             @elseif(!empty($alumnos))
                 @if(count($alumnos) > 0)
                     <br>
-                    <a id="descargar_busqueda" class="btn btn-sm btn-success"><i class="fas fa-download"></i>Descargar
-                        Alumnos</a>
+                    {{--                    <a id="descargar_busqueda" class="btn btn-sm btn-success"><i class="fas fa-download"></i>Descargar--}}
+                    {{--                        Alumnos</a>--}}
                     <table class="table mt-4">
                         <thead class="thead-dark">
                         <tr>
@@ -113,12 +113,44 @@
                                 <td>{{ $alumno->email }}</td>
                                 <td>{{ $alumno->cohorte ?? '-' }}</td>
                                 <td>
-                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
-                                       class="btn btn-sm btn-secondary">
-                                        Ver datos
-                                    </a>
+{{--                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"--}}
+{{--                                       class="btn btn-sm btn-secondary">--}}
+{{--                                        Agregar Equivalencia--}}
+{{--                                    </a>--}}
+                                    <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#equivalenciasModal{{$alumno->id}}">
+                                        Agregar Equivalencia
+                                    </button>
+                                    @include('alumno.modals.admin_equivalencias')
                                 </td>
                             </tr>
+                            @if (count($alumno->getEquivalencias()) > 0)
+                                <tr>
+                                    <td></td>
+                                    <td>Materia</td>
+                                    <td>Nota</td>
+                                    <td>Fecha</td>
+                                    <td>Resolución</td>
+                                </tr>
+                                @foreach ($alumno->getEquivalencias() as $equivalencia)
+                                    <tr>
+                                        <td>*</td>
+                                        <td>{{$equivalencia->materia_id}}</td>
+                                        <td>{{$equivalencia->nota}}</td>
+                                        <td>{{$equivalencia->fecha}}</td>
+                                        <td>{{$equivalencia->resolution}}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5">
+                                        <h6>No se encontraron equivalencias para
+                                            {{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}
+                                        </h6>
+                                    </td>
+
+                                </tr>
+
+                            @endif
                         @endforeach
                         </tbody>
                     </table>

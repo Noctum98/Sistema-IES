@@ -184,7 +184,7 @@
 										@if($ciclo_lectivo == date('Y'))
 										<th scope="col" class="text-center">Verificado</th>
 										@endif
-										<th scope="col">Accion</th>
+										<th scope="col">Acción</th>
 									</tr>
 								</thead>
 								<tbody>

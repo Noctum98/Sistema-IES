@@ -9,5 +9,5 @@ class Equivalencias extends Model
 {
     use HasFactory;
     protected $table = 'equivalencias';
-    protected $fillable = ['alumno_id', 'materia_id', 'nota', 'fecha', 'resolution'];
+    protected $fillable = ['alumno_id', 'materia_id', 'nota', 'fecha', 'resolution', 'user_id'];
 }

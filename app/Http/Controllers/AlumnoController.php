@@ -88,7 +88,7 @@ class AlumnoController extends Controller
         $sedes = $user->sedes;
 
 
-        if (isset($request['busqueda'])) {
+        if (isset($request['busqueda']) && $request['busqueda'] !='') {
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
         }
