@@ -14,7 +14,7 @@ class AddUnicaToComisionesTable extends Migration
     public function up()
     {
         Schema::table('comisiones', function (Blueprint $table) {
-//            $table->boolean('unica')->default(0)->after('año');
+            $table->boolean('unica')->default(0)->after('año');
         });
     }
 
