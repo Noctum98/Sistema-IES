@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <label for="materias">Materias</label>
-                        <select name="materia_id" id="materia_id" class="form-select materias">
+                        <select name="materia_id" id="materia_id" required class="form-select materias">
 
                         </select>
                     </div>

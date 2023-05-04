@@ -41,18 +41,16 @@
             <div class="col-md-5">
                 <form method="GET" action="{{ route('alumno.equivalencias', ['ciclo_lectivo'=> $ciclo_lectivo]) }}"
                       id="buscador-alumnos-equivalencias">
-                    <div class="row form-inline">
+                    <div class="form-inline">
                         <div class="input-group">
-                            {{-- <div class="input-group-append">--}}
-                            {{-- </div>--}}
-                            <label for="busqueda">
-                                <input type="text" id="busqueda" name="busqueda" class="form-control"
-                                       placeholder="Buscar alumno" aria-describedby="inputGroupPrepend2"
-                                       value="{{ $busqueda && $busqueda != 1 ?? '' }}">
-                                <button class="input-group-text" id="inputGroupPrepend2" type="submit">
-                                    <i class="fa fa-search text-info"></i>
-                                </button>
-                            </label>
+
+                            <label for="busqueda"></label>
+                            <input type="text" id="busqueda" name="busqueda" class="form-control"
+                                   placeholder="Buscar alumno" aria-describedby="inputGroupPrepend2"
+                                   value="{{ $busqueda && $busqueda != 1 ?$busqueda: '' }}">
+                            <button class="input-group-text" id="inputGroupPrepend2" type="submit">
+                                <i class="fa fa-search text-info"></i>
+                            </button>
                         </div>
                     </div>
                     @include('alumno.modals.filtros_equivalencias')
@@ -63,39 +61,13 @@
         </div>
         <div class="col-md-12">
             @if(!$busqueda)
-                <table class="table mt-4 col-md-12">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Resolución</th>
-                        <th scope="col">Sede</th>
-                        <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($sedes as $sede)
-                        @foreach($sede->carreras as $carrera)
-                            <tr>
-                                <td>{{ $carrera->nombre.' ('.ucwords($carrera->turno).')' }}</td>
-                                <td>{{ $carrera->resolucion }}</td>
-                                <td>{{ $carrera->sede->nombre }}</td>
-                                <td>
-                                    <a href="{{ route('alumno.carrera',['carrera_id'=>$carrera->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
-                                       class="btn btn-sm btn-primary">
-                                        Ver
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endforeach
-                    </tbody>
-                </table>
+                <div>Por favor número de documento o apellido del alumno</div>
             @elseif(!empty($alumnos))
                 @if(count($alumnos) > 0)
-                    <br>
+
                     {{--                    <a id="descargar_busqueda" class="btn btn-sm btn-success"><i class="fas fa-download"></i>Descargar--}}
                     {{--                        Alumnos</a>--}}
-                    <table class="table mt-4">
+                    <table class="table mt-4 ">
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col">Nombre</th>
@@ -105,41 +77,50 @@
                             <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                         </tr>
                         </thead>
-                        <tbody>
+
                         @foreach ($alumnos as $alumno)
+                            <tbody class="table-striped">
                             <tr>
                                 <td>{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
                                 <td>{{ $alumno->dni }}</td>
                                 <td>{{ $alumno->email }}</td>
                                 <td>{{ $alumno->cohorte ?? '-' }}</td>
                                 <td>
-{{--                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"--}}
-{{--                                       class="btn btn-sm btn-secondary">--}}
-{{--                                        Agregar Equivalencia--}}
-{{--                                    </a>--}}
-                                    <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#equivalenciasModal{{$alumno->id}}">
+                                    {{--                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"--}}
+                                    {{--                                       class="btn btn-sm btn-secondary">--}}
+                                    {{--                                        Agregar Equivalencia--}}
+                                    {{--                                    </a>--}}
+                                    <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#equivalenciasModal{{$alumno->id}}">
                                         Agregar Equivalencia
                                     </button>
                                     @include('alumno.modals.admin_equivalencias')
                                 </td>
                             </tr>
                             @if (count($alumno->getEquivalencias()) > 0)
-                                <tr>
-                                    <td></td>
+
+                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
+                                    <td colspan="4" class="text-center">Equivalencias</td>
+
+                                </tr>
+                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
+
                                     <td>Materia</td>
                                     <td>Nota</td>
                                     <td>Fecha</td>
                                     <td>Resolución</td>
                                 </tr>
                                 @foreach ($alumno->getEquivalencias() as $equivalencia)
-                                    <tr>
-                                        <td>*</td>
+                                    <tr class="table-responsive-md text-center table-bordered border-top-0 border-2 table-striped">
+
                                         <td>{{$equivalencia->materia_id}}</td>
                                         <td>{{$equivalencia->nota}}</td>
                                         <td>{{$equivalencia->fecha}}</td>
                                         <td>{{$equivalencia->resolution}}</td>
                                     </tr>
                                 @endforeach
+
+
                             @else
                                 <tr>
                                     <td colspan="5">
@@ -151,11 +132,16 @@
                                 </tr>
 
                             @endif
+                            <tr>
+                                <td colspan="4" ></td>
+                            </tr>
+                            </tbody>
                         @endforeach
-                        </tbody>
+
+
                     </table>
                 @else
-                    <br>
+                    <br/>
                     <h5>No existen coincidencias con {{$busqueda}}</h5>
                 @endif
             @endif
