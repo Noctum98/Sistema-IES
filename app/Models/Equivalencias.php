@@ -10,4 +10,16 @@ class Equivalencias extends Model
     use HasFactory;
     protected $table = 'equivalencias';
     protected $fillable = ['alumno_id', 'materia_id', 'nota', 'fecha', 'resolution', 'user_id'];
+
+    /**
+     * @return null|string
+     */
+    public function nombreMateria(): ?string
+    {
+        $materia = Materia::where([
+            'id' => $this->materia_id
+        ])->first();
+
+        return $materia->nombre;
+    }
 }
