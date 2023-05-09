@@ -36,6 +36,20 @@
                     {{ @session('alumno_notIsset') }}
                 </div>
             @endif
+            @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{session()->get('success') }}
+                </div>
+            @endif
+            @if((isset($errors)) && $errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{__($error)}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
         <div class="col-md-8 row">
             <div class="col-md-5">
@@ -113,7 +127,8 @@
                                 @foreach ($alumno->getEquivalencias() as $equivalencia)
                                     <tr class="table-responsive-md text-center table-bordered border-top-0 border-2 table-striped">
 
-                                        <td>{{$equivalencia->materia_id}}</td>
+{{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
+                                        <td>{{$equivalencia->nombreMateria()}}</td>
                                         <td>{{$equivalencia->nota}}</td>
                                         <td>{{$equivalencia->fecha}}</td>
                                         <td>{{$equivalencia->resolution}}</td>

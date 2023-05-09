@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Equivalencias;
+use App\Models\Materia;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class EquivalenciasController extends Controller
 {
@@ -42,11 +44,10 @@ class EquivalenciasController extends Controller
      *
      * @param Request $request
      * @return RedirectResponse | Response
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
-
-
         $validate = $this->validate($request, [
             'alumno_id' => ['required'],
             'materia_id' => ['required'],
@@ -55,20 +56,16 @@ class EquivalenciasController extends Controller
             'resolution' => ['required'],
         ]);
 
-
-
         $alumno = Alumno::find($request['alumno_id']);
 
         if (!$alumno) {
             $mensaje = ['error_alumno' => 'No se encontró al alumno'];
-
-            return redirect()->route('alumno.equivalencias')->with($mensaje);
+            return redirect()->route('alumno.equivalencias')->withErrors($mensaje);
         }
-        $materia = Alumno::find($request['materia_id']);
+        $materia = Materia::find($request['materia_id']);
         if (!$materia) {
             $mensaje = ['error_materia' => 'No se encontró la materia'];
-
-            return redirect()->route('alumno.equivalencias')->with($mensaje);
+            return redirect()->route('alumno.equivalencias', $alumno->dni)->withErrors($mensaje);
         }
 
         $equivalencia = Equivalencias::where([
@@ -78,19 +75,22 @@ class EquivalenciasController extends Controller
             ->first();
 
         if ($equivalencia) {
-            $mensaje = ['error_equivalencia' => 'El alumno ya tiene equivalencias en la materia'];
-            return redirect()->route('alumno.equivalencias')->with($mensaje);
+            $mensaje =  "El alumno ya tiene equivalencias en la materia: : {$materia->nombre}";
+            return redirect()->route('alumno.equivalencias', $alumno->dni)->withErrors($mensaje);
         }
         $request['user_id'] = Auth::user()->id;
         $equivalencia = Equivalencias::create($request->all());
 
         if (!$equivalencia) {
-            $mensaje = ['error_equivalencia' => 'Hubo un error inesperado al crear la equivalencia. Por favor compruebe los datos ingresados'];
-            return redirect()->route('alumno.equivalencias')->with($mensaje);
+            $mensaje = 'Hubo un error inesperado al crear la equivalencia. Por favor compruebe los datos ingresados';
+            return redirect()->route('alumno.equivalencias', $alumno->dni)->withErrors($mensaje);
         }
+        session()->flash(
+            'success',
+            "Se han añadido la equivalencia al alumno correctamente: {$materia->nombre}"
+        );
 
-
-        return redirect()->route('alumno.equivalencias', $alumno->dni)->with(['equivalencias_success' => 'Se han añadido la equivalencia al alumno correctamente']);
+        return redirect()->route('alumno.equivalencias', $alumno->dni)->withSuccess("Se han añadido la equivalencia al alumno correctamente: {$materia->nombre}");
     }
 
     /**
