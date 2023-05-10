@@ -627,6 +627,7 @@ Route::get('/prueba-post-size', function () {
                 ]);
 
                 echo $alumno->nombres.' '.$alumno->apellidos.'('.$alumno->dni.'): '.$carrera->nombre.'('.$carrera->turno.') '.$carrera->resolucion.' | ';
+                Log::info($alumno->nombres.' '.$alumno->apellidos.'('.$alumno->dni.'): '.$carrera->nombre.'('.$carrera->turno.') '.$carrera->resolucion);
             }
         }
     }
