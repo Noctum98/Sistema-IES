@@ -135,6 +135,6 @@ class EquivalenciasController extends Controller
      */
     public function destroy(Equivalencias $equivalencias)
     {
-        //
+
     }
 }

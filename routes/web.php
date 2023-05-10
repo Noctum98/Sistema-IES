@@ -10,7 +10,6 @@ use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
-use App\Models\Equivalencias;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -270,6 +269,7 @@ Route::prefix('equivalencias')->group(function () {
 
     Route::get('create/{id}', [EquivalenciasController::class, 'create'])->name('equivalencias.create');
     Route::post('/', [EquivalenciasController::class, 'store'])->name('equivalencias_store');
+    Route::get('borrar/{id}', [EquivalenciasController::class, 'destroy'])->name('equivalencias.borrar');
 });
 
 // Rutas de preinscripciones

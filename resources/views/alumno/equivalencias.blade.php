@@ -123,18 +123,32 @@
                                     <td>Nota</td>
                                     <td>Fecha</td>
                                     <td>Resolución</td>
+                                    <td><i class="fa fa-cogs"></i></td>
                                 </tr>
                                 @foreach ($alumno->getEquivalencias() as $equivalencia)
                                     <tr class="table-responsive-md text-center table-bordered border-top-0 border-2 table-striped">
 
-{{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
+                                        {{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
                                         <td>{{$equivalencia->nombreMateria()}}</td>
                                         <td>{{$equivalencia->nota}}</td>
                                         <td>{{$equivalencia->fecha}}</td>
                                         <td>{{$equivalencia->resolution}}</td>
+                                        <td>
+                                            <ul class="d-inline-block">
+{{--                                                <a href="{{route('proceso.listadoCargo', ['materia_id' => $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id])}}"--}}
+{{--                                                   class="btn btn-sm d-inline-block"--}}
+{{--                                                >--}}
+{{--                                                    <i class="fa fa-external-link-alt"></i> Ver calificaciones--}}
+{{--                                                </a>--}}
+{{--                                                <a href="{{route('proceso.listadoCargo', ['materia_id' => $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id])}}"--}}
+{{--                                                   class="btn btn-sm d-inline-block"--}}
+{{--                                                >--}}
+{{--                                                    <i class="fa fa-external-link-alt"></i> Ver calificaciones--}}
+{{--                                                </a>--}}
+                                            </ul>
+                                        </td>
                                     </tr>
                                 @endforeach
-
 
                             @else
                                 <tr>
@@ -148,7 +162,7 @@
 
                             @endif
                             <tr>
-                                <td colspan="4" ></td>
+                                <td colspan="4"></td>
                             </tr>
                             </tbody>
                         @endforeach
