@@ -595,7 +595,6 @@ Route::prefix('mail')->group(function () {
 
 Route::resource('etapa_campo',EtapaCampoController::class);
 Route::prefix('etapa_campo')->group(function (){
-    Route::get('/{materia_id}/{ciclo_lectivo}/{comision_id}',[EtapaCampoController::class,'index'])->name('etapa_campo.index');
     Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}',[EtapaCampoController::class,'habilitar']);
 });
 
