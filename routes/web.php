@@ -40,6 +40,8 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use App\Models\ActaVolante;
+use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Calificacion;
 use App\Models\Comision;
@@ -602,42 +604,30 @@ Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
-    $archivo = fopen('backups/procesos.csv', 'r');
-    $datos = [];
-    while ($fila = fgetcsv($archivo)) {
-        $datos[] = $fila;
-    }
-    fclose($archivo);
-    $contador = 0;
+    $alumnos = Alumno::all();
 
-    foreach($datos as $key => $proceso)
+    foreach($alumnos as $alumno)
     {
-        $proceso_id = $proceso[0];
-        $proceso_exist = Proceso::where('id',$proceso_id)->withTrashed()->first();
-        if(!$proceso_exist)
+        foreach($alumno->procesos_actuales as $proceso)
         {
-            DB::table('procesos')->insert([
-                'id' => $proceso_id,
-                'materia_id' => $proceso[1] == "" ? null : $proceso[1],
-                'alumno_id' => $proceso[2] == "" ? null : $proceso[2],
-                'estado_id' => $proceso[3] == "" ? null : $proceso[3],
-                'operador_id' => $proceso[4] == "" ? null : $proceso[4],
-                'cierre' => $proceso[5] == "" ? null : $proceso[5],
-                'nota_global' => $proceso[6] == "" ? null : $proceso[6],
-                'final_asistencia' => $proceso[7] == "" ? null : $proceso[7],
-                'final_trabajos' => $proceso[8] == "" ? null : $proceso[8],
-                'porcentaje_final_trabajos' => $proceso[9] == "" ? null : $proceso[9],
-                'final_parciales' => $proceso[10] == "" ? null : $proceso[10],
-                'final_calificaciones' => $proceso[11] == "" ? null : $proceso[11],
-                'nota_recuperatorio' => $proceso[12] == "" ? null : $proceso[12],
-                'observacion_global' => $proceso[13] == "" ? null : $proceso[13],
-                'created_at' => $proceso[14] == "" ? null : $proceso[14],
-                'updated_at' => $proceso[15] == "" ? null : $proceso[15],
-                'ciclo_lectivo' => $proceso[16] == "" ? null : $proceso[16]
-            ]);
-            $contador++;
-            Log::info("$contador - Proceso $proceso_id: Creado");
-            echo "$contador - Proceso $proceso_id: Creado";
+            $carrera = $proceso->materia->carrera;
+            $alumno_carrera = AlumnoCarrera::where([
+                'alumno_id' => $alumno->id,
+                'carrera_id' => $carrera->id,
+                'ciclo_lectivo' => date('Y')
+            ])->first();
+
+            if(!$alumno_carrera)
+            {
+                $alumno_carrera = AlumnoCarrera::create([
+                    'alumno_id' => $alumno->id,
+                    'carrera_id' => $carrera->id,
+                    'año'   => $proceso->materia->año,
+                    'ciclo_lectivo' => date('Y')
+                ]);
+
+                echo $alumno->nombres.' '.$alumno->apellidos.'('.$alumno->dni.'): '.$carrera->nombre.'('.$carrera->turno.') '.$carrera->resolucion.' | ';
+            }
         }
     }
 });
