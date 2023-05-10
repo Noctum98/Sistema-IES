@@ -10,7 +10,6 @@ use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
-use App\Models\Equivalencias;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -34,18 +33,14 @@ use App\Http\Controllers\LibrosController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
+use App\Http\Controllers\Proceso\EtapaCampoController;
 use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
-use App\Models\ActaVolante;
 use App\Models\Alumno;
-use Illuminate\Support\Facades\Artisan;
-use App\Models\Calificacion;
+use App\Models\AlumnoCarrera;
 use App\Models\Comision;
-use App\Models\Materia;
-use App\Models\Proceso;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /*
@@ -333,9 +328,7 @@ Route::prefix('proceso')->group(function () {
         'proceso.listado'
     );
 
-    Route::get(
-        'listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
-        [ProcesoController::class, 'vista_listadoCargo']
+    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo']
     )->name(
         'proceso.listadoCargo'
     );
@@ -419,9 +412,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/carrera/admin/{id}/{instancia_id}', [InstanciaController::class, 'vista_mesas'])->name('mesa.mesas');
     Route::get('/cronograma/{instancia_id}', [MesaController::class, 'vistaCronograma'])->name('mesa.cronograma');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
-    Route::get(
-        '/inscriptos/{instancia_id}/{materia_id}/{comision_id?}',
-        [MesaController::class, 'vista_inscripciones']
+    Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones']
     )->name(
         'mesa.inscriptos'
     );
@@ -449,9 +440,7 @@ Route::prefix('mesas')->group(function () {
 
 
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}', [AlumnoMesaController::class, 'email_session'])->name('edit.mesa');
-    Route::get(
-        '/descargar_excel/{id}/{instancia_id}/{llamado?}',
-        [InstanciaController::class, 'descargar_excel']
+    Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel']
     )->name('mesa.descargar');
     Route::get('/descargar_tribunal/{id}/{instancia_id}', [InstanciaController::class, 'descargar_tribunal'])->name(
         'mesa.tribunal'
@@ -476,6 +465,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
     Route::put('/abrirActaVolante/{mesa_id}', [MesaController::class, 'abrirProfesor'])->name('mesa.abrir_acta');
+
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
@@ -491,7 +481,7 @@ Route::prefix('matriculacion')->group(function () {
         'alumno.delete'
     );
 
-    Route::delete('/deleteAlumno/{id}/{carrera_id}',[MatriculacionController::class,'deleteInscripcion'])->name('matriculacion.delete');
+    Route::delete('/deleteAlumno/{id}/{carrera_id}', [MatriculacionController::class, 'deleteInscripcion'])->name('matriculacion.delete');
 
     Route::get('/', [MatriculacionController::class, 'index'])->name('matriculacion.index');
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
@@ -602,12 +592,40 @@ Route::prefix('mail')->group(function () {
     Route::post('/mail/pre/send/{carrera_id}', [MailController::class, 'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
+Route::resource('etapa_campo', EtapaCampoController::class);
+Route::prefix('etapa_campo')->group(function () {
+    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}', [EtapaCampoController::class, 'habilitar']);
+});
+
 Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
+    $alumnos = Alumno::all();
     $comisiones = Comision::where('nombre', 'Única')->get();
 
+    foreach ($alumnos as $alumno) {
+        foreach ($alumno->procesos_actuales as $proceso) {
+            $carrera = $proceso->materia->carrera;
+            $alumno_carrera = AlumnoCarrera::where([
+                'alumno_id' => $alumno->id,
+                'carrera_id' => $carrera->id,
+                'ciclo_lectivo' => date('Y')
+            ])->first();
+
+            if (!$alumno_carrera) {
+                $alumno_carrera = AlumnoCarrera::create([
+                    'alumno_id' => $alumno->id,
+                    'carrera_id' => $carrera->id,
+                    'año' => $proceso->materia->año,
+                    'ciclo_lectivo' => date('Y')
+                ]);
+
+                echo $alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion . ' | ';
+                Log::info($alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion);
+            }
+        }
+    }
     foreach ($comisiones as $comision) {
         foreach ($comision->procesos as $proceso) {
             if (!$comision->hasAlumno($proceso->alumno_id)) {
@@ -615,4 +633,8 @@ Route::get('/prueba-post-size', function () {
             }
         }
     }
+
 });
+
+
+
