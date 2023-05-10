@@ -12,6 +12,13 @@
         vertical-align: center;
     }
 </style>
+@if (session('error'))
+    <div class="alert alert-danger">
+        <ul>
+            <li>{{ session('error') }}</li>
+        </ul>
+    </div>
+@endif
 <div class="container" id="container-scroll">
     <a href="{{url()->previous()}}">
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
@@ -65,6 +72,9 @@
                     @endforeach
                     @endif
                     <th> <a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>
+                    @if($materia->etapa_campo)
+                    <th>Etapa Campo</th>
+                    @endif
                     <th>
                         Estado
                     </th>
@@ -112,6 +122,12 @@
                         {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
                         </span>
                     </td>
+                    @if($materia->etapa_campo)
+                    <td>
+                    <button class="btn btn-sm btn-info modals-cargar" data-bs-toggle="modal" data-bs-target="#etapaCampo" id="{{$proceso->id}}" data-campo="{{$proceso->etapaCampo ? $proceso->etapaCampo->id : null }}" data-habilitado="{{$proceso->habilitado_campo}}">Habilitar/Cargar</button>
+
+                    </td>
+                    @endif
                     <td class="col-md-3">
 
                         <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1 || $materia->cierre) disabled @endif >
@@ -156,6 +172,8 @@
             @else
             'No se encontraron procesos'
             @endif
+            @include('proceso.modals.cargar_etapa_campo');
+
     </div>
     @endsection
     @section('scripts')
@@ -164,4 +182,6 @@
     <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
     <script src="{{ asset('js/proceso/calcular_porcentaje.js') }}"></script>
     <script src="{{ asset('js/proceso/ver_tps.js') }}"></script>
+    <script src="{{ asset('js/etapa_campo/cargar.js') }}"></script>
+
     @endsection

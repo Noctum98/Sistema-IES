@@ -101,6 +101,7 @@
 					<br>
 					Año: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id, $ciclo_lectivo)->año }}
 					<br>
+					Ciclo: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id, $ciclo_lectivo)->ciclo_lectivo }}
 
 					<div class="row">
 						@if(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin'))
