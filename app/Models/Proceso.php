@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Proceso\EtapaCampo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Proceso extends Model
@@ -22,7 +24,8 @@ class Proceso extends Model
         'nota_recuperatorio',
         'operador_id',
         'cargo_id',
-        'ciclo_lectivo'
+        'ciclo_lectivo',
+        'habilitado_campo'
     ];
 
     public function materia(): BelongsTo
@@ -43,6 +46,11 @@ class Proceso extends Model
     public function estado()
     {
         return $this->belongsTo(Estados::class,'estado_id');
+    }
+
+    public function etapaCampo(): HasOne
+    {
+        return $this->hasOne(EtapaCampo::class,'proceso_id');
     }
 
     public function procesoCalificacion($calificacion_id)

@@ -75,6 +75,13 @@
 					</select>
 				</div>
 				<div class="form-group">
+					<label for="etapa_campo">Etapa de Campo</label>
+					<select name="etapa_campo" id="etapa_campo" class="form-select">
+						<option value="1" {{ $materia->etapa_campo ? 'selected' : '' }}>Habilitado</option>
+						<option value="0" {{ !$materia->etapa_campo ? 'selected' : '' }}>Deshabilitado</option>
+					</select>
+				</div>
+				<div class="form-group">
 					<input type="submit" class="btn btn-success" value="Editar materia">
 				</div>
 			</form>
