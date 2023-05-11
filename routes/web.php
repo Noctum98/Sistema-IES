@@ -267,6 +267,8 @@ Route::prefix('equivalencias')->group(function () {
 
     Route::get('create/{id}', [EquivalenciasController::class, 'create'])->name('equivalencias.create');
     Route::post('/', [EquivalenciasController::class, 'store'])->name('equivalencias_store');
+    Route::post('/update/{equivalencia}', [EquivalenciasController::class, 'update'])->name('equivalencias.update');
+    Route::get('borrar/{equivalencia}', [EquivalenciasController::class, 'destroy'])->name('equivalencias.borrar');
 });
 
 // Rutas de preinscripciones

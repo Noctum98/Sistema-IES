@@ -80,7 +80,7 @@ class ComisionController extends Controller
         $comision = Comision::create($request->all());
         $comision->materias()->attach($materias);
 
-        
+
         if($request['unica'] == 1)
         {
             $this->comisionService->storeUnicas($comision,$materias);

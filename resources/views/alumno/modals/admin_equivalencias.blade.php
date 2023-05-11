@@ -34,7 +34,7 @@
                         <input type="number" name="nota" class="form-control" required/>
                     </div>
                     <div class="form-group">
-                        <label for="resolution">Resolución</label>
+                        <label for="resolution">N° Resolución</label>
                         <input type="text" name="resolution" class="form-control" required/>
                     </div>
                     <div class="form-group">
