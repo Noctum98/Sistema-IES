@@ -100,15 +100,18 @@
                                 <td>{{ $alumno->email }}</td>
                                 <td>{{ $alumno->cohorte ?? '-' }}</td>
                                 <td>
-                                    {{--                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"--}}
-                                    {{--                                       class="btn btn-sm btn-secondary">--}}
-                                    {{--                                        Agregar Equivalencia--}}
-                                    {{--                                    </a>--}}
-                                    <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#equivalenciasModal{{$alumno->id}}">
-                                        Agregar Equivalencia
-                                    </button>
-                                    @include('alumno.modals.admin_equivalencias')
+                                    <div class="btn-group" role="group" aria-label="Botones de acción">
+                                        <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
+                                           class="btn btn-sm btn-link ">
+                                            <i class="fa fa-external-link-alt"></i>
+                                            Ver datos alumno
+                                        </a>
+                                        <button type="button" class="ms-2 btn btn-sm btn-info" data-bs-toggle="modal"
+                                                data-bs-target="#equivalenciasModal{{$alumno->id}}">
+                                            Agregar Equivalencia
+                                        </button>
+                                        @include('alumno.modals.admin_equivalencias')
+                                    </div>
                                 </td>
                             </tr>
                             @if (count($alumno->getEquivalencias()) > 0)
@@ -122,7 +125,7 @@
                                     <td>Materia</td>
                                     <td>Nota</td>
                                     <td>Fecha</td>
-                                    <td>Resolución</td>
+                                    <td>N° Resolución</td>
                                     <td><i class="fa fa-cogs"></i></td>
                                 </tr>
                                 @foreach ($alumno->getEquivalencias() as $equivalencia)
@@ -134,18 +137,24 @@
                                         <td>{{$equivalencia->fecha}}</td>
                                         <td>{{$equivalencia->resolution}}</td>
                                         <td>
-                                            <ul class="d-inline-block">
-{{--                                                <a href="{{route('proceso.listadoCargo', ['materia_id' => $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id])}}"--}}
-{{--                                                   class="btn btn-sm d-inline-block"--}}
-{{--                                                >--}}
-{{--                                                    <i class="fa fa-external-link-alt"></i> Ver calificaciones--}}
-{{--                                                </a>--}}
-{{--                                                <a href="{{route('proceso.listadoCargo', ['materia_id' => $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id])}}"--}}
-{{--                                                   class="btn btn-sm d-inline-block"--}}
-{{--                                                >--}}
-{{--                                                    <i class="fa fa-external-link-alt"></i> Ver calificaciones--}}
-{{--                                                </a>--}}
-                                            </ul>
+                                            <div class="btn-group" role="group" aria-label="Botones de acción">
+                                                <a href="{{route('equivalencias.borrar', ['equivalencia' => $equivalencia])}}"
+                                                   class="btn btn-sm btn-danger ps-1"
+                                                >
+                                                    <i class="fa fa-trash"></i> Borrar
+                                                </a>
+
+
+                                                <a href="!#" data-bs-toggle="modal"
+                                                   class="btn btn-sm btn-outline-success ms-1"
+                                                   data-bs-target="#edit{{$equivalencia->id}}"
+                                                >
+                                                    <i class="fa fa-edit"></i> Editar
+                                                </a>
+                                                @include('alumno.modals.editar_equivalencias')
+                                            </div>
+
+
                                         </td>
                                     </tr>
                                 @endforeach

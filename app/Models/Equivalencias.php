@@ -23,4 +23,12 @@ class Equivalencias extends Model
 
         return $materia->nombre;
     }
+
+    public function getAlumno(): ?Alumno
+    {
+        return Alumno::where([
+            'id' => $this->alumno_id
+        ])->first();
+
+    }
 }
