@@ -109,7 +109,6 @@ class Materia extends Model
 
         foreach ($cargos_modulo as $cm) {
             $total_modulo = $cm->ponderacion + $total_modulo;
-
         }
 
         return $total_modulo;

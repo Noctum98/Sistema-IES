@@ -42,16 +42,31 @@
             <div class="col-8">
                 <h4 class="text-info">
                     Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
+                    <br/>
+                    <small style="font-size: 0.6em">
+                        <a href="{{route('modulos.ver', ['materia' => $materia->id])}}">
+                            (Ponderación total: <span class="
+				@if($materia->totalModulo() === 100)
+				text-success
+				@else
+				text-warning
+					@endif
+					"id="cargo-u-materia-{{$materia->id}}">{{$materia->totalModulo()}}</span>)
+                        </a>
+                        @if(@session('success'))
+                            <span class="text-warning">{{ @session('success') }}</span>
+                        @endif
+                    </small>
                 </h4>
                 @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
                     <h6>
                         Cargos:
                         @foreach($materia->cargos()->get() as $cargo)
                             <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
-                               class="btn btn-info" title="Ver proceso cargo">
+                               class="btn btn-sm btn-info" title="Ver proceso cargo">
                                 {{$cargo->nombre}}
                                 @if(Session::has('admin'))
-                                    {{$cargo->id}}
+                                    <small>({{$cargo->id}})</small>
                                 @endif
                             </a>
                         @endforeach

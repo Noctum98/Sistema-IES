@@ -17,16 +17,13 @@
         </h2>
         @include('modulos.modals.agregar_cargo')
         <h3>
-
             Ponderación total: <span class="
 				@if($modulo->totalModulo() === 100)
 				text-success
 				@else
 				text-warning
 					@endif
-					"
-                                     id="cargo-u-materia-{{$modulo->id}}">{{$modulo->totalModulo()}}</span>
-
+					"id="cargo-u-materia-{{$modulo->id}}">{{$modulo->totalModulo()}}</span>
         </h3>
         <hr>
         {{--	Crear la lógica de esta acción separando el concepto de materia de modulo - cargo --}}
@@ -50,7 +47,7 @@
                     @endif
                     <th scope="col">Cargo</th>
                     <th scope="col">Ponderación</th>
-                        <th scope="col"><small>TFI Responsable</small></th>
+                    <th scope="col"><small>TFI Responsable</small></th>
                     <th scope="col">Profesor</th>
                     <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>
                     </th>
@@ -96,14 +93,17 @@
                         <td class="text-center">
                             <i class="fa fa-spinner fa-spin" style="display: none"
                                id="loader-tfi-{{$cargo->relacionCargoModulo($modulo->id)->id}}"></i>
-                            <select class="selection-tfi change-state" name="icon" id="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
-                            data-loader="{{$cargo->relacionCargoModulo($modulo->id)->id}}">
-                                <option value="1" data-icon="fa-check" data-state="text-success" @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi === 1) selected @endif > </option>
-                                <option value="0" data-icon="fa-times" data-state="text-danger" @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi !== 1 ) selected @endif> </option>
+                            <select class="selection-tfi change-state" name="icon"
+                                    id="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
+                                    data-loader="{{$cargo->relacionCargoModulo($modulo->id)->id}}">
+                                <option value="1" data-icon="fa-check" data-state="text-success"
+                                        @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi === 1) selected @endif ></option>
+                                <option value="0" data-icon="fa-times" data-state="text-danger"
+                                        @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi !== 1 ) selected @endif></option>
                             </select>
 
 
-{{--                            <i class="{{$cargo->carga_tfi?'fas fa-check text-success':'fas fa-times text-danger'}}"></i>--}}
+                            {{--                            <i class="{{$cargo->carga_tfi?'fas fa-check text-success':'fas fa-times text-danger'}}"></i>--}}
                         </td>
                         <td>
                             @foreach ($cargo->users as $usuario)
@@ -127,9 +127,9 @@
     <script src="{{ asset('js/cargos/pondera.js') }}"></script>
     <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            function formatText (icon) {
-                return $('<span><i class="fas ' + $(icon.element).data('icon')+' ' + $(icon.element).data('state') +'"></i> ' + icon.text + '</span>');
+        $(document).ready(function () {
+            function formatText(icon) {
+                return $('<span><i class="fas ' + $(icon.element).data('icon') + ' ' + $(icon.element).data('state') + '"></i> ' + icon.text + '</span>');
             }
 
             $('.selection-tfi').select2({
