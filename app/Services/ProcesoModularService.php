@@ -691,6 +691,13 @@ class ProcesoModularService
     {
         $materia->cargos();
 
+        if($materia->totalModulo() < 100){
+            session()->flash(
+                'success',
+                "El módulo no tiene completa la ponderación"
+            );
+        }
+
         $total_modulo = 0;
         foreach ($materia->cargos()->get() as $cargo) {
             $total_cargo = $this->getTotalCargo($cargo, $materia, $proceso);
@@ -807,6 +814,12 @@ class ProcesoModularService
     {
         $calificacionService = new CalificacionService();
         $weighing = $cargo->ponderacion($materia->id);
+
+        if(!$weighing){
+            return 0;
+        }
+
+
         // Busco solo los parciales
         $calificaciones_parcial = $calificacionService->calificacionesInCargos([$cargo->id],
             $proceso->ciclo_lectivo,
