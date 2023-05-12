@@ -76,7 +76,7 @@
                     <th>Etapa Campo</th>
                     @endif
                     <th>
-                        Estado
+                        Condición
                     </th>
                     <th>Nota Global</th>
 
