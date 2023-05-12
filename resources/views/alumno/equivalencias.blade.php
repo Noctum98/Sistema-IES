@@ -122,7 +122,7 @@
                                 </tr>
                                 <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
 
-                                    <td>Materia</td>
+                                    <td>Materia/<br/><small>(Carrera)</small></td>
                                     <td>Nota</td>
                                     <td>Fecha</td>
                                     <td>N° Resolución</td>
@@ -138,13 +138,12 @@
                                         <td>{{$equivalencia->resolution}}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Botones de acción">
-                                                <a href="{{route('equivalencias.borrar', ['equivalencia' => $equivalencia])}}"
+                                                <a data-bs-toggle="modal" data-bs-target="#eliminarEquivalenciaModal{{$equivalencia->id}}"
                                                    class="btn btn-sm btn-danger ps-1"
                                                 >
                                                     <i class="fa fa-trash"></i> Borrar
                                                 </a>
-
-
+                                                @include('alumno.modals.eliminar_equivalencias')
                                                 <a href="!#" data-bs-toggle="modal"
                                                    class="btn btn-sm btn-outline-success ms-1"
                                                    data-bs-target="#edit{{$equivalencia->id}}"
