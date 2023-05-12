@@ -98,6 +98,11 @@ class Alumno extends Model
         return $this->hasMany(Proceso::class)->where('ciclo_lectivo', $date)->orderBy('id')->get();
     }
 
+    public function lastProceso()
+    {
+        return $this->hasMany(Proceso::class)->latest();
+    }
+
     public function asistencias()
     {
         return $this->hasMany('App\Models\AlumnoAsistencia');
@@ -135,15 +140,7 @@ class Alumno extends Model
         ])->latest()->first();
     }
 
-    public function proceso($carrera_id)
-    {
-        $proceso = Proceso::where('alumno_id', $this->id)
-            ->whereHas('materia', function ($query) use ($carrera_id) {
-                $query->where('carrera_id', $carrera_id);
-            })->first();
-
-        return $proceso;
-    }
+   
 
     public function hasProceso($materia_id)
     {
@@ -214,6 +211,8 @@ class Alumno extends Model
         return $this->belongsToMany(Materia::class,'materias')
             ->withPivot('id','carrera_id');
     }
+
+
 
 
 }

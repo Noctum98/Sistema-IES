@@ -27,7 +27,7 @@
 					| {{ $proceso->materia->nombre }} 
 				@endforeach
 			</td>
-			<td>{{ $alumno->updated_at->format('d-m-Y') }}</td>
+			<td>{{ $alumno->lastProceso->first()->created_at }}</td>
 		</tr>
 		@endforeach
 		<tr></tr>
