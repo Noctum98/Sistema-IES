@@ -103,13 +103,13 @@
                         <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'badge-success' : 'badge-danger' }}">
                             {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
                         </span>
-                       
+
 
                         @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                         <span class="badge {{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'badge-success' : 'badge-danger' }}">
                             R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
                         </span>
-                        
+
                         @endif
                         @else
                         -
@@ -131,7 +131,7 @@
                     <td class="col-md-3">
 
                         <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" @if($proceso->cierre == 1 || $materia->cierre) disabled @endif >
-                            <option value="">Seleccione estado</option>
+                            <option value="">Seleccione condición</option>
                             @foreach($estados as $estado)
                             @if($estado->id == $proceso->estado_id)
                             <option value="{{$estado->id}}" selected>{{$estado->nombre}}</option>

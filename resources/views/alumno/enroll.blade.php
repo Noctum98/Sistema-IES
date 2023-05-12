@@ -18,7 +18,7 @@
 				    <tr>
 				      <th scope="col">Nombre</th>
 				      <th scope="col">Año</th>
-				      <th scope="col">Estado</th>
+				      <th scope="col">Condición</th>
 				      <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 				    </tr>
 				  </thead>
