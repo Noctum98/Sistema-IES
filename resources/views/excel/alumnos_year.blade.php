@@ -10,7 +10,7 @@
 			<th scope="col">Teléfono</th>
 			<th scope="col">Regularidad</th>
 			<th scope="col">Materias</th>
-			<th scope="col">Última actualización</th>
+			<th scope="col">Última actualización de materias</th>
 
 		</tr>
 	</thead>
@@ -27,7 +27,7 @@
 					| {{ $proceso->materia->nombre }} 
 				@endforeach
 			</td>
-			<td>{{ $alumno->lastProceso->first()->created_at }}</td>
+			<td>{{ $alumno->lastProceso->first() ? $alumno->lastProceso->first()->created_at : 'No tiene materias asignadas' }}</td>
 		</tr>
 		@endforeach
 		<tr></tr>
