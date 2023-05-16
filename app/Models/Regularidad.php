@@ -16,7 +16,8 @@ class Regularidad extends Model
         'fecha_regularidad',
         'observaciones',
         'operador_id',
-        'fecha_vencimiento'
+        'fecha_vencimiento',
+        'estado_id'
     ];
 
     protected $dates = [
@@ -52,5 +53,10 @@ class Regularidad extends Model
            'id' => $proceso->alumno_id
         ]);
 
+    }
+
+    public function obtenerEstado()
+    {
+        return Estados::find($this->estado_id);
     }
 }

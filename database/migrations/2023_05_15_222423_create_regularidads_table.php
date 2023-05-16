@@ -18,11 +18,13 @@ class CreateRegularidadsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('proceso_id');
             $table->unsignedInteger('operador_id');
+            $table->unsignedBigInteger('estado_id');
             $table->date('fecha_regularidad');
             $table->date('fecha_vencimiento');
             $table->string('observaciones');
             $table->foreign('proceso_id')->references('id')->on('procesos');
             $table->foreign('operador_id')->references('id')->on('users');
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
 
 
