@@ -10,6 +10,7 @@ use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\UserCargoController;
+use App\Models\Equivalencias;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -38,9 +39,15 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Calificacion;
 use App\Models\Comision;
+use App\Models\Materia;
+use App\Models\Proceso;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /*
@@ -78,7 +85,7 @@ Route::get('/', function () {
 
 Route::resource('comisiones', ComisionController::class);
 Route::get('comision/edit/{comision_id}', [ComisionController::class, 'edit'])->name('comision.edit');
-Route::get('verComisiones/{carrera_id}/{ciclo_lectivo}', [ComisionController::class, 'index'])->name('comisiones.ver');
+Route::get('verComisiones/{carrera_id}', [ComisionController::class, 'index'])->name('comisiones.ver');
 Route::post('comision/alumno/agregar', [ComisionController::class, 'agregar_alumno'])->name('comision.alumno');
 Route::post('comision/profesor/{comision_id}', [ComisionController::class, 'agregar_profesor'])->name(
     'comision.profesor'
@@ -483,7 +490,7 @@ Route::prefix('matriculacion')->group(function () {
         'alumno.delete'
     );
 
-    Route::delete('/deleteAlumno/{id}/{carrera_id}', [MatriculacionController::class, 'deleteInscripcion'])->name('matriculacion.delete');
+    Route::delete('/deleteAlumno/{id}/{carrera_id}',[MatriculacionController::class,'deleteInscripcion'])->name('matriculacion.delete');
 
     Route::get('/', [MatriculacionController::class, 'index'])->name('matriculacion.index');
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
@@ -541,9 +548,7 @@ Route::prefix('moduloProfesor')->group(function () {
     Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name(
         'modulo_profesor.vincular_cargo_modulo'
     );
-    Route::get(
-        'formAgregarCargoModulo/{cargo}/{usuario}',
-        [ModuloProfesorController::class, 'formAgregarCargoModulo']
+    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo']
     )->name('modulo_profesor.form_agregar_cargo_modulo');
     Route::delete('delete/{materia}/{cargo}/{user}', [ModuloProfesorController::class, 'destroy'])->name(
         'modulo_profesor.destroy'
@@ -561,9 +566,7 @@ Route::prefix('proceso-modular')->group(function () {
     Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
-    Route::get(
-        '/procesaPonderacionModular/{materia}',
-        [ProcesoModularController::class, 'procesaPonderacionModular']
+    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
     )->name('proceso_modular.procesa_ponderacion_modular');
     Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
     )->name('proceso_modular.procesa_estados_modular');
@@ -636,7 +639,5 @@ Route::get('/prueba-post-size', function () {
         }
     }
 
+
 });
-
-
-
