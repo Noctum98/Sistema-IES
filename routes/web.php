@@ -605,31 +605,5 @@ Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
-    $alumnos = Alumno::all();
-
-    foreach($alumnos as $alumno)
-    {
-        foreach($alumno->procesos_actuales as $proceso)
-        {
-            $carrera = $proceso->materia->carrera;
-            $alumno_carrera = AlumnoCarrera::where([
-                'alumno_id' => $alumno->id,
-                'carrera_id' => $carrera->id,
-                'ciclo_lectivo' => date('Y')
-            ])->first();
-
-            if(!$alumno_carrera)
-            {
-                $alumno_carrera = AlumnoCarrera::create([
-                    'alumno_id' => $alumno->id,
-                    'carrera_id' => $carrera->id,
-                    'año'   => $proceso->materia->año,
-                    'ciclo_lectivo' => date('Y')
-                ]);
-
-                echo $alumno->nombres.' '.$alumno->apellidos.'('.$alumno->dni.'): '.$carrera->nombre.'('.$carrera->turno.') '.$carrera->resolucion.' | ';
-                Log::info($alumno->nombres.' '.$alumno->apellidos.'('.$alumno->dni.'): '.$carrera->nombre.'('.$carrera->turno.') '.$carrera->resolucion);
-            }
-        }
-    }
+    
 });
