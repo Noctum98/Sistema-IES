@@ -3,18 +3,70 @@
 namespace App\Http\Controllers;
 
 use App\Models\Regularidad;
+use App\Services\AlumnoService;
+use App\Services\CicloLectivoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegularidadController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var AlumnoService
+     */
+    private $alumnoService;
+    /**
+     * @var CicloLectivoService
+     */
+    private $cicloLectivoService;
+
+    /**
+     * @param AlumnoService $alumnoService
+     * @param CicloLectivoService $cicloLectivoService
+     */
+    function __construct(AlumnoService $alumnoService, CicloLectivoService $cicloLectivoService)
+    {
+        $this->middleware('app.auth');
+        $this->middleware('app.roles:admin-equivalencias');
+
+        $this->alumnoService = $alumnoService;
+        $this->cicloLectivoService = $cicloLectivoService;
+    }
+
+
+    /**
+     * Muestra la pantalla de búsqueda de alumnos para cargar regularidad.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = Auth::user();
+        $alumnos = [];
+        $busqueda = null;
+
+        if (isset($request['busqueda']) && $request['busqueda'] !='') {
+            $alumnos = $this->alumnoService->buscarAlumnos($request);
+            $busqueda = $request['busqueda'] ?? true;
+        }
+
+        $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
+
+
+//        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
+
+
+        //dd($alumnos);
+        $data = [
+            'alumnos' => $alumnos,
+            'busqueda' => $busqueda,
+            'carrera_id' => $request['carrera_id'],
+            'materia_id' => $request['materia_id'],
+            'cohorte' => $request['cohorte'],
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo' => $ciclo_lectivo
+        ];
+
+        return view('regularidad.index', $data);
     }
 
     /**

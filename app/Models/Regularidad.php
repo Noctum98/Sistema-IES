@@ -34,9 +34,7 @@ class Regularidad extends Model
            'id' => $this->proceso_id
         ]);
 
-        return Materia::where([
-           'id' => $proceso->materia_id
-        ]);
+        return Materia::find($proceso->materia_id);
 
     }
 
@@ -55,8 +53,20 @@ class Regularidad extends Model
 
     }
 
-    public function obtenerEstado()
+    /**
+     * @return Estados|null
+     */
+    public function obtenerEstado(): ?Estados
     {
         return Estados::find($this->estado_id);
+    }
+
+    public function getCicloLectivo()
+    {
+        $proceso = Proceso::where([
+            'id' => $this->proceso_id
+        ]);
+
+        return $proceso->ciclo_lectivo;
     }
 }

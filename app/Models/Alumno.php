@@ -140,7 +140,7 @@ class Alumno extends Model
         ])->latest()->first();
     }
 
-   
+
 
     public function hasProceso($materia_id)
     {
@@ -205,6 +205,26 @@ class Alumno extends Model
             ->orderBy('equivalencias.fecha', 'asc')
             ->get();
     }
+
+    public function getRegularidades()
+    {
+        return Regularidad::select()
+            ->leftJoin('procesos','regularidades.proceso_id','procesos.id')
+            ->where('procesos.alumno_id',$this->id)
+            ->orderBy('procesos.materia_id','asc')
+            ->get();
+    }
+
+    public function isRegular()
+    {
+        return Proceso::select()
+            ->leftJoin('alumnos','procesos.alumno_id','alumnos.id')
+            ->leftJoin('estados','procesos.estado_id','estados.id')
+            ->whereIn('estados.identificador', [1,3,4])
+            ->get();
+    }
+
+
 
     public function materias(): BelongsToMany
     {
