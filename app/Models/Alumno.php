@@ -215,13 +215,17 @@ class Alumno extends Model
             ->get();
     }
 
-    public function isRegular()
+    public function isRegular(int $ciclo_lectivo = null)
     {
-        return Proceso::select()
+        $qb = Proceso::select()
             ->leftJoin('alumnos','procesos.alumno_id','alumnos.id')
             ->leftJoin('estados','procesos.estado_id','estados.id')
-            ->whereIn('estados.identificador', [1,3,4])
-            ->get();
+            ->whereIn('estados.identificador', [1,3,4]);
+        if($ciclo_lectivo){
+            $qb->where('ciclo_lectivo','=', $ciclo_lectivo);
+        }
+
+        return $qb->get();
     }
 
 

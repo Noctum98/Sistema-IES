@@ -48,6 +48,7 @@ class RegularidadController extends Controller
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
         }
+//        dd($request['busqueda']);
 
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 

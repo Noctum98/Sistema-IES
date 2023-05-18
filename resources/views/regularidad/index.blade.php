@@ -13,13 +13,13 @@
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
                             data-bs-toggle="dropdown">
-                        Ciclo lectivo
+                        Ciclo lectivo {{$ciclo_lectivo}}
                     </button>
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
                             <li>
-                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                       href="{{route('alumno.equivalencias', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                   href="{{route('regularidad.index', ['ciclo_lectivo'=> $i, 'busqueda' => $busqueda])}}">{{$i}}</a>
 
                             </li>
                         @endfor
@@ -58,12 +58,16 @@
                             <input type="text" id="busqueda" name="busqueda" class="form-control"
                                    placeholder="Buscar alumno" aria-describedby="inputGroupPrepend2"
                                    value="{{ $busqueda && $busqueda != 1 ?$busqueda: '' }}">
+
+                            <input type="hidden" id="ciclo_lectivo" name="ciclo_lectivo" class="form-control"
+                                   value="{{ $ciclo_lectivo }}">
+
                             <button class="input-group-text" id="inputGroupPrepend2" type="submit">
                                 <i class="fa fa-search text-info"></i>
                             </button>
                         </div>
                     </div>
-{{--                    @include('alumno.modals.filtros_equivalencias')--}}
+                    {{--                    @include('alumno.modals.filtros_equivalencias')--}}
 
                 </form>
 
@@ -103,11 +107,11 @@
                                             Ver datos alumno
                                         </a>
                                         <button type="button" class="ms-2 btn btn-sm btn-info"
-{{--                                                data-bs-toggle="modal"  data-bs-target="#equivalenciasModal{{$alumno->id}}"--}}
+                                            {{--                                                data-bs-toggle="modal"  data-bs-target="#equivalenciasModal{{$alumno->id}}"--}}
                                         >
                                             Registrar regularidad
                                         </button>
-{{--                                        @include('alumno.modals.admin_equivalencias')--}}
+                                        {{--                                        @include('alumno.modals.admin_equivalencias')--}}
                                     </div>
                                 </td>
                             </tr>
@@ -141,20 +145,20 @@
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Botones de acción">
                                                 <a
-{{--                                                    data-bs-toggle="modal" data-bs-target="#eliminarEquivalenciaModal{{$equivalencia->id}}"--}}
-                                                   class="btn btn-sm btn-danger ps-1"
+                                                    {{--                                                    data-bs-toggle="modal" data-bs-target="#eliminarEquivalenciaModal{{$equivalencia->id}}"--}}
+                                                    class="btn btn-sm btn-danger ps-1"
                                                 >
                                                     <i class="fa fa-trash"></i> Clonar
                                                 </a>
                                                 @include('alumno.modals.eliminar_equivalencias')
                                                 <a href="!#"
-{{--                                                   data-bs-toggle="modal" data-bs-target="#edit{{$equivalencia->id}}"--}}
+                                                   {{--                                                   data-bs-toggle="modal" data-bs-target="#edit{{$equivalencia->id}}"--}}
                                                    class="btn btn-sm btn-outline-success ms-1"
 
                                                 >
                                                     <i class="fa fa-edit"></i> Editar
                                                 </a>
-{{--                                                @include('alumno.modals.editar_equivalencias')--}}
+                                                {{--                                                @include('alumno.modals.editar_equivalencias')--}}
                                             </div>
 
 
@@ -173,10 +177,48 @@
                                 </tr>
 
                             @endif
-                            @if (count($alumno->isRegular()) > 0)
+                            @if (count($alumno->isRegular($ciclo_lectivo)) > 0)
+                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
+                                    <td colspan="5" class="text-center">Procesos regulares</td>
+                                </tr>
+                                <tr class="text-center table-bordered border-top-0 border-2">
+                                    <td>Materia<br/>
+                                        <small style="font-size: 0.8em">(Carrera)</small>
+                                    </td>
+                                    <td>
+                                        Condición<br/>
+                                        <small style="font-size: 0.8em">(Cerrada)</small>
+                                    </td>
+                                    <td>Últ. actualización</td>
+                                    <td>Ciclo lectivo</td>
+                                    <td><i class="fa fa-cogs"></i></td>
+                                </tr>
                                 @foreach($alumno->isRegular() as $proceso)
-                                    <tr>
-                                        <td colspan="5">{{$proceso->estado()->first()->nombre}}</td>
+                                    <tr class="text-center table-bordered border-top-0 border-2">
+                                        <td>
+                                            {{$proceso->materia()->first()->nombre}}<br/>
+                                            <small
+                                                style="font-size: 0.8em">{{$proceso->materia()->first()->carrera()->first()->nombre}}</small>
+                                        </td>
+                                        <td>{{$proceso->estado()->first()->nombre}}
+                                            <br/>
+                                            <small style="font-size: 0.8em">
+                                                @if ($proceso->cierre === 1)
+                                                    <i class='fas fa-check text-success'></i>
+                                                @else
+                                                    <i class='fas fa-times text-danger'></i>
+                                                @endif
+                                            </small>
+                                        </td>
+                                        <td>
+
+                                            <small style="font-size: 0.7em">
+                                                {{date_format(new DateTime($proceso->updated_at),'d-m-Y H:i')}}
+                                            </small>
+
+                                        </td>
+                                        <td>{{$proceso->ciclo_lectivo}}</td>
+                                        <td>Copiar condición</td>
                                     </tr>
                                 @endforeach
 
