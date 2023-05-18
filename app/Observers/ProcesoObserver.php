@@ -73,7 +73,7 @@ class ProcesoObserver
             'model' => 'Proceso',
             'table_id' => $proceso->id,
             'user_id' => Auth::user() ? Auth::user()->id : null,
-            'changes' => 'CREATE',
+            'changes' => 'DELETE',
             'table_created_at' => $proceso->created_at,
             'table_updated_at' => $proceso->updated_at,
             'table_deleted_at' => $proceso->deleted_at ? $proceso->deleted_at : Carbon::now()
