@@ -106,12 +106,14 @@
                                             <i class="fa fa-external-link-alt"></i>
                                             Ver datos alumno
                                         </a>
-                                        <button type="button" class="ms-2 btn btn-sm btn-info"
-                                            {{--                                                data-bs-toggle="modal"  data-bs-target="#equivalenciasModal{{$alumno->id}}"--}}
-                                        >
-                                            Registrar regularidad
-                                        </button>
-                                        {{--                                        @include('alumno.modals.admin_equivalencias')--}}
+                                        <a class="btn btn-sm btn-warning" data-bs-toggle="modal" id="agregarButton"
+                                           data-bs-target="#agregarModal"
+                                           data-loader="{{$alumno->id}}"
+                                           data-attr="{{ route('regularidad.create', ['id'=>$alumno->id,'ciclo_lectivo' => $ciclo_lectivo]) }}">
+                                            <i class="fas fa-edit text-gray-300"></i>
+                                            <i class="fa fa-spinner fa-spin" style="display: none"
+                                               id="loader{{$alumno->id}}"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -240,9 +242,40 @@
 
         </div>
     </div>
+    @include('regularidad.components.agregar_regularidad')
 @endsection
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
     <script src="{{ asset('js/alumnos/filtros.js') }}"></script>
 
+    <script>
+
+        $(document).on('click', '#agregarButton', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+
+            $.ajax({
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                },
+                // return the result
+                success: function (result) {
+                    $('#agregaModal').modal("show");
+                    $('#agregarBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 2000
+            })
+        });
+    </script>
 @endsection

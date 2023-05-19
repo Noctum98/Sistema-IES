@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estados;
+use App\Models\Proceso;
 use App\Models\Regularidad;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class RegularidadController extends Controller
@@ -36,7 +42,7 @@ class RegularidadController extends Controller
     /**
      * Muestra la pantalla de búsqueda de alumnos para cargar regularidad.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -44,7 +50,7 @@ class RegularidadController extends Controller
         $alumnos = [];
         $busqueda = null;
 
-        if (isset($request['busqueda']) && $request['busqueda'] !='') {
+        if (isset($request['busqueda']) && $request['busqueda'] != '') {
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
         }
@@ -71,20 +77,33 @@ class RegularidadController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostramos un modal para agregar una regularidad a un alumno.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $alumnoId
+     * @param int $ciclo_lectivo
+     * @return Application|Factory|View
      */
-    public function create()
+    public function create(int $alumnoId, int $ciclo_lectivo)
     {
-        //
+        $procesos = Proceso::where([
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'alumno_id' => $alumnoId
+        ])
+            ->get();
+
+        $estados = Estados::all();
+
+        return view('regularidad.components.form_agregar_regularidad')->with([
+            'estados' => $estados,
+            'procesos' => $procesos,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -94,8 +113,8 @@ class RegularidadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Regularidad  $regularidad
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Regularidad $regularidad
+     * @return Response
      */
     public function show(Regularidad $regularidad)
     {
@@ -105,8 +124,8 @@ class RegularidadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Regularidad  $regularidad
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Regularidad $regularidad
+     * @return Response
      */
     public function edit(Regularidad $regularidad)
     {
@@ -116,9 +135,9 @@ class RegularidadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Regularidad  $regularidad
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Regularidad $regularidad
+     * @return Response
      */
     public function update(Request $request, Regularidad $regularidad)
     {
@@ -128,8 +147,8 @@ class RegularidadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Regularidad  $regularidad
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Regularidad $regularidad
+     * @return Response
      */
     public function destroy(Regularidad $regularidad)
     {
