@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Alumno;
+use App\Models\Proceso;
+use App\Observers\AlumnoObserver;
+use App\Observers\ProcesoObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -31,6 +35,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Proceso::observe(ProcesoObserver::class);
+        Alumno::observe(AlumnoObserver::class);
     }
 }
