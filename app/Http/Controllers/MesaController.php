@@ -7,6 +7,9 @@ use App\Models\Comision;
 use App\Models\Instancia;
 use App\Models\Libro;
 use App\Models\Sede;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use App\Models\Materia;
@@ -15,6 +18,7 @@ use App\Models\Proceso;
 use App\Services\UserService;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,7 +30,7 @@ class MesaController extends Controller
     const T_T = '23:59';
     const T_V = '23:59';
 
-   
+
     public function __construct()
     {
         /**
@@ -136,7 +140,7 @@ class MesaController extends Controller
         ]);
     }
 
-    
+
 
     // Funcionalidades
     public function crear(Request $request, $materia_id, $instancia_id)
@@ -151,7 +155,7 @@ class MesaController extends Controller
 
         $fecha_dia = date("d-m-Y", strtotime($request['fecha']));
         $fecha_dia_segundo = date("d-m-Y", strtotime($request['fecha_segundo']));
-        
+
         $comp_primer_llamado = in_array($fecha_dia, $this->feriados);
         $comp_segundo_llamado = in_array($fecha_dia_segundo, $this->feriados);
 
@@ -193,9 +197,9 @@ class MesaController extends Controller
                     'D',
                     strtotime($request['fecha_segundo'])
                 ) == 'Tue') {
-                    
+
                 $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-4 days");
-          
+
 
             } else {
                 $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-2 days");
@@ -269,7 +273,7 @@ class MesaController extends Controller
         int $orden,
         Comision $comision = null
     ) {
-        
+
         $texto_llamado = 'Primer llamado';
 
         if ($llamado == 2) {
@@ -360,7 +364,7 @@ class MesaController extends Controller
             $mesa->cierre_profesor_segundo = true;
             $mesa->fecha_cierre_profesor_segundo = Carbon::now();
         }
-        
+
         $mesa->update();
 
         return redirect()->back()->with(['alert_success'=>'El acta volante se ha cerrado correctamente.']);
@@ -378,7 +382,7 @@ class MesaController extends Controller
             $mesa->cierre_profesor_segundo = false;
             $mesa->fecha_cierre_profesor_segundo = null;
         }
-        
+
         $mesa->update();
 
         return redirect()->back()->with(['alert_success'=>'El acta volante se ha abierto correctamente.']);
@@ -406,11 +410,18 @@ class MesaController extends Controller
 
     }
 
+    /**
+     * @param int $instancia
+     * @return Application|Factory|View
+     */
     public function vistaCronograma(int $instancia)
     {
         $instanciaGet = Instancia::find($instancia);
+        $user = Auth::user();
+
         $mesa = new Mesa();
-        $carreras = $mesa->obtenerCarrerasByInstancia($instancia);
+        $carreras = $mesa->obtenerCarrerasByInstancia($instancia, $user);
+
         return view('mesa.cronograma')->with([
             'carreras' => $carreras,
             'instancia' => $instancia,
