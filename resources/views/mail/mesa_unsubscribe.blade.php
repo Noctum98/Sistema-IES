@@ -60,8 +60,13 @@
 				
 				<p>Datos del estudiante:</p>
 				<ul>
+					@if($instancia->tipo == 0)
 					<li>Sede: {{ $inscripcion->mesa->materia->carrera->sede->nombre }}</li>
 					<li>Carrera: {{ $inscripcion->mesa->materia->carrera->nombre }}</li>
+					@else
+					<li>Sede: {{ $inscripcion->materia->carrera->sede->nombre }}</li>
+					<li>Carrera: {{ $inscripcion->materia->carrera->nombre }}</li>
+					@endif
 					<li>Nombres: {{$inscripcion->nombres}}</li>
 					<li>Apellidos: {{$inscripcion->apellidos}}</li>
 					<li>Correo: {{ $inscripcion->correo }}</li>
@@ -70,6 +75,7 @@
 					<li>Fecha Baja:
 						{{date_format(new DateTime($inscripcion->updated_at),'d-m-Y H:i:s')}}
 					</li>
+					
 				</ul>
 			</div>
 		</div>
