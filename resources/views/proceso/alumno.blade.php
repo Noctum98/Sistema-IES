@@ -18,7 +18,7 @@
                         Materia
                     </th>
                     <th>
-                        Estado
+                        Condición
                     </th>
                     <th>
                         <small>

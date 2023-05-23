@@ -10,7 +10,7 @@
 		    <tr>
 		      <th scope="col">Alumno</th>
 		      <th scope="col">Porcentaje</th>
-		      <th scope="col">Estado</th>
+		      <th scope="col">Condición</th>
 		    </tr>
 		  </thead>
 		  <tbody>
