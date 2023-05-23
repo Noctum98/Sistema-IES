@@ -26,7 +26,7 @@ class AlumnoMesaController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('app.auth');
+        $this->middleware('app.auth');
     }
     // Vistas
     public function vista_home($id)
