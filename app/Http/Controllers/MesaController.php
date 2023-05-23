@@ -328,12 +328,12 @@ class MesaController extends Controller
 
         $mesa = Mesa::where($datos)
             ->with(
-                'presidente',
-                'primer_vocal',
-                'segundo_vocal',
-                'presidente_segundo',
-                'primer_vocal_segundo',
-                'segundo_vocal_segundo'
+                'presidente_mesa',
+                'primer_vocal_mesa',
+                'segundo_vocal_mesa',
+                'presidente_segundo_mesa',
+                'primer_vocal_segundo_mesa',
+                'segundo_vocal_segundo_mesa'
             )
             ->first();
         if($mesa)

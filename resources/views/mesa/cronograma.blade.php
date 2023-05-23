@@ -29,6 +29,7 @@
                             <i>1° llamado</i>
                         </a>
                     </div>
+                    @if($instancia_model->tipo == 0)
                     <div class="col-sm-5"><i>{{$carrera['sede']}}</i></div>
                     <div class="col-sm-5"><b>{{$carrera['nombre']}} - Res {{$carrera['resolucion']}}</b></div>
                     <div class="col">
@@ -38,7 +39,7 @@
                             <i>2° llamado</i>
                         </a>
                     </div>
-
+                    @endif
                 @endforeach
             </div>
         </div>

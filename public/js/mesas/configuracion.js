@@ -70,31 +70,31 @@ $(document).ready(function () {
 
         function setFormData(mesa, materia_id) {
             
-            if (mesa.presidente) {
-                $('#presidente-' + materia_id).append('<option selected="selected" value="' + mesa.presidente.id + '">' + mesa.presidente.apellido.toUpperCase() + ' ' + mesa.presidente.nombre + '</option>').trigger('change');
+            if (mesa.presidente_mesa) {
+                $('#presidente-' + materia_id).append('<option selected="selected" value="' + mesa.presidente_mesa.id + '">' + mesa.presidente_mesa.apellido.toUpperCase() + ' ' + mesa.presidente_mesa.nombre + '</option>').trigger('change');
             }
 
-            if (mesa.primer_vocal) {
-                $('#primer_vocal-' + materia_id).append('<option selected="selected" value=' + mesa.primer_vocal.id + '>' + mesa.primer_vocal.apellido.toUpperCase() + ' ' + mesa.primer_vocal.nombre + '</option>').trigger('change');
-
-            }
-
-            if (mesa.segundo_vocal) {
-                $('#segundo_vocal-' + materia_id).append('<option selected="selected" value=' + mesa.segundo_vocal.id + '>' + mesa.segundo_vocal.apellido.toUpperCase() + ' ' + mesa.segundo_vocal.nombre + '</option>').trigger('change');
-            }
-
-            if (mesa.segundo_vocal_segundo) {
-                $('#segundo_vocal_segundo-' + materia_id).append('<option selected="selected" value=' + mesa.segundo_vocal_segundo.id + '>' + mesa.segundo_vocal_segundo.apellido.toUpperCase() + ' ' + mesa.segundo_vocal_segundo.nombre + '</option>').trigger('change');
+            if (mesa.primer_vocal_mesa) {
+                $('#primer_vocal-' + materia_id).append('<option selected="selected" value=' + mesa.primer_vocal_mesa.id + '>' + mesa.primer_vocal_mesa.apellido.toUpperCase() + ' ' + mesa.primer_vocal_mesa.nombre + '</option>').trigger('change');
 
             }
 
-            if (mesa.presidente_segundo) {
-                $('#presidente_segundo-' + materia_id).append('<option selected="selected" value=' + mesa.presidente_segundo.id + '>' + mesa.presidente_segundo.apellido.toUpperCase() + ' ' + mesa.presidente_segundo.nombre + '</option>').trigger('change');
+            if (mesa.segundo_vocal_mesa) {
+                $('#segundo_vocal-' + materia_id).append('<option selected="selected" value=' + mesa.segundo_vocal_mesa.id + '>' + mesa.segundo_vocal_mesa.apellido.toUpperCase() + ' ' + mesa.segundo_vocal_mesa.nombre + '</option>').trigger('change');
+            }
+
+            if (mesa.segundo_vocal_segundo_mesa) {
+                $('#segundo_vocal_segundo-' + materia_id).append('<option selected="selected" value=' + mesa.segundo_vocal_segundo_mesa.id + '>' + mesa.segundo_vocal_segundo_mesa.apellido.toUpperCase() + ' ' + mesa.segundo_vocal_segundo_mesa.nombre + '</option>').trigger('change');
 
             }
 
-            if (mesa.primer_vocal_segundo) {
-                $('#primer_vocal_segundo-' + materia_id).append('<option selected="selected" value=' + mesa.primer_vocal_segundo.id + '>' + mesa.primer_vocal_segundo.apellido.toUpperCase() + ' ' + mesa.primer_vocal_segundo.nombre + '</option>').trigger('change');
+            if (mesa.presidente_segundo_mesa) {
+                $('#presidente_segundo-' + materia_id).append('<option selected="selected" value=' + mesa.presidente_segundo_mesa.id + '>' + mesa.presidente_segundo_mesa.apellido.toUpperCase() + ' ' + mesa.presidente_segundo_mesa.nombre + '</option>').trigger('change');
+
+            }
+
+            if (mesa.primer_vocal_segundo_mesa) {
+                $('#primer_vocal_segundo-' + materia_id).append('<option selected="selected" value=' + mesa.primer_vocal_segundo_mesa.id + '>' + mesa.primer_vocal_segundo_mesa.apellido.toUpperCase() + ' ' + mesa.primer_vocal_segundo_mesa.nombre + '</option>').trigger('change');
 
             }
 
