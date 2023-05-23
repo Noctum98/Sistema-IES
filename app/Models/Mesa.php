@@ -99,32 +99,32 @@ class Mesa extends Model
         return $this->belongsTo(Comision::class, 'comision_id');
     }
 
-    public function presidente(): BelongsTo
+    public function presidente_mesa(): BelongsTo
     {
         return $this->belongsTo(User::class, 'presidente_id');
     }
 
-    public function primer_vocal(): BelongsTo
+    public function primer_vocal_mesa(): BelongsTo
     {
         return $this->belongsTo(User::class, 'primer_vocal_id');
     }
 
-    public function segundo_vocal(): BelongsTo
+    public function segundo_vocal_mesa(): BelongsTo
     {
         return $this->belongsTo(User::class, 'segundo_vocal_id');
     }
 
-    public function presidente_segundo(): BelongsTo
+    public function presidente_segundo_mesa(): BelongsTo
     {
         return $this->belongsTo(User::class, 'presidente_segundo_id');
     }
 
-    public function primer_vocal_segundo(): BelongsTo
+    public function primer_vocal_segundo_mesa(): BelongsTo
     {
         return $this->belongsTo(User::class, 'primer_vocal_segundo_id');
     }
 
-    public function segundo_vocal_segundo(): BelongsTo
+    public function segundo_vocal_segundo_mesa(): BelongsTo
     {
         return $this->belongsTo(User::class, 'segundo_vocal_segundo_id');
     }
