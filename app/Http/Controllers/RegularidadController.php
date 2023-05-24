@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Estados;
 use App\Models\Proceso;
 use App\Models\Regularidad;
+use App\Request\RegularidadesRequest;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
 use Illuminate\Contracts\Foundation\Application;
@@ -105,9 +106,24 @@ class RegularidadController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(RegularidadesRequest $request)
     {
-        //
+
+        $request->validated();
+        $user = Auth::user();
+
+        $regularidad = Regularidad::create([
+            'estado_id' => $request->get('estado_id'),
+            'proceso_id' => $request->get('proceso_id'),
+            'operador_id' => $user->id,
+            'observaciones' => $request->get('observaciones'),
+            'fecha_regularidad' => $request->get('fecha_regularidad'),
+            'fecha_vencimiento' => date('d F Y', strtotime($request->get('fecha_regularidad') . " +2 year") ),
+        ]
+        );
+
+        dd($regularidad);
+
     }
 
     /**
