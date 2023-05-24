@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Mesa extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'instancia_id',
         'materia_id',
@@ -67,18 +68,6 @@ class Mesa extends Model
             ->skip($skip)
             ->take($take);
     }
-
-    public function mesa_inscriptos_props(int $prop = null, $orden = 1): HasMany
-    {
-        if ($prop == 1) {
-            return $this->mesa_inscriptos_primero($orden);
-        }
-        if ($prop == 2) {
-            return $this->mesa_inscriptos_segundo($orden);
-        }
-        return $this->mesa_inscriptos();
-    }
-
     public function bajas_primero()
     {
         return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);
@@ -138,9 +127,39 @@ class Mesa extends Model
     {
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
-    public function obtenerCarrerasByInstancia(int $instancia)
+
+    public function mesa_inscriptos_props(int $prop = null, $orden = 1): HasMany
     {
-        return   Carrera::select(
+        if ($this->instancia->tipo == 0) {
+            if ($prop == 1) {
+                return $this->mesa_inscriptos_primero($orden);
+            }
+            if ($prop == 2) {
+                return $this->mesa_inscriptos_segundo($orden);
+            }
+            return $this->mesa_inscriptos();
+        } else {
+            $inscriptos = MesaAlumno::where([
+                'materia_id' => $this->materia_id,
+                'instancia_id' => $this->instancia_id,
+                'estado_baja' => false
+            ]);
+
+            $take = 25;
+            $skip = $take * ($orden - 1);
+
+            if ($prop == 1) {
+                return $inscriptos->skip($skip)->take($take)->get();
+            }
+            
+            return $inscriptos->get();
+        }
+    }
+
+
+    public function obtenerCarrerasByInstancia(int $instancia, $user)
+    {
+        return Carrera::select(
             'carreras.id as id',
             'carreras.nombre as nombre',
             'carreras.resolucion as resolucion',
@@ -149,10 +168,13 @@ class Mesa extends Model
             ->join('sedes', 'carreras.sede_id', 'sedes.id')
             ->join('materias', 'carreras.id', 'materias.carrera_id')
             ->join('mesas', 'materias.id', 'mesas.materia_id')
+            ->join('carrera_user', 'carreras.id', 'carrera_user.carrera_id')
             ->where('mesas.instancia_id', $instancia)
+            ->where('carrera_user.user_id', $user->id)
             ->groupBy('carreras.id', 'carreras.nombre', 'carreras.resolucion', 'sedes.nombre')
             ->orderBy('sedes.nombre', 'asc')
             //            ->orderBy('materias.nombre','asc')
+            //            ->getQuery()->dd();
             ->get();
     }
 }

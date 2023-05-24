@@ -65,7 +65,9 @@
 					<li>Carrera: {{ $inscripcion->mesa->materia->carrera->nombre }}</li>
 					@else
 					<li>Sede: {{ $inscripcion->materia->carrera->sede->nombre }}</li>
-					<li>Carrera: {{ $inscripcion->materia->carrera->nombre }}</li>
+					<li>Carrera: {{ $inscripcion->
+					
+					materia->carrera->nombre }}</li>
 					@endif
 					<li>Nombres: {{$inscripcion->nombres}}</li>
 					<li>Apellidos: {{$inscripcion->apellidos}}</li>

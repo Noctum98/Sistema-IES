@@ -23,7 +23,7 @@
 
 
 
-    <div class="row col-md-12">
+    <div class="row">
 
         @if(Session::has('coordinador') || Session::has('admin'))
         <button class="btn btn-sm btn-primary col-md-2 m-1" data-bs-toggle="modal" data-bs-target="#inscribirAlumno"><i class="fas fa-clipboard"></i> Inscribir alumno</button>
@@ -31,10 +31,18 @@
         @endif
 
         @if(count($inscripciones) > 0)
-        <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 m-1">
+        <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 ml-1 mt-1 mb-1">
             <i class="fas fa-download"></i>
             Descargar Inscriptos
         </a>
+        @endif
+
+        @if($materia->mesa($instancia->id) && $materia->mesa($instancia->id)->cierre_profesor)
+        <form action="{{route('mesa.abrir_acta',['mesa_id'=>$materia->mesa($instancia->id)->id])}}" method="POST" class="col-md-2 mt-1">
+            {{method_field('PUT')}}
+            <input type="hidden" name="llamado" value="1" id="llamado">
+            <input type="submit" value="Abrir Mesa" class="btn btn-sm btn-warning">
+        </form>
         @endif
 
     </div>

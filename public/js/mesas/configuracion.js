@@ -16,7 +16,6 @@ $(document).ready(function () {
             url: url,
             //dataType: "dataType",
             success: function (response) {
-                console.log(response);
                 if (response.status == 'success') {
                     setFormData(response.mesa, materia_id);
                 } else {

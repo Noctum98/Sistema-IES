@@ -40,10 +40,11 @@
                     @endif
             </div>
             <div>
-                <input type="hidden" name="instancia_id" value="{{$inscripcion->mesa->instancia_id}}">
                 @if($inscripcion->materia_id)
+                <input type="hidden" name="instancia_id" value="{{$inscripcion->instancia_id}}">
                 <input type="hidden" name="materia_id" value="{{$inscripcion->materia_id }}">
                 @elseif($inscripcion->mesa)
+                <input type="hidden" name="instancia_id" value="{{$inscripcion->mesa->instancia_id}}">
                 <input type="hidden" name="materia_id" value="{{$inscripcion->mesa->materia_id }}">
                 <input type="hidden" name="mesa_id" value="{{ $inscripcion->mesa->id }}">
                 @endif
