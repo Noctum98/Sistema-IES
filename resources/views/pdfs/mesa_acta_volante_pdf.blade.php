@@ -173,11 +173,11 @@
     @if($llamado == 1)
         @php
             $presidente = $mesa->presidente;
-            $presidente_id = $mesa->presidente_mesa->id;
+            $presidente_id = $mesa->presidente_mesa;
             $primer_vocal = $mesa->primer_vocal;
-            $primer_vocal_id = $mesa->primer_vocal_mesa->id;
+            $primer_vocal_id = $mesa->primer_vocal_mesa;
             $segundo_vocal = $mesa->segundo_vocal;
-            $segundo_vocal_id = $mesa->segundo_vocal_mesa->id;
+            $segundo_vocal_id = $mesa->segundo_vocal_mesa;
         @endphp
 
     @else
