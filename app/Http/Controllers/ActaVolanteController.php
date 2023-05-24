@@ -30,9 +30,28 @@ class ActaVolanteController extends Controller
     public function show(Request $request,$mesa_id)
     {
         $mesa = Mesa::find($mesa_id);
+        $inscriptos = null;
+        $bajas = null;
+
+        if($mesa->instancia->tipo == 1)
+        {
+            $inscriptos = MesaAlumno::where([
+                'materia_id' => $mesa->materia_id,
+                'instancia_id' => $mesa->instancia_id,
+                'estado_baja' => false
+            ])->get();
+
+            $bajas = MesaAlumno::where([
+                'materia_id' => $mesa->materia_id,
+                'instancia_id' => $mesa->instancia_id,
+                'estado_baja' => true
+            ])->get();
+        }
 
         return view('mesa.acta_volante.show',[
-            'mesa' => $mesa
+            'mesa' => $mesa,
+            'inscripciones' => $inscriptos,
+            'bajas' => $bajas
         ]);
     }
 
