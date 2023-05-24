@@ -68,18 +68,6 @@ class Mesa extends Model
             ->skip($skip)
             ->take($take);
     }
-
-    public function mesa_inscriptos_props(int $prop = null, $orden = 1): HasMany
-    {
-        if ($prop == 1) {
-            return $this->mesa_inscriptos_primero($orden);
-        }
-        if ($prop == 2) {
-            return $this->mesa_inscriptos_segundo($orden);
-        }
-        return $this->mesa_inscriptos();
-    }
-
     public function bajas_primero()
     {
         return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);
@@ -139,6 +127,35 @@ class Mesa extends Model
     {
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
+
+    public function mesa_inscriptos_props(int $prop = null, $orden = 1): HasMany
+    {
+        if ($this->instancia->tipo == 0) {
+            if ($prop == 1) {
+                return $this->mesa_inscriptos_primero($orden);
+            }
+            if ($prop == 2) {
+                return $this->mesa_inscriptos_segundo($orden);
+            }
+            return $this->mesa_inscriptos();
+        } else {
+            $inscriptos = MesaAlumno::where([
+                'materia_id' => $this->materia_id,
+                'instancia_id' => $this->instancia_id,
+                'estado_baja' => false
+            ]);
+
+            $take = 25;
+            $skip = $take * ($orden - 1);
+
+            if ($prop == 1) {
+                return $inscriptos->skip($skip)->take($take)->get();
+            }
+            
+            return $inscriptos->get();
+        }
+    }
+
 
     public function obtenerCarrerasByInstancia(int $instancia, $user)
     {
