@@ -58,7 +58,7 @@
                                                 @else
                                                     <span class="text-secondary">Inscripto</span>
                                                     @if($inscripcion->instancia->estado == 'activa' || $inscripcion->instancia->cierre == 1)
-                                                        <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
+                                                        <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$inscripcion->instancia_id])}}"
                                                            class="text-danger">Bajarme</a>
                                                     @endif
                                                 @endif
