@@ -94,7 +94,7 @@
         border-collapse: collapse !important; margin: 0;">
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>Fecha: </u> {{ $llamado == 1 ? date('d-m-Y', strtotime($mesa->fecha) ) : date('d-m-Y', strtotime($mesa->fecha_segundo) ) }}</h5>
             </td>
-           
+
         </tr>
     </table>
 </div>
@@ -132,7 +132,7 @@
                 <td style="font-size: 0.85em">{{$mesa_inscripto->dni}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->correo}}</td>
                 <td style="font-size: 0.85em">{{$mesa_inscripto->telefono}}</td>
-                
+
                 @if($mesa_inscripto->acta_volante && $mesa_inscripto->acta_volante->nota_escrito != -1)
                 <td style="font-size: 0.85em">{{$mesa_inscripto->acta_volante->nota_escrito}}</td>
                 @else
@@ -173,21 +173,21 @@
     @if($llamado == 1)
         @php
             $presidente = $mesa->presidente;
-            $presidente_id = $mesa->presidente()->first();
+            $presidente_id = $mesa->presidente_mesa->id;
             $primer_vocal = $mesa->primer_vocal;
-            $primer_vocal_id = $mesa->primer_vocal()->first();
+            $primer_vocal_id = $mesa->primer_vocal_mesa->id;
             $segundo_vocal = $mesa->segundo_vocal;
-            $segundo_vocal_id = $mesa->segundo_vocal()->first();
+            $segundo_vocal_id = $mesa->segundo_vocal_mesa->id;
         @endphp
 
     @else
         @php
             $presidente = $mesa->presidente;
-            $presidente_id = $mesa->presidente_segundo()->first();
+            $presidente_id = $mesa->presidente_segundo_mesa;
             $primer_vocal = $mesa->primer_vocal;
-            $primer_vocal_id = $mesa->primer_vocal_segundo()->first();
+            $primer_vocal_id = $mesa->primer_vocal_segundo_mesa;
             $segundo_vocal = $mesa->segundo_vocal;
-            $segundo_vocal_id = $mesa->segundo_vocal_segundo()->first();
+            $segundo_vocal_id = $mesa->segundo_vocal_segundo_mesa;
         @endphp
     @endif
     <div class="container" style="width: 100%; margin: 0 5px; padding: 0 5px">
