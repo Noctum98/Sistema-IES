@@ -8,7 +8,7 @@
 		<div class="col-md-4 m-0 p-0 proceso-detalle">
 			<ul>
 				<li><strong>Materia:</strong> {{ $proceso->materia->nombre }}</li>
-				<li><strong>Estado:</strong> {{ ucwords($proceso->estado) }}</li>
+				<li><strong>Condición:</strong> {{ ucwords($proceso->estado) }}</li>
 				<li><strong>Nota final de parciales:</strong>
 				 {{ $proceso->final_parciales ? $proceso->final_parciales : 'Sin asignar'}}
 				</li>

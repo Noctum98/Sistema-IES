@@ -35,7 +35,7 @@
             <th>Asistencia Virtual</th>
             @endif
             <th>
-                Estado
+                Condición
             </th>
             <th>Nota Global</th>
 
