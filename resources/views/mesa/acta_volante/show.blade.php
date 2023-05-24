@@ -50,7 +50,7 @@
         @endif
 
         @if(count($bajas) > 0)
-            <h2 class="text-info">Primer llamado bajas</h2>
+            <h2 class="text-info">Bajas</h2>
             @include('mesa.acta_volante.tabla_bajas',['inscripciones'=>$bajas])
         @endif
     @endif
