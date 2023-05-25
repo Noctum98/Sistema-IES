@@ -208,7 +208,7 @@ class Alumno extends Model
 
     public function getRegularidades()
     {
-        return Regularidad::select()
+        return Regularidad::select('regularidades.*')
             ->leftJoin('procesos','regularidades.proceso_id','procesos.id')
             ->where('procesos.alumno_id',$this->id)
             ->orderBy('procesos.materia_id','asc')

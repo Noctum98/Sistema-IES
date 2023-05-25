@@ -50,7 +50,7 @@
         <div class="col-md-8 row">
             <div class="col-md-5">
                 <form method="GET" action="{{ route('regularidad.index', ['ciclo_lectivo'=> $ciclo_lectivo]) }}"
-                      id="buscador-alumnos-equivalencias">
+                      id="buscador-alumnos-regularidad">
                     <div class="form-inline">
                         <div class="input-group">
 
@@ -81,25 +81,25 @@
 
                     {{--                    <a id="descargar_busqueda" class="btn btn-sm btn-success"><i class="fas fa-download"></i>Descargar--}}
                     {{--                        Alumnos</a>--}}
-                    <table class="table mt-4 ">
+                    <table class="table mt-4 table-bordered table-striped">
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">DNI</th>
                             <th>Email</th>
                             <th>Cohorte</th>
-                            <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
+                            <th scope="col" colspan="2"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                         </tr>
                         </thead>
 
                         @foreach ($alumnos as $alumno)
-                            <tbody class="table-striped">
+                            <tbody class="table-striped table-bordered">
                             <tr>
                                 <td>{{ mb_strtoupper($alumno->apellidos).' '.ucwords($alumno->nombres) }}</td>
                                 <td>{{ $alumno->dni }}</td>
                                 <td>{{ $alumno->email }}</td>
                                 <td>{{ $alumno->cohorte ?? '-' }}</td>
-                                <td>
+                                <td colspan="2">
                                     <div class="btn-group" role="group" aria-label="Botones de acción">
                                         <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
                                            class="btn btn-sm btn-link ">
@@ -119,13 +119,15 @@
                             </tr>
                             @if (count($alumno->getRegularidades()) > 0)
 
-                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
-                                    <td colspan="4" class="text-center">Regularidades</td>
+                                <tr class="table-responsive-md text-center table-borderless">
+                                    <td colspan="6" class="text-center h4">Regularidades</td>
 
                                 </tr>
-                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
+                                <tr class="table-responsive-md text-center border-2 border-info">
 
-                                    <td>Materia/<br/><small>(Carrera)</small></td>
+                                    <td>Materia <br/>
+                                        <small
+                                            style="font-size: 0.8em">(Carrera)</small></td>
                                     <td>Condición</td>
                                     <td>Fecha Regularidad</td>
                                     <td>Vto. Regularidad</td>
@@ -133,26 +135,29 @@
                                     <td><i class="fa fa-cogs"></i></td>
                                 </tr>
                                 @foreach ($alumno->getRegularidades() as $regularidad)
-                                    <tr class="table-responsive-md text-center table-bordered border-top-0 border-2 table-striped">
+                                    <tr class="table-responsive-md text-center border-2 border-primary">
 
                                         {{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
-                                        <td>{{$regularidad->obtenerMateria()->nombre}}
-                                            <br/>
-                                            <small>{{$regularidad->obtenerMateria()->carrera()->nombre}}</small>
+                                        <td rowspan="2">{{$regularidad->obtenerMateria()->nombre}}<br/>
+                                            <small
+                                                style="font-size: 0.8em">
+                                                {{$regularidad->obtenerMateria()->carrera()->first()->nombre}}</small>
                                         </td>
-                                        <td>{{$equivalencia->obtenerEstado()}}</td>
-                                        <td>{{$equivalencia->fecha_regularidad}}</td>
-                                        <td>{{$equivalencia->fecha_vencimiento}}</td>
-                                        <td>{{$equivalencia->obtenerCicloLectivo()}}</td>
                                         <td>
+
+                                            {{$regularidad->obtenerEstado()->nombre}}</td>
+                                        <td>{{date_format(new DateTime($regularidad->fecha_regularidad),'d-m-Y')}}</td>
+                                        <td>{{date_format(new DateTime($regularidad->fecha_vencimiento),'d-m-Y')}}</td>
+                                        <td>{{$regularidad->getCicloLectivo()}}</td>
+                                        <td rowspan="2">
                                             <div class="btn-group" role="group" aria-label="Botones de acción">
-                                                <a
-                                                    {{--                                                    data-bs-toggle="modal" data-bs-target="#eliminarEquivalenciaModal{{$equivalencia->id}}"--}}
-                                                    class="btn btn-sm btn-danger ps-1"
-                                                >
-                                                    <i class="fa fa-trash"></i> Clonar
-                                                </a>
-                                                @include('alumno.modals.eliminar_equivalencias')
+                                                {{--                                                <a--}}
+                                                {{--                                                    --}}{{--                                                    data-bs-toggle="modal" data-bs-target="#eliminarEquivalenciaModal{{$equivalencia->id}}"--}}
+                                                {{--                                                    class="btn btn-sm btn-danger ps-1"--}}
+                                                {{--                                                >--}}
+                                                {{--                                                    <i class="fa fa-trash"></i> Clonar--}}
+                                                {{--                                                </a>--}}
+                                                {{--                                                @include('regularidad.components.eliminar_regularidad')--}}
                                                 <a href="!#"
                                                    {{--                                                   data-bs-toggle="modal" data-bs-target="#edit{{$equivalencia->id}}"--}}
                                                    class="btn btn-sm btn-outline-success ms-1"
@@ -164,6 +169,14 @@
                                             </div>
 
 
+                                        </td>
+                                    </tr>
+                                    <tr class="border-bottom border-primary">
+                                        <td colspan="4">
+                                            <small
+                                                style="font-size: 0.8em">
+                                                Observaciones: {{$regularidad->observaciones}}
+                                            </small>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -181,7 +194,7 @@
                             @endif
                             @if (count($alumno->isRegular($ciclo_lectivo)) > 0)
                                 <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
-                                    <td colspan="5" class="text-center">Procesos regulares</td>
+                                    <td colspan="6" class="text-center h4">Procesos regulares</td>
                                 </tr>
                                 <tr class="text-center table-bordered border-top-0 border-2">
                                     <td>Materia<br/>

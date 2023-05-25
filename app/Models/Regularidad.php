@@ -32,24 +32,22 @@ class Regularidad extends Model
     {
         $proceso = Proceso::where([
            'id' => $this->proceso_id
-        ]);
+        ])->first();
 
         return Materia::find($proceso->materia_id);
 
     }
 
     /**
-     * @return Alumno|null
+     * @return mixed
      */
-    public function obtenerAlumno():?Alumno
+    public function obtenerAlumno()
     {
         $proceso = Proceso::where([
            'id' => $this->proceso_id
-        ]);
+        ])->first();
 
-        return Alumno::where([
-           'id' => $proceso->alumno_id
-        ]);
+        return Alumno::find($proceso->alumno_id);
 
     }
 
@@ -65,7 +63,7 @@ class Regularidad extends Model
     {
         $proceso = Proceso::where([
             'id' => $this->proceso_id
-        ]);
+        ])->first();
 
         return $proceso->ciclo_lectivo;
     }

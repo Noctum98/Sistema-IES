@@ -109,20 +109,40 @@ class RegularidadController extends Controller
     public function store(RegularidadesRequest $request)
     {
 
+
         $request->validated();
         $user = Auth::user();
 
+        $regularidad = Regularidad::where([
+            'proceso_id' => $request->get('proceso_id')
+        ])->first();
+        if ($regularidad) {
+            $mensaje = "Ya existe regularidad cargada para {$regularidad->obtenerAlumno()->getApellidosNombresAttribute()} en la materia {$regularidad->obtenerMateria()->nombre}";
+        } else
+        {
         $regularidad = Regularidad::create([
-            'estado_id' => $request->get('estado_id'),
-            'proceso_id' => $request->get('proceso_id'),
-            'operador_id' => $user->id,
-            'observaciones' => $request->get('observaciones'),
-            'fecha_regularidad' => $request->get('fecha_regularidad'),
-            'fecha_vencimiento' => date('d F Y', strtotime($request->get('fecha_regularidad') . " +2 year") ),
-        ]
+                'estado_id' => $request->get('estado_id'),
+                'proceso_id' => $request->get('proceso_id'),
+                'operador_id' => $user->id,
+                'observaciones' => $request->get('observaciones'),
+                'fecha_regularidad' => $request->get('fecha_regularidad'),
+                'fecha_vencimiento' => date('d F Y', strtotime($request->get('fecha_regularidad') . " +2 year")),
+            ]
         );
+        $mensaje = "Regularidad cargada para {$regularidad->obtenerAlumno()->getApellidosNombresAttribute()} en la materia {$regularidad->obtenerMateria()->nombre}";
+        }
 
-        dd($regularidad);
+        $data = [
+            'alumnos' => [$regularidad->obtenerAlumno()],
+            'busqueda' => true,
+            'carrera_id' => $regularidad->obtenerMateria()->carrera(),
+            'materia_id' => $regularidad->obtenerMateria(),
+//            'cohorte' => $request['cohorte'],
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo' => $regularidad->getCicloLectivo()
+        ];
+
+        return view('regularidad.index', $data)->withSuccess($mensaje);
 
     }
 
