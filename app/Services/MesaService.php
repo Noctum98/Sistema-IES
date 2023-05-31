@@ -9,10 +9,13 @@ class MesaService
         if(count($materia->mesas_instancias($instancia->id)) == 1)
         {
             $mesa = $materia->mesa($instancia->id);
+
             foreach($inscripciones as $inscripcion)
             {
                 $inscripcion->update(['mesa_id'=>$mesa->id,'segundo_llamado'=> 0]);
             }
         }
+
+        return $mesa;
     }
 }
