@@ -103,12 +103,11 @@ class RegularidadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param RegularidadesRequest $request
      * @return Response
      */
     public function store(RegularidadesRequest $request)
     {
-
 
         $request->validated();
         $user = Auth::user();
@@ -130,6 +129,10 @@ class RegularidadController extends Controller
             ]
         );
         $mensaje = "Regularidad cargada para {$regularidad->obtenerAlumno()->getApellidosNombresAttribute()} en la materia {$regularidad->obtenerMateria()->nombre}";
+        }
+
+        if($request->get('ciclo_anterior')){
+            $this->procesoAnterior($regularidad, $request->get('ciclo_anterior'));
         }
 
         $data = [
@@ -189,5 +192,39 @@ class RegularidadController extends Controller
     public function destroy(Regularidad $regularidad)
     {
         //
+    }
+
+    private function procesoAnterior(Regularidad $regularidad, $ciclo_anterior)
+    {
+
+        $procesoAnterior = Proceso::where([
+            'alumno_id' => $regularidad->obtenerAlumno()->id,
+            'ciclo_lectivo' => $ciclo_anterior,
+            'materia_id' => $regularidad->obtenerMateria()->materia_id,
+
+        ])->first();
+
+        if(!$procesoAnterior) {
+            $procesoAnterior =  Proceso::create([
+                'alumno_id' => $regularidad->obtenerAlumno()->id,
+                'estado_id' => $regularidad->obtenerEstado()->id,
+                'materia_id' => $regularidad->obtenerMateria()->id,
+                'ciclo_lectivo' => $ciclo_anterior,
+                'operador_id' => $regularidad->operador_id,
+                'cierre' => 1
+            ]);
+        }
+        if(!$procesoAnterior->obtenerRegularidad()){
+            Regularidad::create([
+                    'estado_id' => $regularidad->obtenerEstado()->id,
+                    'proceso_id' => $procesoAnterior->id,
+                    'operador_id' => $regularidad->operador_id,
+                    'observaciones' => $regularidad->observaciones . ' Por Traspaso de regularidad.',
+                    'fecha_regularidad' => date('d F Y', strtotime($ciclo_anterior.'-12-31')),
+                    'fecha_vencimiento' => date('d F Y', strtotime($ciclo_anterior.'-12-31' . " +2 year")),
+
+                ]
+            );
+        }
     }
 }

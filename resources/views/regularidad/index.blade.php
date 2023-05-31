@@ -106,13 +106,13 @@
                                             <i class="fa fa-external-link-alt"></i>
                                             Ver datos alumno
                                         </a>
-                                        <a class="btn btn-sm btn-warning" data-bs-toggle="modal" id="agregarButton"
+                                        <a class="btn btn-sm btn-primary" data-bs-toggle="modal" id="agregarButton"
                                            data-bs-target="#agregarModal"
                                            data-loader="{{$alumno->id}}"
                                            data-attr="{{ route('regularidad.create', ['id'=>$alumno->id,'ciclo_lectivo' => $ciclo_lectivo]) }}">
-                                            <i class="fas fa-edit text-gray-300"></i>
+                                            <i class="fas fa-plus-square text-gray-300"></i>
                                             <i class="fa fa-spinner fa-spin" style="display: none"
-                                               id="loader{{$alumno->id}}"></i>
+                                               id="loader{{$alumno->id}}"></i> Cargar regularidad
                                         </a>
                                     </div>
                                 </td>
