@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Carrera;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Alumno extends Model
 {
@@ -140,7 +138,7 @@ class Alumno extends Model
         ])->latest()->first();
     }
 
-   
+
 
     public function hasProceso($materia_id)
     {
@@ -223,6 +221,30 @@ class Alumno extends Model
             ->orderBy('equivalencias.fecha', 'asc')
             ->get();
     }
+
+    public function getRegularidades()
+    {
+        return Regularidad::select('regularidades.*')
+            ->leftJoin('procesos','regularidades.proceso_id','procesos.id')
+            ->where('procesos.alumno_id',$this->id)
+            ->orderBy('procesos.materia_id','asc')
+            ->get();
+    }
+
+    public function isRegular(int $ciclo_lectivo = null)
+    {
+        $qb = Proceso::select()
+            ->leftJoin('alumnos','procesos.alumno_id','alumnos.id')
+            ->leftJoin('estados','procesos.estado_id','estados.id')
+            ->whereIn('estados.identificador', [1,3,4]);
+        if($ciclo_lectivo){
+            $qb->where('ciclo_lectivo','=', $ciclo_lectivo);
+        }
+
+        return $qb->get();
+    }
+
+
 
     public function materias(): BelongsToMany
     {
