@@ -1,3 +1,5 @@
+@if($mesa)
+
 <button class="mt-2 btn btn-sm btn-secondary button-modal" id="{{$llamado}}" data-bs-toggle="modal" data-bs-target="#libro_folio_{{$llamado}}">
     Libro/Folio
 </button>
@@ -12,7 +14,8 @@ $contador_boton = 1;
     @php
     $contador_boton++;
     @endphp
-@endwhile
+    @endwhile
+@endif
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
@@ -20,6 +23,9 @@ $contador_boton = 1;
                 <th scope="col">Apellido</th>
                 <th scope="col">D.N.I</th>
                 <th scope="col">Teléfono</th>
+                @if(isset($instancia) && $instancia->tipo == 1)
+                <th>Comisión</th>
+                @endif
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
@@ -30,6 +36,10 @@ $contador_boton = 1;
                 <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellidos : $inscripcion->apellidos }}</td>
                 <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
+                @if(isset($instancia) && $instancia->tipo == 1)
+                <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->carrera_id,$inscripcion->materia->año) ?? '-' }}</td>
+
+                @endif
 
                 <td>
                     @include('mesa.modals.dar_baja_mesa')

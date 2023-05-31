@@ -18,7 +18,7 @@
                 @if($materia->mesas)
                 @foreach($materia->mesas as $mesa)
                     @if($mesa->instancia_id == $instancia->id)
-                    @foreach($mesa->mesa_inscriptos as $inscripcion)
+                    @foreach($mesa->mesa_inscriptos_total as $inscripcion)
                     <tr style="cursor:pointer;">
                         <td>{{ $inscripcion->nombres.' '.$inscripcion->apellidos }}</td>
                         <td>{{ $inscripcion->dni }}</td>

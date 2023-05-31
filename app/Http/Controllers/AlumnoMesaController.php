@@ -107,34 +107,44 @@ class AlumnoMesaController extends Controller
         }
     }
 
-    public function vista_inscriptos($materia_id, $instancia_id = null)
+    public function vista_inscriptos($materia_id, $instancia_id)
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
+        $materia = Materia::find($materia_id);
+        $mesa = null;
 
         $inscripciones = MesaAlumno::where([
             'instancia_id' => $instancia->id,
             'materia_id' => $materia_id,
             'estado_baja' => 0
         ])->get();
+
         $inscripciones_baja = MesaAlumno::where([
             'instancia_id' => $instancia->id,
             'materia_id' => $materia_id,
             'estado_baja' => 1
         ])->get();
 
-
-        $procesos = $procesos = Proceso::select('procesos.*')
+        $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
 
-        $materia = Materia::select('nombre', 'id', 'carrera_id')->where('id', $materia_id)->first();
+        if(count($materia->mesas_instancias($instancia->id)) == 1)
+        {
+            $mesa = $materia->mesa($instancia_id);
+            foreach($inscripciones as $inscripcion)
+            {
+                $inscripcion->update(['mesa_id'=>$materia->mesa($instancia->id)->id,'segundo_llamado'=> 0]);
+            }
+        }
 
         return view('mesa.inscripciones_especial', [
             'inscripciones' => $inscripciones,
             'inscripciones_baja' => $inscripciones_baja,
             'materia' => $materia,
             'instancia' => $instancia,
-            'procesos' => $procesos
+            'procesos' => $procesos,
+            'mesa' => $mesa
         ]);
     }
 
@@ -295,7 +305,7 @@ class AlumnoMesaController extends Controller
                 } else {
                     $inscripcion->estado_baja = true;
 
-                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion,$instancia));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
                 }
             } else {
                 if (time() > $inscripcion->mesa->cierre) {
@@ -304,13 +314,12 @@ class AlumnoMesaController extends Controller
                     ]);
                 } else {
                     $inscripcion->estado_baja = true;
-                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion,$instancia));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
                 }
             }
         } else {
             $inscripcion->estado_baja = true;
-            Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion,$instancia));
-
+            Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
         }
         if (Auth::user()) {
             $inscripcion->user_id = Auth::user()->id;
@@ -321,7 +330,7 @@ class AlumnoMesaController extends Controller
         return redirect()->back();
     }
 
-    public function alta_mesa(Request $request,$id)
+    public function alta_mesa(Request $request, $id)
     {
         $inscripcion = MesaAlumno::find($id);
 
@@ -372,7 +381,7 @@ class AlumnoMesaController extends Controller
             }
             $inscripcion->estado_baja = true;
             $inscripcion->update();
-            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'],$instancia,$inscripcion));
+            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
 
             $ruta = 'mesa.inscriptos';
             $id = $inscripcion->materia_id;
@@ -443,7 +452,7 @@ class AlumnoMesaController extends Controller
         return response()->json($data, 200);
     }
 
-    public function moverComision(Request $request,$inscripcion_id)
+    public function moverComision(Request $request, $inscripcion_id)
     {
         $mesaActual = Mesa::find($request['mesa_id']);
         $inscripcion = MesaAlumno::find($inscripcion_id);
@@ -454,17 +463,29 @@ class AlumnoMesaController extends Controller
             'comision_id' => $request['comision_id']
         ])->first();
 
-        if($mesaNueva)
-        {
+        if ($mesaNueva) {
             $inscripcion->mesa_id = $mesaNueva->id;
-            $mensaje = ['alumno_success'=>'Se ha movido correctamente la inscripción de comisión.'];
-        }else{
-            $mensaje = ['alumno_error'=>'No se ha creado una mesa para la comisión seleccionada'];
+            $mensaje = ['alumno_success' => 'Se ha movido correctamente la inscripción de comisión.'];
+        } else {
+            $mensaje = ['alumno_error' => 'No se ha creado una mesa para la comisión seleccionada'];
         }
 
         $inscripcion->update();
 
         return redirect()->back()->with($mensaje);
+    }
+
+    public function asignar_mesa(Request $request)
+    {
+        $mesa_id = $request['mesa_id'];
+        $inscripcion_id = $request['inscripcion_id'];
+
+        $inscripcion = MesaAlumno::find($inscripcion_id);
+
+        $inscripcion->mesa_id = $mesa_id;
+        $inscripcion->update();
+
+        return redirect()->back()->with(['alert_success','Mesa asignada correctamente.']);
     }
 
     // Funciones privadas

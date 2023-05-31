@@ -40,27 +40,24 @@
             <td style="width: 100%;
              border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0; padding: 0"
-                colspan="3"
+                colspan="4"
             >
                 <h5 style="margin: 0; padding: 0; text-align: center" >ACTA VOLANTE DE EXÁMENES</h5>
             </td>
 
         </tr>
         <tr style="margin: 0;">
-            <td style="width: 50%; border: 0.01rem solid white !important;
+            <td colspan="2" style="width: 50%; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0; padding: 0">
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>CARRERA:</u> {{$carrera->nombre}}</h5>
             </td>
-            <td style="width: 50%; border: 0.01rem solid white !important;
-        border-collapse: collapse !important; margin: 0; padding: 0">
-            </td>
-            <td style="width: 50%; border: 0.01rem solid white !important;
+            <td colspan="2" style="width: 50%; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0; padding: 5px">
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>UNIDAD ACADÉMICA:</u> {{$carrera->sede()->first()->nombre}}</span></h5>
             </td>
         </tr>
         <tr style="margin: 0;">
-            <td style="width: 50%; border:none !important; border: 0.01rem solid white !important;
+            <td colspan="2" style="width: 50%; border:none !important; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0; padding: 5px">
                 <h5 style="margin: 0; padding: 0; text-align: center" ><u>Resol. No</u> {{$carrera->resolucion}}</h5>
             </td>
@@ -73,7 +70,7 @@
             </td>
         </tr>
         <tr style="margin: 0;">
-            <td colspan="3" style="width: 50%; border:none !important; border: 0.01rem solid white !important;
+            <td colspan="4" style="width: 50%; border:none !important; border: 0.01rem solid white !important;
         border-collapse: collapse !important; margin: 0; padding: 5px">
                 Espacio / Módulo: <b>{{$materia->nombre}}</b>
             </td>
@@ -122,10 +119,10 @@
         </thead>
         <tbody>
         @php
-        $cant_file = count($mesa->mesa_inscriptos_props($llamado,$orden)->get());
+        $cant_file = count($mesa->mesa_inscriptos_props($llamado,$orden));
         $faltan_file = 26 - $cant_file;
         @endphp
-        @foreach($mesa->mesa_inscriptos_props($llamado,$orden)->get() as $mesa_inscripto)
+        @foreach($mesa->mesa_inscriptos_props($llamado,$orden) as $mesa_inscripto)
             <tr>
                 <td style="font-size: 0.85em">{{ $loop->index+1 }}</td>
                 <td style="font-size: 0.85em">{{mb_strtoupper($mesa_inscripto->apellidos)}}, {{$mesa_inscripto->nombres}}</td>

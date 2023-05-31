@@ -58,12 +58,29 @@ class Materia extends Model
         return $this->hasMany('App\Models\Mesa');
     }
 
-    public function mesa($instancia_id)
+    public function comisiones()
     {
-        return Mesa::where([
+        return $this->belongsToMany(Comision::class);
+    }
+
+    public function getTotalAttribute(): int
+    {
+        return $this->comisiones()->count();
+    }
+    
+    public function mesa($instancia_id,$comision_id = null)
+    {
+        $mesa = Mesa::where([
             'instancia_id' => $instancia_id,
             'materia_id' => $this->id
-        ])->first();
+        ]);
+
+        if($comision_id)
+        {
+            $mesa = $mesa->where('comision_id',$comision_id);
+        }
+
+        return $mesa->first();
     }
 
     public function mesas_instancias($instancia_id)
@@ -89,15 +106,6 @@ class Materia extends Model
         $mesas->orderBy('mesas.instancia_id', 'asc');
 
         return $mesas->get();
-    }
-
-    public function comisiones()
-    {
-        return $this->belongsToMany(Comision::class);
-    }
-    public function getTotalAttribute(): int
-    {
-        return $this->comisiones()->count();
     }
 
     public function totalModulo()

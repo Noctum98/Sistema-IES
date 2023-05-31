@@ -85,12 +85,10 @@ class MesaController extends Controller
 
         $mesa = Mesa::where($dataQuery)->first();
 
-        //dd($mesa);
-
         if ($mesa) {
             $contador_segundo_llamado = 0;
             $contador_primer_llamado = 0;
-            foreach ($mesa->mesa_inscriptos as $inscripcion) {
+            foreach ($mesa->mesa_inscriptos_total as $inscripcion) {
                 if ($inscripcion->segundo_llamado) {
                     if ($inscripcion->estado_baja) {
                         $segundo_llamado_bajas[] = $inscripcion;
@@ -273,6 +271,7 @@ class MesaController extends Controller
         int $orden,
         Comision $comision = null
     ) {
+
 
         $texto_llamado = 'Primer llamado';
 
