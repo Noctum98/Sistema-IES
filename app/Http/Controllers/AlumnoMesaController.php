@@ -17,16 +17,21 @@ use App\Mail\MesaUnsubscribe;
 use App\Models\Alumno;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Services\MesaService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AlumnoMesaController extends Controller
 {
+    protected $mesaService;
 
-    public function __construct()
+    public function __construct(
+        MesaService $mesaService
+    )
     {
         $this->middleware('app.auth');
+        $this->mesaService = $mesaService;
     }
     // Vistas
     public function vista_home($id)
@@ -129,14 +134,7 @@ class AlumnoMesaController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
 
-        if(count($materia->mesas_instancias($instancia->id)) == 1)
-        {
-            $mesa = $materia->mesa($instancia_id);
-            foreach($inscripciones as $inscripcion)
-            {
-                $inscripcion->update(['mesa_id'=>$materia->mesa($instancia->id)->id,'segundo_llamado'=> 0]);
-            }
-        }
+        $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$materia,$instancia);
 
         return view('mesa.inscripciones_especial', [
             'inscripciones' => $inscripciones,
