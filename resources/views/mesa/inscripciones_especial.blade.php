@@ -119,6 +119,7 @@
                     <th>Responsable</th>
                     <th>Fecha de baja</th>
                     <th scope="col">Motivos</th>
+                    <th><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 </tr>
             </thead>
             <tbody>
@@ -133,6 +134,8 @@
                     <td>
                         {{ $inscripcion->motivo_baja }}
                     </td>
+                    <td><a href="{{ route('alta.mesa',$inscripcion->id) }}" class="btn btn-sm btn-info"><i class="fas fa-chevron-circle-up"></i> Dar Alta</a></td>
+
                 </tr>
                 @endforeach
             </tbody>
