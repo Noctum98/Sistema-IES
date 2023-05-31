@@ -77,11 +77,12 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="{{ route('alumno.admin') }}">Administrar</a>
-                        
+
                         @if(Session::has('equivalencias'))
                         <a class="nav-link" href="{{ route('alumno.equivalencias') }}">Equivalencias</a>
+                        <a class="nav-link" href="{{ route('regularidad.index') }}">Regularidades</a>
                         @endif
-                        
+
                     </nav>
                 </div>
                 @endif

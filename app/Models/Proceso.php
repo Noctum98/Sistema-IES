@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Proceso extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'alumno_id',
@@ -45,12 +45,12 @@ class Proceso extends Model
 
     public function estado()
     {
-        return $this->belongsTo(Estados::class,'estado_id');
+        return $this->belongsTo(Estados::class, 'estado_id');
     }
 
     public function etapaCampo(): HasOne
     {
-        return $this->hasOne(EtapaCampo::class,'proceso_id');
+        return $this->hasOne(EtapaCampo::class, 'proceso_id');
     }
 
     public function procesoCalificacion($calificacion_id)
@@ -64,15 +64,14 @@ class Proceso extends Model
 
     public function procesosCalificaciones()
     {
-        $procesosCalificaciones = ProcesoCalificacion::join('procesos','procesos.id','proceso_calificacion.proceso_id')
-        ->join('alumnos','procesos.alumno_id','alumnos.id')
-        ->join('calificaciones','calificaciones.id','proceso_calificacion.calificacion_id')
-        ->where(
-            ['proceso_id' => $this->id]
-        )->where('calificaciones.tipo_id',2)
-        ->orderBy('calificacion_id', 'ASC')
-        ->get()
-        ;
+        $procesosCalificaciones = ProcesoCalificacion::join('procesos', 'procesos.id', 'proceso_calificacion.proceso_id')
+            ->join('alumnos', 'procesos.alumno_id', 'alumnos.id')
+            ->join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
+            ->where(
+                ['proceso_id' => $this->id]
+            )->where('calificaciones.tipo_id', 2)
+            ->orderBy('calificacion_id', 'ASC')
+            ->get();
 
 
         return $procesosCalificaciones;
@@ -80,26 +79,25 @@ class Proceso extends Model
 
     public function calificacionTFI()
     {
-        $calificacion_tfi = ProcesoCalificacion::join('calificaciones','calificaciones.id','proceso_calificacion.calificacion_id')
-        ->where('proceso_id' , $this->id)
-        ->where('calificaciones.materia_id',$this->materia_id)
-        ->where('calificaciones.tipo_id',3)
-        ->first();
+        $calificacion_tfi = ProcesoCalificacion::join('calificaciones', 'calificaciones.id', 'proceso_calificacion.calificacion_id')
+            ->where('proceso_id', $this->id)
+            ->where('calificaciones.materia_id', $this->materia_id)
+            ->where('calificaciones.tipo_id', 3)
+            ->first();
 
         return $calificacion_tfi;
     }
 
     public function cargos()
     {
-        return $this->belongsTo(Cargo::class,'cargo_id');
+        return $this->belongsTo(Cargo::class, 'cargo_id');
     }
 
     public function procesoModular()
     {
         return ProcesoModular::where(
-                ['proceso_id' => $this->id])
-            ->get()
-        ;
+            ['proceso_id' => $this->id])
+            ->get();
     }
 
     public function obtenerProcesoCargo(int $cargo)
@@ -108,5 +106,13 @@ class Proceso extends Model
             'cargo_id' => $cargo,
             'proceso_id' => $this->id
         ])->first();
+    }
+
+    public function obtenerRegularidad()
+    {
+        return Regularidad::where([
+            'proceso_id' => $this->id
+        ])
+            ->first();
     }
 }
