@@ -206,12 +206,17 @@ class Alumno extends Model
             ->get();
     }
 
+    /**
+     * @return mixed
+     */
     public function getRegularidades()
     {
         return Regularidad::select('regularidades.*')
             ->leftJoin('procesos','regularidades.proceso_id','procesos.id')
+            ->leftJoin('materias','materias.id','procesos.materia_id')
             ->where('procesos.alumno_id',$this->id)
-            ->orderBy('procesos.materia_id','asc')
+            ->orderBy('procesos.ciclo_lectivo','desc')
+            ->orderBy('materias.nombre','asc')
             ->get();
     }
 

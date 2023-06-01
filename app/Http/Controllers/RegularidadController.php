@@ -197,12 +197,15 @@ class RegularidadController extends Controller
     private function procesoAnterior(Regularidad $regularidad, $ciclo_anterior)
     {
 
+
         $procesoAnterior = Proceso::where([
             'alumno_id' => $regularidad->obtenerAlumno()->id,
             'ciclo_lectivo' => $ciclo_anterior,
-            'materia_id' => $regularidad->obtenerMateria()->materia_id,
-
+            'materia_id' => $regularidad->obtenerMateria()->id,
         ])->first();
+
+
+
 
         if(!$procesoAnterior) {
             $procesoAnterior =  Proceso::create([
