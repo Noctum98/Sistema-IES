@@ -30,23 +30,44 @@
         @include('mesa.modals.inscribir_alumno')
         @endif
 
+        {{--
         @if(count($inscripciones) > 0)
         <a href="{{ route('mesa.descargar',['id'=>$materia->id,'instancia_id'=>$instancia->id]) }}" class="btn btn-sm btn-success col-md-2 ml-1 mt-1 mb-1">
             <i class="fas fa-download"></i>
             Descargar Inscriptos
         </a>
         @endif
-
-        @if($materia->mesa($instancia->id) && $materia->mesa($instancia->id)->cierre_profesor)
-        <form action="{{route('mesa.abrir_acta',['mesa_id'=>$materia->mesa($instancia->id)->id])}}" method="POST" class="col-md-2 mt-1">
+        --}}
+    </div>
+    @if(count($inscripciones) > 0)
+    @if($mesa)
+        <div class="row">
+        <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="col-md-1 mt-1">
             {{method_field('PUT')}}
             <input type="hidden" name="llamado" value="1" id="llamado">
             <input type="submit" value="Abrir Mesa" class="btn btn-sm btn-warning">
         </form>
-        @endif
 
-    </div>
-    @if(count($inscripciones) > 0)
+
+            <button class="btn btn-sm btn-secondary button-modal col-md-2 mt-1" id="1" data-bs-toggle="modal" data-bs-target="#libro_folio_1">
+                Libro/Folio
+            </button>
+            @include('mesa.modals.libro_folio_1',['llamado'=>1,'folios'=>$mesa->folios()])
+            @php
+                $contador_boton = 1;
+            @endphp
+            @while($contador_boton <= $mesa->folios() ) 
+            <a class="btn btn-sm btn-success mt-1 col-md-2" href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia->carrera_id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => $mesa->comision_id ?? null,'orden'=>$contador_boton]) }}">
+                <i>Folio {{$contador_boton}}</i>
+                <small style="font-size: 0.6em">Descargar Acta Volante</small>
+                </a>
+                @php
+                    $contador_boton++;
+                @endphp
+            @endwhile
+        </div>
+
+    @endif
     <div class="table-responsive">
         <table class="table mt-4">
             <thead class="thead-dark">
@@ -75,19 +96,25 @@
                     <td>{{ $inscripcion->telefono ?? '-'  }}</td>
                     <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->carrera_id,$inscripcion->materia->año) ?? '-' }}</td>
                     <td>
+
                         @if(Session::has('admin') || Session::has('coordinador'))
 
                         <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                             <i class="fas fa-arrow-down"></i>
                             Dar baja
                         </a>
+                        
                         @endif
 
                         <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}"><i class="fas fa-check"></i> Confirmar</button>
                         <button class="btn btn-sm btn-success d-none" id="confirmado-{{$inscripcion->id}}" disabled><i class="fas fa-check"></i>Confirmado </button>
 
                         @if($inscripcion->confirmado)
-                        <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado </button>
+                        <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado</button>
+                        @endif
+                        @if(count($materia->mesas_instancias($instancia->id)) > 1)
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#asignarMesa{{$inscripcion->id}}" id="asignar-{{$inscripcion->id}}" {{ $inscripcion->mesa_id || !$inscripcion->confirmado ? 'disabled':'' }}>Asingar Mesa</button>
+                        @include('mesa.modals.asignar_mesa')
                         @endif
 
                     </td>
@@ -99,50 +126,24 @@
         </table>
     </div>
 
+    @if($materia->getTotalAttribute() > 1)
+        @foreach($materia->mesas_instancias($instancia->id) as $mesa)
+            <h3 class="text-info">Mesa: {{ $mesa->comision->nombre }}</h3>
+            @if(count($mesa->mesa_inscriptos()->get()) > 0)
+            @include('mesa.tablas.tabla_inscripciones',['inscripciones'=>$mesa->mesa_inscriptos,'folios'=>$mesa->folios(),'llamado'=>1])
+            @else
+            <p>No hay alumnos en la mesa.</p>
+            @endif
+        @endforeach
+    @endif
     @else
     <br>
     <h3>No existen inscripciones para esta materia.</h3>
     <br>
     @endif
-
-    @if(count($inscripciones_baja) > 0)
-    <h3 class="text-secondary">Dados de baja</h3>
-
-    <div class="table-responsive">
-        <table class="table mt-4">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">D.N.I</th>
-                    <th scope="col">Teléfono</th>
-                    <th>Responsable</th>
-                    <th>Fecha de baja</th>
-                    <th scope="col">Motivos</th>
-                    <th><i class="fa fa-cog" style="font-size:20px;"></i></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($inscripciones_baja as $inscripcion)
-                <tr style="cursor:pointer;">
-                    <td>{{ $inscripcion->nombres }}</td>
-                    <td>{{ $inscripcion->apellidos }}</td>
-                    <td>{{ $inscripcion->dni }}</td>
-                    <td>{{ $inscripcion->telefono }}</td>
-                    <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
-                    <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
-                    <td>
-                        {{ $inscripcion->motivo_baja }}
-                    </td>
-                    <td><a href="{{ route('alta.mesa',$inscripcion->id) }}" class="btn btn-sm btn-info"><i class="fas fa-chevron-circle-up"></i> Dar Alta</a></td>
-
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    @endif
+    
+    @include('mesa.tablas.tablas_bajas_inscripciones_especiales')
+    
 </div>
 @endsection
 @section('scripts')

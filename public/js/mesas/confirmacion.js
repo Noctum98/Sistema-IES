@@ -18,6 +18,7 @@ $(document).ready(function () {
                 {
                     $("#confirmado-"+response.inscripcion.id).removeClass('d-none');
                     $('#'+response.inscripcion.id).addClass('d-none');
+                    $("#asignar-"+response.inscripcion.id).attr('disabled',false);
                 }
             }
         });

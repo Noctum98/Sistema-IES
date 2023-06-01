@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" class="inscripciones_comision" data-materia_id="{{ $materia->id }}" data-instancia_id="{{$instancia->id}}">
+                <form action="" class="inscripciones_comision" data-materia_id="{{ $materia->id }}" data-instancia_id="{{$instancia->id}}" data-tipo="{{ $instancia->tipo }}">
                     @foreach($materia->comisiones as $key => $comision)
                     <div class="form-check">
                         <input class="form-check-input" name="comision"  type="radio" id="radio{{$comision->id}}" value="{{$comision->id}}" {{$key == 0 ? 'checked' : ''}}>

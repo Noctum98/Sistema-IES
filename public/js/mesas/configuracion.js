@@ -119,8 +119,14 @@ $(document).ready(function () {
             let comision_id = data[0].value;
             let materia_id = $(this).data('materia_id');
             let instancia_id = $(this).data('instancia_id');
+            let tipo = $(this).data('tipo');
 
             //window.location(`/mesas/inscriptos/${instancia_id}/${materia_id}/${comision_id}`);
-            $(location).attr('href', `/mesas/inscriptos/${instancia_id}/${materia_id}/${comision_id}`);
+            if(tipo == 0)
+            {
+                $(location).attr('href', `/mesas/inscriptos/${instancia_id}/${materia_id}/${comision_id}`);
+            }else{
+                $(location).attr('href', `/mesas/inscriptos_especial/${materia_id}/${instancia_id}/${comision_id}`);
+            }
         });
     });

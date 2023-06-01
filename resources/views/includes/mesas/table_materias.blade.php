@@ -55,12 +55,19 @@
             <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
 
             {{--
-            @if($materia->getTotalAttribute() > 0)
-                <a class="btn btn-sm btn-secondary open_modal" data-bs-toggle="modal" data-bs-target="#comisiones{{$materia->id}}">Ver inscriptos</a>
-                @include('includes.mesas.mesa_comision')
+            @if(count($materia->mesas_instancias($instancia->id)) > 0)
+                @if($materia->getTotalAttribute() > 0)
+                    <a class="btn btn-sm btn-secondary open_modal" data-bs-toggle="modal" data-bs-target="#comisiones{{$materia->id}}">Ver inscriptos</a>
+                    @include('includes.mesas.mesa_comision')
+                @else
+                <a href="{{route('mesa.especial.inscriptos',['id'=>$materia->id,'instancia_id'=>$instancia->id,'mesa_id'=>$materia->mesa($instancia->id)->id])}}" class="btn btn-sm btn-secondary">Ver inscriptos</a>
+                @endif
             @else
-            @endif
-            --}}
+            @endif--}}
+
+            
+            
+            
             @include('includes.mesas.config_mesa')
         @endif
 

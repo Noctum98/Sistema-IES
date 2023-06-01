@@ -42,10 +42,16 @@ class Mesa extends Model
         return $this->belongsTo('App\Models\Materia', 'materia_id');
     }
 
-    public function mesa_inscriptos()
+    public function mesa_inscriptos_total()
     {
         return $this->hasMany('App\Models\MesaAlumno');
     }
+
+    public function mesa_inscriptos()
+    {
+        return $this->hasMany('App\Models\MesaAlumno')->where('estado_baja', false);
+    }
+
 
     public function mesa_inscriptos_primero($orden = 1)
     {
@@ -128,7 +134,18 @@ class Mesa extends Model
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
 
-    public function mesa_inscriptos_props(int $prop = null, $orden = 1): HasMany
+    public function folios()
+    {
+        $folios = 1;
+        if ($this->mesa_inscriptos->count() > 25) {
+            $division_primero = $this->mesa_inscriptos->count() / 25;
+            $folios = ceil($division_primero);
+        }
+
+        return $folios;
+    }
+
+    public function mesa_inscriptos_props(int $prop = null, $orden = 1)
     {
         if ($this->instancia->tipo == 0) {
             if ($prop == 1) {
@@ -139,19 +156,15 @@ class Mesa extends Model
             }
             return $this->mesa_inscriptos();
         } else {
-            $inscriptos = MesaAlumno::where([
-                'materia_id' => $this->materia_id,
-                'instancia_id' => $this->instancia_id,
-                'estado_baja' => false
-            ]);
+            $inscriptos = $this->mesa_inscriptos()->where('confirmado',true);
 
             $take = 25;
             $skip = $take * ($orden - 1);
 
             if ($prop == 1) {
-                return $inscriptos->skip($skip)->take($take)->get();
+                return $inscriptos->skip($skip)->take($take)->orderBy('apellidos','ASC')->get();
             }
-            
+
             return $inscriptos->get();
         }
     }
