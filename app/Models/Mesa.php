@@ -60,6 +60,7 @@ class Mesa extends Model
 
         return $this->hasMany('App\Models\MesaAlumno')
             ->where(['estado_baja' => false, 'segundo_llamado' => false])
+            ->orWhere(['estado_baja'=>false,'segundo_llamado'=>null])
             ->skip($skip)
             ->take($take);
     }
