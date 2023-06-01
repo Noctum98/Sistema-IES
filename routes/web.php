@@ -181,6 +181,7 @@ Route::prefix('regularidad')->group(function () {
     Route::get('/', [RegularidadController::class, 'index'])->name('regularidad.index');
     Route::post('/', [RegularidadController::class, 'store'])->name('regularidad.store');
     Route::get('create/{id}/{ciclo_lectivo}', [RegularidadController::class, 'create'])->name('regularidad.create');
+    Route::get('edit/{regularidad}', [RegularidadController::class, 'edit'])->name('regularidad.edit');
     Route::post('update/{regularidad}', [RegularidadController::class, 'update'])->name('regularidad.update');
     Route::get('borrar/{regularidad}', [RegularidadController::class, 'destroy'])->name('regularidad.borrar');
 });

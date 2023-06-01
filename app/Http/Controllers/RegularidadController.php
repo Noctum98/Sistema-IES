@@ -152,7 +152,7 @@ class RegularidadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Regularidad $regularidad
+     * @param Regularidad $regularidad
      * @return Response
      */
     public function show(Regularidad $regularidad)
@@ -163,19 +163,27 @@ class RegularidadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Regularidad $regularidad
-     * @return Response
+     * @param Regularidad $regularidad
+     * @return Application|Factory|View
      */
     public function edit(Regularidad $regularidad)
     {
-        //
+
+        $estados = Estados::all();
+
+
+        return view('regularidad.components.form_editar_regularidad')->with([
+            'estados' => $estados,
+            'regularidad' => $regularidad,
+
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Regularidad $regularidad
+     * @param Regularidad $regularidad
      * @return Response
      */
     public function update(Request $request, Regularidad $regularidad)
@@ -186,7 +194,7 @@ class RegularidadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Regularidad $regularidad
+     * @param Regularidad $regularidad
      * @return Response
      */
     public function destroy(Regularidad $regularidad)
