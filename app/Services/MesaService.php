@@ -14,8 +14,10 @@ class MesaService
             {
                 $inscripcion->update(['mesa_id'=>$mesa->id,'segundo_llamado'=> 0]);
             }
+            
+            return $mesa;
         }
 
-        return $mesa;
+        
     }
 }
