@@ -18,10 +18,13 @@
 
     @include('mesa.modals.alerta_acta_volante')
 
+        @if($mesa->instancia->tipo == 0)
+        <h2 class="text-info">Primer llamado</h2>
+        @else
+        <h2 class="text-info">Inscripciones</h2>
+        @endif
 
-    <h2 class="text-info">Primer llamado</h2>
-
-    @if($mesa->instancia->tipo == 0)
+    
         @if(count($mesa->mesa_inscriptos_primero) > 0)
             @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_primero,'cierre'=>$mesa->cierre_profesor])
         @else
@@ -42,18 +45,7 @@
             <h2 class="text-info">Segundo llamado bajas</h2>
             @include('mesa.acta_volante.tabla_bajas',['inscripciones'=>$mesa->bajas_segundo])
         @endif
-    @else
-        @if(count($inscripciones) > 0)
-            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$inscripciones,'cierre'=>$mesa->cierre_profesor])
-        @else
-            <p>No hay inscripciones.</p>
-        @endif
-
-        @if(count($bajas) > 0)
-            <h2 class="text-info">Bajas</h2>
-            @include('mesa.acta_volante.tabla_bajas',['inscripciones'=>$bajas])
-        @endif
-    @endif
+    
     @endsection
 
     @section('scripts')
