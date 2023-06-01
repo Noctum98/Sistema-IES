@@ -69,16 +69,25 @@ class Materia extends Model
     }
 
     public function comisionesCiclo($ciclo_lectivo)
-    {   
+    {
         return $this->comisiones->where('ciclo_lectivo',$ciclo_lectivo);
     }
 
-    public function mesa($instancia_id)
+
+
+    public function mesa($instancia_id,$comision_id = null)
     {
-        return Mesa::where([
+        $mesa = Mesa::where([
             'instancia_id' => $instancia_id,
             'materia_id' => $this->id
-        ])->first();
+        ]);
+
+        if($comision_id)
+        {
+            $mesa = $mesa->where('comision_id',$comision_id);
+        }
+
+        return $mesa->first();
     }
 
     public function mesas_instancias($instancia_id)
@@ -106,7 +115,7 @@ class Materia extends Model
         return $mesas->get();
     }
 
-    
+
     public function getTotalAttribute(): int
     {
         return $this->comisiones()->count();
