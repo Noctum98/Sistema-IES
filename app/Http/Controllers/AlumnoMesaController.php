@@ -481,6 +481,7 @@ class AlumnoMesaController extends Controller
         $inscripcion = MesaAlumno::find($inscripcion_id);
 
         $inscripcion->mesa_id = $mesa_id;
+        $inscripcion->segundo_llamado = false;
         $inscripcion->update();
 
         return redirect()->back()->with(['alert_success','Mesa asignada correctamente.']);

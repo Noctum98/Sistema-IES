@@ -149,4 +149,5 @@
 @section('scripts')
 <script src="{{ asset('js/mesas/confirmacion.js') }}"></script>
 <script src="{{ asset('js/mesas/inscripcion.js') }}"></script>
+<script src="{{ asset('js/mesas/mesas.js') }}"></script>
 @endsection
