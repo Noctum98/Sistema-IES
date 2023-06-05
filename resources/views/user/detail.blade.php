@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">Usuario {{ $user->nombre.' '.$user->apellido }}</h2>
+        <h2 class="text-info">Usuario {{ $user->nombre.' '.$user->apellido }}</h2>
         <hr>
         @if(@session('carrera_success'))
             <div class="alert alert-success">

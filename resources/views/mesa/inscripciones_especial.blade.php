@@ -130,6 +130,13 @@
         @foreach($materia->mesas_instancias($instancia->id) as $mesa)
             <h3 class="text-info">Mesa: {{ $mesa->comision->nombre }}</h3>
             @if(count($mesa->mesa_inscriptos()->get()) > 0)
+            @if($mesa->cierre_profesor)
+            <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="mt-2">
+                {{method_field('PUT')}}
+                <input type="hidden" name="llamado" value="1" id="llamado">
+                <input type="submit" value="Abrir Acta Volante" class="btn btn-sm btn-warning">
+            </form>
+            @endif
             @include('mesa.tablas.tabla_inscripciones',['inscripciones'=>$mesa->mesa_inscriptos,'folios'=>$mesa->folios(),'llamado'=>1])
             @else
             <p>No hay alumnos en la mesa.</p>

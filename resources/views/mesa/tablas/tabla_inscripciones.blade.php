@@ -1,5 +1,4 @@
 @if($mesa)
-
 <button class="mt-2 btn btn-sm btn-secondary button-modal" id="{{$llamado}}" data-bs-toggle="modal" data-bs-target="#libro_folio_{{$llamado}}">
     Libro/Folio
 </button>
