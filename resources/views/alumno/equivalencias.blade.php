@@ -7,13 +7,13 @@
                     Administrar equivalencias de alumnos <small class="text-dark"> Ciclo lectivo
                         <b>{{$ciclo_lectivo}}</b></small>
                 </h4>
-                <p>Agrega, edita o busca equivalencias de alumnos</p>
+                <p><i>Agrega, edita o busca equivalencias de alumnos</i></p>
             </div>
             <div class="col-4">
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
                             data-bs-toggle="dropdown">
-                        Ciclo lectivo
+                        Ciclo lectivo {{$ciclo_lectivo}}
                     </button>
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
@@ -75,7 +75,7 @@
         </div>
         <div class="col-md-12">
             @if(!$busqueda)
-                <div>Por favor número de documento o apellido del alumno</div>
+                <div>Por favor indique número de documento o apellido del alumno</div>
             @elseif(!empty($alumnos))
                 @if(count($alumnos) > 0)
 
@@ -187,7 +187,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/user/carreras.js') }}"></script>
+    <script src="{{ asset('js/user/carrerasInscripto.js') }}"></script>
     <script src="{{ asset('js/alumnos/filtros.js') }}"></script>
 
 @endsection

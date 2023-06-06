@@ -106,7 +106,7 @@
                                             <i class="fa fa-external-link-alt"></i>
                                             Ver datos alumno
                                         </a>
-                                        <a class="btn btn-sm btn-primary" data-bs-toggle="modal" id="agregarButton"
+                                        <a class="btn btn-sm btn-primary agregarButton" data-bs-toggle="modal"
                                            data-bs-target="#agregarModal"
                                            data-loader="{{$alumno->id}}"
                                            data-attr="{{ route('regularidad.create', ['id'=>$alumno->id,'ciclo_lectivo' => $ciclo_lectivo]) }}">
@@ -158,12 +158,19 @@
                                                 {{--                                                    <i class="fa fa-trash"></i> Clonar--}}
                                                 {{--                                                </a>--}}
                                                 {{--                                                @include('regularidad.components.eliminar_regularidad')--}}
-                                                <a href="!#"
-                                                   {{--                                                   data-bs-toggle="modal" data-bs-target="#edit{{$equivalencia->id}}"--}}
-                                                   class="btn btn-sm btn-outline-success ms-1"
+                                                <a class="btn btn-sm btn-outline-success ms-1 agregarButton"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#agregarModal"
+                                                   data-loader="_regularidad-{{$regularidad->id}}"
+                                                   data-attr="{{ route('regularidad.edit', ['regularidad'=>$regularidad->id]) }}">
+                                                    <i class="fa fa-edit"></i>
+                                                    <i class="fa fa-spinner fa-spin" style="display: none"
+                                                       id="loader_regularidad-{{$regularidad->id}}"></i> Editar
+                                                    regularidad
 
-                                                >
-                                                    <i class="fa fa-edit"></i> Editar
+                                                    {{--                                                   data-bs-toggle="modal" data-bs-target="#edit{{$equivalencia->id}}"--}}
+
+
                                                 </a>
                                                 {{--                                                @include('alumno.modals.editar_equivalencias')--}}
                                             </div>
@@ -255,7 +262,7 @@
 
         </div>
     </div>
-    @include('regularidad.components.agregar_regularidad')
+    @include('regularidad.components.form_modal_regularidad')
 @endsection
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
@@ -263,7 +270,7 @@
 
     <script>
 
-        $(document).on('click', '#agregarButton', function (event) {
+        $(document).on('click', '.agregarButton', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');
             let referencia = $(this).attr('data-loader');
