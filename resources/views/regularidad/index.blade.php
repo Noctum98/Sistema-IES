@@ -199,56 +199,60 @@
                                 </tr>
 
                             @endif
-                            @if (count($alumno->isRegular($ciclo_lectivo)) > 0)
-                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
-                                    <td colspan="6" class="text-center h4">Procesos regulares</td>
-                                </tr>
-                                <tr class="text-center table-bordered border-top-0 border-2">
-                                    <td>Materia<br/>
-                                        <small style="font-size: 0.8em">(Carrera)</small>
-                                    </td>
-                                    <td>
-                                        Condición<br/>
-                                        <small style="font-size: 0.8em">(Cerrada)</small>
-                                    </td>
-                                    <td>Últ. actualización</td>
-                                    <td>Ciclo lectivo</td>
-                                    <td><i class="fa fa-cogs"></i></td>
-                                </tr>
-                                @foreach($alumno->isRegular() as $proceso)
-                                    <tr class="text-center table-bordered border-top-0 border-2">
-                                        <td>
-                                            {{$proceso->materia()->first()->nombre}}<br/>
-                                            <small
-                                                style="font-size: 0.8em">{{$proceso->materia()->first()->carrera()->first()->nombre}}</small>
-                                        </td>
-                                        <td>{{$proceso->estado()->first()->nombre}}
-                                            <br/>
-                                            <small style="font-size: 0.8em">
-                                                @if ($proceso->cierre === 1)
-                                                    <i class='fas fa-check text-success'></i>
-                                                @else
-                                                    <i class='fas fa-times text-danger'></i>
-                                                @endif
-                                            </small>
-                                        </td>
-                                        <td>
 
-                                            <small style="font-size: 0.7em">
-                                                {{date_format(new DateTime($proceso->updated_at),'d-m-Y H:i')}}
-                                            </small>
+                            {{--                            Inicio procesos regulares--}}
 
-                                        </td>
-                                        <td>{{$proceso->ciclo_lectivo}}</td>
-                                        <td>Copiar condición</td>
-                                    </tr>
-                                @endforeach
+{{--                            @if (count($alumno->isRegular($ciclo_lectivo)) > 0)--}}
+{{--                                <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">--}}
+{{--                                    <td colspan="6" class="text-center h4">Procesos regulares</td>--}}
+{{--                                </tr>--}}
+{{--                                <tr class="text-center table-bordered border-top-0 border-2">--}}
+{{--                                    <td>Materia<br/>--}}
+{{--                                        <small style="font-size: 0.8em">(Carrera)</small>--}}
+{{--                                    </td>--}}
+{{--                                    <td>--}}
+{{--                                        Condición<br/>--}}
+{{--                                        <small style="font-size: 0.8em">(Cerrada)</small>--}}
+{{--                                    </td>--}}
+{{--                                    <td>Últ. actualización</td>--}}
+{{--                                    <td>Ciclo lectivo</td>--}}
+{{--                                    <td><i class="fa fa-cogs"></i></td>--}}
+{{--                                </tr>--}}
+{{--                                @foreach($alumno->isRegular() as $proceso)--}}
+{{--                                    <tr class="text-center table-bordered border-top-0 border-2">--}}
+{{--                                        <td>--}}
+{{--                                            {{$proceso->materia()->first()->nombre}}<br/>--}}
+{{--                                            <small--}}
+{{--                                                style="font-size: 0.8em">{{$proceso->materia()->first()->carrera()->first()->nombre}}</small>--}}
+{{--                                        </td>--}}
+{{--                                        <td>{{$proceso->estado()->first()->nombre}}--}}
+{{--                                            <br/>--}}
+{{--                                            <small style="font-size: 0.8em">--}}
+{{--                                                @if ($proceso->cierre === 1)--}}
+{{--                                                    <i class='fas fa-check text-success'></i>--}}
+{{--                                                @else--}}
+{{--                                                    <i class='fas fa-times text-danger'></i>--}}
+{{--                                                @endif--}}
+{{--                                            </small>--}}
+{{--                                        </td>--}}
+{{--                                        <td>--}}
 
-                            @endif
+{{--                                            <small style="font-size: 0.7em">--}}
+{{--                                                {{date_format(new DateTime($proceso->updated_at),'d-m-Y H:i')}}--}}
+{{--                                            </small>--}}
 
-                            <tr>
-                                <td colspan="4"></td>
-                            </tr>
+{{--                                        </td>--}}
+{{--                                        <td>{{$proceso->ciclo_lectivo}}</td>--}}
+{{--                                        <td>Copiar condición</td>--}}
+{{--                                    </tr>--}}
+{{--                                @endforeach--}}
+
+{{--                            @endif--}}
+
+{{--                            <tr>--}}
+{{--                                <td colspan="4"></td>--}}
+{{--                            </tr>--}}
+                            {{--                            Fin procesos regulares--}}
                             </tbody>
                         @endforeach
 

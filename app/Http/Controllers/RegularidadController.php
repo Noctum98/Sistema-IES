@@ -186,9 +186,26 @@ class RegularidadController extends Controller
      * @param Regularidad $regularidad
      * @return Response
      */
-    public function update(Request $request, Regularidad $regularidad)
+    public function update(RegularidadesRequest $request, Regularidad $regularidad)
     {
-        //
+        $request->validated();
+        $user = Auth::user();
+
+        $regularidad->update($request->all());
+        $mensaje = "Regularidad actualizada";
+
+        $data = [
+            'alumnos' => [$regularidad->obtenerAlumno()],
+            'busqueda' => true,
+            'carrera_id' => $regularidad->obtenerMateria()->carrera(),
+            'materia_id' => $regularidad->obtenerMateria(),
+//            'cohorte' => $request['cohorte'],
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo' => $regularidad->getCicloLectivo()
+        ];
+
+        return view('regularidad.index', $data)->withSuccess($mensaje);
+
     }
 
     /**
