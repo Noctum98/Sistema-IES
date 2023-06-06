@@ -46,6 +46,7 @@ class LibrosController extends Controller
 
         if(!$validation->fails())
         {
+            //dd($request['folios']);
             foreach($request['folios'] as $folio)
             {
                 $numero_folio = explode('-',$folio);
@@ -56,7 +57,9 @@ class LibrosController extends Controller
                     'mesa_id' => $request['mesa_id'],
                     'llamado' => $request['llamado']
                 ])->first();
-            
+
+                
+                
 
                 if($libro)
                 {
