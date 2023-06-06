@@ -52,6 +52,7 @@
 
 {{--    </div>--}}
     <hr>
+            <input name="proceso_id" id="proceso_id"  type="hidden" value="{{$regularidad->proceso_id}}"  />
     <sup>*</sup> <small>Campos requeridos</small><br/>
     <input type="submit" value="Guardar" class="btn btn-primary">
 </form>
