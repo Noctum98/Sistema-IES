@@ -297,6 +297,7 @@ Route::prefix('carreras/materias')->group(function () {
 
 
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
+Route::get('/selectMateriasCarreraInscripto/{idCarrera}/{idAlumno}/{ciclo_lectivo}', [MateriaController::class, 'selectMateriasInscripto']);
 Route::get('/selectCargosCarrera/{id}', [CargoController::class, 'selectCargos']);
 Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsuarioByUsernameOrNull']);
 

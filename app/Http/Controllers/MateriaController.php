@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\AlumnosMateriaExport;
 use App\Models\User;
 use App\Services\MateriaService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Estados;
@@ -113,6 +114,24 @@ class MateriaController extends Controller
     public function selectMaterias($id)
     {
         $materias = Materia::select('nombre', 'id')->where('carrera_id', $id)->get();
+
+        return response()->json($materias, 200);
+    }
+
+    /**
+     * @param $idCarrera
+     * @param $idAlumno
+     * @param $ciclo_lectivo
+     * @return JsonResponse
+     */
+    public function selectMateriasInscripto($idCarrera, $idAlumno, $ciclo_lectivo): JsonResponse
+    {
+        $materias = Materia::select('materias.nombre', 'materias.id')
+            ->join('procesos', 'procesos.materia_id', 'materias.id')
+            ->where('materias.carrera_id', $idCarrera)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
+            ->where('procesos.alumno_id', $idAlumno)
+            ->get();
 
         return response()->json($materias, 200);
     }
