@@ -116,6 +116,7 @@ class AsistenciaController extends Controller
         }
         $datos['ciclo_lectivo'] = $ciclo_lectivo;
         $datos['changeCicloLectivo'] = $this->cicloLectivoService->getCicloInicialYActual();
+        $datos['comision_id'] = $comision_id;
 
 
         return view('asistencia.admin',
