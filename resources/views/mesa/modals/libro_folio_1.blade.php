@@ -1,4 +1,4 @@
-<div class="modal fade" id="libro_folio_{{$llamado}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="libro_folio_{{$llamado.$mesa->comision_id ?? ''}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,17 +18,16 @@
                 <form method="POST" action="#" class="mt-3">
                 <div class="form-group">
                     <label for="libro">Libro</label>
-                    <input type="number" name="numero" id="libro-{{$llamado}}" class="form-control" value="{{ $mesa->libro($llamado) ? $mesa->libro($llamado)->numero : '' }}">
+                    <input type="number" name="numero" id="libro-{{$llamado}}{{$mesa->comision_id?'_'.$mesa->comision_id:''}}" class="form-control" value="{{ $mesa->libro($llamado) ? $mesa->libro($llamado)->numero : '' }}">
                 </div>
 
                 @php
                 $contador = 1;
                 @endphp
                 @while($contador <= $folios) 
-
                     <div class="form-group">
                         <label for="folio">Folio {{ $contador }}</label>
-                        <input type="number" name="folios[]" class="form-control folios_{{$llamado}} {{$contador > 1 ? 'readonly_'.$llamado : 'writeonly_'.$llamado}}" id="folio-{{$llamado.'-'.$contador}}" value="{{ $mesa->libro($llamado,$contador) ? $mesa->libro($llamado,$contador)->folio : '' }}">
+                        <input type="number" name="folios[]" class="form-control folios_{{$llamado}}{{$mesa->comision_id ? '_'.$mesa->comision_id : ''}} {{$contador > 1 ? 'readonly_'.$llamado : 'writeonly_'.$llamado}}" id="folio-{{$llamado.'-'.$contador}}" value="{{ $mesa->libro($llamado,$contador) ? $mesa->libro($llamado,$contador)->folio : '' }}">
                     </div>
 
 
@@ -36,11 +35,11 @@
                     $contador++;
                     @endphp
                 @endwhile
-                    <input type="submit" class="btn btn-success btn-guardar" data-folio="{{ $llamado.'-'.$contador }}" value="Guardar" {{ !$mesa->cierre_profesor ? 'disabled' : '' }}>
+                    <input type="submit" class="btn btn-success btn-guardar" data-folio="{{ $llamado.'-'.$contador }}" data-comision_id="{{ $mesa->comision_id }}" data-mesa_id="{{$mesa->id}}" value="Guardar" {{ !$mesa->cierre_profesor ? 'disabled' : '' }}>
                     <span class="d-none" id="spin-{{$llamado}}">
                         <i class="fa fa-spinner fa-spin"></i>
                     </span>
-                    <span class="d-none text-success" id="check-{{$llamado}}">
+                    <span class="d-none text-success" id="check-{{$llamado}}{{$mesa->comision_id?'_'.$mesa->comision_id:''}}">
                         <i class="fas fa-check"></i>
                     </span>
                     </form>
