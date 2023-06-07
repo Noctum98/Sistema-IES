@@ -42,14 +42,35 @@ $(document).ready(function () {
         let data = $(this).data('folio').split('-');
         let llamado = data[0];
         let orden = data[1];
-        let libro = $("#libro-" + llamado).val();
-        let mesa_id = $("#mesa_id").val();
-        $("#spin-" + llamado).removeClass('d-none');
+        let comision_id = $(this).data('comision_id');
 
-        if (!$("#check-" + llamado).hasClass('d-none')) {
-            $("#check-" + llamado).addClass('d-none');
+        let mesa_id = $(this).data('mesa_id');
+        var spinner = "#spin-"+llamado;
+        var check = "#check-" + llamado;
+
+        if(comision_id)
+        {
+            spinner = spinner + '_' + comision_id;
+            check = check + '_' + comision_id;
         }
-        let folios = $(".folios_"+llamado).get();
+        $(spinner).removeClass('d-none');
+
+        if (!$(check).hasClass('d-none')) {
+            $(check).addClass('d-none');
+        }
+
+        if(comision_id)
+        {
+            var libro = $("#libro-" + llamado+"_"+comision_id).val();
+            var folios = $(".folios_"+llamado+"_"+comision_id).get();
+
+        }else{
+            var libro = $("#libro-" + llamado).val();
+            var folios = $(".folios_"+llamado).get();
+        }
+        console.log(folios);
+
+        
 
         let folios_array = [];
 
@@ -73,9 +94,8 @@ $(document).ready(function () {
             url: url,
             data: data_json,
             success: function (response) {
-                console.log(response);
-                $("#spin-" + llamado).addClass('d-none');
-                $("#check-" + llamado).removeClass('d-none');
+                $(spinner).addClass('d-none');
+                $(check).removeClass('d-none');
             }
         });
         
