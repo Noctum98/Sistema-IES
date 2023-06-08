@@ -179,6 +179,7 @@ Route::prefix('proceso-modular')->group(function () {
 
 Route::prefix('regularidad')->group(function () {
     Route::get('/', [RegularidadController::class, 'index'])->name('regularidad.index');
+    Route::get('/anteriores', [RegularidadController::class, 'anteriores'])->name('regularidad.anteriores');
     Route::post('/', [RegularidadController::class, 'store'])->name('regularidad.store');
     Route::get('create/{id}/{ciclo_lectivo}', [RegularidadController::class, 'create'])->name('regularidad.create');
     Route::get('edit/{regularidad}', [RegularidadController::class, 'edit'])->name('regularidad.edit');
