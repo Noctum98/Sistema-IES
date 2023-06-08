@@ -40,28 +40,8 @@
 		@endif
 		<div class="col-md-12 row mb-3">
 			<div class="col-md-4">
-				<!---
-                    <form method="GET" action="#" id="buscador-alumnos" class="form-inline">
-                        <div class="row">
-                            <div class="input-group">
-{{--                                <div class="input-group-append">--}}
-{{--                                </div>--}}
-                                <input type="text" id="busqueda" class="form-control" placeholder="Buscar alumno"
-                                       aria-describedby="inputGroupPrepend2"
-                                >
-                                <button class="input-group-text" id="inputGroupPrepend2" type="submit">
-                                    <i class="fa fa-search text-info"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-				<div class="col-md-3">
 
-				</div>
-				-->
 				<a href="{{ route('excel.alumnosDatos',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="d-block btn btn-secondary mb-2"><i class="fas fa-download"></i> Descargar Datos</a>
-
 			</div>
 			<div id="accordion">
 				<div class="card">
@@ -73,7 +53,14 @@
 
 					<div id="collapseOne" class="collapse show" aria-bs-labelledby="headingOne" data-bs-parent="#accordion">
 						<div class="card-body">
+
+							@foreach($carrera->comisiones(1) as $comision)
+							<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>1,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos {{ $comision->nombre }}</a>
+							@endforeach
+
 							<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>1,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>
+
+						
 							<table class="table">
 								<thead>
 									<tr>
@@ -124,6 +111,9 @@
 					</div>
 					<div id="collapseTwo" class="collapse" aria-bs-labelledby="headingTwo" data-bs-parent="#accordion">
 						<div class="card-body">
+						@foreach($carrera->comisiones(2) as $comision)
+							<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>2,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos {{ $comision->nombre }}</a>
+							@endforeach
 							<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>2,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>
 							<table class="table">
 								<thead>
@@ -175,6 +165,9 @@
 					</div>
 					<div id="collapseThree" class="collapse" aria-bs-labelledby="headingThree" data-bs-parent="#accordion">
 						<div class="card-body">
+						@foreach($carrera->comisiones(3) as $comision)
+							<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>3,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos {{ $comision->nombre }}</a>
+							@endforeach
 							<a href="{{ route('excel.alumnosAño',['carrera_id'=>$carrera->id,'year'=>3,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-success mb-2"><i class="fas fa-download"></i> Descargar Alumnos</a>
 							<table class="table">
 								<thead>
