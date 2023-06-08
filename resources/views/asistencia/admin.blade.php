@@ -16,6 +16,8 @@
                     @endif
                 </h4>
             </div>
+            
+            @if(!$comision)
             <div class="col-4">
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
@@ -42,6 +44,7 @@
                     </ul>
                 </div>
             </div>
+            @endif
         </div>
         <div class="col-md-12">
             <br>
