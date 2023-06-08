@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\CargaHorariaController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
@@ -79,6 +80,16 @@ Route::get('/', function () {
         return view('auth.login');
     }
 });
+
+// Rutas de Personal
+Route::prefix('carga-horaria')->group(function () {
+    // Vistas
+    Route::get('/', [CargaHorariaController::class, 'index'])->name('cargaHoraria.listado');
+    Route::get('crear', [CargaHorariaController::class, 'create'])->name('cargaHoraria.crear');
+    Route::get('editar/{id}', [CargaHorariaController::class, 'edit'])->name('cargaHoraria.editar');
+    Route::get('composicion/{id}', [CargaHorariaController::class, 'show'])->name('cargaHoraria.ver');
+});
+
 
 
 // Rutas de comisiones
@@ -605,5 +616,5 @@ Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 
 Route::get('/prueba-post-size', function () {
-    
+
 });

@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCargaHorariaRequest;
 use App\Http\Requests\UpdateCargaHorariaRequest;
 use App\Models\CargaHoraria;
+use App\Models\Personal;
+use App\Models\User;
 
 class CargaHorariaController extends Controller
 {
+
+
+    function __construct()
+    {
+        $this->middleware('app.admin');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,11 @@ class CargaHorariaController extends Controller
      */
     public function index()
     {
-        //
+        $personal = User::usersPersonal();
+
+        return view('cargaHoraria.listado', [
+            'personal' => $personal
+        ]);
     }
 
     /**
@@ -45,9 +58,13 @@ class CargaHorariaController extends Controller
      * @param  \App\Models\CargaHoraria  $cargaHoraria
      * @return \Illuminate\Http\Response
      */
-    public function show(CargaHoraria $cargaHoraria)
+    public function show(User $persona)
     {
-        //
+        $cargaHoraria = CargaHoraria::where([
+            'profesor_id' => $persona->id
+        ])->first();
+
+        dd($cargaHoraria);
     }
 
     /**
