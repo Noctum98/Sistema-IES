@@ -180,16 +180,27 @@ class Alumno extends Model
 
     // Functiones Estáticas
 
-    public static function alumnosAño($year, $carrera_id, $ciclo_lectivo)
+    public static function alumnosAño($year, $carrera_id, $ciclo_lectivo,$comision_id)
     {
-        return Alumno::whereHas('alumno_carrera', function ($query) use ($year, $carrera_id, $ciclo_lectivo) {
+        $alumnos =  Alumno::whereHas('alumno_carrera', function ($query) use ($year, $carrera_id, $ciclo_lectivo) {
             $query->where('año', $year)
                 ->where('carrera_id', $carrera_id)
                 ->where('ciclo_lectivo', $ciclo_lectivo);
-        })
-            ->where('aprobado', true)
-            ->orderBy('alumnos.apellidos', 'asc')
-            ->get();
+        });
+
+        if($comision_id)
+        {
+            $alumnos = $alumnos->whereHas('comisiones',function($query) use ($comision_id){
+                $query->where('comisiones.id',$comision_id);
+            });
+        }
+
+
+        $alumnos = $alumnos->where('aprobado', true)
+        ->orderBy('alumnos.apellidos', 'asc')
+        ->get();
+
+        return $alumnos;
     }
 
     public function getApellidosNombresAttribute()
