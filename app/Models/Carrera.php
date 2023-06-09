@@ -93,4 +93,11 @@ class Carrera extends Model
 //            ->orderBy('materias.nombre','asc')
             ->get();
     }
+
+    public function materiasInscripto($idAlumno)
+    {
+
+
+
+    }
 }

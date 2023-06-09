@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Models\Equivalencias;
 use App\Models\Materia;
+use App\Request\EquivalenciasRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,15 @@ use Illuminate\Validation\ValidationException;
 
 class EquivalenciasController extends Controller
 {
+
+
+    function __construct()
+    {
+        $this->middleware('app.auth');
+        $this->middleware('app.roles:admin-equivalencias');
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +46,6 @@ class EquivalenciasController extends Controller
             return redirect()->back();
         }
 
-
     }
 
     /**
@@ -51,9 +60,9 @@ class EquivalenciasController extends Controller
         $validate = $this->validate($request, [
             'alumno_id' => ['required'],
             'materia_id' => ['required'],
-            'nota' => ['required'],
-            'fecha' => ['required'],
-            'resolution' => ['required'],
+            'nota' => 'required|numeric|min:0|max:10',
+            'resolution' => 'required|string|min:2',
+            'fecha' => ['required']
         ]);
 
         $alumno = Alumno::find($request['alumno_id']);
@@ -75,7 +84,7 @@ class EquivalenciasController extends Controller
             ->first();
 
         if ($equivalencia) {
-            $mensaje =  "El alumno ya tiene equivalencias en la materia: : {$materia->nombre}";
+            $mensaje = "El alumno ya tiene equivalencias en la materia: : {$materia->nombre}";
             return redirect()->route('alumno.equivalencias', $alumno->dni)->withErrors($mensaje);
         }
         $request['user_id'] = Auth::user()->id;
@@ -96,7 +105,7 @@ class EquivalenciasController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Equivalencias $equivalencias
+     * @param Equivalencias $equivalencias
      * @return Response
      */
     public function show(Equivalencias $equivalencias)
@@ -107,7 +116,7 @@ class EquivalenciasController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Equivalencias $equivalencias
+     * @param Equivalencias $equivalencias
      * @return Response
      */
     public function edit(Equivalencias $equivalencias)
@@ -118,23 +127,44 @@ class EquivalenciasController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param \App\Models\Equivalencias $equivalencias
-     * @return Response
+     * @param Equivalencias $equivalencia
+     * @throws ValidationException
      */
-    public function update(Request $request, Equivalencias $equivalencias)
+    public function update(Request $request, Equivalencias $equivalencia)
     {
-        //
+        $request->validate([
+            'nota' => 'required|numeric|min:0|max:10',
+            'resolution' => 'required|string|min:2',
+            'fecha' => 'required',
+        ]);
+
+        try {
+            $equivalencia->update($request->all());
+            return redirect()->route('alumno.equivalencias', $equivalencia->getAlumno()->dni)->withSuccess("Se ha editado la equivalencia del alumno correctamente: {$equivalencia->nombreMateria()}");
+        }
+        catch (\Exception $exception){
+            return redirect()->route('alumno.equivalencias', $equivalencia->alumno_id)->withErrors("No se pudo editar la equivalencia del alumno: {$exception->getMessage()}");
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Equivalencias $equivalencias
-     * @return Response
+     * @param Equivalencias $equivalencia
+     * @return mixed
      */
-    public function destroy(Equivalencias $equivalencias)
+    public function destroy(Equivalencias $equivalencia)
     {
-        //
+        $alumno = $equivalencia->getAlumno();
+
+        $materia = $equivalencia->nombreMateria();
+
+        $equivalencia->user_id = Auth::user();
+
+        $equivalencia->delete();
+
+        return redirect()->route('alumno.equivalencias', $alumno->dni)->withSuccess("Se ha eliminado la equivalencia al alumno correctamente: {$materia}");
+
     }
 }
