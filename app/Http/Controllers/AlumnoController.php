@@ -43,7 +43,6 @@ class AlumnoController extends Controller
     // Vistas
     public function vista_admin(Request $request)
     {
-//        dd(46);
         $user = Auth::user();
         $alumnos = [];
         $sedes = null;

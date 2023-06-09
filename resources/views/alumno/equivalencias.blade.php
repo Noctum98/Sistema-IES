@@ -7,13 +7,13 @@
                     Administrar equivalencias de alumnos <small class="text-dark"> Ciclo lectivo
                         <b>{{$ciclo_lectivo}}</b></small>
                 </h4>
-                <p>Agrega, edita o busca equivalencias de alumnos</p>
+                <p><i>Agrega, edita o busca equivalencias de alumnos</i></p>
             </div>
             <div class="col-4">
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
                             data-bs-toggle="dropdown">
-                        Ciclo lectivo
+                        Ciclo lectivo {{$ciclo_lectivo}}
                     </button>
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
@@ -75,7 +75,7 @@
         </div>
         <div class="col-md-12">
             @if(!$busqueda)
-                <div>Por favor número de documento o apellido del alumno</div>
+                <div>Por favor indique número de documento o apellido del alumno</div>
             @elseif(!empty($alumnos))
                 @if(count($alumnos) > 0)
 
@@ -100,15 +100,18 @@
                                 <td>{{ $alumno->email }}</td>
                                 <td>{{ $alumno->cohorte ?? '-' }}</td>
                                 <td>
-                                    {{--                                    <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"--}}
-                                    {{--                                       class="btn btn-sm btn-secondary">--}}
-                                    {{--                                        Agregar Equivalencia--}}
-                                    {{--                                    </a>--}}
-                                    <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#equivalenciasModal{{$alumno->id}}">
-                                        Agregar Equivalencia
-                                    </button>
-                                    @include('alumno.modals.admin_equivalencias')
+                                    <div class="btn-group" role="group" aria-label="Botones de acción">
+                                        <a href="{{ route('alumno.detalle',['id'=>$alumno->id, 'ciclo_lectivo' => $ciclo_lectivo]) }}"
+                                           class="btn btn-sm btn-link ">
+                                            <i class="fa fa-external-link-alt"></i>
+                                            Ver datos alumno
+                                        </a>
+                                        <button type="button" class="ms-2 btn btn-sm btn-info" data-bs-toggle="modal"
+                                                data-bs-target="#equivalenciasModal{{$alumno->id}}">
+                                            Agregar Equivalencia
+                                        </button>
+                                        @include('alumno.modals.admin_equivalencias')
+                                    </div>
                                 </td>
                             </tr>
                             @if (count($alumno->getEquivalencias()) > 0)
@@ -119,22 +122,41 @@
                                 </tr>
                                 <tr class="table-responsive-md text-center table-bordered border-top-0 border-2">
 
-                                    <td>Materia</td>
+                                    <td>Materia/<br/><small>(Carrera)</small></td>
                                     <td>Nota</td>
                                     <td>Fecha</td>
-                                    <td>Resolución</td>
+                                    <td>N° Resolución</td>
+                                    <td><i class="fa fa-cogs"></i></td>
                                 </tr>
                                 @foreach ($alumno->getEquivalencias() as $equivalencia)
                                     <tr class="table-responsive-md text-center table-bordered border-top-0 border-2 table-striped">
 
-{{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
+                                        {{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
                                         <td>{{$equivalencia->nombreMateria()}}</td>
                                         <td>{{$equivalencia->nota}}</td>
                                         <td>{{$equivalencia->fecha}}</td>
                                         <td>{{$equivalencia->resolution}}</td>
+                                        <td>
+                                            <div class="btn-group" role="group" aria-label="Botones de acción">
+                                                <a data-bs-toggle="modal" data-bs-target="#eliminarEquivalenciaModal{{$equivalencia->id}}"
+                                                   class="btn btn-sm btn-danger ps-1"
+                                                >
+                                                    <i class="fa fa-trash"></i> Borrar
+                                                </a>
+                                                @include('alumno.modals.eliminar_equivalencias')
+                                                <a href="!#" data-bs-toggle="modal"
+                                                   class="btn btn-sm btn-outline-success ms-1"
+                                                   data-bs-target="#edit{{$equivalencia->id}}"
+                                                >
+                                                    <i class="fa fa-edit"></i> Editar
+                                                </a>
+                                                @include('alumno.modals.editar_equivalencias')
+                                            </div>
+
+
+                                        </td>
                                     </tr>
                                 @endforeach
-
 
                             @else
                                 <tr>
@@ -148,7 +170,7 @@
 
                             @endif
                             <tr>
-                                <td colspan="4" ></td>
+                                <td colspan="4"></td>
                             </tr>
                             </tbody>
                         @endforeach
@@ -165,7 +187,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/user/carreras.js') }}"></script>
+    <script src="{{ asset('js/user/carrerasInscripto.js') }}"></script>
     <script src="{{ asset('js/alumnos/filtros.js') }}"></script>
 
 @endsection
