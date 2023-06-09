@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Carrera;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Alumno extends Model
 {
@@ -142,8 +144,7 @@ class Alumno extends Model
 
     public function hasProceso($materia_id)
     {
-        if($this->procesos->where('materia_id',$materia_id)->where('ciclo_lectivo',date('Y'))->first())
-        {
+        if ($this->procesos->where('materia_id', $materia_id)->where('ciclo_lectivo', date('Y'))->first()) {
             return true;
         }
         return false;
@@ -151,7 +152,7 @@ class Alumno extends Model
 
     public function hasComision($comision_id)
     {
-        if($this->comisiones->where('id',$comision_id)->first()){
+        if ($this->comisiones->where('id', $comision_id)->first()) {
             return true;
         }
         return false;
@@ -182,16 +183,27 @@ class Alumno extends Model
 
     // Functiones Estáticas
 
-    public static function alumnosAño($year, $carrera_id, $ciclo_lectivo)
+    public static function alumnosAño($year, $carrera_id, $ciclo_lectivo,$comision_id)
     {
-        return Alumno::whereHas('alumno_carrera', function($query) use ($year, $carrera_id, $ciclo_lectivo) {
+        $alumnos =  Alumno::whereHas('alumno_carrera', function($query) use ($year, $carrera_id, $ciclo_lectivo) {
             $query->where('año', $year)
                   ->where('carrera_id', $carrera_id)
                   ->where('ciclo_lectivo', $ciclo_lectivo);
-        })
-            ->where('aprobado', true)
-            ->orderBy('alumnos.apellidos', 'asc')
-            ->get();
+        });
+
+        if($comision_id)
+        {
+            $alumnos = $alumnos->whereHas('comisiones',function($query) use ($comision_id){
+                $query->where('comisiones.id',$comision_id);
+            });
+        }
+
+
+        $alumnos = $alumnos->where('aprobado', true)
+        ->orderBy('alumnos.apellidos', 'asc')
+        ->get();
+
+        return $alumnos;
     }
 
     public function getApellidosNombresAttribute()

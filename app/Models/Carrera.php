@@ -49,9 +49,9 @@ class Carrera extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    public function comisiones(): HasMany
+    public function comisiones($año)
     {
-        return $this->hasMany(Comision::class,'carrera_id');
+        return Comision::where(['carrera_id'=>$this->id,'año' => $año])->get();
     }
 
     public function hasMaterias($año){
