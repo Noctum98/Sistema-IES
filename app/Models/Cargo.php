@@ -35,6 +35,15 @@ class Cargo extends Model
         return $this->belongsToMany(Materia::class)->withTimestamps();
     }
 
+    public function hasMateria($materia_id): bool
+    {
+
+        if ($this->materias()->where('materias.id', $materia_id)->first()) {
+            return true;
+        }
+        return false;
+    }
+
     public function carrera()
     {
         return $this->belongsTo('App\Models\Carrera','carrera_id');

@@ -44,7 +44,7 @@ class CargaHorariaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCargaHorariaRequest  $request
+     * @param \App\Http\Requests\StoreCargaHorariaRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCargaHorariaRequest $request)
@@ -55,7 +55,7 @@ class CargaHorariaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CargaHoraria  $cargaHoraria
+     * @param \App\Models\CargaHoraria $cargaHoraria
      * @return \Illuminate\Http\Response
      */
     public function show(User $persona)
@@ -64,13 +64,17 @@ class CargaHorariaController extends Controller
             'profesor_id' => $persona->id
         ])->first();
 
-        dd($cargaHoraria);
+        return view('cargaHoraria.ver', [
+            'cargaHoraria' => $cargaHoraria,
+            'user' => $persona
+        ]);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CargaHoraria  $cargaHoraria
+     * @param \App\Models\CargaHoraria $cargaHoraria
      * @return \Illuminate\Http\Response
      */
     public function edit(CargaHoraria $cargaHoraria)
@@ -81,8 +85,8 @@ class CargaHorariaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCargaHorariaRequest  $request
-     * @param  \App\Models\CargaHoraria  $cargaHoraria
+     * @param \App\Http\Requests\UpdateCargaHorariaRequest $request
+     * @param \App\Models\CargaHoraria $cargaHoraria
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCargaHorariaRequest $request, CargaHoraria $cargaHoraria)
@@ -93,7 +97,7 @@ class CargaHorariaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CargaHoraria  $cargaHoraria
+     * @param \App\Models\CargaHoraria $cargaHoraria
      * @return \Illuminate\Http\Response
      */
     public function destroy(CargaHoraria $cargaHoraria)
