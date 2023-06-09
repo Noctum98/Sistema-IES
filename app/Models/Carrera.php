@@ -48,6 +48,11 @@ class Carrera extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
+    public function comisiones($año)
+    {
+        return Comision::where(['carrera_id'=>$this->id,'año' => $año])->get();
+    }
+
     public function hasMaterias($año){
         $materias = $this->materias->where('año',$año)->count();
 
