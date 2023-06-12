@@ -114,7 +114,7 @@ class ComisionController extends Controller
                 $recursantes = $recursantes->where('regularidad','!=','regular_segundo')->orderBy('apellidos')->get();
             }
         }
-        
+
         // dd($recursantes);
         return view('comision.detail',[
             'comision' => $comision,
@@ -202,7 +202,7 @@ class ComisionController extends Controller
         $comision->delete();
 
         return redirect()->route('comisiones.ver',$comision->carrera_id)->with(
-            'comision_eliminada','La comisión se eliminó con exito!'
+            'comision_eliminada','La comisión se eliminó con éxito'
         );
     }
 

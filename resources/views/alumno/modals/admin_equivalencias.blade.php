@@ -10,8 +10,8 @@
                 <form action="{{ route('equivalencias_store') }}" method="POST">
                     <div class="form-group">
                         <label for="carreras">Carreras</label>
-                        <select name="carrera" id="carreras" class="form-select carreras">
-
+                        <select name="carrera" id="carreras" class="form-select carreras" data-alumno="{{$alumno->id}}"
+                                data-lectivo="{{$ciclo_lectivo}}">
 
                             <option selected='selected' value=''> - Seleccione Carrera -</option>
                             @foreach($alumno->carreras()->get() as $carrera)
@@ -34,7 +34,7 @@
                         <input type="number" name="nota" class="form-control" required/>
                     </div>
                     <div class="form-group">
-                        <label for="resolution">Resolución</label>
+                        <label for="resolution">N° Resolución</label>
                         <input type="text" name="resolution" class="form-control" required/>
                     </div>
                     <div class="form-group">

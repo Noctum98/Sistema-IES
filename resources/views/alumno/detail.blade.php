@@ -1,9 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container alumno">
-	<h2 class="h1 text-info">
+	<h3 class="text-info">
 		Datos de {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
-	</h2>
+	</h3>
 	<hr>
 	<div class="col-md-12">
 		@if(@session('mensaje_exitoso'))
@@ -36,7 +36,7 @@
 		<div class="row col-md-12">
 			<ul class="datos-generales col-md-6">
 				<li>
-					<h2 class="text-info"><u>Datos Generales</u></h2>
+					<h4 class="text-info"><u>Datos Generales</u></h4>
 				</li>
 				<li><strong>Email:</strong> {{ $alumno->email ? : 'Sin Asignar' }}</li>
 				<li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha ? : 'Sin Asignar' }}</li>
@@ -49,7 +49,7 @@
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
-					<h2 class="text-info"><u>Datos Domicilio</u></h2>
+					<h4 class="text-info"><u>Datos Domicilio</u></h4>
 				</li>
 				<li><strong>Localidad:</strong> {{ $alumno->localidad ? : 'Sin Asignar' }}</li>
 				<li><strong>Calle: </strong> {{ $alumno->calle ? : 'Sin Asignar' }}</li>
@@ -62,7 +62,7 @@
 
 			<ul class="datos-domicilio col-md-6">
 				<li>
-					<h2 class="text-info"><u>Datos Personales</u></h2>
+					<h4 class="text-info"><u>Datos Personales</u></h4>
 				</li>
 				<li><strong>Estado Civil:</strong> {{ ucwords($alumno->estado_civil? :'Sin Asignar') }}</li>
 				<li><strong>Ocupación: </strong> {{ ucwords($alumno->ocupacion? :'Sin Asignar') }}</li>
@@ -87,7 +87,7 @@
 
 			<ul class="datos-academicos col-md-6">
 				<li>
-					<h2 class="text-info"><u>Datos de Inscripción</u></h2>
+					<h4 class="text-info"><u>Datos de Inscripción</u></h4>
 				</li>
 				<li> <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }} </li>
 				<li> <strong>Cohorte: </strong>{{ $alumno->cohorte?? 'No indicada'}} </li>
