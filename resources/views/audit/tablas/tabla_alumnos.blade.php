@@ -10,9 +10,23 @@
     <tbody>
         @foreach ($registros as $registro)
         <tr>
-            <th><a href="{{ route('alumno.detalle',$registro->proceso->alumno_id) }}"> {{$registro->proceso->alumno->dni}} </a></th>
+            <th>
+                @if(!$registro->deleted_at)
+                <a href="{{ route('alumno.detalle',$registro->id) }}"> 
+                    {{$registro->dni}} 
+                </a>
+                @else
+                {{$registro->dni}} 
+                @endif
+            </th>
             <td> {{ $registro->changes == 'CREATE' || $registro->changes == 'DELETE' ? $registro->changes : 'UPDATE' }} </td>
-            <td> {{ $registro->user->apellido.' '.$registro->user->nombre }} </td>
+            <td> 
+                @if($registro->user)
+                {{ $registro->user->apellido.' '.$registro->user->nombre }} 
+                @else
+                Usuario Eliminado
+                @endif
+            </td>
 
             <td> 
                 @if($registro->changes != 'CREATE' && $registro->changes != 'DELETE')
