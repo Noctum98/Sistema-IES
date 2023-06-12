@@ -6,6 +6,7 @@
             <th>Carrera</th>
             <th>Materia</th>
             <th>Usuario Responsable</th>
+            <th>Fecha</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
                 Usuario eliminado
                 @endif
             </td>
+            <td>{{ $registro->updated_at->format('d-m-Y H:i') }}</td>
         </tr>
         @endforeach
     </tbody>

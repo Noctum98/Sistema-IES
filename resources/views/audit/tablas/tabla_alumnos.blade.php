@@ -5,6 +5,8 @@
             <th>Cambios</th>
             <th>Usuario Responsable</th>
             <th>Acción</th>
+            <th>Fecha</th>
+
         </tr>
     </thead>
     <tbody>
@@ -35,6 +37,8 @@
                 -
                 @endif 
             </td>
+            <td>{{ $registro->updated_at->format('d-m-Y H:i') }}</td>
+
         </tr>
         @endforeach
     </tbody>

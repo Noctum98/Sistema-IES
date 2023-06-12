@@ -33,7 +33,7 @@ class AuditController extends Controller
             $audits = $audits->where('changes','CREATE')->orWhere('changes','DELETE');
         }
 
-        $audits = $audits->paginate(20);
+        $audits = $audits->orderBy('updated_at','DESC')->paginate(20);
 
         return view('audit.show',[
             'tabla' => $tabla,
