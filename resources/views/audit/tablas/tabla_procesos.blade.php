@@ -15,7 +15,13 @@
             <td>{{ $registro->changes == 'CREATE' || $registro->changes == 'DELETE' ? $registro->changes : 'UPDATE' }}</td>
             <td>{{ $registro->proceso->materia->carrera->nombre }}</td>
             <td> {{ $registro->proceso->materia->nombre }} </td>
-            <td>{{ $registro->user->apellido.' '.$registro->user->nombre }}</td>
+            <td>
+                @if($registro->user)
+                {{ $registro->user->apellido.' '.$registro->user->nombre }}
+                @else
+                Usuario eliminado
+                @endif
+            </td>
         </tr>
         @endforeach
     </tbody>
