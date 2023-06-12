@@ -2,9 +2,9 @@
     <thead class="thead-dark">
         <tr>
             <th>D.N.I</th>
-            <th>Acción</th>
             <th>Cambios</th>
             <th>Usuario Responsable</th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
@@ -12,11 +12,11 @@
         <tr>
             <th>
                 @if(!$registro->deleted_at)
-                <a href="{{ route('alumno.detalle',$registro->id) }}"> 
-                    {{$registro->dni}} 
+                <a href="{{ route('alumno.detalle',$registro->alumno->id) }}"> 
+                    {{$registro->alumno->dni}} 
                 </a>
                 @else
-                {{$registro->dni}} 
+                {{$registro->alumno->dni}} 
                 @endif
             </th>
             <td> {{ $registro->changes == 'CREATE' || $registro->changes == 'DELETE' ? $registro->changes : 'UPDATE' }} </td>

@@ -2,6 +2,7 @@
 
 namespace App\Models\Config;
 
+use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Proceso;
 use App\Models\User;
@@ -17,16 +18,22 @@ class Audit extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
 
     public function proceso(): BelongsTo
     {
-        return $this->belongsTo(Proceso::class,'table_id');
+        return $this->belongsTo(Proceso::class,'table_id')->withTrashed();
+    }
+
+    public function alumno(): BelongsTo
+    {
+        return $this->belongsTo(Alumno::class,'table_id')->withTrashed();
+
     }
 
     public function inscripcion(): BelongsTo
     {
-        return $this->belongsTo(AlumnoCarrera::class,'table_id');
+        return $this->belongsTo(AlumnoCarrera::class,'table_id')->withTrashed();
     }
 }
