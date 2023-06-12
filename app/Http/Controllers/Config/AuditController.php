@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Session;
 
 class AuditController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('app.roles:admin-registros');    
+    }
     public function index()
     {
         $modelos = [

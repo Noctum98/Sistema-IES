@@ -17,6 +17,7 @@ class ActaVolanteController extends Controller
         UserService $userService,
         MesaService $mesaService
     ) {
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor');
         $this->userService = $userService;
         $this->mesaService = $mesaService;
     }
