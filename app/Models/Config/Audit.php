@@ -2,6 +2,8 @@
 
 namespace App\Models\Config;
 
+use App\Models\AlumnoCarrera;
+use App\Models\Proceso;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,5 +18,15 @@ class Audit extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function proceso(): BelongsTo
+    {
+        return $this->belongsTo(Proceso::class,'table_id');
+    }
+
+    public function inscripcion(): BelongsTo
+    {
+        return $this->belongsTo(AlumnoCarrera::class,'table_id');
     }
 }

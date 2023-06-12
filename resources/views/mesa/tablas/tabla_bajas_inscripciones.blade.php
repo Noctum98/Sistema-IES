@@ -20,9 +20,7 @@
             <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
             <td>{{ $inscripcion->user ? ucwords($inscripcion->user->nombre).' '.ucwords($inscripcion->user->apellido) : '' }}</td>
             <td>{{ date_format(new DateTime($inscripcion->updated_at ), 'd-m-Y H:i') }}</td>
-            <td>
-                {{ $inscripcion->motivo_baja }}
-            </td>
+            <td>{{ $inscripcion->motivo_baja }}</td>
             <td><a href="{{ route('alta.mesa',$inscripcion->id) }}" class="btn btn-sm btn-info"><i class="fas fa-chevron-circle-up"></i> Dar Alta</a></td>
         </tr>
         @endforeach
