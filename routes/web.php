@@ -29,6 +29,7 @@ use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\Config\AuditController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\LibrosController;
 use App\Http\Controllers\MailController;
@@ -174,6 +175,7 @@ Route::prefix('proceso-modular')->group(function () {
 
 Route::prefix('regularidad')->group(function () {
     Route::get('/', [RegularidadController::class, 'index'])->name('regularidad.index');
+    Route::get('/anteriores', [RegularidadController::class, 'anteriores'])->name('regularidad.anteriores');
     Route::post('/', [RegularidadController::class, 'store'])->name('regularidad.store');
     Route::get('create/{id}/{ciclo_lectivo}', [RegularidadController::class, 'create'])->name('regularidad.create');
     Route::get('edit/{regularidad}', [RegularidadController::class, 'edit'])->name('regularidad.edit');
@@ -666,6 +668,7 @@ Route::prefix('etapa_campo')->group(function () {
 
 Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
+Route::resource('registros',AuditController::class);
 
 Route::get('/prueba-post-size', function () {
     $alumnos = Alumno::all();

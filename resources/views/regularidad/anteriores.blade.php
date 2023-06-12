@@ -5,10 +5,10 @@
             <div class="col-8">
                 <span class="col-8">
                 <h4 class="text-primary">
-                    Administrar regularidad de los alumnos <small class="text-dark"> Ciclo lectivo
-                        <b>{{$ciclo_lectivo}}</b></small>
+                    Administrar regularidad de los alumnos
                 </h4>
-                <p>Agrega, edita o busca regularidad de alumnos</p>
+                </span>
+                <p>Agrega, edita o busca regularidad de alumnos de ciclos lectivos anteriores al ciclo lectivo 2022</p>
             </div>
             <div class="col-4">
                 <div class="dropdown">
@@ -27,7 +27,6 @@
                     </ul>
                 </div>
 
-                <small><a href="{{route('regularidad.anteriores')}}">Anteriores</a></small>
             </div>
 
             @if(@session('alumno_notIsset'))
@@ -52,7 +51,7 @@
         </div>
         <div class="col-md-8 row">
             <div class="col-md-5">
-                <form method="GET" action="{{ route('regularidad.index', ['ciclo_lectivo'=> $ciclo_lectivo]) }}"
+                <form method="GET" action="{{ route('regularidad.anteriores', ['ciclo_lectivo'=> $ciclo_lectivo]) }}"
                       id="buscador-alumnos-regularidad">
                     <div class="form-inline">
                         <div class="input-group">

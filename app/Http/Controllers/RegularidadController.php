@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\helper;
 use App\Models\Estados;
 use App\Models\Proceso;
 use App\Models\Regularidad;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RegularidadController extends Controller
 {
+    use helper;
     /**
      * @var AlumnoService
      */
@@ -78,6 +80,44 @@ class RegularidadController extends Controller
     }
 
     /**
+     * Muestra la pantalla de búsqueda de alumnos para cargar regularidad de ciclos lectivos anteriores.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function anteriores(Request $request)
+    {
+        $user = $this->userActual();
+        $alumnos = [];
+        $busqueda = null;
+
+        if (isset($request['busqueda']) && $request['busqueda'] != '') {
+            $alumnos = $this->alumnoService->buscarAlumnos($request);
+            $busqueda = $request['busqueda'] ?? true;
+        }
+//        dd($request['busqueda']);
+
+        $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
+
+
+//        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
+
+
+        //dd($alumnos);
+        $data = [
+            'alumnos' => $alumnos,
+            'busqueda' => $busqueda,
+            'carrera_id' => $request['carrera_id'],
+            'materia_id' => $request['materia_id'],
+            'cohorte' => $request['cohorte'],
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'ciclo_lectivo' => $ciclo_lectivo
+        ];
+
+        return view('regularidad.anteriores', $data);
+    }
+
+    /**
      * Mostramos un modal para agregar una regularidad a un alumno.
      *
      * @param int $alumnoId
@@ -117,21 +157,20 @@ class RegularidadController extends Controller
         ])->first();
         if ($regularidad) {
             $mensaje = "Ya existe regularidad cargada para {$regularidad->obtenerAlumno()->getApellidosNombresAttribute()} en la materia {$regularidad->obtenerMateria()->nombre}";
-        } else
-        {
-        $regularidad = Regularidad::create([
-                'estado_id' => $request->get('estado_id'),
-                'proceso_id' => $request->get('proceso_id'),
-                'operador_id' => $user->id,
-                'observaciones' => $request->get('observaciones'),
-                'fecha_regularidad' => $request->get('fecha_regularidad'),
-                'fecha_vencimiento' => date('d F Y', strtotime($request->get('fecha_regularidad') . " +2 year")),
-            ]
-        );
-        $mensaje = "Regularidad cargada para {$regularidad->obtenerAlumno()->getApellidosNombresAttribute()} en la materia {$regularidad->obtenerMateria()->nombre}";
+        } else {
+            $regularidad = Regularidad::create([
+                    'estado_id' => $request->get('estado_id'),
+                    'proceso_id' => $request->get('proceso_id'),
+                    'operador_id' => $user->id,
+                    'observaciones' => $request->get('observaciones'),
+                    'fecha_regularidad' => $request->get('fecha_regularidad'),
+                    'fecha_vencimiento' => date('d F Y', strtotime($request->get('fecha_regularidad') . " +2 year")),
+                ]
+            );
+            $mensaje = "Regularidad cargada para {$regularidad->obtenerAlumno()->getApellidosNombresAttribute()} en la materia {$regularidad->obtenerMateria()->nombre}";
         }
 
-        if($request->get('ciclo_anterior')){
+        if ($request->get('ciclo_anterior')) {
             $this->procesoAnterior($regularidad, $request->get('ciclo_anterior'));
         }
 
@@ -230,10 +269,8 @@ class RegularidadController extends Controller
         ])->first();
 
 
-
-
-        if(!$procesoAnterior) {
-            $procesoAnterior =  Proceso::create([
+        if (!$procesoAnterior) {
+            $procesoAnterior = Proceso::create([
                 'alumno_id' => $regularidad->obtenerAlumno()->id,
                 'estado_id' => $regularidad->obtenerEstado()->id,
                 'materia_id' => $regularidad->obtenerMateria()->id,
@@ -242,14 +279,14 @@ class RegularidadController extends Controller
                 'cierre' => 1
             ]);
         }
-        if(!$procesoAnterior->obtenerRegularidad()){
+        if (!$procesoAnterior->obtenerRegularidad()) {
             Regularidad::create([
                     'estado_id' => $regularidad->obtenerEstado()->id,
                     'proceso_id' => $procesoAnterior->id,
                     'operador_id' => $regularidad->operador_id,
                     'observaciones' => $regularidad->observaciones . ' Por Traspaso de regularidad.',
-                    'fecha_regularidad' => date('d F Y', strtotime($ciclo_anterior.'-12-31')),
-                    'fecha_vencimiento' => date('d F Y', strtotime($ciclo_anterior.'-12-31' . " +2 year")),
+                    'fecha_regularidad' => date('d F Y', strtotime($ciclo_anterior . '-12-31')),
+                    'fecha_vencimiento' => date('d F Y', strtotime($ciclo_anterior . '-12-31' . " +2 year")),
 
                 ]
             );
