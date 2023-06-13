@@ -10,6 +10,8 @@ use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
+use App\Http\Controllers\Trianual\AcreditacionController;
+use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -81,6 +83,13 @@ Route::get('/', function () {
     }
 });
 
+// Rutas acreditaciones
+Route::prefix('acreditacion')->group(function () {
+    Route::post('/', [AcreditacionController::class, 'store']);
+});
+
+// Rutas Actas volantes
+Route::resource('actas_volantes', ActaVolanteController::class);
 
 // Rutas de comisiones
 
@@ -612,6 +621,18 @@ Route::prefix('procesoCalificacion')->group(function () {
 });
 
 
+
+Route::prefix('estadistica')->group(function () {
+    Route::get('datos', [AlumnoController::class, 'vista_datos']);
+    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
+});
+
+Route::resource('etapa_campo',EtapaCampoController::class);
+
+Route::prefix('etapa_campo')->group(function (){
+    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}',[EtapaCampoController::class,'habilitar']);
+});
+
 Route::prefix('excel')->group(function () {
     Route::get('alumnos/{carrera_id}/{year}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'alumnos_year'])->name('excel.alumnosAño');
     Route::get('alumnos/all', [ExcelController::class, 'all_alumnos']);
@@ -626,23 +647,18 @@ Route::prefix('excel')->group(function () {
     Route::get('/descargarFiltro', [ExcelController::class, 'filtro_alumnos']);
 });
 
-Route::prefix('estadistica')->group(function () {
-    Route::get('datos', [AlumnoController::class, 'vista_datos']);
-    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
-});
+Route::resource('libros', LibrosController::class);
 
 Route::prefix('mail')->group(function () {
     Route::post('/mail/pre/send/{carrera_id}', [MailController::class, 'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
-Route::resource('etapa_campo',EtapaCampoController::class);
-Route::prefix('etapa_campo')->group(function (){
-    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}',[EtapaCampoController::class,'habilitar']);
-});
 
-Route::resource('actas_volantes', ActaVolanteController::class);
-Route::resource('libros', LibrosController::class);
 Route::resource('registros',AuditController::class);
+
+Route::prefix('trianual')->group(function () {
+    Route::post('/', [TrianualController::class, 'store']);
+});
 
 Route::get('/prueba-post-size', function () {
 
