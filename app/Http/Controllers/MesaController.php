@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\Proceso;
+use App\Services\MesaService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use DateTime;
@@ -25,14 +26,18 @@ use Symfony\Component\HttpFoundation\Response;
 class MesaController extends Controller
 {
     protected $feriados;
+    protected $mesaService;
 
     const T_M = '14:00';
     const T_T = '23:59';
     const T_V = '23:59';
 
 
-    public function __construct()
+    public function __construct(
+        MesaService $mesaService
+    )
     {
+        $this->mesaService = $mesaService;
         /**
          * Fuente https://www.argentina.gob.ar/interior/feriados-nacionales-2022
          */
@@ -59,6 +64,8 @@ class MesaController extends Controller
             '08-12-2022',
             '09-12-2022',
         ];
+
+
     }
 
     // Vistas
@@ -185,23 +192,9 @@ class MesaController extends Controller
         $request['instancia_id'] = $instancia->id;
         $request['materia_id'] = $materia->id;
 
-        if (date('D', strtotime($request['fecha'])) == 'Mon' || date('D', strtotime($request['fecha'])) == 'Tue') {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
-        } else {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
-        }
+        $request['cierre'] = $this->mesaService->setCierreMesa($request['fecha'],$materia);
         if ($request['fecha_segundo']) {
-            if ($request['fecha_segundo'] && date('D', strtotime($request['fecha_segundo'])) == 'Mon' || date(
-                    'D',
-                    strtotime($request['fecha_segundo'])
-                ) == 'Tue') {
-
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-4 days");
-
-
-            } else {
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-2 days");
-            }
+            $request['cierre_segundo'] = $this->mesaService->setCierreMesa($request['fecha_segundo'],$materia);
         } else {
             $request['cierre_segundo'] = null;
         }
@@ -387,27 +380,6 @@ class MesaController extends Controller
         return redirect()->back()->with(['alert_success'=>'El acta volante se ha abierto correctamente.']);
     }
 
-    private function setFechaTurno($materia, $fecha)
-    {
-
-        $turno = $materia->carrera->turno;
-        $hora = '00:00';
-        switch ($turno) {
-            case 'mañana':
-                $hora = $this::T_M;
-                break;
-            case 'tarde':
-                $hora = $this::T_T;
-                break;
-            case 'vespertino':
-                $hora = $this::T_V;
-        }
-
-        $fecha = substr($fecha, 0, -6);
-
-        return $fecha.'T'.$hora;
-
-    }
 
     /**
      * @param int $instancia
