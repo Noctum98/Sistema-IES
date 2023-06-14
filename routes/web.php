@@ -657,7 +657,9 @@ Route::prefix('mail')->group(function () {
 Route::resource('registros',AuditController::class);
 
 Route::prefix('trianual')->group(function () {
-    Route::post('/', [TrianualController::class, 'store']);
+    Route::get('/', [TrianualController::class, 'index'])->name('trianual.listar');
+    Route::post('/', [TrianualController::class, 'store'])->name('trianual.guardar');
+    Route::get('/crear', [TrianualController::class, 'create'])->name('trianual.crear');
 });
 
 Route::get('/prueba-post-size', function () {

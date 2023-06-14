@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Trianual;
 
-use App\Http\Requests\StoreDetalleTrianualRequest;
-use App\Http\Requests\UpdateDetalleTrianualRequest;
+use App\Http\Requests\Trianual\StoreDetalleTrianualRequest;
+use App\Http\Requests\Trianual\UpdateDetalleTrianualRequest;
 use App\Models\DetalleTrianual;
 
 class DetalleTrianualController extends Controller
@@ -31,7 +31,7 @@ class DetalleTrianualController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDetalleTrianualRequest  $request
+     * @param  \App\Http\Requests\Trianual\StoreDetalleTrianualRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreDetalleTrianualRequest $request)
@@ -64,7 +64,7 @@ class DetalleTrianualController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateDetalleTrianualRequest  $request
+     * @param  \App\Http\Requests\Trianual\UpdateDetalleTrianualRequest  $request
      * @param  \App\Models\DetalleTrianual  $detalleTrianual
      * @return \Illuminate\Http\Response
      */

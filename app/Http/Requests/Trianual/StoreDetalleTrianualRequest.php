@@ -4,7 +4,7 @@ namespace App\Http\Requests\Trianual;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAcreditacionTrianualRequest extends FormRequest
+class StoreDetalleTrianualRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

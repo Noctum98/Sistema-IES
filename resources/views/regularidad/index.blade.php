@@ -9,6 +9,7 @@
                         <b>{{$ciclo_lectivo}}</b></small>
                 </h4>
                 <p>Agrega, edita o busca regularidad de alumnos</p>
+                </span>
             </div>
             <div class="col-4">
                 <div class="dropdown">

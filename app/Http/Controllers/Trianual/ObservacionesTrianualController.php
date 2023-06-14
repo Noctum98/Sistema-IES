@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Trianual;
 
-use App\Http\Requests\StoreObservacionesTrianualRequest;
-use App\Http\Requests\UpdateObservacionesTrianualRequest;
+use App\Http\Requests\Trianual\StoreObservacionesTrianualRequest;
+use App\Http\Requests\Trianual\UpdateObservacionesTrianualRequest;
 use App\Models\ObservacionesTrianual;
 
 class ObservacionesTrianualController extends Controller
@@ -31,7 +31,7 @@ class ObservacionesTrianualController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreObservacionesTrianualRequest  $request
+     * @param  \App\Http\Requests\Trianual\StoreObservacionesTrianualRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreObservacionesTrianualRequest $request)
@@ -64,7 +64,7 @@ class ObservacionesTrianualController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateObservacionesTrianualRequest  $request
+     * @param  \App\Http\Requests\Trianual\UpdateObservacionesTrianualRequest  $request
      * @param  \App\Models\ObservacionesTrianual  $observacionesTrianual
      * @return \Illuminate\Http\Response
      */
