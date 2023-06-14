@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAcreditacionsTable extends Migration
+class CreateObservacionesTrianualsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreateAcreditacionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('acreditacions', function (Blueprint $table) {
+        Schema::create('observaciones_trianuals', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedBigInteger('trianual_id');
-            $table->unsignedBigInteger('operador_id');
-            $table->unsignedInteger('nota');
-            $table->string('fecha_acreditacion');
-            $table->string('libro');
-            $table->string('folio');
-            $table->boolean('excepcion');
+            $table->unsignedInteger('year');
+            $table->text('observaciones');
+            $table->unsignedInteger('operador_id');
+
+            $table->foreign('trianual_id')->references('id')->on('trianuals');
+            $table->foreign('operador_id')->references('id')->on('users');
+
+
             $table->timestamps();
         });
     }
@@ -34,6 +36,6 @@ class CreateAcreditacionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('acreditacions');
+        Schema::dropIfExists('observaciones_trianuals');
     }
 }
