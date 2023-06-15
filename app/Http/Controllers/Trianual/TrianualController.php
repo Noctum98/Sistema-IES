@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Trianual;
 
 use App\Http\Requests\Trianual\StoreTrianualRequest;
 use App\Http\Requests\Trianual\UpdateTrianualRequest;
+use App\Models\Alumno;
+use App\Models\Estados;
+use App\Models\Proceso;
 use App\Models\Sede;
 use App\Models\Trianual\Trianual;
 use App\Services\AlumnoService;
@@ -11,6 +14,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TrianualController extends Controller
@@ -63,11 +67,42 @@ class TrianualController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function create()
+    public function create(Alumno $idAlumno)
     {
-        //
+//        'sede_id',
+//        'carrera_id',
+//        'cohorte',
+//        'resolucion',
+//        'alumno_id',
+//        'matricula',
+//        'libro',
+//        'folio',
+//        'operador_id',
+//        'promedio',
+//        'fecha_egreso',
+//        'preceptor',
+//        'coordinator'
+
+        $alumno = $idAlumno->first();
+
+        dd($alumno->alumno_carrera()->first()->carrera());
+
+
+
+//        $procesos = Proceso::where([
+//            'ciclo_lectivo' => $ciclo_lectivo,
+//            'alumno_id' => $alumnoId
+//        ])
+//            ->get();
+//
+//        $estados = Estados::all();
+
+        return view('regularidad.components.form_agregar_regularidad')->with([
+            'estados' => $estados,
+            'procesos' => $procesos,
+        ]);
     }
 
     /**
