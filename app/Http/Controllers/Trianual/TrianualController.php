@@ -9,6 +9,7 @@ use App\Models\Estados;
 use App\Models\Proceso;
 use App\Models\Sede;
 use App\Models\Trianual\Trianual;
+use App\Models\User;
 use App\Services\AlumnoService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -19,6 +20,21 @@ use Illuminate\Http\Request;
 
 class TrianualController extends Controller
 {
+
+    const CAMPOS_TRIANUAL = [
+        'carrera',
+        'cohorte',
+        'resolucion',
+        'alumno_id',
+        'matricula',
+        'libro',
+        'folio',
+        'operador_id',
+        'promedio',
+        'fecha_egreso',
+        'preceptor',
+        'coordinator'
+    ];
     /**
      * @var AlumnoService
      */
@@ -46,7 +62,7 @@ class TrianualController extends Controller
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
 
-            if($alumnos) {
+            if ($alumnos) {
                 $trianual = Trianual::whereIn(
                     'alumno_id', $alumnos->pluck('id')
                 )
@@ -67,28 +83,34 @@ class TrianualController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return RedirectResponse
+     * @return Application|Factory|View|RedirectResponse
      */
-    public function create(Alumno $idAlumno)
+    public function create(Request $request)
     {
-//        'sede_id',
-//        'carrera_id',
-//        'cohorte',
-//        'resolucion',
-//        'alumno_id',
-//        'matricula',
-//        'libro',
-//        'folio',
-//        'operador_id',
-//        'promedio',
-//        'fecha_egreso',
-//        'preceptor',
-//        'coordinator'
+        $alumno = Alumno::find($request->get('alumno'));
+        if (!$alumno) {
+            return view('trianual.trianual.index', [
+                'trianual' => false,
+                'sedes' => Sede::all(),
+                'busqueda' => false,
+                'alumnos' => false,
 
-        $alumno = $idAlumno->first();
+            ]);
+        }
 
-        dd($alumno->alumno_carrera()->first()->carrera());
+        $campos = self::CAMPOS_TRIANUAL;
+        $datos = [];
 
+        $carrera = $alumno->alumno_carrera()->first()->carrera()->id;
+        if ($carrera) {
+            unset($campos[0]);
+            $datos['carrera'] = $alumno->alumno_carrera()->first()->carrera()->nombre;
+        }
+        if ($alumno->cohorte) {
+            unset($campos[1]);
+            unset($campos[3]);
+            $datos['cohorte'] = $alumno->cohorte;
+        }
 
 
 //        $procesos = Proceso::where([
@@ -98,10 +120,19 @@ class TrianualController extends Controller
 //            ->get();
 //
 //        $estados = Estados::all();
+        $coordinadores = User::whereHas('roles', function ($query) {
+            return $query->where('nombre', 'coordinador');
+        })->get();
+        $bedeles = User::whereHas('roles', function ($query) {
+            return $query->where('nombre', 'seccionAlumnos');
+        })->get();
 
-        return view('regularidad.components.form_agregar_regularidad')->with([
-            'estados' => $estados,
-            'procesos' => $procesos,
+        return view('trianual.trianual.components.form_agregar_trianual')->with([
+            'campos' => $campos,
+            'alumno' => $alumno,
+            'coordinadores' => $coordinadores,
+            'bedeles' => $bedeles,
+            'datos' => $datos
         ]);
     }
 

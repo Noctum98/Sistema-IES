@@ -631,7 +631,7 @@ Route::resource('registros',AuditController::class);
 Route::prefix('trianual')->group(function () {
     Route::get('/', [TrianualController::class, 'index'])->name('trianual.listar');
     Route::post('/', [TrianualController::class, 'store'])->name('trianual.guardar');
-    Route::get('/crear/{idAlumno}', [TrianualController::class, 'create'])->name('trianual.crear');
+    Route::get('/crear/{alumno}', [TrianualController::class, 'create'])->name('trianual.crear');
 });
 
 //Ruta de usuario administrador

@@ -3,16 +3,14 @@
         color: #dc3545;
     }
 </style>
-<form action="{{ route('regularidad.store') }}"
+<form action="{{ route('trianual.guardar') }}"
       method="POST">
 
     <div class="form-group mb-3">
         <label for="proceso_id">Materia<sup>*</sup></label>
         <select name="proceso_id" id="proceso_id" class="form-select" required>
             <option value="">Seleccione materia</option>
-            @foreach($procesos as $proceso)
-                <option value="{{ $proceso->id }}">{{ $proceso->materia()->first()->nombre }}</option>
-            @endforeach
+
         </select>
     </div>
     <div class="form-group mb-3">
@@ -37,9 +35,7 @@
         <label for="estado_id">Condición <sup>*</sup></label>
         <select name="estado_id" id="estado_id" class="form-select" required>
             <option value="">Seleccione regularidad</option>
-            @foreach($estados as $estado)
-                <option value="{{ $estado->id }}">{{ $estado->nombre }}</option>
-            @endforeach
+
         </select>
     </div>
     <hr/>
