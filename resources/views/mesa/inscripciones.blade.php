@@ -13,30 +13,15 @@
         Inscripciones en {{$mesa->materia->nombre}}
     </h2>
     @if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
-        <span class="text-success font-weight-bold">
-            Abierta - Cierre 1er llamado: {{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do llamado: {{ $mesa->fecha_segundo ? date("d-m-Y", $mesa->cierre_segundo) : '-'}}
-        </span>
-    @else
-        <span class="text-secondary font-weight-bold">
-            Cerrada - Cierre 1er llamado: {{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do llamado: {{ $mesa->fecha_segundo ? date("d-m-Y", $mesa->cierre_segundo) : '-'}}
-        </span>
-    @endif
+            <span class="text-success font-weight-bold">
+                Abierta - Cierre 1er llamado: {{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do llamado: {{ $mesa->fecha_segundo ? date("d-m-Y", $mesa->cierre_segundo) : '-'}}
+            </span>
+            @else
+            <span class="text-secondary font-weight-bold">
+                Cerrada - Cierre 1er llamado: {{ date("d-m-Y", $mesa->cierre)}} | Cierre 2do llamado: {{ $mesa->fecha_segundo ? date("d-m-Y", $mesa->cierre_segundo) : '-'}}
+            </span>
+            @endif
             <hr>
-            @if(@session('baja_exitosa'))
-            <div class="alert alert-warning">
-                {{@session('baja_exitosa')}}
-            </div>
-            @endif
-            @if(@session('alumno_success'))
-            <div class="alert alert-success">
-                {{@session('alumno_success')}}
-            </div>
-            @endif
-            @if(@session('alumno_error'))
-            <div class="alert alert-danger">
-                {{@session('alumno_error')}}
-            </div>
-            @endif
 
             <div class="mb-3">
                 <button class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#inscribirAlumno">
@@ -46,7 +31,10 @@
             </div>
 
 
-            <h2 class="text-info">Primer llamado</h2>
+            <h2 class="text-info">
+                {{$mesa->instancia->segundo_llamado ? 'Primer llamado' : 'LLamado'}}
+            </h2>
+
             @if( count($primer_llamado) > 0)
             @if($mesa->cierre_profesor)
             <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="mt-2">
@@ -65,6 +53,7 @@
             @include('mesa.tablas.tabla_bajas_inscripciones',['bajas'=>$primer_llamado_bajas])
             @endif
 
+            @if($mesa->instancia->segundo_llamado)
             <h2 class="text-info">Segundo llamado</h2>
             @if( count($segundo_llamado) > 0)
             @if($mesa->cierre_profesor_segundo)
@@ -81,7 +70,7 @@
             @if(count($segundo_llamado_bajas) > 0)
             <h2 class="text-info">Segundo llamado bajas</h2>
             @include('mesa.tablas.tabla_bajas_inscripciones',['bajas'=>$segundo_llamado_bajas])
-
+            @endif
 
             @endif
             @else

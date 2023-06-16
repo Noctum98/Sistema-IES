@@ -7,23 +7,9 @@
         <h2 class="h1 text-info">
             {{$sede->nombre}}
         </h2>
+        <p class="text-info"><i>{{ $instancia->nombre }}</i></p>
         <hr>
-        @if(@session('message'))
-            <div class="alert alert-success">
-                {{@session('message')}}
-            </div>
-        @endif
-        @if(@session('message_edit'))
-            <div class="alert alert-primary">
-                {{@session('message_edit')}}
-            </div>
-        @endif
-        @if(@session('error_fecha'))
-            <div class="alert alert-danger">
-                {{@session('error_fecha')}}
-            </div>
-        @endif
-
+        
         @foreach($carreras as $carrera)
             <a type="button" href="{{ route('mesa.mesas',['id'=>$carrera->id,'instancia_id'=>$instancia->id]) }}"
                class="list-group-item list-group-item-action border-top mt-2 text-secondary" title="Ver calificaciones">

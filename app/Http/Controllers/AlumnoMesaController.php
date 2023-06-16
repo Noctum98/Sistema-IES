@@ -281,9 +281,9 @@ class AlumnoMesaController extends Controller
             $request['segundo_llamado'] = $request['llamado'];
             $inscripcion = MesaAlumno::create($request->all());
 
-            $mensaje = ['alumno_success' => 'El alumno ha sido inscripto.'];
+            $mensaje = ['alert_success' => 'El alumno ha sido inscripto.'];
         } else {
-            $mensaje = ['alumno_error' => 'El alumno ya esta inscripto a este llamado.'];
+            $mensaje = ['alert_danger' => 'El alumno ya esta inscripto a este llamado.'];
         }
 
         return redirect()->back()->with($mensaje);
@@ -386,7 +386,7 @@ class AlumnoMesaController extends Controller
         }
 
         return redirect()->back()->with([
-            'baja_exitosa' => 'Se ha dado de baja la inscripción correctamente'
+            'alert_warning' => 'Se ha dado de baja la inscripción correctamente'
         ]);
     }
 
@@ -463,9 +463,9 @@ class AlumnoMesaController extends Controller
 
         if ($mesaNueva) {
             $inscripcion->mesa_id = $mesaNueva->id;
-            $mensaje = ['alumno_success' => 'Se ha movido correctamente la inscripción de comisión.'];
+            $mensaje = ['alert_success' => 'Se ha movido correctamente la inscripción de comisión.'];
         } else {
-            $mensaje = ['alumno_error' => 'No se ha creado una mesa para la comisión seleccionada'];
+            $mensaje = ['alert_danger' => 'No se ha creado una mesa para la comisión seleccionada'];
         }
 
         $inscripcion->update();
