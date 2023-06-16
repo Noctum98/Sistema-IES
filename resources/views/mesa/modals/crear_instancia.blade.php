@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         <label for="limite">Segundo llamado</label>
-                        <select name="segundo_llamado" id="segundo_llamado">
+                        <select name="segundo_llamado" id="segundo_llamado" class="form-select">
                             <option value="1">Habilitado</option>
                             <option value="0">Deshabilitado</option>
                         </select>
