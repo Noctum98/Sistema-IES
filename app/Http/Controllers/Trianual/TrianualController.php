@@ -108,10 +108,12 @@ class TrianualController extends Controller
         }
         if ($alumno->cohorte) {
             unset($campos[1]);
-            unset($campos[3]);
             $datos['cohorte'] = $alumno->cohorte;
         }
 
+        $datos['alumno_id'] = $alumno->id;
+        unset($campos[7]);
+        unset($campos[3]);
 
 //        $procesos = Proceso::where([
 //            'ciclo_lectivo' => $ciclo_lectivo,

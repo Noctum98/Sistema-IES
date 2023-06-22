@@ -16,13 +16,15 @@ class CreateAcreditacionsTable extends Migration
         Schema::create('acreditaciones', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedBigInteger('trianual_id');
+            $table->unsignedBigInteger('detalle_trianual_id');
             $table->unsignedBigInteger('operador_id');
+            $table->unsignedInteger('orden');
             $table->unsignedInteger('nota');
-            $table->string('fecha_acreditacion');
+            $table->string('fecha_acreditacion')->nullable();
             $table->string('libro');
             $table->string('folio');
             $table->boolean('excepcion');
+            $table->unsignedBigInteger('mesa_id')->nullable();
             $table->timestamps();
         });
     }

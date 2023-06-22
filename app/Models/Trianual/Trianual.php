@@ -4,9 +4,12 @@ namespace App\Models\Trianual;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Trianual extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'sede_id',
         'carrera_id',
@@ -23,5 +26,8 @@ class Trianual extends Model
         'coordinator'
     ];
 
-    use HasFactory;
+    public function getObservaciones(): HasMany
+    {
+        return $this->hasMany(ObservacionesTrianual::class, 'trianual_id');
+    }
 }

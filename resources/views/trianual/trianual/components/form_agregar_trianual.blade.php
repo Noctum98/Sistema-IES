@@ -6,13 +6,19 @@
 <form action="{{ route('trianual.guardar') }}"
       method="POST">
 
-    <div class="form-group mb-3">
-        <label for="proceso_id">Materia<sup>*</sup></label>
-        <select name="proceso_id" id="proceso_id" class="form-select" required>
-            <option value="">Seleccione materia</option>
 
-        </select>
-    </div>
+    @foreach($campos as $campo)
+        {{$campo}}
+        @if($campo == 'cohorte')
+            <div class="form-group mb-3">
+                <label for="cohorte">Cohorte<sup>*</sup></label>
+                <input id="cohorte" name="cohorte" class="form-control" type="number" min="1986" required>
+
+            </div>
+        @endif
+    @endforeach
+
+
     <div class="form-group mb-3">
         <label for="fecha_regularidad">Fecha Regularidad <sup>*</sup></label>
         <input type="date" name="fecha_regularidad" id="fecha_regularidad" class="form-control"
@@ -24,11 +30,11 @@
         <textarea name="observaciones" id="observaciones" class="form-control"
                   required></textarea>
     </div>
-{{--    <div class="form-group mb-3">--}}
-{{--        <label for="fecha_vencimiento">Fecha Vencimiento</label>--}}
-{{--        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control"--}}
-{{--               placeholder="Fecha Vencimiento" required>--}}
-{{--    </div>--}}
+    {{--    <div class="form-group mb-3">--}}
+    {{--        <label for="fecha_vencimiento">Fecha Vencimiento</label>--}}
+    {{--        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control"--}}
+    {{--               placeholder="Fecha Vencimiento" required>--}}
+    {{--    </div>--}}
 
 
     <div class="form-group mb-3">
@@ -41,7 +47,7 @@
     <hr/>
     <div class="form-group mb-3">
         <label for="ciclo_anterior">Ciclo lectivo original</label>
-        <input name="ciclo_anterior" id="ciclo_anterior" class="form-control" type="number" min="1986"  />
+        <input name="ciclo_anterior" id="ciclo_anterior" class="form-control" type="number" min="1986"/>
 
     </div>
     <hr>
