@@ -13,6 +13,7 @@ $(document).ready(function () {
             data: data,
             //dataType: "dataType",
             success: function (response) {
+                console.log(response);
                 if(response.final_trabajos)
                 {
 

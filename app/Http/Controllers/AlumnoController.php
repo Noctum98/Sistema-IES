@@ -48,30 +48,29 @@ class AlumnoController extends Controller
         $sedes = null;
         $busqueda = null;
         $sedes = $user->sedes;
-//        $ciclo_lectivo = date('Y');
-
         if (isset($request['busqueda'])) {
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
         }
-//        if (isset($request['ciclo_lectivo'])) {
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
-//        }
 
+        if(Session::has('admin'))
+        {
+            $carreras = Carrera::all();
+        }else{
+            $carreras = $user->carreras;
+        }
 
-//        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
-
-
-        //dd($alumnos);
         $data = [
             'alumnos' => $alumnos,
-            'sedes' => $sedes,
+            'carreras' => $carreras,
             'busqueda' => $busqueda,
             'carrera_id' => $request['carrera_id'],
             'materia_id' => $request['materia_id'],
             'cohorte' => $request['cohorte'],
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'sedes' => $sedes
         ];
 
         return view('alumno.admin', $data);

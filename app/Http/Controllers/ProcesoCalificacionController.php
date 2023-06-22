@@ -79,13 +79,6 @@ class ProcesoCalificacionController extends Controller
                 $procesoModular->update();
             }
 
-
-            //            if($calificacion->cargo_id){
-            //                $proceso->cargo_id= $calificacion->cargo_id;
-            //                $proceso->update();
-            //            }
-
-
             $response = $procesoCalificacion;
         } else {
             $response = [
