@@ -14,6 +14,7 @@ use App\Models\Carrera;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
+use App\Http\Requests\InstanciaRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -85,46 +86,21 @@ class InstanciaController extends Controller
     }
     
     //Funcionalidades
-    public function crear(Request $request)
+    public function crear(InstanciaRequest $request)
     {
-        $validate = $this->validate($request, [
-            'nombre'    =>  ['required'],
-            'limite'    =>  ['required', 'numeric'],
-            'tipo'      =>  ['required', 'numeric']
-        ]);
+        $request['año'] = date('Y');
+        $request['estado'] = 'inactiva';
+        $instancia = Instancia::create($request->all());
 
-        $instancia = new Instancia();
-        $instancia->nombre = $request->input('nombre');
-        $instancia->tipo = $request->input('tipo');
-        $instancia->limite = $request->input('limite');
-        $instancia->año = date('Y');
-        if ($instancia->tipo == 0) {
-            $instancia->segundo_llamado = $request->input('segundo_llamado');
-        }
-        $instancia->estado = 'inactiva';
-        $instancia->save();
-
-        return redirect()->route('mesa.admin');
+        return redirect()->back()->with('alert_success','Instancia creada correctamente.');;
     }
 
-    public function editar(Request $request, $id)
+    public function editar(InstanciaRequest $request, $id)
     {
-        $validate = $this->validate($request, [
-            'nombre'    =>  ['required'],
-            'limite'    =>  ['required', 'numeric'],
-            'tipo'      =>  ['required', 'numeric'],
-        ]);
         $instancia = Instancia::find($id);
-        $instancia->nombre = $request['nombre'];
-        $instancia->tipo = $request['tipo'];
-        $instancia->limite = $request['limite'];
-        $instancia->cierre = $request['cierre'];
-        if ($instancia->tipo == 0) {
-            $instancia->segundo_llamado = $request->input('segundo_llamado');
-        }
-        $instancia->update();
+        $instancia->update($request->all());
 
-        return redirect()->route('mesa.admin');
+        return redirect()->back()->with('alert_success','Instancia editada correctamente.');
     }
 
     public function borrar(Instancia $id, $solo = null): RedirectResponse
