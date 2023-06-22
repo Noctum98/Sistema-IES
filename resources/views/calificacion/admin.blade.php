@@ -61,7 +61,7 @@
         @endforeach
 
     @endif
-    
+
     <!---
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 mt-1" method="GET" action="#" id="buscador">
             <div class="input-group mt-3">
@@ -86,50 +86,47 @@
     <div class="alert alert-danger mt-2">{{ @session('error_comision') }}</div>
     @endif
 
-    @if (count($calificaciones) > 0)
-    <table class="table  mt-4">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Tipo</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Creador</th>
-                <th scope="col">Fecha</th>
-                @if ($materia->carrera->tipo == 'modular')
-                <th scope="col">Cargo</th>
-                @endif
-                <th scope="col">Comisión</th>
-                <th scope="col">Descripción</th>
-                <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>-</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($calificaciones as $calificacion)
-            <tr style="cursor:pointer;">
-                <td>{{ $calificacion->tipo->nombre }}</td>
-                <td>{{ $calificacion->nombre }}</td>
-                <td>
-                    {{ $calificacion->user->nombre . ' ' . $calificacion->user->apellido }}
-                </td>
-                <td>{{ $calificacion->fecha }}</td>
-                @if ($materia->carrera->tipo == 'modular')
-                <td> {{ optional($calificacion->modelCargo)->nombre }}</td>
-                @endif
-                @if ($calificacion->comision_id)
-                @if ($calificacion->comision)
-                <td>{{ $calificacion->comision->nombre }}</td>
-                @endif
-                @else
-                <td>General</td>
-                @endif
-                <td title="{{ $calificacion->description }}">{{ Str::limit($calificacion->description,10, '...') }}</td>
-                <td>
-                    <a href="{{ route('calificacion.create', $calificacion->id) }}" class="btn btn-sm btn-secondary
-                    @if (Session::has('profesor') &&
-                            !Session::has('coordinador') &&
-                            $calificacion->comision_id &&
-                            !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">
-                        Notas
-                    </a>
+        @if(count($calificaciones) > 0)
+            <table class="table  mt-4">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Creador</th>
+                    <th scope="col">Fecha</th>
+                    @if($materia->carrera->tipo == 'modular' )
+                        <th scope="col">Cargo</th>
+                    @endif
+                    <th scope="col">Comisión</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>-</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($calificaciones as $calificacion)
+                    <tr style="cursor:pointer;">
+                        <td>{{ $calificacion->tipo->nombre }}</td>
+                        <td>{{ $calificacion->nombre }}</td>
+                        <td>
+                            {{ $calificacion->user->nombre.' '.$calificacion->user->apellido }}
+                        </td>
+                        <td>{{ $calificacion->fecha }}</td>
+                        @if($materia->carrera->tipo == 'modular' )
+                            <td> {{optional($calificacion->modelCargo)->nombre }}</td>
+                        @endif
+                        @if( $calificacion->comision_id)
+                            @if($calificacion->comision)
+                                <td>{{ $calificacion->comision->nombre }}</td>
+                            @endif
+                        @else
+                            <td>General</td>
+                        @endif
+                        <td>{{ $calificacion->description }}</td>
+                        <td>
+                            <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary
+                    @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">
+                                Notas
+                            </a>
 
                     @if (Session::has('profesor') && $calificacion->user_id == Auth::user()->id)
                     <a class="btn btn-sm btn-warning" data-bs-toggle="modal" id="editButton" data-bs-target="#editModal" data-loader="{{ $calificacion->id }}" data-attr="{{ route('calificacion.edit', $calificacion) }}">

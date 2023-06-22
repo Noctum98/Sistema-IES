@@ -104,18 +104,32 @@
 					Ciclo: {{ $alumno->lastProcesoCarrera($carrera->id,$alumno->id, $ciclo_lectivo)->ciclo_lectivo }}
 
 					<div class="row">
-						@if(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin'))
-						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
-						@include('alumno.modals.carreras_matriculacion')
+						@if(Session::has('admin'))
+							
+							<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
+							@include('alumno.modals.carreras_matriculacion')
 
-						<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año</button>
-						@include('alumno.modals.carreras_year')
+							<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año</button>
+							@include('alumno.modals.carreras_year')
+						@elseif(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos'))
+							@if(Auth::user()->hasCarrera($carrera->id))
+								<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver materias</button>
+								@include('alumno.modals.carreras_matriculacion')
+
+								<button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año</button>
+								@include('alumno.modals.carreras_year')
+							@endif
+
 						@endif
 
-
-						@if(Session::has('regente') || Session::has('coordinador') || Session::has('admin'))
+						@if(Session::has('admin'))
 						<button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar Inscripción</button>
 						@include('alumno.modals.correo_eliminar')
+						@elseif(Session::has('regente') || Session::has('coordinador'))
+						@if(Auth::user()->hasCarrera($carrera->id))
+						<button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">Eliminar Inscripción</button>
+						@include('alumno.modals.correo_eliminar')
+						@endif
 						@endif
 					</div>
 					@endforeach
