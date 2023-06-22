@@ -44,7 +44,7 @@
                         <td class="py-auto">
                             {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
                         </td>
-                        <td class="input-group py-auto">
+                        <td class="py-auto">
                             <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-calificacion input-group"
                                   id="{{ $proceso->id }}" method="POST">
                                 <input type="hidden" name="calificacion_id" id="calificacion_id"

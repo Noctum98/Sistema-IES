@@ -148,6 +148,7 @@ class CalificacionController extends Controller
         }
 
         $calificacionFinal = $this->verificarFinalIntegrador($request);
+        $request['description'] = trim($request['description']);
 
         if ($calificacionFinal) {
             $mensaje = ['calificacion_fallo' => 'Ya existe un trabajo integrador final en esta materia'];
@@ -198,7 +199,7 @@ class CalificacionController extends Controller
                 'ciclo_lectivo' => $ciclo_lectivo,
             ])->with($mensaje);
         }
-
+        $request['description'] = trim($request['description']);
         $calificacion->update($request->all());
         $mensaje = ['calificacion_creada' => '¡Calificación actualizada!'];
 

@@ -45,7 +45,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<h6 class="text-secondary">Recuerda la inscripción de la mesa estará abierta hasta 48hs antes de la fecha y hora de la misma.</h6>
+							<h6 class="text-secondary">Recuerda la inscripción de la mesa estará abierta hasta 48hs hábiles antes de la fecha la misma.</h6>
 							<form method="POST" action="{{route('insc_mesa',['instancia_id'=>$instancia->id])}}">
 								@csrf
 								<table class="table mt-4">

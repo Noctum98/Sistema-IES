@@ -143,7 +143,7 @@
                         @else
                             <td>General</td>
                         @endif
-                        <td>{{ $calificacion->descripction }}</td>
+                        <td>{{ $calificacion->description }}</td>
                         <td>
                             <a href="{{ route('calificacion.create',$calificacion->id) }}" class="btn btn-sm btn-secondary
                     @if (Session::has('profesor') && !Session::has('coordinador') && $calificacion->comision_id && !Auth::user()->hasComision($calificacion->comision_id)) disabled @endif">
