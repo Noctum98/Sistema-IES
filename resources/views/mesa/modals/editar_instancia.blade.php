@@ -34,7 +34,10 @@
                     </div>
                     <div class="form-group">
                         <label for="limite">Segundo llamado</label>
-                        <input type="date" name="segundo_llamado" class="form-control" value="{{$instancia->segundo_llamado}}">
+                        <select name="segundo_llamado" id="segundo_llamado" class="form-select">
+                            <option value="1" {{$instancia->segundo_llamado == 1 ? 'selected="selected"' : ''}}>Habilitado</option>
+                            <option value="0" {{$instancia->segundo_llamado == 0 ? 'selected="selected"' : ''}}>Deshabilitado</option>
+                        </select>
                     </div>
                     <input type="submit" class="btn btn-success" value="Editar">
                 </form>

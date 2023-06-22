@@ -21,6 +21,7 @@
         @endif
 
     </td>
+    @if($instancia->segundo_llamado)
     <td>
     @if($materia->mesas)
         @foreach($materia->mesas as $mesa)
@@ -38,6 +39,7 @@
         @endforeach
         @endif
     </td>
+    @endif
 
     <td>
         @if($instancia->tipo == 0)

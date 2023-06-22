@@ -13,34 +13,27 @@
     <h3 class="text-info">
         Mesas {{$carrera->nombre}}
     </h3>
+    <p class="text-info"><i>{{ $instancia->nombre }}</i></p>
     <hr>
-    @if(@session('message'))
-    <div class="alert alert-success">
-        {{@session('message')}}
-    </div>
-    @endif
-    @if(@session('message_edit'))
-    <div class="alert alert-primary">
-        {{@session('message_edit')}}
-    </div>
-    @endif
-    @if(@session('error_fecha'))
-    <div class="alert alert-danger">
-        {{@session('error_fecha')}}
-    </div>
-    @endif
 
+    @if($instancia->segundo_llamado)
     <a href="{{ route('generar_pdf_mesa',['instancia'=>$instancia->id,'carrera'=>$carrera->id,'llamado'=>1]) }}" class="btn btn-sm btn-danger mb-3">PDF 1er Llamado</a>
     <a href="{{ route('generar_pdf_mesa',['instancia'=>$instancia->id,'carrera'=>$carrera->id,'llamado'=>2]) }}" class="btn btn-sm btn-danger mb-3">PDF 2do Llamado</a>
-
+    @else
+    <a href="{{ route('generar_pdf_mesa',['instancia'=>$instancia->id,'carrera'=>$carrera->id,'llamado'=>1]) }}" class="btn btn-sm btn-danger mb-3">Descargar PDF</a>
+    @endif
 
     @if($carrera->estado != 1)
     <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Primer Año</th>
+                @if($instancia->segundo_llamado)
                 <th scope="col">Fecha Primer llamado</th>
                 <th scope="col">Fecha Segundo llamado</th>
+                @else
+                <th scope="col">Fecha</th>
+                @endif
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
@@ -60,8 +53,12 @@
             <tr>
                 <th scope="col">Segundo Año</th>
 
+                @if($instancia->segundo_llamado)
                 <th scope="col">Fecha Primer llamado</th>
                 <th scope="col">Fecha Segundo llamado</th>
+                @else
+                <th scope="col">Fecha</th>
+                @endif
 
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
@@ -80,8 +77,12 @@
             <tr>
                 <th scope="col">Tercer Año</th>
 
+                @if($instancia->segundo_llamado)
                 <th scope="col">Fecha Primer llamado</th>
                 <th scope="col">Fecha Segundo llamado</th>
+                @else
+                <th scope="col">Fecha</th>
+                @endif
 
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>

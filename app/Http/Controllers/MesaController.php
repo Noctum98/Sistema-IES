@@ -6,7 +6,6 @@ use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Instancia;
 use App\Models\Libro;
-use App\Models\Sede;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,12 +15,11 @@ use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\Proceso;
 use App\Services\MesaService;
-use App\Services\UserService;
 use Carbon\Carbon;
-use DateTime;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpFoundation\Response;
 
 class MesaController extends Controller
 {
@@ -129,7 +127,7 @@ class MesaController extends Controller
 
             //dd($folios,$folios_segundo);
         } else {
-            return redirect()->back()->with(['error_fecha' => 'La mesa indicada no existe.']);
+            return redirect()->back()->with(['alert_danger' => 'La mesa indicada no existe.']);
         }
 
         return view('mesa.inscripciones', [
@@ -174,7 +172,7 @@ class MesaController extends Controller
             }
 
             return redirect()->back()->with([
-                'error_fecha' => $mensaje,
+                'alert_danger' => $mensaje,
             ]);
         }
 
@@ -207,7 +205,7 @@ class MesaController extends Controller
         }
 
         return redirect()->back()->with([
-            'message' => 'Mesa '.$materia->nombre.' configurada correctamente',
+            'message_success' => 'Mesa '.$materia->nombre.' configurada correctamente',
         ]);
     }
 
@@ -217,7 +215,7 @@ class MesaController extends Controller
 
         $mesa->update($request->all());
 
-        return redirect()->back()->with(['alumno_success' => 'Libro y Folio establecidos']);
+        return redirect()->back()->with(['alert_success' => 'Libro y Folio establecidos']);
     }
 
     public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera, int $llamado = 1, int $comision = null)
@@ -250,7 +248,7 @@ class MesaController extends Controller
 
         ];
 
-        $pdf = \App::make('dompdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
 
         return $pdf->download('Tribunal Mesa '.$carrera->sede->nombre.'-'.$carrera->nombre.'-'.$carrera->resolucion.'-'.$llamado.'-'. $instancia->nombre.'.pdf');
@@ -304,7 +302,7 @@ class MesaController extends Controller
             'orden' => $orden
         ];
 
-        $pdf = \App::make('dompdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_acta_volante_pdf', $data);
 
         return $pdf->download('Acta Volante: '.$materia->nombre .'-'.$instancia->nombre.'.pdf');
