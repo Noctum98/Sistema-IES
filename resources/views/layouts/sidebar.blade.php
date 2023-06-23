@@ -15,6 +15,12 @@
                     Usuarios
                 </a>
                 @endif
+                @if(Session::has('actividad'))
+                <a class="nav-link" href="{{ route('registros.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-paste"></i></div>
+                    Registro de actividad
+                </a>
+                @endif
                 @if(Session::has('listas'))
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseListado" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
