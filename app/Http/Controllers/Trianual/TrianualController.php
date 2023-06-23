@@ -85,16 +85,17 @@ class TrianualController extends Controller
      *
      * @return Application|Factory|View|RedirectResponse
      */
-    public function create(Request $request)
+    public function create(Request $request, int $alumno)
     {
-        $alumno = Alumno::find($request->get('alumno'));
+        $alumno = Alumno::find($alumno);
+        $sedes = Sede::all();
+
         if (!$alumno) {
             return view('trianual.trianual.index', [
                 'trianual' => false,
-                'sedes' => Sede::all(),
+                'sedes' => $sedes,
                 'busqueda' => false,
                 'alumnos' => false,
-
             ]);
         }
 
@@ -134,7 +135,8 @@ class TrianualController extends Controller
             'alumno' => $alumno,
             'coordinadores' => $coordinadores,
             'bedeles' => $bedeles,
-            'datos' => $datos
+            'datos' => $datos,
+            'sedes' => $sedes,
         ]);
     }
 

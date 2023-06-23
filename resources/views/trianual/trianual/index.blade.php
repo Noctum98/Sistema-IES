@@ -1,4 +1,5 @@
 @extends('layouts.app-prueba')
+
 @section('content')
     <div class="container">
         <div class="row d-flex justify-content-between">
@@ -52,11 +53,11 @@
                         <div class="col-6">
                             @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
                                 <a
-                                   class="btn btn-sm btn-primary agregarButton"
-                                   data-bs-toggle="modal"
-                                   data-bs-target="#agregarModal"
-                                   data-loader="{{$alumno->id}}"
-                                   data-attr="{{ route('trianual.crear', ['alumno'=>$alumno->id]) }}">
+                                    class="btn btn-sm btn-primary agregarButton"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#agregarModal"
+                                    data-loader="{{$alumno->id}}"
+                                    data-attr="{{ route('trianual.crear', ['alumno'=>$alumno->id]) }}">
                                     <i class="fas fa-plus-square text-gray-300"></i>
                                     <i class="fa fa-spinner fa-spin" style="display: none"
                                        id="loader{{$alumno->id}}"></i>
@@ -87,7 +88,21 @@
 
 @endsection
 @section('scripts')
+
+
     <script>
+        $(document).ready(function () {
+            // $("#sedes").select2({
+            //     placeholder:'Seleccione sede',
+            //     dropdownParent: $('#agregarModal'),
+            //     width: "100%"
+            // });
+            $(".carreras").select2({
+                dropdownParent: $('#agregarModal'),
+                width: "100%"
+            });
+        });
+
 
         $(document).on('click', '.agregarButton', function (event) {
             event.preventDefault();
@@ -117,4 +132,7 @@
             })
         });
     </script>
+
+
+
 @endsection

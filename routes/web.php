@@ -232,6 +232,7 @@ Route::prefix('sedes')->group(function () {
     Route::post('crear-sede', [SedeController::class, 'crear'])->name('crear_sede');
     Route::post('editar-sede/{id}', [SedeController::class, 'editar'])->name('editar_sede');
     Route::get('eliminar-sede/{id}', [SedeController::class, 'eliminar'])->name('eliminar_sede');
+    Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
 });
 
 
@@ -305,6 +306,7 @@ Route::prefix('carreras/materias')->group(function () {
         'descargar_planilla'
     );
 });
+
 
 
 
