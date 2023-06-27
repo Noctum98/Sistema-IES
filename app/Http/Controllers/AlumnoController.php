@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
 class AlumnoController extends Controller
 {
@@ -54,7 +55,7 @@ class AlumnoController extends Controller
         }
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
-        if(Session::has('admin'))
+        if(Session::has('admin') || Session::has('areaSocial'))
         {
             $carreras = Carrera::all();
         }else{
