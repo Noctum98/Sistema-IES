@@ -10,16 +10,17 @@
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
+	<button class="btn btn-info mb-4"
+		   data-bs-toggle="modal" data-bs-target="#crearComision"
+		>
+		Crear comisión
+	</button>
 	@endif
 
 	<a href="{{ route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>date('Y')]) }}" class="btn btn-warning mb-4">
 		Ver comisiones
 	</a>
-		<button class="btn btn-info mb-4"
-		   data-bs-toggle="modal" data-bs-target="#crearComision"
-		>
-		Crear comisión
-	</button>
+
 
 
 
