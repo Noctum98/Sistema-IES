@@ -4,18 +4,26 @@ namespace App\Http\Controllers\Trianual;
 
 use App\Http\Requests\Trianual\StoreDetalleTrianualRequest;
 use App\Http\Requests\Trianual\UpdateDetalleTrianualRequest;
-use App\Models\DetalleTrianual;
+use App\Models\Trianual\DetalleTrianual;
+use App\Models\Trianual\Trianual;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class DetalleTrianualController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function index()
+    public function index(Request $request, Trianual $trianual)
     {
-        //
+
+        return view('trianual.detalle.detail', [
+            'trianual' => $trianual,
+        ]);
     }
 
     /**
@@ -47,7 +55,7 @@ class DetalleTrianualController extends Controller
      */
     public function show(DetalleTrianual $detalleTrianual)
     {
-        //
+
     }
 
     /**

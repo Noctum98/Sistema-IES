@@ -11,12 +11,14 @@ use App\Models\Sede;
 use App\Models\Trianual\Trianual;
 use App\Models\User;
 use App\Services\AlumnoService;
+use App\Services\CarreraService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrianualController extends Controller
 {
@@ -24,9 +26,9 @@ class TrianualController extends Controller
     const CAMPOS_TRIANUAL = [
         'carrera',
         'cohorte',
+        'matricula',
         'resolucion',
         'alumno_id',
-        'matricula',
         'libro',
         'folio',
         'operador_id',
@@ -39,13 +41,19 @@ class TrianualController extends Controller
      * @var AlumnoService
      */
     private $alumnoService;
+    /**
+     * @var CarreraService
+     */
+    private $carreraService;
 
     /**
      * @param AlumnoService $alumnoService
+     * @param CarreraService $carreraService
      */
-    public function __construct(AlumnoService $alumnoService)
+    public function __construct(AlumnoService $alumnoService, CarreraService $carreraService)
     {
         $this->alumnoService = $alumnoService;
+        $this->carreraService = $carreraService;
     }
 
     /**
@@ -144,11 +152,70 @@ class TrianualController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Trianual\StoreTrianualRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function store(StoreTrianualRequest $request)
     {
-        //
+
+        $datos = [];
+
+        $alumno = Alumno::find($request->get('alumno'));
+        $sedes = Sede::all();
+
+        if (!$alumno) {
+            return view('trianual.trianual.index', [
+                'trianual' => false,
+                'sedes' => $sedes,
+                'busqueda' => false,
+                'alumnos' => false,
+            ]);
+        }
+
+        $trianual = Trianual::where(
+            'alumno_id', $alumno->id
+        )
+            ->first();
+
+        if ($trianual) {
+            return view('trianual.trianual.index', [
+                'trianual' => $trianual,
+                'sedes' => Sede::all(),
+                'busqueda' => $alumno->dni,
+                'alumnos' => [$alumno],
+
+            ]);
+        }
+        $carrera = $alumno->alumno_carrera()->first()->carrera();
+        if (!$carrera) {
+            $carrera = $this->carreraService->getCarrera($request->get('carrera'));
+        }
+        if ($request->get('cohorte')) {
+            $alumno->cohorte = $request->get('cohorte');
+            $alumno->update();
+        }
+
+        $datos['carrera_id'] = $carrera->id;
+        $datos['cohorte'] = $alumno->cohorte ?? $request->get('cohorte');
+        $datos['matricula'] = $request->get('matricula');
+        $datos['resolucion'] = $request->get('resolucion');
+        $datos['alumno_id'] = $alumno->id;
+        $datos['libro'] = $request->get('resolucion');
+        $datos['folio'] = $request->get('folio');
+        $datos['operador_id'] = Auth::user()->id;
+        $datos['promedio'] = $request->get('promedio');
+        $datos['fecha_egreso'] = $request->get('fecha_egreso');
+        $datos['preceptor_id'] = $request->get('preceptor');
+        $datos['coordinator_id'] = $request->get('coordinator');
+        $datos['sede_id'] = $carrera->sede_id;
+        $trianual = Trianual::create($datos);
+
+        return view('trianual.detalle.detail', [
+            'trianual' => $trianual,
+            'alumno' => $alumno,
+
+        ]);
+
+
     }
 
     /**
@@ -195,4 +262,6 @@ class TrianualController extends Controller
     {
         //
     }
+
+
 }

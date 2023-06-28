@@ -61,7 +61,6 @@
                                     <i class="fas fa-plus-square text-gray-300"></i>
                                     <i class="fa fa-spinner fa-spin" style="display: none"
                                        id="loader{{$alumno->id}}"></i>
-
                                     Cargar trianual
                                 </a>
                             @endif
@@ -92,17 +91,11 @@
 
     <script>
         $(document).ready(function () {
-            // $("#sedes").select2({
-            //     placeholder:'Seleccione sede',
-            //     dropdownParent: $('#agregarModal'),
-            //     width: "100%"
-            // });
             $(".carreras").select2({
                 dropdownParent: $('#agregarModal'),
                 width: "100%"
             });
         });
-
 
         $(document).on('click', '.agregarButton', function (event) {
             event.preventDefault();
