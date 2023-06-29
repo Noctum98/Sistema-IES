@@ -11,6 +11,7 @@ use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\Trianual\AcreditacionController;
+use App\Http\Controllers\Trianual\DetalleTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use Illuminate\Support\Facades\Auth;
@@ -139,6 +140,14 @@ Route::post('crearComisiones/{carrera_id}', [ComisionController::class, 'store']
 Route::delete('comisiones/profesor/{comision_id}', [ComisionController::class, 'delete_profesor'])->name(
     'comision.delprofesor'
 );
+
+//Rutas detalleTrianual
+Route::prefix('detalleTrianual')->group(function () {
+    Route::get('/', [DetalleTrianualController::class, 'index'])->name('detalleTrianual.listar');
+    Route::post('/', [DetalleTrianualController::class, 'store'])->name('detalleTrianual.guardar');
+    Route::get('/crear/{trianual}', [DetalleTrianualController::class, 'create'])->name('detalleTrianual.crear');
+    Route::get('/ver/{detalleTrianual}', [DetalleTrianualController::class, 'show'])->name('detalleTrianual.ver');
+});
 
 // Rutas de estados
 
@@ -634,6 +643,7 @@ Route::prefix('trianual')->group(function () {
     Route::get('/', [TrianualController::class, 'index'])->name('trianual.listar');
     Route::post('/', [TrianualController::class, 'store'])->name('trianual.guardar');
     Route::get('/crear/{alumno}', [TrianualController::class, 'create'])->name('trianual.crear');
+    Route::get('/ver/{trianual}', [TrianualController::class, 'show'])->name('trianual.ver');
 });
 
 //Ruta de usuario administrador

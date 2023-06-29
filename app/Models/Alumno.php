@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Trianual\Trianual;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -252,7 +254,9 @@ class Alumno extends Model
             ->withPivot('id','carrera_id');
     }
 
-
-
+    public function getTrianual(): HasOne
+    {
+        return $this->hasOne(Trianual::class, 'alumno_id');
+    }
 
 }

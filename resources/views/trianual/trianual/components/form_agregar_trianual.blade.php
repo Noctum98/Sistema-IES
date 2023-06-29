@@ -15,6 +15,7 @@
         height: 34px !important;
     }
 </style>
+<h5 class="modal-title text-dark text-center" id="agregarModalLabel">Trianual: <i>{{$alumno->getApellidosNombresAttribute()}}</i> </h5>
 <form action="{{ route('trianual.guardar') }}" method="POST">
 
     <div class="row">

@@ -3,10 +3,12 @@
 namespace App\Models\Trianual;
 
 use App\Models\Alumno;
+use App\Models\Carrera;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Trianual extends Model
 {
@@ -37,8 +39,21 @@ class Trianual extends Model
     {
         return $this->hasMany(DetalleTrianual::class, 'trianual_id');
     }
-    public function getAlumno(): HasOne
+
+
+    /**
+     * @return Model|BelongsTo|object|null
+     */
+    public function getAlumno()
     {
-        return $this->hasOne(Alumno::class, 'alumno_id');
+        return $this->belongsTo(Alumno::class,'alumno_id', 'id')->first();
+    }
+    public function getCarrera()
+    {
+        return $this->belongsTo(Carrera::class,'carrera_id', 'id')->first();
+    }
+    public function getOperador($id)
+    {
+        return User::find($id);
     }
 }

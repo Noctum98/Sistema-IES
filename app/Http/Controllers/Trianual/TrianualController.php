@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class TrianualController extends Controller
@@ -221,19 +222,23 @@ class TrianualController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Trianual $trianual
-     * @return \Illuminate\Http\Response
+     * @param Trianual $trianual
+     * @return Application|Factory|View
      */
     public function show(Trianual $trianual)
     {
-        //
+        $estados = Estados::all();
+        return view('trianual.trianual.show', [
+            'trianual' => $trianual,
+            'estados' => $estados
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Trianual $trianual
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Trianual $trianual)
     {
@@ -245,7 +250,7 @@ class TrianualController extends Controller
      *
      * @param \App\Http\Requests\Trianual\UpdateTrianualRequest $request
      * @param \App\Models\Trianual $trianual
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateTrianualRequest $request, Trianual $trianual)
     {
@@ -256,7 +261,7 @@ class TrianualController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Trianual $trianual
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Trianual $trianual)
     {

@@ -45,24 +45,33 @@
             @if($alumnos)
                 @foreach($alumnos as $alumno)
                     <div class="row border-bottom pb-2">
-                        <div class="col-5">
+                        <div class="col-6">
                             {{$alumno->getApellidosNombresAttribute()}}
-                            <small class="ml-5">D.N.I.:{{$alumno->dni}}</small>
-                            <small class="ml-5">Cohorte:{{$alumno->cohorte}}</small>
+                            <small class="ml-5">D.N.I.: {{$alumno->dni}}</small>
+                            <small class="ml-5">Cohorte: {{$alumno->cohorte}}</small>
                         </div>
                         <div class="col-6">
-                            @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
-                                <a
-                                    class="btn btn-sm btn-primary agregarButton"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#agregarModal"
-                                    data-loader="{{$alumno->id}}"
-                                    data-attr="{{ route('trianual.crear', ['alumno'=>$alumno->id]) }}">
-                                    <i class="fas fa-plus-square text-gray-300"></i>
-                                    <i class="fa fa-spinner fa-spin" style="display: none"
-                                       id="loader{{$alumno->id}}"></i>
-                                    Cargar trianual
+                            @if($alumno->getTrianual()->first())
+
+                                <a href="{{route('trianual.ver', ['trianual' => $alumno->getTrianual()->first()->id])}}"
+                                   class="btn btn-sm  btn-info">
+                                    Ver trianual
                                 </a>
+
+                            @else
+                                @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
+                                    <a
+                                        class="btn btn-sm btn-primary agregarButton"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#agregarModal"
+                                        data-loader="{{$alumno->id}}"
+                                        data-attr="{{ route('trianual.crear', ['alumno'=>$alumno->id]) }}">
+                                        <i class="fas fa-plus-square text-gray-300"></i>
+                                        <i class="fa fa-spinner fa-spin" style="display: none"
+                                           id="loader{{$alumno->id}}"></i>
+                                        Cargar trianual
+                                    </a>
+                                @endif
                             @endif
                             @if(!$alumno->cohorte)
                                 <a href="{{ route('alumno.admin',['busqueda' => $alumno->dni]) }}"
@@ -88,14 +97,7 @@
 @endsection
 @section('scripts')
 
-
     <script>
-        $(document).ready(function () {
-            $(".carreras").select2({
-                dropdownParent: $('#agregarModal'),
-                width: "100%"
-            });
-        });
 
         $(document).on('click', '.agregarButton', function (event) {
             event.preventDefault();
@@ -117,15 +119,11 @@
                     $laoder.hide();
                 },
                 error: function (jqXHR, testStatus, error) {
-                    console.log(error);
-
                     $laoder.hide();
                 },
                 timeout: 2000
             })
         });
     </script>
-
-
 
 @endsection
