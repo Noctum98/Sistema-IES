@@ -14,7 +14,7 @@
         <tr>
             <th>
                 @if(!$registro->deleted_at)
-                <a href="{{ route('alumno.detalle',$registro->alumno->id) }}"> 
+                <a href="{{ route('alumno.detalle',$registro->table_id) }}"> 
                     {{$registro->alumno->dni}} 
                 </a>
                 @else

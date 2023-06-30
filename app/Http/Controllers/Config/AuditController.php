@@ -12,7 +12,7 @@ class AuditController extends Controller
 
     public function __construct()
     {
-        $this->middleware('app.roles:admin-actividad');    
+        $this->middleware('app.roles:admin-actividad-areaSocial');    
     }
     public function index()
     {
@@ -39,5 +39,5 @@ class AuditController extends Controller
             'tabla' => $tabla,
             'registros' => $audits
         ]);
-    }
+    }    
 }
