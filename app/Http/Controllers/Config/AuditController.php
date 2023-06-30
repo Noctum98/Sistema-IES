@@ -12,7 +12,7 @@ class AuditController extends Controller
 
     public function __construct()
     {
-        $this->middleware('app.roles:admin-registros');    
+        $this->middleware('app.roles:admin-actividad');    
     }
     public function index()
     {
