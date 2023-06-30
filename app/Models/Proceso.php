@@ -35,7 +35,7 @@ class Proceso extends Model
 
     public function alumno(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Alumno', 'alumno_id');
+        return $this->belongsTo('App\Models\Alumno', 'alumno_id')->withTrashed();
     }
 
     public function asistencia()

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class Alumno extends Model
 {
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'user_id',
         'año',
@@ -65,8 +67,6 @@ class Alumno extends Model
         'deleted_at',
         'aprobado'
     ];
-
-    use HasFactory, SoftDeletes;
 
     public function user()
     {
