@@ -12,6 +12,7 @@ use App\Models\Trianual\Trianual;
 use App\Models\User;
 use App\Services\AlumnoService;
 use App\Services\CarreraService;
+use App\Services\Trianual\DetalleTrianualService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -46,15 +47,21 @@ class TrianualController extends Controller
      * @var CarreraService
      */
     private $carreraService;
+    /**
+     * @var DetalleTrianualService
+     */
+    private $detalleTrianualService;
 
     /**
      * @param AlumnoService $alumnoService
      * @param CarreraService $carreraService
+     * @param DetalleTrianualService $detalleTrianualService
      */
-    public function __construct(AlumnoService $alumnoService, CarreraService $carreraService)
+    public function __construct(AlumnoService $alumnoService, CarreraService $carreraService, DetalleTrianualService $detalleTrianualService)
     {
         $this->alumnoService = $alumnoService;
         $this->carreraService = $carreraService;
+        $this->detalleTrianualService = $detalleTrianualService;
     }
 
     /**
@@ -228,9 +235,14 @@ class TrianualController extends Controller
     public function show(Trianual $trianual)
     {
         $estados = Estados::all();
+
+        $detalles = $this->detalleTrianualService->detallesPorTrianual($trianual->id);
+
+
         return view('trianual.trianual.show', [
             'trianual' => $trianual,
-            'estados' => $estados
+            'estados' => $estados,
+            'detalles' => $detalles
         ]);
     }
 

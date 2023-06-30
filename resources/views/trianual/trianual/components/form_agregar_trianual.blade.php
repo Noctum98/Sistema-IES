@@ -31,7 +31,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="carreras">Carreras</label>
+                    <label for="carreras">Carreras<sup>*</sup></label>
                     <select name="carrera_id" id="carreras" class="form-select carreras">
 
                     </select>

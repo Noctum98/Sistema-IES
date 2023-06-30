@@ -20,7 +20,7 @@
                         </tr>
                         </thead>
                         <tbody>
-
+<tr><td>ok</td></tr>
 {{--                        Aqui @foreach() @endforeach--}}
                         </tbody>
                     </table>

@@ -22,17 +22,17 @@
         <div class="row">
 
             <div class="form-group">
-                <label for="materias">Materia</label>
-                <select name="materias" id="materias" class="form-control materias">
+                <label for="materia_id">Materia <sup>*</sup></label>
+                <select name="materia_id" id="materia_id" class="form-control materias" required>
                     <option value=''> - Seleccione materia -</option>
                     @foreach($trianual->getCarrera()->materias()->get() as $materia)
-                        <option value="{{ $materia->id }}">{{ $materia->nombre }} - ({{$materia->año}})</option>
+                        <option value="{{ $materia->id }}">{{ $materia->nombre }} - ({{$materia->año}} año)</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label for="estados">Condición</label>
-                <select name="estado_id" id="estados" class="form-select estados">
+                <label for="condicion_id">Condición <sup>*</sup></label>
+                <select name="condicion_id" id="condicion_id" class="form-select estados" required>
                     <option value=''> - Seleccione condición -</option>
                     @foreach($estados as $estado)
                         <option value="{{ $estado->id }}">{{ $estado->nombre }}</option>
@@ -40,9 +40,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="recursado">Recursado</label>
-                <select name="recursado" id="recursado" class="form-select recursado">
-
+                <label for="recursado">Recursado <sup>*</sup></label>
+                <select name="recursado" id="recursado" class="form-select recursado" required>
 
                     <option value="0" selected>No Recursa</option>
                     <option value="1">1<sup>er</sup> Recursado</option>
@@ -55,32 +54,32 @@
         </div>
         <div class="col-sm-12 text-center">
             <sup>*</sup> <small>Campos requeridos</small><br/>
-            <input type="hidden" name="trianual" id="trianual" value="{{$trianual->id}}">
+            <input type="hidden" name="trianual_id" id="trianual_id" value="{{$trianual->id}}">
             <input type="submit" value="Guardar" class="btn btn-primary col-12">
         </div>
     </form>
 </div>
 <script src="{{ asset('js/sedes/sedes_carreras.js') }}"></script>
 <script>
-    $(".sedes").select2({
-        dropdownParent: $('#agregarBody'),
-        placeholder: 'Seleccione sede',
+    $(".materias").select2({
+        // dropdownParent: $('#agregarBody'),
+        placeholder: 'Seleccione materia',
         width: "100%",
         theme: "classic",
         allowClear: true
 
     });
-    $(".carreras").select2({
-        dropdownParent: $('#agregarBody'),
-        placeholder: 'Seleccione carrera',
+    $(".estados").select2({
+        // dropdownParent: $('#agregarBody'),
+        placeholder: 'Seleccione condición',
         theme: "classic",
         width: "100%",
         allowClear: true
 
     });
-    $(".preceptor").select2({
-        dropdownParent: $('#agregarBody'),
-        placeholder: 'Seleccione preceptor',
+    $(".recursado").select2({
+        // dropdownParent: $('#agregarBody'),
+        placeholder: 'Seleccione si recursa',
         theme: "classic",
         width: "100%",
         allowClear: true
