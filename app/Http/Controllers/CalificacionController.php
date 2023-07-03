@@ -238,6 +238,7 @@ class CalificacionController extends Controller
                 ->join('tipo_calificaciones', 'tipo_calificaciones.id', 'calificaciones.tipo_id')
                 ->where('calificaciones.materia_id', $request['materia_id'])
                 ->where('tipo_calificaciones.descripcion', 3)
+                ->where('calificaciones.ciclo_lectivo', $request['ciclo_lectivo'])
                 ->first();
 
             if ($calificacionFinal) {
