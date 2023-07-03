@@ -61,7 +61,8 @@ class Mesa extends Model
         return $this->hasMany('App\Models\MesaAlumno')
             ->where(['estado_baja' => false, 'segundo_llamado' => false])
             ->skip($skip)
-            ->take($take);
+            ->take($take)
+            ->get();
     }
 
     public function mesa_inscriptos_segundo($orden = 1)
@@ -72,7 +73,8 @@ class Mesa extends Model
         return $this->hasMany('App\Models\MesaAlumno')
             ->where(['estado_baja' => false, 'segundo_llamado' => true])
             ->skip($skip)
-            ->take($take);
+            ->take($take)
+            ->get();
     }
     public function bajas_primero()
     {
@@ -154,6 +156,7 @@ class Mesa extends Model
             if ($prop == 2) {
                 return $this->mesa_inscriptos_segundo($orden);
             }
+            
             return $this->mesa_inscriptos();
         } else {
             $inscriptos = $this->mesa_inscriptos()->where('confirmado',true);

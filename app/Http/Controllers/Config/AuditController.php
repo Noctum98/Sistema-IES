@@ -12,7 +12,7 @@ class AuditController extends Controller
 
     public function __construct()
     {
-        $this->middleware('app.roles:admin-registros');    
+        $this->middleware('app.roles:admin-actividad-areaSocial');
     }
     public function index()
     {
@@ -21,21 +21,24 @@ class AuditController extends Controller
             'Procesos' => 'procesos'
         ];
 
-        return view('audit.index',['modelos' => $modelos]);
+        return view('audit.index', ['modelos' => $modelos]);
     }
 
     public function show($tabla)
     {
-        $audits = Audit::where('table',$tabla);
+        $audits = Audit::where('table', $tabla)
+            ->orderBy('updated_at', 'DESC');
 
-        if(!Session::has('admin'))
-        {
-            $audits = $audits->where('changes','CREATE')->orWhere('changes','DELETE');
+        if (!Session::has('admin') && $tabla == 'procesos') {
+            $audits = $audits->where(function ($query) {
+                $query->where('changes', 'CREATE')
+                    ->orWhere('changes', 'DELETE');
+            });
         }
 
-        $audits = $audits->orderBy('updated_at','DESC')->paginate(20);
+        $audits = $audits->paginate(20);
 
-        return view('audit.show',[
+        return view('audit.show', [
             'tabla' => $tabla,
             'registros' => $audits
         ]);
