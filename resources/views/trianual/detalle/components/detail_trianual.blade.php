@@ -8,7 +8,7 @@
                 <tr>
                     <th scope="col">Materia</th>
                     <th scope="col">Condición</th>
-                    <th scope="col">Equivalencia</th>
+                    <th scope="col" title="Equivalencia">Equi.</th>
                     <th scope="col">Proceso</th>
                     <th scope="col" class="text-center"><i class="fa fa-cogs"></i></th>
                 </tr>
