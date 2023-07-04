@@ -56,7 +56,6 @@ class ActaVolanteController extends Controller
             'nota_escrito' => ['required'],
             'nota_oral' => ['required'],
         ]);
-
         $request = $this->verificar_nota($request);
 
         if ($request['error']) {
