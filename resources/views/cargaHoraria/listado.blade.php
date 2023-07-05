@@ -28,7 +28,7 @@
                         <td>{{ ucwords($persona->cargo) }}</td>
                         <td>
 
-                            <a href="{{ route('cargaHoraria.ver',['id'=>$persona->id]) }}" class="btn-sm btn-warning">
+                            <a href="{{ route('cargaHoraria.ver',['persona'=>$persona->id]) }}" class="btn-sm btn-warning">
                                 Ver Carga horaria
                             </a>
                         </td>

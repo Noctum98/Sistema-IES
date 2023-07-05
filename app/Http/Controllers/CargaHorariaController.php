@@ -5,8 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCargaHorariaRequest;
 use App\Http\Requests\UpdateCargaHorariaRequest;
 use App\Models\CargaHoraria;
+use App\Models\Estados;
 use App\Models\Personal;
+use App\Models\Proceso;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Response;
 
 class CargaHorariaController extends Controller
 {
@@ -20,7 +26,7 @@ class CargaHorariaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|Application|View
      */
     public function index()
     {
@@ -34,18 +40,27 @@ class CargaHorariaController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function create(User $persona)
+    public function create(int $persona)
     {
-        //
+
+        $profesor = User::find($persona);
+
+        $carreras = $profesor->carreras()->get();
+
+
+        return view('cargaHoraria.components.form_agregar_cargaHoraria')->with([
+            'carreras' => $carreras,
+            'profesor' => $profesor
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\StoreCargaHorariaRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreCargaHorariaRequest $request)
     {
@@ -56,7 +71,7 @@ class CargaHorariaController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\CargaHoraria $cargaHoraria
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(User $persona)
     {
@@ -75,7 +90,7 @@ class CargaHorariaController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\CargaHoraria $cargaHoraria
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(CargaHoraria $cargaHoraria)
     {
@@ -87,7 +102,7 @@ class CargaHorariaController extends Controller
      *
      * @param \App\Http\Requests\UpdateCargaHorariaRequest $request
      * @param \App\Models\CargaHoraria $cargaHoraria
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateCargaHorariaRequest $request, CargaHoraria $cargaHoraria)
     {
@@ -98,7 +113,7 @@ class CargaHorariaController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\CargaHoraria $cargaHoraria
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(CargaHoraria $cargaHoraria)
     {

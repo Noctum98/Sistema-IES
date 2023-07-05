@@ -87,8 +87,9 @@ Route::prefix('carga-horaria')->group(function () {
     // Vistas
     Route::get('/', [CargaHorariaController::class, 'index'])->name('cargaHoraria.listado');
     Route::get('/{persona}', [CargaHorariaController::class, 'show'])->name('cargaHoraria.ver');
-    Route::get('crear', [CargaHorariaController::class, 'create'])->name('cargaHoraria.crear');
-    Route::get('editar/{id}', [CargaHorariaController::class, 'edit'])->name('cargaHoraria.editar');
+    Route::get('/crear/{persona}', [CargaHorariaController::class, 'create'])->name('cargaHoraria.crear');
+    Route::get('/guardar/{persona}', [CargaHorariaController::class, 'store'])->name('cargaHoraria.guardar');
+    Route::get('/editar/{persona}', [CargaHorariaController::class, 'edit'])->name('cargaHoraria.editar');
 });
 
 

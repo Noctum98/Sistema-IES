@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ComposicionHoraria extends Model
 {
     use HasFactory;
+
+    protected $table = 'hourlies_compositions';
 }
