@@ -100,7 +100,8 @@ class ExcelController extends Controller
         $procesos = $procesos->get();
         
         $calificacion = Calificacion::where([
-            'materia_id' => $materia_id
+            'materia_id' => $materia_id,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
         if ($comision_id) {
             $calificacion->where([
