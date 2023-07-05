@@ -61,6 +61,8 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        @if($instancia->segundo_llamado)
                         <div class="form-group">
                             <label for="fecha_segundo">Fecha y Hora (Segundo llamado):</label>
                             <input type="datetime-local" id="fecha_segundo-{{$materia->id}}" name="fecha_segundo" value="{{ $materia->mesa($instancia->id) ? $materia->mesa($instancia->id)->fecha_segundo : '' }}" class="form-control">
@@ -95,6 +97,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endif
                         <input type="submit" value="Configurar" class="btn btn-success mt-2" id="loading">
                     </div>
                 </form>

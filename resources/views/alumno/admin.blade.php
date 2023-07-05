@@ -75,8 +75,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($sedes as $sede)
-                        @foreach($sede->carreras as $carrera)
+                    
+                        @foreach($carreras as $carrera)
                             <tr>
                                 <td>{{ $carrera->nombre.' ('.ucwords($carrera->turno).')' }}</td>
                                 <td>{{ $carrera->resolucion }}</td>
@@ -89,7 +89,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                    @endforeach
+                    
                     </tbody>
                 </table>
             @elseif(!empty($alumnos))

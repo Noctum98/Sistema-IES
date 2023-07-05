@@ -16,8 +16,8 @@
                     @endif
                 </h4>
             </div>
-            
-            @if(!$comision)
+
+            @if(!$comision_id)
             <div class="col-4">
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"

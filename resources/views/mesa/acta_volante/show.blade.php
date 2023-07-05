@@ -25,8 +25,8 @@
         @endif
 
     
-        @if(count($mesa->mesa_inscriptos_primero) > 0)
-            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_primero,'cierre'=>$mesa->cierre_profesor])
+        @if(count($mesa->mesa_inscriptos_primero()) > 0)
+            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_primero(),'cierre'=>$mesa->cierre_profesor])
         @else
             <p>No existen inscripciones para este llamado.</p>
         @endif
@@ -36,9 +36,9 @@
             @include('mesa.acta_volante.tabla_bajas',['inscripciones'=>$mesa->bajas_primero])
         @endif
 
-        @if( count($mesa->mesa_inscriptos_segundo) > 0)
+        @if( count($mesa->mesa_inscriptos_segundo()) > 0)
             <h2 class="text-info">Segundo llamado</h2>
-            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_segundo,'cierre'=>$mesa->cierre_profesor_segundo])
+            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_segundo(),'cierre'=>$mesa->cierre_profesor_segundo])
         @endif
 
         @if(count($mesa->bajas_segundo) > 0)

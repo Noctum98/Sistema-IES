@@ -6,19 +6,21 @@
 		Plan de estudios de {{ $carrera->nombre }}
 	</h2>
 	<hr>
-	@if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
+	@if(Session::has('admin'))
 	<a href="{{ route('materia.crear',['carrera_id'=>$carrera->id]) }}" class="btn btn-success mb-4">
 		Agregar materia
 	</a>
-	<a href="{{ route('comisiones.ver',$carrera->id) }}" class="btn btn-warning mb-4">
-		Ver comisiones
-	</a>
-		<button class="btn btn-info mb-4"
+	<button class="btn btn-info mb-4"
 		   data-bs-toggle="modal" data-bs-target="#crearComision"
 		>
 		Crear comisión
 	</button>
 	@endif
+
+	<a href="{{ route('comisiones.ver',$carrera->id) }}" class="btn btn-warning mb-4">
+		Ver comisiones
+	</a>
+
 
 
 

@@ -17,6 +17,7 @@ class ActaVolanteController extends Controller
         UserService $userService,
         MesaService $mesaService
     ) {
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor');
         $this->userService = $userService;
         $this->mesaService = $mesaService;
     }
@@ -55,7 +56,6 @@ class ActaVolanteController extends Controller
             'nota_escrito' => ['required'],
             'nota_oral' => ['required'],
         ]);
-
         $request = $this->verificar_nota($request);
 
         if ($request['error']) {

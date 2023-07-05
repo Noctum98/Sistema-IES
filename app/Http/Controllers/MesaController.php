@@ -6,7 +6,6 @@ use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Instancia;
 use App\Models\Libro;
-use App\Models\Sede;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,24 +14,28 @@ use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\Proceso;
-use App\Services\UserService;
+use App\Services\MesaService;
 use Carbon\Carbon;
-use DateTime;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpFoundation\Response;
 
 class MesaController extends Controller
 {
     protected $feriados;
+    protected $mesaService;
 
     const T_M = '14:00';
     const T_T = '23:59';
     const T_V = '23:59';
 
 
-    public function __construct()
+    public function __construct(
+        MesaService $mesaService
+    )
     {
+        $this->mesaService = $mesaService;
         /**
          * Fuente https://www.argentina.gob.ar/interior/feriados-nacionales-2022
          */
@@ -59,6 +62,8 @@ class MesaController extends Controller
             '08-12-2022',
             '09-12-2022',
         ];
+
+
     }
 
     // Vistas
@@ -122,7 +127,7 @@ class MesaController extends Controller
 
             //dd($folios,$folios_segundo);
         } else {
-            return redirect()->back()->with(['error_fecha' => 'La mesa indicada no existe.']);
+            return redirect()->back()->with(['alert_danger' => 'La mesa indicada no existe.']);
         }
 
         return view('mesa.inscripciones', [
@@ -167,7 +172,7 @@ class MesaController extends Controller
             }
 
             return redirect()->back()->with([
-                'error_fecha' => $mensaje,
+                'alert_danger' => $mensaje,
             ]);
         }
 
@@ -185,23 +190,9 @@ class MesaController extends Controller
         $request['instancia_id'] = $instancia->id;
         $request['materia_id'] = $materia->id;
 
-        if (date('D', strtotime($request['fecha'])) == 'Mon' || date('D', strtotime($request['fecha'])) == 'Tue') {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-4 days");
-        } else {
-            $request['cierre'] = strtotime($this->setFechaTurno($materia, $request['fecha'])."-2 days");
-        }
+        $request['cierre'] = $this->mesaService->setCierreMesa($request['fecha'],$materia);
         if ($request['fecha_segundo']) {
-            if ($request['fecha_segundo'] && date('D', strtotime($request['fecha_segundo'])) == 'Mon' || date(
-                    'D',
-                    strtotime($request['fecha_segundo'])
-                ) == 'Tue') {
-
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-4 days");
-
-
-            } else {
-                $request['cierre_segundo'] = strtotime($this->setFechaTurno($materia, $request['fecha_segundo'])."-2 days");
-            }
+            $request['cierre_segundo'] = $this->mesaService->setCierreMesa($request['fecha_segundo'],$materia);
         } else {
             $request['cierre_segundo'] = null;
         }
@@ -214,7 +205,7 @@ class MesaController extends Controller
         }
 
         return redirect()->back()->with([
-            'message' => 'Mesa '.$materia->nombre.' configurada correctamente',
+            'message_success' => 'Mesa '.$materia->nombre.' configurada correctamente',
         ]);
     }
 
@@ -224,7 +215,7 @@ class MesaController extends Controller
 
         $mesa->update($request->all());
 
-        return redirect()->back()->with(['alumno_success' => 'Libro y Folio establecidos']);
+        return redirect()->back()->with(['alert_success' => 'Libro y Folio establecidos']);
     }
 
     public function generar_pdf_mesa(Instancia $instancia, Carrera $carrera, int $llamado = 1, int $comision = null)
@@ -257,7 +248,7 @@ class MesaController extends Controller
 
         ];
 
-        $pdf = \App::make('dompdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
 
         return $pdf->download('Tribunal Mesa '.$carrera->sede->nombre.'-'.$carrera->nombre.'-'.$carrera->resolucion.'-'.$llamado.'-'. $instancia->nombre.'.pdf');
@@ -311,7 +302,7 @@ class MesaController extends Controller
             'orden' => $orden
         ];
 
-        $pdf = \App::make('dompdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_acta_volante_pdf', $data);
 
         return $pdf->download('Acta Volante: '.$materia->nombre .'-'.$instancia->nombre.'.pdf');
@@ -387,27 +378,6 @@ class MesaController extends Controller
         return redirect()->back()->with(['alert_success'=>'El acta volante se ha abierto correctamente.']);
     }
 
-    private function setFechaTurno($materia, $fecha)
-    {
-
-        $turno = $materia->carrera->turno;
-        $hora = '00:00';
-        switch ($turno) {
-            case 'mañana':
-                $hora = $this::T_M;
-                break;
-            case 'tarde':
-                $hora = $this::T_T;
-                break;
-            case 'vespertino':
-                $hora = $this::T_V;
-        }
-
-        $fecha = substr($fecha, 0, -6);
-
-        return $fecha.'T'.$hora;
-
-    }
 
     /**
      * @param int $instancia
