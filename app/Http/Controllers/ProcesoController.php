@@ -97,6 +97,7 @@ class ProcesoController extends Controller
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
             'tipo_id' => 1,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
         if ($comision_id) {
             $calificacion->where([
