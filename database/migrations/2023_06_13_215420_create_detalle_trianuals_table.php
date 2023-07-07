@@ -20,7 +20,7 @@ class CreateDetalleTrianualsTable extends Migration
             $table->unsignedBigInteger('materia_id');
             $table->unsignedBigInteger('condicion_id');
             $table->unsignedBigInteger('equivalencia_id')->nullable();
-            $table->unsignedBigInteger('proceso_id');
+            $table->unsignedBigInteger('proceso_id')->nullable();
             $table->unsignedInteger('operador_id');
             $table->unsignedInteger('recursado')->default(0);
 

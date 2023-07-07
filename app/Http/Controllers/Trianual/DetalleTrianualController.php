@@ -71,7 +71,7 @@ class DetalleTrianualController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Trianual\StoreDetalleTrianualRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|\Illuminate\Http\Response
      */
     public function store(StoreDetalleTrianualRequest $request)
     {
@@ -98,7 +98,11 @@ class DetalleTrianualController extends Controller
         $data['operador_id'] = Auth::user()->id;
         $detalleTrianual = DetalleTrianual::create($data);
 
-dd($detalleTrianual);
+        return view('trianual.detalle.detail', [
+            'trianual' => $trianual,
+            'alumno' => $trianual->getAlumno(),
+
+        ]);
 
     }
 
