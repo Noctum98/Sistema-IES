@@ -59,6 +59,7 @@
         </div>
     </form>
 </div>
+
 <script src="{{ asset('js/sedes/sedes_carreras.js') }}"></script>
 <script>
     $(".materias").select2({

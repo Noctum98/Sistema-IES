@@ -14,6 +14,7 @@ use App\Http\Controllers\Trianual\AcreditacionController;
 use App\Http\Controllers\Trianual\DetalleTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
+use App\Models\Trianual\ObservacionesTrianual;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -636,6 +637,12 @@ Route::prefix('mail')->group(function () {
     Route::post('/mail/pre/send/{carrera_id}', [MailController::class, 'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
+Route::prefix('observaciones_trianual')->group(function () {
+    Route::get('/', [ObservacionesTrianual::class, 'index'])->name('observaciones_trianual.listar');
+    Route::post('/', [ObservacionesTrianual::class, 'store'])->name('observaciones_trianual.guardar');
+    Route::get('/crear/{alumno}', [ObservacionesTrianual::class, 'create'])->name('observaciones_trianual.crear');
+    Route::get('/ver/{trianual}', [ObservacionesTrianual::class, 'show'])->name('observaciones_trianual.ver');
+});
 
 Route::resource('registros',AuditController::class);
 

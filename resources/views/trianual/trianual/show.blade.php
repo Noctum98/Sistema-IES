@@ -9,6 +9,14 @@
             /*left:0;top:0;*/
             display: none;
         }
+        .overlay-observaciones{
+            background: #f0f0f0;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            /*left:0;top:0;*/
+            display: none;
+        }
     </style>
     <div class="container">
         <h4 class="text-dark text-center">
@@ -44,7 +52,9 @@
 
         <div id="detail-trianual" class="row mt-3">
 
-                <button class="btn btn-primary button col-sm-3" type="button" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                <button class="btn btn-primary button col-sm-3" type="button"
+{{--                        data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"--}}
+                >
                     Agregar materia
                 </button>
 
@@ -60,13 +70,25 @@
                     </div>
 
             </div>
+            <button class="btn btn-primary button-observaciones col-sm-3" type="button"
+{{--                    data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"--}}
+            >
+                    Agregar obsevaciones
+                </button>
+
+            <div class="overlay-observaciones">
+                <button class="oculto-observaciones">
+                    Cerrar
+                </button>
+
+                    <div class="card card-body w-100 p-3"
+                        {{--                         style="width: 300px;"--}}
+                    >
+                        @include('trianual.observaciones.components.form_agregar_observaciones_trianual')
+                    </div>
+
+            </div>
             @include('trianual.detalle.components.detail_trianual')
-
-
-
-
-
-
         </div>
 
     </div>
@@ -75,11 +97,19 @@
     <script>
         $(document).ready(function () {
             $(".button").click(function () {
-                console.log('78')
+                console.log('106')
                 $(".overlay").show({width: "0px"});
             });
             $(".oculto").click(function () {
                 $(".overlay").hide({width: "100%"});
+            });
+
+            $(".button-observaciones").click(function () {
+                console.log('114')
+                $(".overlay-observaciones").show({width: "0px"});
+            });
+            $(".oculto-observaciones").click(function () {
+                $(".overlay-observaciones").hide({width: "100%"});
             });
         })
         $(document).on('click', '#editButton', function (event) {
