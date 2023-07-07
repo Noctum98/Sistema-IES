@@ -1,4 +1,4 @@
-<div class="col-md-7">
+<div class="col-md-12 mt-5" >
 
     @if(count($detalles) > 0)
 

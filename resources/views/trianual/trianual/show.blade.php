@@ -1,5 +1,15 @@
 @extends('layouts.app-prueba')
 @section('content')
+    <style>
+        .overlay{
+            background: #f0f0f0;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            /*left:0;top:0;*/
+            display: none;
+        }
+    </style>
     <div class="container">
         <h4 class="text-dark text-center">
             Detalle trianual del alumno: <i>{{$trianual->getAlumno()->getApellidosNombresAttribute()}}</i>
@@ -33,16 +43,45 @@
         </div>
 
         <div id="detail-trianual" class="row mt-3">
+
+                <button class="btn btn-primary button col-sm-3" type="button" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                    Agregar materia
+                </button>
+
+            <div class="overlay">
+                <button class="oculto">
+                    Cerrar
+                </button>
+
+                    <div class="card card-body w-100 p-3"
+                        {{--                         style="width: 300px;"--}}
+                    >
+                        @include('trianual.detalle.components.form_agregar_detalle')
+                    </div>
+
+            </div>
             @include('trianual.detalle.components.detail_trianual')
-            @include('trianual.detalle.components.form_agregar_detalle')
+
+
+
+
+
+
         </div>
 
     </div>
 @endsection
 @section('scripts')
     <script>
-
-
+        $(document).ready(function () {
+            $(".button").click(function () {
+                console.log('78')
+                $(".overlay").show({width: "0px"});
+            });
+            $(".oculto").click(function () {
+                $(".overlay").hide({width: "100%"});
+            });
+        })
         $(document).on('click', '#editButton', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');

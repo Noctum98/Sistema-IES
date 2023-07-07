@@ -15,7 +15,7 @@
         height: 34px !important;
     }
 </style>
-<div class="col-sm-5">
+<div class="col-sm-5" >
     <h5 class="text-dark text-center" id="agregarMateria">Agregar materia</h5>
     <form action="{{ route('detalleTrianual.guardar') }}" method="POST">
 
