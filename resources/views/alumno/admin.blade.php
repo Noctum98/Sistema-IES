@@ -129,12 +129,10 @@
                     <h5>No existen coincidencias con {{$busqueda}}</h5>
                 @endif
             @endif
-
         </div>
     </div>
 @endsection
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
     <script src="{{ asset('js/alumnos/filtros.js') }}"></script>
-
 @endsection

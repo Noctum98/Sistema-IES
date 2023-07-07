@@ -113,15 +113,15 @@ class MesaController extends Controller
 
             $folios_segundo = 1;
             $folios = 1;
-            if($contador_primer_llamado > 25)
+            if($contador_primer_llamado > 26)
             {
-                $division_primero = $contador_primer_llamado / 25;
+                $division_primero = $contador_primer_llamado / 26;
                 $folios = ceil($division_primero);
             }
 
-            if($contador_segundo_llamado > 25)
+            if($contador_segundo_llamado > 26)
             {
-                $division_segundo = $contador_segundo_llamado / 25;
+                $division_segundo = $contador_segundo_llamado / 26;
                 $folios_segundo = ceil($division_segundo);
             }
 
@@ -151,6 +151,8 @@ class MesaController extends Controller
         $validate = $this->validate($request, [
             'fecha' => ['required'],
             'presidente_id' => ['required'],
+            'fecha' => ['date'],
+            'fecha_segundo' => ['date']
         ]);
 
         $materia = Materia::find($materia_id);
