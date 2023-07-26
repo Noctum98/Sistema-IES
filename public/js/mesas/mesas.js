@@ -65,8 +65,8 @@ $(document).ready(function () {
             var folios = $(".folios_"+llamado+"_"+comision_id).get();
 
         }else{
-            var libro = $("#libro-" + llamado).val();
-            var folios = $(".folios_"+llamado).get();
+            var libro = $("#libro-" + llamado+"_"+comision_id).val();
+            var folios = $(".folios_"+llamado+"_"+comision_id).get();
         }
         console.log(folios);
 
@@ -75,7 +75,12 @@ $(document).ready(function () {
         let folios_array = [];
 
         for (let index = 1; index <= folios.length; index++) {
-            folios_array.push( $("#folio-" + llamado + '-' + index).val() +'-'+ index );
+            if(!comision_id)
+            {
+                folios_array.push( $("#folio-" + llamado + '-' + index).val() +'-'+ index );
+            }else{
+                folios_array.push( $("#folio-" + llamado + '-' + index + '-' + comision_id).val() +'-'+ index );
+            }
         }
         let data_json = {
             'numero': libro,

@@ -42,7 +42,6 @@ class LibrosController extends Controller
             'llamado' => ['required'],
         ]);
 
-        Log::info($request->all());
 
         if(!$validation->fails())
         {
@@ -59,8 +58,6 @@ class LibrosController extends Controller
                 ])->first();
 
                 
-                
-
                 if($libro)
                 {
                    $libroExist = $libro->update($request->all());
@@ -139,9 +136,9 @@ class LibrosController extends Controller
 
         if($libro->llamado == 1)
         {
-            $inscripciones = $mesa->mesa_inscriptos_primero($libro->orden)->get();
+            $inscripciones = $mesa->mesa_inscriptos_primero($libro->orden);
         }elseif($libro->llamado == 2){
-            $inscripciones = $mesa->mesa_inscriptos_segundo($libro->orden)->get();
+            $inscripciones = $mesa->mesa_inscriptos_segundo($libro->orden);
         }else{
             $inscripciones = $mesa->mesa_inscriptos();
         }
