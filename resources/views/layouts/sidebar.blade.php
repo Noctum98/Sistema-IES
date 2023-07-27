@@ -9,7 +9,7 @@
                     Mis datos
                 </a>
                 @endif
-                @if(Session::has('admin'))
+                @if(Session::has('admin')|| Session::has('regente'))
                 <a class="nav-link" href="{{ route('usuarios.admin') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                     Usuarios

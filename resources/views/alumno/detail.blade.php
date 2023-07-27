@@ -121,7 +121,7 @@
                                                 data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año
                                         </button>
                                         @include('alumno.modals.carreras_year')
-                                    @elseif(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos'))
+                                    @elseif(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('areaSocial'))
                                         @if(Auth::user()->hasCarrera($carrera->id))
                                             <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal"
                                                     data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
@@ -178,7 +178,6 @@
                             Corregir datos
                         </a>
                     @endif
-
                 @endif
                 @if((Session::has('admin') || Session::has('regente')) && $alumno->user)
                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"

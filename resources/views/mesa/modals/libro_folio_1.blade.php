@@ -27,7 +27,7 @@
                 @while($contador <= $folios) 
                     <div class="form-group">
                         <label for="folio">Folio {{ $contador }}</label>
-                        <input type="number" name="folios[]" class="form-control folios_{{$llamado}}{{$mesa->comision_id ? '_'.$mesa->comision_id : ''}} {{$contador > 1 ? 'readonly_'.$llamado : 'writeonly_'.$llamado}}" id="folio-{{$llamado.'-'.$contador}}" value="{{ $mesa->libro($llamado,$contador) ? $mesa->libro($llamado,$contador)->folio : '' }}">
+                        <input type="number" name="folios[]" class="form-control folios_{{$llamado}}{{$mesa->comision_id ? '_'.$mesa->comision_id : ''}} {{$contador > 1 ? 'readonly_'.$llamado : 'writeonly_'.$llamado}}" id="folio-{{$llamado.'-'.$contador}}{{$mesa->comision_id ? '-'.$mesa->comision_id : ''}}" value="{{ $mesa->libro($llamado,$contador) ? $mesa->libro($llamado,$contador)->folio : '' }}">
                     </div>
 
 

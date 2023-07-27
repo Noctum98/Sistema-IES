@@ -30,7 +30,7 @@ class PreinscripcionController extends Controller
         MailService $mailService
     ) {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-areaSocial-regente-coordinador-seccionAlumnos', ['only' => ['vista_admin', 'vista_all']]);
+        $this->middleware('app.roles:admin-areaSocial-regente-coordinador-seccionAlumnos', ['only' => ['vista_admin', 'vista_all','vista_verificadas','vista_verificadas']]);
         $this->disk = Storage::disk('google');
         $this->mailService = $mailService;
     }
@@ -61,9 +61,8 @@ class PreinscripcionController extends Controller
 
         $carrera = Carrera::find($id);
         $error = '';
-        $carreras_abiertas = [];
 
-        if (!in_array($carrera->id, $carreras_abiertas) && !Session::has('preinscripciones')) {
+        if (!$carrera->preinscripcion_habilitada && !Session::has('preinscripciones')) {
             $carrera = null;
             $error = 'Página deshabilitada';
         }
