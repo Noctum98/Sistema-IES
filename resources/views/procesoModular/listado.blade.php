@@ -91,7 +91,7 @@
                     @endif
                 </small></i></p>
         <p><small style="font-size: 0.8em">
-                Aclaraciones:
+                <u>Aclaraciones:</u>
                 <i>'N Proceso'</i>: Nota Proceso.
                 <i>'% Asist. Final'</i>: Porcentaje Asistencia Final.
                 <i>'N TFI'</i>: Nota Trabajo Final Integrador.
