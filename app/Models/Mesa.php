@@ -139,8 +139,8 @@ class Mesa extends Model
     public function folios()
     {
         $folios = 1;
-        if ($this->mesa_inscriptos->count() > 25) {
-            $division_primero = $this->mesa_inscriptos->count() / 25;
+        if ($this->mesa_inscriptos->count() > 26) {
+            $division_primero = $this->mesa_inscriptos->count() / 26;
             $folios = ceil($division_primero);
         }
 
