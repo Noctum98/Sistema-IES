@@ -233,8 +233,8 @@
 
                     @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
-                            **
-                            @colorAprobado(number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ','))
+
+{{--                            @colorAprobado(number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ','))--}}
                             @php
                                 $valor_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
                             @endphp
@@ -243,7 +243,7 @@
 $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A'
 )
                             @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
-                                A
+{{--                                A--}}
 
                             @else
                                 {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
@@ -251,7 +251,7 @@ $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()-
 
                         @endif
                     @else
-                        -
+{{--                        ---}}
                     @endif
 
                     @php
