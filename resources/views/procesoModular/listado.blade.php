@@ -106,8 +106,8 @@
                     @endif
                 </small></i></p>
         <p><small style="font-size: 0.8em">
-                Aclaraciones:
-                <i>'N Proceso'</i>: Nota Proceso.
+                <u>Aclaraciones:</u>
+                <i>'N Proceso'</i>: <b>Nota Proceso.</b>
                 <i>'% Asist. Final'</i>: Porcentaje Asistencia Final.
                 <i>'N TFI'</i>: Nota Trabajo Final Integrador.
                 <i>'N Final'</i>: Nota Final.
@@ -175,16 +175,16 @@
                                     {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
                                 </td>
                                 <td class="text-center">
-                                    {{$proceso->promedio_final_nota}}
+                                    @colorAprobado($proceso->promedio_final_nota)
                                 </td>
                                 <td class="text-center">
                                     {{$proceso->asistencia_final_porcentaje}} %
                                 </td>
                                 <td class="text-center">
-                                    {{$proceso->trabajo_final_nota}}
+                                    @colorAprobado($proceso->trabajo_final_nota)
                                 </td>
                                 <td class="text-center">
-                                    {{$proceso->nota_final_nota}}
+                                    @colorAprobado($proceso->nota_final_nota)
                                 </td>
                                 <td class="row">
                                     <form action="" id="{{ $proceso->procesoRelacionado->id }}"
