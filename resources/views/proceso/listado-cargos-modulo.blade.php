@@ -233,6 +233,7 @@
 
                     @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
+                            **
                             @colorAprobado(number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ','))
                             @php
                                 $valor_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
