@@ -132,12 +132,19 @@ class Alumno extends Model
         ])->first();
     }
 
-    public function lastProcesoCarrera($carrera_id)
+    public function lastProcesoCarrera($carrera_id,$ciclo_lectivo = null)
     {
-        return AlumnoCarrera::where([
+        $alumnoCarrera = AlumnoCarrera::where([
             'carrera_id' => $carrera_id,
             'alumno_id' => $this->id,
-        ])->latest()->first();
+        ]);
+
+        if($ciclo_lectivo)
+        {
+            $alumnoCarrera = $alumnoCarrera->where('ciclo_lectivo',$ciclo_lectivo);
+        }
+
+        return $alumnoCarrera->latest()->first();
     }
 
 
