@@ -65,8 +65,8 @@ $(document).ready(function () {
             var folios = $(".folios_"+llamado+"_"+comision_id).get();
 
         }else{
-            var libro = $("#libro-" + llamado+"_"+comision_id).val();
-            var folios = $(".folios_"+llamado+"_"+comision_id).get();
+            var libro = $("#libro-" + llamado).val();
+            var folios = $(".folios_"+llamado).get();
         }
         console.log(folios);
 
