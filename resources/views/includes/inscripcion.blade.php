@@ -72,7 +72,7 @@
 	</div>
 	<div class="form-group">
 		<label for="nacionalidad">Nacionalidad:</label>
-		<select class="form-control" name="nacionalidad" id="nacionalidad">
+		<select class="form-select" name="nacionalidad" id="nacionalidad">
 			<option value="argentina" {{ old('nacionalidad') == 'argentina' ? 'selected' : '' }}>Argentina</option>
 			<option value="uruguaya" {{ old('nacionalidad') == 'uruguaya' ? 'selected' : '' }}>Uruguaya</option>
 			<option value="chilena" {{ old('nacionalidad') == 'chilena' ? 'selected' : '' }}>Chilena</option>
@@ -102,7 +102,7 @@
 	</div>
 	<div class="form-group">
 		<label for="residencia">Residencia:</label>
-		<select class="form-control" name="residencia" id="residencia">
+		<select class="form-select" name="residencia" id="residencia">
 			<option value="capital" selected="selected">Capital</option>
 			<option value="las heras" {{ old('residencia') == 'las heras' ? 'selected' : '' }}>Las Heras</option>
 			<option value="godoy cruz" {{ old('residencia') == 'godoy cruz' ? 'selected' : '' }}>Godoy Cruz</option>
@@ -148,7 +148,7 @@
 	</div>
 	<div class="form-group">
 		<label for="condicion_s">Situación de Escolaridad:</label>
-		<select class="form-control" name="condicion_s" id="condicion_s">
+		<select class="form-select" name="condicion_s" id="condicion_s">
 			<option value="primario completo" {{ old('condicion_s') == 'primario completo' ? 'selected' : '' }}>Primario Completo</option>
 			<option value="secundario completo" {{ old('condicion_s') == 'secundario completo' ? 'selected' : '' }}>Secundario Completo</option>
 			<option value="secundario incompleto" {{ old('condicion_s') == 'secundario incompleto' ? 'selected' : '' }}>Secundario Incompleto</option>
@@ -398,9 +398,12 @@
 			@enderror
 		</div>
 	</div>
+	@include('alumno.modals.confirmar_preinscripcion')
+
 	<div class="form-group">
-		<input type="submit" value="Inscribirse" class="btn btn-success">
+		<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmar_preinscripcion">Inscribirse</button>
 	</div>
+
 
 </form>
 
