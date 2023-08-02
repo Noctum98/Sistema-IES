@@ -256,10 +256,7 @@
                                        class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
                                         Comprobar notas
                                     </a>
-                                </td>
-
-                                <td colspan="2">
-                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
+                                    <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
                                     {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
@@ -269,6 +266,13 @@
                                     <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
+                                </td>
+
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                            data-bs-toggle="collapse" data-bs-target="#cargo-{{$proceso->id}}">
+                                        Cargos <i class="fas fa-caret-square-down"></i> </button>
+
                                     {{--                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">--}}
                                     {{--                                    <i class="fa fa-spinner fa-spin"></i>--}}
                                     {{--                                </span>--}}
@@ -276,7 +280,9 @@
                             </tr>
                             <tr>
                                 <td colspan="9" class="border-top-0 border-info">
+                                    <div id="cargo-{{$proceso->id}}" class="collapse p-0 m-0">
                                     @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
+                                    </div>
                                 </td>
                             </tr>
                         @endif
