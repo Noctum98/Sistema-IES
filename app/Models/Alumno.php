@@ -129,7 +129,7 @@ class Alumno extends Model
             'carrera_id' => $carrera_id,
             'alumno_id' => $alumno_id,
             'ciclo_lectivo' => $ciclo_lectivo ?? date('Y')
-        ])->first();
+        ])->latest()->first();
     }
 
     public function lastProcesoCarrera($carrera_id,$ciclo_lectivo = null)
