@@ -55,7 +55,7 @@ class Mesa extends Model
 
     public function mesa_inscriptos_primero($orden = 1, $all = false)
     {
-        $take = 25;
+        $take = 26;
         $skip = $take * ($orden - 1);
 
         $inscriptos = $this->hasMany('App\Models\MesaAlumno')
@@ -71,7 +71,7 @@ class Mesa extends Model
 
     public function mesa_inscriptos_segundo($orden = 1, $all = false)
     {
-        $take = 25;
+        $take = 26;
         $skip = $take * ($orden - 1);
 
         $inscriptos = $this->hasMany('App\Models\MesaAlumno')
