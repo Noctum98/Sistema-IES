@@ -28,6 +28,12 @@
                     Inscribir alumno
                 </button>
                 @include('mesa.modals.inscribir_alumno')
+
+                @if(Session::has('admin'))
+                    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#borrar_mesa">Borrar Mesa</a>
+                    @include('mesa.modals.borrar_mesa')
+                @endif
+
             </div>
 
 

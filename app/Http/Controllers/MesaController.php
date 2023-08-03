@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActaVolante;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Instancia;
@@ -13,6 +14,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
+use App\Models\MesaAlumno;
 use App\Models\Proceso;
 use App\Services\MesaService;
 use Carbon\Carbon;
@@ -209,6 +211,28 @@ class MesaController extends Controller
         return redirect()->back()->with([
             'message_success' => 'Mesa '.$materia->nombre.' configurada correctamente',
         ]);
+    }
+
+    public function delete(Request $request,$id)
+    {
+        $mesa = Mesa::find($id);
+
+        if($mesa)
+        {
+            $carrera_id = $mesa->materia->carrera_id;
+            $instancia_id = $mesa->instancia_id;
+            MesaAlumno::where('mesa_id',$mesa->id)->delete();
+            ActaVolante::where('mesa_id',$mesa->id)->delete();
+
+            $mesa->delete();
+
+            return redirect()->route('mesa.mesas',[
+                'id' => $carrera_id,
+                'instancia_id' => $instancia_id
+            ])->with(['alert_success'=>'Mesa eliminada correctamente.']);
+        }else{
+            return redirect()->back()->with(['alert_danger'=>'No existe la mesa.']);
+        }
     }
 
     public function updateLibroFolio(Request $request, $id)
