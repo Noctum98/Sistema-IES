@@ -112,7 +112,7 @@
                                                             @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                                                    {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') }}
+                                                                    @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') )
                                                                     @php
                                                                         $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota
                                                                     @endphp
@@ -189,7 +189,7 @@
                                                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') }}
+                                                                @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') )
                                                             @endif
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                                                 A
@@ -205,7 +205,7 @@
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio >= 0)
                                                                 @if(is_numeric($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio))
 
-                                                                    {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio, 2, '.', ',') }}
+                                                                    @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio, 2, '.', ',') )
                                                                 @else
                                                                     {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio}}
 
@@ -233,7 +233,8 @@
 
                     @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
                         @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
-                            {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
+
+{{--                            @colorAprobado(number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ','))--}}
                             @php
                                 $valor_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
                             @endphp
@@ -242,7 +243,7 @@
 $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A'
 )
                             @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
-                                A
+{{--                                A--}}
 
                             @else
                                 {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
@@ -250,7 +251,7 @@ $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()-
 
                         @endif
                     @else
-                        -
+{{--                        ---}}
                     @endif
 
                     @php
@@ -265,7 +266,7 @@ $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()-
 
                 <td>
                     @if($cant_parciales > 0)
-                        {{number_format($suma_parcial/$cant_parciales , 2, '.', ',')}}
+                        @colorAprobado(number_format($suma_parcial/$cant_parciales , 2, '.', ','))
                     @endif
                 </td>
 
@@ -276,7 +277,7 @@ $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()-
                     @php
                         $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
                     @endphp
-                    {{number_format($pfinal, 2, '.', ',')}}
+                    @colorAprobado(number_format($pfinal, 2, '.', ','))
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
