@@ -53,28 +53,35 @@ class Mesa extends Model
     }
 
 
-    public function mesa_inscriptos_primero($orden = 1)
+    public function mesa_inscriptos_primero($orden = 1, $all = false)
     {
-        $take = 25;
+        $take = 26;
         $skip = $take * ($orden - 1);
 
-        return $this->hasMany('App\Models\MesaAlumno')
-            ->where(['estado_baja' => false, 'segundo_llamado' => false])
-            ->skip($skip)
-            ->take($take)
-            ->get();
+        $inscriptos = $this->hasMany('App\Models\MesaAlumno')
+            ->where(['estado_baja' => false, 'segundo_llamado' => false]);
+
+        if (!$all) {
+            $inscriptos = $inscriptos->skip($skip)
+                ->take($take);
+        }
+
+        return $inscriptos->get();
     }
 
-    public function mesa_inscriptos_segundo($orden = 1)
+    public function mesa_inscriptos_segundo($orden = 1, $all = false)
     {
-        $take = 25;
+        $take = 26;
         $skip = $take * ($orden - 1);
 
-        return $this->hasMany('App\Models\MesaAlumno')
-            ->where(['estado_baja' => false, 'segundo_llamado' => true])
-            ->skip($skip)
-            ->take($take)
-            ->get();
+        $inscriptos = $this->hasMany('App\Models\MesaAlumno')
+            ->where(['estado_baja' => false, 'segundo_llamado' => true]);
+        if (!$all) {
+            $inscriptos = $inscriptos->skip($skip)
+                ->take($take);
+        }
+
+        return $inscriptos->get();
     }
     public function bajas_primero()
     {
@@ -147,25 +154,25 @@ class Mesa extends Model
         return $folios;
     }
 
-    public function mesa_inscriptos_props(int $prop = null, $orden = 1)
+    public function mesa_inscriptos_props(int $prop = null, $orden = 1, $all = false)
     {
         if ($this->instancia->tipo == 0) {
             if ($prop == 1) {
-                return $this->mesa_inscriptos_primero($orden);
+                return $this->mesa_inscriptos_primero($orden, $all);
             }
             if ($prop == 2) {
-                return $this->mesa_inscriptos_segundo($orden);
+                return $this->mesa_inscriptos_segundo($orden, $all);
             }
-            
+
             return $this->mesa_inscriptos();
         } else {
-            $inscriptos = $this->mesa_inscriptos()->where('confirmado',true);
+            $inscriptos = $this->mesa_inscriptos()->where('confirmado', true);
 
-            $take = 25;
+            $take = 26;
             $skip = $take * ($orden - 1);
 
             if ($prop == 1) {
-                return $inscriptos->skip($skip)->take($take)->orderBy('apellidos','ASC')->get();
+                return $inscriptos->skip($skip)->take($take)->orderBy('apellidos', 'ASC')->get();
             }
 
             return $inscriptos->get();
