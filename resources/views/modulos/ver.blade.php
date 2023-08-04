@@ -7,24 +7,27 @@
         <a href="{{url()->previous()}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
-        <h2 class="text-info">
+        <h4 class="text-info">
             Detalle de {{ $modulo->nombre }}
             <small>
                 <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#agregarCargo">
                     Agregar cargo
                 </button>
             </small>
-        </h2>
+        </h4>
         @include('modulos.modals.agregar_cargo')
-        <h3>
+        <h5>
+
             Ponderación total: <span class="
 				@if($modulo->totalModulo() === 100)
 				text-success
 				@else
 				text-warning
 					@endif
-					"id="cargo-u-materia-{{$modulo->id}}">{{$modulo->totalModulo()}}</span>
-        </h3>
+					"
+                                     id="cargo-u-materia-{{$modulo->id}}">{{$modulo->totalModulo()}} %</span>
+
+        </h5>
         <hr>
         {{--	Crear la lógica de esta acción separando el concepto de materia de modulo - cargo --}}
         {{--	@if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))--}}
@@ -47,10 +50,10 @@
                     @endif
                     <th scope="col">Cargo</th>
                     <th scope="col">Ponderación</th>
-                    <th scope="col"><small>TFI Responsable</small></th>
+                    <th scope="col"><small>TFI Responsable <br/> (Solo un cargo puede estar marcado)</small></th>
                     <th scope="col">Profesor</th>
-                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>
-                    </th>
+                    {{--                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>--}}
+                    {{--                    </th>--}}
                 </tr>
                 </thead>
                 <tbody>
@@ -95,7 +98,11 @@
                                id="loader-tfi-{{$cargo->relacionCargoModulo($modulo->id)->id}}"></i>
                             <select class="selection-tfi change-state" name="icon"
                                     id="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
-                                    data-loader="{{$cargo->relacionCargoModulo($modulo->id)->id}}">
+                                    data-loader="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
+                                    @if($cargo->relacionCargoModulo($modulo->id)->carga_tfi !== 1 and $tieneTfi ==1)
+                                        disabled = "disabled"
+                                @endif
+                            >
                                 <option value="1" data-icon="fa-check" data-state="text-success"
                                         @if ($cargo->relacionCargoModulo($modulo->id)->carga_tfi === 1) selected @endif ></option>
                                 <option value="0" data-icon="fa-times" data-state="text-danger"
@@ -189,6 +196,18 @@
                 success: function (result) {
                     // $('#agregarCargoModulo').modal("show");
                     // $('#agregarCargoModuloBody').html(result).show();
+                    if (result.tieneTfi === false) {
+                        document.querySelectorAll(".selection-tfi").forEach(b => b.removeAttribute('disabled'));
+                    } else {
+                        document.querySelectorAll(".selection-tfi").forEach(b => {
+                                if (b.value === '0') {
+                                    b.setAttribute('disabled','disabled')
+                                } else {
+                                    b.removeAttribute('disabled')
+                                }
+                            }
+                        )
+                    }
                 },
                 complete: function () {
                     $laoder.hide();
