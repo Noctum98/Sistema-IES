@@ -99,7 +99,7 @@
                             <select class="selection-tfi change-state" name="icon"
                                     id="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
                                     data-loader="{{$cargo->relacionCargoModulo($modulo->id)->id}}"
-                                    @if($cargo->relacionCargoModulo($modulo->id)->carga_tfi !== 1 and $tieneTfi ==1)
+                                    @if($cargo->relacionCargoModulo($modulo->id)->carga_tfi !== 1 and $tieneTfi == 1)
                                         disabled = "disabled"
                                 @endif
                             >
