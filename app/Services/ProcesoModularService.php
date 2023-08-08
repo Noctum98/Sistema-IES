@@ -129,14 +129,6 @@ class ProcesoModularService
     {
         return ProcesoModular::select(
             'proceso_modular.*'
-//            , 'proceso_modular.promedio_final_porcentaje',
-//            'proceso_modular.promedio_final_nota',
-//            'proceso_modular.ponderacion_promedio_final', 'proceso_modular.trabajo_final_porcentaje',
-//            'proceso_modular.trabajo_final_nota', 'proceso_modular.ponderacion_trabajo_final',
-//            'proceso_modular.nota_final_porcentaje', 'proceso_modular.nota_final_nota',
-//            'proceso_modular.cierre', 'proceso_modular.proceso_id', 'proceso_modular.asistencia_final_porcentaje',
-//            'proceso_modular.operador_id', 'proceso_modular.asistencia_practica_profesional',
-//            'proceso_modular.porcentaje_actividades_aprobado', 'proceso_modular.ciclo_lectivo'
         )
             ->leftjoin('procesos', 'procesos.id', 'proceso_modular.proceso_id')
             ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
@@ -209,10 +201,8 @@ class ProcesoModularService
 
                 }
                 $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
-//            $proceso->promedio_final_nota = $nota = $serviceProcesoCalificacion->calculoPorcentajeNota(
-//                $promedio_final_p
-//            );
-                $proceso->promedio_final_nota = max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0);
+
+                $proceso->promedio_final_nota = round(max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0));
 
                 if (!$proceso->trabajo_final_porcentaje) {
                     if ($cargo->responsableTFI($materia->id)) {
@@ -230,16 +220,8 @@ class ProcesoModularService
                 }
 
                 $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
-//            $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
-                $proceso->nota_final_nota = $proceso->trabajo_final_nota * 0.2 + $proceso->promedio_final_nota * 0.8;
+                $proceso->nota_final_nota = round(round($proceso->trabajo_final_nota) * 0.2 + round($proceso->promedio_final_nota) * 0.8);
 
-//            $proceso->porcentaje_actividades_aprobado = $this->obtenerPorcentajeProcesoAprobado(
-//                $proceso->procesoRelacionado()->first()->id,
-//                $materia->id,
-//                $cargo->id,
-//            );
-//            print_r('-- ');
-//print_r($proceso->porcentaje_actividades_aprobado);
                 $proceso->update();
 
                 $cant += 1;
@@ -791,7 +773,7 @@ class ProcesoModularService
             'proceso_id' => $proceso
         ])->first();
 
-        $procesoModular->promedio_final_nota = $nota;
+        $procesoModular->promedio_final_nota = round($nota);
 
         $procesoModular->update();
 
