@@ -25,18 +25,15 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
     public function view(): View
     {
 
-        $cargo = $this->data_array['cargo'];
-
         return view('excel.planilla_notas_modular', [
             'materia' => $this->data_array['materia'],
-            'cargo' => $this->data_array['cargo'],
             'procesos' => $this->data_array['procesos']
         ]);
     }
 
     public function title(): string
     {
-        return $this->data_array['cargo']->nombre;
+        return 'Planilla cargo';
     }
 
     public static function afterSheet(AfterSheet $event)
@@ -44,7 +41,7 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         // Get Worksheet
         $active_sheet = $event->sheet->getDelegate();
         $active_sheet->getColumnDimension('A')->setAutoSize(true);
-        foreach (range('B', 'Z') as $columnID) {
+        foreach (range('B', 'F') as $columnID) {
             $active_sheet->getColumnDimension($columnID)
                 ->setWidth('25');
         }
@@ -56,7 +53,7 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         $active_sheet->getStyle('A1:B1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
         $active_sheet->getStyle('A2:B2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
         $active_sheet->getStyle('A3:B3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
-        $active_sheet->getStyle('A4:Z4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
+        $active_sheet->getStyle('A4:F4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
 
         $active_sheet->getStyle('A1:B1')->getBorders()
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
@@ -64,9 +61,9 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $active_sheet->getStyle('A3:B3')->getBorders()
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A4:Z4')->getBorders()
+        $active_sheet->getStyle('A4:F4')->getBorders()
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A4:Z4')->getAlignment()->setWrapText(true);
+        $active_sheet->getStyle('A4:F4')->getAlignment()->setWrapText(true);
         $active_sheet->getStyle('A2:B2')->getAlignment()->setWrapText(true);
     }
 }

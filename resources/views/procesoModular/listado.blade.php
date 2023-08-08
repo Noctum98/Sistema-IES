@@ -105,17 +105,18 @@
                 <i>'% Asist.'</i>: Porcentaje asistencia.
             </small>
         </p>
-        {{--
+        {{-- 
 @if(isset($comision))
-<!-----
+
     <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
-       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>-->
+       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
 @else
-<!-----
+
     <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
                 class="fas fa-download"></i> Descargar
-        planilla</a>-->
-
+        planilla</a>
+        @endif
+     
     @if($puede_procesar)
         <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
            class="btn btn-warning">
