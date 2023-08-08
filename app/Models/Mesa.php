@@ -57,7 +57,6 @@ class Mesa extends Model
     {
         $take = 26;
         $skip = $take * ($orden - 1);
-
         $inscriptos = $this->hasMany('App\Models\MesaAlumno')
             ->where(['estado_baja' => false, 'segundo_llamado' => false]);
 
@@ -78,11 +77,12 @@ class Mesa extends Model
             ->where(['estado_baja' => false, 'segundo_llamado' => true]);
         if (!$all) {
             $inscriptos = $inscriptos->skip($skip)
-                ->take($take);
+            ->take($take);
         }
 
         return $inscriptos->get();
     }
+
     public function bajas_primero()
     {
         return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);

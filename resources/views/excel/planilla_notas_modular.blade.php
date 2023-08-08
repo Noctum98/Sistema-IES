@@ -14,62 +14,40 @@
         </tr>
         <tr>
             <th scope="col">Apeliido y Nombre</th>
-            @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
-            <th scope="col">{{$calificacion->nombre}}</th>
-            @endforeach
-            <th>Parcial</th>
-            <th>% Final</th>
+            {{-- <th class="sticky-top">Proc. Final %</th>--}}
+            <th class="sticky-top text-center">N Proceso</th>
+            <th class="sticky-top text-center">% Asist. Final</th>
+            {{-- <th class="sticky-top">TFI %</th>--}}
+            <th class="sticky-top text-center">N TFI</th>
+            {{-- <th class="sticky-top">Nota Final %</th>--}}
+            <th class="sticky-top text-center">N Final</th>
+            <th class="sticky-top col-sm-1">N Global</th>
         </tr>
     </thead>
     <tbody>
         @foreach($procesos as $proceso)
-        @php
-        $suma=0;
-        $sumaNota=0;
-        $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id));
-        $pparcial = 0;
-        @endphp
+        @if($proceso->procesoRelacionado)
         <tr>
-            <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}</td>
-
-
-            <!--Trabajos Prácticos-->
-            @foreach($cargo->calificacionesTPByCargoByMateria($materia->id) as $calificacion)
             <td>
-                @if(count($calificacion->procesosCalificacionByAlumno($proceso->alumno->id)) > 0)
-                {{number_format($calificacion->procesosCalificacionByAlumno($proceso->alumno->id)[0]->porcentaje, 2, '.', ',').'%' }}
-                @php
-                $suma+=$calificacion->procesosCalificacionByAlumno($proceso->alumno->id)[0]->porcentaje;
-                $sumaNota+=$calificacion->procesosCalificacionByAlumno($proceso->alumno->id)[0]->nota;
-                @endphp
-                @else
-                -
-                @endif
+                {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
             </td>
-            @endforeach
-
-
-            <!--Parciales-->
-
-            @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id) as $calificacionP)
-            <td>
-                {{number_format($calificacionP->obtenerParcial($proceso->alumno->id), 2, '.', ',')??'-'}}
-                @php
-                $pparcial = $calificacionP->obtenerParcial($proceso->alumno->id);
-                @endphp
+            <td class="text-center">
+                @colorAprobado($proceso->promedio_final_nota)
             </td>
-            @endforeach
-            <td>
-                @php
-                $p70 = 0;
-                if($cant > 0) $p70 = ($suma/$cant * 0.7);
-
-                $pfinal =($pparcial * 0.3) + $p70
-                @endphp
-                {{number_format($pfinal, 2, '.', ',') !=0 ? number_format($pfinal, 2, '.', ',').'%' :  '-'}}
+            <td class="text-center">
+                {{$proceso->asistencia_final_porcentaje}} %
             </td>
-
+            <td class="text-center">
+                @colorAprobado($proceso->trabajo_final_nota)
+            </td>
+            <td class="text-center">
+                @colorAprobado($proceso->nota_final_nota)
+            </td>
+            <td class="text-center">
+                @colorAprobado($proceso->nota_global)
+            </td>
         </tr>
+        @endif
         @endforeach
     </tbody>
 </table>
