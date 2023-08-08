@@ -16,7 +16,8 @@
             </small>
         </h4>
         @include('modulos.modals.agregar_cargo')
-        <h5>
+        <div class="row">
+        <h5 class="col-sm-4">
 
             Ponderación total: <span class="
 				@if($modulo->totalModulo() === 100)
@@ -28,7 +29,10 @@
                                      id="cargo-u-materia-{{$modulo->id}}">{{$modulo->totalModulo()}} %</span>
 
         </h5>
-        <hr>
+        <small class="col-sm-8">Tenga en cuenta que solo un cargo puede ser marcado para la carga de la nota del TFI</small>
+        </div>
+        <hr/>
+
         {{--	Crear la lógica de esta acción separando el concepto de materia de modulo - cargo --}}
         {{--	@if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))--}}
         {{--	<a href="{{ route('modulos.agregarCargo',['modulo'=>$modulo->id]) }}" class="btn btn-success mb-4">--}}
@@ -41,14 +45,14 @@
         @endif
         <div class="col-md-12">
 
-            <table class="table table-hover mt-4">
+            <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
+                    <th scope="col" class="col-sm-1">
                     @if(Auth::user()->hasRole('admin'))
-                        <th scope="col" class="col-sm-1">
                             <small>#</small>
-                        </th>
                     @endif
+                    </th>
                     <th scope="col" class="col-sm-4">Cargo</th>
                     <th scope="col" class="col-sm-2">Ponderación</th>
                     <th scope="col" class="col-sm-2">
@@ -67,9 +71,11 @@
                 @foreach($modulo->cargos as $cargo)
 
                     <tr>
+                        <td>
                         @if(Auth::user()->hasRole('admin'))
-                            <td>{{$cargo->id}}</td>
+                            {{$cargo->id}}
                         @endif
+                        </td>
                         <td>
                             <small>
                                 <a href="{{ route('cargo.show',$cargo->id) }}"
