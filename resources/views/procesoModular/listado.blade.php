@@ -93,16 +93,16 @@
         <p><small style="font-size: 0.8em">
                 <u>Aclaraciones:</u>
                 <i>'N Proceso'</i>: <b>Nota Proceso.</b>
-                <i>'% Asist. Final'</i>: Porcentaje Asistencia Final.
-                <i>'N TFI'</i>: Nota Trabajo Final Integrador.
-                <i>'N Final'</i>: Nota Final.
-                <i>'N Global'</i>: Nota Global.
-                <i>'% Act. Ap.'</i>: Porcentaje de actividades del cargo aprobadas.
-                <i>'TP's'</i>: Trabajos Prácticos.
-                <i>'N TPs x̄'</i>: Nota Promedio Trabajos Prácticos.
-                <i>'N Ps x̄'</i>: Nota Promedio Parciales.
-                <i>'P's'</i>: Parciales.
-                <i>'% Asist.'</i>: Porcentaje asistencia.
+                <i>'% Asist. Final'</i>: <b>Porcentaje Asistencia Final.</b>
+                <i>'N TFI'</i>: <b>Nota Trabajo Final Integrador.</b>
+                <i>'N Final'</i>: <b>Nota Final.</b>
+                <i>'N Global'</i>: <b>Nota Global.</b>
+                <i>'% Act. Ap.'</i>: <b>Porcentaje de actividades del cargo aprobadas.</b>
+                <i>'TP's'</i>: <b>Trabajos Prácticos.</b>
+                <i>'N TPs x̄'</i>: <b>Nota Promedio Trabajos Prácticos.</b>
+                <i>'N Ps x̄'</i>: <b>Nota Promedio Parciales.</b>
+                <i>'P's'</i>: <b>Parciales.</b>
+                <i>'% Asist.'</i>: <b>Porcentaje asistencia.</b>
             </small>
         </p>
         {{--

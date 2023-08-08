@@ -45,15 +45,22 @@
                 <thead class="thead-dark">
                 <tr>
                     @if(Auth::user()->hasRole('admin'))
-                        <td><small>#</small>
-                        </td>
+                        <th scope="col" class="col-sm-1">
+                            <small>#</small>
+                        </th>
                     @endif
-                    <th scope="col">Cargo</th>
-                    <th scope="col">Ponderación</th>
-                    <th scope="col"><small>TFI Responsable <br/> (Solo un cargo puede estar marcado)</small></th>
-                    <th scope="col">Profesor</th>
-                    {{--                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>--}}
-                    {{--                    </th>--}}
+                    <th scope="col" class="col-sm-4">Cargo</th>
+                    <th scope="col" class="col-sm-2">Ponderación</th>
+                    <th scope="col" class="col-sm-2">
+                        <small>TFI Responsable</small>
+
+
+                </th>
+
+                <th colspan="2" scope="col" class="col-sm-3">Profesor</th>
+                {{--                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>--}}
+                {{--                    </th>--}}
+
                 </tr>
                 </thead>
                 <tbody>
@@ -75,23 +82,26 @@
                                id="loader-cargo-{{$cargo->id}}-materia-{{$modulo->id}}"></i>
 
                             {{--						{{$cargo->ponderacion($modulo->id)}}--}}
-                            @if(!$cargo->ponderacion($modulo->id))
+                            @if(!$cargo->ponderacion($modulo->id) or Auth::user()->hasRole('admin'))
 
                                 <form action="" id="pondera-cargo-materia" class="pondera-cargo">
-                                    <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
+                                    <div class="input-group">
+                                        <input type="number" class="form-control ponderacion_cargo_materia col-sm-6
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
                         "
-                                           id="ponderacion" value="{{$cargo->ponderacion($modulo->id)??'0' }}"/>
-                                    <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
-                                    <input type="hidden" id="materia" value="{{$modulo->id}}"/>
-                                    <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
+                                               id="ponderacion" value="{{$cargo->ponderacion($modulo->id)??'0' }}"/>
+                                        <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
+                                        <input type="hidden" id="materia" value="{{$modulo->id}}"/>
+                                        <button type="submit" class="btn btn-info btn-sm input-group-text
                         @if(!Session::has('coordinador') && !Session::has('admin') ) disabled @endif
                         ">
-                                        <i class="fa fa-save"></i></button>
+                                            <i class="fa fa-save"></i></button>
+                                    </div>
                                 </form>
                             @else
                                 {{$cargo->ponderacion($modulo->id)}}
                             @endif
+
                         </td>
                         <td class="text-center">
                             <i class="fa fa-spinner fa-spin" style="display: none"
@@ -201,7 +211,7 @@
                     } else {
                         document.querySelectorAll(".selection-tfi").forEach(b => {
                                 if (b.value === '0') {
-                                    b.setAttribute('disabled','disabled')
+                                    b.setAttribute('disabled', 'disabled')
                                 } else {
                                     b.removeAttribute('disabled')
                                 }
