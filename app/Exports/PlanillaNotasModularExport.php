@@ -22,23 +22,12 @@ class PlanillaNotasModularExport implements WithMultipleSheets
 
     public function sheets(): array
     {
-
-        $sheets = [];
-        $sheets[] = new PlanillaModularAsistenciaSheet($this->materia->cargos,$this->procesos,$this->materia);
-
-        foreach($this->materia->cargos as $cargo)
-        {
-            $data_array = [
-                'materia' => $this->materia,
-                'cargo' => $cargo,
-                'procesos' => $this->procesos
-            ];  
-            
-            $sheets[] = new PlanillaModularCargoSheet($data_array);
-        }
-
-        $data_array['cargos'] = $this->materia->cargos;
-        $sheets[] = new PlanillaModularAlumnosSheet($data_array);
+        $data_array = [
+            'materia'=> $this->materia,
+            'procesos' => $this->procesos
+        ];
+        
+        $sheets[] = new PlanillaModularCargoSheet($data_array);
         return $sheets;
     }
 }
