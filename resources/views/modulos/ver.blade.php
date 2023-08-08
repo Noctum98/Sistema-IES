@@ -16,7 +16,8 @@
             </small>
         </h4>
         @include('modulos.modals.agregar_cargo')
-        <h5>
+        <div class="row">
+        <h5 class="col-sm-4">
 
             Ponderación total: <span class="
 				@if($modulo->totalModulo() === 100)
@@ -28,7 +29,10 @@
                                      id="cargo-u-materia-{{$modulo->id}}">{{$modulo->totalModulo()}} %</span>
 
         </h5>
-        <hr>
+        <small class="col-sm-8">Tenga en cuenta que solo un cargo puede ser marcado para la carga de la nota del TFI</small>
+        </div>
+        <hr/>
+
         {{--	Crear la lógica de esta acción separando el concepto de materia de modulo - cargo --}}
         {{--	@if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))--}}
         {{--	<a href="{{ route('modulos.agregarCargo',['modulo'=>$modulo->id]) }}" class="btn btn-success mb-4">--}}
@@ -41,28 +45,37 @@
         @endif
         <div class="col-md-12">
 
-            <table class="table table-hover mt-4">
+            <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
+                    <th scope="col" class="col-sm-1">
                     @if(Auth::user()->hasRole('admin'))
-                        <td><small>#</small>
-                        </td>
+                            <small>#</small>
                     @endif
-                    <th scope="col">Cargo</th>
-                    <th scope="col">Ponderación</th>
-                    <th scope="col"><small>TFI Responsable <br/> (Solo un cargo puede estar marcado)</small></th>
-                    <th scope="col">Profesor</th>
-                    {{--                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>--}}
-                    {{--                    </th>--}}
+                    </th>
+                    <th scope="col" class="col-sm-4">Cargo</th>
+                    <th scope="col" class="col-sm-2">Ponderación</th>
+                    <th scope="col" class="col-sm-2">
+                        <small>TFI Responsable</small>
+
+
+                </th>
+
+                <th colspan="2" scope="col" class="col-sm-3">Profesor</th>
+                {{--                    <th scope="col" class="text-center"><i class="fa fa-cog" style="font-size:20px;"></i>--}}
+                {{--                    </th>--}}
+
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($modulo->cargos as $cargo)
 
                     <tr>
+                        <td>
                         @if(Auth::user()->hasRole('admin'))
-                            <td>{{$cargo->id}}</td>
+                            {{$cargo->id}}
                         @endif
+                        </td>
                         <td>
                             <small>
                                 <a href="{{ route('cargo.show',$cargo->id) }}"
@@ -75,23 +88,26 @@
                                id="loader-cargo-{{$cargo->id}}-materia-{{$modulo->id}}"></i>
 
                             {{--						{{$cargo->ponderacion($modulo->id)}}--}}
-                            @if(!$cargo->ponderacion($modulo->id))
+                            @if(!$cargo->ponderacion($modulo->id) or Auth::user()->hasRole('admin'))
 
                                 <form action="" id="pondera-cargo-materia" class="pondera-cargo">
-                                    <input type="number" style="width: 50%" class="form-control ponderacion_cargo_materia
+                                    <div class="input-group">
+                                        <input type="number" class="form-control ponderacion_cargo_materia col-sm-6
 {{--                        @if($proceso->cierre || !$proceso->estado_id) disabled @endif--}}
                         "
-                                           id="ponderacion" value="{{$cargo->ponderacion($modulo->id)??'0' }}"/>
-                                    <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
-                                    <input type="hidden" id="materia" value="{{$modulo->id}}"/>
-                                    <button type="submit" style="width: 50%" class="btn btn-info btn-sm input-group-text
+                                               id="ponderacion" value="{{$cargo->ponderacion($modulo->id)??'0' }}"/>
+                                        <input type="hidden" id="cargo" value="{{$cargo->id}}"/>
+                                        <input type="hidden" id="materia" value="{{$modulo->id}}"/>
+                                        <button type="submit" class="btn btn-info btn-sm input-group-text
                         @if(!Session::has('coordinador') && !Session::has('admin') ) disabled @endif
                         ">
-                                        <i class="fa fa-save"></i></button>
+                                            <i class="fa fa-save"></i></button>
+                                    </div>
                                 </form>
                             @else
                                 {{$cargo->ponderacion($modulo->id)}}
                             @endif
+
                         </td>
                         <td class="text-center">
                             <i class="fa fa-spinner fa-spin" style="display: none"
@@ -201,7 +217,7 @@
                     } else {
                         document.querySelectorAll(".selection-tfi").forEach(b => {
                                 if (b.value === '0') {
-                                    b.setAttribute('disabled','disabled')
+                                    b.setAttribute('disabled', 'disabled')
                                 } else {
                                     b.removeAttribute('disabled')
                                 }
