@@ -36,8 +36,19 @@ class CargoMateria extends Model
         return $this->hasOne(Cargo::class, 'id', 'cargo_id');
     }
 
+    public function tieneTfiMateria($modulo): bool
+    {
+            $tfi = CargoMateria::where([
+                'materia_id' => $modulo,
+                'carga_tfi' => 1
+            ])->first();
 
+            if($tfi){
+                return true;
 
+            }
+            return false;
+    }
 
 
 }
