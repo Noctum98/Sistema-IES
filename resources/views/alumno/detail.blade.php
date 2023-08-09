@@ -104,9 +104,9 @@
                             @foreach($carreras as $carrera)
                                 _ {{ $carrera->nombre.'('.ucwords($carrera->turno).'-'. $carrera->resolucion .') - '.$carrera->sede->nombre }}
                                 <br>
-                                Año: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->año }}
+                                Año: {{ $alumno->lastProcesoCarrera($carrera->id)->año }}
                                 <br>
-                                Ciclo: {{ $alumno->procesoCarrera($carrera->id,$alumno->id)->ciclo_lectivo }}
+                                Ciclo: {{ $alumno->lastProcesoCarrera($carrera->id)->ciclo_lectivo }}
 
                                 <div class="row">
                                     @if(Session::has('admin'))
