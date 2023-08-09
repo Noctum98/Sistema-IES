@@ -23,8 +23,6 @@ class Cargo extends Model
      */
     private $cargoService;
 
-
-
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
@@ -136,5 +134,19 @@ class Cargo extends Model
             'cargo_id' => $this->id,
             'proceso_id' => $proceso
         ])->first();
+    }
+
+    public function profesores()
+    {
+        $users = $this->users()->get();
+
+        $profesores = '';
+
+        if($users){
+            foreach ($users as $user){
+                $profesores .= $user->apellido . ', '. $user->nombre . ' - ' ;
+            }
+        }
+        return $profesores;
     }
 }
