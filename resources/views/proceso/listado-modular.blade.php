@@ -25,7 +25,8 @@
             @endif
         </h4>
         <h6>
-            Correspondiente al módulo <i>{{$materia->nombre}}</i> <br/> <small class="blockquote blockquote-footer">Prof.: {{$cargo->profesores()}}</small>
+            Correspondiente al módulo <i>{{$materia->nombre}}</i> <br/>
+            <small class="blockquote blockquote-footer mt-3">Prof.: {{$cargo->profesores()}}</small>
         </h6>
             </div>
             <div class="col-4">
