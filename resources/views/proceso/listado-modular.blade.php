@@ -19,13 +19,14 @@
         </a>
         <div class="row">
             <div class="col-8">
-        <h4 class="text-info">
+        <h4 class="text-primary">
             Notas de Proceso de {{ $cargo->nombre }} @if($comision)
                 <br/><small>{{$comision->nombre}}</small>
             @endif
         </h4>
         <h6>
-            Correspondiente al módulo <i>{{$materia->nombre}}</i>
+            Correspondiente al módulo <i>{{$materia->nombre}}</i> <br/>
+            <small class="blockquote blockquote-footer mt-3">Prof.: {{$cargo->profesores()}}</small>
         </h6>
             </div>
             <div class="col-4">
@@ -89,7 +90,10 @@
                         @if(count($calificaciones) > 0)
                             @foreach($calificaciones as $calificacion)
                                 <th><a href="{{ route('calificacion.create',$calificacion->id) }}"
-                                       class="text-white">{{$calificacion->nombre}}</a></th>
+                                       class="text-white" title="{{$calificacion->description}}"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                    >{{$calificacion->nombre}}</a></th>
                             @endforeach
                         @else
                             <th>
@@ -118,19 +122,28 @@
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                                {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                                                <b>{{$proceso->procesoCalificacion($cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
+                                                <small>
+                                ({{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+
+@if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
+                                                    %
+                                                @endif
+                                                )</small>
                             </span>
-                                            @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
-                                                %
-                                            @endif
+
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                                R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                                                    R: <b>{{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}</b>
+                                                    <small>({{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                                                    @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                                                        %
+                                                    @endif
+                                                    )
+                                                    </small>
                             </span>
-                                                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                                                    %
-                                                @endif
+
                                             @endif
                                         @else
                                             -
@@ -195,5 +208,14 @@
                 <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
+    <script>
+
+
+
+
+
+
+
+    </script>
 
 @endsection
