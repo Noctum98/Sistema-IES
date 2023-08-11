@@ -38,13 +38,13 @@
                 {{ $proceso->procesoModularOne->asistencia_final_porcentaje }} %
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->procesoModularOne->trabajo_final_nota)
+                {{ $proceso->procesoModularOne->trabajo_final_nota ? $proceso->procesoModularOne->trabajo_final_nota : '-'}}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->procesoModularOne->nota_final_nota)
+                {{$proceso->procesoModularOne->nota_final_nota ? $proceso->procesoModularOne->nota_final_nota : '-'}}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->procesoModularOne->nota_global)
+                {{ $proceso->procesoModularOne->nota_global }}
             </td>
         </tr>
         @endif
