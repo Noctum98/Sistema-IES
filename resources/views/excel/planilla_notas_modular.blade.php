@@ -26,26 +26,28 @@
     </thead>
     <tbody>
         @foreach($procesos as $proceso)
+        @if($proceso->procesoModularOne)
         <tr>
             <td>
                 {{optional($proceso->alumno)->apellidos_nombres}}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->promedio_final_nota)
+                @colorAprobado($proceso->procesoModularOne->promedio_final_nota)
             </td>
             <td class="text-center">
-                {{$proceso->asistencia_final_porcentaje}} %
+                {{$proceso->procesoModularOne->asistencia_final_porcentaje}} %
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->trabajo_final_nota)
+                @colorAprobado($proceso->procesoModularOne->trabajo_final_nota)
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->nota_final_nota)
+                @colorAprobado($proceso->procesoModularOne->nota_final_nota)
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->nota_global)
+                @colorAprobado($proceso->procesoModularOne->nota_global)
             </td>
         </tr>
+        @endif
         @endforeach
     </tbody>
 </table>

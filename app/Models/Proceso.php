@@ -100,6 +100,11 @@ class Proceso extends Model
             ->get();
     }
 
+    public function procesoModularOne()
+    {
+        $this->hasOne(ProcesoModular::class);
+    }
+
     public function obtenerProcesoCargo(int $cargo)
     {
         return ProcesosCargos::where([
