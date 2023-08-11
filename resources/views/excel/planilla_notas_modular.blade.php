@@ -26,10 +26,9 @@
     </thead>
     <tbody>
         @foreach($procesos as $proceso)
-        @if($proceso->procesoRelacionado)
         <tr>
             <td>
-                {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
+                {{optional($proceso->alumno)->apellidos_nombres}}
             </td>
             <td class="text-center">
                 @colorAprobado($proceso->promedio_final_nota)
@@ -47,7 +46,6 @@
                 @colorAprobado($proceso->nota_global)
             </td>
         </tr>
-        @endif
         @endforeach
     </tbody>
 </table>

@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
 {
     use RegistersEventListeners;
-    private $data_array;
+    public $data_array;
 
 
     public function __construct($data_array)
@@ -24,7 +24,6 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
 
     public function view(): View
     {
-
         return view('excel.planilla_notas_modular', [
             'materia' => $this->data_array['materia'],
             'procesos' => $this->data_array['procesos']

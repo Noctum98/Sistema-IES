@@ -28,6 +28,7 @@ class PlanillaNotasModularExport implements WithMultipleSheets
         ];
         
         $sheets[] = new PlanillaModularCargoSheet($data_array);
+
         return $sheets;
     }
 }
