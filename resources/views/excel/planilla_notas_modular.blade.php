@@ -35,7 +35,7 @@
                 @colorAprobado($proceso->procesoModularOne->promedio_final_nota)
             </td>
             <td class="text-center">
-                {{$proceso->procesoModularOne->asistencia_final_porcentaje}} %
+                {{ $proceso->procesoModularOne->asistencia_final_porcentaje }} %
             </td>
             <td class="text-center">
                 @colorAprobado($proceso->procesoModularOne->trabajo_final_nota)

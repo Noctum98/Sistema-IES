@@ -102,7 +102,7 @@ class Proceso extends Model
 
     public function procesoModularOne()
     {
-        $this->hasOne(ProcesoModular::class);
+        return $this->hasOne(ProcesoModular::class);
     }
 
     public function obtenerProcesoCargo(int $cargo)
