@@ -14,14 +14,11 @@
         </tr>
         <tr>
             <th scope="col">Apeliido y Nombre</th>
-            {{-- <th class="sticky-top">Proc. Final %</th>--}}
-            <th class="sticky-top text-center">N Proceso</th>
+            <th class="sticky-top text-center">Nota Proceso</th>
             <th class="sticky-top text-center">% Asist. Final</th>
-            {{-- <th class="sticky-top">TFI %</th>--}}
-            <th class="sticky-top text-center">N TFI</th>
-            {{-- <th class="sticky-top">Nota Final %</th>--}}
-            <th class="sticky-top text-center">N Final</th>
-            <th class="sticky-top col-sm-1">N Global</th>
+            <th class="sticky-top text-center">TFI</th>
+            <th class="sticky-top text-center">Nota Final</th>
+            <th class="sticky-top col-sm-1">Nota Global</th>
         </tr>
     </thead>
     <tbody>
@@ -29,10 +26,10 @@
         @if($proceso->procesoModularOne)
         <tr>
             <td>
-                {{optional($proceso->alumno)->apellidos_nombres}}
+                {{ optional($proceso->alumno)->apellidos_nombres }}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->procesoModularOne->promedio_final_nota)
+                {{ $proceso->procesoModularOne->promedio_final_nota }}
             </td>
             <td class="text-center">
                 {{ $proceso->procesoModularOne->asistencia_final_porcentaje }} %
@@ -41,7 +38,7 @@
                 {{ $proceso->procesoModularOne->trabajo_final_nota ? $proceso->procesoModularOne->trabajo_final_nota : '-'}}
             </td>
             <td class="text-center">
-                {{$proceso->procesoModularOne->nota_final_nota ? $proceso->procesoModularOne->nota_final_nota : '-'}}
+                {{ $proceso->procesoModularOne->nota_final_nota ? $proceso->procesoModularOne->nota_final_nota : '-'}}
             </td>
             <td class="text-center">
                 {{ $proceso->procesoModularOne->nota_global ? $proceso->procesoModularOne->nota_global : '-' }}
