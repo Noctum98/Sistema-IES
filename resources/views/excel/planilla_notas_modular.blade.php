@@ -44,7 +44,7 @@
                 {{$proceso->procesoModularOne->nota_final_nota ? $proceso->procesoModularOne->nota_final_nota : '-'}}
             </td>
             <td class="text-center">
-                {{ $proceso->procesoModularOne->nota_global }}
+                {{ $proceso->procesoModularOne->nota_global ? $proceso->procesoModularOne->nota_global : '-' }}
             </td>
         </tr>
         @endif
