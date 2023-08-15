@@ -48,9 +48,9 @@
 
     @if(Session::has('coordinador') || Session::has('admin'))
         @if(!$comision)
-        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
         @else
-        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
         @endif
     @endif
 

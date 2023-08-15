@@ -32,7 +32,7 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
 
     public function title(): string
     {
-        return 'Planilla cargo';
+        return 'Planilla Módulo';
     }
 
     public static function afterSheet(AfterSheet $event)

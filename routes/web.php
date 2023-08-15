@@ -131,7 +131,7 @@ Route::prefix('equivalencias')->group(function () {
  */
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
-    Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
+    Route::get('/cierre/{materia_id}/{ciclo_lectivo}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
         'materia.cierre'
     );
     Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
