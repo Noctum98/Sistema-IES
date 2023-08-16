@@ -792,7 +792,9 @@ class ProcesoModularService
         // Busco solo los parciales
         $calificaciones_parcial = $calificacionService->calificacionesInCargos([$cargo->id],
             $proceso->ciclo_lectivo,
-            [1])->pluck('id');
+            [1],
+            $materia->id
+        )->pluck('id');
 
         $parcial = $this->obtenerNotaPonderadaParciales(
             $calificaciones_parcial,
@@ -803,7 +805,9 @@ class ProcesoModularService
         // Busco solo los tps
         $calificaciones_tps = $calificacionService->calificacionesInCargos([$cargo->id],
             $proceso->ciclo_lectivo,
-            [2])->pluck('id');
+            [2],
+            $materia->id
+        )->pluck('id');
         $tps = $this->obtenerNotaPonderadaTps(
             $calificaciones_tps,
             $proceso,

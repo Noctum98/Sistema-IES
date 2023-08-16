@@ -17,11 +17,11 @@ class CreateCargoProcesosTable extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedInteger('user_id');
-            $table->integer('cantidad_tp');
-            $table->integer('suma_tp');
+            $table->integer('cantidad_tp')->nullable();
+            $table->integer('suma_tp')->nullable();
             $table->float('nota_tp')->nullable();
-            $table->integer('cantidad_ps');
-            $table->integer('suma_ps');
+            $table->integer('cantidad_ps')->nullable();
+            $table->integer('suma_ps')->nullable();
             $table->integer('ciclo_lectivo');
             $table->float('nota_ps')->nullable();
             $table->float('nota_cargo')->nullable();

@@ -43,6 +43,10 @@ class Cargo extends Model
         return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
     }
 
+    /**
+     * @param $materia_id
+     * @return int|mixed
+     */
     public function ponderacion($materia_id)
     {
         $ponderacion = new CargoService();
