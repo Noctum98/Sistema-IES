@@ -122,7 +122,7 @@
                                         </button>
                                         @include('alumno.modals.carreras_year')
                                     @elseif(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('areaSocial'))
-                                        @if(Auth::user()->hasCarrera($carrera->id))
+                                        @if(Auth::user()->hasCarrera($carrera->id) || Session::has('areaSocial'))
                                             <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal"
                                                     data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
                                                 materias

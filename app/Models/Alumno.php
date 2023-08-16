@@ -174,12 +174,9 @@ class Alumno extends Model
 
         $respuesta = null;
 
-        if($comisiones)
-        {
-            foreach($comisiones as $comision)
-            {
-                if($this->hasComision($comision->id))
-                {
+        if ($comisiones) {
+            foreach ($comisiones as $comision) {
+                if ($this->hasComision($comision->id)) {
                     $respuesta = $comision->nombre;
                 }
             }
@@ -192,10 +189,10 @@ class Alumno extends Model
 
     public static function alumnosAño($year, $carrera_id, $ciclo_lectivo,$comision_id)
     {
-        $alumnos =  Alumno::whereHas('alumno_carrera', function($query) use ($year, $carrera_id, $ciclo_lectivo) {
+        $alumnos =  Alumno::whereHas('alumno_carrera', function ($query) use ($year, $carrera_id, $ciclo_lectivo) {
             $query->where('año', $year)
-                  ->where('carrera_id', $carrera_id)
-                  ->where('ciclo_lectivo', $ciclo_lectivo);
+                ->where('carrera_id', $carrera_id)
+                ->where('ciclo_lectivo', $ciclo_lectivo);
         });
 
         if($comision_id)
@@ -215,7 +212,7 @@ class Alumno extends Model
 
     public function getApellidosNombresAttribute()
     {
-        return $this->apellidos .', '. $this->nombres;
+        return mb_strtoupper($this->apellidos) . ', ' . ucwords($this->nombres);
     }
 
     /**
