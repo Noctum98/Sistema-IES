@@ -14,37 +14,34 @@
         </tr>
         <tr>
             <th scope="col">Apeliido y Nombre</th>
-            {{-- <th class="sticky-top">Proc. Final %</th>--}}
-            <th class="sticky-top text-center">N Proceso</th>
+            <th class="sticky-top text-center">Nota Proceso</th>
             <th class="sticky-top text-center">% Asist. Final</th>
-            {{-- <th class="sticky-top">TFI %</th>--}}
-            <th class="sticky-top text-center">N TFI</th>
-            {{-- <th class="sticky-top">Nota Final %</th>--}}
-            <th class="sticky-top text-center">N Final</th>
-            <th class="sticky-top col-sm-1">N Global</th>
+            <th class="sticky-top text-center">TFI</th>
+            <th class="sticky-top text-center">Nota Final</th>
+            <th class="sticky-top col-sm-1">Nota Global</th>
         </tr>
     </thead>
     <tbody>
         @foreach($procesos as $proceso)
-        @if($proceso->procesoRelacionado)
+        @if($proceso->procesoModularOne)
         <tr>
             <td>
-                {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
+                {{ optional($proceso->alumno)->apellidos_nombres }}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->promedio_final_nota)
+                {{ $proceso->procesoModularOne->promedio_final_nota }}
             </td>
             <td class="text-center">
-                {{$proceso->asistencia_final_porcentaje}} %
+                {{ $proceso->procesoModularOne->asistencia_final_porcentaje }} %
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->trabajo_final_nota)
+                {{ $proceso->procesoModularOne->trabajo_final_nota ? $proceso->procesoModularOne->trabajo_final_nota : '-'}}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->nota_final_nota)
+                {{ $proceso->procesoModularOne->nota_final_nota ? $proceso->procesoModularOne->nota_final_nota : '-'}}
             </td>
             <td class="text-center">
-                @colorAprobado($proceso->nota_global)
+                {{ $proceso->procesoModularOne->nota_global ? $proceso->procesoModularOne->nota_global : '-' }}
             </td>
         </tr>
         @endif

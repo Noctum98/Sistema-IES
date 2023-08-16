@@ -212,7 +212,7 @@ class Alumno extends Model
 
     public function getApellidosNombresAttribute()
     {
-        return $this->apellidos . ', ' . $this->nombres;
+        return mb_strtoupper($this->apellidos) . ', ' . ucwords($this->nombres);
     }
 
     public function getEquivalencias()

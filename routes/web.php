@@ -131,7 +131,7 @@ Route::prefix('equivalencias')->group(function () {
  */
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
-    Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
+    Route::get('/cierre/{materia_id}/{ciclo_lectivo}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
         'materia.cierre'
     );
     Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
@@ -619,7 +619,7 @@ Route::prefix('excel')->group(function () {
     Route::get('procesos/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
-    Route::get('procesosModular/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
+    Route::get('procesosModular/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
         'excel.procesosModular'
     );
     Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');

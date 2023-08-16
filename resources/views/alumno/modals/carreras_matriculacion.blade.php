@@ -13,7 +13,7 @@
                     @foreach($carrera->materias as $materia)
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="materias[]" id="materia-{{$materia->id}}" value="{{ $materia->id }}" {{ $alumno->hasProceso($materia->id) ? 'checked':null }}>
-                        <label class="form-check-label" for="exampleRadios{{$materia->id}}">
+                        <label class="form-check-label" for="exampleRadios{{$materia->id}}" >
                             {{$materia->nombre}}
                         </label>
                     </div>
@@ -21,7 +21,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <input type="submit" class="btn btn-primary" value="Guardar cambios">
+                <input type="submit" class="btn btn-primary" value="Guardar cambios" {{Session::has('areaSocial')  ? 'disabled' : ''}}>
             </div>
             </form>
         </div>
