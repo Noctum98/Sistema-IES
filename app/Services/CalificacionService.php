@@ -221,11 +221,12 @@ class CalificacionService
      * @param array $tipos <b>Tipo</b> de calificación
      * @return mixed
      */
-    public function calificacionesInCargos($cargos , int $ciclo_lectivo, array $tipos)
+    public function calificacionesInCargos(array $cargos , int $ciclo_lectivo, array $tipos, int $materia)
     {
         return Calificacion::select('calificaciones.*')
             ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
             ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->where('materia_id', '=', $materia)
             ->whereIn('cargo_id', $cargos)
             ->whereIn('tipo_calificaciones.descripcion', $tipos)
             ->get()

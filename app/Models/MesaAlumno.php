@@ -46,8 +46,6 @@ class MesaAlumno extends Model
 
     public function alumnoByDni($dni)
     {
-        $alumno = Alumno::where('dni',$dni)->first();
-
-        return $alumno;
+        return Alumno::where('dni',$dni)->first();
     }
 }
