@@ -24,11 +24,13 @@
             <hr>
 
             <div class="mb-3">
+            @if(Session::has('coordinador') || Session::has('admin'))
+
                 <button class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#inscribirAlumno">
                     Inscribir alumno
                 </button>
                 @include('mesa.modals.inscribir_alumno')
-
+@endif
                 @if(Session::has('admin'))
                     <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#borrar_mesa">Borrar Mesa</a>
                     @include('mesa.modals.borrar_mesa')
