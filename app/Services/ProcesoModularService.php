@@ -84,8 +84,6 @@ class ProcesoModularService
      */
     public function crearProcesoModular(int $materia_id, int $ciclo_lectivo)
     {
-
-
         $pm_sin_vincular = $this->obtenerProcesosModularesNoVinculados($materia_id, $ciclo_lectivo);
         $inicio = 0;
         foreach ($pm_sin_vincular as $pm) {
@@ -94,7 +92,6 @@ class ProcesoModularService
             ProcesoModular::create($data);
             $inicio += 1;
         }
-
     }
 
     /**

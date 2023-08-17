@@ -83,12 +83,13 @@ class CargoProcesoService
         $sumaPs = null;
 
         foreach ($trabajosPracticals as $tps) {
-            foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion([$tps->id], $proceso) as $notas){
+            foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion([$tps->id], $proceso) as $notas) {
                 $sumaTps += $notas->nota;
             }
         }
         foreach ($parciales as $ps) {
-            $sumaPs += $this->calificacionService->notaCalificacionParcialByAlumno($this->getAlumnoId($proceso), $ps->id);
+//            $sumaPs += $this->calificacionService->notaCalificacionParcialByAlumno($this->getAlumnoId($proceso), $ps->id);
+            $sumaPs += $this->calificacionService->calificacionParcialByProceso($proceso, $ps->id);
         }
 
         $cargoProceso->suma_tp = $sumaTps;
@@ -118,11 +119,11 @@ class CargoProcesoService
         if (!$cantidadTps and !$cantidadPs) {
             list($cantidadTps, $cantidadPs) = $this->grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user);
         }
-        $sumaTps = $cargoProceso->suma_tp;
-        $sumaPs = $cargoProceso->suma_ps;
-        if (!$sumaTps and !$sumaPs) {
+//        $sumaTps = $cargoProceso->suma_tp;
+//        $sumaPs = $cargoProceso->suma_ps;
+//        if (!$sumaTps and !$sumaPs) {
             list($sumaTps, $sumaPs) = $this->grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
-        }
+//        }
 
         $cargoProceso->nota_tp = 0;
         if ($cantidadTps > 0) {
@@ -153,6 +154,7 @@ class CargoProcesoService
 
         $configuration = Configuration::first();
 
+
         $total_cargo = 0;
         if ($configuration->value_parcial != null) {
             $value_parcial = $configuration->value_parcial / 100;
@@ -164,9 +166,12 @@ class CargoProcesoService
                 $total_cargo = $suma / $cuenta;
             }
         }
+
+
         $procesoCargo->nota_cargo = $total_cargo;
 
         $procesoCargo->update();
+
         return $procesoCargo;
 
     }
