@@ -13,9 +13,11 @@ class ChangeSegundoLlamadoToInstanciasTable extends Migration
      */
     public function up()
     {
+        /**
         Schema::table('instancias', function (Blueprint $table) {
             $table->boolean('segundo_llamado')->default(true)->change();
         });
+        */
     }
 
     /**
