@@ -13,6 +13,7 @@ class CreateRegularidadsTable extends Migration
      */
     public function up()
     {
+        /**
         Schema::create('regularidades', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
@@ -29,6 +30,7 @@ class CreateRegularidadsTable extends Migration
 
 
         });
+        */
     }
 
     /**
