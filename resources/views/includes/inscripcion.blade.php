@@ -348,6 +348,9 @@
 	<div id="7mo" class="d-none">
 		<br>
 		<h4 class="text-secondary">Artículo 7mo</h4>
+		<div class="alert-warning">
+			Usted cumple con los requisitos para inscribirse a traves de Articulo 7mo (Mayor de 24 años, Secundario Incompleto y trabaja o trabajó anteriormente en un puesto similar), informesé correctamente si debe inscribirse por este medio, ya que debe subir obligatoriamente los siguientes archivos.
+		</div>
 		<hr>
 		<div class="form-group">
 			<label for="primario_file">
