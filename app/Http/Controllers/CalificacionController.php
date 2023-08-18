@@ -27,7 +27,7 @@ class CalificacionController extends Controller
     public function __construct(CicloLectivoService $cicloLectivoService)
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos');
+        $this->middleware('app.roles:admin-coordinador-profesor-regente-seccionAlumnos-areaSocial');
         $this->cicloLectivoService = $cicloLectivoService;
     }
 

@@ -34,7 +34,7 @@ class MateriaController extends Controller
     function __construct(MateriaService $materiaService,ProcesoService $procesoService, CicloLectivoService $cicloLectivoService)
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
+        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos-areaSocial');
         $this->materiaService = $materiaService;
         $this->procesoService = $procesoService;
         $this->cicloLectivoService = $cicloLectivoService;
