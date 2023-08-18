@@ -19,9 +19,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($preinscripciones as $preinscripcion)
+            @foreach ($preinscripciones as $key => $preinscripcion)
             <tr style="cursor:pointer;">
-                <td>{{ $preinscripcion->nombres.' '.$preinscripcion->apellidos }}</td>
+                <td>{{ $key + 1 }}</td>
+
+                <td>{{ mb_strtoupper($preinscripcion->apellidos).' '.ucwords($preinscripcion->nombres) }}</td>
                 <td>{{ $preinscripcion->dni }}</td>
                 <td>{{ $preinscripcion->carrera->nombre }}</td>
                 <td>{{ $preinscripcion->responsable_delete }}</td>

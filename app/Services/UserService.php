@@ -60,7 +60,6 @@ class UserService
             });
         }
 
-
         if ($paginate) {
             return $users->paginate(10);
         } else {
