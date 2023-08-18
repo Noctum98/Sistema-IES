@@ -84,14 +84,16 @@ class CargoProcesoService
 
         foreach ($trabajosPracticals as $tps) {
             foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion([$tps->id], $proceso) as $notas) {
-                if(is_numeric($notas->nota)){
+                if (is_numeric($notas->nota)) {
                     $sumaTps += $notas->nota;
                 }
             }
         }
         foreach ($parciales as $ps) {
 //            $sumaPs += $this->calificacionService->notaCalificacionParcialByAlumno($this->getAlumnoId($proceso), $ps->id);
-            $sumaPs += $this->calificacionService->calificacionParcialByProceso($proceso, $ps->id);
+            if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso, $ps->id))) {
+                $sumaPs += $this->calificacionService->calificacionParcialByProceso($proceso, $ps->id);
+            }
         }
 
         $cargoProceso->suma_tp = $sumaTps;
@@ -124,7 +126,7 @@ class CargoProcesoService
 //        $sumaTps = $cargoProceso->suma_tp;
 //        $sumaPs = $cargoProceso->suma_ps;
 //        if (!$sumaTps and !$sumaPs) {
-            list($sumaTps, $sumaPs) = $this->grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
+        list($sumaTps, $sumaPs) = $this->grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
 //        }
 
         $cargoProceso->nota_tp = 0;
