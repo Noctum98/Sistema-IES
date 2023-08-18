@@ -53,7 +53,7 @@ class InstanciaController extends Controller
         $sede = Sede::find($sede_id);
         $instancia = Instancia::find($instancia_id);
 
-        if(Session::has('admin'))
+        if(Session::has('admin') || Session::has('areaSocial'))
         {
             $carreras = $sede->carreras;
         }else{

@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Carrera;
 use App\Models\Mesa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UserService
 {
@@ -84,5 +86,25 @@ class UserService
     public function getUserById(int $idUser): User
     {
         return User::find($idUser);
+    }
+
+    /**
+     * @return array
+     */
+    public function getCarreras(): array
+    {
+        $user = Auth::user();
+
+        if (Session::has('admin') || Session::has('regente')) {
+            $carreras = Carrera::orderBy('sede_id')->get();
+        }elseif(Session::has('areaSocial'))
+        {
+            $carreras = Carrera::whereIn('sede_id',$user->sedes)->get();
+        }else{
+            $carreras = $user->carreras;
+        }
+
+
+        return array($user, $carreras);
     }
 }
