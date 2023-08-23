@@ -645,5 +645,10 @@ Route::resource('libros', LibrosController::class);
 Route::resource('registros',AuditController::class);
 
 Route::get('/prueba-post-size', function () {
-
+    echo "ENV";
+    echo env('MAIL_USERNAME');
+    echo env('MAIL_PASSWORD');
+    echo "CONFIG";
+    echo config('app.MAIL_USERNAME');
+    echo config('app.MAIL_PASSWORD');
 });

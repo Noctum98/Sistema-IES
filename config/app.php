@@ -233,6 +233,8 @@ return [
 
     ],
 
-    'APP_URL' => env('APP_URL')
+    'APP_URL' => env('APP_URL'),
+    'MAIL_USERNAME' => env('MAIL_USERNAME'),
+    'MAIL_PASSWORD' => env('MAIL_PASSWORD')
 
 ];
