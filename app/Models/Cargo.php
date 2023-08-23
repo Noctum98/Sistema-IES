@@ -153,4 +153,12 @@ class Cargo extends Model
         }
         return $profesores;
     }
+
+    public function getCargoProceso($proceso_id)
+    {
+        return CargoProceso::where([
+            'cargo_id' => $this->id,
+            'proceso_id' => $proceso_id
+        ]);
+    }
 }

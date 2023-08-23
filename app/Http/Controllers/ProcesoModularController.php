@@ -8,6 +8,7 @@ use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
+use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesoModularService;
 use http\Exception\InvalidArgumentException;
@@ -25,13 +26,19 @@ class ProcesoModularController extends Controller
      * @var CicloLectivoService
      */
     private $cicloLectivoService;
+    /**
+     * @var CargoProcesoService
+     */
+    private $cargoProcesoService;
 
     /**
      * @param CicloLectivoService $cicloLectivoService
+     * @param CargoProcesoService $cargoProcesoService
      */
-    public function __construct(CicloLectivoService $cicloLectivoService)
+    public function __construct(CicloLectivoService $cicloLectivoService, CargoProcesoService $cargoProcesoService)
     {
         $this->cicloLectivoService = $cicloLectivoService;
+        $this->cargoProcesoService = $cargoProcesoService;
     }
 
     /**
@@ -66,6 +73,7 @@ class ProcesoModularController extends Controller
         if(Auth::user()->hasAnyRole('coordinador') or Auth::user()->hasAnyRole('admin')){
             $puedeProcesar = true;
         }
+        $user = Auth::user();
 
         $acciones = [];
         $serviceModular = new ProcesoModularService();
@@ -98,6 +106,20 @@ class ProcesoModularController extends Controller
         }
 
         $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
+        /**
+         * Genero los cargos procesos si no existen
+         */
+
+        foreach ($materia->cargos()->get() as $cargo) {
+            foreach ($procesos as $proceso){
+                $this->cargoProcesoService->grabaNotaPonderadaCargo(
+                    $cargo->id,
+                    $ciclo_lectivo,
+                    $proceso->id,
+                    $materia->id,
+                    $user->id);
+            }
+        }
 
         $estados =  Estados::all();
 

@@ -256,6 +256,17 @@ class CargoProcesoService
         return $cargoProceso;
     }
 
+    public function generaCargoProceso($cargo, $proceso, $user): void
+    {
+        $cargoProceso = CargoProceso::where([
+            'cargo_id' => $cargo,
+            'proceso_id' => $proceso
+        ])->first();
+        if (!$cargoProceso) {
+            $this->grabaNuevoCargoProceso($cargo, $proceso, $user);
+        }
+    }
+
     public function getAlumnoId(int $proceso)
     {
         return Proceso::find($proceso)->alumno_id;
@@ -270,6 +281,12 @@ class CargoProcesoService
     public function getCicloLectivo($proceso)
     {
         return Proceso::find($proceso)->ciclo_lectivo;
+    }
+
+
+    public function procesaCargoProceso()
+    {
+
     }
 
 
