@@ -6,6 +6,7 @@ use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Materia extends Model
 {
@@ -38,7 +39,10 @@ class Materia extends Model
         return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
     }
 
-    public function cargos()
+    /**
+     * @return null | BelongsToMany
+     */
+    public function cargos(): ?BelongsToMany
     {
         return $this->belongsToMany(Cargo::class)->withTimestamps();
     }
@@ -72,7 +76,6 @@ class Materia extends Model
     {
         return $this->comisiones->where('ciclo_lectivo',$ciclo_lectivo);
     }
-
 
 
     public function mesa($instancia_id,$comision_id = null)
