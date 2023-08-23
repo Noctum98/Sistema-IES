@@ -115,7 +115,7 @@ class CargoProcesoService
      */
     public function grabaNotaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user): CargoProceso
     {
-        $cargoProceso = $this->getCargoProceso($cargo, $proceso, $user);
+        $cargoProceso = $this->getCargoProceso($cargo, $proceso, $user, $cicloLectivo);
 
         $cantidadTps = $cargoProceso->cantidad_tp;
         $cantidadPs = $cargoProceso->cantidad_ps;
@@ -209,11 +209,11 @@ class CargoProcesoService
      * @param $cargo
      * @param $proceso
      * @param $user
+     * @param $cicloLectivo
      * @return CargoProceso
      */
-    public function grabaNuevoCargoProceso($cargo, $proceso, $user): CargoProceso
+    public function grabaNuevoCargoProceso($cargo, $proceso, $user, $cicloLectivo): CargoProceso
     {
-        $cicloLectivo = $this->getCicloLectivo($proceso);
         return CargoProceso::create([
             'user_id' => $user,
             'cargo_id' => $cargo,
@@ -234,7 +234,7 @@ class CargoProcesoService
     {
         list($trabajosPracticals, $parciales) = $this->getCalificacionesPorCargo($cargo, $cicloLectivo, $materia);
 
-        $cargoProceso = $this->getCargoProceso($cargo, $proceso, $user);
+        $cargoProceso = $this->getCargoProceso($cargo, $proceso, $user, $cicloLectivo);
         return array($trabajosPracticals, $parciales, $cargoProceso);
     }
 
@@ -242,16 +242,17 @@ class CargoProcesoService
      * @param $cargo
      * @param $proceso
      * @param $user
+     * @param $cicloLectivo
      * @return CargoProceso
      */
-    public function getCargoProceso($cargo, $proceso, $user): CargoProceso
+    public function getCargoProceso($cargo, $proceso, $user, $cicloLectivo): CargoProceso
     {
         $cargoProceso = CargoProceso::where([
             'cargo_id' => $cargo,
             'proceso_id' => $proceso
         ])->first();
         if (!$cargoProceso) {
-            $cargoProceso = $this->grabaNuevoCargoProceso($cargo, $proceso, $user);
+            $cargoProceso = $this->grabaNuevoCargoProceso($cargo, $proceso, $user, $cicloLectivo);
         }
         return $cargoProceso;
     }

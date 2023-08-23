@@ -159,6 +159,6 @@ class Cargo extends Model
         return CargoProceso::where([
             'cargo_id' => $this->id,
             'proceso_id' => $proceso_id
-        ]);
+        ])->first();
     }
 }

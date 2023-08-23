@@ -101,31 +101,21 @@
                                                 <tbody>
 
                                                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
-                                                    <td class="p-2"><h6>
-                                                            {{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                                                    <td class="p-2">
+                                                        <h6>
+{{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                                                             @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
                                                                     @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
                                                                     2, '.', ',') )
-                                                                    @php
-                                                                        $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota
-                                                                    @endphp
+
 
                                                                 @endif
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                                                     A
-                                                                    @php
-                                                                        $sumaCalificacion = 0;
-                                                                    @endphp
+
                                                                 @endif
-                                                                @php
-                                                                    if(is_numeric($sumaCalificacion)){
-                                                                        $suma+=$sumaCalificacion;
-                                                                        }else{
-                                                                        $suma+= 0;
-                                                                        }
-                                                                @endphp
                                                             @else
                                                                 -
                                                             @endif
@@ -233,7 +223,11 @@
                 <td>
                     @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo, 2, '.', ','))
                     <br/>
-                    <small>@colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ','))</small>
+                    <small>
+
+                        {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
+
+                    </small>
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
