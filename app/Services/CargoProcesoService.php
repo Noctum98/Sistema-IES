@@ -84,7 +84,7 @@ class CargoProcesoService
 
         foreach ($trabajosPracticals as $tps) {
             foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion([$tps->id], $proceso) as $notas) {
-                if (is_numeric($notas->nota)) {
+                if (is_numeric($notas->nota) and $notas->nota > 0 ) {
                     $sumaTps += $notas->nota;
                 }
             }
