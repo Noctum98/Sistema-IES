@@ -52,7 +52,7 @@ class CargoProcesoService
      * @param $proceso
      * @param $materia
      * @param $user
-     * @return array
+     * @return array <b>Cantidad de Trabajos Prácticos y Cantidad de Parciales</b>
      */
     public function grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user): array
     {
@@ -72,7 +72,7 @@ class CargoProcesoService
      * @param $proceso
      * @param $materia
      * @param $user
-     * @return array
+     * @return array <b>Suma de Trabajos Prácticos y Suma de Parciales</b>
      */
     public function grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user): array
     {
@@ -288,5 +288,25 @@ class CargoProcesoService
     {
 
     }
+
+
+    /**
+     * @param $cargo
+     * @param $cicloLectivo
+     * @param $proceso
+     * @param $materia
+     * @param $user
+     * @return void
+     */
+    public function grabaCalificacion($cargo, $cicloLectivo, $proceso, $materia, $user): void
+    {
+        $this->grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user);
+        $this->grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
+    }
+
+
+
+
+
 
 }
