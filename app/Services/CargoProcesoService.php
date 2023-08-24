@@ -300,8 +300,7 @@ class CargoProcesoService
      */
     public function grabaCalificacion($cargo, $cicloLectivo, $proceso, $materia, $user): void
     {
-        $this->grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user);
-        $this->grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
+        $this->grabaNotaPonderadaCargo($cargo, $cicloLectivo, $proceso, $materia, $user);
     }
 
 
