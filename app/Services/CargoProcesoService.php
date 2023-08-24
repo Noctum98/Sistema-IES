@@ -6,7 +6,6 @@ use App\Models\Cargo;
 use App\Models\CargoProceso;
 use App\Models\Configuration;
 use App\Models\Proceso;
-use App\Models\ProcesoModular;
 
 class CargoProcesoService
 {
@@ -84,7 +83,7 @@ class CargoProcesoService
 
         foreach ($trabajosPracticals as $tps) {
             foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion([$tps->id], $proceso) as $notas) {
-                if (is_numeric($notas->nota)) {
+                if (is_numeric($notas->nota) and $notas->nota > 0 ) {
                     $sumaTps += $notas->nota;
                 }
             }
@@ -257,14 +256,14 @@ class CargoProcesoService
         return $cargoProceso;
     }
 
-    public function generaCargoProceso($cargo, $proceso, $user): void
+    public function generaCargoProceso($cargo, $proceso, $user, $ciclo_lectivo): void
     {
         $cargoProceso = CargoProceso::where([
             'cargo_id' => $cargo,
             'proceso_id' => $proceso
         ])->first();
         if (!$cargoProceso) {
-            $this->grabaNuevoCargoProceso($cargo, $proceso, $user);
+            $this->grabaNuevoCargoProceso($cargo, $proceso, $user, $ciclo_lectivo);
         }
     }
 
@@ -289,6 +288,5 @@ class CargoProcesoService
     {
 
     }
-
 
 }
