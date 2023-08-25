@@ -836,7 +836,7 @@ class ProcesoModularService
     public function setCicloLectivo($procesoModular, $cicloLectivo):void
     {
         $pm = ProcesoModular::find($procesoModular);
-        $pm->ciloc_lectivo = $cicloLectivo;
+        $pm->ciclo_lectivo = $cicloLectivo;
         $pm->update();
     }
 }
