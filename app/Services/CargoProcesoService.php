@@ -6,7 +6,6 @@ use App\Models\Cargo;
 use App\Models\CargoProceso;
 use App\Models\Configuration;
 use App\Models\Proceso;
-use App\Models\ProcesoModular;
 
 class CargoProcesoService
 {
@@ -53,7 +52,7 @@ class CargoProcesoService
      * @param $proceso
      * @param $materia
      * @param $user
-     * @return array
+     * @return array <b>Cantidad de Trabajos Prácticos y Cantidad de Parciales</b>
      */
     public function grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user): array
     {
@@ -73,7 +72,7 @@ class CargoProcesoService
      * @param $proceso
      * @param $materia
      * @param $user
-     * @return array
+     * @return array <b>Suma de Trabajos Prácticos y Suma de Parciales</b>
      */
     public function grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user): array
     {
@@ -257,14 +256,14 @@ class CargoProcesoService
         return $cargoProceso;
     }
 
-    public function generaCargoProceso($cargo, $proceso, $user): void
+    public function generaCargoProceso($cargo, $proceso, $user, $ciclo_lectivo): void
     {
         $cargoProceso = CargoProceso::where([
             'cargo_id' => $cargo,
             'proceso_id' => $proceso
         ])->first();
         if (!$cargoProceso) {
-            $this->grabaNuevoCargoProceso($cargo, $proceso, $user);
+            $this->grabaNuevoCargoProceso($cargo, $proceso, $user, $ciclo_lectivo);
         }
     }
 
@@ -289,6 +288,24 @@ class CargoProcesoService
     {
 
     }
+
+
+    /**
+     * @param $cargo
+     * @param $cicloLectivo
+     * @param $proceso
+     * @param $materia
+     * @param $user
+     * @return void
+     */
+    public function grabaCalificacion($cargo, $cicloLectivo, $proceso, $materia, $user): void
+    {
+        $this->grabaNotaPonderadaCargo($cargo, $cicloLectivo, $proceso, $materia, $user);
+    }
+
+
+
+
 
 
 }
