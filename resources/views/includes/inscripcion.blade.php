@@ -62,7 +62,7 @@
 	</div>
 	<div class="form-group">
 		<label for="email">Email:</label>
-		<input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" readonly/>
+		<input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" readonly />
 
 		@error('email')
 		<span class="invalid-feedback d-block" role="alert">
@@ -211,6 +211,16 @@
 		@enderror
 	</div>
 	<div class="form-group">
+		<label for="cantidad_materias_s">Nombre de escuela donde egresó: (Número y Nombre):</label>
+		<input type="number" id="escuela_s" name="cantidad_materias_s" class="form-control @error('cantidad_materias_s') is-invalid @enderror" value="{{ old('cantidad_materias_s') }}" disabled/>
+
+		@error('cantidad_materias_s')
+		<span class="invalid-feedback d-block" role="alert">
+			<strong>{{ $message }}</strong>
+		</span>
+		@enderror
+	</div>
+	<div class="form-group">
 		<label>Conexión a internet: </label>
 		<div class="form-check">
 			<input class="form-check-input" type="radio" value="si" name="conexion" id="conexion1" {{ old('conexion') == 'si' ? 'checked' : '' }} />
@@ -233,7 +243,7 @@
 	<div class="form-group">
 		<label>Trabajas actualmente: </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1" {{ old('trabajo') == 'si' ? 'checked' : '' }}/>
+			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1" {{ old('trabajo') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="trabajo1">
 				Si
 			</label>
@@ -254,7 +264,7 @@
 	<div class="form-group">
 		<label>Alguna tuviste un trabajo relacionado a la carrera? </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }}/>
+			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="trabajo_relacionado1">
 				Si
 			</label>
@@ -349,65 +359,70 @@
 		<br>
 		<h4 class="text-secondary">Artículo 7mo</h4>
 		<div class="alert alert-warning">
-			Usted cumple con los requisitos para inscribirse a traves de Articulo 7mo (Mayor de 24 años, Secundario Incompleto y trabaja o trabajó anteriormente en un puesto similar), informesé correctamente si debe inscribirse por este medio, ya que debe subir obligatoriamente los siguientes archivos.
+			Estás realizando tu preinscripción por Artículo 7, cuyos requisitos son:
+			ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
+			trabajado en un empleo relacionado con la carrera elegida.
+		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" name="articulo_septimo" id="articulo_septimo" value="1" {{ old('articulo_septimo') == 1 ? 'checked' : '' }}>
+			<label class="form-check-label" for="articulo_septimo">
+				Confirmo mi preinscripción por Artículo 7
+			</label>
 		</div>
 		<hr>
-		<div class="form-group">
-			<label for="primario_file">
-				Título de Nivel Primario:
-			</label>
-			<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
+		<div class="d-none" id="archivos_articulo_septimo">
+			<div class="form-group">
+				<label for="primario_file">
+					Título de Nivel Primario:
+				</label>
+				<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
 
-			@error('primario_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="ctrabajo_file">
-				Certificado de Trabajo con firma y sello de quien lo emite
-			</label>
-			<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
+				@error('primario_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label for="ctrabajo_file">
+					Certificado de Trabajo con firma y sello de quien lo emite
+				</label>
+				<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
 
-			@error('ctrabajo_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="curriculum_file">
-				Currículum Vitae (en formato PDF)
-			</label>
-			<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
+				@error('ctrabajo_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label for="curriculum_file">
+					Currículum Vitae (en formato PDF)
+				</label>
+				<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
 
-			@error('curriculum_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="nota_file">
-				Nota al Rector (en PDF)
-			</label>
-			<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
+				@error('curriculum_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label for="nota_file">
+					Nota al Rector (en PDF)
+				</label>
+				<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
 
-			@error('nota_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
+				@error('nota_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
 		</div>
 	</div>
-	@include('alumno.modals.confirmar_preinscripcion')
 
 	<div class="form-group">
-		<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmar_preinscripcion">Inscribirse</button>
+		<button type="submit" class="btn btn-success">Inscribirse</button>
 	</div>
-
-
 </form>
-
-

@@ -59,4 +59,19 @@ $(document).ready(function () {
 
         }
     });
+
+    $("#articulo_septimo").change(function (e){
+        let checked = $("#articulo_septimo").is(":checked");
+
+        if(checked)
+        {
+            $("#archivos_articulo_septimo").removeClass('d-none');
+        }else{
+            $("#archivos_articulo_septimo").addClass('d-none');
+        }
+    });
+
+    $("#materias_s").change(function(e){
+        
+    });
 });
