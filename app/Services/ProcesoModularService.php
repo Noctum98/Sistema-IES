@@ -828,4 +828,15 @@ class ProcesoModularService
     }
 
 
+    /**
+     * @param $procesoModular
+     * @param $cicloLectivo
+     * @return void <b>Graba el ciclo lectivo en el proceso modular</b>
+     */
+    public function setCicloLectivo($procesoModular, $cicloLectivo):void
+    {
+        $pm = ProcesoModular::find($procesoModular);
+        $pm->ciclo_lectivo = $cicloLectivo;
+        $pm->update();
+    }
 }
