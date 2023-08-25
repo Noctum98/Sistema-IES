@@ -14,7 +14,6 @@ class ProcesoModular extends Model
 
     protected $table = "proceso_modular";
     protected $fillable = [
-
         'promedio_final_porcentaje',
         'promedio_final_nota',
         'ponderacion_promedio_final',
