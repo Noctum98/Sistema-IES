@@ -84,7 +84,7 @@
                                             @endif
                                             @if($inscripcion->mesa_id)
                                                 <div class="sol-sm-12 col-md-6 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{$inscripcion->mesa->fecha->format('d-m-Y')}}</h6>
+                                                    <h6 class="card-text font-italic">{{ optional($inscripcion->mesa->fecha)->format('d-m-Y')}}</h6>
                                                 </div>
                                                 <div class="col-sm-12 col-md-3 m-0 p-0">
                                                     <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->promedio}}</h6>

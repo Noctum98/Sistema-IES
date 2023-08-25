@@ -47,7 +47,7 @@
                 Crear Calificación
             </button>
         @endif
-        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos'))
+        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos') || Session::has('areaSocial'))
             @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
