@@ -69,21 +69,23 @@ class CalculaCargosProcesos extends Command
             $ppc = 0;
             foreach ($procesosModulares as $modulare) {
 
-                $cargos = $modulare->procesoRelacionado()->first()->materia()->first()->cargos()->get();
+                if($modulare->procesoRelacionado()->first()) {
+                    $cargos = $modulare->procesoRelacionado()->first()->materia()->first()->cargos()->get();
 
 
-                if($modulare->ciclo_lectivo and $modulare->ciclo_lectivo > 0) {
-                    foreach ($cargos as $cargo) {
-                        try {
-                            $this->cargoProcesoService->grabaNotaPonderadaCargo($cargo->id, $modulare->ciclo_lectivo, $modulare->proceso_id, $modulare->procesoRelacionado()->first()->materia_id, $user);
-                        } catch (Exception $e) {
-                            $cantidad -= $cantidad;
-                            $this->info('Error en: ' . $e->getMessage());
+                    if ($modulare->ciclo_lectivo and $modulare->ciclo_lectivo > 0) {
+                        foreach ($cargos as $cargo) {
+                            try {
+                                $this->cargoProcesoService->grabaNotaPonderadaCargo($cargo->id, $modulare->ciclo_lectivo, $modulare->proceso_id, $modulare->procesoRelacionado()->first()->materia_id, $user);
+                            } catch (Exception $e) {
+                                $cantidad -= $cantidad;
+                                $this->info('Error en: ' . $e->getMessage());
 
+                            }
                         }
+                    } else {
+                        $this->info('El proceso ' . $modulare->id . ' no tiene ciclo_lectivo');
                     }
-                }else{
-                    $this->info('El proceso ' . $modulare->id . ' no tiene ciclo_lectivo');
                 }
 
 
