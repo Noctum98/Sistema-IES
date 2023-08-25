@@ -115,7 +115,7 @@ class ProcesoModularController extends Controller
                 $this->cargoProcesoService->grabaNotaPonderadaCargo(
                     $cargo->id,
                     $ciclo_lectivo,
-                    $proceso->procesoRelacionado()->first()->id,
+                    $proceso->procesoRelacionado()->id,
                     $materia->id,
                     $user->id);
             }
