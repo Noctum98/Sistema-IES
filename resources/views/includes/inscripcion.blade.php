@@ -211,8 +211,8 @@
 		@enderror
 	</div>
 	<div class="form-group">
-		<label for="cantidad_materias_s">Nombre de escuela donde egresó: (Número y Nombre):</label>
-		<input type="number" id="escuela_s" name="cantidad_materias_s" class="form-control @error('cantidad_materias_s') is-invalid @enderror" value="{{ old('cantidad_materias_s') }}" disabled/>
+		<label for="cantidad_materias_s">Cuantas adeuda?:</label>
+		<input type="number" id="cantidad_materias_s" name="cantidad_materias_s" class="form-control @error('cantidad_materias_s') is-invalid @enderror" value="{{ old('cantidad_materias_s') }}" disabled/>
 
 		@error('cantidad_materias_s')
 		<span class="invalid-feedback d-block" role="alert">

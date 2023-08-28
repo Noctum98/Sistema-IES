@@ -61,7 +61,7 @@ $(document).ready(function () {
     });
 
     $("#articulo_septimo").change(function (e){
-        let checked = $("#articulo_septimo").is(":checked");
+        let checked = $(this).is(":checked");
 
         if(checked)
         {
@@ -71,7 +71,22 @@ $(document).ready(function () {
         }
     });
 
-    $("#materias_s").change(function(e){
-        
+    $("#materia_s1").change(function(e){
+        let checked = $(this).is(":checked");
+
+        if(checked)
+        {
+            $("#cantidad_materias_s").attr('disabled',false);
+        }
+    });
+
+    $("#materia_s2").change(function(e){
+        let checked = $(this).is(":checked");
+
+        if(checked)
+        {
+            $("#cantidad_materias_s").attr('disabled',true);
+            $("#cantidad_materias_s").val("");
+        }
     });
 });
