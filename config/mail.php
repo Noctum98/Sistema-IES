@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
+            'host' => 'smtp.gmail.com',
+            'port' => 587,
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME','data@iesvu.edu.ar'),
-            'password' => env('MAIL_PASSWORD','dataiesvu*2022/'),
+            'username' => 'data@iesvu.edu.ar',
+            'password' => 'dataiesvu*2022/',
             'timeout' => null,
             'auth_mode' => null,
         ],
