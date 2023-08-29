@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Proceso;
 use App\Models\ProcesoModular;
 use App\Services\CargoProcesoService;
 use Exception;
@@ -48,38 +47,57 @@ class CalculaCargosProcesos extends Command
         $this->info('Iniciando commando ');
         $this->info($this->description);
         $this->info('Procesando...');
+        $cantProcesosModulares = ProcesoModular::max('id');
 
-        $procesosModulares = ProcesoModular::all();
-        $cantidad = count($procesosModulares);
-
-        $advance = 100 /$cantidad;
-        $this->info(' Total procesos modulares: ' . $cantidad . ' ');
-
+        $paginas = round($cantProcesosModulares / 100, PHP_ROUND_HALF_UP);
+        $cantidad = $cantProcesosModulares;
+        $inicio = 1;
+        $fin = 100;
         $this->output->progressStart($cantidad);
-        $user = $this->option('id_user');
-        $ppc = 0;
-        foreach ($procesosModulares as $modulare) {
-
-            $cargos = $modulare->procesoRelacionado()->first()->materia()->first()->cargos()->get();
+        for($i = 0; $i < $paginas; $i++){
 
 
-            if($modulare->ciclo_lectivo and $modulare->ciclo_lectivo > 0) {
-                foreach ($cargos as $cargo) {
-                    try {
-                        $this->cargoProcesoService->grabaNotaPonderadaCargo($cargo->id, $modulare->ciclo_lectivo, $modulare->proceso_id, $modulare->procesoRelacionado()->first()->materia_id, $user);
-                    } catch (Exception $e) {
-                        $cantidad -= $cantidad;
-                        $this->info('Error en: ' . $e->getMessage());
+            $procesosModulares = ProcesoModular::where('id', '>' , $inicio )
+                ->orderBy('id', 'ASC')
+                ->paginate(100);
 
+
+            $this->info(' Total procesos modulares: ' . $cantidad . ' ');
+
+
+            $user = $this->option('id_user');
+            $ppc = 0;
+            foreach ($procesosModulares as $modulare) {
+
+                $cargos = $modulare->procesoRelacionado()->first()->materia()->first()->cargos()->get();
+
+
+                if($modulare->ciclo_lectivo and $modulare->ciclo_lectivo > 0) {
+                    foreach ($cargos as $cargo) {
+                        try {
+                            $this->cargoProcesoService->grabaNotaPonderadaCargo($cargo->id, $modulare->ciclo_lectivo, $modulare->proceso_id, $modulare->procesoRelacionado()->first()->materia_id, $user);
+                        } catch (Exception $e) {
+                            $cantidad -= $cantidad;
+                            $this->info('Error en: ' . $e->getMessage());
+
+                        }
                     }
+                }else{
+                    $this->info('El proceso ' . $modulare->id . ' no tiene ciclo_lectivo');
                 }
-            }else{
-                $this->info('El proceso ' . $modulare->id . ' no tiene ciclo_lectivo');
+
+
+                $this->output->progressAdvance();
             }
 
+            $inicio +=100;
+            $fin +=100;
 
-            $this->output->progressAdvance();
         }
+
+
+
+
         $this->output->progressFinish();
         $this->info('Se procesaron ' . $cantidad . ' procesos modulares');
         $this->info('Commando finalizado');
