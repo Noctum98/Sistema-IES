@@ -41,6 +41,7 @@ class Preinscripcion extends Model
        'curriculum',
        'ctrabajo',
        'nota',
+       'articulo_septimo'
     ];
 
     public function carrera(){

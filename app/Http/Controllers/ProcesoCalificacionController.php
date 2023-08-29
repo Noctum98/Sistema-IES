@@ -25,7 +25,7 @@ class ProcesoCalificacionController extends Controller
     public function __construct(CargoProcesoService $cargoProcesoService)
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-profesor-seccionAlumnos-coordinador');
+        $this->middleware('app.roles:admin-profesor-seccionAlumnos-coordinador-areaSocial');
         $this->cargoProcesoService = $cargoProcesoService;
     }
 

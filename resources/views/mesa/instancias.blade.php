@@ -84,21 +84,10 @@
                                             @endif
                                             @if($inscripcion->mesa_id)
                                                 <div class="sol-sm-12 col-md-6 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{$inscripcion->mesa->fecha->format('d-m-Y')}}</h6>
+                                                    <h6 class="card-text font-italic">{{ optional($inscripcion->mesa->fecha)->format('d-m-Y')}}</h6>
                                                 </div>
                                                 <div class="col-sm-12 col-md-3 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->promedio}}</h6>
-                                                </div>
-                                                <div class="col-sm-12 col-md-3 m-0 p-0">
-{{--                                                    @if($inscripcion->segundo_llamado)--}}
-{{--                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro_segundo}}<br/>--}}
-{{--                                                             {{$inscripcion->mesa()->first()->folio_segundo}}--}}
-{{--                                                        </h6>--}}
-{{--                                                    @else--}}
-{{--                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro}}<br/>--}}
-{{--                                                            {{$inscripcion->mesa()->first()->folio}}--}}
-{{--                                                        </h6>--}}
-{{--                                                    @endif--}}
+                                                    <h6 class="card-text font-italic">{{ optional($inscripcion->acta_volante)->promedio}}</h6>
                                                 </div>
                                             @endif
                                         </div>
