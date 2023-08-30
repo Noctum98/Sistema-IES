@@ -161,7 +161,7 @@ class ProcesoModularService
     public function cargarPonderacionEnProcesoModular(Materia $materia, $ciclo_lectivo): int
     {
 
-        $this->crearProcesoModular($materia->id, $ciclo_lectivo);
+//        $this->crearProcesoModular($materia->id, $ciclo_lectivo);
 
         $procesoCalificacionService = new ProcesoCalificacionService();
 
