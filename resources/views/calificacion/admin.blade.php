@@ -35,7 +35,6 @@
                 </div>
             </div>
             <div class="col-12">
-
                 @if (isset($cargo))
                     Cargo: <b><i> {{ $cargo->nombre }}</i></b>
                 @endif
