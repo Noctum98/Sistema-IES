@@ -292,7 +292,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label>Alguna tuviste un trabajo relacionado a la carrera? </label>
+						<label>Alguna vez tuviste un trabajo relacionado a la carrera? </label>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
 							<label class="form-check-label" for="trabajo_relacionado1">
@@ -302,7 +302,7 @@
 <<<<<<< HEAD
 =======
                         <div class="form-group">
-						<label>Alguna tuviste un trabajo relacionado a la carrera? </label>
+						<label>Alguna vez tuviste un trabajo relacionado a la carrera? </label>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
 							<label class="form-check-label" for="trabajo_relacionado1">
