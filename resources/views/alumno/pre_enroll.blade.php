@@ -18,12 +18,12 @@
 					@if($checked)
 						@include('includes.inscripcion')
 					@else
-						<form action="{{ route('pre.sendEmail',$carrera->id) }}" method="POST">
+						<form action="{{ route('pre.sendEmail',$carrera->id) }}" method="POST" id="formPreenroll">
 							<div class="form-group">
 							<label for="email">Ingrese su email</label>
 							<input type="email" name="email" id="email" class="form-control" required>
 							</div>
-							<input type="submit" value="Enviar Correo" class="btn btn-success">	
+							<input type="submit" value="Enviar Correo" class="btn btn-success" id="submitPre">	
 						</form>
 					@endif
 				</div>

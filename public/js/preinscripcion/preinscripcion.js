@@ -89,4 +89,9 @@ $(document).ready(function () {
             $("#cantidad_materias_s").val("");
         }
     });
+
+    $("#formPreenroll").submit(function(event) {
+        $("#submitPre").prop("disabled", true);
+        $("#submitPre").val("Espere por favor..");
+    });
 });
