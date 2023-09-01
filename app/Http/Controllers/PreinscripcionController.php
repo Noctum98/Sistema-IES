@@ -255,8 +255,6 @@ class PreinscripcionController extends Controller
     // Funcionalidades
     public function crear(Request $request, int $carrera_id)
     {
-        $carrera = Carrera::find($carrera_id);
-
         $validate = $this->validate($request, [
             'nombres'       =>  ['required'],
             'apellidos'     =>  ['required'],
@@ -285,6 +283,8 @@ class PreinscripcionController extends Controller
             'curriculum_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
             'nota_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
         ]);
+
+        $carrera = Carrera::find($carrera_id);
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],
