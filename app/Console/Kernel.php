@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(EliminarPreinscripcionesRepetidas::class)->hourly();
+        $schedule->command(EliminarPreinscripcionesRepetidas::class)->hourly('00:00');
     }
 
     /**
