@@ -42,7 +42,7 @@ class deletePreinscripciones extends Command
     {
         $this->info('Command -> deletePreinscripciones Iniciado');
 
-        Preinscripcion::whereDate('created_at', '<', '2023-09-1')->delete();
+        Preinscripcion::whereDate('created_at', '<', '2023-09-1')->forceDelete();
 
         $this->info('Command -> deletePreinscripciones Terminado');
     }
