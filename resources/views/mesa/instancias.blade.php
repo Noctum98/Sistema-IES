@@ -83,9 +83,15 @@
                                                 @endif
                                             @endif
                                             @if($inscripcion->mesa_id)
+                                                @if(!$inscripcion->segundo_llamado)
                                                 <div class="sol-sm-12 col-md-6 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{ $inscripcion->mesa->fecha ? $inscripcion->mesa->fecha->format('d-m-Y') : ''}}</h6>
+                                                    <h6 class="card-text font-italic">{{ $inscripcion->mesa->fecha ? date_format(new DateTime($inscripcion->mesa->fecha ), 'd-m-Y H:i') : ''}}</h6>
                                                 </div>
+                                                @else
+                                                <div class="sol-sm-12 col-md-6 m-0 p-0">
+                                                    <h6 class="card-text font-italic">{{ $inscripcion->mesa->fecha_segundo ? date_format(new DateTime($inscripcion->mesa->fecha_segundo ), 'd-m-Y H:i') : ''}}</h6>
+                                                </div>
+                                                @endif
                                                 <div class="col-sm-12 col-md-3 m-0 p-0">
                                                     <h6 class="card-text font-italic">{{ optional($inscripcion->acta_volante)->promedio}}</h6>
                                                 </div>

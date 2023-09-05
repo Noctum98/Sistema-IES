@@ -11,6 +11,8 @@ class VerifiedPreEnroll extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $preinscripcion;
+
     /**
      * Create a new message instance.
      *
@@ -30,9 +32,8 @@ class VerifiedPreEnroll extends Mailable
     public function build()
     {
         $titulo = 'Preinscripción: '.$this->preinscripcion->nombres.' '.$this->preinscripcion->apellidos;
-        $pie = 'Tu preinscripción esta completa, y tus datos han sido verificados, EL CICLO DE ACTUALIZACIÓN DE SABERES PREVIOS INICIA EN FEBRERO DE 2023, a través de nuestras aulas virtuales. 
-        Antes de esa fecha recibirás un correo para ingresar al aula virtual.
-        Te recomendamos leer atentamente el documento "Proceso de ingreso 2023" disponible en nuestro sitio web.';
+        $pie = 'Tu preinscripción esta completa, y tus datos han sido verificados. 
+        Antes de esa fecha recibirás un correo para ingresar al aula virtual.';
         $subtitulo = '';
         return $this->view('mail.verified_pre_enroll',[
             'preinscripcion' => $this->preinscripcion,
