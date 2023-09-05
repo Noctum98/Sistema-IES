@@ -40,7 +40,6 @@ class ReloadTImechecks extends Command
     public function handle()
     {
         $repeatedTimechecks = MailCheck::select('timecheck', DB::raw('COUNT(*) as cantidad_repeticiones'))
-            ->where('checked', 1)
             ->groupBy('timecheck')
             ->havingRaw('COUNT(*) > 1')
             ->get();
@@ -53,12 +52,15 @@ class ReloadTImechecks extends Command
             foreach ($duplicates as $key => $duplicate) {
                 if ($key === 0) {
                 } else {
+                    if ($duplicate->checked) {
+                        do {
+                            $newTimecheckValue = $this->generateUniqueTimecheck();
+                        } while (MailCheck::where('timecheck', $newTimecheckValue)->exists());
 
-                    do {
-                        $newTimecheckValue = $this->generateUniqueTimecheck();
-                    } while (MailCheck::where('timecheck', $newTimecheckValue)->exists());
-
-                    $duplicate->update(['timecheck' => $newTimecheckValue]);
+                        $duplicate->update(['timecheck' => $newTimecheckValue]);
+                    }else{
+                        $duplicate->delete();
+                    }
                 }
             }
         }
