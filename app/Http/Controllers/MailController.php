@@ -31,7 +31,8 @@ class MailController extends Controller
         }elseif ($mailCheck && !$mailCheck->checked) {
             Mail::to($request['email'])->send(new CheckEmail($mailCheck, $carrera_id, null));
         } else {
-            $request['timecheck'] = time();
+            $parts = explode("@", $request['email']);
+            $request['timecheck'] = time().$parts[0];
             $mailCheck = MailCheck::create($request->all());
 
             Mail::to($request['email'])->send(new CheckEmail($mailCheck, $carrera_id, null));
