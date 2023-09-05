@@ -65,7 +65,8 @@ class Alumno extends Model
         'fecha_primera_acreditacion',
         'fecha_ultima_acreditacion',
         'deleted_at',
-        'aprobado'
+        'aprobado',
+        'operador_id'
     ];
 
     public function user()

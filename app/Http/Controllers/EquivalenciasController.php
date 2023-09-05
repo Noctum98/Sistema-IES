@@ -57,6 +57,8 @@ class EquivalenciasController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $validate = $this->validate($request, [
             'alumno_id' => ['required'],
             'materia_id' => ['required'],
@@ -99,6 +101,12 @@ class EquivalenciasController extends Controller
             "Se han añadido la equivalencia al alumno correctamente: {$materia->nombre}"
         );
 
+        if($request['flexCheckCohorte']){
+            $alumno->operador_id =  Auth::user()->id;
+            $alumno->cohorte = substr($request['fecha'], 0, 4,);
+            $alumno->update();
+        }
+
         return redirect()->route('alumno.equivalencias', $alumno->dni)->withSuccess("Se han añadido la equivalencia al alumno correctamente: {$materia->nombre}");
     }
 
@@ -132,6 +140,8 @@ class EquivalenciasController extends Controller
      */
     public function update(Request $request, Equivalencias $equivalencia)
     {
+
+
         $request->validate([
             'nota' => 'required|numeric|min:0|max:10',
             'resolution' => 'required|string|min:2',
@@ -140,6 +150,13 @@ class EquivalenciasController extends Controller
 
         try {
             $equivalencia->update($request->all());
+            if($request['flexCheckCohorte']){
+
+                $alumno = Alumno::find($equivalencia->getAlumno()->id);
+                $alumno->operador_id =  Auth::user()->id;
+                $alumno->cohorte = substr($request['fecha'], 0, 4,);
+                $alumno->update();
+            }
             return redirect()->route('alumno.equivalencias', $equivalencia->getAlumno()->dni)->withSuccess("Se ha editado la equivalencia del alumno correctamente: {$equivalencia->nombreMateria()}");
         }
         catch (\Exception $exception){
