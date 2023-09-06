@@ -49,6 +49,7 @@
                     </div>
 
                     <input type="hidden" name="alumno_id" value="{{$alumno->id}}" id="alumno_id-{{$alumno->id}}">
+                    <input type="hidden" name="ciclo_lectivo" value="{{$ciclo_lectivo}}" id="{{$ciclo_lectivo}}">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>

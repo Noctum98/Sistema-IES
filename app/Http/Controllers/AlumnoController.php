@@ -98,7 +98,7 @@ class AlumnoController extends Controller
 //        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
 
 
-        //dd($alumnos);
+
         $data = [
             'alumnos' => $alumnos,
             'sedes' => $sedes,

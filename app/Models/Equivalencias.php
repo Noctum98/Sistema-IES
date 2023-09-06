@@ -10,7 +10,7 @@ class Equivalencias extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'equivalencias';
-    protected $fillable = ['alumno_id', 'materia_id', 'nota', 'fecha', 'resolution', 'user_id'];
+    protected $fillable = ['alumno_id', 'materia_id', 'nota', 'fecha', 'resolution', 'user_id', 'ciclo_lectivo'];
 
     /**
      * @return null|string
@@ -22,6 +22,25 @@ class Equivalencias extends Model
         ])->first();
 
         return $materia->nombre;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function nombreCarrera(): ?string
+    {
+
+        $materia = Materia::where([
+            'id' => $this->materia_id
+        ])->first();
+
+        $carrera = Carrera::where([
+            'id' => $materia->carrera_id
+        ])->first();
+
+
+
+        return $carrera->nombre;
     }
 
     public function getAlumno(): ?Alumno

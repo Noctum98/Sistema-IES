@@ -81,7 +81,8 @@ class EquivalenciasController extends Controller
 
         $equivalencia = Equivalencias::where([
             'materia_id' => $materia->id,
-            'alumno_id' => $alumno->id
+            'alumno_id' => $alumno->id,
+            'ciclo_lectivo' => $request['ciclo_lectivo']
         ])
             ->first();
 
