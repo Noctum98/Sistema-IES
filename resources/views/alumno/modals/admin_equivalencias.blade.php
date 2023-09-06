@@ -14,7 +14,7 @@
                                 data-lectivo="{{$ciclo_lectivo}}">
 
                             <option selected='selected' value=''> - Seleccione Carrera -</option>
-                            @foreach($alumno->carreras()->get() as $carrera)
+                            @foreach($alumno->carrerasByCicloLectivo($ciclo_lectivo)->get() as $carrera)
 
                                 <option
                                     value="{{ $carrera->id }}">{{ $carrera->nombre.' ( '.$carrera->resolucion.' '.$carrera->turno.' ) '.' - '.$carrera->sede->nombre }}</option>
@@ -24,24 +24,32 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="materias">Materias</label>
+                        <label for="materia_id">Materias</label>
                         <select name="materia_id" id="materia_id" required class="form-select materias">
 
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="nota">Nota</label>
-                        <input type="number" name="nota" class="form-control" required/>
+                        <input type="number" id="nota" name="nota" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label for="resolution">N° Resolución</label>
-                        <input type="text" name="resolution" class="form-control" required/>
+                        <input type="text" id="resolution" name="resolution" class="form-control" required/>
                     </div>
                     <div class="form-group">
                         <label for="fecha">Fecha Resolución</label>
-                        <input type="date" name="fecha" class="form-control" required/>
+                        <input type="date" id="fecha" name="fecha" class="form-control" required/>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" name="flexCheckCohorte" id="flexCheckCohorte">
+                        <label class="form-check-label" for="flexCheckCohorte">
+                            Cambia cohorte
+                        </label>
+                    </div>
+
                     <input type="hidden" name="alumno_id" value="{{$alumno->id}}" id="alumno_id-{{$alumno->id}}">
+                    <input type="hidden" name="ciclo_lectivo" value="{{$ciclo_lectivo}}" id="{{$ciclo_lectivo}}">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>

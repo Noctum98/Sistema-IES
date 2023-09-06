@@ -65,7 +65,8 @@ class Alumno extends Model
         'fecha_primera_acreditacion',
         'fecha_ultima_acreditacion',
         'deleted_at',
-        'aprobado'
+        'aprobado',
+        'operador_id'
     ];
 
     public function user()
@@ -76,6 +77,15 @@ class Alumno extends Model
     public function carreras()
     {
         return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo',date('Y'));
+    }
+
+    /**
+     * @param $ciclo_lectivo
+     * @return BelongsToMany
+     */
+    public function carrerasByCicloLectivo($ciclo_lectivo): BelongsToMany
+    {
+        return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo',$ciclo_lectivo);
     }
 
     public function comisiones()
