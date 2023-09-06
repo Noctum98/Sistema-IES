@@ -18,13 +18,8 @@
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
                             <li>
-                                @if(isset($cargo))
-                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                       href="{{route('alumno.equivalencias', ['ciclo_lectivo' =>$i])}}">{{$i}}</a>
-                                @else
                                     <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
                                        href="{{route('alumno.equivalencias', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
-                                @endif
                             </li>
                         @endfor
                     </ul>
@@ -62,6 +57,7 @@
                             <input type="text" id="busqueda" name="busqueda" class="form-control"
                                    placeholder="Buscar alumno" aria-describedby="inputGroupPrepend2"
                                    value="{{ $busqueda && $busqueda != 1 ?$busqueda: '' }}">
+                            <input type="hidden" name="ciclo_lectivo" id="ciclo_lectivo" value="{{$ciclo_lectivo}}">
                             <button class="input-group-text" id="inputGroupPrepend2" type="submit">
                                 <i class="fa fa-search text-info"></i>
                             </button>
