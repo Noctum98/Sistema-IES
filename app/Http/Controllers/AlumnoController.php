@@ -97,7 +97,9 @@ class AlumnoController extends Controller
 
 //        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
 
-
+foreach ($alumnos as $alumno){
+    dd($alumno->carreras()->get());
+}
 
         $data = [
             'alumnos' => $alumnos,
