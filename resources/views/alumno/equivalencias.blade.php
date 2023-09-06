@@ -18,13 +18,8 @@
                     <ul class="dropdown-menu">
                         @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
                             <li>
-                                @if(isset($cargo))
-                                    <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                       href="{{route('alumno.equivalencias', ['ciclo_lectivo' =>$i])}}">{{$i}}</a>
-                                @else
                                     <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
                                        href="{{route('alumno.equivalencias', ['ciclo_lectivo'=> $i])}}">{{$i}}</a>
-                                @endif
                             </li>
                         @endfor
                     </ul>
@@ -62,6 +57,7 @@
                             <input type="text" id="busqueda" name="busqueda" class="form-control"
                                    placeholder="Buscar alumno" aria-describedby="inputGroupPrepend2"
                                    value="{{ $busqueda && $busqueda != 1 ?$busqueda: '' }}">
+                            <input type="hidden" name="ciclo_lectivo" id="ciclo_lectivo" value="{{$ciclo_lectivo}}">
                             <button class="input-group-text" id="inputGroupPrepend2" type="submit">
                                 <i class="fa fa-search text-info"></i>
                             </button>
@@ -124,7 +120,9 @@
 
                                     <td>Materia/<br/><small>(Carrera)</small></td>
                                     <td>Nota</td>
-                                    <td>Fecha</td>
+                                    <td>Fecha / <br/>
+                                        <small>Ciclo Lectivo</small>
+                                    </td>
                                     <td>N° Resolución</td>
                                     <td><i class="fa fa-cogs"></i></td>
                                 </tr>
@@ -132,9 +130,14 @@
                                     <tr class="table-responsive-md text-center table-bordered border-top-0 border-2 table-striped">
 
                                         {{--                                        <td>{{$equivalencia->materia_id}}</td>--}}
-                                        <td>{{$equivalencia->nombreMateria()}}</td>
+                                        <td>{{$equivalencia->nombreMateria()}}/<br/>
+                                            <small>{{$equivalencia->nombreCarrera()}}</small>
+                                        </td>
                                         <td>{{$equivalencia->nota}}</td>
-                                        <td>{{$equivalencia->fecha}}</td>
+                                        <td>{{$equivalencia->fecha}}/<br/>
+                                            <small>{{$equivalencia->ciclo_lectivo}}</small>
+
+                                        </td>
                                         <td>{{$equivalencia->resolution}}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Botones de acción">
