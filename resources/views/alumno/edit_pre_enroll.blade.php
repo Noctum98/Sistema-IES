@@ -299,8 +299,6 @@
 								Si
 							</label>
 						</div>
-<<<<<<< HEAD
-=======
                         <div class="form-group">
 						<label>Alguna vez tuviste un trabajo relacionado a la carrera? </label>
 						<div class="form-check">
@@ -309,13 +307,10 @@
 								Si
 							</label>
 						</div>
->>>>>>> b0d2b008be232ea741e35f421e06b41fcfcd7180
 						<div class="form-check">
 							<input class="form-check-input" type="radio" value="no" name="trabajo_relacionado" id="trabajo_relacionado2" {{ old('trabajo_relacionado') == 'no' ? 'checked' : '' }}>
 							<label class="form-check-label" for="trabajo_relacionado2">
 								No
-<<<<<<< HEAD
-=======
 							</label>
 						</div>
 						@error('trabajo')
@@ -333,7 +328,6 @@
 								@if($preinscripcion->dni_archivo)
 									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
 								@endif
->>>>>>> b0d2b008be232ea741e35f421e06b41fcfcd7180
 							</label>
 						</div>
 						@error('trabajo')
