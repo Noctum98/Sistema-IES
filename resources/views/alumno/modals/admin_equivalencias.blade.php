@@ -14,7 +14,7 @@
                                 data-lectivo="{{$ciclo_lectivo}}">
 
                             <option selected='selected' value=''> - Seleccione Carrera -</option>
-                            @foreach($alumno->carreras()->get() as $carrera)
+                            @foreach($alumno->carrerasByCicloLectivo($ciclo_lectivo)->get() as $carrera)
 
                                 <option
                                     value="{{ $carrera->id }}">{{ $carrera->nombre.' ( '.$carrera->resolucion.' '.$carrera->turno.' ) '.' - '.$carrera->sede->nombre }}</option>
