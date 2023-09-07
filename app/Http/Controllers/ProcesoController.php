@@ -321,10 +321,6 @@ class ProcesoController extends Controller
         $proceso->estado_id = $estado->id;
         $proceso->operador_id = $user->id;
 
-        if ($estado->identificador != 5) {
-            $proceso->nota_global = null;
-        }
-
         $proceso->update();
 
         $data = [
