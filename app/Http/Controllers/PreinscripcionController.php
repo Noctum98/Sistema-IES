@@ -62,11 +62,18 @@ class PreinscripcionController extends Controller
         $carrera = Carrera::find($id);
         $error = '';
 
-        if (!$carrera->preinscripcion_habilitada && !Session::has('preinscripciones')) {
+        if($carrera)
+        {
+            if (!$carrera->preinscripcion_habilitada && !Session::has('preinscripciones')) {
+                $carrera = null;
+                $error = 'Página deshabilitada';
+            }
+    
+        }else{
             $carrera = null;
             $error = 'Página deshabilitada';
         }
-
+        
         /*
         if (!Auth::user() && !Session::has('admin')) {
            

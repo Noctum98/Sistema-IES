@@ -21,9 +21,29 @@
 		@enderror
 	</div>
 	<div class="form-group">
-		<label for="dni">D.N.I (Sin puntos):</label>
+		<label for="nacionalidad">Nacionalidad:</label>
+		<select class="form-select" name="nacionalidad" id="nacionalidad" required>
+			<option value="">-- Seleccione Nacionalidad --</option>
+			<option value="argentina" {{ old('nacionalidad') == 'argentina' ? 'selected' : '' }}>Argentina</option>
+			<option value="uruguaya" {{ old('nacionalidad') == 'uruguaya' ? 'selected' : '' }}>Uruguaya</option>
+			<option value="chilena" {{ old('nacionalidad') == 'chilena' ? 'selected' : '' }}>Chilena</option>
+			<option value="paraguaya" {{ old('nacionalidad') == 'paraguaya' ? 'selected' : '' }}>Paraguaya</option>
+			<option value="brasilera" {{ old('nacionalidad') == 'brasilera' ? 'selected' : '' }}>Brasilera</option>
+			<option value="boliviana" {{ old('nacionalidad') == 'boliviana' ? 'selected' : '' }}>Boliviana</option>
+			<option value="colombiana" {{ old('nacionalidad') == 'colombiana' ? 'selected' : '' }}>Colombiana</option>
+			<option value="peruana" {{ old('nacionalidad') == 'peruana' ? 'selected' : '' }}>Peruana</option>
+			<option value="venezolana" {{ old('nacionalidad') == 'venezolana' ? 'selected' : '' }}>Venezolana</option>
+			<option value="otra" {{ old('nacionalidad') == 'otra' ? 'selected' : '' }}>Otra</option>
+		</select>
+		@error('nacionalidad')
+		<span class="invalid-feedback d-block" role="alert">
+			<strong>{{ $message }}</strong>
+		</span>
+		@enderror
+	</div>
+	<div class="form-group">
+		<label for="dni">D.N.I (Sin puntos<span id="label_dni"></span>):</label>
 		<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{ old('dni') }}" required />
-
 		@error('dni')
 		<span class="invalid-feedback d-block" role="alert">
 			<strong>{{ $message }}</strong>
@@ -65,26 +85,6 @@
 		<input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" readonly />
 
 		@error('email')
-		<span class="invalid-feedback d-block" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
-	</div>
-	<div class="form-group">
-		<label for="nacionalidad">Nacionalidad:</label>
-		<select class="form-select" name="nacionalidad" id="nacionalidad">
-			<option value="argentina" {{ old('nacionalidad') == 'argentina' ? 'selected' : '' }}>Argentina</option>
-			<option value="uruguaya" {{ old('nacionalidad') == 'uruguaya' ? 'selected' : '' }}>Uruguaya</option>
-			<option value="chilena" {{ old('nacionalidad') == 'chilena' ? 'selected' : '' }}>Chilena</option>
-			<option value="paraguaya" {{ old('nacionalidad') == 'paraguaya' ? 'selected' : '' }}>Paraguaya</option>
-			<option value="brasilera" {{ old('nacionalidad') == 'brasilera' ? 'selected' : '' }}>Brasilera</option>
-			<option value="boliviana" {{ old('nacionalidad') == 'boliviana' ? 'selected' : '' }}>Boliviana</option>
-			<option value="colombiana" {{ old('nacionalidad') == 'colombiana' ? 'selected' : '' }}>Colombiana</option>
-			<option value="peruana" {{ old('nacionalidad') == 'peruana' ? 'selected' : '' }}>Peruana</option>
-			<option value="venezolana" {{ old('nacionalidad') == 'venezolana' ? 'selected' : '' }}>Venezolana</option>
-			<option value="otra" {{ old('nacionalidad') == 'otra' ? 'selected' : '' }}>Otra</option>
-		</select>
-		@error('nacionalidad')
 		<span class="invalid-feedback d-block" role="alert">
 			<strong>{{ $message }}</strong>
 		</span>
