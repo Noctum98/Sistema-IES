@@ -35,7 +35,42 @@
 						@enderror
 					</div>
 					<div class="form-group">
-						<label for="dni">D.N.I (Sin puntos):</label>
+						<label for="nacionalidad">Nacionalidad:</label>
+						<select class="form-control" name="nacionalidad" id="nacionalidad">
+							<option value="argentina" {{$preinscripcion->nacionalidad == 'argentina' ? 'selected="selected"' : ''}}>
+								Argentina
+							</option>
+							<option value="uruguaya" {{$preinscripcion->nacionalidad == 'uruguaya' ? 'selected="selected"' : ''}}>
+								Uruguaya
+							</option>
+							<option value="chilena" {{$preinscripcion->nacionalidad == 'chilena' ? 'selected="selected"' : ''}}>
+								Chilena
+							</option>
+							<option value="paraguaya" {{$preinscripcion->nacionalidad == 'paraguaya' ? 'selected="selected"' : ''}}>
+								Paraguaya
+							</option>
+							<option value="brasilera" {{$preinscripcion->nacionalidad == 'brasilera' ? 'selected="selected"' : ''}}>
+								Brasilera
+							</option>
+							<option value="boliviana" {{$preinscripcion->nacionalidad == 'boliviana' ? 'selected="selected"' : ''}}>
+								Boliviana
+							</option>
+							<option value="colombiana" {{$preinscripcion->nacionalidad == 'colombiana' ? 'selected="selected"' : ''}}>
+								Colombiana
+							</option>
+							<option value="peruana" {{$preinscripcion->nacionalidad == 'peruana' ? 'selected="selected"' : ''}}>
+								Peruana
+							</option>
+							<option value="venezolana" {{$preinscripcion->nacionalidad == 'venezolana' ? 'selected="selected"' : ''}}>
+								Venezolana
+							</option>
+							<option value="otra" {{$preinscripcion->nacionalidad == 'otra' ? 'selected="selected"' : ''}}>
+								Otra
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+					<label for="dni">D.N.I (Sin puntos<span id="label_dni"></span>):</label>
 						<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{$preinscripcion->dni}}" required />
 
 						@error('dni')
@@ -84,41 +119,7 @@
 						</span>
 						@enderror
 					</div>
-					<div class="form-group">
-						<label for="nacionalidad">Nacionalidad:</label>
-						<select class="form-control" name="nacionalidad" id="nacionalidad">
-							<option value="argentina" {{$preinscripcion->nacionalidad == 'argentina' ? 'selected="selected"' : ''}}>
-								Argentina
-							</option>
-							<option value="uruguaya" {{$preinscripcion->nacionalidad == 'uruguaya' ? 'selected="selected"' : ''}}>
-								Uruguaya
-							</option>
-							<option value="chilena" {{$preinscripcion->nacionalidad == 'chilena' ? 'selected="selected"' : ''}}>
-								Chilena
-							</option>
-							<option value="paraguaya" {{$preinscripcion->nacionalidad == 'paraguaya' ? 'selected="selected"' : ''}}>
-								Paraguaya
-							</option>
-							<option value="brasilera" {{$preinscripcion->nacionalidad == 'brasilera' ? 'selected="selected"' : ''}}>
-								Brasilera
-							</option>
-							<option value="boliviana" {{$preinscripcion->nacionalidad == 'boliviana' ? 'selected="selected"' : ''}}>
-								Boliviana
-							</option>
-							<option value="colombiana" {{$preinscripcion->nacionalidad == 'colombiana' ? 'selected="selected"' : ''}}>
-								Colombiana
-							</option>
-							<option value="peruana" {{$preinscripcion->nacionalidad == 'peruana' ? 'selected="selected"' : ''}}>
-								Peruana
-							</option>
-							<option value="venezolana" {{$preinscripcion->nacionalidad == 'venezolana' ? 'selected="selected"' : ''}}>
-								Venezolana
-							</option>
-							<option value="otra" {{$preinscripcion->nacionalidad == 'otra' ? 'selected="selected"' : ''}}>
-								Otra
-							</option>
-						</select>
-					</div>
+					
 					<div class="form-group">
 						<label for="domicilio">Domicilio:</label>
 						<input type="text" id="domicilio" name="domicilio" class="form-control @error('domicilio') is-invalid @enderror" value="{{$preinscripcion->domicilio}}" required />

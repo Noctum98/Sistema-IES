@@ -4,6 +4,10 @@ $(document).ready(function () {
     let trabajo_relacionado = $("#trabajo_relacionado1").is(":checked")
     let edad = $("#edad").val();
     var trelacionado = false;
+    var nacionalidad = $("#nacionalidad").val();
+    verificarDNI(nacionalidad);
+
+    
 
 
     if (edad >= 25 && secundario == 'secundario incompleto' && trabajo_relacionado) {
@@ -94,4 +98,31 @@ $(document).ready(function () {
         $("#submitPre").prop("disabled", true);
         $("#submitPre").val("Espere por favor..");
     });
+
+    $("#nacionalidad").change(function(e){
+        let value = $(this).val();
+        verificarDNI(value);
+    });
+
+    $('#dni').on('input', function() {
+        var maxLength = $(this).attr('maxlength');
+        console.log(maxLength);
+        if ($(this).val().length > maxLength) {
+          $(this).val($(this).val().slice(0, maxLength));
+        }
+      });
+
+    function verificarDNI(nacionalidad)
+    {
+        if(nacionalidad == 'argentina')
+        {
+            $("#dni").attr('type','number');
+            $("#label_dni").html(" y solo 8 números");
+            $("#dni").attr('maxlength',8);
+        }else{
+            $("#dni").attr('type','text');
+            $("#label_dni").html("");
+            $("#dni").attr('maxlength',20);
+        }
+    }
 });
