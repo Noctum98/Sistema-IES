@@ -186,7 +186,7 @@
                                                    class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                                    id="global-{{ $proceso->procesoRelacionado->id }}"
                                                    value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                   @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                   @if(($proceso->procesoRelacionado->estado && ($proceso->procesoRelacionado->estado->identificador != 5 || $proceso->procesoRelacionado->estado->identificador != 7)) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
                                             <div class="input-group-append">
                                                 <button type="submit"
                                                         class="btn btn-info btn-sm input-group-text"
@@ -214,7 +214,17 @@
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <td>
                                     <small>
-                                        <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                        <small>Condición:
+                                            @if($proceso->procesoRelacionado->estado)
+                                                @if($proceso->procesoRelacionado->estado->regularidad)
+                                                    {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                @else
+                                                    {{$proceso->procesoRelacionado->estado->nombre}}
+                                                @endif
+                                            @else
+                                                No indicada
+                                            @endif
+                                        </small>
                                     </small>
                                 </td>
                                 <td colspan="2" class="text-center w-50">
