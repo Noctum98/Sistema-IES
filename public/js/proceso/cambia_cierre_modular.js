@@ -6,7 +6,6 @@ $(document).ready(function () {
         const proceso_tipo = campo.attr('data-tipo');
         const proceso_cargo = campo.attr('data-cargo');
         const cierre = $(this).prop('checked');
-        console.log('prop' + cierre);
 
         $('#span-' + proceso_id).removeClass('d-block')
         $('#span-' + proceso_id).addClass('d-none')
@@ -37,7 +36,7 @@ $(document).ready(function () {
                     }
                 } else {
                     $("#alerts").html("");
-                    
+
                     let coordinador = $("#coordinador").val();
                     if (response.cierre) {
                         if(coordinador == 0 || coordinador == "0")
@@ -49,7 +48,7 @@ $(document).ready(function () {
                         $('#' + proceso_id).attr('disabled', true);
                         $('#global-' + proceso_id).attr('disabled', true);
                             $('#btn-global-' + proceso_id).attr('disabled', true);
-                        
+
                     } else {
                         if (response.estado_id == 5) {
                             $('#global-' + proceso_id).attr('disabled', false);
@@ -61,7 +60,7 @@ $(document).ready(function () {
                         $('#' + proceso_id).attr('disabled', false);
                     }
 
-                    
+
                 }
                 $('#span-' + proceso_id).removeClass('d-none')
                 $('#span-' + proceso_id).addClass('d-block')

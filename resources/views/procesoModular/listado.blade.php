@@ -214,7 +214,6 @@
                                     </form>
                                 </td>
                                 <td>
-                                    {{$proceso->procesoRelacionado->cierre}}
                                     <input type="checkbox" class="check-cierre"
                                            id="{{$proceso->procesoRelacionado->id}}"
                                            @if($proceso->procesoRelacionado->cierre == 1)
