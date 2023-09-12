@@ -40,6 +40,7 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Mail\VerifiedPreEnroll;
 use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
@@ -47,9 +48,11 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\Calificacion;
 use App\Models\Comision;
 use App\Models\Materia;
+use App\Models\Preinscripcion;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -644,11 +647,13 @@ Route::resource('actas_volantes', ActaVolanteController::class);
 Route::resource('libros', LibrosController::class);
 Route::resource('registros',AuditController::class);
 
-Route::get('/prueba-post-size', function () {
-    echo "ENV";
-    echo env('MAIL_USERNAME');
-    echo env('MAIL_PASSWORD');
-    echo "CONFIG";
-    echo config('app.MAIL_USERNAME');
-    echo config('app.MAIL_PASSWORD');
-});
+Route::get('/ruta_funcionalidades', function () {
+    $preinscripciones = Preinscripcion::where('updated_at','<', '2023-09-6')->get();
+
+    foreach($preinscripciones as $preinscripcion)
+    {
+        Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
+    }
+
+    echo "Mails enviados.";
+})->middleware('app.roles:admin');

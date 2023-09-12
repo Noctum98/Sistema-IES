@@ -170,7 +170,7 @@ class PreinscripcionController extends Controller
             if (Session::has('coordinador') || Session::has('seccionAlumnos')) {
                 $carreras = Auth::user()->carreras;
             } else {
-                $carreras = Carrera::all();
+                $carreras = Carrera::where('preinscripcion_habilitada',true)->get();
             }
         }
 
