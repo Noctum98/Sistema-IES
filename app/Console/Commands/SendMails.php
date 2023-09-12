@@ -40,9 +40,9 @@ class SendMails extends Command
      */
     public function handle()
     {
-        $preinscripciones = Preinscripcion::where([
+        $preinscripciones = Preinscripcion::where(
             'updated_at', '<', '2023-09-6'
-        ]);
+        );
 
         $preinscripciones = $preinscripciones->where('estado','verificado')->get();
 
