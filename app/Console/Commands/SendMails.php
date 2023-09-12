@@ -40,7 +40,11 @@ class SendMails extends Command
      */
     public function handle()
     {
-        $preinscripciones = Preinscripcion::where('updated_at', '<', '2023-09-6')->get();
+        $preinscripciones = Preinscripcion::where([
+            'updated_at', '<', '2023-09-6'
+        ]);
+
+        $preinscripciones = $preinscripciones->where('estado','verificado')->get();
 
         $this->output->progressStart(count($preinscripciones));
         foreach ($preinscripciones as $preinscripcion) {
