@@ -105,6 +105,7 @@ class EquivalenciasController extends Controller
         if($request['flexCheckCohorte']){
             $alumno->operador_id =  Auth::user()->id;
             $alumno->cohorte = substr($request['fecha'], 0, 4,);
+            $alumno->fecha_primera_acreditacion = $equivalencia->fecha;
             $alumno->update();
         }
 
