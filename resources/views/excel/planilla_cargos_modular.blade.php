@@ -14,7 +14,6 @@
         </tr>
         <tr>
             <th scope="col">Apeliido y Nombre</th>
-            <th>% Actividades Aprobadas</th>
             <th>Nota Tps</th>
             <th>Nota Parciales</th>
             <th>Nota Final</th>
