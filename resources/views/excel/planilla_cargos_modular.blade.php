@@ -29,7 +29,7 @@
             <td>{{ number_format($cargo->getCargoProceso($proceso->procesoModularOne->id)->nota_tp , 2, '.', ',') }}</td>
             <td>{{ number_format($cargo->getCargoProceso($proceso->procesoModularOne->id)->nota_ps , 2, '.', ',') }}</td>
             <td>{{ number_format($cargo->getCargoProceso($proceso->procesoModularOne->id)->nota_cargo, 2, '.', ',') }}</td>
-            <td>{{optional(optional($proceso->procesoModularOne->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}</td>
+            <td>{{ optional(optional($proceso->procesoModularOne->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}</td>
             <td>{{ optional($cargo->obtenerProcesoCargo(optional($proceso->procesoModularOne)->id))->isClose() ? 'Cerrado' : 'Abierto' }}</td>
         </tr>
         @endforeach

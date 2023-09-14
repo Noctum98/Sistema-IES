@@ -27,7 +27,7 @@ class PlanillaNotasModularExport implements WithMultipleSheets
             'procesos' => $this->procesos
         ];
         
-        $sheets[] = new PlanillaModularCargoSheet($data_array);
+        //$sheets[] = new PlanillaModularCargoSheet($data_array);
 
         foreach($this->materia->cargos as $cargo)
         {

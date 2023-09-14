@@ -34,7 +34,7 @@ class PlanillaModularAlumnosSheet implements FromView, WithTitle, WithEvents
 
     public function title(): string
     {
-        return 'Cargo';
+        return $this->data_array['cargo']->nombre;
     }
 
     public static function afterSheet(AfterSheet $event)
