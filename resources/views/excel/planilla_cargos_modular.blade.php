@@ -26,11 +26,11 @@
         @foreach($procesos as $proceso)
         <tr>
             <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos) }}</td>
-            <td>{{ number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp , 2, '.', ',') }}</td>
-            <td>{{ number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps , 2, '.', ',') }}</td>
-            <td>{{ number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo, 2, '.', ',') }}</td>
-            <td>{{ optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}</td>
-            <td>{{ optional($cargo->obtenerProcesoCargo(optional($proceso->procesoRelacionado()->first())->id))->isClose() ? 'Cerrado' : 'Abierto' }}</td>
+            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_tp , 2, '.', ',') }}</td>
+            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_ps , 2, '.', ',') }}</td>
+            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_cargo, 2, '.', ',') }}</td>
+            <td>{{ optional(optional($proceso->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}</td>
+            <td>{{ optional($cargo->obtenerProcesoCargo(optional($proceso)->id))->isClose() ? 'Cerrado' : 'Abierto' }}</td>
         </tr>
         @endforeach
     </tbody>

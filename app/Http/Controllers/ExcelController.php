@@ -78,9 +78,7 @@ class ExcelController extends Controller
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('procesos.ciclo_lectivo',$ciclo_lectivo)
-            ->with('procesoModularOne');
-
+            ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
