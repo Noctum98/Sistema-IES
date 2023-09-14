@@ -19,6 +19,7 @@
             <th class="sticky-top text-center">TFI</th>
             <th class="sticky-top text-center">Nota Final</th>
             <th class="sticky-top col-sm-1">Nota Global</th>
+            <th class="sticky-top col-sm-1">Regularidad</th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +43,10 @@
             </td>
             <td class="text-center">
                 {{ $proceso->procesoModularOne->nota_global ? $proceso->procesoModularOne->nota_global : '-' }}
+            </td>
+            <td>
+            <td>
+                {{ $proceso->estado ? mb_strtoupper($proceso->estado->nombre) : '-' }}</td>
             </td>
         </tr>
         @endif

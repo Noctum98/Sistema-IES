@@ -27,14 +27,14 @@ class PlanillaModularAlumnosSheet implements FromView, WithTitle, WithEvents
 
         return view('excel.planilla_cargos_modular', [
             'materia' => $this->data_array['materia'],
-            'cargos' => $this->data_array['cargos'],
+            'cargo' => $this->data_array['cargo'],
             'procesos' => $this->data_array['procesos']
         ]);
     }
 
     public function title(): string
     {
-        return "Cargos";
+        return $this->data_array['cargo']['nombre'];
     }
 
     public static function afterSheet(AfterSheet $event)
