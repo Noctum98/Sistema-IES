@@ -75,7 +75,7 @@ class AlumnoMesaController extends Controller
     {
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
-        $carreras = Auth::user() ? $alumno->carreras : Carrera::where('sede_id', $alumno['sede'])->get();
+        $carreras = Auth::user() ? $alumno->carrerasDistinct : Carrera::where('sede_id', $alumno['sede'])->get();
 
         if ($instancia->cierre) {
             $carreras = null;
