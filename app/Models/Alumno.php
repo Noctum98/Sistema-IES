@@ -79,6 +79,11 @@ class Alumno extends Model
         return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo',date('Y'));
     }
 
+    public function carrerasDistinct()
+    {
+        return $this->belongsToMany(Carrera::class)->distinct();
+    }
+
     /**
      * @param $ciclo_lectivo
      * @return BelongsToMany
