@@ -120,7 +120,10 @@ class ExcelController extends Controller
             $query->where('materia_id', $materia_id)
                   ->where('ciclo_lectivo', $ciclo_lectivo);
         })
-        ->with('alumnos');
+        ->with('alumno');
+
+        $procesos->orderBy('alumno.apellidos', 'asc');
+        $procesos = $procesos->get();
 
 
         if ($comision_id) {
