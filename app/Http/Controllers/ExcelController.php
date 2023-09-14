@@ -142,7 +142,7 @@ class ExcelController extends Controller
         }
 
 
-        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos->orderBy('apellidos', 'asc');
         $procesos = $procesos->get();
 
         return Excel::download(new PlanillaNotasModularExport($materia,$procesos),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
