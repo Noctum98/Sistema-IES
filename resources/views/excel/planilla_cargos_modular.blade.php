@@ -23,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($procesos as $key => $proceso)
+        @foreach($procesos as $proceso)
         <tr>
             <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos) }}</td>
             <td>{{ number_format($cargo->getCargoProceso($proceso->procesoModularOne->id)->nota_tp , 2, '.', ',') }}</td>

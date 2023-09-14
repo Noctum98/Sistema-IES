@@ -35,8 +35,6 @@ class PlanillaNotasModularExport implements WithMultipleSheets
             $sheets[] = new PlanillaModularAlumnosSheet($data_array);
         }
 
-        dd($sheets);
-
         return $sheets;
     }
 }

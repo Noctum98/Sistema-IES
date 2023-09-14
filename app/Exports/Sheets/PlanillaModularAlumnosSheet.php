@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 class PlanillaModularAlumnosSheet implements FromView, WithTitle, WithEvents
 {
     use RegistersEventListeners;
-    private $data_array;
+    public $data_array;
 
 
     public function __construct($data_array)
