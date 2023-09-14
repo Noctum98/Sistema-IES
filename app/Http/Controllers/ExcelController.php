@@ -116,10 +116,11 @@ class ExcelController extends Controller
     public function planilla_notas_modular($materia_id,$ciclo_lectivo,$comision_id = null)
     {
 
-        $procesos = Proceso::select('procesos.*')
-            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id)
-            ->where('ciclo_lectivo',$ciclo_lectivo);
+        $procesos = Proceso::whereHas('alumno', function ($query) use ($materia_id, $ciclo_lectivo) {
+            $query->where('materia_id', $materia_id)
+                  ->where('ciclo_lectivo', $ciclo_lectivo);
+        })
+        ->with('alumnos');
 
 
         if ($comision_id) {
