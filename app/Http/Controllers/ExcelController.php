@@ -116,14 +116,15 @@ class ExcelController extends Controller
     public function planilla_notas_modular($materia_id,$ciclo_lectivo,$comision_id = null)
     {
 
-        $procesos = Proceso::whereHas('alumno', function ($query) use ($materia_id, $ciclo_lectivo) {
-            $query->where('materia_id', $materia_id)
-                  ->where('ciclo_lectivo', $ciclo_lectivo);
-        })
-        ->with('alumno');
-
-        $procesos->orderBy('alumno.apellidos', 'asc');
-        $procesos = $procesos->get();
+        $procesos = Proceso::where(function ($query) use ($materia_id, $ciclo_lectivo) {
+            $query->whereExists(function ($subquery) use ($materia_id, $ciclo_lectivo) {
+                $subquery->selectRaw(1)
+                    ->from('alumnos')
+                    ->whereColumn('procesos.alumno_id', 'alumnos.id')
+                    ->where('alumnos.materia_id', $materia_id)
+                    ->where('alumnos.ciclo_lectivo', $ciclo_lectivo);
+            });
+        });
 
 
         if ($comision_id) {
