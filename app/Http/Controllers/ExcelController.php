@@ -79,7 +79,7 @@ class ExcelController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
             ->where('procesos.ciclo_lectivo',$ciclo_lectivo)
-            ->with('procesoModular');
+            ->with('procesoModularOne');
 
 
         if ($comision_id) {
