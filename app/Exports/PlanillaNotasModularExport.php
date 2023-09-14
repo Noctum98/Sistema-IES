@@ -29,6 +29,7 @@ class PlanillaNotasModularExport implements WithMultipleSheets
         
         $sheets[] = new PlanillaModularCargoSheet($data_array);
 
+        dd($this->materia->cargos);
         foreach($this->materia->cargos as $cargo)
         {
             $data_array['cargo'] = $cargo;
