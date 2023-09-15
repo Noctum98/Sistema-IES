@@ -26,7 +26,8 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
     {
         return view('excel.planilla_notas_modular', [
             'materia' => $this->data_array['materia'],
-            'procesos' => $this->data_array['procesos']
+            'procesos' => $this->data_array['procesos'],
+            'ciclo_lectivo' => $this->data_array['ciclo_lectivo']
         ]);
     }
 
@@ -62,6 +63,8 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         $active_sheet->getStyle('A3:B3')->getBorders()
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $active_sheet->getStyle('A4:F4')->getBorders()
+            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $active_sheet->getStyle('A4:G4')->getBorders()
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $active_sheet->getStyle('A4:F4')->getAlignment()->setWrapText(true);
         $active_sheet->getStyle('A2:B2')->getAlignment()->setWrapText(true);

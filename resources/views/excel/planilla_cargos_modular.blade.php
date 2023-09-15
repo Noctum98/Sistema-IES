@@ -25,6 +25,7 @@
         @foreach($procesos as $proceso)
         <tr>
             <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos) }}</td>
+            <td>{{ number_format($proceso->procesoModularOne->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id, $ciclo_lectivo) , 2, '.', ',')}}</td>
             <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_tp , 2, '.', ',') }}</td>
             <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_ps , 2, '.', ',') }}</td>
             <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_cargo, 2, '.', ',') }}</td>

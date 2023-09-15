@@ -139,7 +139,7 @@ class ExcelController extends Controller
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
 
-        return Excel::download(new PlanillaNotasModularExport($materia,$procesos),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
+        return Excel::download(new PlanillaNotasModularExport($materia,$procesos,$ciclo_lectivo),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
     }
 
     public function filtro_alumnos(Request $request)
