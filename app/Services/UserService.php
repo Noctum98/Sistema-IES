@@ -98,7 +98,7 @@ class UserService
             $carreras = Carrera::orderBy('sede_id')->get();
         }elseif(Session::has('areaSocial'))
         {
-            $carreras = Carrera::whereIn('sede_id',$user->sedes)->get();
+            $carreras = Carrera::whereIn('sede_id',$user->sedes)->orderBy('sede_id')->get();
         }else{
             $carreras = $user->carreras;
         }
