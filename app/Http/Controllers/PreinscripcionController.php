@@ -292,6 +292,7 @@ class PreinscripcionController extends Controller
         ]);
 
         $carrera = Carrera::find($carrera_id);
+        $request['carrera_id'] = $carrera_id;
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],
