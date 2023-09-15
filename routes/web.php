@@ -44,6 +44,19 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Mail\VerifiedPreEnroll;
+use App\Models\ActaVolante;
+use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Calificacion;
+use App\Models\Comision;
+use App\Models\Materia;
+use App\Models\Preinscripcion;
+use App\Models\Proceso;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -174,7 +187,7 @@ Route::prefix('equivalencias')->group(function () {
  */
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
-    Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
+    Route::get('/cierre/{materia_id}/{ciclo_lectivo}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
         'materia.cierre'
     );
     Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
@@ -492,7 +505,7 @@ Route::prefix('mesas')->group(function () {
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
     Route::get('/alta_mesa/{id}', [AlumnoMesaController::class, 'alta_mesa'])->name('alta.mesa');
-    Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
+    Route::post('/borrar_inscripcion/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
         'mesa.borrar'
     );
     Route::post('/moverComision/{inscripcion_id}', [AlumnoMesaController::class, 'moverComision'])->name(
@@ -526,7 +539,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
     Route::put('/abrirActaVolante/{mesa_id}', [MesaController::class, 'abrirProfesor'])->name('mesa.abrir_acta');
-
+    Route::delete('borrar_mesa/{mesa_id}',[MesaController::class,'delete'])->name('mesa.delete');
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
@@ -624,7 +637,7 @@ Route::prefix('excel')->group(function () {
     Route::get('procesos/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
-    Route::get('procesosModular/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
+    Route::get('procesosModular/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
         'excel.procesosModular'
     );
     Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
@@ -678,6 +691,13 @@ Route::prefix('usuarios')->group(function () {
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
 });
 
-Route::get('/prueba-post-size', function () {
+Route::get('/ruta_funcionalidades', function () {
+    $preinscripciones = Preinscripcion::where('updated_at','<', '2023-09-6')->get();
 
-});
+    foreach($preinscripciones as $preinscripcion)
+    {
+        Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
+    }
+
+    echo "Mails enviados.";
+})->middleware('app.roles:admin');

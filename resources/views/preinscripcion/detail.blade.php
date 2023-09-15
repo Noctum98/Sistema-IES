@@ -58,7 +58,10 @@
 				</ul>
 				<ul class="datos-academicos">
 					<li><h2 class="text-info">Datos Académicos</h2></li>
-					<li><strong>Carrera:</strong> {{ $alumno->carrera->nombre.' - '.$alumno->carrera->sede->nombre }}</li>
+					@if($alumno->articulo_septimo)
+					<li><strong class="text-primary">POR ARTICULO SEPTIMO</strong></li>
+					@endif
+					<li><strong>Carrera:</strong> {{ $alumno->carrera->nombre.' - '.$alumno->carrera->sede->nombre.' - '.ucwords($alumno->carrera->turno) }}</li>
 					<li><strong>Título secundario:</strong>
 						{{ ucwords($alumno->escolaridad) }}
 					</li>

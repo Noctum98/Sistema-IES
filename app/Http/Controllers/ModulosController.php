@@ -26,9 +26,19 @@ class ModulosController extends Controller
         $cargos = Cargo::where([
            'carrera_id' => $materia->carrera_id
         ])->get();
+
+        $tieneTfi = false;
+        foreach ($cargos as $cargo){
+            if($cargo->responsableTFI($materia->id)){
+                $tieneTfi = true;
+            }
+        }
+
+
         return view('modulos.ver', [
             'modulo' => $materia,
-            'cargos' => $cargos
+            'cargos' => $cargos,
+            'tieneTfi' => $tieneTfi
         ]);
     }
 
@@ -47,11 +57,18 @@ class ModulosController extends Controller
 
         if ($cargo_materia) {
             $cargo_materia->update(["carga_tfi" => $request['valor']]);
-
         }
 
-        return view('modulos.ver', [
-            'modulo' => $cargo_materia->materia_id
+        $tieneTfi = $cargo_materia->tieneTfiMateria($cargo_materia->materia_id);
+
+
+//        return view('modulos.ver', [
+//            'modulo' => $cargo_materia->materia()->first(),
+//            'tieneTfi' => $tieneTfi
+//        ]);
+        return new JsonResponse([
+            'modulo' => $cargo_materia->materia()->first(),
+            'tieneTfi' => $tieneTfi
         ]);
 
     }

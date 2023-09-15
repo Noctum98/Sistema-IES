@@ -53,6 +53,12 @@
 				{{$pie}}
 			</p>
 			<p>{{$subtitulo}}</p>
+			<p>Ciclo de Actualización de Saberes Previos inicia en octubre de 2023 para las siguientes carreras:</p>
+			<li>Enfermería Profesional</li>
+			<li>Tec. Sup. en Laboratorio de Análisis Clínicos </li>
+			<li>Tec. Sup. en Enología e Industrias de los Alimentos</li>
+			<li>Tec. Sup. en Gastronomía</li>
+			<p>Las demás carreras inicia en febrero de 2024.</p>
 			<br>
 		</div>
 	</div>		

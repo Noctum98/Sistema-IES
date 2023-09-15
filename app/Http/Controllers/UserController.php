@@ -199,7 +199,6 @@ class UserController extends Controller
         $user = Auth::user();
 
         $validate = $this->validate($request, [
-            'username' => ['required', Rule::unique('users')->ignore($user->id)],
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
             'telefono' => ['required'],

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Preinscripcion;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class EliminarPreinscripcionesRepetidas extends Command
@@ -39,18 +40,22 @@ class EliminarPreinscripcionesRepetidas extends Command
      */
     public function handle()
     {
-        $preinscripciones = Preinscripcion::all();
+        $preinscripciones = Preinscripcion::select('carrera_id', 'dni', DB::raw('MAX(id) as max_id'))
+            ->groupBy('carrera_id', 'dni')
+            ->havingRaw('COUNT(*) > 1')
+            ->get();
 
-        foreach($preinscripciones as $preinscripcion)
-        {
-            foreach($preinscripciones as $preinscripcionOtra)
-            {
-                if($preinscripcionOtra->id != $preinscripcion->id && $preinscripcionOtra->carrera_id == $preinscripcion->carrera_id && $preinscripcionOtra->dni == $preinscripcion->dni)
-                {
-                    $this->info($preinscripcion->id.' repetida:'.$preinscripcionOtra->id);
-                    Log::info($preinscripcion->id.' repetida:'.$preinscripcionOtra->id);
-                }
-            }
+        $this->info(count($preinscripciones). ' preinscripciones repetidas.');
+        $this->output->progressStart(count($preinscripciones));
+
+        foreach ($preinscripciones as $preinscripcion) {
+            Preinscripcion::where('carrera_id', $preinscripcion->carrera_id)
+                ->where('dni', $preinscripcion->dni)
+                ->where('id', '<>', $preinscripcion->max_id)
+                ->forceDelete();
+            $this->output->progressAdvance();
         }
+
+        $this->output->progressFinish();
     }
 }

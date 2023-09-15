@@ -32,15 +32,35 @@ class MesaService
 
     public function verificarInscripcionesEspeciales($inscripciones, $materia, $instancia)
     {
-        if (count($materia->mesas_instancias($instancia->id)) == 1) {
-            $mesa = $materia->mesa($instancia->id);
+        $comisiones = false;
+        $mesa_selected = null;
+        if (count($materia->mesas_instancias($instancia->id)) >= 1 ) {
 
-            foreach ($inscripciones as $inscripcion) {
-                $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
+            foreach($materia->mesas_instancias($instancia->id) as $mesa)
+            {
+                foreach ($inscripciones as $inscripcion) {
+
+                    if($mesa->comision_id)
+                    {
+                        $comisiones = true;
+                        $comisionAlumno = $inscripcion->alumno->comisiones->where('id',$mesa->comision_id)->first();
+                        if($comisionAlumno){
+                            $inscripcion->update(['mesa_id'=>$mesa->id,'segundo_llamado' => 0]);
+                        }
+                    }else{
+                        $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
+                    }
+                }
+
+                $mesa_selected = $mesa;
             }
-
-            return $mesa;
         }
+
+        
+        return [
+            'mesa' => $mesa_selected,
+            'comisiones' => $comisiones
+        ];
     }
 
     public function setCierreMesa($fecha, $materia)

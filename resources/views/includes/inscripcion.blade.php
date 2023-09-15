@@ -21,9 +21,29 @@
 		@enderror
 	</div>
 	<div class="form-group">
-		<label for="dni">D.N.I (Sin puntos):</label>
+		<label for="nacionalidad">Nacionalidad:</label>
+		<select class="form-select" name="nacionalidad" id="nacionalidad" required>
+			<option value="">-- Seleccione Nacionalidad --</option>
+			<option value="argentina" {{ old('nacionalidad') == 'argentina' ? 'selected' : '' }}>Argentina</option>
+			<option value="uruguaya" {{ old('nacionalidad') == 'uruguaya' ? 'selected' : '' }}>Uruguaya</option>
+			<option value="chilena" {{ old('nacionalidad') == 'chilena' ? 'selected' : '' }}>Chilena</option>
+			<option value="paraguaya" {{ old('nacionalidad') == 'paraguaya' ? 'selected' : '' }}>Paraguaya</option>
+			<option value="brasilera" {{ old('nacionalidad') == 'brasilera' ? 'selected' : '' }}>Brasilera</option>
+			<option value="boliviana" {{ old('nacionalidad') == 'boliviana' ? 'selected' : '' }}>Boliviana</option>
+			<option value="colombiana" {{ old('nacionalidad') == 'colombiana' ? 'selected' : '' }}>Colombiana</option>
+			<option value="peruana" {{ old('nacionalidad') == 'peruana' ? 'selected' : '' }}>Peruana</option>
+			<option value="venezolana" {{ old('nacionalidad') == 'venezolana' ? 'selected' : '' }}>Venezolana</option>
+			<option value="otra" {{ old('nacionalidad') == 'otra' ? 'selected' : '' }}>Otra</option>
+		</select>
+		@error('nacionalidad')
+		<span class="invalid-feedback d-block" role="alert">
+			<strong>{{ $message }}</strong>
+		</span>
+		@enderror
+	</div>
+	<div class="form-group">
+		<label for="dni">D.N.I (Sin puntos<span id="label_dni"></span>):</label>
 		<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{ old('dni') }}" required />
-
 		@error('dni')
 		<span class="invalid-feedback d-block" role="alert">
 			<strong>{{ $message }}</strong>
@@ -62,29 +82,9 @@
 	</div>
 	<div class="form-group">
 		<label for="email">Email:</label>
-		<input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" readonly/>
+		<input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ $checked ? $checked->email : old('email') }}" readonly />
 
 		@error('email')
-		<span class="invalid-feedback d-block" role="alert">
-			<strong>{{ $message }}</strong>
-		</span>
-		@enderror
-	</div>
-	<div class="form-group">
-		<label for="nacionalidad">Nacionalidad:</label>
-		<select class="form-control" name="nacionalidad" id="nacionalidad">
-			<option value="argentina" {{ old('nacionalidad') == 'argentina' ? 'selected' : '' }}>Argentina</option>
-			<option value="uruguaya" {{ old('nacionalidad') == 'uruguaya' ? 'selected' : '' }}>Uruguaya</option>
-			<option value="chilena" {{ old('nacionalidad') == 'chilena' ? 'selected' : '' }}>Chilena</option>
-			<option value="paraguaya" {{ old('nacionalidad') == 'paraguaya' ? 'selected' : '' }}>Paraguaya</option>
-			<option value="brasilera" {{ old('nacionalidad') == 'brasilera' ? 'selected' : '' }}>Brasilera</option>
-			<option value="boliviana" {{ old('nacionalidad') == 'boliviana' ? 'selected' : '' }}>Boliviana</option>
-			<option value="colombiana" {{ old('nacionalidad') == 'colombiana' ? 'selected' : '' }}>Colombiana</option>
-			<option value="peruana" {{ old('nacionalidad') == 'peruana' ? 'selected' : '' }}>Peruana</option>
-			<option value="venezolana" {{ old('nacionalidad') == 'venezolana' ? 'selected' : '' }}>Venezolana</option>
-			<option value="otra" {{ old('nacionalidad') == 'otra' ? 'selected' : '' }}>Otra</option>
-		</select>
-		@error('nacionalidad')
 		<span class="invalid-feedback d-block" role="alert">
 			<strong>{{ $message }}</strong>
 		</span>
@@ -102,7 +102,7 @@
 	</div>
 	<div class="form-group">
 		<label for="residencia">Residencia:</label>
-		<select class="form-control" name="residencia" id="residencia">
+		<select class="form-select" name="residencia" id="residencia">
 			<option value="capital" selected="selected">Capital</option>
 			<option value="las heras" {{ old('residencia') == 'las heras' ? 'selected' : '' }}>Las Heras</option>
 			<option value="godoy cruz" {{ old('residencia') == 'godoy cruz' ? 'selected' : '' }}>Godoy Cruz</option>
@@ -148,7 +148,7 @@
 	</div>
 	<div class="form-group">
 		<label for="condicion_s">Situación de Escolaridad:</label>
-		<select class="form-control" name="condicion_s" id="condicion_s">
+		<select class="form-select" name="condicion_s" id="condicion_s">
 			<option value="primario completo" {{ old('condicion_s') == 'primario completo' ? 'selected' : '' }}>Primario Completo</option>
 			<option value="secundario completo" {{ old('condicion_s') == 'secundario completo' ? 'selected' : '' }}>Secundario Completo</option>
 			<option value="secundario incompleto" {{ old('condicion_s') == 'secundario incompleto' ? 'selected' : '' }}>Secundario Incompleto</option>
@@ -211,6 +211,16 @@
 		@enderror
 	</div>
 	<div class="form-group">
+		<label for="cantidad_materias_s">Cuantas adeuda?:</label>
+		<input type="number" id="cantidad_materias_s" name="cantidad_materias_s" class="form-control @error('cantidad_materias_s') is-invalid @enderror" value="{{ old('cantidad_materias_s') }}" disabled/>
+
+		@error('cantidad_materias_s')
+		<span class="invalid-feedback d-block" role="alert">
+			<strong>{{ $message }}</strong>
+		</span>
+		@enderror
+	</div>
+	<div class="form-group">
 		<label>Conexión a internet: </label>
 		<div class="form-check">
 			<input class="form-check-input" type="radio" value="si" name="conexion" id="conexion1" {{ old('conexion') == 'si' ? 'checked' : '' }} />
@@ -233,7 +243,7 @@
 	<div class="form-group">
 		<label>Trabajas actualmente: </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1" {{ old('trabajo') == 'si' ? 'checked' : '' }}/>
+			<input class="form-check-input" type="radio" value="si" name="trabajo" id="trabajo1" {{ old('trabajo') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="trabajo1">
 				Si
 			</label>
@@ -252,9 +262,9 @@
 	</div>
 
 	<div class="form-group">
-		<label>Alguna tuviste un trabajo relacionado a la carrera? </label>
+		<label>Alguna vez tuviste un trabajo relacionado a la carrera? </label>
 		<div class="form-check">
-			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }}/>
+			<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
 			<label class="form-check-label" for="trabajo_relacionado1">
 				Si
 			</label>
@@ -348,59 +358,71 @@
 	<div id="7mo" class="d-none">
 		<br>
 		<h4 class="text-secondary">Artículo 7mo</h4>
+		<div class="alert alert-warning">
+			Estás realizando tu preinscripción por Artículo 7, cuyos requisitos son:
+			ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
+			trabajado en un empleo relacionado con la carrera elegida.
+		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" name="articulo_septimo" id="articulo_septimo" value="1" {{ old('articulo_septimo') == 1 ? 'checked' : '' }}>
+			<label class="form-check-label" for="articulo_septimo">
+				Confirmo mi preinscripción por Artículo 7
+			</label>
+		</div>
 		<hr>
-		<div class="form-group">
-			<label for="primario_file">
-				Título de Nivel Primario:
-			</label>
-			<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
+		<div class="d-none" id="archivos_articulo_septimo">
+			<div class="form-group">
+				<label for="primario_file">
+					Título de Nivel Primario:
+				</label>
+				<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
 
-			@error('primario_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="ctrabajo_file">
-				Certificado de Trabajo con firma y sello de quien lo emite
-			</label>
-			<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
+				@error('primario_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label for="ctrabajo_file">
+					Certificado de Trabajo con firma y sello de quien lo emite
+				</label>
+				<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
 
-			@error('ctrabajo_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="curriculum_file">
-				Currículum Vitae (en formato PDF)
-			</label>
-			<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
+				@error('ctrabajo_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label for="curriculum_file">
+					Currículum Vitae (en formato PDF)
+				</label>
+				<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
 
-			@error('curriculum_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
-		</div>
-		<div class="form-group">
-			<label for="nota_file">
-				Nota al Rector (en PDF)
-			</label>
-			<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
+				@error('curriculum_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
+			<div class="form-group">
+				<label for="nota_file">
+					Nota al Rector (en PDF)
+				</label>
+				<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
 
-			@error('nota_file')
-			<span class="invalid-feedback d-block" role="alert">
-				<strong>{{ $message }}</strong>
-			</span>
-			@enderror
+				@error('nota_file')
+				<span class="invalid-feedback d-block" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+				@enderror
+			</div>
 		</div>
 	</div>
+
 	<div class="form-group">
-		<input type="submit" value="Inscribirse" class="btn btn-success">
+		<button type="submit" class="btn btn-success">Inscribirse</button>
 	</div>
-
 </form>
-

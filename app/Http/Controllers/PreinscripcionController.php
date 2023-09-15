@@ -30,7 +30,7 @@ class PreinscripcionController extends Controller
         MailService $mailService
     ) {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-areaSocial-regente-coordinador-seccionAlumnos', ['only' => ['vista_admin', 'vista_all','vista_verificadas','vista_verificadas']]);
+        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all','vista_verificadas','vista_verificadas']]);
         $this->disk = Storage::disk('google');
         $this->mailService = $mailService;
     }
@@ -62,11 +62,18 @@ class PreinscripcionController extends Controller
         $carrera = Carrera::find($id);
         $error = '';
 
-        if (!$carrera->preinscripcion_habilitada && !Session::has('preinscripciones')) {
+        if($carrera)
+        {
+            if (!$carrera->preinscripcion_habilitada && !Session::has('preinscripciones')) {
+                $carrera = null;
+                $error = 'Página deshabilitada';
+            }
+    
+        }else{
             $carrera = null;
             $error = 'Página deshabilitada';
         }
-
+        
         /*
         if (!Auth::user() && !Session::has('admin')) {
            
@@ -163,7 +170,7 @@ class PreinscripcionController extends Controller
             if (Session::has('coordinador') || Session::has('seccionAlumnos')) {
                 $carreras = Auth::user()->carreras;
             } else {
-                $carreras = Carrera::all();
+                $carreras = Carrera::where('preinscripcion_habilitada',true)->get();
             }
         }
 
@@ -255,8 +262,6 @@ class PreinscripcionController extends Controller
     // Funcionalidades
     public function crear(Request $request, int $carrera_id)
     {
-        $carrera = Carrera::find($carrera_id);
-
         $validate = $this->validate($request, [
             'nombres'       =>  ['required'],
             'apellidos'     =>  ['required'],
@@ -285,6 +290,8 @@ class PreinscripcionController extends Controller
             'curriculum_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
             'nota_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
         ]);
+
+        $carrera = Carrera::find($carrera_id);
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],

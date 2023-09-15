@@ -9,19 +9,24 @@ use Illuminate\Http\Request;
 use App\Models\Sede;
 use App\Models\Personal;
 use App\Models\Carrera;
+use App\Services\CarreraService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CarreraController extends Controller
 {
-    function __construct()
+    protected $userService;
+    function __construct(UserService $userService)
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-areaSocial');
+        $this->userService = $userService;
     }
     // Vistas
 
     public function vista_admin(){
-        list($user, $carreras) = $this->getUserAndCarrera();
+        list($user, $carreras) = $this->userService->getCarreras();
 
         $sedes = $user->sedes;
         return view('carrera.admin',[
@@ -98,21 +103,6 @@ class CarreraController extends Controller
             'carreras' => $carreras,
             'instancia' => $instancia
         ]);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getUserAndCarrera(): array
-    {
-        $user = Auth::user();
-        $carreras = Carrera::orderBy('sede_id')->get();
-
-        if (!$user->hasRole('admin') && !$user->hasRole('regente')) {
-            $carreras = $user->carreras;
-        }
-
-        return array($user, $carreras);
     }
 
     protected function verProfesores($carrera_id)

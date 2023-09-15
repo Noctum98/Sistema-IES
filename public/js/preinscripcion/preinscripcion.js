@@ -4,6 +4,10 @@ $(document).ready(function () {
     let trabajo_relacionado = $("#trabajo_relacionado1").is(":checked")
     let edad = $("#edad").val();
     var trelacionado = false;
+    var nacionalidad = $("#nacionalidad").val();
+    verificarDNI(nacionalidad);
+
+    
 
 
     if (edad >= 25 && secundario == 'secundario incompleto' && trabajo_relacionado) {
@@ -59,4 +63,66 @@ $(document).ready(function () {
 
         }
     });
+
+    $("#articulo_septimo").change(function (e){
+        let checked = $(this).is(":checked");
+
+        if(checked)
+        {
+            $("#archivos_articulo_septimo").removeClass('d-none');
+        }else{
+            $("#archivos_articulo_septimo").addClass('d-none');
+        }
+    });
+
+    $("#materia_s1").change(function(e){
+        let checked = $(this).is(":checked");
+
+        if(checked)
+        {
+            $("#cantidad_materias_s").attr('disabled',false);
+        }
+    });
+
+    $("#materia_s2").change(function(e){
+        let checked = $(this).is(":checked");
+
+        if(checked)
+        {
+            $("#cantidad_materias_s").attr('disabled',true);
+            $("#cantidad_materias_s").val("");
+        }
+    });
+
+    $("#formPreenroll").submit(function(event) {
+        $("#submitPre").prop("disabled", true);
+        $("#submitPre").val("Espere por favor..");
+    });
+
+    $("#nacionalidad").change(function(e){
+        let value = $(this).val();
+        verificarDNI(value);
+    });
+
+    $('#dni').on('input', function() {
+        var maxLength = $(this).attr('maxlength');
+        console.log(maxLength);
+        if ($(this).val().length > maxLength) {
+          $(this).val($(this).val().slice(0, maxLength));
+        }
+      });
+
+    function verificarDNI(nacionalidad)
+    {
+        if(nacionalidad == 'argentina')
+        {
+            $("#dni").attr('type','number');
+            $("#label_dni").html(" y solo 8 números");
+            $("#dni").attr('maxlength',8);
+        }else{
+            $("#dni").attr('type','text');
+            $("#label_dni").html("");
+            $("#dni").attr('maxlength',20);
+        }
+    }
 });

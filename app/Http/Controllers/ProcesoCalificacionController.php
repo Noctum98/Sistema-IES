@@ -6,25 +6,37 @@ use App\Models\Calificacion;
 use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use App\Models\ProcesoModular;
+use App\Services\CargoProcesoService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProcesoCalificacionController extends Controller
 {
-    public function __construct()
+    /**
+     * @var CargoProcesoService
+     */
+    private $cargoProcesoService;
+
+    /**
+     * @param CargoProcesoService $cargoProcesoService
+     */
+    public function __construct(CargoProcesoService $cargoProcesoService)
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-profesor-seccionAlumnos-coordinador');
+        $this->middleware('app.roles:admin-profesor-seccionAlumnos-coordinador-areaSocial');
+        $this->cargoProcesoService = $cargoProcesoService;
     }
 
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         $proceso = Proceso::find($id);
 
-        return response()->json($proceso->procesosCalificaciones(),200);
+        return response()->json($proceso->procesosCalificaciones(), 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $ausente = false;
 
@@ -70,7 +82,7 @@ class ProcesoCalificacionController extends Controller
             /** @var Calificacion $calificacion */
             $calificacion = Calificacion::find($procesoCalificacion->calificacion_id);
 
-            if($calificacion->tipo()->first()->descripcion == 3){
+            if ($calificacion->tipo()->first()->descripcion == 3) {
                 $procesoModular = ProcesoModular::where([
                     'proceso_id' => $proceso->id
                 ])->first();
@@ -78,6 +90,11 @@ class ProcesoCalificacionController extends Controller
                 $procesoModular->trabajo_final_nota = $procesoCalificacion->nota;
                 $procesoModular->update();
             }
+            $user = Auth::user();
+            $this->cargoProcesoService->grabaCalificacion(
+                $procesoCalificacion->calificacion()->first()->cargo_id, $calificacion->ciclo_lectivo,
+                $proceso->id, $procesoCalificacion->calificacion()->first()->materia_id, $user
+            );
 
             $response = $procesoCalificacion;
         } else {
@@ -226,10 +243,10 @@ class ProcesoCalificacionController extends Controller
             foreach ($calificaciones as $calificacion) {
                 if ($calificacion->nota == -1) {
                     array_push($array_calificaciones, 0);
-                    array_push($array_promedios,0);
+                    array_push($array_promedios, 0);
                 } else {
                     array_push($array_calificaciones, $calificacion->nota);
-                    array_push($array_promedios,$calificacion->porcentaje);
+                    array_push($array_promedios, $calificacion->porcentaje);
                 }
             }
 
@@ -251,11 +268,12 @@ class ProcesoCalificacionController extends Controller
             $promedio = $suma / $cantidadPromedio;
             $promedio_porcentaje = $suma_porcentajes / $cantidadPorcentaje;
 
-            $proceso->porcentaje_final_trabajos = round($promedio_porcentaje,0,PHP_ROUND_HALF_UP);
+            $proceso->final_asistencia = optional($proceso->asistencia())->porcentaje_final;
+            $proceso->porcentaje_final_trabajos = round($promedio_porcentaje, 0, PHP_ROUND_HALF_UP);
             $proceso->final_trabajos = $this->calcularNota($proceso->porcentaje_final_trabajos);
             $proceso->update();
         }
- 
+
 
         return response()->json($proceso, 200);
     }

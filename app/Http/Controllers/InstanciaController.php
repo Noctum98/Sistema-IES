@@ -39,7 +39,7 @@ class InstanciaController extends Controller
         $sedes = Auth::user()->sedes;
 
         //dd($instancia);
-        
+
         return view('mesa.admin', [
             'instancias' => $instancia,
             'sedes' =>  $sedes,
@@ -49,11 +49,11 @@ class InstanciaController extends Controller
 
     public function vista_carreras($sede_id,$instancia_id)
     {
-        
+
         $sede = Sede::find($sede_id);
         $instancia = Instancia::find($instancia_id);
 
-        if(Session::has('admin'))
+        if(Session::has('admin') || Session::has('areaSocial'))
         {
             $carreras = $sede->carreras;
         }else{
@@ -84,7 +84,7 @@ class InstanciaController extends Controller
             'profesores' => $profesores
         ]);
     }
-    
+
     //Funcionalidades
     public function crear(InstanciaRequest $request)
     {
@@ -92,7 +92,7 @@ class InstanciaController extends Controller
         $request['estado'] = 'inactiva';
         $instancia = Instancia::create($request->all());
 
-        return redirect()->back()->with('alert_success','Instancia creada correctamente.');;
+        return redirect()->back()->with('alert_success','Instancia creada correctamente.');
     }
 
     public function editar(InstanciaRequest $request, $id)

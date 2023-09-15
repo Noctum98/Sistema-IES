@@ -42,7 +42,6 @@ class LibrosController extends Controller
             'llamado' => ['required'],
         ]);
 
-
         if(!$validation->fails())
         {
             //dd($request['folios']);
