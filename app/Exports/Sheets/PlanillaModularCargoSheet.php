@@ -53,7 +53,7 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         $active_sheet->getColumnDimension($columnID)
                 ->setWidth('30');
 
-        $active_sheet->getRowDimension('1')->setRowHeight(60);
+        $active_sheet->getRowDimension('1')->setRowHeight(80);
         $active_sheet->getRowDimension('2')->setRowHeight(40);
         $active_sheet->getRowDimension('3')->setRowHeight(40);
         $active_sheet->getRowDimension('4')->setRowHeight(40);
