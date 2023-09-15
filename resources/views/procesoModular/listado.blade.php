@@ -141,7 +141,7 @@
         @endif
 
         @if(count($procesos) > 0)
-            <div class="table-responsive">
+            <div class="table-responsive mt-2">
                 <table class="table table-hover" id="job-table">
                     <thead class="thead-dark text-white" style="z-index: 100">
                     <tr class="fijar">
