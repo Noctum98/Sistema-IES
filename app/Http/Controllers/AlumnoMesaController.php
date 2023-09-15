@@ -75,7 +75,7 @@ class AlumnoMesaController extends Controller
     {
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
-        $carreras = Auth::user() ? $alumno->carreras : Carrera::where('sede_id', $alumno['sede'])->get();
+        $carreras = Auth::user() ? $alumno->carrerasDistinct : Carrera::where('sede_id', $alumno['sede'])->get();
 
         if ($instancia->cierre) {
             $carreras = null;
@@ -124,6 +124,8 @@ class AlumnoMesaController extends Controller
             'estado_baja' => 0
         ])->get();
 
+        //dd($inscripciones);
+
         $inscripciones_baja = MesaAlumno::where([
             'instancia_id' => $instancia->id,
             'materia_id' => $materia_id,
@@ -134,7 +136,7 @@ class AlumnoMesaController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
 
-        $mesa = $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$materia,$instancia);
+        $verificacion = $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$materia,$instancia);
 
         return view('mesa.inscripciones_especial', [
             'inscripciones' => $inscripciones,
@@ -142,7 +144,8 @@ class AlumnoMesaController extends Controller
             'materia' => $materia,
             'instancia' => $instancia,
             'procesos' => $procesos,
-            'mesa' => $mesa
+            'mesa' => $verificacion['mesa'],
+            'comisiones' => $verificacion['comisiones']
         ]);
     }
 
@@ -271,7 +274,6 @@ class AlumnoMesaController extends Controller
                 'materia_id' => $request['materia_id']
             ])->first();
         }
-
         if (!$inscripcion) {
             $request['nombres'] = $alumno->nombres;
             $request['apellidos'] = $alumno->apellidos;

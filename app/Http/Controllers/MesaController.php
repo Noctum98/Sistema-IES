@@ -153,8 +153,6 @@ class MesaController extends Controller
         $validate = $this->validate($request, [
             'fecha' => ['required'],
             'presidente_id' => ['required'],
-            'fecha' => ['date'],
-            'fecha_segundo' => ['date']
         ]);
 
         $materia = Materia::find($materia_id);
@@ -207,7 +205,6 @@ class MesaController extends Controller
         } else {
             $mesa = Mesa::create($request->all());
         }
-
         return redirect()->back()->with([
             'message_success' => 'Mesa '.$materia->nombre.' configurada correctamente',
         ]);
@@ -327,6 +324,7 @@ class MesaController extends Controller
             'libro' => $libro,
             'orden' => $orden
         ];
+
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_acta_volante_pdf', $data);
