@@ -17,6 +17,7 @@ class Estados extends Model
     protected $fillable = [
         'nombre',
         'identificador',
-        'user_action_id'
+        'user_action_id',
+        'regularidad'
     ];
 }

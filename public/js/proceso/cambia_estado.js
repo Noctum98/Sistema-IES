@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log('ff')
+
     $('.select-estado').on('change', function () {
 
         const campo = $(this);
@@ -17,12 +17,11 @@ $(document).ready(function () {
             "estado_id": estado_id
         };
 
-
         $.ajax({
             method: "POST",
             url: url,
             data: data,
-            //dataType: "dataType",
+
             success: function (response) {
                 if (response.errors) {
                     for (const key in response.errors) {
@@ -36,11 +35,9 @@ $(document).ready(function () {
                     }
                 } else {
                     $("#alerts").html("");
-
-                    // $("#nota-" + proceso_id).attr('disabled', false);
                 }
 
-                if (response.estado && response.estado.identificador == 5) {
+                if (response.estado && (response.estado.identificador == 5 || response.estado.identificador == 7)) {
                     $("#global-" + proceso_id).attr('disabled', false);
                     $("#observacion-"+proceso_id).removeClass('d-none');
                 } else {
