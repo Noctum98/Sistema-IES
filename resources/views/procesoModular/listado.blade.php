@@ -111,7 +111,7 @@
                 </span>
             </small>
         </p>
-        
+
 @if(isset($comision))
 
     <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
