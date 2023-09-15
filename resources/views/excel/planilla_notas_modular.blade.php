@@ -45,7 +45,7 @@
                 {{ $proceso->procesoModularOne->nota_global ? $proceso->procesoModularOne->nota_global : '-' }}
             </td>
             <td>
-                {{ $proceso->estado ? mb_strtoupper($proceso->estado->nombre) : '-' }}</td>
+                {{ $proceso->estado ? mb_strtoupper($proceso->estado->nombre) : '-' }}
             </td>
         </tr>
         @endif
