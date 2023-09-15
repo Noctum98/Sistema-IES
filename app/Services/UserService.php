@@ -94,12 +94,10 @@ class UserService
     {
         $user = Auth::user();
 
-        if (Session::has('admin') || Session::has('regente')) {
+        if (Session::has('admin') || Session::has('regente') || Session::has('areaSocial')) {
             $carreras = Carrera::orderBy('sede_id')->get();
-        }elseif(Session::has('areaSocial'))
-        {
-            $carreras = Carrera::whereIn('sede_id',$user->sedes)->orderBy('sede_id')->get();
-        }else{
+        }
+        else{
             $carreras = $user->carreras;
         }
 
