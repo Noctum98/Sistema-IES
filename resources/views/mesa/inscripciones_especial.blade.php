@@ -39,12 +39,12 @@
         @endif
         --}}
     </div>
-    
+
 
     @if(count($inscripciones) > 0)
     @if($mesa && !$mesa->comision_id)
     <div class="row">
-    @if($mesa->cierre_profesor)
+        @if($mesa->cierre_profesor)
         <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="col-md-1 mt-1">
             {{method_field('PUT')}}
             <input type="hidden" name="llamado" value="1" id="llamado">
@@ -56,6 +56,10 @@
         <button class="btn btn-sm btn-secondary button-modal col-md-2 mt-1" id="1" data-bs-toggle="modal" data-bs-target="#libro_folio_1">
             Libro/Folio
         </button>
+        @if(Session::has('admin'))
+        <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#borrar_mesa">Borrar Mesa</a>
+        @include('mesa.modals.borrar_mesa')
+        @endif
         @include('mesa.modals.libro_folio_1',['llamado'=>1,'folios'=>$mesa->folios()])
         @php
         $contador_boton = 1;
@@ -140,6 +144,10 @@
         <input type="hidden" name="llamado" value="1" id="llamado">
         <input type="submit" value="Abrir Acta Volante" class="btn btn-sm btn-warning">
     </form>
+    @endif
+    @if(Session::has('admin'))
+    <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#borrar_mesa">Borrar Mesa</a>
+    @include('mesa.modals.borrar_mesa')
     @endif
     @include('mesa.tablas.tabla_inscripciones',['inscripciones'=>$mesa->mesa_inscriptos,'folios'=>$mesa->folios(),'llamado'=>1])
     @else

@@ -53,17 +53,6 @@
                                             data-bs-target="#edit{{$instancia->id}}">
                                         Editar Mesa
                                     </button>
-                                    @if($instancia->tipo == 0)
-                                        <button type="button" class="btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#delete{{$instancia->id}}">
-                                            Borrar datos
-                                        </button>
-                                    @else
-                                        <a href="{{route('borrar_datos',['id'=>$instancia->id])}}" type="button"
-                                           class="btn btn-sm btn-danger">
-                                            Borrar datos
-                                        </a>
-                                    @endif
                                 @endif
                                 @if(Session::has('admin') or Session::has('coordinador') )
                                     <a class="btn btn-sm btn-success" data-bs-toggle="modal"
