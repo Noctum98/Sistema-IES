@@ -23,7 +23,7 @@
     <a href="{{ route('generar_pdf_mesa',['instancia'=>$instancia->id,'carrera'=>$carrera->id,'llamado'=>1]) }}" class="btn btn-sm btn-danger mb-3">Descargar PDF</a>
     @endif
 
-    @if($carrera->estado != 1)
+    
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -47,7 +47,7 @@
 
         </tbody>
     </table>
-    @endif
+    
     <table class="table">
         <thead class="thead-dark">
             <tr>
