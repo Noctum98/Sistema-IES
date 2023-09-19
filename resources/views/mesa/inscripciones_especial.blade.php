@@ -41,7 +41,6 @@
     </div>
 
 
-    @if(count($inscripciones) > 0)
     @if($mesa && !$mesa->comision_id)
     <div class="row">
         @if($mesa->cierre_profesor)
@@ -52,20 +51,21 @@
         </form>
         @endif
 
-
-        <button class="btn btn-sm btn-secondary button-modal col-md-2 mt-1" id="1" data-bs-toggle="modal" data-bs-target="#libro_folio_1">
-            Libro/Folio
-        </button>
         @if(Session::has('admin'))
-        <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#borrar_mesa">Borrar Mesa</a>
+        <button type="button" class="btn btn-sm btn-danger col-md-2 m-1" data-bs-toggle="modal" data-bs-target="#borrar_mesa">Borrar Mesa</button>
         @include('mesa.modals.borrar_mesa')
         @endif
+
+
+        <button class="btn btn-sm btn-secondary button-modal col-md-2 m-1" id="1" data-bs-toggle="modal" data-bs-target="#libro_folio_1">
+            Libro/Folio
+        </button>
         @include('mesa.modals.libro_folio_1',['llamado'=>1,'folios'=>$mesa->folios()])
         @php
         $contador_boton = 1;
         @endphp
         @while($contador_boton <= $mesa->folios() )
-            <a class="btn btn-sm btn-success mt-1 col-md-2" href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia->carrera_id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => $mesa->comision_id ?? null,'orden'=>$contador_boton]) }}">
+            <a class="btn btn-sm btn-success m-1 col-md-2" href="{{ route('generar_pdf_acta_volante', ['instancia' => $mesa->instancia_id, 'carrera'=>$mesa->materia->carrera_id,'materia' => $mesa->materia_id ,'llamado' => 1, 'comision' => $mesa->comision_id ?? null,'orden'=>$contador_boton]) }}">
                 <i>Folio {{$contador_boton}}</i>
                 <small style="font-size: 0.6em">Descargar Acta Volante</small>
             </a>
@@ -76,6 +76,9 @@
     </div>
 
     @endif
+
+    @if(count($inscripciones) > 0)
+
     <div class="table-responsive">
         <table class="table mt-4">
             <thead class="thead-dark">
