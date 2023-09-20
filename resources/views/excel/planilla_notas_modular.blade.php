@@ -43,7 +43,7 @@
         </tr>
 
         <tr>
-            <th scope="col" style="text-align: left;">Apeliido y Nombre</th>
+            <th scope="col">Apeliido y Nombre</th>
             <th class="sticky-top text-center">Nota Proceso</th>
             <th class="sticky-top text-center">% Asist. Final</th>
             <th class="sticky-top text-center">TFI</th>
@@ -56,7 +56,7 @@
         @foreach($procesos as $proceso)
         @if($proceso->procesoModularOne)
         <tr>
-            <td style="text-align: right;">
+            <td style="text-align: left;">
                 {{ optional($proceso->alumno)->apellidos_nombres }}
             </td>
             <td style="text-align: right;">
