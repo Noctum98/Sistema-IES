@@ -1,27 +1,47 @@
-<table class="table table-striped f30">
+<table>
     <thead>
         <tr>
-            <th><b>UNIDAD ACADEMICA: {{$materia->carrera->sede->nombre}}</b></th>
-            <th><b>CARRERA: {{ $materia->carrera->nombre.' ( '.ucwords($materia->carrera->turno).' )' }} </b></th>
-            <th><b>Docentes:
-                @foreach($cargos as $cargo)
+            <th colspan="7" style="text-align: center;"><b>PLANILLA DE CALIFICACIONES</b></th>
+        </tr>
+        <tr>
+            <th colspan="7" style="text-align: center;" valign="middle">
+            </th>
+        </tr>
+        <tr>
+            <th colspan="7"><b>INSTITUTO DE EDUCACION SUPERIOR 9-015 VALLE DE UCO</b></th>
+        </tr>
+        <tr>
+            <th colspan="7"><b>UNIDAD ACADEMICA: {{$materia->carrera->sede->nombre}}</b></th>
+        </tr>
+        <tr>
+            <th colspan="7"><b>CARRERA: {{ $materia->carrera->nombre.' ( '.ucwords($materia->carrera->turno).' )' }} </b></th>
+        </tr>
+        <tr>
+            <th colspan="7"><b>ESPACIO CURRICULAR: {{ $materia->nombre }} </b></th>
+        </tr>
+        <tr>
+            <th colspan="7"><b>Docentes:
+                    @foreach($cargos as $cargo)
                     @foreach($cargo->users as $key => $user)
-                        {{ mb_strtoupper($user->apellido).' '.ucwords($user->nombre) }}
-                        @if (!$loop->last)
-                        -
-                        @endif
+                    {{ mb_strtoupper($user->apellido).' '.ucwords($user->nombre) }}
+                    @if (!$loop->last)
+                    -
+                    @endif
                     @endforeach
-                @endforeach
+                    @endforeach
                 </b></th>
         </tr>
+
         <tr>
-            <th><b>MÓDULO: {{ $materia->nombre }} </b></th>
-            <th> <b>RESOLUCION: {{ $materia->carrera->resolucion }} </b></th>
+            <th colspan="7"> <b>MODALIDAD: {{ $materia->carrera->modalidad }} </b></th>
         </tr>
         <tr>
-            <th><b>AÑO: {{ $materia->año }}
-            <th style="text-align: left;"><b>Ciclo Lectivo: {{ $ciclo_lectivo }} </b></th>
+            <th style="text-align: left;" colspan="7"><b>Ciclo Lectivo: {{ $ciclo_lectivo }} </b></th>
         </tr>
+        <tr>
+            <th colspan="7"><b>AÑO: {{ $materia->año }} </b></th>
+        </tr>
+
         <tr>
             <th scope="col">Apeliido y Nombre</th>
             <th class="sticky-top text-center">Nota Proceso</th>
@@ -36,7 +56,7 @@
         @foreach($procesos as $proceso)
         @if($proceso->procesoModularOne)
         <tr>
-            <td style="text-align: right;">
+            <td style="text-align: left;">
                 {{ optional($proceso->alumno)->apellidos_nombres }}
             </td>
             <td style="text-align: right;">

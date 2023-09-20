@@ -28,6 +28,7 @@ class Proceso extends Model
         'habilitado_campo'
     ];
 
+    //Relations
     public function materia(): BelongsTo
     {
         return $this->belongsTo('App\Models\Materia', 'materia_id');
@@ -36,11 +37,6 @@ class Proceso extends Model
     public function alumno(): BelongsTo
     {
         return $this->belongsTo('App\Models\Alumno', 'alumno_id')->withTrashed();
-    }
-
-    public function asistencia()
-    {
-        return Asistencia::where('proceso_id', $this->id)->first();
     }
 
     public function estado()
@@ -53,6 +49,24 @@ class Proceso extends Model
         return $this->hasOne(EtapaCampo::class, 'proceso_id');
     }
 
+    public function cargos()
+    {
+        return $this->belongsTo(Cargo::class, 'cargo_id');
+    }
+
+    public function procesoModularOne()
+    {
+        return $this->hasOne(ProcesoModular::class);
+    }
+
+
+
+    // Functions
+    public function asistencia()
+    {
+        return Asistencia::where('proceso_id', $this->id)->first();
+    }
+
     public function procesoCalificacion($calificacion_id)
     {
         $procesoCalificacion = ProcesoCalificacion::where(
@@ -60,6 +74,30 @@ class Proceso extends Model
         )->first();
 
         return $procesoCalificacion;
+    }
+
+    public function procesoModular()
+    {
+        return ProcesoModular::where(
+            ['proceso_id' => $this->id]
+        )
+            ->get();
+    }
+
+    public function obtenerProcesoCargo(int $cargo)
+    {
+        return ProcesosCargos::where([
+            'cargo_id' => $cargo,
+            'proceso_id' => $this->id
+        ])->first();
+    }
+
+    public function obtenerRegularidad()
+    {
+        return Regularidad::where([
+            'proceso_id' => $this->id
+        ])
+            ->first();
     }
 
     public function procesosCalificaciones()
@@ -88,36 +126,18 @@ class Proceso extends Model
         return $calificacion_tfi;
     }
 
-    public function cargos()
+    public function hasEquivalencia()
     {
-        return $this->belongsTo(Cargo::class, 'cargo_id');
-    }
-
-    public function procesoModular()
-    {
-        return ProcesoModular::where(
-            ['proceso_id' => $this->id])
-            ->get();
-    }
-
-    public function procesoModularOne()
-    {
-        return $this->hasOne(ProcesoModular::class);
-    }
-
-    public function obtenerProcesoCargo(int $cargo)
-    {
-        return ProcesosCargos::where([
-            'cargo_id' => $cargo,
-            'proceso_id' => $this->id
+        $equivalencia = Equivalencias::where([
+            'materia_id' => $this->materia_id,
+            'alumno_id' => $this->alumno_id
         ])->first();
-    }
 
-    public function obtenerRegularidad()
-    {
-        return Regularidad::where([
-            'proceso_id' => $this->id
-        ])
-            ->first();
+        if($equivalencia)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

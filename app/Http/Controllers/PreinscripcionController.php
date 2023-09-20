@@ -236,7 +236,7 @@ class PreinscripcionController extends Controller
 
     public function vista_articulo()
     {
-        $preinscripciones = Preinscripcion::whereNotNUll('curriculum')->get();
+        $preinscripciones = Preinscripcion::where('articulo_septimo',1)->get();
 
         return view('preinscripcion.article', [
             'preinscripciones' => $preinscripciones
