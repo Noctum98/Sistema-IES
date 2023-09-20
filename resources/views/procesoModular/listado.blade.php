@@ -111,18 +111,18 @@
                 </span>
             </small>
         </p>
-        {{--
+
 @if(isset($comision))
 
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
        class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
 @else
 
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}" class="btn btn-sm btn-success"><i
                 class="fas fa-download"></i> Descargar
         planilla</a>
         @endif
-
+{{--
     @if($puede_procesar)
         <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
            class="btn btn-warning">
@@ -141,7 +141,7 @@
         @endif
 
         @if(count($procesos) > 0)
-            <div class="table-responsive">
+            <div class="table-responsive mt-2">
                 <table class="table table-hover" id="job-table">
                     <thead class="thead-dark text-white" style="z-index: 100">
                     <tr class="fijar">
@@ -186,7 +186,7 @@
                                                    class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                                    id="global-{{ $proceso->procesoRelacionado->id }}"
                                                    value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                   @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                   @if(($proceso->procesoRelacionado->estado && ($proceso->procesoRelacionado->estado->identificador != 5 || $proceso->procesoRelacionado->estado->identificador != 7)) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
                                             <div class="input-group-append">
                                                 <button type="submit"
                                                         class="btn btn-info btn-sm input-group-text"
@@ -199,7 +199,6 @@
                                     </form>
                                 </td>
                                 <td>
-                                    {{$proceso->procesoRelacionado->cierre}}
                                     <input type="checkbox" class="check-cierre"
                                            id="{{$proceso->procesoRelacionado->id}}"
                                            @if($proceso->procesoRelacionado->cierre == 1)
@@ -214,7 +213,17 @@
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <td>
                                     <small>
-                                        <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                        <small>Condición:
+                                            @if($proceso->procesoRelacionado->estado)
+                                                @if($proceso->procesoRelacionado->estado->regularidad)
+                                                    {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                @else
+                                                    {{$proceso->procesoRelacionado->estado->nombre}}
+                                                @endif
+                                            @else
+                                                No indicada
+                                            @endif
+                                        </small>
                                     </small>
                                 </td>
                                 <td colspan="2" class="text-center w-50">

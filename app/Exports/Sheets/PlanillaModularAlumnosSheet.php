@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 class PlanillaModularAlumnosSheet implements FromView, WithTitle, WithEvents
 {
     use RegistersEventListeners;
-    private $data_array;
+    public $data_array;
 
 
     public function __construct($data_array)
@@ -27,14 +27,15 @@ class PlanillaModularAlumnosSheet implements FromView, WithTitle, WithEvents
 
         return view('excel.planilla_cargos_modular', [
             'materia' => $this->data_array['materia'],
-            'cargos' => $this->data_array['cargos'],
-            'procesos' => $this->data_array['procesos']
+            'cargo' => $this->data_array['cargo'],
+            'procesos' => $this->data_array['procesos'],
+            'ciclo_lectivo' => $this->data_array['ciclo_lectivo']
         ]);
     }
 
     public function title(): string
     {
-        return "Cargos";
+        return $this->data_array['cargo']->nombre;
     }
 
     public static function afterSheet(AfterSheet $event)
