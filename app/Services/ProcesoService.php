@@ -74,4 +74,21 @@ class ProcesoService
 
         return true;
     }
+
+    /**
+     * @param int $alumno
+     * @param int $materia
+     * @return mixed
+     */
+    public function procesoPorAlumnoMateria(int $alumno, int $materia)
+    {
+        return Proceso::where([
+            'alumno_id' => $alumno,
+            'materia_id' => $materia,
+        ])
+            ->orderBy('ciclo_lectivo', 'DESC')
+            ->first();
+    }
+
+
 }

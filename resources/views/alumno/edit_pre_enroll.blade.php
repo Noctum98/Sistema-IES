@@ -211,6 +211,9 @@
 							<option value="primario completo" {{$preinscripcion->condicion_s == 'primario completo' ? 'selected="selected"' : ''}}>
 								Primario Completo
 							</option>
+							<option value="primario incompleto" {{$preinscripcion->condicion_s == 'primario incompleto' ? 'selected="selected"' : ''}}>
+								Primario Incompleto
+							</option>
 							<option value="secundario completo" {{$preinscripcion->condicion_s == 'secundario completo' ? 'selected="selected"' : ''}}>
 								Secundario Completo
 							</option>
