@@ -53,29 +53,20 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         $active_sheet->getColumnDimension($columnID)
                 ->setWidth('30');
 
-        $active_sheet->getRowDimension('1')->setRowHeight(80);
-        $active_sheet->getRowDimension('2')->setRowHeight(40);
-        $active_sheet->getRowDimension('3')->setRowHeight(40);
-        $active_sheet->getRowDimension('4')->setRowHeight(40);
-        $active_sheet->getStyle('A1:B1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
-        $active_sheet->getStyle('A2:B2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
-        $active_sheet->getStyle('A3:B3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
-        $active_sheet->getStyle('C1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
+        // $active_sheet->getRowDimension('1')->setRowHeight(40);
+        // $active_sheet->getRowDimension('2')->setRowHeight(40);
+        // $active_sheet->getRowDimension('3')->setRowHeight(40);
+        // $active_sheet->getRowDimension('4')->setRowHeight(40);
 
-        $active_sheet->getStyle('A4:F4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
-        $active_sheet->getStyle('A4:G4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
+        foreach(range(1,10) as $rowID)
+        {
+            $active_sheet->getStyle('A'.$rowID)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
+            $active_sheet->getStyle('A'.$rowID)->getBorders()
+            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        }
 
-
-
-        $active_sheet->getStyle('A1:C1')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A2:B2')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A3:B3')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A4:F4')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A4:G4')->getBorders()
-            ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $active_sheet->getStyle('A11:G11')->getBorders()
+        ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $active_sheet->getStyle('A11:G11')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
     }
 }
