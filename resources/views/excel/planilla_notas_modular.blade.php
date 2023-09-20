@@ -43,7 +43,7 @@
         </tr>
 
         <tr>
-            <th scope="col">Apeliido y Nombre</th>
+            <th scope="col" style="text-align: left;">Apeliido y Nombre</th>
             <th class="sticky-top text-center">Nota Proceso</th>
             <th class="sticky-top text-center">% Asist. Final</th>
             <th class="sticky-top text-center">TFI</th>
