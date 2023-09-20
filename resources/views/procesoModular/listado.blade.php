@@ -126,18 +126,18 @@
                 </span>
             </small>
         </p>
-        {{--
+
 @if(isset($comision))
 
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
        class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
 @else
 
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}" class="btn btn-sm btn-success"><i
                 class="fas fa-download"></i> Descargar
         planilla</a>
         @endif
-
+{{--
     @if($puede_procesar)
         <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
            class="btn btn-warning">
@@ -156,7 +156,7 @@
         @endif
 
         @if(count($procesos) > 0)
-            <div class="table-responsive">
+            <div class="table-responsive mt-2">
                 <table class="table table-hover" id="job-table">
                     <thead class="thead-dark text-white" style="z-index: 100">
                     <tr class="fijar">

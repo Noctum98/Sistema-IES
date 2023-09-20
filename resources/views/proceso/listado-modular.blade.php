@@ -199,8 +199,6 @@
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
                                 <span>
-                                    {{$proceso->id}}<br/>
-                                    {{$proceso->cierre}}
                                      @if ($proceso->cierre == 1)
                                         <i class="fa fa-check text-success"></i>
                                     @else
@@ -211,12 +209,8 @@
                                                data-cargo="{{$cargo->id}}"
                                         >
                                     @endif
-
                                 </span>
-
-
                             </td>
-
                         </tr>
                     @endforeach
                     </tbody>
@@ -227,7 +221,7 @@
             @endsection
             @section('scripts')
                 <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
-                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
+                <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>
 

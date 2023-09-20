@@ -13,27 +13,25 @@
             <th style="text-align: left;"><b> {{ $materia->carrera->resolucion }} </b></th>
         </tr>
         <tr>
-            <th>N°</th>
-            <th>DNI</th>
             <th scope="col">Apeliido y Nombre</th>
-            <th>Promedio Final %</th>
-            <th>Promedio Final #</th>
-            <th>TIF</th>
+            <th>Actividades Aprobadas %</th>
+            <th>Nota Tps</th>
+            <th>Nota Parciales</th>
+            <th>Nota Final</th>
             <th>Asistencia</th>
-            <th>Condición</th>
+            <th>Estado</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($procesos as $key => $proceso)
+        @foreach($procesos as $proceso)
         <tr>
-            <td>{{ $key + 1 }}</td>
-            <td>{{ $proceso->alumno->dni }}</td>
-            <td>{{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->apellidos) }}</td>
-            <td>{{ $proceso->promedio_final_nota }}</td>
-            <td>{{ $proceso->promedio_final_porcentaje }}</td>
-            <td>{{ $proceso->calificacionTFI() ? $proceso->calificacionTFI()->nota : '-' }}</td>
-            <td>{{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }}</td>
-            <td>{{ $proceso->estado ? mb_strtoupper($proceso->estado->nombre) : '-' }}</td>
+            <td>{{ mb_strtoupper($proceso->alumno->apellidos).', '.ucwords($proceso->alumno->nombre) }}</td>
+            <td>{{ number_format($proceso->procesoModularOne->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id, $ciclo_lectivo) , 2, '.', ',')}}</td>
+            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_tp , 2, '.', ',') }}</td>
+            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_ps , 2, '.', ',') }}</td>
+            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_cargo, 2, '.', ',') }}</td>
+            <td>{{ optional(optional($proceso->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}</td>
+            <td>{{ optional($cargo->obtenerProcesoCargo(optional($proceso)->id))->isClose() ? 'Cerrado' : 'Abierto' }}</td>
         </tr>
         @endforeach
     </tbody>

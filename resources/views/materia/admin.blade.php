@@ -30,7 +30,7 @@
 	{{ @session('error_procesos') }}
 	@endif
 	<div class="col-md-8">
-		@if($carrera->estado != 1)
+
 		<h3 class="text-secondary">Primer Año</h3>
 		<table class="table table-hover mt-4">
 			<thead class="thead-dark">
@@ -68,7 +68,6 @@
 			</tbody>
 		</table>
 		<hr>
-		@endif
 		<h3 class="text-secondary">Segundo Año</h3>
 		<table class="table table-hover mt-4">
 			<thead class="thead-dark">
