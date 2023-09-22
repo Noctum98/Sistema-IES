@@ -396,7 +396,7 @@ class UserController extends Controller
 
         $alumno->update();
 
-        Mail::to($alumno->email)->send(new MatriculacionUser($alumno));
+        // Mail::to($alumno->email)->send(new MatriculacionUser($alumno));
 
         return redirect()->route('alumno.detalle', [
             'id' => $alumno->id,
