@@ -177,7 +177,7 @@ class MatriculacionController extends Controller
                 $this->procesoService->inscribir($alumno->id, $request['materias']);
             }
 
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
+            // Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
 
 
             $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
@@ -236,7 +236,7 @@ class MatriculacionController extends Controller
         $alumno->update($request->all());
 
         if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
+            // Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
         }
 
         return redirect()->route('matriculacion.edit', [
@@ -320,7 +320,7 @@ class MatriculacionController extends Controller
 
         $alumno->update(['aprobado' => 0]);
 
-        Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno, $carrera, $request));
+        // Mail::to($alumno->email)->send(new MatriculacionDeleted($alumno, $carrera, $request));
 
         return redirect()->back()->with(['alert_warning' => 'Se ha eliminado la matriculación, y se le ha enviado un correo con una notificación al alumno']);
     }
@@ -350,7 +350,7 @@ class MatriculacionController extends Controller
                 ]);
             }
         } elseif ($mail_check && !$mail_check->checked) {
-            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+            // Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         } else {
             do {
                 $newTimecheckValue = time().$request['email'];
@@ -359,7 +359,7 @@ class MatriculacionController extends Controller
             $duplicate->update(['timecheck' => $newTimecheckValue]);
             $mail_check = MailCheck::create($request->all());
 
-            Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
+            // Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         }
 
         return view('matriculacion.card_email_check');
