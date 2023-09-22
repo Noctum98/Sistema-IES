@@ -394,7 +394,7 @@ class PreinscripcionController extends Controller
         $request['timecheck'] = time();
         $preinscripcion = Preinscripcion::create($request->all());
 
-        // Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
 
         return redirect()->route('pre.inscripto', [
             'timecheck' => $preinscripcion->timecheck,
@@ -533,7 +533,7 @@ class PreinscripcionController extends Controller
         $request['estado'] = 'sin verificar';
         $preinscripcion->update($request->all());
 
-        // // Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        // Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
 
         return redirect()->route('pre.editado', [
             'timecheck' => $preinscripcion->timecheck,
@@ -590,7 +590,7 @@ class PreinscripcionController extends Controller
 
         if ($preinscripcion->estado != 'verificado') {
             $preinscripcion->estado = 'verificado';
-            // Mail::to($preinscripcion->email)->send(new VerifiedPreEnroll($preinscripcion));
+            Mail::to($preinscripcion->email)->send(new VerifiedPreEnroll($preinscripcion));
         } else {
             $preinscripcion->estado = 'sin verificar';
         }
@@ -622,7 +622,7 @@ class PreinscripcionController extends Controller
         $preinscripcion->estado = 'por corregir';
         $preinscripcion->update();
 
-        // Mail::to($preinscripcion->email)->send(new FileErrorForm($preinscripcion, $datos));
+        Mail::to($preinscripcion->email)->send(new FileErrorForm($preinscripcion, $datos));
 
         return redirect()->route('pre.all', [
             'id' => $preinscripcion->carrera_id
