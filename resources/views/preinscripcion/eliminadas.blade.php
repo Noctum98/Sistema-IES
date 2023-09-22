@@ -11,6 +11,7 @@
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
+                <th>#</th>
                 <th scope="col">Nombre y Apellido</th>
                 <th scope="col">D.N.I</th>
                 <th scope="col">Carrera</th>
