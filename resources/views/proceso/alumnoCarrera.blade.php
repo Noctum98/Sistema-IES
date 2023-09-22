@@ -1,78 +1,166 @@
 @extends('layouts.app-prueba')
 @section('content')
-    <div class="container">
-        <h4 class="text-dark">
-            Desempeño Académico <br/>
-            <small style="font-size: 0.5em">
-                <i>
-                    {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
-                </i>
-            </small>
-        </h4>
-        <hr>
-        <div class="table-responsive">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                    <th>
-                        Materia
-                    </th>
-                    <th>
-                        Condición
-                    </th>
-                    <th>
-                        <small>
-                            Nota final <br/> Parciales
-                        </small>
-                    </th>
-                    <th>
-                        <small>
-                            Nota final <br/>
-                            T. Prácticos
-                        </small>
-                    </th>
-                    <th class="text-right pr-3">
-                        Asistencia final
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($alumno->procesos as $proceso)
-                    <tr>
-                        <td>
-                            {{ $proceso->materia->nombre }}
-                        </td>
-                        <td>
-                            {{ ucwords($proceso->estado) }}
-                        </td>
-                        <td>
-                            {{ $proceso->final_parciales ?  : 'Sin asignar'}}
-                        </td>
-                        <td>
-                            {{ $proceso->final_trabajos ?  : 'Sin asignar'}}
-                        </td>
-                        <td class="text-right pr-3">
+    <style>
+        .card {
+            /*margin-top: 2em;*/
+            padding: 0.5em;
+            border-radius: 2em;
+            /*text-align: center;*/
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
 
-                            @if($proceso->materia->carrera->tipo == 'tradicional')
-                                {{ $proceso->asistencia($proceso->id) ? $proceso->asistencia($proceso->id)->porcentaje_final : 'Sin asignar'}}
-                                %
-                            @endif
-                            @if($proceso->materia->carrera->tipo == 'tradicional2')
-                                @if($proceso->asistencia($proceso->id))
-                                    {{ $proceso->asistencia($proceso->id)->porcentaje_presencial ? : '-'}} %<sup>
-                                        Presencial</sup> |
-                                    {{ $proceso->asistencia($proceso->id)->porcentaje_virtual ? : '-'}} %<sup>
-                                        Virtual</sup> <br/>
-                                    {{ $proceso->asistencia($proceso->id)->porcentaje_final ? : '-'}} % <sup>Final</sup>
-                                @else
-                                    - %<sup> Presencial</sup> | - %<sup>Virtual</sup> <br/>
-                                    - % <sup>Final</sup>
-                                @endif
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+        .card .card-header {
+
+            padding: 0.5em;
+            border-top-left-radius: 2em;
+            border-top-right-radius: 2em;
+            /*text-align: center;*/
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .card li {
+            list-style: none;
+        }
+
+        .card_img {
+            /*width: 65%;*/
+            /*border-radius: 50%;*/
+            border-radius: 2em;
+            margin: 0 auto 0 -50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background: #1a1e21;
+            color: white;
+            font-size: 6em;
+            font-weight: bold;
+        }
+
+        .card .card-title {
+            font-weight: 700;
+            font-size: 1.5em;
+        }
+
+        /*.card .btn {*/
+        /*    border-radius: 2em;*/
+        /*    background-color: teal;*/
+        /*    color: #ffffff;*/
+        /*    padding: 0.5em 1.5em;*/
+        /*}*/
+
+        .card .btn:hover {
+            background-color: rgba(0, 128, 128, 0.7);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <div class="container">
+        <div class="card">
+            <div class="row">
+                <div class="card-body col-sm-6 mx-auto">
+                    <h5 class="card-title">
+                        <i>
+                            {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
+                        </i>
+                    </h5>
+                </div>
+                <div class="card-body col-sm-6 mx-auto">
+                    <p class="card-text">
+                        Desempeño Académico <br/> <b>{{strtoupper($carrera->nombre)}}</b>
+                        <br/><small>{{$carrera->años}} años</small>
+                    </p>
+
+                </div>
+            </div>
         </div>
+        <div class="card border-info p-0">
+            <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
+                <p class="card-text text-right m-1 p-1 me-5">1° Año</p>
+            </div>
+            <div class="row">
+                <div class="card-body col-sm-12 mx-auto">
+                    @foreach($carrera->materias()->get() as $materia)
+                        @if($materia->año == 1)
+
+                            <div class="row">
+                                <div class="col-sm-4 px-3 ">
+                                    <p class="card-text">{{$materia->nombre}}</p>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="card-text text-center">{{ucwords(
+    optional(
+    optional($materia->getProcesoCarrera($alumno->id))->estado())
+    ->first()->regularidad??'-')}}</p>
+
+                                </div>
+
+                            </div>
+                            <hr class="m-1 p-0"/>
+                        @endif
+                    @endforeach
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="card border-info p-0">
+            <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
+                <p class="card-text text-right m-1 p-1 me-5">2° Año</p>
+            </div>
+            <div class="row">
+                <div class="card-body col-sm-12 mx-auto">
+                    @foreach($carrera->materias()->get() as $materia)
+                        @if($materia->año == 2)
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <p class="card-text">{{$materia->nombre}}</p>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="card-text text-center">{{ucwords(
+    optional(
+    optional($materia->getProcesoCarrera($alumno->id))->estado())
+    ->first()->regularidad??'-')}}</p>
+                                </div>
+                            </div>
+                            <hr class="m-1 p-0"/>
+                        @endif
+                    @endforeach
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="card border-info p-0">
+            <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
+                <p class="card-text text-right m-1 p-1 me-5">3° Año</p>
+            </div>
+            <div class="row">
+                <div class="card-body col-sm-12 mx-auto">
+                    @foreach($carrera->materias()->get() as $materia)
+                        @if($materia->año == 3)
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <p class="card-text">{{$materia->nombre}}</p>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="card-text text-center">{{ucwords(
+    optional(
+    optional($materia->getProcesoCarrera($alumno->id))->estado())
+    ->first()->regularidad??'-')}}</p>
+                                </div>
+                            </div>
+                            <hr class="m-1 p-0"/>
+                        @endif
+                    @endforeach
+
+                </div>
+
+
+            </div>
+        </div>
+
 @endsection

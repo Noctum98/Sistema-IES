@@ -144,11 +144,16 @@ class Materia extends Model
      */
     public function getProcesoCarrera($alumno_id)
     {
-        return Proceso::where([
+        $proceso = Proceso::where([
                 'materia_id' => $this->id,
-                'alumno_id', $alumno_id
+                'alumno_id' => $alumno_id
             ]
         )->first();
+
+        if(!$proceso){
+            return null;
+        }
+        return $proceso;
     }
 
 
