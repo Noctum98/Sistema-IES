@@ -48,7 +48,7 @@ class SendMails extends Command
 
         $this->output->progressStart(count($preinscripciones));
         foreach ($preinscripciones as $preinscripcion) {
-            // Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
+            Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
             $this->output->progressAdvance();
         }
         $this->output->progressFinish();
