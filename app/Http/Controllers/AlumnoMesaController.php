@@ -240,11 +240,11 @@ class AlumnoMesaController extends Controller
 
             if (!Auth::user()) {
                 //dd($datos);
-                // Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
+                Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
                 $mensaje = 'Ya estas inscripto correctamente, se ha enviado un comprobante a tu correo electrónico.';
             }
 
-            // Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
+            Mail::to($inscripcion->correo)->queue(new MesaEnrolled($datos, $instancia, $inscripcion));
 
             return redirect()->route('mesa.mate', [
                 'instancia_id' => $instancia->id
@@ -305,7 +305,7 @@ class AlumnoMesaController extends Controller
                 } else {
                     $inscripcion->estado_baja = true;
 
-                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
                 }
             } else {
                 if (time() > $inscripcion->mesa->cierre) {
@@ -314,12 +314,12 @@ class AlumnoMesaController extends Controller
                     ]);
                 } else {
                     $inscripcion->estado_baja = true;
-                    // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
+                    Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
                 }
             }
         } else {
             $inscripcion->estado_baja = true;
-            // Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
+            Mail::to($inscripcion->correo)->send(new MesaUnsubscribe($inscripcion, $instancia));
         }
         if (Auth::user()) {
             $inscripcion->user_id = Auth::user()->id;
@@ -364,7 +364,7 @@ class AlumnoMesaController extends Controller
 
             $inscripcion->estado_baja = true;
             $inscripcion->update();
-            // Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
+            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
 
             $ruta = 'mesa.especial.inscriptos';
             $id = $inscripcion->materia_id;
@@ -381,7 +381,7 @@ class AlumnoMesaController extends Controller
             }
             $inscripcion->estado_baja = true;
             $inscripcion->update();
-            // Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
+            Mail::to($inscripcion->correo)->send(new BajaMesaMotivos($request['motivos'], $instancia, $inscripcion));
 
             $ruta = 'mesa.inscriptos';
             $id = $inscripcion->materia_id;

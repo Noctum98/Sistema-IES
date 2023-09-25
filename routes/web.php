@@ -697,7 +697,7 @@ Route::get('/ruta_funcionalidades', function () {
 
     foreach($preinscripciones as $preinscripcion)
     {
-        // Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
+        Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
     }
 
     echo "Mails enviados.";
