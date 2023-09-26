@@ -10,7 +10,7 @@ $(document).ready(function () {
     
 
 
-    if (edad >= 25 && secundario == 'secundario incompleto' && trabajo_relacionado) {
+    if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto') && trabajo_relacionado) {
         $("#7mo").removeClass('d-none');
     } else {
         if (!$("#7mo").hasClass('d-none')) {
@@ -23,7 +23,7 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $(this).val();
 
-        if (edad >= 25 && secundario == 'secundario incompleto' && trelacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto') && trelacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -37,7 +37,7 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $("#edad").val();
 
-        if (edad >= 25 && secundario == 'secundario incompleto' && trelacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto') && trelacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -51,7 +51,7 @@ $(document).ready(function () {
         let secundario = $("#condicion_s").val();
         let edad = $("#edad").val();
         trelacionado = true;
-        if (edad >= 25 && secundario == 'secundario incompleto') {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto')) {
             $("#7mo").removeClass('d-none');
         }
     });

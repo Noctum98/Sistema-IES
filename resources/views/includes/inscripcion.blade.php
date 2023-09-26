@@ -150,6 +150,9 @@
 		<label for="condicion_s">Situación de Escolaridad:</label>
 		<select class="form-select" name="condicion_s" id="condicion_s">
 			<option value="primario completo" {{ old('condicion_s') == 'primario completo' ? 'selected' : '' }}>Primario Completo</option>
+			<option value="primario incompleto" {{old('condicion_s') == 'primario incompleto' ? 'selected="selected"' : ''}}>
+				Primario Incompleto
+			</option>
 			<option value="secundario completo" {{ old('condicion_s') == 'secundario completo' ? 'selected' : '' }}>Secundario Completo</option>
 			<option value="secundario incompleto" {{ old('condicion_s') == 'secundario incompleto' ? 'selected' : '' }}>Secundario Incompleto</option>
 			<option value="cursando actualmente secundario" {{ old('condicion_s') == 'cursando actualmente secundario' ? 'selected' : '' }}>Cursando actualmente el nivel secundario</option>
@@ -212,7 +215,7 @@
 	</div>
 	<div class="form-group">
 		<label for="cantidad_materias_s">Cuantas adeuda?:</label>
-		<input type="number" id="cantidad_materias_s" name="cantidad_materias_s" class="form-control @error('cantidad_materias_s') is-invalid @enderror" value="{{ old('cantidad_materias_s') }}" disabled/>
+		<input type="number" id="cantidad_materias_s" name="cantidad_materias_s" class="form-control @error('cantidad_materias_s') is-invalid @enderror" value="{{ old('cantidad_materias_s') }}" disabled />
 
 		@error('cantidad_materias_s')
 		<span class="invalid-feedback d-block" role="alert">

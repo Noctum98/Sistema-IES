@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MesaAlumno extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     protected $table = 'mesa_alumno';
     protected $fillable = [
         'mesa_id','alumno_id','materia_id','instancia_id','segundo_llamado',
