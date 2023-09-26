@@ -62,6 +62,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
             $dni_nombre = $this->data['dni_archivo'];
 
             $this->disk->put($dir['path'] . '/' . $dni_nombre, $dni_archivo);
+            Storage::disk('temp')->delete($dni_nombre);
         }
 
         if (isset($this->data['dni2_path'])) {
@@ -69,6 +70,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
             $dni_nombre2 = $this->data['dni_archivo_2'];
 
             $this->disk->put($dir['path'] . '/' . $dni_nombre2, $dni_archivo2);
+            Storage::disk('temp')->delete($dni_nombre2);
         }
 
         if (isset($this->data['comprobante_path'])) {
@@ -76,6 +78,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
             $comprobante_nombre = $this->data['comprobante'];
 
             $this->disk->put($dir['path'] . '/' . $comprobante_nombre, $comprobante);
+            Storage::disk('temp')->delete($comprobante_nombre);
         }
 
 
@@ -84,36 +87,42 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
             $certificado_nombre = $this->data['certificado_archivo'];
 
             $this->disk->put($dir['path'] . '/' . $certificado_nombre, $certificado_archivo);
+            Storage::disk('temp')->delete($certificado_nombre);
         }
         if (isset($this->data['certificado2_path'])) {
             $certificado_archivo2 = Storage::disk('temp')->get($this->data['certificado_archivo_2']);
             $certificado_nombre2 = $this->data['certificado_archivo_2'];
 
             $this->disk->put($dir['path'] . '/' . $certificado_nombre2, $certificado_archivo2);
+            Storage::disk('temp')->delete($certificado_nombre2);
         }
         if (isset($this->data['primario_path'])) {
             $primario = Storage::disk('temp')->get($this->data['primario']);
             $primario_nombre = $this->data['primario'];
 
             $this->disk->put($dir['path'] . '/' . $primario_nombre, $primario);
+            Storage::disk('temp')->delete($primario_nombre);
         }
         if (isset($this->data['curriculum_path'])) {
             $curriculum = Storage::disk('temp')->get($this->data['curriculum']);
             $curriculum_nombre = $this->data['curriculum'];
 
             $this->disk->put($dir['path'] . '/' . $curriculum_nombre, $curriculum);
+            Storage::disk('temp')->delete($curriculum_nombre);
         }
         if (isset($this->data['ctrabajo_path'])) {
             $ctrabajo = Storage::disk('temp')->get($this->data['ctrabajo']);
             $ctrabajo_nombre = $this->data['ctrabajo'];
 
             $this->disk->put($dir['path'] . '/' . $ctrabajo_nombre, $ctrabajo);
+            Storage::disk('temp')->delete($ctrabajo_nombre);
         }
         if (isset($this->data['nota_path'])) {
             $nota = Storage::disk('temp')->get($this->data['nota']);
             $nota_nombre = $this->data['nota'];
 
             $this->disk->put($dir['path'] . '/' . $nota_nombre, $nota);
+            Storage::disk('temp')->delete($nota_nombre);
         }
 
         $this->data['estado'] = 'sin verificar';

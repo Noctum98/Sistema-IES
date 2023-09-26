@@ -347,7 +347,7 @@ Route::prefix('preinscripcion')->group(function () {
         'pre.inscripto'
     );
 
-    Route::get('editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
+    Route::get('/form/editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/admin/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
     Route::get('/admin/verificadas/{id}', [PreinscripcionController::class, 'vista_verificadas'])->name(

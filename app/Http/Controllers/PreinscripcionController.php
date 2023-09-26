@@ -296,7 +296,6 @@ class PreinscripcionController extends Controller
         ]);
 
         $carrera = Carrera::find($carrera_id);
-        $request['carrera_id'] = $carrera_id;
 
         $exists = Preinscripcion::where([
             'dni' => $request['dni'],
@@ -313,6 +312,7 @@ class PreinscripcionController extends Controller
         }
 
         $data = $this->preinscripcionService->guardarArchivosTemporales($request);
+        $data['carrera_id'] = $carrera_id;
 
         
         dispatch(new PreinscripcionGoogleDriveJob($data));
@@ -324,8 +324,6 @@ class PreinscripcionController extends Controller
 
     public function editar(Request $request, $id)
     {
-        $preinscripcion = Preinscripcion::find($id);
-
         $validate = $this->validate($request, [
             'año'           =>  ['numeric', 'max:3'],
             'nombres'       =>  ['required'],
@@ -357,103 +355,10 @@ class PreinscripcionController extends Controller
         ]);
 
         $preinscripcion = Preinscripcion::find($id);
-        $dni_archivo = $request->file('dni_archivo_file');
-        $dni_archivo_2 = $request->file('dni_archivo_2_file');
-        $comprobante = $request->file('comprobante_file');
-        $certificado_archivo = $request->file('certificado_archivo_file');
-        $certificado_archivo_2 = $request->file('certificado_archivo_2_file');
-        $primario = $request->file('primario_file');
-        $curriculum = $request->file('curriculum_file');
-        $ctrabajo = $request->file('ctrabajo_file');
-        $nota = $request->file('nota_file');
 
-
-        $dir = '/';
-        $recursive = false; // Get subdirectories also?
-        $contents = collect($this->disk->listContents($dir, $recursive));
-        $dir = $contents->where('type', '=', 'dir')
-            ->where('filename', '=', $request['dni'])
-            ->first();
-
-        if (!$dir) {
-            $this->disk->makeDirectory($request['dni']);
-
-            $contents = collect($this->disk->listContents($dir, $recursive));
-            $dir = $contents->where('type', '=', 'dir')
-                ->where('filename', '=', $request['dni'])
-                ->first();
-        }
-
-        if ($dni_archivo) {
-            $dni_nombre = time() . $dni_archivo->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->dni_archivo);
-            $this->disk->put($dir['path'] . '/' . $dni_nombre, File::get($dni_archivo));
-            $request['dni_archivo'] = $dni_nombre;
-        }
-        if ($dni_archivo_2) {
-            $dni_nombre2 = time() . $dni_archivo_2->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->dni_archivo_2);
-            $this->disk->put($dir['path'] . '/' . $dni_nombre2, File::get($dni_archivo_2));
-            $request['dni_archivo_2'] = $dni_nombre2;
-        }
-        if ($comprobante) {
-            $comprobante_nombre = time() . $comprobante->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->comprobante);
-            $this->disk->put($dir['path'] . '/' . $comprobante_nombre, File::get($comprobante));
-            $request['comprobante'] = $comprobante_nombre;
-        }
-
-        if ($certificado_archivo) {
-            $certificado_nombre = time() . $certificado_archivo->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->certificado_archivo);
-            $this->disk->put($dir['path'] . '/' . $certificado_nombre, File::get($certificado_archivo));
-            $request['certificado_archivo'] = $certificado_nombre;
-        }
-        if ($certificado_archivo_2) {
-            $certificado_nombre2 = time() . $certificado_archivo_2->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->certificado_archivo_2);
-            $this->disk->put($dir['path'] . '/' . $certificado_nombre2, File::get($certificado_archivo_2));
-            $request['certificado_archivo_2'] = $certificado_nombre2;
-        }
-
-        if ($primario) {
-            $primario_nombre = time() . $primario->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->primario);
-            $this->disk->put($dir['path'] . '/' . $primario_nombre, File::get($primario));
-            $request['primario'] = $primario_nombre;
-        }
-        if ($curriculum) {
-            $curriculum_nombre = time() . $curriculum->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->curriculum);
-            $this->disk->put($dir['path'] . '/' . $curriculum_nombre, File::get($curriculum));
-            $request['curriculum'] = $curriculum_nombre;
-        }
-        if ($ctrabajo) {
-            $ctrabajo_nombre = time() . $ctrabajo->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->ctrabajo);
-            $this->disk->put($dir['path'] . '/' . $ctrabajo_nombre, File::get($ctrabajo));
-            $request['ctrabajo'] = $ctrabajo_nombre;
-        }
-        if ($nota) {
-            $nota_nombre = time() . $nota->getClientOriginalName();
-
-            //$this->disk->delete($dir['path'].'/'.$preinscripcion->nota);
-            $this->disk->put($dir['path'] . '/' . $nota_nombre, File::get($nota));
-            $request['nota'] = $nota_nombre;
-        }
-
-        $request['estado'] = 'sin verificar';
-        $preinscripcion->update($request->all());
-
-        // Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        $data = $this->preinscripcionService->guardarArchivosTemporales($request);        
+        dispatch(new PreinscripcionGoogleDriveJob($data,$preinscripcion));
+        
 
         return redirect()->route('pre.editado', [
             'timecheck' => $preinscripcion->timecheck,
