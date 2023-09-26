@@ -19,7 +19,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $disk;
-    private $request;
+    private $data;
     private $preinscripcion;
 
     /**
@@ -27,12 +27,10 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($request,$preinscripcion = null)
+    public function __construct($data,$preinscripcion = null)
     {
-        $this->disk = Storage::disk('google');
-        $this->request = $request;
+        $this->data = $data;
         $this->preinscripcion = $preinscripcion;
-
     }
 
     /**
@@ -42,95 +40,90 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
      */
     public function handle()
     {
-        $dni_archivo = $this->request->file('dni_archivo_file');
-        $dni_archivo2 = $this->request->file('dni_archivo_2_file');
-        $comprobante = $this->request->file('comprobante_file');
-        $certificado_archivo = $this->request->file('certificado_archivo_file');
-        $certificado_archivo2 = $this->request->file('certificado_archivo_2_file');
-        $primario = $this->request->file('primario_file');
-        $curriculum = $this->request->file('curriculum_file');
-        $ctrabajo = $this->request->file('ctrabajo_file');
-        $nota = $this->request->file('nota_file');
+        $this->disk = Storage::disk('google');
 
         $dir = '/';
         $recursive = false; // Get subdirectories also?
         $contents = collect($this->disk->listContents($dir, $recursive));
         $dir = $contents->where('type', '=', 'dir')
-            ->where('filename', '=', $this->request['dni'])
+            ->where('filename', '=', $this->data['dni'])
             ->first();
 
         if (!$dir) {
-            $path_folder = $this->disk->makeDirectory($this->request['dni']);
+            $path_folder = $this->disk->makeDirectory($this->data['dni']);
             $contents = collect($this->disk->listContents($dir, $recursive));
             $dir = $contents->where('type', '=', 'dir')
-                ->where('filename', '=', $this->request['dni'])
+                ->where('filename', '=', $this->data['dni'])
                 ->first();
         }
 
-        if ($dni_archivo) {
-            $dni_nombre = time() . $dni_archivo->getClientOriginalName();
+        if (isset($this->data['dni_path'])) {
+            $dni_archivo = Storage::disk('temp')->get($this->data['dni_archivo']);
+            $dni_nombre = $this->data['dni_archivo'];
 
-
-            $this->disk->put($dir['path'] . '/' . $dni_nombre, File::get($dni_archivo));
-            $this->request['dni_archivo'] = $dni_nombre;
-        }
-        if ($dni_archivo2) {
-            $dni_nombre2 = time() . $dni_archivo2->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $dni_nombre2, File::get($dni_archivo2));
-            $this->request['dni_archivo_2'] = $dni_nombre2;
-        }
-        if ($comprobante) {
-            $comprobante_nombre = time() . $comprobante->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $comprobante_nombre, File::get($comprobante));
-            $this->request['comprobante'] = $comprobante_nombre;
-        }
-        if ($certificado_archivo) {
-            $certificado_nombre = time() . $certificado_archivo->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $certificado_nombre, File::get($certificado_archivo));
-            $this->request['certificado_archivo'] = $certificado_nombre;
-        }
-        if ($certificado_archivo2) {
-            $certificado_nombre2 = time() . $certificado_archivo2->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $certificado_nombre2, File::get($certificado_archivo2));
-            $this->request['certificado_archivo_2'] = $certificado_nombre2;
-        }
-        if ($primario) {
-            $primario_nombre = time() . $primario->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $primario_nombre, File::get($primario));
-            $this->request['primario'] = $primario_nombre;
-        }
-        if ($curriculum) {
-            $curriculum_nombre = time() . $curriculum->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $curriculum_nombre, File::get($curriculum));
-            $this->request['curriculum'] = $curriculum_nombre;
-        }
-        if ($ctrabajo) {
-            $ctrabajo_nombre = time() . $ctrabajo->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $ctrabajo_nombre, File::get($ctrabajo));
-            $this->request['ctrabajo'] = $ctrabajo_nombre;
-        }
-        if ($nota) {
-            $nota_nombre = time() . $nota->getClientOriginalName();
-
-            $this->disk->put($dir['path'] . '/' . $nota_nombre, File::get($nota));
-            $this->request['nota'] = $nota_nombre;
+            $this->disk->put($dir['path'] . '/' . $dni_nombre, $dni_archivo);
         }
 
-        $this->request['estado'] = 'sin verificar';
+        if (isset($this->data['dni2_path'])) {
+            $dni_archivo2 = Storage::disk('temp')->get($this->data['dni_archivo_2']);
+            $dni_nombre2 = $this->data['dni_archivo_2'];
+
+            $this->disk->put($dir['path'] . '/' . $dni_nombre2, $dni_archivo2);
+        }
+
+        if (isset($this->data['comprobante_path'])) {
+            $comprobante = Storage::disk('temp')->get($this->data['comprobante']);
+            $comprobante_nombre = $this->data['comprobante'];
+
+            $this->disk->put($dir['path'] . '/' . $comprobante_nombre, $comprobante);
+        }
+
+
+        if (isset($this->data['certificado_path'])) {
+            $certificado_archivo = Storage::disk('temp')->get($this->data['certificado_archivo']);
+            $certificado_nombre = $this->data['certificado_archivo'];
+
+            $this->disk->put($dir['path'] . '/' . $certificado_nombre, $certificado_archivo);
+        }
+        if (isset($this->data['certificado2_path'])) {
+            $certificado_archivo2 = Storage::disk('temp')->get($this->data['certificado_archivo_2']);
+            $certificado_nombre2 = $this->data['certificado_archivo_2'];
+
+            $this->disk->put($dir['path'] . '/' . $certificado_nombre2, $certificado_archivo2);
+        }
+        if (isset($this->data['primario_path'])) {
+            $primario = Storage::disk('temp')->get($this->data['primario']);
+            $primario_nombre = $this->data['primario'];
+
+            $this->disk->put($dir['path'] . '/' . $primario_nombre, $primario);
+        }
+        if (isset($this->data['curriculum_path'])) {
+            $curriculum = Storage::disk('temp')->get($this->data['curriculum']);
+            $curriculum_nombre = $this->data['curriculum'];
+
+            $this->disk->put($dir['path'] . '/' . $curriculum_nombre, $curriculum);
+        }
+        if (isset($this->data['ctrabajo_path'])) {
+            $ctrabajo = Storage::disk('temp')->get($this->data['ctrabajo']);
+            $ctrabajo_nombre = $this->data['ctrabajo'];
+
+            $this->disk->put($dir['path'] . '/' . $ctrabajo_nombre, $ctrabajo);
+        }
+        if (isset($this->data['nota_path'])) {
+            $nota = Storage::disk('temp')->get($this->data['nota']);
+            $nota_nombre = $this->data['nota'];
+
+            $this->disk->put($dir['path'] . '/' . $nota_nombre, $nota);
+        }
+
+        $this->data['estado'] = 'sin verificar';
 
         if($this->preinscripcion)
         {
-            $this->preinscripcion->update($this->request->all());
+            $this->preinscripcion->update($this->data);
         }else{
-            $this->request['timecheck'] = time();
-            $preinscripcion = Preinscripcion::create($this->request->all());
+            $this->data['timecheck'] = uniqid();
+            $preinscripcion = Preinscripcion::create($this->data);
             Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
         }
     }
