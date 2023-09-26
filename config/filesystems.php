@@ -47,8 +47,15 @@ return [
             'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
             'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
             'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
+            'verify' => false
             // 'teamDriveId' => env('GOOGLE_DRIVE_TEAM_DRIVE_ID'),
-        ]
+        ],
+        'temp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/temp'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
     ],
 
     /*
