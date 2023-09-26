@@ -1,14 +1,14 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h2 class="h1 text-info">
+        <h4 class="text-info">
             Mis procesos <br/>
             <small style="font-size: 0.5em">
                 <i>
                     {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
                 </i>
             </small>
-        </h2>
+        </h4>
         <hr>
         <div class="table-responsive">
             <table class="table">
