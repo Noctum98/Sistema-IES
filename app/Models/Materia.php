@@ -156,5 +156,21 @@ class Materia extends Model
         return $proceso;
     }
 
+    public function getActaVolante($alumno_id)
+    {
+        $actaVolante = ActaVolante::where([
+            'alumno_id' => $alumno_id,
+            'materia_id' => $this->id
+        ])->first();
+
+
+        if(!$actaVolante){
+            return null;
+        }
+         return  $actaVolante;
+
+
+    }
+
 
 }

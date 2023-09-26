@@ -76,31 +76,46 @@
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
                 <p class="card-text text-right m-1 p-1 me-5">1° Año</p>
             </div>
+            <div class="card-footer border-bottom col-sm-12 mx-auto">
+                <div class="row">
+                    <div class="col-sm-4 px-3 border-right">
+                        Materia
+                    </div>
+                    <div class="col-sm-4  border-right">
+                        Regularidad
+                    </div>
+                    <div class="col-sm-4 ">
+                        Nota final
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="card-body col-sm-12 mx-auto">
                     @foreach($carrera->materias()->get() as $materia)
                         @if($materia->año == 1)
-
                             <div class="row">
-                                <div class="col-sm-4 px-3 ">
+                                <div class="col-sm-4 px-3 border-right">
                                     <p class="card-text">{{$materia->nombre}}</p>
                                 </div>
-                                <div class="col-sm-8">
-                                    <p class="card-text text-center">{{ucwords(
-    optional(
-    optional($materia->getProcesoCarrera($alumno->id))->estado())
-    ->first()->regularidad??'-')}}</p>
-
+                                <div class="col-sm-4 border-right">
+                                    <p class="card-text text-center">
+                                        {{ucwords(
+                                            optional(
+                                                optional($materia->getProcesoCarrera($alumno->id))->estado())
+                                        ->first()->regularidad??'-')}}
+                                    </p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="card-text text-center">
+                                        {{optional($materia->getActaVolante($alumno->id))->promedio??'-'}}
+                                    </p>
                                 </div>
 
                             </div>
                             <hr class="m-1 p-0"/>
                         @endif
                     @endforeach
-
                 </div>
-
-
             </div>
         </div>
 
@@ -108,29 +123,46 @@
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
                 <p class="card-text text-right m-1 p-1 me-5">2° Año</p>
             </div>
+            <div class="card-footer border-bottom col-sm-12 mx-auto">
+                <div class="row">
+                    <div class="col-sm-4 px-3 border-right">
+                        Materia
+                    </div>
+                    <div class="col-sm-4  border-right">
+                        Regularidad
+                    </div>
+                    <div class="col-sm-4 ">
+                        Nota final
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="card-body col-sm-12 mx-auto">
                     @foreach($carrera->materias()->get() as $materia)
                         @if($materia->año == 2)
-
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 px-3 border-right">
                                     <p class="card-text">{{$materia->nombre}}</p>
                                 </div>
-                                <div class="col-sm-8">
-                                    <p class="card-text text-center">{{ucwords(
-    optional(
-    optional($materia->getProcesoCarrera($alumno->id))->estado())
-    ->first()->regularidad??'-')}}</p>
+                                <div class="col-sm-4 border-right">
+                                    <p class="card-text text-center">
+                                        {{ucwords(
+                                            optional(
+                                                optional($materia->getProcesoCarrera($alumno->id))->estado())
+                                        ->first()->regularidad??'-')}}
+                                    </p>
                                 </div>
+                                <div class="col-sm-4">
+                                    <p class="card-text text-center">
+                                        {{optional($materia->getActaVolante($alumno->id))->promedio??'-'}}
+                                    </p>
+                                </div>
+
                             </div>
                             <hr class="m-1 p-0"/>
                         @endif
                     @endforeach
-
                 </div>
-
-
             </div>
         </div>
 
@@ -138,29 +170,47 @@
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
                 <p class="card-text text-right m-1 p-1 me-5">3° Año</p>
             </div>
+            <div class="card-footer border-bottom col-sm-12 mx-auto">
+                <div class="row">
+                    <div class="col-sm-4 px-3 border-right">
+                        Materia
+                    </div>
+                    <div class="col-sm-4  border-right">
+                        Regularidad
+                    </div>
+                    <div class="col-sm-4 ">
+                        Nota final
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="card-body col-sm-12 mx-auto">
+
                     @foreach($carrera->materias()->get() as $materia)
                         @if($materia->año == 3)
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 px-3 border-right">
                                     <p class="card-text">{{$materia->nombre}}</p>
                                 </div>
-                                <div class="col-sm-8">
-                                    <p class="card-text text-center">{{ucwords(
-    optional(
-    optional($materia->getProcesoCarrera($alumno->id))->estado())
-    ->first()->regularidad??'-')}}</p>
+                                <div class="col-sm-4 border-right">
+                                    <p class="card-text text-center">
+                                        {{ucwords(
+                                            optional(
+                                                optional($materia->getProcesoCarrera($alumno->id))->estado())
+                                        ->first()->regularidad??'-')}}
+                                    </p>
                                 </div>
+                                <div class="col-sm-4">
+                                    <p class="card-text text-center">
+                                        {{optional($materia->getActaVolante($alumno->id))->promedio??'-'}}
+                                    </p>
+                                </div>
+
                             </div>
                             <hr class="m-1 p-0"/>
                         @endif
                     @endforeach
-
                 </div>
-
-
             </div>
         </div>
-
 @endsection
