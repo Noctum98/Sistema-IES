@@ -131,7 +131,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
         {
             $this->preinscripcion->update($this->data);
         }else{
-            $this->data['timecheck'] = uniqid();
+            $this->data['timecheck'] = time();
             $preinscripcion = Preinscripcion::create($this->data);
             Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
         }
