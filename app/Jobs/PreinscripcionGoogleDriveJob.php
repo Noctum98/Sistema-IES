@@ -130,6 +130,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
         if($this->preinscripcion)
         {
             $this->preinscripcion->update($this->data);
+            
         }else{
             $this->data['timecheck'] = time();
             $preinscripcion = Preinscripcion::create($this->data);
