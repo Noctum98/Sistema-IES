@@ -137,7 +137,7 @@
         </table>
     </div>
 
-    @if($materia->getTotalAttribute() > 1)
+    @if($materia->getTotalAttribute() >= 1)
     @foreach($materia->mesas_instancias($instancia->id) as $mesa)
     <h3 class="text-info">Mesa: {{ $mesa->comision->nombre }}</h3>
     @if(count($mesa->mesa_inscriptos()->get()) > 0)
