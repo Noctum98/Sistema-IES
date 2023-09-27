@@ -70,7 +70,7 @@
 						</select>
 					</div>
 					<div class="form-group">
-					<label for="dni">D.N.I (Sin puntos<span id="label_dni"></span>):</label>
+						<label for="dni">D.N.I (Sin puntos<span id="label_dni"></span>):</label>
 						<input type="number" id="dni" name="dni" class="form-control @error('dni') is-invalid @enderror" value="{{$preinscripcion->dni}}" required />
 
 						@error('dni')
@@ -119,7 +119,7 @@
 						</span>
 						@enderror
 					</div>
-					
+
 					<div class="form-group">
 						<label for="domicilio">Domicilio:</label>
 						<input type="text" id="domicilio" name="domicilio" class="form-control @error('domicilio') is-invalid @enderror" value="{{$preinscripcion->domicilio}}" required />
@@ -253,13 +253,13 @@
 					<div class="form-group">
 						<label for="materia_s">Adeuda materias:</label>
 						<div class="form-check">
-							<input class="form-check-input" type="radio" value="si" name="materia_s" id="materia_s1" {{$preinscripcion->materias_s == 'si' ? 'checked' : ''}}>
+							<input class="form-check-input" type="radio" value="si" name="materias_s" id="materia_s1" {{$preinscripcion->materias_s == 'si' ? 'checked' : ''}}>
 							<label class="form-check-label" for="materia_s1">
 								Si
 							</label>
 						</div>
 						<div class="form-check">
-							<input class="form-check-input" type="radio" value="no" name="materia_s" id="materia_s2" {{$preinscripcion->materias_s == 'no' ? 'checked' : ''}}>
+							<input class="form-check-input" type="radio" value="no" name="materias_s" id="materia_s2" {{$preinscripcion->materias_s == 'no' ? 'checked' : ''}}>
 							<label class="form-check-label" for="materia_s2">
 								No
 							</label>
@@ -295,15 +295,8 @@
 							</label>
 						</div>
 					</div>
+
 					<div class="form-group">
-						<label>Alguna vez tuviste un trabajo relacionado a la carrera? </label>
-						<div class="form-check">
-							<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
-							<label class="form-check-label" for="trabajo_relacionado1">
-								Si
-							</label>
-						</div>
-                        <div class="form-group">
 						<label>Alguna vez tuviste un trabajo relacionado a la carrera? </label>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" value="si" name="trabajo_relacionado" id="trabajo_relacionado1" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }} />
@@ -323,23 +316,9 @@
 						</span>
 						@enderror
 					</div>
-						<br>
-						<h4 class="text-secondary">Documentación a adjuntar</h4>
-						<hr>
-						<div class="form-group">
-							<label for="dni_archivo_file">
-								DNI:
-								@if($preinscripcion->dni_archivo)
-									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-								@endif
-							</label>
-						</div>
-						@error('trabajo')
-						<span class="invalid-feedback d-block" role="alert">
-							<strong>{{ $message }}</strong>
-						</span>
-						@enderror
-					</div>
+					<br>
+
+
 					<br>
 					<h4 class="text-secondary">Documentación a adjuntar</h4>
 					<hr>
@@ -424,7 +403,9 @@
 						</span>
 						@enderror
 					</div>
-					<div id="7mo" class="d-none">
+
+					@if($preinscripcion->articulo_septimo)
+					<div id="7mo">
 						<br>
 						<h4 class="text-secondary">Artículo 7mo</h4>
 						<hr>
@@ -489,6 +470,7 @@
 							@enderror
 						</div>
 					</div>
+					@endif
 					<input type="submit" value="Actualizar datos" class="btn btn-success" id="loading">
 				</form>
 			</div>
