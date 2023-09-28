@@ -40,23 +40,6 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="personal">Profesor:</label>
-					<select class="form-control" id="personal" name="personal">
-						@foreach($personal as $persona)
-							@if($persona->id == $materia->personal_id)
-								<option value="{{ $persona->id }}" selected="selected">
-									{{ $persona->nombres.' '.$persona->apellidos}}
-								</option>
-							@else
-								<option value="{{ $persona->id }}">
-								{{ $persona->nombres.' '.$persona->apellidos}}
-								</option>
-							@endif
-
-						@endforeach
-					</select>
-				</div>
-				<div class="form-group">
 					<label for="correlativa" name="correlativa">Correlatividad:</label>
 					<select class="form-control" id="correlativa">
 						<option value="">No es correlativa</option>
