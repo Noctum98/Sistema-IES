@@ -81,10 +81,14 @@
                     <div class="col-sm-4 px-3 border-right">
                         Materia
                     </div>
-                    <div class="col-sm-4  border-right">
+                    <div class="col-sm-3  border-right">
+                        Régimen
+                    </div>
+                    <div class="col-sm-3  border-right">
                         Regularidad
                     </div>
-                    <div class="col-sm-4 ">
+
+                    <div class="col-sm-2 ">
                         Nota final
                     </div>
                 </div>
@@ -95,9 +99,20 @@
                         @if($materia->año == 1)
                             <div class="row">
                                 <div class="col-sm-4 px-3 border-right">
-                                    <p class="card-text">{{$materia->nombre}}</p>
+                                    <p class="card-text">
+                                        <b>{{$materia->nombre}}</b>
+                                    </p>
                                 </div>
-                                <div class="col-sm-4 border-right">
+                                <div class="col-sm-3 px-3 border-right">
+                                    <p class="card-text">
+                                        @if($materia->regimen)
+                                            <i> {{$materia->regimen}}</i>
+                                        @else
+                                            <small><i>No indicado</i></small>
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="col-sm-3 border-right">
                                     <p class="card-text text-center">
                                         {{ucwords(
                                             optional(
@@ -105,9 +120,14 @@
                                         ->first()->regularidad??'-')}}
                                     </p>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <p class="card-text text-center">
-                                        {{optional($materia->getActaVolante($alumno->id))->promedio??'-'}}
+                                        @if($materia->getActaVolante($alumno->id))
+                                            @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                        @else
+                                            -
+                                        @endif
+
                                     </p>
                                 </div>
 
@@ -128,10 +148,14 @@
                     <div class="col-sm-4 px-3 border-right">
                         Materia
                     </div>
-                    <div class="col-sm-4  border-right">
+                    <div class="col-sm-3  border-right">
+                        Régimen
+                    </div>
+                    <div class="col-sm-3  border-right">
                         Regularidad
                     </div>
-                    <div class="col-sm-4 ">
+
+                    <div class="col-sm-2 ">
                         Nota final
                     </div>
                 </div>
@@ -142,9 +166,20 @@
                         @if($materia->año == 2)
                             <div class="row">
                                 <div class="col-sm-4 px-3 border-right">
-                                    <p class="card-text">{{$materia->nombre}}</p>
+                                    <p class="card-text">
+                                        <b>{{$materia->nombre}}</b>
+                                    </p>
                                 </div>
-                                <div class="col-sm-4 border-right">
+                                <div class="col-sm-3 px-3 border-right">
+                                    <p class="card-text">
+                                        @if($materia->regimen)
+                                            <i> {{$materia->regimen}}</i>
+                                        @else
+                                            <small><i>No indicado</i></small>
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="col-sm-3 border-right">
                                     <p class="card-text text-center">
                                         {{ucwords(
                                             optional(
@@ -152,9 +187,14 @@
                                         ->first()->regularidad??'-')}}
                                     </p>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <p class="card-text text-center">
-                                        {{optional($materia->getActaVolante($alumno->id))->promedio??'-'}}
+                                        @if($materia->getActaVolante($alumno->id))
+                                            @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                        @else
+                                            -
+                                        @endif
+
                                     </p>
                                 </div>
 
@@ -175,10 +215,14 @@
                     <div class="col-sm-4 px-3 border-right">
                         Materia
                     </div>
-                    <div class="col-sm-4  border-right">
+                    <div class="col-sm-3  border-right">
+                        Régimen
+                    </div>
+                    <div class="col-sm-3  border-right">
                         Regularidad
                     </div>
-                    <div class="col-sm-4 ">
+
+                    <div class="col-sm-2 ">
                         Nota final
                     </div>
                 </div>
@@ -190,9 +234,20 @@
                         @if($materia->año == 3)
                             <div class="row">
                                 <div class="col-sm-4 px-3 border-right">
-                                    <p class="card-text">{{$materia->nombre}}</p>
+                                    <p class="card-text">
+                                        <b>{{$materia->nombre}}</b>
+                                    </p>
                                 </div>
-                                <div class="col-sm-4 border-right">
+                                <div class="col-sm-3 px-3 border-right">
+                                    <p class="card-text">
+                                        @if($materia->regimen)
+                                            <i> {{$materia->regimen}}</i>
+                                        @else
+                                            <small><i>No indicado</i></small>
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="col-sm-3 border-right">
                                     <p class="card-text text-center">
                                         {{ucwords(
                                             optional(
@@ -200,9 +255,14 @@
                                         ->first()->regularidad??'-')}}
                                     </p>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <p class="card-text text-center">
-                                        {{optional($materia->getActaVolante($alumno->id))->promedio??'-'}}
+                                        @if($materia->getActaVolante($alumno->id))
+                                            @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                        @else
+                                            -
+                                        @endif
+
                                     </p>
                                 </div>
 
