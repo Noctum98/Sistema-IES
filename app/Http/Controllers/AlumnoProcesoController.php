@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\BajaMesaMotivos;
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Instancia;
 use App\Models\Sede;
 use App\Models\Carrera;
@@ -36,6 +37,41 @@ class AlumnoProcesoController extends Controller
 
         return view('proceso.alumno',[
             'alumno' => $alumno
+        ]);
+    }
+
+    public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera){
+        $alumno = Alumno::find($idAlumno);
+        $carrera = Carrera::find($idCarrera);
+
+        if(!$alumno)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'No se encontró el alumno solicitado'
+            ]);
+        }
+        if(!$carrera)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'No se encontró la carrera solicitada'
+            ]);
+        }
+
+        $alumnoCarrera = AlumnoCarrera::where([
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id,
+        ])->first();
+
+        if(!$alumnoCarrera)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'No se encontró la carrera solicitada para el alumno indicado'
+            ]);
+        }
+
+        return view('proceso.alumnoCarrera',[
+            'alumno' => $alumno,
+            'carrera' => $carrera
         ]);
     }
 

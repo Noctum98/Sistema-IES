@@ -172,6 +172,9 @@
                                     Año: {{ $alumno->lastProcesoCarrera($carrera->id)->año }}
                                     <br>
                                     Ciclo: {{ $alumno->lastProcesoCarrera($carrera->id)->ciclo_lectivo }}
+                                    <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id])}}">
+                                        Ver desempeño académico
+                                    </a>
 
                                     <div class="row">
                                         @if(Session::has('admin'))
@@ -279,7 +282,7 @@
         </div>
         <hr>
     </div>
-    </div>
+
 @endsection
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>

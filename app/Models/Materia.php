@@ -31,7 +31,7 @@ class Materia extends Model
 
     public function tipoMateria(): BelongsTo
     {
-        return $this->belongsTo(TipoMateria::class,'tipo_materia_id');
+        return $this->belongsTo(TipoMateria::class, 'tipo_materia_id');
     }
 
     /**
@@ -72,16 +72,15 @@ class Materia extends Model
         return $this->comisiones()->count();
     }
 
-    public function mesa($instancia_id,$comision_id = null)
+    public function mesa($instancia_id, $comision_id = null)
     {
         $mesa = Mesa::where([
             'instancia_id' => $instancia_id,
             'materia_id' => $this->id
         ]);
 
-        if($comision_id)
-        {
-            $mesa = $mesa->where('comision_id',$comision_id);
+        if ($comision_id) {
+            $mesa = $mesa->where('comision_id', $comision_id);
         }
 
         return $mesa->first();
@@ -98,10 +97,9 @@ class Materia extends Model
     public function mesasByMateria($instancia_id, $materias, $comision = null)
     {
 
-        $mesas =  Mesa::select('mesas.*')
+        $mesas = Mesa::select('mesas.*')
             ->where('mesas.instancia_id', $instancia_id)
-            ->whereIn('mesas.materia_id', $materias)
-            ;
+            ->whereIn('mesas.materia_id', $materias);
 
         if ($comision) {
             $mesas = $mesas->where('mesas.comision_id', $comision);
@@ -137,7 +135,41 @@ class Materia extends Model
 
     public function proceso($alumno_id)
     {
-        return Proceso::where(['materia_id'=>$this->id,'alumno_id',$alumno_id,'ciclo_lectivo'=>date('Y')])->first();
+        return Proceso::where(['materia_id' => $this->id, 'alumno_id', $alumno_id, 'ciclo_lectivo' => date('Y')])->first();
+    }
+
+    /**
+     * @param $alumno_id
+     * @return mixed
+     */
+    public function getProcesoCarrera($alumno_id)
+    {
+        $proceso = Proceso::where([
+                'materia_id' => $this->id,
+                'alumno_id' => $alumno_id
+            ]
+        )->first();
+
+        if(!$proceso){
+            return null;
+        }
+        return $proceso;
+    }
+
+    public function getActaVolante($alumno_id)
+    {
+        $actaVolante = ActaVolante::where([
+            'alumno_id' => $alumno_id,
+            'materia_id' => $this->id
+        ])->first();
+
+
+        if(!$actaVolante){
+            return null;
+        }
+         return  $actaVolante;
+
+
     }
 
 
