@@ -57,12 +57,10 @@ class MateriaController extends Controller
     public function vista_crear(int $carrera_id)
     {
         $carrera = Carrera::find($carrera_id);
-        $personal = Personal::where('sede_id', $carrera->sede_id)->get();
         $materias = Materia::where('carrera_id', $carrera_id)->get();
 
         return view('materia.create', [
             'carrera' => $carrera,
-            'personal' => $personal,
             'materias' => $materias,
         ]);
     }
@@ -70,12 +68,10 @@ class MateriaController extends Controller
     public function vista_editar(int $id)
     {
         $materia = Materia::find($id);
-        $personal = Personal::where('sede_id', $materia->carrera->sede_id)->get();
         $materias = Materia::where('carrera_id', $materia->carrera_id)->get();
 
         return view('materia.edit', [
             'materia' => $materia,
-            'personal' => $personal,
             'materias' => $materias,
         ]);
     }
