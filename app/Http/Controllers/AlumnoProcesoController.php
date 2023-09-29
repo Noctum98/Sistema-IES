@@ -16,6 +16,8 @@ use App\Mail\MesaUnsubscribe;
 use App\Models\Materia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class AlumnoProcesoController extends Controller
 {
@@ -41,8 +43,33 @@ class AlumnoProcesoController extends Controller
     }
 
     public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera){
+        if(!Auth::check()){
+            return Redirect::route('login')->withInput()->with('errmessage', 'Aún no se ha identificado en el sistema.');
+        }
+
+        $pase = false;
         $alumno = Alumno::find($idAlumno);
+        if (Session::has('alumno')) {
+
+            if (Auth::user()->id == $alumno->user->id) {
+                $pase = true;
+            }
+
+        }
+        if (Session::has('coordinador') || Session::has('admin')) {
+            $pase = true;
+        }
+
+
+        if (!$pase) {
+            return view('alumno.detail', [
+                'alumno' => $alumno,
+                'carreras' => $alumno->carreras,
+                'ciclo_lectivo' => date('Y')
+            ]);
+        }
         $carrera = Carrera::find($idCarrera);
+
 
         if(!$alumno)
         {

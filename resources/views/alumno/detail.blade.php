@@ -153,11 +153,12 @@
                             <strong>Condición: </strong>{{ explode("_",ucwords($alumno->regularidad))[0].' '.explode("_",ucwords($alumno->regularidad))[1] }}
                         </li>
                         <li><strong>Cohorte: </strong>{{ $alumno->cohorte?? 'No indicada'}} </li>
-                        <li><strong>1<sup>er</sup> Acreditación: </strong>{{ $alumno->fecha_primera_acreditacion?? 'No indicada'}} </li>
+                        <li><strong>1<sup>er</sup> Acreditación:
+                            </strong>{{ $alumno->fecha_primera_acreditacion?? 'No indicada'}} </li>
                         <li><strong>Activo: </strong>{{ $alumno->active?'Si': 'No'}} </li>
 
-{{--                    </ul>--}}
-{{--                    <ul class="datos-inscripcion col-md-6">--}}
+                        {{--                    </ul>--}}
+                        {{--                    <ul class="datos-inscripcion col-md-6">--}}
                         <li>
                             <h4 class="text-info"><u>Datos de Inscripción</u></h4>
                         </li>
@@ -172,8 +173,15 @@
                                     Año: {{ $alumno->lastProcesoCarrera($carrera->id)->año }}
                                     <br>
                                     Ciclo: {{ $alumno->lastProcesoCarrera($carrera->id)->ciclo_lectivo }}
-                                    <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id])}}">
+                                    <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id])}}"
+                                       class="btn btn-link position-relative p-1"
+                                    >
                                         Ver desempeño académico
+                                        <small
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                Beta
+                                                <span class="visually-hidden">Funcionalidad Beta</span>
+                                        </small>
                                     </a>
 
                                     <div class="row">

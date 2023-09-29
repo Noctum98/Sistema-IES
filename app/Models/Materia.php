@@ -156,6 +156,41 @@ class Materia extends Model
         return $proceso;
     }
 
+
+    /**
+     * @param $alumno_id
+     * @return mixed
+     */
+    public function getEstadoAlumnoPorMateria($alumno_id):string
+    {
+        $estado = '-';
+
+
+
+        $proceso = Proceso::where([
+                'materia_id' => $this->id,
+                'alumno_id' => $alumno_id
+            ]
+        )->first();
+
+
+        if(!$proceso){
+            return $estado;
+        }
+
+        $regularidad = Regularidad::where([
+            'proceso_id' => $proceso->id
+        ])->first()
+        ;
+
+        if($regularidad){
+            return $regularidad->obtenerEstado()->regularidad . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>' ;
+        }
+
+        return $proceso->regularidad??'-';
+
+    }
+
     public function getActaVolante($alumno_id)
     {
         $actaVolante = ActaVolante::where([
