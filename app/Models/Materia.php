@@ -184,7 +184,7 @@ class Materia extends Model
         ;
 
         if($regularidad){
-            return $regularidad->obtenerEstado()->regularidad . '<sup> ' . $regularidad->observaciones . '</sup>' ;
+            return $regularidad->obtenerEstado()->regularidad . ' <sup> ' . $regularidad->observaciones . '</sup>' ;
         }
 
         return $proceso->regularidad??'-';
