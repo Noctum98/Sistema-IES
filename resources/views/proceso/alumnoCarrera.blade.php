@@ -57,15 +57,21 @@
         <div class="card">
             <div class="row">
                 <div class="card-body col-sm-6 mx-auto">
-                    <h5 class="card-title">
+                    <h5 class="card-title ms-2">
                         <i>
-                            {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
+                            {{ ucwords($alumno->nombres) }}<br/>
+                            {{ ucwords($alumno->apellidos) }}
                         </i>
                     </h5>
                 </div>
                 <div class="card-body col-sm-6 mx-auto">
                     <p class="card-text">
-                        Desempeño Académico <br/> <b>{{strtoupper($carrera->nombre)}}</b>
+                        <small
+                            class="position-absolute top-0 start-90 translate-middle badge rounded-pill bg-danger">
+                            Funcionalidad Beta <span class="visually-hidden"></span>
+                        </small>
+                        Desempeño Académico <br/>
+                        <b>{{strtoupper($carrera->nombre)}}</b>
                         <br/><small>{{$carrera->años}} años</small>
                     </p>
 
@@ -113,11 +119,8 @@
                                     </p>
                                 </div>
                                 <div class="col-sm-3 border-right">
-                                    <p class="card-text text-center">
-                                        {{ucwords(
-                                            optional(
-                                                optional($materia->getProcesoCarrera($alumno->id))->estado())
-                                        ->first()->regularidad??'-')}}
+                                    <p class="card-text text-left pl-1">
+                                        {!! ucwords($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
