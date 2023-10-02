@@ -41,7 +41,7 @@ class PreinscripcionService
             'escuela_s'     =>  $request['escuela_s'],
             'materias_s'     => $request['materias_s'],
             'conexion'      =>  $request['conexion'],
-
+            'articulo_septimo' => $request['articulo_septimo'] ?? 0
         ];
 
         if ($dni_archivo) {
