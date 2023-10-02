@@ -183,11 +183,8 @@
                                     </p>
                                 </div>
                                 <div class="col-sm-3 border-right">
-                                    <p class="card-text text-center">
-                                        {{ucwords(
-                                            optional(
-                                                optional($materia->getProcesoCarrera($alumno->id))->estado())
-                                        ->first()->regularidad??'-')}}
+                                    <p class="card-text text-left pl-1">
+                                        {!! ucwords($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
@@ -251,11 +248,8 @@
                                     </p>
                                 </div>
                                 <div class="col-sm-3 border-right">
-                                    <p class="card-text text-center">
-                                        {{ucwords(
-                                            optional(
-                                                optional($materia->getProcesoCarrera($alumno->id))->estado())
-                                        ->first()->regularidad??'-')}}
+                                    <p class="card-text text-left pl-1">
+                                        {!! ucwords($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">

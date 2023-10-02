@@ -23,7 +23,7 @@
             @include('matriculacion.campos.campos_procesos')
         @endif
 
-        @if(Session::has('coordinador') && isset($matriculacion))
+        @if((Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin')) && isset($matriculacion) )
         @if($matriculacion->lastProcesoCarrera($carrera->id)->año == 1)
         <div class="form-group">
             <label for="regularidad">Condición</label>
