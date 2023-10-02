@@ -174,7 +174,7 @@ class PreinscripcionController extends Controller
             if (Session::has('coordinador') || Session::has('seccionAlumnos')) {
                 $carreras = Auth::user()->carreras;
             } else {
-                $carreras = Carrera::orderBy('carrera_id','ASC')->get();
+                $carreras = Carrera::orderBy('sede_id','ASC')->get();
             }
         }
 
