@@ -91,7 +91,7 @@
                                                         <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                                            class="text-danger">Bajarme</a>
                                                     @endif
-                                                @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesa?$inscripcion->mesa->cierre:0)
+                                                @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre)
                                                     -
                                                     @if($inscripcion->mesa->instancia->estado == 'activa')
                                                         <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
