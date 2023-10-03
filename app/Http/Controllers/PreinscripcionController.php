@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Serializable;
 
@@ -324,8 +325,8 @@ class PreinscripcionController extends Controller
 
     public function editar(Request $request, $id)
     {
+        Log::info($request->all());
         $validate = $this->validate($request, [
-            'año'           =>  ['numeric', 'max:3'],
             'nombres'       =>  ['required'],
             'apellidos'     =>  ['required'],
             'dni'           =>  ['required', 'numeric'],
