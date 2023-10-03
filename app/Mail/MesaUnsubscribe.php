@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Services\MailService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,6 +14,7 @@ class MesaUnsubscribe extends Mailable
 
     public $inscripcion;
     public $instancia;
+    public $mailService;
 
     /**
      * Create a new message instance.
@@ -23,6 +25,7 @@ class MesaUnsubscribe extends Mailable
     {
         $this->inscripcion = $inscripcion;
         $this->instancia = $instancia;
+        $this->mailService = new MailService();
         $this->subject('Baja en Mesas de Examenes');
     }
 
@@ -33,6 +36,15 @@ class MesaUnsubscribe extends Mailable
      */
     public function build()
     {
+        $datos = [
+            'tipo' => 'Baja Mesas Alumno',
+            'email' => $this->to[0]['address'],
+            'instancia' => $this->instancia,
+            'materia' => $this->instancia->tipo == 0 ? $this->inscripcion->mesa->materia : $this->inscripcion->materia
+        ];
+
+        $this->mailService->store($datos);
+
         return $this->view('mail.mesa_unsubscribe',[
             'inscripcion' => $this->inscripcion,
             'instancia'   => $this->instancia

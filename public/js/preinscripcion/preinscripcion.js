@@ -5,17 +5,25 @@ $(document).ready(function () {
     let edad = $("#edad").val();
     var trelacionado = false;
     var nacionalidad = $("#nacionalidad").val();
+    var articulo_septimo = $("#articulo_septimo").is(":checked");
+
     verificarDNI(nacionalidad);
+
 
     
 
 
-    if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto') && trabajo_relacionado) {
+    if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trabajo_relacionado) {
         $("#7mo").removeClass('d-none');
     } else {
         if (!$("#7mo").hasClass('d-none')) {
             $("#7mo").addClass('d-none');
         }
+    }
+
+    if(articulo_septimo)
+    {
+        $("#archivos_articulo_septimo").removeClass('d-none');
     }
     
     $("#edad").change(function (e) {
@@ -23,7 +31,7 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $(this).val();
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto') && trelacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trelacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -37,7 +45,7 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $("#edad").val();
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto') && trelacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trelacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -51,7 +59,7 @@ $(document).ready(function () {
         let secundario = $("#condicion_s").val();
         let edad = $("#edad").val();
         trelacionado = true;
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto')) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo')) {
             $("#7mo").removeClass('d-none');
         }
     });
