@@ -22,12 +22,7 @@ class MailService
     {
         if($datos['tipo'] == 'Baja Mesas')
         {
-            $datos['contenido'] = $datos['instancia']['nombre'];
-
-            foreach($datos['motivos'] as $motivo)
-            {
-                $datos['contenido'] = $datos[' - Motivos: '].$motivo.'|';
-            }
+            $datos['contenido'] = $datos['instancia']['nombre']. ': '.$datos['inscripcion']['motivo_baja'];
         }
 
         if($datos['tipo'] == 'Check Email')

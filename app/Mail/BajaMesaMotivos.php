@@ -42,7 +42,7 @@ class BajaMesaMotivos extends Mailable
             'tipo' => 'Baja Mesas',
             'email' => $this->to[0]['address'],
             'instancia' => $this->instancia,
-            'motivos' => $this->motivos
+            'inscripcion' => $this->inscripcion
         ];
 
         $this->mailService->store($datos);
