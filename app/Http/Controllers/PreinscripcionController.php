@@ -342,7 +342,7 @@ class PreinscripcionController extends Controller
             'condicion_s'   =>  ['required'],
             'escolaridad'   =>  ['required'],
             'escuela_s'     =>  ['required'],
-            'materia_s'     =>  ['required'],
+            'materias_s'     =>  ['required'],
             'conexion'      =>  ['required'],
             'dni_archivo_file'   =>  ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
             'certificado_archivo_file'   =>  ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
