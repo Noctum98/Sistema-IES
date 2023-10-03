@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Services\MailService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -15,6 +16,8 @@ class MesaEnrolled extends Mailable
     public $datos;
     public $instancia;
     public $datos_limpios;
+    public $mailService;
+
     /**
      * Create a new message instance.
      *
@@ -26,6 +29,7 @@ class MesaEnrolled extends Mailable
         $this->datos = $datos;
         $this->instancia = $instancia;
         $this->datos_limpios = [];
+        $this->mailService = new MailService();
         $this->subject("Mesas IESVU 9015");
     }
 
@@ -42,7 +46,16 @@ class MesaEnrolled extends Mailable
             array_push($this->datos_limpios,$key);
             
         }
-        
+
+        $datos = [
+            'tipo' => 'Mesa Inscripción',
+            'email' => $this->to[0]['address'],
+            'instancia' => $this->instancia,
+            'materias' => $this->datos_limpios
+        ];
+
+        $this->mailService->store($datos);
+
         return $this->view('mail.mesa_enrolled',[
             'datos_limpios'         =>  $this->datos_limpios,
             'instancia'     =>  $this->instancia,
