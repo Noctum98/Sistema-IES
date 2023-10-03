@@ -85,7 +85,7 @@
                                                         class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
                                                     <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
 
-                                                @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa?$inscripcion->mesa->cierre_segundo:0)
+                                                @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre_segundo)
                                                     -
                                                     @if($inscripcion->mesa->instancia->estado == 'activa')
                                                         <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"

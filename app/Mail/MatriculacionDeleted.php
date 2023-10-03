@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Services\MailService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -14,6 +15,7 @@ class MatriculacionDeleted extends Mailable
     public $carrera;
     public $errores;
     public $motivo;
+    public $mailService;
 
     /**
      * Create a new message instance.
@@ -26,6 +28,7 @@ class MatriculacionDeleted extends Mailable
         $this->carrera = $carrera;
         $this->errores = $request['errores'];
         $this->motivo = $request['motivo'];
+        $this->mailService = new MailService();
         $this->subject('Matriculación Eliminada IES 9015');
     }
 
@@ -36,6 +39,15 @@ class MatriculacionDeleted extends Mailable
      */
     public function build()
     {
+        $datos = [
+            'tipo' => 'Matriculación Eliminada',
+            'email' => $this->to[0]['address'],
+            'motivo' => $this->motivo,
+            'errores' => $this->errores
+        ];
+
+        $this->mailService->store($datos);
+
         return $this->view('mail.matriculacion_deleted',[
             'alumno'  => $this->alumno,
             'carrera' => $this->carrera,
