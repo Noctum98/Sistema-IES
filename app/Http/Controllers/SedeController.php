@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Sede;
 use Illuminate\Support\Facades\Auth;
@@ -87,5 +89,16 @@ class SedeController extends Controller
         return redirect()->route('sedes.admin')->with([
             'sede_deleted' => 'Sede elimindada!'
         ]);
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function selectCarreraSede($id): JsonResponse
+    {
+        $carreras = Carrera::select('nombre', 'id')->where('sede_id', $id)->get();
+
+        return response()->json($carreras);
     }
 }

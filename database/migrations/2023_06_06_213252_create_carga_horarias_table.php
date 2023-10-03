@@ -16,7 +16,7 @@ class CreateCargaHorariasTable extends Migration
         Schema::create('workloads', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedInteger('profesor_id')->unique();
+            $table->unsignedInteger('profesor_id');
             $table->foreign('profesor_id')->references('id')->on('users');
             $table->foreignId('materia_id')->nullable()->constrained('materias');
             $table->integer('cantidad_horas')->nullable();

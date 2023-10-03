@@ -29,4 +29,9 @@ class AlumnoCarrera extends Model
             return false;
         }
     }
+
+    public function carrera()
+    {
+        return Carrera::find($this->carrera_id);
+    }
 }

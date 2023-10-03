@@ -11,7 +11,11 @@ use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
+use App\Http\Controllers\Trianual\AcreditacionController;
+use App\Http\Controllers\Trianual\DetalleTrianualController;
+use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
+use App\Models\Trianual\ObservacionesTrianual;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -41,6 +45,7 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Mail\VerifiedPreEnroll;
 use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
@@ -48,9 +53,11 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\Calificacion;
 use App\Models\Comision;
 use App\Models\Materia;
+use App\Models\Preinscripcion;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,17 +89,67 @@ Route::get('/', function () {
     }
 });
 
+
+// Rutas acreditaciones
+Route::prefix('acreditacion')->group(function () {
+    Route::post('/', [AcreditacionController::class, 'store']);
+});
+
+// Rutas Actas volantes
+Route::resource('actas_volantes', ActaVolanteController::class);
+
+// Rutas de Alumnos
+Route::prefix('alumnos')->group(function () {
+    // Vistas
+    Route::get('/{busqueda?}', [AlumnoController::class, 'vista_admin'])->name('alumno.admin');
+    Route::post('/{ciclo_lectivo?}', [AlumnoController::class, 'vista_admin'])->name('alumno.adminp');
+    Route::get('agregar/{id}', [AlumnoController::class, 'vista_crear'])->name('alumno.crear');
+    Route::get('carrera/elegir', [AlumnoController::class, 'vista_elegir'])->name('alumno.elegir');
+    Route::get('editar/{id}', [AlumnoController::class, 'vista_editar'])->name('alumno.editar');
+    Route::get('equivalencias/alumno/{busqueda?}', [AlumnoController::class, 'vista_equivalencias'])->name('alumno.equivalencias');
+    Route::get('carrera/{carrera_id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_alumnos'])->name(
+        'alumno.carrera'
+    );
+    Route::get('alumno/{id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_detalle'])->name('alumno.detalle');
+
+    // Acciones
+    Route::post('crear-alumno/{carrera_id}', [AlumnoController::class, 'crear'])->name('crear_alumno');
+    Route::post('editar-alumno/{id}', [AlumnoController::class, 'editar'])->name('editar_alumno');
+    Route::post('buscarAlumno/{id}', [AlumnoController::class, 'buscar']);
+    Route::get('alumnosMateria/{id}', [AlumnoController::class, 'alumnosMateria']);
+
+    Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
+    Route::get('descargar/{nombre}/{dni?}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
+    Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+});
+
+Route::prefix('alumno/carrera')->group(function () {
+    Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
+        'alumnoCarrera.year'
+    );
+});
+
 // Rutas de Personal
 Route::prefix('carga-horaria')->group(function () {
     // Vistas
     Route::get('/', [CargaHorariaController::class, 'index'])->name('cargaHoraria.listado');
     Route::get('/{persona}', [CargaHorariaController::class, 'show'])->name('cargaHoraria.ver');
     Route::get('/crear/{persona}', [CargaHorariaController::class, 'create'])->name('cargaHoraria.crear');
-    Route::get('/guardar/{persona}', [CargaHorariaController::class, 'store'])->name('cargaHoraria.guardar');
+    Route::post('/guardar/{persona}', [CargaHorariaController::class, 'store'])->name('cargaHoraria.guardar');
     Route::get('/editar/{persona}', [CargaHorariaController::class, 'edit'])->name('cargaHoraria.editar');
 });
 
+// Rutas Cargo
 
+Route::prefix('cargo')->group(function () {
+    Route::get('/', [CargoController::class, 'index'])->name('cargo.admin');
+    Route::post('cargo', [CargoController::class, 'store'])->name('cargo.store');
+    Route::get('cargo/{id}', [CargoController::class, 'show'])->name('cargo.show');
+    Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
+    Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
+    Route::delete('delete/{cargo}', [CargoController::class, 'destroy'])->name('cargo.delete');
+    Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
+});
 
 // Rutas de comisiones
 
@@ -109,22 +166,20 @@ Route::delete('comisiones/profesor/{comision_id}', [ComisionController::class, '
     'comision.delprofesor'
 );
 
+//Rutas detalleTrianual
+Route::prefix('detalleTrianual')->group(function () {
+    Route::get('/', [DetalleTrianualController::class, 'index'])->name('detalleTrianual.listar');
+    Route::post('/', [DetalleTrianualController::class, 'store'])->name('detalleTrianual.guardar');
+    Route::get('/crear/{trianual}', [DetalleTrianualController::class, 'create'])->name('detalleTrianual.crear');
+    Route::get('/ver/{detalleTrianual}', [DetalleTrianualController::class, 'show'])->name('detalleTrianual.ver');
+});
+
 // Rutas de estados
 
 Route::resource('estados', EstadosController::class);
 
 
-// Rutas Cargo
 
-Route::prefix('cargo')->group(function () {
-    Route::get('/', [CargoController::class, 'index'])->name('cargo.admin');
-    Route::post('cargo', [CargoController::class, 'store'])->name('cargo.store');
-    Route::get('cargo/{id}', [CargoController::class, 'show'])->name('cargo.show');
-    Route::get('editar/{id}', [CargoController::class, 'vista_editar'])->name('cargo.edit');
-    Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
-    Route::delete('delete/{cargo}', [CargoController::class, 'destroy'])->name('cargo.delete');
-    Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
-});
 
 /**
  * Rutas Equivalencias
@@ -143,7 +198,7 @@ Route::prefix('equivalencias')->group(function () {
  */
 Route::prefix('materia')->group(function () {
     Route::get('/listado', [MateriaController::class, 'vista_listado'])->name('materia.listado');
-    Route::get('/cierre/{materia_id}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
+    Route::get('/cierre/{materia_id}/{ciclo_lectivo}/{comision_id?}', [MateriaController::class, 'cierre_tradicional'])->name(
         'materia.cierre'
     );
     Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
@@ -211,32 +266,10 @@ Route::prefix('sedes')->group(function () {
     Route::post('crear-sede', [SedeController::class, 'crear'])->name('crear_sede');
     Route::post('editar-sede/{id}', [SedeController::class, 'editar'])->name('editar_sede');
     Route::get('eliminar-sede/{id}', [SedeController::class, 'eliminar'])->name('eliminar_sede');
+    Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
 });
 
-//Ruta de usuario administrador
-Route::prefix('usuarios')->group(function () {
-    Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
-    Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
-    Route::get('detalle/{id}', [UserController::class, 'vista_detalle'])->name('usuarios.detalle');
-    Route::get('mis_datos', [UserController::class, 'vista_mis_datos'])->name('usuarios.mis_datos');
-    Route::get('listado/{listado}/{busqueda?}', [UserController::class, 'vista_listado'])->name('usuarios.listado');
 
-
-    // Funcionalidades
-    Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
-    Route::delete('/{id}', [UserController::class, 'delete'])->name('usuario.eliminar');
-    Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
-    Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
-    Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
-    Route::post('set_Carrera/{id}', [UserCarreraController::class, 'store'])->name('set_carrera');
-    Route::post('set_CarreraMaterias/{id}', [UserMateriaController::class, 'store'])->name('set_materias_carreras');
-    Route::post('set_CarreraCargo/{id}', [UserCargoController::class, 'store'])->name('set_cargos_carreras');
-    Route::get('crear_alumno_usuario/{id}', [UserController::class, 'crear_usuario_alumno'])->name(
-        'crear_usuario_alumno'
-    );
-    Route::get('reestablecer_password/{id}', [UserController::class, 'regenerar_contra']);
-    Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
-});
 
 Route::prefix('usuario_materia')->group(function () {
     Route::delete('delete/{user_id}/{materia_id}', [UserMateriaController::class, 'delete'])->name(
@@ -310,41 +343,13 @@ Route::prefix('carreras/materias')->group(function () {
 
 
 
+
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
 Route::get('/selectMateriasCarreraInscripto/{idCarrera}/{idAlumno}/{ciclo_lectivo}', [MateriaController::class, 'selectMateriasInscripto']);
 Route::get('/selectCargosCarrera/{id}', [CargoController::class, 'selectCargos']);
 Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsuarioByUsernameOrNull']);
 
-// Rutas de Alumnos
-Route::prefix('alumnos')->group(function () {
-    // Vistas
-    Route::get('/{busqueda?}', [AlumnoController::class, 'vista_admin'])->name('alumno.admin');
-    Route::post('/{ciclo_lectivo?}', [AlumnoController::class, 'vista_admin'])->name('alumno.adminp');
-    Route::get('agregar/{id}', [AlumnoController::class, 'vista_crear'])->name('alumno.crear');
-    Route::get('carrera/elegir', [AlumnoController::class, 'vista_elegir'])->name('alumno.elegir');
-    Route::get('editar/{id}', [AlumnoController::class, 'vista_editar'])->name('alumno.editar');
-    Route::get('equivalencias/alumno/{busqueda?}', [AlumnoController::class, 'vista_equivalencias'])->name('alumno.equivalencias');
-    Route::get('carrera/{carrera_id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_alumnos'])->name(
-        'alumno.carrera'
-    );
-    Route::get('alumno/{id}/{ciclo_lectivo?}', [AlumnoController::class, 'vista_detalle'])->name('alumno.detalle');
 
-    // Acciones
-    Route::post('crear-alumno/{carrera_id}', [AlumnoController::class, 'crear'])->name('crear_alumno');
-    Route::post('editar-alumno/{id}', [AlumnoController::class, 'editar'])->name('editar_alumno');
-    Route::post('buscarAlumno/{id}', [AlumnoController::class, 'buscar']);
-    Route::get('alumnosMateria/{id}', [AlumnoController::class, 'alumnosMateria']);
-
-    Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
-    Route::get('descargar/{nombre}/{dni?}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
-    Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
-});
-
-Route::prefix('alumno/carrera')->group(function () {
-    Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
-        'alumnoCarrera.year'
-    );
-});
 
 
 // Rutas de preinscripciones
@@ -352,11 +357,11 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('/carreras/{busqueda?}', [PreinscripcionController::class, 'vista_admin'])->name('pre.admin');
     Route::get('/admin/carrera/{id}', [PreinscripcionController::class, 'vista_all'])->name('pre.all');
     Route::get('/{id}/{timecheck?}', [PreinscripcionController::class, 'vista_preinscripcion'])->name('alumno.pre');
-    Route::get('terminada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
+    Route::get('/form/terminado/{carrera_id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
         'pre.inscripto'
     );
 
-    Route::get('editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
+    Route::get('/form/editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/admin/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
     Route::get('/admin/verificadas/{id}', [PreinscripcionController::class, 'vista_verificadas'])->name(
@@ -395,6 +400,7 @@ Route::prefix('proceso')->group(function () {
     Route::get('detalle/{id}', [ProcesoController::class, 'vista_detalle'])->name('proceso.detalle');
     // Vista Alumno
     Route::get('/mis_procesos/{id}', [AlumnoProcesoController::class, 'vista_procesos'])->name('proceso.alumno');
+    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])->name('proceso.alumnoCarrera');
 
     // Acciones
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
@@ -511,7 +517,7 @@ Route::prefix('mesas')->group(function () {
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
     Route::get('/alta_mesa/{id}', [AlumnoMesaController::class, 'alta_mesa'])->name('alta.mesa');
-    Route::post('/borrar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
+    Route::post('/borrar_inscripcion/{id}/{instancia_id?}', [AlumnoMesaController::class, 'borrar_inscripcion'])->name(
         'mesa.borrar'
     );
     Route::post('/moverComision/{inscripcion_id}', [AlumnoMesaController::class, 'moverComision'])->name(
@@ -545,7 +551,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
     Route::put('/abrirActaVolante/{mesa_id}', [MesaController::class, 'abrirProfesor'])->name('mesa.abrir_acta');
-
+    Route::delete('borrar_mesa/{mesa_id}',[MesaController::class,'delete'])->name('mesa.delete');
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
@@ -624,6 +630,18 @@ Route::prefix('procesoCalificacion')->group(function () {
 });
 
 
+
+Route::prefix('estadistica')->group(function () {
+    Route::get('datos', [AlumnoController::class, 'vista_datos']);
+    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
+});
+
+Route::resource('etapa_campo',EtapaCampoController::class);
+
+Route::prefix('etapa_campo')->group(function (){
+    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}',[EtapaCampoController::class,'habilitar']);
+});
+
 Route::prefix('excel')->group(function () {
     Route::get('alumnos/{carrera_id}/{year}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'alumnos_year'])->name('excel.alumnosAño');
     Route::get('alumnos/all', [ExcelController::class, 'all_alumnos']);
@@ -631,31 +649,67 @@ Route::prefix('excel')->group(function () {
     Route::get('procesos/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
-    Route::get('procesosModular/{materia_id}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
+    Route::get('procesosModular/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_modular'])->name(
         'excel.procesosModular'
     );
     Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
     Route::get('/descargarFiltro', [ExcelController::class, 'filtro_alumnos']);
 });
 
-Route::prefix('estadistica')->group(function () {
-    Route::get('datos', [AlumnoController::class, 'vista_datos']);
-    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
-});
+Route::resource('libros', LibrosController::class);
 
 Route::prefix('mail')->group(function () {
     Route::post('/mail/pre/send/{carrera_id}', [MailController::class, 'emailPreinscripciones'])->name('pre.sendEmail');
 });
 
-Route::resource('etapa_campo',EtapaCampoController::class);
-Route::prefix('etapa_campo')->group(function (){
-    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}',[EtapaCampoController::class,'habilitar']);
+Route::prefix('observaciones_trianual')->group(function () {
+    Route::get('/', [ObservacionesTrianual::class, 'index'])->name('observaciones_trianual.listar');
+    Route::post('/', [ObservacionesTrianual::class, 'store'])->name('observaciones_trianual.guardar');
+    Route::get('/crear/{alumno}', [ObservacionesTrianual::class, 'create'])->name('observaciones_trianual.crear');
+    Route::get('/ver/{trianual}', [ObservacionesTrianual::class, 'show'])->name('observaciones_trianual.ver');
 });
 
-Route::resource('actas_volantes', ActaVolanteController::class);
-Route::resource('libros', LibrosController::class);
 Route::resource('registros',AuditController::class);
 
-Route::get('/prueba-post-size', function () {
-
+Route::prefix('trianual')->group(function () {
+    Route::get('/', [TrianualController::class, 'index'])->name('trianual.listar');
+    Route::post('/', [TrianualController::class, 'store'])->name('trianual.guardar');
+    Route::get('/crear/{alumno}', [TrianualController::class, 'create'])->name('trianual.crear');
+    Route::get('/ver/{trianual}', [TrianualController::class, 'show'])->name('trianual.ver');
 });
+
+//Ruta de usuario administrador
+Route::prefix('usuarios')->group(function () {
+    Route::get('administrar', [UserController::class, 'vista_admin'])->name('usuarios.admin');
+    Route::get('editar', [UserController::class, 'vista_editar'])->name('usuarios.editar');
+    Route::get('detalle/{id}', [UserController::class, 'vista_detalle'])->name('usuarios.detalle');
+    Route::get('mis_datos', [UserController::class, 'vista_mis_datos'])->name('usuarios.mis_datos');
+    Route::get('listado/{listado}/{busqueda?}', [UserController::class, 'vista_listado'])->name('usuarios.listado');
+
+
+    // Funcionalidades
+    Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
+    Route::delete('/{id}', [UserController::class, 'delete'])->name('usuario.eliminar');
+    Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
+    Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
+    Route::post('cambiar_sedes/{id}', [UserController::class, 'cambiar_sedes'])->name('sede_usuario');
+    Route::post('set_Carrera/{id}', [UserCarreraController::class, 'store'])->name('set_carrera');
+    Route::post('set_CarreraMaterias/{id}', [UserMateriaController::class, 'store'])->name('set_materias_carreras');
+    Route::post('set_CarreraCargo/{id}', [UserCargoController::class, 'store'])->name('set_cargos_carreras');
+    Route::get('crear_alumno_usuario/{id}', [UserController::class, 'crear_usuario_alumno'])->name(
+        'crear_usuario_alumno'
+    );
+    Route::get('reestablecer_password/{id}', [UserController::class, 'regenerar_contra']);
+    Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
+});
+
+Route::get('/ruta_funcionalidades', function () {
+    $preinscripciones = Preinscripcion::where('updated_at','<', '2023-09-6')->get();
+
+    foreach($preinscripciones as $preinscripcion)
+    {
+        Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
+    }
+
+    echo "Mails enviados.";
+})->middleware('app.roles:admin');

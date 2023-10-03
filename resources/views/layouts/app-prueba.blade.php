@@ -10,9 +10,13 @@
     <title>DATA IESVU</title>
     <link href="{{asset('css/simple-datatables_style.css')}}" rel="stylesheet" />
 
+
     <script src="{{ asset('js/main.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
     <script src="{{asset('js/jquery_1.11.3.js')}}"></script>
+
+    <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('vendors/select2/js/i18n/es.js') }}"></script>
 
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
 
@@ -20,7 +24,7 @@
     <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendors/select2/css/select2.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/styless.css') }}" />
 
@@ -96,6 +100,13 @@
         }
     </script>
     @endif
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+</script>
 </body>
 
 </html>

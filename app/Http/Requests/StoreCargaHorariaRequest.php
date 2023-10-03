@@ -13,7 +13,7 @@ class StoreCargaHorariaRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreCargaHorariaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'materia_id'=>  ['required','numeric'],
+            'cantidad_horas'=>  ['required','numeric'],
         ];
     }
 }

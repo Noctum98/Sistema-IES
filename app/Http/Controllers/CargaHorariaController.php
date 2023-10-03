@@ -13,6 +13,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CargaHorariaController extends Controller
 {
@@ -49,7 +50,6 @@ class CargaHorariaController extends Controller
 
         $carreras = $profesor->carreras()->get();
 
-
         return view('cargaHoraria.components.form_agregar_cargaHoraria')->with([
             'carreras' => $carreras,
             'profesor' => $profesor
@@ -59,25 +59,43 @@ class CargaHorariaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreCargaHorariaRequest $request
-     * @return Response
+     * @param StoreCargaHorariaRequest $request
+     * @param int $persona
+     * @return Application|Factory|View
      */
-    public function store(StoreCargaHorariaRequest $request)
+    public function store(StoreCargaHorariaRequest $request, int $persona)
     {
-        //
+        $request['profesor_id'] = $persona;
+        $user = Auth::user();
+
+        $request['usuario_id'] =  $user->id;
+
+        CargaHoraria::create($request->all());
+
+        $mensaje = ['calificacion_creada' => 'Carga horaria asignada correctamente'];
+
+        $cargaHoraria = CargaHoraria::where([
+            'profesor_id' => $persona
+        ])->get();
+
+        return view('cargaHoraria.ver', [
+            'cargaHoraria' => $cargaHoraria,
+            'user' => $persona
+        ]);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\CargaHoraria $cargaHoraria
-     * @return Response
+     * @param User $persona
+     * @return Application|Factory|View
      */
     public function show(User $persona)
     {
         $cargaHoraria = CargaHoraria::where([
             'profesor_id' => $persona->id
-        ])->first();
+        ])->get();
 
         return view('cargaHoraria.ver', [
             'cargaHoraria' => $cargaHoraria,
@@ -89,7 +107,7 @@ class CargaHorariaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\CargaHoraria $cargaHoraria
+     * @param CargaHoraria $cargaHoraria
      * @return Response
      */
     public function edit(CargaHoraria $cargaHoraria)
@@ -101,7 +119,7 @@ class CargaHorariaController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\UpdateCargaHorariaRequest $request
-     * @param \App\Models\CargaHoraria $cargaHoraria
+     * @param CargaHoraria $cargaHoraria
      * @return Response
      */
     public function update(UpdateCargaHorariaRequest $request, CargaHoraria $cargaHoraria)
@@ -112,7 +130,7 @@ class CargaHorariaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\CargaHoraria $cargaHoraria
+     * @param CargaHoraria $cargaHoraria
      * @return Response
      */
     public function destroy(CargaHoraria $cargaHoraria)

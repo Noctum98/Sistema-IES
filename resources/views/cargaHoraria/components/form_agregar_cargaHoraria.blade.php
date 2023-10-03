@@ -7,20 +7,19 @@
       method="POST">
 
     <div class="form-group mb-3">
-        <label for="proceso_id">Materia<sup>*</sup></label>
-        <select name="proceso_id" id="proceso_id" class="form-select" required>
+        <label for="materia_id">Materia<sup>*</sup></label>
+        <select name="materia_id" id="materia_id" class="form-select" required>
             <option value="">Seleccione materia</option>
             @foreach($carreras as $carrera)
                 @foreach($carrera->materias()->get() as $materia)
                     <option value="{{ $materia->id }}">{{ $materia->nombre }}</option>
-
                 @endforeach
             @endforeach
         </select>
     </div>
     <div class="form-group mb-3">
         <label for="cantidad_horas">Cantidad de horas <sup>*</sup></label>
-        <input type="date" name="cantidad_horas" id="cantidad_horas" class="form-control"
+        <input type="number" name="cantidad_horas" id="cantidad_horas" class="form-control"
                placeholder="Cantidad de horas" required>
     </div>
 

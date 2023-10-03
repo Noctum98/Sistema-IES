@@ -6,6 +6,7 @@
             z-index: 1;
             top: 0;
         }
+
         .thead-dark th {
             color: white;
             background-color: #343a40;
@@ -14,21 +15,17 @@
 
     </style>
     <div class="container" id="container-scroll">
-        <a href="{{url()->previous()}}">
-            <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
-        </a>
-        <div class="row">
-            <div class="col-8">
-        <h4 class="text-info">
-            Notas de Proceso de {{ $cargo->nombre }} @if($comision)
-                <br/><small>{{$comision->nombre}}</small>
-            @endif
-        </h4>
-        <h6>
-            Correspondiente al módulo <i>{{$materia->nombre}}</i>
-        </h6>
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <a href="{{url()->previous()}}">
+                    <button class="btn btn-sm btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+                </a>
             </div>
-            <div class="col-4">
+            <div>
+                <p class="text-dark fw-bold">Notas de proceso cargo</p>
+            </div>
+            <div>
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
                             data-bs-toggle="dropdown">
@@ -39,7 +36,7 @@
                             <li>
                                 @if($comision)
                                     <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                     href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ,'comision_id' => $comision->id]) }}">
+                                       href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ,'comision_id' => $comision->id]) }}">
                                         {{$i}}
                                     </a>
                                 @else
@@ -54,13 +51,36 @@
                 </div>
             </div>
         </div>
+        <div class="row-cols-1">
+            <div class="card w-75 mx-auto">
+                <div class="card-header text-center text-primary">
+                    <div class="card-title">
+                        {{ $cargo->nombre }} @if($comision)
+                            <br/><small>{{$comision->nombre}}</small>
+                        @endif
+                    </div>
+                    <div class="card-subtitle">
+                        Correspondiente al módulo <i>{{$materia->nombre}}</i> <br/>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="blockquote blockquote-footer mt-1 mb-0">Prof.: {{$cargo->profesores()}}</div>
+                </div>
+            </div>
+        </div>
 
         <div id="alerts">
 
         </div>
-        <p><strong><i>Importante:</i></strong></p>
-        <p><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></p>
-        <p><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></p>
+        <div class="d-flex alert alert-info w-75 mx-auto">
+            <div class="me-auto">
+                <span><strong><i>Importante:</i></strong></span>
+            </div>
+            <div>
+                <small><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></small><br/>
+                <small><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></small>
+            </div>
+        </div>
 
 
         {{-- @if($comision)
@@ -79,7 +99,6 @@
 
         @if(count($procesos) > 0)
             <div class="table-responsive tableFixHead">
-
                 <table class="table mt-4 ">
                     <thead class="thead-dark ">
                     <tr>
@@ -89,7 +108,10 @@
                         @if(count($calificaciones) > 0)
                             @foreach($calificaciones as $calificacion)
                                 <th><a href="{{ route('calificacion.create',$calificacion->id) }}"
-                                       class="text-white">{{$calificacion->nombre}}</a></th>
+                                       class="text-white" title="{{$calificacion->description}}"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                    >{{$calificacion->nombre}}</a></th>
                             @endforeach
                         @else
                             <th>
@@ -117,20 +139,31 @@
                                 @foreach($calificaciones as $cc)
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
-                                            <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                                {{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                                            <span
+                                                class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
+                                                <b>{{$proceso->procesoCalificacion($cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
+                                                <small>
+                                ({{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+
+                                                    @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
+                                                        %
+                                                    @endif
+                                                    )</small>
                             </span>
-                                            @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
-                                                %
-                                            @endif
+
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
-                                                <span class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                                R: {{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                                                <span
+                                                    class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
+                                                    R: <b>{{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}</b>
+                                                    <small>({{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
+                                                        @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
+                                                            %
+                                                        @endif
+                                                        )
+                                                    </small>
                             </span>
-                                                @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                                                    %
-                                                @endif
+
                                             @endif
                                         @else
                                             -
@@ -169,7 +202,6 @@
                                      @if ($proceso->cierre == 1)
                                         <i class="fa fa-check text-success"></i>
                                     @else
-
                                         <input type="checkbox" class="check-cierre"
                                                id="{{$proceso->id}}"
                                                {{$proceso->obtenerProcesoCargo($cargo->id) ? 'checked':'unchecked'}}
@@ -177,12 +209,8 @@
                                                data-cargo="{{$cargo->id}}"
                                         >
                                     @endif
-
                                 </span>
-
-
                             </td>
-
                         </tr>
                     @endforeach
                     </tbody>
@@ -193,7 +221,11 @@
             @endsection
             @section('scripts')
                 <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
-                <script src="{{ asset('js/proceso/cambia_cierre.js') }}"></script>
+                <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
+                <script>
+
+
+                </script>
 
 @endsection

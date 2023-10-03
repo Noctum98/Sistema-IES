@@ -31,16 +31,31 @@
                                     <div class="col-4 m-0 p-0">
                                         @if($inscripcion->materia_id)
                                             {{ $inscripcion->materia->nombre }}
-                                        @elseif($inscripcion->mesa->materia)
-                                            {{$inscripcion->mesa->materia->nombre}}
+                                        @elseif($inscripcion->mesa)
+                                            @if($inscripcion->mesa->materia)
+                                                {{$inscripcion->mesa->materia->nombre}}
+                                            @endif
                                         @else
                                             -
                                         @endif
                                     </div>
                                     <div class="col-4 m-0 p-0">
                                         {{--                                        {{ $inscripcion->materia_id ? $inscripcion->materia->nombre : $inscripcion->mesa->materia->nombre }}--}}
-                                        {{ $inscripcion->instancia_id ? $inscripcion->instancia->nombre : $inscripcion->mesa->instancia->nombre}}
-                                        - {{ $inscripcion->instancia_id ? $inscripcion->instancia->año : $inscripcion->mesa->instancia->año }}
+                                        @if($inscripcion->instancia)
+                                            {{$inscripcion->instancia->nombre}}
+                                        @else
+                                            @if($inscripcion->mesa)
+                                                {{$inscripcion->mesa->instancia->nombre}}
+                                            @endif
+                                        @endif
+                                        @if($inscripcion->instancia)
+                                            - {{$inscripcion->instancia->año}}
+                                        @else
+                                            @if($inscripcion->mesa)
+                                                - {{$inscripcion->mesa->instancia->año}}
+                                            @endif
+                                        @endif
+
                                         @if ($inscripcion->segundo_llamado)
                                             (2do llamado)
                                         @else
@@ -53,7 +68,8 @@
                                             @if($inscripcion->instancia && $inscripcion->instancia->tipo == 1)
                                                 @if($inscripcion->estado_baja)
                                                     <span class="text-secondary col-4 mr-1 px-0">Dada de baja</span>
-                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
+                                                    <span
+                                                        class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
                                                     <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
                                                 @else
                                                     <span class="text-secondary">Inscripto</span>
@@ -65,16 +81,17 @@
                                             @else
                                                 @if($inscripcion->estado_baja)
                                                     <span class="text-secondary col-4 mr-1 px-0">Dada de baja</span>
-                                                    <span class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
+                                                    <span
+                                                        class="text-secondary col-4 mr-1 px-0">por: {{optional($inscripcion->user()->first())->getApellidoNombre()}}</span>
                                                     <span class="text-secondary col-4 mx-0 px-0">Motivo:<br/> {{$inscripcion->motivo_baja}}</span>
 
-                                                @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre_segundo)
+                                                @elseif($inscripcion->segundo_llamado && time() < $inscripcion->mesa?$inscripcion->mesa->cierre_segundo:0)
                                                     -
                                                     @if($inscripcion->mesa->instancia->estado == 'activa')
                                                         <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
                                                            class="text-danger">Bajarme</a>
                                                     @endif
-                                                @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesa->cierre)
+                                                @elseif(!$inscripcion->segundo_llamado && time() < $inscripcion->mesa?$inscripcion->mesa->cierre:0)
                                                     -
                                                     @if($inscripcion->mesa->instancia->estado == 'activa')
                                                         <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}"
@@ -82,23 +99,25 @@
                                                     @endif
                                                 @endif
                                             @endif
-                                            @if($inscripcion->acta_volante()->first())
-                                                <div class="sol-sm-12 col-md-6 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->updated_at->format('d-m-Y')}}</h6>
-                                                </div>
+                                            @if($inscripcion->mesa_id)
+                                                @if(!$inscripcion->segundo_llamado)
+                                                    <div class="sol-sm-12 col-md-6 m-0 p-0">
+                                                        <h6 class="card-text font-italic">
+                                                            @if($inscripcion->mesa)
+                                                                {{ $inscripcion->mesa->fecha ? date_format(new DateTime($inscripcion->mesa->fecha ), 'd-m-Y H:i') : ''}}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </h6>
+
+                                                    </div>
+                                                @else
+                                                    <div class="sol-sm-12 col-md-6 m-0 p-0">
+                                                        <h6 class="card-text font-italic">{{ $inscripcion->mesa->fecha_segundo ? date_format(new DateTime($inscripcion->mesa->fecha_segundo ), 'd-m-Y H:i') : ''}}</h6>
+                                                    </div>
+                                                @endif
                                                 <div class="col-sm-12 col-md-3 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{$inscripcion->acta_volante()->first()->promedio}}</h6>
-                                                </div>
-                                                <div class="col-sm-12 col-md-3 m-0 p-0">
-{{--                                                    @if($inscripcion->segundo_llamado)--}}
-{{--                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro_segundo}}<br/>--}}
-{{--                                                             {{$inscripcion->mesa()->first()->folio_segundo}}--}}
-{{--                                                        </h6>--}}
-{{--                                                    @else--}}
-{{--                                                        <h6 class="card-text font-italic">{{$inscripcion->mesa()->first()->libro}}<br/>--}}
-{{--                                                            {{$inscripcion->mesa()->first()->folio}}--}}
-{{--                                                        </h6>--}}
-{{--                                                    @endif--}}
+                                                    <h6 class="card-text font-italic">{{ optional($inscripcion->acta_volante)->promedio}}</h6>
                                                 </div>
                                             @endif
                                         </div>

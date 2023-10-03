@@ -18,6 +18,7 @@
 	<div class="row">
 		<form class="col-md-4 mb-4" method="POST" action="{{route('editar_usuario')}}">
 			@csrf
+			@if(Session::has('admin'))
 			<div class="form-group">
 				<label for="username">Nombre de Usuario:</label>
 				<input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ $user->username }}" required autocomplete="username" autofocus>
@@ -28,6 +29,7 @@
 				</span>
 				@enderror
 			</div>
+			@endif
 			<div class="form-group">
 				<label for="nombre">Nombre:</label>
 				<input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" value="{{ $user->nombre }}" required autocomplete="nombre" autofocus>

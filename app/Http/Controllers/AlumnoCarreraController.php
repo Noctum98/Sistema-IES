@@ -25,7 +25,7 @@ class AlumnoCarreraController extends Controller
         $validate = $this->validate($request,[
             'year' => ['required','numeric']
         ]);
-        
+
 
         $alumnoCarrera = AlumnoCarrera::where([
             'alumno_id' => $alumno_id,
@@ -41,5 +41,10 @@ class AlumnoCarreraController extends Controller
         $this->alumnoService->cambiarSituacion($alumno,$request['year']);
 
         return redirect()->route('alumno.detalle',$alumno_id)->with('mensaje_exitoso','Año editado');
+    }
+
+    public function ver_datos_carrera($carrera, $alumno)
+    {
+
     }
 }

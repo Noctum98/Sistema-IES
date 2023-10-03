@@ -34,16 +34,6 @@
 					@enderror
 				</div>
 				<div class="form-group">
-					<label for="personal">Profesor:</label>
-					<select class="form-control" id="personal" name="personal">
-						@foreach($personal as $persona)
-							<option value="{{ $persona->id }}">
-								{{ $persona->nombres.' '.$persona->apellidos}}
-							</option>
-						@endforeach
-					</select>
-				</div>
-				<div class="form-group">
 					<label for="regimen">Régimen:</label>
 					<select class="form-select" id="regimen" name="regimen">
 						<option value="Anual">Anual</option>

@@ -23,8 +23,8 @@
             @include('matriculacion.campos.campos_procesos')
         @endif
 
-        @if(Session::has('coordinador') && isset($matriculacion))
-        @if($matriculacion->lastProcesoCarrera($carrera->id,$matriculacion->id)->año == 1)
+        @if((Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin')) && isset($matriculacion) )
+        @if($matriculacion->lastProcesoCarrera($carrera->id)->año == 1)
         <div class="form-group">
             <label for="regularidad">Condición</label>
             <select name="regularidad" id="regularidad" class="form-select">
@@ -34,7 +34,7 @@
                 <option value="recursante_diferenciado_primero" {{ isset($matriculacion) && $matriculacion->regularidad == 'recursante_diferenciado_primero' ? "selected='selected'":'' }}>RECURSANTE CON TRAYECTORIA DIFERENCIADA</option>
             </select>
         </div>
-        @elseif($matriculacion->lastProcesoCarrera($carrera->id,$matriculacion->id)->año == 2)
+        @elseif($matriculacion->lastProcesoCarrera($carrera->id)->año == 2)
         <div class="form-group">
             <label for="regularidad">Condición</label>
             <select name="regularidad" id="regularidad" class="form-select">
@@ -44,7 +44,7 @@
                 <option value="recursante_diferenciado_segundo" {{ isset($matriculacion) && $matriculacion->regularidad == 'recursante_diferenciado_segundo' ? "selected='selected'":'' }}>RECURSANTE CON TRAYECTORIA DIFERENCIADA</option>
             </select>
         </div>
-        @elseif($matriculacion->lastProcesoCarrera($carrera->id,$matriculacion->id)->año == 3)
+        @elseif($matriculacion->lastProcesoCarrera($carrera->id)->año == 3)
         <div class="form-group">
             <label for="regularidad">Condición</label>
             <select name="regularidad" id="regularidad" class="form-select">

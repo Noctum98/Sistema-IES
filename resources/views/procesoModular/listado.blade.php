@@ -81,8 +81,8 @@
         </div>
         <div id="alerts">
         </div>
-        <p><strong><i>Importante:</i></strong></p>
-        <p><i><small>
+        <p class="mb-1"><strong><i>Importante:</i></strong></p>
+        <p class="mb-1"><i><small>
                     Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
                     Los procesos se editan desde cada cargo individualmente.
 
@@ -90,32 +90,39 @@
                         <b>Usted tiene permisos de edición</b>
                     @endif
                 </small></i></p>
-        <p><small style="font-size: 0.8em">
-                Aclaraciones:
-                <i>'N Proceso'</i>: Nota Proceso.
-                <i>'% Asist. Final'</i>: Porcentaje Asistencia Final.
-                <i>'N TFI'</i>: Nota Trabajo Final Integrador.
-                <i>'N Final'</i>: Nota Final.
-                <i>'N Global'</i>: Nota Global.
-                <i>'% Act. Ap.'</i>: Porcentaje de actividades del cargo aprobadas.
-                <i>'TP's'</i>: Trabajos Prácticos.
-                <i>'N TPs x̄'</i>: Nota Promedio Trabajos Prácticos.
-                <i>'N Ps x̄'</i>: Nota Promedio Parciales.
-                <i>'P's'</i>: Parciales.
-                <i>'% Asist.'</i>: Porcentaje asistencia.
+        <p class="mb-1"><small style="font-size: 0.8em">
+                <u>Aclaraciones:</u><br/>
+                <span class="col-sm-12" >
+                    <b>'N Proceso'</b>: <i>Nota Proceso.</i>
+                <b>'% Asist. Final'</b>: <i>Porcentaje Asistencia Final.</i>
+                <b>'N TFI'</b>: <i>Nota Trabajo Final Integrador.</i>
+                <b>'N Final'</b>: <i>Nota Final.</i>
+                </span><br/>
+                <span class="col-sm-12 m-0">
+                <b>'N Global'</b>: <i>Nota Global.</i>
+                <b>'% Act. Ap.'</b>: <i>Porcentaje de actividades del cargo aprobadas.</i>
+                <b>'TP's'</b>: <i>Trabajos Prácticos.</i>
+                <b>'N TPs x̄'</b>: <i>Nota Promedio Trabajos Prácticos.</i>
+                </span><br/>
+                <span class="col-sm-12 m-0">
+                <b>'N Ps x̄'</b>: <i>Nota Promedio Parciales.</i>
+                <b>'P's'</b>: <i>Parciales.</i>
+                <b>'% Asist.'</b>: <i>Porcentaje asistencia.</i>
+                </span>
             </small>
         </p>
-        {{--
-@if(isset($comision))
-<!-----
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'comision_id'=>$comision->id])}}"
-       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>-->
-@else
-<!-----
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id])}}" class="btn btn-sm btn-success"><i
-                class="fas fa-download"></i> Descargar
-        planilla</a>-->
 
+@if(isset($comision))
+
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
+       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
+@else
+
+    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}" class="btn btn-sm btn-success"><i
+                class="fas fa-download"></i> Descargar
+        planilla</a>
+        @endif
+{{--
     @if($puede_procesar)
         <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
            class="btn btn-warning">
@@ -134,7 +141,7 @@
         @endif
 
         @if(count($procesos) > 0)
-            <div class="table-responsive">
+            <div class="table-responsive mt-2">
                 <table class="table table-hover" id="job-table">
                     <thead class="thead-dark text-white" style="z-index: 100">
                     <tr class="fijar">
@@ -160,16 +167,16 @@
                                     {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
                                 </td>
                                 <td class="text-center">
-                                    {{$proceso->promedio_final_nota}}
+                                    @colorAprobado($proceso->promedio_final_nota)
                                 </td>
                                 <td class="text-center">
                                     {{$proceso->asistencia_final_porcentaje}} %
                                 </td>
                                 <td class="text-center">
-                                    {{$proceso->trabajo_final_nota}}
+                                    @colorAprobado($proceso->trabajo_final_nota)
                                 </td>
                                 <td class="text-center">
-                                    {{$proceso->nota_final_nota}}
+                                    @colorAprobado($proceso->nota_final_nota)
                                 </td>
                                 <td class="row">
                                     <form action="" id="{{ $proceso->procesoRelacionado->id }}"
@@ -179,7 +186,7 @@
                                                    class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
                                                    id="global-{{ $proceso->procesoRelacionado->id }}"
                                                    value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                   @if(($proceso->procesoRelacionado->estado && $proceso->procesoRelacionado->estado->identificador != 5) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                   @if(($proceso->procesoRelacionado->estado && ($proceso->procesoRelacionado->estado->identificador != 5 || $proceso->procesoRelacionado->estado->identificador != 7)) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
                                             <div class="input-group-append">
                                                 <button type="submit"
                                                         class="btn btn-info btn-sm input-group-text"
@@ -192,7 +199,6 @@
                                     </form>
                                 </td>
                                 <td>
-                                    {{$proceso->procesoRelacionado->cierre}}
                                     <input type="checkbox" class="check-cierre"
                                            id="{{$proceso->procesoRelacionado->id}}"
                                            @if($proceso->procesoRelacionado->cierre == 1)
@@ -207,7 +213,17 @@
                             <tr class="bg-secondary text-white font-weight-bold">
                                 <td>
                                     <small>
-                                        <small>Condición: {{optional($proceso->procesoRelacionado->estado)->nombre}}</small>
+                                        <small>Condición:
+                                            @if($proceso->procesoRelacionado->estado)
+                                                @if($proceso->procesoRelacionado->estado->regularidad)
+                                                    {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                @else
+                                                    {{$proceso->procesoRelacionado->estado->nombre}}
+                                                @endif
+                                            @else
+                                                No indicada
+                                            @endif
+                                        </small>
                                     </small>
                                 </td>
                                 <td colspan="2" class="text-center w-50">
@@ -241,10 +257,7 @@
                                        class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
                                         Comprobar notas
                                     </a>
-                                </td>
-
-                                <td colspan="2">
-                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
+                                    <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
                                     {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
@@ -254,6 +267,13 @@
                                     <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
+                                </td>
+
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                            data-bs-toggle="collapse" data-bs-target="#cargo-{{$proceso->id}}">
+                                        Cargos <i class="fas fa-caret-square-down"></i> </button>
+
                                     {{--                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">--}}
                                     {{--                                    <i class="fa fa-spinner fa-spin"></i>--}}
                                     {{--                                </span>--}}
@@ -261,7 +281,9 @@
                             </tr>
                             <tr>
                                 <td colspan="9" class="border-top-0 border-info">
+                                    <div id="cargo-{{$proceso->id}}" class="collapse p-0 m-0">
                                     @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
+                                    </div>
                                 </td>
                             </tr>
                         @endif

@@ -13,32 +13,32 @@ class PlanillaNotasModularExport implements WithMultipleSheets
 {
     private $materia;
     private $procesos;
+    private $ciclo_lectivo;
 
-    public function __construct(Materia $materia,$procesos)
+    public function __construct(Materia $materia,$procesos,$ciclo_lectivo)
     {
         $this->materia = $materia;
         $this->procesos = $procesos;
+        $this->ciclo_lectivo = $ciclo_lectivo;
     }
 
     public function sheets(): array
     {
+        $data_array = [
+            'materia'=> $this->materia,
+            'procesos' => $this->procesos,
+            'ciclo_lectivo' => $this->ciclo_lectivo
+        ];
+        
+        $sheets[] = new PlanillaModularCargoSheet($data_array);
 
-        $sheets = [];
-        $sheets[] = new PlanillaModularAsistenciaSheet($this->materia->cargos,$this->procesos,$this->materia);
-
+        
         foreach($this->materia->cargos as $cargo)
         {
-            $data_array = [
-                'materia' => $this->materia,
-                'cargo' => $cargo,
-                'procesos' => $this->procesos
-            ];  
-            
-            $sheets[] = new PlanillaModularCargoSheet($data_array);
+            $data_array['cargo'] = $cargo;
+            $sheets[] = new PlanillaModularAlumnosSheet($data_array);
         }
 
-        $data_array['cargos'] = $this->materia->cargos;
-        $sheets[] = new PlanillaModularAlumnosSheet($data_array);
         return $sheets;
     }
 }

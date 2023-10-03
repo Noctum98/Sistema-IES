@@ -80,7 +80,6 @@ class ExcelController extends Controller
             ->where('procesos.materia_id', $materia_id)
             ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
 
-
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
                 $query->whereHas('comisiones', function ($query) use ($comision_id) {
@@ -113,12 +112,13 @@ class ExcelController extends Controller
         return Excel::download(new PlanillaNotasTradicionalExport($procesos,$calificaciones,$materia->carrera),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
     }
 
-    public function planilla_notas_modular($materia_id, $comision_id = null)
+    public function planilla_notas_modular($materia_id,$ciclo_lectivo,$comision_id = null)
     {
 
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id);
+            ->where('procesos.materia_id', $materia_id)
+            ->where('ciclo_lectivo',$ciclo_lectivo);
 
 
         if ($comision_id) {
@@ -139,7 +139,7 @@ class ExcelController extends Controller
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
 
-        return Excel::download(new PlanillaNotasModularExport($materia,$procesos),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
+        return Excel::download(new PlanillaNotasModularExport($materia,$procesos,$ciclo_lectivo),'Planilla Notas '.$materia->nombre.' - '.$materia->carrera->nombre.'.xlsx');
     }
 
     public function filtro_alumnos(Request $request)

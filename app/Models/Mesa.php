@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Mesa extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'instancia_id',
@@ -53,29 +55,36 @@ class Mesa extends Model
     }
 
 
-    public function mesa_inscriptos_primero($orden = 1)
+    public function mesa_inscriptos_primero($orden = 1, $all = false)
     {
-        $take = 25;
+        $take = 26;
         $skip = $take * ($orden - 1);
+        $inscriptos = $this->hasMany('App\Models\MesaAlumno')
+            ->where(['estado_baja' => false, 'segundo_llamado' => false]);
 
-        return $this->hasMany('App\Models\MesaAlumno')
-            ->where(['estado_baja' => false, 'segundo_llamado' => false])
-            ->skip($skip)
-            ->take($take)
-            ->get();
+        if (!$all) {
+            $inscriptos = $inscriptos->skip($skip)
+                ->take($take);
+        }
+
+        return $inscriptos->get();
     }
 
-    public function mesa_inscriptos_segundo($orden = 1)
+    public function mesa_inscriptos_segundo($orden = 1, $all = false)
     {
-        $take = 25;
+        $take = 26;
         $skip = $take * ($orden - 1);
 
-        return $this->hasMany('App\Models\MesaAlumno')
-            ->where(['estado_baja' => false, 'segundo_llamado' => true])
-            ->skip($skip)
-            ->take($take)
-            ->get();
+        $inscriptos = $this->hasMany('App\Models\MesaAlumno')
+            ->where(['estado_baja' => false, 'segundo_llamado' => true]);
+        if (!$all) {
+            $inscriptos = $inscriptos->skip($skip)
+            ->take($take);
+        }
+
+        return $inscriptos->get();
     }
+
     public function bajas_primero()
     {
         return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);
@@ -139,33 +148,33 @@ class Mesa extends Model
     public function folios()
     {
         $folios = 1;
-        if ($this->mesa_inscriptos->count() > 25) {
-            $division_primero = $this->mesa_inscriptos->count() / 25;
+        if ($this->mesa_inscriptos->count() > 26) {
+            $division_primero = $this->mesa_inscriptos->count() / 26;
             $folios = ceil($division_primero);
         }
 
         return $folios;
     }
 
-    public function mesa_inscriptos_props(int $prop = null, $orden = 1)
+    public function mesa_inscriptos_props(int $prop = null, $orden = 1, $all = false)
     {
         if ($this->instancia->tipo == 0) {
             if ($prop == 1) {
-                return $this->mesa_inscriptos_primero($orden);
+                return $this->mesa_inscriptos_primero($orden, $all);
             }
             if ($prop == 2) {
-                return $this->mesa_inscriptos_segundo($orden);
+                return $this->mesa_inscriptos_segundo($orden, $all);
             }
-            
+
             return $this->mesa_inscriptos();
         } else {
-            $inscriptos = $this->mesa_inscriptos()->where('confirmado',true);
+            $inscriptos = $this->mesa_inscriptos()->where('confirmado', true);
 
-            $take = 25;
+            $take = 26;
             $skip = $take * ($orden - 1);
 
             if ($prop == 1) {
-                return $inscriptos->skip($skip)->take($take)->orderBy('apellidos','ASC')->get();
+                return $inscriptos->skip($skip)->take($take)->orderBy('apellidos', 'ASC')->get();
             }
 
             return $inscriptos->get();

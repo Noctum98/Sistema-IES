@@ -11,6 +11,7 @@
     <table class="table mt-4">
         <thead class="thead-dark">
             <tr>
+                <th>#</th>
                 <th scope="col">Nombre y Apellido</th>
                 <th scope="col">D.N.I</th>
                 <th scope="col">Carrera</th>
@@ -19,9 +20,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($preinscripciones as $preinscripcion)
+            @foreach ($preinscripciones as $key => $preinscripcion)
             <tr style="cursor:pointer;">
-                <td>{{ $preinscripcion->nombres.' '.$preinscripcion->apellidos }}</td>
+                <td>{{ $key + 1 }}</td>
+
+                <td>{{ mb_strtoupper($preinscripcion->apellidos).' '.ucwords($preinscripcion->nombres) }}</td>
                 <td>{{ $preinscripcion->dni }}</td>
                 <td>{{ $preinscripcion->carrera->nombre }}</td>
                 <td>{{ $preinscripcion->responsable_delete }}</td>

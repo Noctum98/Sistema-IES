@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\BajaMesaMotivos;
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Instancia;
 use App\Models\Sede;
 use App\Models\Carrera;
@@ -15,6 +16,8 @@ use App\Mail\MesaUnsubscribe;
 use App\Models\Materia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class AlumnoProcesoController extends Controller
 {
@@ -36,6 +39,66 @@ class AlumnoProcesoController extends Controller
 
         return view('proceso.alumno',[
             'alumno' => $alumno
+        ]);
+    }
+
+    public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera){
+        if(!Auth::check()){
+            return Redirect::route('login')->withInput()->with('errmessage', 'Aún no se ha identificado en el sistema.');
+        }
+
+        $pase = false;
+        $alumno = Alumno::find($idAlumno);
+        if (Session::has('alumno')) {
+
+            if (Auth::user()->id == $alumno->user->id) {
+                $pase = true;
+            }
+
+        }
+        if (Session::has('coordinador') || Session::has('admin')) {
+            $pase = true;
+        }
+
+
+        if (!$pase) {
+            return view('alumno.detail', [
+                'alumno' => $alumno,
+                'carreras' => $alumno->carreras,
+                'ciclo_lectivo' => date('Y')
+            ]);
+        }
+        $carrera = Carrera::find($idCarrera);
+
+
+        if(!$alumno)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'No se encontró el alumno solicitado'
+            ]);
+        }
+        if(!$carrera)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'No se encontró la carrera solicitada'
+            ]);
+        }
+
+        $alumnoCarrera = AlumnoCarrera::where([
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id,
+        ])->first();
+
+        if(!$alumnoCarrera)
+        {
+            return redirect()->route('alumno.admin')->with([
+                'alumno_notIsset' => 'No se encontró la carrera solicitada para el alumno indicado'
+            ]);
+        }
+
+        return view('proceso.alumnoCarrera',[
+            'alumno' => $alumno,
+            'carrera' => $carrera
         ]);
     }
 

@@ -9,21 +9,25 @@ use Illuminate\Http\Request;
 use App\Models\Sede;
 use App\Models\Personal;
 use App\Models\Carrera;
+use App\Services\CarreraService;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CarreraController extends Controller
 {
-    function __construct()
+    protected $userService;
+    function __construct(UserService $userService)
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente');
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-areaSocial');
+        $this->userService = $userService;
     }
     // Vistas
 
     public function vista_admin(){
-        list($user, $carreras) = $this->getUserAndCarrera();
+        list($user, $carreras) = $this->userService->getCarreras();
 
-        $sedes = $user->sedes;
         return view('carrera.admin',[
             'carreras'  => $carreras
         ]);
@@ -38,23 +42,19 @@ class CarreraController extends Controller
 
     public function vista_agregarPersonal(int $id){
         $carrera = Carrera::find($id);
-        $personal = Personal::where('sede_id',$carrera->sede_id)->get();
 
         return view('carrera.add_personal',[
-            'personal' => $personal,
             'carrera'  => $carrera
         ]);
     }
 
     public function vista_editar(int $id){
         $carrera = Carrera::find($id);
-        $personal = Personal::where('sede_id',$carrera->sede_id)->get();
         $sedes = Sede::all();
 
         return view('carrera.edit',[
             'carrera'   => $carrera,
             'sedes'     => $sedes,
-            'personal'  => $personal
         ]);
     }
 
@@ -68,18 +68,6 @@ class CarreraController extends Controller
         ]);
     }
 
-    public function agregar_personal(int $id,Request $request){
-        $carrera = Carrera::find($id);
-        $carrera->coordinador = $request->input('coordinador');
-        $carrera->referente_p = $request->input('referente_p');
-        $carrera->referente_s = $request->input('referente_s');
-        $carrera->update();
-
-        return redirect()->route('carrera.admin')->with([
-            'message'   =>  'La carrera ha sido creada correctamente'
-        ]);
-
-    }
 
     public function editar(int $id,CarrerasRequest $request){
         $carrera = Carrera::find($id);
@@ -98,21 +86,6 @@ class CarreraController extends Controller
             'carreras' => $carreras,
             'instancia' => $instancia
         ]);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getUserAndCarrera(): array
-    {
-        $user = Auth::user();
-        $carreras = Carrera::orderBy('sede_id')->get();
-
-        if (!$user->hasRole('admin') && !$user->hasRole('regente')) {
-            $carreras = $user->carreras;
-        }
-
-        return array($user, $carreras);
     }
 
     protected function verProfesores($carrera_id)

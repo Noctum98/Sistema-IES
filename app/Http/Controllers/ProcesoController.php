@@ -34,7 +34,7 @@ class ProcesoController extends Controller
     function __construct(CicloLectivoService $cicloLectivoService)
     {
         $this->middleware('app.auth',['except'=>'delete']);
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor',['except'=>'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',['except'=>'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
     }
 
@@ -97,6 +97,7 @@ class ProcesoController extends Controller
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
             'tipo_id' => 1,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
         if ($comision_id) {
             $calificacion->where([
@@ -320,10 +321,6 @@ class ProcesoController extends Controller
         $proceso->estado_id = $estado->id;
         $proceso->operador_id = $user->id;
 
-        if ($estado->identificador != 5) {
-            $proceso->nota_global = null;
-        }
-
         $proceso->update();
 
         $data = [
@@ -338,11 +335,68 @@ class ProcesoController extends Controller
     {
         $user = Auth::user();
         $proceso = Proceso::find($request['proceso_id']);
+
+        // Actualizamos el proceso
+
         if ($request['cierre'] == 'true') {
             $proceso->cierre = 1;
         }
         if ($request['cierre'] == 'false') {
             $proceso->cierre = 0;
+        }
+        $proceso->operador_id = $user->id;
+
+        $proceso->update();
+
+        //
+
+        if ($request['tipo'] and $request['tipo'] == 'modular' and $request['cargo']) {
+            $cargo_id = $request['cargo'];
+            $procesoService = new ProcesosCargosService();
+            $procesoService->actualizar($proceso->id, $cargo_id, $user->id);
+        } else {
+            $proceso->operador_id = $user->id;
+            $proceso->update();
+
+            if ($proceso->materia()->first()) {
+                if ($proceso->materia()->first()->cargos()->get()) {
+                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                        $procesoService = new ProcesosCargosService();
+                        $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
+                    }
+                }
+            }
+        }
+
+        return response()->json($proceso, 200);
+    }
+
+    public function cambiaCierreModulo(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        $proceso = Proceso::find($request['proceso_id']);
+
+        // Actualizamos el proceso
+
+        if ($request['cierre'] == 'true') {
+            $proceso->cierre = 1;
+        }
+        if ($request['cierre'] == 'false') {
+            $proceso->cierre = 0;
+        }
+        $proceso->operador_id = $user->id;
+
+        $proceso->update();
+
+        //
+
+        if($proceso->materia()->first()){
+            if ($proceso->materia()->first()->cargos()->get()) {
+                foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                    $procesoService = new ProcesosCargosService();
+                    $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
+                }
+            }
         }
 
         if ($request['tipo'] and $request['tipo'] == 'modular' and $request['cargo']) {
@@ -380,21 +434,16 @@ class ProcesoController extends Controller
         bool $cierre_coordinador = false
     ) {
 
-
-
         $user = Auth::user();
         if($comision_id == 0){
             $comision_id = null;
         }
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
-
-
         if ($cargo_id and !$cierre_coordinador) {
             $procesoService = new ProcesosCargosService();
             foreach ($procesos as $proceso) {
                 $procesoService->cierraProcesoCargo($cargo_id, $proceso->id, $user->id, true);
             }
-
         } else {
             foreach ($procesos as $proceso) {
                 $proceso->cierre = 1;

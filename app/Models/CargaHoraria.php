@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CargaHoraria extends Model
 {
@@ -16,4 +17,12 @@ class CargaHoraria extends Model
     ];
 
     protected $table = 'workloads';
+
+    /**
+     * @return BelongsTo
+     */
+    public function materia(): BelongsTo
+    {
+        return $this->belongsTo(Materia::class);
+    }
 }

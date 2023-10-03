@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Trianual\Trianual;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -65,7 +67,8 @@ class Alumno extends Model
         'fecha_primera_acreditacion',
         'fecha_ultima_acreditacion',
         'deleted_at',
-        'aprobado'
+        'aprobado',
+        'operador_id'
     ];
 
     public function user()
@@ -75,7 +78,21 @@ class Alumno extends Model
 
     public function carreras()
     {
-        return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo',date('Y'));
+        return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo', date('Y'));
+    }
+
+    public function carrerasDistinct()
+    {
+        return $this->belongsToMany(Carrera::class)->distinct();
+    }
+
+    /**
+     * @param $ciclo_lectivo
+     * @return BelongsToMany
+     */
+    public function carrerasByCicloLectivo($ciclo_lectivo): BelongsToMany
+    {
+        return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo', $ciclo_lectivo);
     }
 
     public function comisiones()
@@ -129,17 +146,22 @@ class Alumno extends Model
             'carrera_id' => $carrera_id,
             'alumno_id' => $alumno_id,
             'ciclo_lectivo' => $ciclo_lectivo ?? date('Y')
-        ])->first();
-    }
-
-    public function lastProcesoCarrera($carrera_id)
-    {
-        return AlumnoCarrera::where([
-            'carrera_id' => $carrera_id,
-            'alumno_id' => $this->id,
         ])->latest()->first();
     }
 
+    public function lastProcesoCarrera($carrera_id, $ciclo_lectivo = null)
+    {
+        $alumnoCarrera = AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'alumno_id' => $this->id,
+        ]);
+
+        if ($ciclo_lectivo) {
+            $alumnoCarrera = $alumnoCarrera->where('ciclo_lectivo', $ciclo_lectivo);
+        }
+
+        return $alumnoCarrera->latest()->first();
+    }
 
 
     public function hasProceso($materia_id)
@@ -180,32 +202,31 @@ class Alumno extends Model
 
     // Functiones Estáticas
 
-    public static function alumnosAño($year, $carrera_id, $ciclo_lectivo,$comision_id)
+    public static function alumnosAño($year, $carrera_id, $ciclo_lectivo, $comision_id)
     {
-        $alumnos =  Alumno::whereHas('alumno_carrera', function ($query) use ($year, $carrera_id, $ciclo_lectivo) {
+        $alumnos = Alumno::whereHas('alumno_carrera', function ($query) use ($year, $carrera_id, $ciclo_lectivo) {
             $query->where('año', $year)
                 ->where('carrera_id', $carrera_id)
                 ->where('ciclo_lectivo', $ciclo_lectivo);
         });
 
-        if($comision_id)
-        {
-            $alumnos = $alumnos->whereHas('comisiones',function($query) use ($comision_id){
-                $query->where('comisiones.id',$comision_id);
+        if ($comision_id) {
+            $alumnos = $alumnos->whereHas('comisiones', function ($query) use ($comision_id) {
+                $query->where('comisiones.id', $comision_id);
             });
         }
 
 
         $alumnos = $alumnos->where('aprobado', true)
-        ->orderBy('alumnos.apellidos', 'asc')
-        ->get();
+            ->orderBy('alumnos.apellidos', 'asc')
+            ->get();
 
         return $alumnos;
     }
 
     public function getApellidosNombresAttribute()
     {
-        return $this->apellidos . ', ' . $this->nombres;
+        return mb_strtoupper($this->apellidos) . ', ' . ucwords($this->nombres);
     }
 
     public function getEquivalencias()
@@ -218,41 +239,75 @@ class Alumno extends Model
     }
 
     /**
+     * @param $materia
+     * @param $ciclo_lectivo
+     * @return bool
+     */
+    public function hasEquivalenciaMateriaCicloLectivo($materia, $ciclo_lectivo): bool
+    {
+        $equivalencias = Equivalencias::where([
+                'equivalencias.alumno_id' => $this->id,
+                'equivalencias.materia_id' => $materia,
+                'equivalencias.ciclo_lectivo' => $ciclo_lectivo,
+            ]
+        )->first();
+
+        if ($equivalencias) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getNotaEquivalenciaMateriaCicloLectivo($materia, $ciclo_lectivo)
+    {
+        $equivalencias = Equivalencias::where([
+                'equivalencias.alumno_id' => $this->id,
+                'equivalencias.materia_id' => $materia,
+                'equivalencias.ciclo_lectivo' => $ciclo_lectivo,
+            ]
+        )->select('nota')
+            ->first();
+        return $equivalencias->nota;
+
+    }
+
+    /**
      * @return mixed
      */
     public function getRegularidades()
     {
         return Regularidad::select('regularidades.*')
-            ->leftJoin('procesos','regularidades.proceso_id','procesos.id')
-            ->leftJoin('materias','materias.id','procesos.materia_id')
-            ->where('procesos.alumno_id',$this->id)
-            ->orderBy('procesos.ciclo_lectivo','desc')
-            ->orderBy('materias.nombre','asc')
+            ->leftJoin('procesos', 'regularidades.proceso_id', 'procesos.id')
+            ->leftJoin('materias', 'materias.id', 'procesos.materia_id')
+            ->where('procesos.alumno_id', $this->id)
+            ->orderBy('procesos.ciclo_lectivo', 'desc')
+            ->orderBy('materias.nombre', 'asc')
             ->get();
     }
 
     public function isRegular(int $ciclo_lectivo = null)
     {
         $qb = Proceso::select()
-            ->leftJoin('alumnos','procesos.alumno_id','alumnos.id')
-            ->leftJoin('estados','procesos.estado_id','estados.id')
-            ->whereIn('estados.identificador', [1,3,4]);
-        if($ciclo_lectivo){
-            $qb->where('ciclo_lectivo','=', $ciclo_lectivo);
+            ->leftJoin('alumnos', 'procesos.alumno_id', 'alumnos.id')
+            ->leftJoin('estados', 'procesos.estado_id', 'estados.id')
+            ->whereIn('estados.identificador', [1, 3, 4]);
+        if ($ciclo_lectivo) {
+            $qb->where('ciclo_lectivo', '=', $ciclo_lectivo);
         }
 
         return $qb->get();
     }
 
 
-
     public function materias(): BelongsToMany
     {
-        return $this->belongsToMany(Materia::class,'materias')
-            ->withPivot('id','carrera_id');
+        return $this->belongsToMany(Materia::class, 'materias')
+            ->withPivot('id', 'carrera_id');
     }
 
-
-
+    public function getTrianual(): HasOne
+    {
+        return $this->hasOne(Trianual::class, 'alumno_id');
+    }
 
 }

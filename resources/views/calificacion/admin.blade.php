@@ -47,7 +47,7 @@
                 Crear Calificación
             </button>
         @endif
-        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos'))
+        @if(Session::has('profesor') || Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos') || Session::has('areaSocial'))
             @if($materia->getTotalAttribute() > 0)
                 @foreach($materia->comisiones as $comision)
                     @if(Auth::user()->hasComision($comision->id))
@@ -60,7 +60,7 @@
                             <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id, 'ciclo_lectivo'=>$ciclo_lectivo,'comision_id' => $comision->id]) }}"
                                class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                         @endif
-                    @elseif(Session::has('coordinador') || Session::has('seccionAlumnos'))
+                    @elseif(Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin') || Session::has('areaSocial'))
                         <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo ,'comision_id' => $comision->id]) }}"
                            class="btn btn-info">Ver Planilla de Calificaciones {{$comision->nombre}}</a>
                     @endif

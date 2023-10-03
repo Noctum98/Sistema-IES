@@ -5,6 +5,7 @@
             <th>Acción</th>
             <th>Carrera</th>
             <th>Materia</th>
+            <th>Por equivalencia</th>
             <th>Usuario Responsable</th>
             <th>Fecha</th>
         </tr>
@@ -15,7 +16,14 @@
             <th><a href="{{ route('alumno.detalle',$registro->proceso->alumno_id) }}"> {{$registro->proceso->alumno->dni}} </a></th>
             <td>{{ $registro->changes == 'CREATE' || $registro->changes == 'DELETE' ? $registro->changes : 'UPDATE' }}</td>
             <td>{{ $registro->proceso->materia->carrera->nombre }}</td>
-            <td> {{ $registro->proceso->materia->nombre }} </td>
+            <td>{{ $registro->proceso->materia->nombre }}</td>
+            <td>
+                @if(!$registro->proceso->hasEquivalencia())
+                    <span class="text-danger">NO</span>
+                @else
+                    <span class="text-success">SI</span>
+                @endif
+            </td>
             <td>
                 @if($registro->user)
                 {{ $registro->user->apellido.' '.$registro->user->nombre }}

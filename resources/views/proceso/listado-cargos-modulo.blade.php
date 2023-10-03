@@ -3,13 +3,7 @@
         {{--            {{$alumno->nombre}} {{$alumno->apellidos}}, DU: {{$alumno->dni}}--}}
     </div>
     @foreach($cargos as $cargo )
-        @php
-            $suma=0;
-            $suma_parcial = null;
-            $cant=count($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo));
-            $cant_parciales = count($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo));
-            $valor_parcial = 0;
-        @endphp
+
         <table class="table table-striped f30">
             <colgroup>
                 <col class="col-sm-2">
@@ -62,16 +56,16 @@
             </thead>
             <tbody>
             <tr>
+                {{-- Columna cargo --}}
                 <td>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
+                {{-- Columna Porcentaje de Actividades Aprobadas --}}
                 <td>
-
                     {{number_format($proceso->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id, $ciclo_lectivo) , 2, '.', ',')}}
                     %
-
                 </td>
-
+                {{-- Columna Trabajos Prácticos --}}
                 <td>
                     <button class="btn-info" data-bs-toggle="modal"
                             data-bs-target="#tp-{{$proceso->procesoRelacionado()->first()->id}}-{{$cargo->id}}">
@@ -107,30 +101,21 @@
                                                 <tbody>
 
                                                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
-                                                    <td class="p-2"><h6>
-                                                            {{--                        {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                                                    <td class="p-2">
+                                                        <h6>
+{{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                                                             @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                                                    {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') }}
-                                                                    @php
-                                                                        $sumaCalificacion = $calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota
-                                                                    @endphp
+                                                                    @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
+                                                                    2, '.', ',') )
+
 
                                                                 @endif
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                                                     A
-                                                                    @php
-                                                                        $sumaCalificacion = 0;
-                                                                    @endphp
+
                                                                 @endif
-                                                                @php
-                                                                    if(is_numeric($sumaCalificacion)){
-                                                                        $suma+=$sumaCalificacion;
-                                                                        }else{
-                                                                        $suma+= 0;
-                                                                        }
-                                                                @endphp
                                                             @else
                                                                 -
                                                             @endif
@@ -146,11 +131,11 @@
                         </div>
                     </div>
                 </td>
+                {{-- Columna Nota Promedio Trabajos Prácticos --}}
                 <td>
-                    @if($cant > 0)
-                        {{number_format($suma/$cant , 2, '.', ',')}}
-                    @endif
+                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp , 2, '.', ','))
                 </td>
+                {{-- Columna Parciales --}}
                 <td>
                     <button class="btn-info" data-bs-toggle="modal"
                             data-bs-target="#parcial-{{$proceso->procesoRelacionado()->first()->id}}-{{$cargo->id}}">
@@ -189,7 +174,8 @@
                                                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                                                {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',') }}
+                                                                @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
+                                                                2, '.', ',') )
                                                             @endif
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                                                 A
@@ -205,7 +191,8 @@
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio >= 0)
                                                                 @if(is_numeric($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio))
 
-                                                                    {{number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio, 2, '.', ',') }}
+                                                                    @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio,
+                                                                    2, '.', ',') )
                                                                 @else
                                                                     {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio}}
 
@@ -228,55 +215,19 @@
                         </div>
                     </div>
                 </td>
-
-                @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacionP)
-
-                    @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id))
-                        @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) > 0)
-                            {{number_format($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id), 2, '.', ',')}}
-                            @php
-                                $valor_parcial = $calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id);
-                            @endphp
-                        @endif
-                        @if($calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) <= 0 or
-$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A'
-)
-                            @if($calificacionP->obtenerAusenteParcialByProceso($proceso->procesoRelacionado()->first()->id) == 'A')
-                                A
-
-                            @else
-                                {{$calificacionP->obtenerParcialByProceso($proceso->procesoRelacionado()->first()->id)}}
-                            @endif
-
-                        @endif
-                    @else
-                        -
-                    @endif
-
-                    @php
-                        if(is_numeric($valor_parcial)){
-                            $suma_parcial+=$valor_parcial;
-                            }else{
-                            $suma_parcial+= 0;
-                            }
-                    @endphp
-
-                @endforeach
-
+                {{-- Nota Promedio Parciales --}}
                 <td>
-                    @if($cant_parciales > 0)
-                        {{number_format($suma_parcial/$cant_parciales , 2, '.', ',')}}
-                    @endif
+                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps , 2, '.', ','))
                 </td>
-
-
+                {{-- Columna Nota Final --}}
                 <td>
+                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo, 2, '.', ','))
+                    <br/>
+                    <small>
 
-                    @inject('cargoService', 'App\Services\CargoService')
-                    @php
-                        $pfinal = $cargoService->calculoPorcentajeCalificacionFromBlade($cant, $suma, $cant_parciales, $suma_parcial);
-                    @endphp
-                    {{number_format($pfinal, 2, '.', ',')}}
+                        {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
+
+                    </small>
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
