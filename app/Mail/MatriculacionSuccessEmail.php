@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Services\MailService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,6 +11,10 @@ use Illuminate\Queue\SerializesModels;
 class MatriculacionSuccessEmail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $alumno;
+    public $carrera;
+    public $url;
+    public $mailService;
 
     /**
      * Create a new message instance.
@@ -21,6 +26,7 @@ class MatriculacionSuccessEmail extends Mailable
         $this->alumno = $alumno;
         $this->carrera = $carrera;
         $this->url = config('app.APP_URL');
+        $this->mailService = new MailService();
         $this->subject("Matriculación IESVU 9015");
     }
 
@@ -31,6 +37,13 @@ class MatriculacionSuccessEmail extends Mailable
      */
     public function build()
     {
+        $datos = [
+            'tipo' => 'Matriculación Enviada',
+            'email' => $this->to[0]['address']
+        ];
+
+        $this->mailService->store($datos);
+
         return $this->view('mail.matriculacion_success',[
             'alumno' => $this->alumno,
             'carrera' => $this->carrera,

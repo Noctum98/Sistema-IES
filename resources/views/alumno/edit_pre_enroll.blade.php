@@ -404,73 +404,85 @@
 						@enderror
 					</div>
 
-					@if($preinscripcion->articulo_septimo)
+
 					<div id="7mo">
 						<br>
 						<h4 class="text-secondary">Artículo 7mo</h4>
+						<div class="alert alert-warning">
+							Estás realizando tu preinscripción por Artículo 7, cuyos requisitos son:
+							ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
+							trabajado en un empleo relacionado con la carrera elegida.
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="articulo_septimo" id="articulo_septimo" value="1" {{ $preinscripcion->articulo_septimo == 1 ? 'checked' : '' }}>
+							<label class="form-check-label" for="articulo_septimo">
+								Confirmo mi preinscripción por Artículo 7
+							</label>
+						</div>
 						<hr>
-						<div class="form-group">
-							<label for="primario_file">
-								Título de Nivel Primario:
-								@if($preinscripcion->primario)
-								<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-								@endif
-							</label>
-							<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
+						<div class="d-none" id="archivos_articulo_septimo">
+							<div class="form-group">
+								<label for="primario_file">
+									Título de Nivel Primario:
+									@if($preinscripcion->primario)
+									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+									@endif
+								</label>
+								<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
 
-							@error('primario_file')
-							<span class="invalid-feedback d-block" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-							@enderror
-						</div>
-						<div class="form-group">
-							<label for="ctrabajo_file">
-								Certificado de Trabajo con firma y sello de quien lo emite
-								@if($preinscripcion->ctrabajo)
-								<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-								@endif
-							</label>
-							<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
+								@error('primario_file')
+								<span class="invalid-feedback d-block" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
+								@enderror
+							</div>
+							<div class="form-group">
+								<label for="ctrabajo_file">
+									Certificado de Trabajo con firma y sello de quien lo emite
+									@if($preinscripcion->ctrabajo)
+									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+									@endif
+								</label>
+								<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
 
-							@error('ctrabajo_file')
-							<span class="invalid-feedback d-block" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-							@enderror
-						</div>
-						<div class="form-group">
-							<label for="curriculum_file">
-								Currículum Vitae (en formato PDF)
-								@if($preinscripcion->curriculum)
-								<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-								@endif
-							</label>
-							<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
+								@error('ctrabajo_file')
+								<span class="invalid-feedback d-block" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
+								@enderror
+							</div>
+							<div class="form-group">
+								<label for="curriculum_file">
+									Currículum Vitae (en formato PDF)
+									@if($preinscripcion->curriculum)
+									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+									@endif
+								</label>
+								<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
 
-							@error('curriculum_file')
-							<span class="invalid-feedback d-block" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-							@enderror
-						</div>
-						<div class="form-group">
-							<label for="nota_file">
-								Nota a la Rectora (en PDF)
-								@if($preinscripcion->nota)
-								<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-								@endif
-							</label>
-							<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
+								@error('curriculum_file')
+								<span class="invalid-feedback d-block" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
+								@enderror
+							</div>
+							<div class="form-group">
+								<label for="nota_file">
+									Nota a la Rectora (en PDF)
+									@if($preinscripcion->nota)
+									<b>(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+									@endif
+								</label>
+								<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
 
-							@error('nota_file')
-							<span class="invalid-feedback d-block" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-							@enderror
+								@error('nota_file')
+								<span class="invalid-feedback d-block" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
+								@enderror
+							</div>
 						</div>
 					</div>
-					@endif
 					<input type="submit" value="Actualizar datos" class="btn btn-success" id="loading">
 				</form>
 			</div>
