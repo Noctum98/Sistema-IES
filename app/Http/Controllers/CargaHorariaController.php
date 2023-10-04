@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCargaHorariaRequest;
 use App\Http\Requests\UpdateCargaHorariaRequest;
 use App\Models\CargaHoraria;
+use App\Models\ComposicionHoraria;
 use App\Models\Estados;
+use App\Models\Materia;
 use App\Models\Personal;
 use App\Models\Proceso;
 use App\Models\User;
@@ -70,17 +72,29 @@ class CargaHorariaController extends Controller
 
         $request['usuario_id'] =  $user->id;
 
-        CargaHoraria::create($request->all());
+        $ch = CargaHoraria::create($request->all());
 
         $mensaje = ['calificacion_creada' => 'Carga horaria asignada correctamente'];
+
+        ComposicionHoraria::create([
+            'carga_principal_id' => $ch->id,
+            'is_principal' => true,
+            'compositable_id' => $ch->materia_id,
+            'compositable_type' => Materia::class,
+            'cantidad_horas' => $ch->cantidad_horas,
+            'usuario_id' => $user->id
+        ]);
+
 
         $cargaHoraria = CargaHoraria::where([
             'profesor_id' => $persona
         ])->get();
+        $profesor = User::find($persona);
 
         return view('cargaHoraria.ver', [
             'cargaHoraria' => $cargaHoraria,
-            'user' => $persona
+            'user' => $profesor,
+            'mensaje' => $mensaje
         ]);
 
     }
@@ -96,6 +110,8 @@ class CargaHorariaController extends Controller
         $cargaHoraria = CargaHoraria::where([
             'profesor_id' => $persona->id
         ])->get();
+
+
 
         return view('cargaHoraria.ver', [
             'cargaHoraria' => $cargaHoraria,

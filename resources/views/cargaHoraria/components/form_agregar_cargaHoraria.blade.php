@@ -8,11 +8,12 @@
 
     <div class="form-group mb-3">
         <label for="materia_id">Materia<sup>*</sup></label>
-        <select name="materia_id" id="materia_id" class="form-select" required>
+        <select name="materia_id" id="materia_id" class="form-select select2" required>
             <option value="">Seleccione materia</option>
             @foreach($carreras as $carrera)
                 @foreach($carrera->materias()->get() as $materia)
-                    <option value="{{ $materia->id }}">{{ $materia->nombre }}</option>
+                    <option value="{{ $materia->id }}">
+                        ({{ $materia->id }}) {{ $materia->nombre }}//{{$materia->carrera->nombre}}({{$materia->carrera->id}}) </option>
                 @endforeach
             @endforeach
         </select>
@@ -35,3 +36,12 @@
     <sup>*</sup> <small>Campos requeridos</small><br/>
     <input type="submit" value="Guardar" class="btn btn-primary">
 </form>
+
+<script>
+    $(document).ready(function () {
+        $(".select2").select2({
+            dropdownParent: $('#agregaModal'),
+            width: "100%"
+        });
+    });
+</script>

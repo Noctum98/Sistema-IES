@@ -17,11 +17,10 @@ class CreateComposicionHorariasTable extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->foreignId('carga_principal_id')->constrained('workloads');
-            $table->foreignId('carrera_id')->nullable()->constrained('carreras');
-            $table->foreignId('materia_id')->nullable()->constrained('materias');
-            $table->foreignId('espacio_id')->nullable()->constrained('spaces');
+            $table->morphs('compositable');
             $table->integer('cantidad_horas')->nullable();
-            $table->unsignedInteger('usuario_id')->unique();
+            $table->boolean('is_principal')->nullable();
+            $table->unsignedInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
