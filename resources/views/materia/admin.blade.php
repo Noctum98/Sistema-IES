@@ -30,7 +30,7 @@
 	{{ @session('error_procesos') }}
 	@endif
 	<div class="col-md-8">
-		
+
 		<h3 class="text-secondary">Primer Año</h3>
 		<table class="table table-hover mt-4">
 			<thead class="thead-dark">
@@ -46,7 +46,7 @@
 				<tr style="cursor:pointer;">
 					<td>{{ $materia->nombre }}</td>
 					<td>
-						@if(Auth::user()->hasRole('admin'))
+						@if(Auth::user()->hasRole('admin') or Auth::user()->hasRole('regente') or Auth::user()->hasRole('coordinador') or Auth::user()->hasRole('seccionAlumnos'))
 						<a href="{{ route('materia.editar',['id'=>$materia->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 						@endif
 						<a href="{{ route('calificacion.admin',['materia_id'=>$materia->id,'ciclo_lectivo'=>date('Y')]) }}" class="btn btn-sm btn-secondary">Ver calificaciones</a>

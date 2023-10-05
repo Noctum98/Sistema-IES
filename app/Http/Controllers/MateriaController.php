@@ -27,6 +27,7 @@ class MateriaController extends Controller
 
     /**
      * @param MateriaService $materiaService
+     * @param ProcesoService $procesoService
      */
     function __construct(MateriaService $materiaService,ProcesoService $procesoService)
     {
@@ -192,7 +193,7 @@ class MateriaController extends Controller
         }
         foreach($procesos as $proceso)
         {
-            
+
             if(!$proceso->estado_id)
             {
                 $proceso->estado_id = $estadoNoRegular->id;
