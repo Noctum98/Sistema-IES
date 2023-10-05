@@ -71,7 +71,7 @@
                             Funcionalidad Beta <span class="visually-hidden"></span>
                         </small>
                         Desempeño Académico <br/>
-                        <b>{{strtoupper($carrera->nombre)}}</b>
+                        <b>{{mb_strtoupper($carrera->nombre)}}</b>
                         <br/><small>{{$carrera->años}} años</small>
                     </p>
 
@@ -85,7 +85,7 @@
             <div class="card-footer border-bottom col-sm-12 mx-auto">
                 <div class="row">
                     <div class="col-sm-4 px-3 border-right">
-                        Materia
+                        Materia/Módulo
                     </div>
                     <div class="col-sm-3  border-right">
                         Régimen
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
-                                        {!! ucwords($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
+                                        {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
@@ -149,7 +149,7 @@
             <div class="card-footer border-bottom col-sm-12 mx-auto">
                 <div class="row">
                     <div class="col-sm-4 px-3 border-right">
-                        Materia
+                        Materia/Módulo
                     </div>
                     <div class="col-sm-3  border-right">
                         Régimen
@@ -184,7 +184,7 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
-                                        {!! ucwords($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
+                                        {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
@@ -213,7 +213,7 @@
             <div class="card-footer border-bottom col-sm-12 mx-auto">
                 <div class="row">
                     <div class="col-sm-4 px-3 border-right">
-                        Materia
+                        Materia/Módulo
                     </div>
                     <div class="col-sm-3  border-right">
                         Régimen
@@ -249,7 +249,7 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
-                                        {!! ucwords($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
+                                        {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">

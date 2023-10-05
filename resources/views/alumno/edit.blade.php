@@ -19,7 +19,9 @@
                         Foto tipo carnet digital (La imagen cambiará al subir el formulario)
                     </label>
                     <div class="imagen-alumno ml-4 mb-2">
-                        <img src="{{ route('ver_imagen',['foto'=>$alumno->imagen]) }}" alt="Imagen Alumno IESVU">
+                        <img src="
+                        @if($alumno->imagen){{ route('ver_imagen',['foto'=>$alumno->imagen]) }} @endif
+                        " alt="Imagen Alumno IESVU">
                     </div>
                     <input type="file" id="imagen" name="imagen"
                            class="form-control @error('imagen') is-invalid @enderror" value="{{ old('imagen') }}">
