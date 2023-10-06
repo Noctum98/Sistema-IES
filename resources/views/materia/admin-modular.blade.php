@@ -43,7 +43,7 @@
                             <tr style="cursor:pointer;">
                                 <td>{{ $materia->nombre }}</td>
                                 <td>
-                                    @if(Aukth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
+                                    @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
                                     <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"
                                            class="btn btn-sm btn-warning">Editar</a>
                                     @endif
@@ -92,7 +92,7 @@
                         <tr style="cursor:pointer;">
                             <td>{{ $materia->nombre }}</td>
                             <td>
-                                @if(Aukth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
+                                @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
                                 <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"
                                        class="btn btn-sm btn-warning">Editar</a>
                                 @endif
@@ -140,7 +140,7 @@
                         <tr style="cursor:pointer;">
                             <td>{{ $materia->nombre }}</td>
                             <td>
-                                @if(Aukth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
+                                @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
                                 <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"
                                        class="btn btn-sm btn-warning">Editar</a>
                                 @endif
