@@ -30,6 +30,7 @@ class MateriaController extends Controller
 
     /**
      * @param MateriaService $materiaService
+     * @param ProcesoService $procesoService
      */
     function __construct(MateriaService $materiaService,ProcesoService $procesoService, CicloLectivoService $cicloLectivoService)
     {
