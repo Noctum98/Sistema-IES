@@ -10,6 +10,10 @@ use App\Models\Sede;
 use App\Models\Carrera;
 use App\Models\MesaAlumno;
 use App\Models\Mesa;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
@@ -27,6 +31,10 @@ class AlumnoProcesoController extends Controller
     }
     // Vistas
 
+    /**
+     * @param int $id
+     * @return Application|Factory|View|RedirectResponse
+     */
     public function vista_procesos(int $id){
         $alumno = Alumno::find($id);
 
