@@ -45,7 +45,7 @@ return [
             'driver' => 'google',
             'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),
             'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
-            'refreshToken' => '1//04xBoL_eoZ0qHCgYIARAAGAQSNwF-L9IruXhg68jzqBUlBtg8qY9-8Lmawiyy4NJg1UQyWzCGQhI66iEp3Q6B4kM8f7isoWEZiPY',
+            'refreshToken' => "1//04y-HrxVrLX23CgYIARAAGAQSNwF-L9Ir8ue6dENa6V1uXBpThop_pLNGfnCFpzWQ_US0QSoUic4o4WD4btA56HPoWb4exVrrCuI",
             'folderId' => env('GOOGLE_DRIVE_FOLDER_ID')
             // 'teamDriveId' => env('GOOGLE_DRIVE_TEAM_DRIVE_ID'),
         ],
