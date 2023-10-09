@@ -693,12 +693,8 @@ Route::prefix('usuarios')->group(function () {
 });
 
 Route::get('/ruta_funcionalidades', function () {
-    $preinscripciones = Preinscripcion::where('updated_at','<', '2023-09-6')->get();
-
-    foreach($preinscripciones as $preinscripcion)
-    {
-        Mail::to($preinscripcion->email)->queue(new VerifiedPreEnroll($preinscripcion));
-    }
-
-    echo "Mails enviados.";
+    echo env('GOOGLE_DRIVE_CLIENT_ID');
+    echo env('GOOGLE_DRIVE_CLIENT_SECRET');
+    echo env('GOOGLE_DRIVE_REFRESH_TOKEN');
+    echo env('GOOGLE_DRIVE_FOLDER_ID');
 })->middleware('app.roles:admin');
