@@ -693,8 +693,8 @@ Route::prefix('usuarios')->group(function () {
 });
 
 Route::get('/ruta_funcionalidades', function () {
-    echo env('GOOGLE_DRIVE_CLIENT_ID');
-    echo env('GOOGLE_DRIVE_CLIENT_SECRET');
-    echo env('GOOGLE_DRIVE_REFRESH_TOKEN');
-    echo env('GOOGLE_DRIVE_FOLDER_ID');
+    var_dump(env('GOOGLE_DRIVE_CLIENT_ID'));
+    var_dump(env('GOOGLE_DRIVE_CLIENT_SECRET'));
+    var_dump(env('GOOGLE_DRIVE_REFRESH_TOKEN'));
+    var_dump(env('GOOGLE_DRIVE_FOLDER_ID'));
 })->middleware('app.roles:admin');
