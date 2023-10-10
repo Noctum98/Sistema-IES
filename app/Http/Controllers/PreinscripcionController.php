@@ -120,8 +120,8 @@ class PreinscripcionController extends Controller
     public function vista_inscripto(Request $request,$carrera_id)
     {
         $carrera = Carrera::find($carrera_id);
-        $title = "Tu preinscripción ha sido enviada con éxito";
-        $content = "Terminados de procesar los datos de tu preinscripción se enviará un comprobante a tu correo electronico, los datos serán verificados
+        $title = "Tu preinscripción ya está siendo procesada.";
+        $content = "Terminados de procesar los datos de tu preinscripción se enviará un comprobante a tu correo electronico, esto puede tardar ,al finalizar los datos serán verificados
         en el establecimiento y se te informará el resultado.";
         $edit = false;
 
