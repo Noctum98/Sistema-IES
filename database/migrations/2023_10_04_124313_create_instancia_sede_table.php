@@ -16,7 +16,8 @@ class CreateInstanciaSedeTable extends Migration
         Schema::create('instancia_sede', function (Blueprint $table) {
             $table->id();
             $table->foreignId('instancia_id')->constrained('instancias');
-            $table->foreignId('sede_id')->constrained('sedes');
+            $table->unsignedInteger('sede_id');
+            $table->foreign('sede_id')->references('id')->on('sedes');
             $table->timestamps();
         });
     }

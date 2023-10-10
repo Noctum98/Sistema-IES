@@ -138,7 +138,7 @@
 {{--                <!-------}}
                     <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
-                        Mis procesos
+                        Mi proceso
                     </a>
 {{--                     ----->--}}
                 @endif
