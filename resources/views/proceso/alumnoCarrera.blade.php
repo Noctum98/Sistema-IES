@@ -111,6 +111,9 @@
                                 </div>
                                 <div class="col-sm-3 px-3 border-right">
                                     <p class="card-text">
+                                        <span class="d-sm-none mr-5">
+                                            Régimen
+                                        </span>
                                         @if($materia->regimen)
                                             <i> {{$materia->regimen}}</i>
                                         @else
@@ -120,11 +123,17 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
+                                        <span class="d-sm-none mr-5">
+                                            Regularidad
+                                        </span>
                                         {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
-                                    <p class="card-text text-center">
+                                    <p class="card-text text-left pl-1">
+                                        <span class="d-sm-none mr-5">
+                                             Nota final
+                                        </span>
                                         @if($materia->getActaVolante($alumno->id))
                                             @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
                                         @else
@@ -175,6 +184,9 @@
                                 </div>
                                 <div class="col-sm-3 px-3 border-right">
                                     <p class="card-text">
+                                        <span class="d-sm-none mr-5">
+                                            Régimen
+                                        </span>
                                         @if($materia->regimen)
                                             <i> {{$materia->regimen}}</i>
                                         @else
@@ -184,11 +196,17 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
+                                        <span class="d-sm-none mr-5">
+                                            Regularidad
+                                        </span>
                                         {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
-                                    <p class="card-text text-center">
+                                    <p class="card-text text-left pl-1">
+                                        <span class="d-sm-none mr-5">
+                                            Nota final
+                                        </span>
                                         @if($materia->getActaVolante($alumno->id))
                                             @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
                                         @else
@@ -240,6 +258,9 @@
                                 </div>
                                 <div class="col-sm-3 px-3 border-right">
                                     <p class="card-text">
+                                        <span class="d-sm-none mr-5">
+                                            Régimen:
+                                        </span>
                                         @if($materia->regimen)
                                             <i> {{$materia->regimen}}</i>
                                         @else
@@ -249,11 +270,17 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
+                                        <span class="d-sm-none mr-5">
+                                            Regularidad
+                                        </span>
                                         {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
-                                    <p class="card-text text-center">
+                                    <p class="card-text text-left pl-1">
+                                         <span class="d-sm-none mr-5">
+                                             Nota final
+                                        </span>
                                         @if($materia->getActaVolante($alumno->id))
                                             @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
                                         @else

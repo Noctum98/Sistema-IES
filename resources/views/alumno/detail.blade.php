@@ -176,7 +176,7 @@
                                     <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id])}}"
                                        class="btn btn-link position-relative p-1"
                                     >
-                                        Ver desempeño académico
+                                        Ver Libreta
                                         <small
                                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                 Beta
