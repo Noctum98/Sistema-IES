@@ -14,9 +14,13 @@ class CreateInstanciaCarreraTable extends Migration
     public function up()
     {
         Schema::create('instancia_carrera', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-            $table->foreignId('instancia_id')->constrained('instancias');
-            $table->foreignId('carrera_id')->constrained('carreras');
+            $table->unsignedBigInteger('instancia_id');
+            $table->unsignedBigInteger('carrera_id');
+
+            $table->foreign('instancia_id')->references('id')->on('instancias');
+            $table->foreign('carrera_id')->references('id')->on('carreras');
             $table->timestamps();
         });
     }
