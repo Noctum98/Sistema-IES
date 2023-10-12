@@ -312,6 +312,7 @@ Route::prefix('carreras')->group(function () {
     Route::get('crear', [CarreraController::class, 'vista_crear'])->name('carrera.crear');
     Route::get('personal/{id}', [CarreraController::class, 'vista_agregarPersonal'])->name('carrera.personal');
     Route::get('editar/{id}', [CarreraController::class, 'vista_editar'])->name('carrera.editar');
+    Route::post('/sedes',[CarreraController::class,'carrerasPorSedes']);
 
     // Acciones
     Route::post('crear-carrera', [CarreraController::class, 'crear'])->name('crear_carrera');
@@ -550,6 +551,7 @@ Route::prefix('mesas')->group(function () {
     Route::post('/crear_instancia', [InstanciaController::class, 'crear'])->name('crear_instancia');
     Route::post('/editar_instancia/{id}', [InstanciaController::class, 'editar'])->name('editar_instancia');
     Route::get('/estado/{estado}/{id}', [InstanciaController::class, 'cambiar_estado']);
+    Route::get('/cierre/{cierre}/{id}', [InstanciaController::class, 'cambiar_cierre']);
     Route::post('/alumno/crear', [AlumnoMesaController::class, 'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');

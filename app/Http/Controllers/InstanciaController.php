@@ -16,14 +16,20 @@ use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
 use App\Http\Requests\InstanciaRequest;
 use App\Models\User;
+use App\Services\Mesas\InstanciaService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class InstanciaController extends Controller
 {
-    public function __construct()
+    private $instanciaService;
+
+    public function __construct(
+        InstanciaService $instanciaService
+    )
     {
         $this->middleware('app.auth');
+        $this->instanciaService = $instanciaService;
     }
     // Vistas
 
@@ -53,12 +59,18 @@ class InstanciaController extends Controller
         $sede = Sede::find($sede_id);
         $instancia = Instancia::find($instancia_id);
 
-        if(Session::has('admin') || Session::has('areaSocial') || Session::has('regente'))
+        if($instancia->general)
         {
-            $carreras = $sede->carreras;
+            if(Session::has('admin') || Session::has('areaSocial') || Session::has('regente'))
+            {
+                $carreras = $sede->carreras;
+            }else{
+                $carreras = Auth::user()->carreras;
+            }
         }else{
-            $carreras = Auth::user()->carreras;
+            $carreras = $instancia->carreras;
         }
+        
 
         return view('mesa.carreras', [
             'sede'  =>  $sede,
@@ -88,17 +100,34 @@ class InstanciaController extends Controller
     //Funcionalidades
     public function crear(InstanciaRequest $request)
     {
-        $request['año'] = date('Y');
         $request['estado'] = 'inactiva';
+
+        $request['general'] = isset($request['general']) ? $request['general'] : false;
+
         $instancia = Instancia::create($request->all());
+
+
+        if(!$request['general'])
+        {
+            $this->instanciaService->agregarSedes($request,$instancia);
+            $this->instanciaService->agregarCarreras($request,$instancia);
+        }
 
         return redirect()->back()->with('alert_success','Instancia creada correctamente.');
     }
 
     public function editar(InstanciaRequest $request, $id)
     {
+        $request['general'] = isset($request['general']) ? $request['general'] : false;
         $instancia = Instancia::find($id);
         $instancia->update($request->all());
+
+
+        if(!$request['general'])
+        {
+            $this->instanciaService->agregarSedes($request,$instancia);
+            $this->instanciaService->agregarCarreras($request,$instancia);
+        }
 
         return redirect()->back()->with('alert_success','Instancia editada correctamente.');
     }
@@ -125,9 +154,22 @@ class InstanciaController extends Controller
         $instancia->update();
 
         return response()->json([
+            'status' => 'success',
+            'data' => $instancia
+        ]);
+    }
+
+
+    public function cambiar_cierre($cierre,$id){
+        $instancia = Instancia::find($id);
+        $instancia->cierre = $cierre;
+        $instancia->update();
+
+        return response()->json([
             'status' => 'success'
         ]);
     }
+
     public function descargar_excel($id,$instancia_id,$llamado=null)
     {
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
