@@ -7,6 +7,7 @@ use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
+use App\Http\Controllers\Parameters\CicloLectivoController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
@@ -140,6 +141,18 @@ Route::prefix('cargo')->group(function () {
     Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
 });
 
+//Ruta de Ciclo lectivo
+Route::prefix('ciclo-lectivo')->group(function () {
+//    Route::resource('ciclo-lectivo', CicloLectivoController::class);
+    Route::get('/', [CicloLectivoController::class, 'index'])->name('ciclo_lectivo.index');
+    Route::post('/', [CicloLectivoController::class, 'store'])->name('ciclo_lectivo.store');
+    Route::get('{ciclo_lectivo}', [CicloLectivoController::class, 'show'])->name('ciclo_lectivo.show');
+    Route::get('create', [CicloLectivoController::class, 'create'])->name('ciclo_lectivo.create');
+    Route::delete('{ciclo_lectivo}', [CicloLectivoController::class, 'destroy'])->name('ciclo_lectivo.destroy');
+    Route::put('{ciclo_lectivo}', [CicloLectivoController::class, 'update'])->name('ciclo_lectivo.update');
+    Route::get('{ciclo_lectivo}/edit', [CicloLectivoController::class, 'edit'])->name('ciclo_lectivo.edit');
+    Route::get('{ciclo_lectivo}/especial', [CicloLectivoController::class, 'especial'])->name('ciclo_lectivo.especial');
+});
 // Rutas de comisiones
 
 Route::resource('comisiones', ComisionController::class);

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Parameters;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCicloLectivoEspecialRequest;
 use App\Http\Requests\UpdateCicloLectivoEspecialRequest;
-use App\Models\CicloLectivoEspecial;
+use App\Models\Parameters\CicloLectivoEspecial;
 
 class CicloLectivoEspecialController extends Controller
 {
