@@ -16,8 +16,8 @@ class CreateInstanciaSedeTable extends Migration
         Schema::create('instancia_sede', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedBigInteger('instancia_id');
-            $table->unsignedBigInteger('sede_id');
+            $table->unsignedInteger('instancia_id');
+            $table->unsignedInteger('sede_id');
 
             $table->foreign('instancia_id')->references('id')->on('instancias');
             $table->foreign('sede_id')->references('id')->on('sedes');
