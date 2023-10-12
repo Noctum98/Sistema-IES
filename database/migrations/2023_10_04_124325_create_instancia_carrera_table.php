@@ -19,8 +19,8 @@ class CreateInstanciaCarreraTable extends Migration
             $table->unsignedInteger('instancia_id');
             $table->unsignedInteger('carrera_id');
 
-            $table->foreign('instancia_id')->references('id')->on('instancias');
-            $table->foreign('carrera_id')->references('id')->on('carreras');
+            $table->index('instancia_id');
+            $table->index('carrera_id');
             $table->timestamps();
         });
     }
