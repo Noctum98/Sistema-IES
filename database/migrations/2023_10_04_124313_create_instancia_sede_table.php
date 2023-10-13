@@ -14,10 +14,13 @@ class CreateInstanciaSedeTable extends Migration
     public function up()
     {
         Schema::create('instancia_sede', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-            $table->foreignId('instancia_id')->constrained('instancias');
-            $table->unsignedInteger('sede_id');
-            $table->foreign('sede_id')->references('id')->on('sedes');
+            $table->unsignedBigInteger('instancia_id');
+            $table->unsignedBigInteger('sede_id');
+
+            $table->index('instancia_id');
+            $table->index('sede_id');
             $table->timestamps();
         });
     }
