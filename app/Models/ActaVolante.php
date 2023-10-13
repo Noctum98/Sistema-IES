@@ -10,7 +10,7 @@ class ActaVolante extends Model
 {
     use HasFactory;
     protected $table = 'actas_volantes';
-    protected $fillable = [            
+    protected $fillable = [
         'nota_escrito',
         'nota_oral',
         'promedio',
@@ -31,5 +31,9 @@ class ActaVolante extends Model
     public function mesa(): BelongsTo
     {
         return $this->belongsTo(Mesa::class,'mesa_id');
+    }
+    public function mesaAlumno(): BelongsTo
+    {
+        return $this->belongsTo(MesaAlumno::class,'mesa_alumno_id');
     }
 }

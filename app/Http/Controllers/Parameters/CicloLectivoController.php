@@ -81,6 +81,11 @@ class CicloLectivoController extends Controller
         //
     }
 
+    /**
+     * Solo lista los ciclo lectivos especiales según el ciclo lectivo
+     * @param CicloLectivo $cicloLectivo
+     * @return void
+     */
     public function especial(CicloLectivo $cicloLectivo)
     {
         dd($cicloLectivo);

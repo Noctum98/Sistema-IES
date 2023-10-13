@@ -8,7 +8,7 @@
             <div class="card-body">
                 Listado de los ciclos lectivos con sus fechas de cierre.
                 @if(Auth::user()->hasRole('admin'))
-                    <a href="{{ route('ciclo-lectivo.create') }}" class="btn btn-sm btn-success ml-5">
+                    <a href="{{ route('ciclo_lectivo.create') }}" class="btn btn-sm btn-success ml-5">
                         Crear Ciclo Lectivo
                     </a>
                 @endif
