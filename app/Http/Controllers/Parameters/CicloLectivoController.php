@@ -1,21 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Parameters;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCicloLectivoRequest;
 use App\Http\Requests\UpdateCicloLectivoRequest;
-use App\Models\CicloLectivo;
+use App\Models\Parameters\CicloLectivo;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class CicloLectivoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
-        //
+        $ciclos = CicloLectivo::all()->sortByDesc("year");
+
+        return view('parameters.ciclo_lectivo.admin', [
+            'ciclos' => $ciclos,
+        ]);
     }
 
     /**
@@ -71,6 +79,16 @@ class CicloLectivoController extends Controller
     public function update(UpdateCicloLectivoRequest $request, CicloLectivo $cicloLectivo)
     {
         //
+    }
+
+    /**
+     * Solo lista los ciclo lectivos especiales según el ciclo lectivo
+     * @param CicloLectivo $cicloLectivo
+     * @return void
+     */
+    public function especial(CicloLectivo $cicloLectivo)
+    {
+        dd($cicloLectivo);
     }
 
     /**

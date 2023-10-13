@@ -214,7 +214,9 @@ class Materia extends Model
         $actaVolante = ActaVolante::where([
             'alumno_id' => $alumno_id,
             'materia_id' => $this->id
-        ])->first();
+        ])
+            ->orderBy('updated_at', 'DESC')
+            ->first();
 
 
         if(!$actaVolante){

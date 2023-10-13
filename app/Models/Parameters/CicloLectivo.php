@@ -13,8 +13,8 @@ class CicloLectivo extends Model
     protected $fillable = [
         'id',
         'year',
-        '1st-sem',
-        '2nd-sem',
+        'fst_sem',
+        'snd_sem',
         'anual',
     ];
 
@@ -25,8 +25,8 @@ class CicloLectivo extends Model
         return CicloLectivo::create([
             'id' => $cicloLectivo,
             'year' => $cicloLectivo,
-            '1st-sem' => $primerSemestre,
-            '2nd-sem' => $segundoSemestre,
+            'fst_sem' => $primerSemestre,
+            'snd_sem' => $segundoSemestre,
             'anual' => $anual,
         ]);
     }

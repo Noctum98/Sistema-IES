@@ -113,11 +113,15 @@
                                                     </div>
                                                 @else
                                                     <div class="sol-sm-12 col-md-6 m-0 p-0">
-                                                        <h6 class="card-text font-italic">{{ $inscripcion->mesa->fecha_segundo ? date_format(new DateTime($inscripcion->mesa->fecha_segundo ), 'd-m-Y H:i') : ''}}</h6>
+                                                        <h6 class="card-text font-italic">
+                                                            {{ $inscripcion->mesa->fecha_segundo ? date_format(new DateTime($inscripcion->mesa->fecha_segundo ), 'd-m-Y H:i') : ''}}
+                                                        </h6>
                                                     </div>
                                                 @endif
                                                 <div class="col-sm-12 col-md-3 m-0 p-0">
-                                                    <h6 class="card-text font-italic">{{ optional($inscripcion->acta_volante)->promedio}}</h6>
+                                                    <h6 class="card-text font-italic">
+                                                        {{ optional($inscripcion->acta_volante)->promedio}}
+                                                    </h6>
                                                 </div>
                                             @endif
                                         </div>

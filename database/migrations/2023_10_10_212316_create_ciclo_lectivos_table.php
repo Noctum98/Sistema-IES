@@ -17,8 +17,8 @@ class CreateCicloLectivosTable extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->integer('year');
-            $table->date('1st-sem');
-            $table->date('2nd-sem');
+            $table->date('fst_sem');
+            $table->date('snd_sem');
             $table->date('anual');
             $table->timestamps();
         });
