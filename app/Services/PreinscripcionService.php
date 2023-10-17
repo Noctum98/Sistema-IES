@@ -2,16 +2,19 @@
 
 namespace App\Services;
 
+use App\Mail\PreEnrolledFormReceived;
 use App\Models\Alumno;
 use App\Models\Materia;
+use App\Models\Preinscripcion;
 use App\Models\Proceso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PreinscripcionService
 {
-    public function guardarArchivosTemporales(Request $request)
+    public function guardarArchivosTemporales(Request $request,$preinscripcion = null)
     {
         $dni_archivo = $request->file('dni_archivo_file');
         $dni_archivo2 = $request->file('dni_archivo_2_file');
@@ -108,6 +111,18 @@ class PreinscripcionService
             Storage::disk('temp')->put($nota_nombre, file_get_contents($nota));
             $data['nota_path'] = storage_path('app/temp/' . $nota_nombre);
             $data['nota'] = $nota_nombre;
+        }
+
+        $data['estado'] = 'sin verificar';
+
+        if($preinscripcion)
+        {
+            $preinscripcion->update($data);
+            
+        }else{
+            $data['timecheck'] = time();
+            $preinscripcion = Preinscripcion::create($data);
+            Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
         }
 
         return $data;

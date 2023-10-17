@@ -357,7 +357,7 @@ class PreinscripcionController extends Controller
 
         $preinscripcion = Preinscripcion::find($id);
 
-        $data = $this->preinscripcionService->guardarArchivosTemporales($request);        
+        $data = $this->preinscripcionService->guardarArchivosTemporales($request,$preinscripcion);        
         dispatch(new PreinscripcionGoogleDriveJob($data,$preinscripcion));
         
 
