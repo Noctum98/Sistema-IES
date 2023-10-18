@@ -9,6 +9,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('proceso.administrar',$alumno->id) }}" method="POST">
+                    <fieldset {{ Auth::user()->hasRole('alumno') ? 'disabled': '' }}>
                     @csrf
                     @foreach($carrera->materias as $materia)
                     <div class="form-check">
@@ -21,8 +22,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <input type="submit" class="btn btn-primary" value="Guardar cambios" {{Session::has('areaSocial')  ? 'disabled' : ''}}>
+                <input type="submit" class="btn btn-primary" value="Guardar cambios" {{Session::has('areaSocial') || Session::has('alumno')  ? 'disabled' : ''}}>
             </div>
+            </fieldset>
             </form>
         </div>
     </div>
