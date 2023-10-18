@@ -30,7 +30,7 @@
 					<li><strong>Conexión a internet:</strong> {{ ucwords($alumno->conexion) }}</li>
 					<li><strong>DNI:</strong>
 					 	@if($alumno->dni_archivo)
-							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->dni_archivo,'dni'=>$alumno->dni]) }}" target="_blank">
+							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->dni_archivo,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 							</a>
 						@else
@@ -39,7 +39,7 @@
 					</li>
 					<li><strong>DNI (Archivo 2):</strong>
 					 	@if($alumno->dni_archivo_2)
-							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->dni_archivo_2,'dni'=>$alumno->dni]) }}" target="_blank">
+							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->dni_archivo_2,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 							</a>
 						@else
@@ -48,7 +48,7 @@
 					</li>
 					<li><strong>Comprobante:</strong>
 					 	@if($alumno->comprobante)
-							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->comprobante,'dni'=>$alumno->dni]) }}" target="_blank">
+							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->comprobante,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 							</a>
 						@else
@@ -73,7 +73,7 @@
 					<li>
 						<strong>Certificado de nivel Secundario:</strong>
 						@if($alumno->certificado_archivo)
-							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->certificado_archivo,'dni'=>$alumno->dni]) }}" target="_blank">
+							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->certificado_archivo,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 							</a>
 						@else
@@ -83,7 +83,7 @@
 					<li>
 						<strong>Certificado de nivel Secundario (Archivo 2):</strong>
 						@if($alumno->certificado_archivo_2)
-							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->certificado_archivo_2,'dni'=>$alumno->dni]) }}" target="_blank">
+							<a href="{{ route('descargar_archivo',['nombre'=>$alumno->certificado_archivo_2,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 							</a>
 						@else
@@ -93,7 +93,7 @@
 					@if($alumno->primario)
 					<li>
 						<strong>Título Primario:</strong>
-						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->primario,'dni'=>$alumno->dni]) }}" target="_blank">
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->primario,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 						</a>
 					</li>
@@ -101,7 +101,7 @@
 					@if($alumno->curriculum)
 					<li>
 						<strong>Currículum:</strong>
-						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->curriculum,'dni'=>$alumno->dni]) }}" target="_blank">
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->curriculum,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 						</a>
 					</li>
@@ -109,7 +109,7 @@
 					@if($alumno->ctrabajo)
 					<li>
 						<strong>Certificado de trabajo:</strong>
-						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->ctrabajo,'dni'=>$alumno->dni]) }}" target="_blank">
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->ctrabajo,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 						</a>
 					</li>
@@ -117,7 +117,7 @@
 					@if($alumno->nota)
 					<li>
 						<strong>Nota:</strong>
-						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->nota,'dni'=>$alumno->dni]) }}" target="_blank">
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->nota,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
 								Ver archivo
 						</a>
 					</li>

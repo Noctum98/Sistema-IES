@@ -156,6 +156,7 @@
                         <li><strong>1<sup>er</sup> Acreditación:
                             </strong>{{ $alumno->fecha_primera_acreditacion?? 'No indicada'}} </li>
                         <li><strong>Activo: </strong>{{ $alumno->active?'Si': 'No'}} </li>
+                        <li><strong>Legajo Completo: </strong> {{ $alumno->legajo_completo ? 'Si' : 'No' }} </li>
 
                         {{--                    </ul>--}}
                         {{--                    <ul class="datos-inscripcion col-md-6">--}}
@@ -212,9 +213,14 @@
                                                 </button>
                                                 @include('alumno.modals.carreras_year')
                                             @endif
-
+                                        @elseif(Session::has('alumno'))
+                                                <button class="btn btn-sm btn-primary col-md-3 mr-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
+                                                    materias inscriptas {{$ciclo_lectivo}}
+                                                </button>
+                                                @include('alumno.modals.carreras_matriculacion')
                                         @endif
-
                                         @if(Session::has('admin'))
                                             <button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal"
                                                     data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">

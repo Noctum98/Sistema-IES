@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Carrera;
+use App\Models\Preinscripcion;
 use App\Models\Sede;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
@@ -31,8 +32,7 @@ class AlumnoController extends Controller
     public function __construct(
         AlumnoService       $alumnoService,
         CicloLectivoService $cicloLectivoService
-    )
-    {
+    ) {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
             'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial-equivalencias',
@@ -56,10 +56,9 @@ class AlumnoController extends Controller
         }
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
-        if(Session::has('admin') || Session::has('areaSocial'))
-        {
+        if (Session::has('admin') || Session::has('areaSocial')) {
             $carreras = Carrera::all();
-        }else{
+        } else {
             $carreras = $user->carreras;
         }
 
@@ -88,7 +87,7 @@ class AlumnoController extends Controller
         $sedes = $user->sedes;
 
 
-        if (isset($request['busqueda']) && $request['busqueda'] !='') {
+        if (isset($request['busqueda']) && $request['busqueda'] != '') {
             $alumnos = $this->alumnoService->buscarAlumnos($request);
             $busqueda = $request['busqueda'] ?? true;
         }
@@ -96,7 +95,7 @@ class AlumnoController extends Controller
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
 
-//        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
+        //        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
 
 
 
@@ -363,39 +362,54 @@ class AlumnoController extends Controller
         return new Response($archivo, 200);
     }
 
-    public function descargar_archivo(string $nombre, string $dni)
+    public function descargar_archivo(string $nombre, string $dni, int $id)
     {
+        $preinscripcion = Preinscripcion::find($id);
         $disk = Storage::disk('google');
 
-        $dir = '/';
-        $recursive = false;
-        $contents = collect($disk->listContents($dir, $recursive));
-        $dir = $contents->where('type', '=', 'dir')
-            ->where('filename', '=', $dni)
-            ->first();
+        if ($preinscripcion->gdrive_storage) {
+            $dir = '/';
+            $recursive = false;
+            $contents = collect($disk->listContents($dir, $recursive));
+            $dir = $contents->where('type', '=', 'dir')
+                ->where('filename', '=', $dni)
+                ->first();
 
 
-        $dir_file = $dir['path'];
-        $contents = collect($disk->listContents($dir_file, $recursive));
+            $dir_file = $dir['path'];
+            $contents = collect($disk->listContents($dir_file, $recursive));
 
-        $file = $contents
-            ->where('type', '=', 'file')
-            ->where('filename', '=', pathinfo($nombre, PATHINFO_FILENAME))
-            ->where('extension', '=', pathinfo($nombre, PATHINFO_EXTENSION))
-            ->first();
+            $file = $contents
+                ->where('type', '=', 'file')
+                ->where('filename', '=', pathinfo($nombre, PATHINFO_FILENAME))
+                ->where('extension', '=', pathinfo($nombre, PATHINFO_EXTENSION))
+                ->first();
 
 
-        $rawData = $disk->getDriver()->readStream($file['path']);
+            $rawData = $disk->getDriver()->readStream($file['path']);
 
-        if ($file) {
-            return response()->stream(function () use ($rawData) {
-                fpassthru($rawData);
-            }, 200, [
-                'Content-Type' => $file['mimetype'],
-                //'Content-disposition' => 'attachment; filename="'.$filename.'"', // force download?
-            ]);
+            if ($file) {
+                return response()->stream(function () use ($rawData) {
+                    fpassthru($rawData);
+                }, 200, [
+                    'Content-Type' => $file['mimetype'],
+                    //'Content-disposition' => 'attachment; filename="'.$filename.'"', // force download?
+                ]);
+            }
         } else {
-            return redirect()->route('alumno.detalle');
+            $rutaArchivo = 'temp/'.$nombre;
+
+            $rutaCompleta = storage_path("app/{$rutaArchivo}");
+
+            if (Storage::disk('local')->exists($rutaArchivo)) {
+                $headers = [
+                    'Content-Type' => 'application/pdf',
+                ];
+
+                return response()->file($rutaCompleta, $headers);
+            } else {
+                abort(404, 'Archivo no encontrado');
+            }
         }
     }
 

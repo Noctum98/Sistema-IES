@@ -2,16 +2,19 @@
 
 namespace App\Services;
 
+use App\Mail\PreEnrolledFormReceived;
 use App\Models\Alumno;
 use App\Models\Materia;
+use App\Models\Preinscripcion;
 use App\Models\Proceso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PreinscripcionService
 {
-    public function guardarArchivosTemporales(Request $request)
+    public function guardarArchivosTemporales(Request $request,$preinscripcion = null)
     {
         $dni_archivo = $request->file('dni_archivo_file');
         $dni_archivo2 = $request->file('dni_archivo_2_file');
@@ -41,8 +44,16 @@ class PreinscripcionService
             'escuela_s'     =>  $request['escuela_s'],
             'materias_s'     => $request['materias_s'],
             'conexion'      =>  $request['conexion'],
-            'articulo_septimo' => $request['articulo_septimo'] ?? 0
+            'articulo_septimo' => $request['articulo_septimo'] ?? 0,
+            'carrera_id' => $request['carrera_id'],
         ];
+
+        if($preinscripcion)
+        {
+            $request['gdrive_storage'] = $preinscripcion->gdrive_storage;
+        }else{
+            $request['gdrive_storage'] = false;
+        }
 
         if ($dni_archivo) {
             $dni_nombre = uniqid() . $dni_archivo->getClientOriginalName();
@@ -110,7 +121,17 @@ class PreinscripcionService
             $data['nota'] = $nota_nombre;
         }
 
-        return $data;
+        $data['estado'] = 'sin verificar';
 
+        if($preinscripcion)
+        {
+            $preinscripcion->update($data);
+        }else{
+            $data['timecheck'] = time();
+            $preinscripcion = Preinscripcion::create($data);
+            Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+        }
+
+        return $data;
     }
 }

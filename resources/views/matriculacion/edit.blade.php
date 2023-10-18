@@ -104,6 +104,23 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="form-group col-md-6">
+                <label for="legajo_completo">Legajo Completo: </label>
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="legajo_completo" id="legajo_completo-si" value="1" {{ isset($matriculacion) && $matriculacion->legajo_completo == 1 || old('legajo_completo') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="legajo_completo-si">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="legajo_completo" id="legajo_completo-no" value="0" {{ isset($matriculacion) && $matriculacion->legajo_completo == 0 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="legajo_completo-no">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
         @endif
 
         {{ method_field('PUT') }}
