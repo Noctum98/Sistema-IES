@@ -311,13 +311,10 @@ class PreinscripcionController extends Controller
                 ]);
             }
         }
+        $request['carrera_id'] = $carrera_id;
 
         $data = $this->preinscripcionService->guardarArchivosTemporales($request);
-        $data['carrera_id'] = $carrera_id;
-
         
-        dispatch(new PreinscripcionGoogleDriveJob($data));
-
         return redirect()->route('pre.inscripto', [
             'carrera_id' => $carrera->id,
         ]);
@@ -357,9 +354,7 @@ class PreinscripcionController extends Controller
 
         $preinscripcion = Preinscripcion::find($id);
 
-        $data = $this->preinscripcionService->guardarArchivosTemporales($request,$preinscripcion);        
-        dispatch(new PreinscripcionGoogleDriveJob($data,$preinscripcion));
-        
+        $data = $this->preinscripcionService->guardarArchivosTemporales($request,$preinscripcion);                
 
         return redirect()->route('pre.editado', [
             'timecheck' => $preinscripcion->timecheck,
@@ -417,6 +412,10 @@ class PreinscripcionController extends Controller
         if ($preinscripcion->estado != 'verificado') {
             $preinscripcion->estado = 'verificado';
             Mail::to($preinscripcion->email)->send(new VerifiedPreEnroll($preinscripcion));
+            $data = [
+                'dni' => $preinscripcion->dni
+            ];
+            dispatch(new PreinscripcionGoogleDriveJob($data,$preinscripcion));
         } else {
             $preinscripcion->estado = 'sin verificar';
         }

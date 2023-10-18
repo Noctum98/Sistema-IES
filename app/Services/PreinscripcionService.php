@@ -44,8 +44,16 @@ class PreinscripcionService
             'escuela_s'     =>  $request['escuela_s'],
             'materias_s'     => $request['materias_s'],
             'conexion'      =>  $request['conexion'],
-            'articulo_septimo' => $request['articulo_septimo'] ?? 0
+            'articulo_septimo' => $request['articulo_septimo'] ?? 0,
+            'carrera_id' => $request['carrera_id'],
         ];
+
+        if($preinscripcion)
+        {
+            $request['gdrive_storage'] = $preinscripcion->gdrive_storage;
+        }else{
+            $request['gdrive_storage'] = false;
+        }
 
         if ($dni_archivo) {
             $dni_nombre = uniqid() . $dni_archivo->getClientOriginalName();
@@ -118,7 +126,6 @@ class PreinscripcionService
         if($preinscripcion)
         {
             $preinscripcion->update($data);
-            
         }else{
             $data['timecheck'] = time();
             $preinscripcion = Preinscripcion::create($data);
@@ -126,6 +133,5 @@ class PreinscripcionService
         }
 
         return $data;
-
     }
 }
