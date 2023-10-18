@@ -213,7 +213,12 @@
                                             Nota final
                                         </span>
                                         @if($materia->getActaVolante($alumno->id))
+                                            <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                                             @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                            <small style="font-size: 0.8em">
+                                                <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
+                                                {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
+                                            </small>
                                         @else
                                             -
                                         @endif
@@ -287,7 +292,12 @@
                                              Nota final
                                         </span>
                                         @if($materia->getActaVolante($alumno->id))
+                                            <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                                             @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                            <small style="font-size: 0.8em">
+                                                <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
+                                                {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
+                                            </small>
                                         @else
                                             -
                                         @endif
