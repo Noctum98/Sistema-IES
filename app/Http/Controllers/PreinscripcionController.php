@@ -109,7 +109,11 @@ class PreinscripcionController extends Controller
             } else if (!$preinscripcion) {
                 $ruta = 'error.error';
                 $datos = ['mensaje' => 'Error en la página'];
-            } else {
+            }else if(!$preinscripcion->carrera->preinscripcion_habilitada){
+                $ruta = 'error.error';
+                $datos = ['mensaje' => 'Ya no es posible editar el formulario'];
+            } 
+            else {
                 $ruta = 'alumno.edit_pre_enroll';
                 $datos =  ['preinscripcion'    =>  $preinscripcion];
             }

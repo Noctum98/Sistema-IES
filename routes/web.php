@@ -7,6 +7,8 @@ use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
+use App\Http\Controllers\Parameters\CicloLectivoController;
+use App\Http\Controllers\Parameters\CicloLectivoEspecialController;
 use App\Http\Controllers\ProcesoModularController;
 use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
@@ -138,6 +140,28 @@ Route::prefix('cargo')->group(function () {
     Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
 });
 
+//Ruta de Ciclo lectivo
+Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
+
+    // Común
+    Route::get('/', [CicloLectivoController::class, 'index'])->name('ciclo_lectivo.index');
+    Route::post('/', [CicloLectivoController::class, 'store'])->name('ciclo_lectivo.store');
+    Route::get('{ciclo_lectivo}', [CicloLectivoController::class, 'show'])->name('ciclo_lectivo.show');
+    Route::get('create', [CicloLectivoController::class, 'create'])->name('ciclo_lectivo.create');
+    Route::delete('{ciclo_lectivo}', [CicloLectivoController::class, 'destroy'])->name('ciclo_lectivo.destroy');
+    Route::put('{ciclo_lectivo}', [CicloLectivoController::class, 'update'])->name('ciclo_lectivo.update');
+    Route::get('{ciclo_lectivo}/edit', [CicloLectivoController::class, 'edit'])->name('ciclo_lectivo.edit');
+    Route::get('{ciclo_lectivo}/especial', [CicloLectivoController::class, 'especial'])->name('ciclo_lectivo.especial');
+
+    // Especial
+    Route::get('/especial/listado', [CicloLectivoEspecialController::class, 'index'])->name('ciclo_lectivo_especial.index');
+    Route::post('/especial/{ciclo_lectivo}/guarda', [CicloLectivoEspecialController::class, 'store'])->name('ciclo_lectivo_especial.store');
+    Route::get('/especial/{ciclo_lectivo_especial}/ver', [CicloLectivoEspecialController::class, 'show'])->name('ciclo_lectivo_especial.show');
+    Route::get('/especial/{ciclo_lectivo}/crear', [CicloLectivoEspecialController::class, 'create'])->name('ciclo_lectivo_especial.create');
+    Route::delete('/especial/{ciclo_lectivo_especial}/borrar', [CicloLectivoEspecialController::class, 'destroy'])->name('ciclo_lectivo_especial.destroy');
+    Route::put('/especial/{ciclo_lectivo_especial}/actualizar', [CicloLectivoEspecialController::class, 'update'])->name('ciclo_lectivo_especial.update');
+    Route::get('/especial/{ciclo_lectivo_especial}/edit', [CicloLectivoEspecialController::class, 'edit'])->name('ciclo_lectivo_especial.edit');
+});
 // Rutas de comisiones
 
 Route::resource('comisiones', ComisionController::class);
@@ -164,8 +188,6 @@ Route::prefix('detalleTrianual')->group(function () {
 // Rutas de estados
 
 Route::resource('estados', EstadosController::class);
-
-
 
 
 /**
@@ -257,7 +279,6 @@ Route::prefix('sedes')->group(function () {
 });
 
 
-
 Route::prefix('usuario_materia')->group(function () {
     Route::delete('delete/{user_id}/{materia_id}', [UserMateriaController::class, 'delete'])->name(
         'delete_materias_carreras'
@@ -293,7 +314,6 @@ Route::prefix('personal')->group(function () {
 });
 
 
-
 // Rutas de Carreras
 Route::prefix('carreras')->group(function () {
     // Vistas
@@ -301,7 +321,7 @@ Route::prefix('carreras')->group(function () {
     Route::get('crear', [CarreraController::class, 'vista_crear'])->name('carrera.crear');
     Route::get('personal/{id}', [CarreraController::class, 'vista_agregarPersonal'])->name('carrera.personal');
     Route::get('editar/{id}', [CarreraController::class, 'vista_editar'])->name('carrera.editar');
-    Route::post('/sedes',[CarreraController::class,'carrerasPorSedes']);
+    Route::post('/sedes', [CarreraController::class, 'carrerasPorSedes']);
 
     // Acciones
     Route::post('crear-carrera', [CarreraController::class, 'crear'])->name('crear_carrera');
@@ -330,14 +350,10 @@ Route::prefix('carreras/materias')->group(function () {
 });
 
 
-
-
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
 Route::get('/selectMateriasCarreraInscripto/{idCarrera}/{idAlumno}/{ciclo_lectivo}', [MateriaController::class, 'selectMateriasInscripto']);
 Route::get('/selectCargosCarrera/{id}', [CargoController::class, 'selectCargos']);
 Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsuarioByUsernameOrNull']);
-
-
 
 
 // Rutas de preinscripciones
@@ -492,7 +508,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/inscriptos_especial/{id}/{instancia_id}/{comision_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name(
         'mesa.especial.inscriptos'
     );
-    Route::post('/asignar_mesa',[AlumnoMesaController::class,'asignar_mesa'])->name('mesas.asignar');
+    Route::post('/asignar_mesa', [AlumnoMesaController::class, 'asignar_mesa'])->name('mesas.asignar');
 
     Route::post('/seleccionar/{id}', [InstanciaController::class, 'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{materia_id}/{instancia_id}', [MesaController::class, 'crear'])->name('crear_mesa');
@@ -540,7 +556,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
     Route::put('/abrirActaVolante/{mesa_id}', [MesaController::class, 'abrirProfesor'])->name('mesa.abrir_acta');
-    Route::delete('borrar_mesa/{mesa_id}',[MesaController::class,'delete'])->name('mesa.delete');
+    Route::delete('borrar_mesa/{mesa_id}', [MesaController::class, 'delete'])->name('mesa.delete');
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
@@ -556,7 +572,7 @@ Route::prefix('matriculacion')->group(function () {
         'alumno.delete'
     );
 
-    Route::delete('/deleteAlumno/{id}/{carrera_id}',[MatriculacionController::class,'deleteInscripcion'])->name('matriculacion.delete');
+    Route::delete('/deleteAlumno/{id}/{carrera_id}', [MatriculacionController::class, 'deleteInscripcion'])->name('matriculacion.delete');
 
     Route::get('/', [MatriculacionController::class, 'index'])->name('matriculacion.index');
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
@@ -619,16 +635,15 @@ Route::prefix('procesoCalificacion')->group(function () {
 });
 
 
-
 Route::prefix('estadistica')->group(function () {
     Route::get('datos', [AlumnoController::class, 'vista_datos']);
     Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
 });
 
-Route::resource('etapa_campo',EtapaCampoController::class);
+Route::resource('etapa_campo', EtapaCampoController::class);
 
-Route::prefix('etapa_campo')->group(function (){
-    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}',[EtapaCampoController::class,'habilitar']);
+Route::prefix('etapa_campo')->group(function () {
+    Route::get('/habilitacion/proceso/{proceso_id}/{habilitacion}', [EtapaCampoController::class, 'habilitar']);
 });
 
 Route::prefix('excel')->group(function () {
@@ -658,7 +673,7 @@ Route::prefix('observaciones_trianual')->group(function () {
     Route::get('/ver/{trianual}', [ObservacionesTrianual::class, 'show'])->name('observaciones_trianual.ver');
 });
 
-Route::resource('registros',AuditController::class);
+Route::resource('registros', AuditController::class);
 
 Route::prefix('trianual')->group(function () {
     Route::get('/', [TrianualController::class, 'index'])->name('trianual.listar');
