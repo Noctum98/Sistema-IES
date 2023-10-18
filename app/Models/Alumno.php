@@ -68,7 +68,8 @@ class Alumno extends Model
         'fecha_ultima_acreditacion',
         'deleted_at',
         'aprobado',
-        'operador_id'
+        'operador_id',
+        'legajo_completo'
     ];
 
     public function user()
