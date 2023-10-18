@@ -14,7 +14,7 @@ class AddGdriveStorageToPreinscripcionesTable extends Migration
     public function up()
     {
         Schema::table('preinscripciones', function (Blueprint $table) {
-            $table->boolean('gdrive_storage')->default(true);
+            $table->boolean('gdrive_storage')->default(false);
         });
     }
 
