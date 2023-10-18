@@ -221,7 +221,6 @@
                                                 </button>
                                                 @include('alumno.modals.carreras_matriculacion')
                                         @endif
-
                                         @if(Session::has('admin'))
                                             <button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal"
                                                     data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">

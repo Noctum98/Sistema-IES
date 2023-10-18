@@ -29,7 +29,7 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
      */
     public function __construct($data,$preinscripcion = null)
     {
-        $this->data = $data;
+        $this->preinscripcion = $data;
         $this->preinscripcion = $preinscripcion;
     }
 
@@ -46,95 +46,83 @@ class PreinscripcionGoogleDriveJob implements ShouldQueue
         $recursive = false; // Get subdirectories also?
         $contents = collect($this->disk->listContents($dir, $recursive));
         $dir = $contents->where('type', '=', 'dir')
-            ->where('filename', '=', $this->data['dni'])
+            ->where('filename', '=', $this->preinscripcion['dni'])
             ->first();
 
         if (!$dir) {
-            $path_folder = $this->disk->makeDirectory($this->data['dni']);
+            $path_folder = $this->disk->makeDirectory($this->preinscripcion['dni']);
             $contents = collect($this->disk->listContents($dir, $recursive));
             $dir = $contents->where('type', '=', 'dir')
-                ->where('filename', '=', $this->data['dni'])
+                ->where('filename', '=', $this->preinscripcion['dni'])
                 ->first();
         }
 
-        if (isset($this->data['dni_path'])) {
-            $dni_archivo = Storage::disk('temp')->get($this->data['dni_archivo']);
-            $dni_nombre = $this->data['dni_archivo'];
+        if (isset($this->preinscripcion['dni_archivo'])) {
+            $dni_archivo = Storage::disk('temp')->get($this->preinscripcion['dni_archivo']);
+            $dni_nombre = $this->preinscripcion['dni_archivo'];
 
             $this->disk->put($dir['path'] . '/' . $dni_nombre, $dni_archivo);
             Storage::disk('temp')->delete($dni_nombre);
         }
 
-        if (isset($this->data['dni2_path'])) {
-            $dni_archivo2 = Storage::disk('temp')->get($this->data['dni_archivo_2']);
-            $dni_nombre2 = $this->data['dni_archivo_2'];
+        if (isset($this->preinscripcion['dni_archivo_2'])) {
+            $dni_archivo2 = Storage::disk('temp')->get($this->preinscripcion['dni_archivo_2']);
+            $dni_nombre2 = $this->preinscripcion['dni_archivo_2'];
 
             $this->disk->put($dir['path'] . '/' . $dni_nombre2, $dni_archivo2);
             Storage::disk('temp')->delete($dni_nombre2);
         }
 
-        if (isset($this->data['comprobante_path'])) {
-            $comprobante = Storage::disk('temp')->get($this->data['comprobante']);
-            $comprobante_nombre = $this->data['comprobante'];
+        if (isset($this->preinscripcion['comprobante'])) {
+            $comprobante = Storage::disk('temp')->get($this->preinscripcion['comprobante']);
+            $comprobante_nombre = $this->preinscripcion['comprobante'];
 
             $this->disk->put($dir['path'] . '/' . $comprobante_nombre, $comprobante);
             Storage::disk('temp')->delete($comprobante_nombre);
         }
 
 
-        if (isset($this->data['certificado_path'])) {
-            $certificado_archivo = Storage::disk('temp')->get($this->data['certificado_archivo']);
-            $certificado_nombre = $this->data['certificado_archivo'];
+        if (isset($this->preinscripcion['certificado_archivo'])) {
+            $certificado_archivo = Storage::disk('temp')->get($this->preinscripcion['certificado_archivo']);
+            $certificado_nombre = $this->preinscripcion['certificado_archivo'];
 
             $this->disk->put($dir['path'] . '/' . $certificado_nombre, $certificado_archivo);
             Storage::disk('temp')->delete($certificado_nombre);
         }
-        if (isset($this->data['certificado2_path'])) {
-            $certificado_archivo2 = Storage::disk('temp')->get($this->data['certificado_archivo_2']);
-            $certificado_nombre2 = $this->data['certificado_archivo_2'];
+        if (isset($this->preinscripcion['certificado_archivo_2'])) {
+            $certificado_archivo2 = Storage::disk('temp')->get($this->preinscripcion['certificado_archivo_2']);
+            $certificado_nombre2 = $this->preinscripcion['certificado_archivo_2'];
 
             $this->disk->put($dir['path'] . '/' . $certificado_nombre2, $certificado_archivo2);
             Storage::disk('temp')->delete($certificado_nombre2);
         }
-        if (isset($this->data['primario_path'])) {
-            $primario = Storage::disk('temp')->get($this->data['primario']);
-            $primario_nombre = $this->data['primario'];
+        if (isset($this->preinscripcion['primario'])) {
+            $primario = Storage::disk('temp')->get($this->preinscripcion['primario']);
+            $primario_nombre = $this->preinscripcion['primario'];
 
             $this->disk->put($dir['path'] . '/' . $primario_nombre, $primario);
             Storage::disk('temp')->delete($primario_nombre);
         }
-        if (isset($this->data['curriculum_path'])) {
-            $curriculum = Storage::disk('temp')->get($this->data['curriculum']);
-            $curriculum_nombre = $this->data['curriculum'];
+        if (isset($this->preinscripcion['curriculum'])) {
+            $curriculum = Storage::disk('temp')->get($this->preinscripcion['curriculum']);
+            $curriculum_nombre = $this->preinscripcion['curriculum'];
 
             $this->disk->put($dir['path'] . '/' . $curriculum_nombre, $curriculum);
             Storage::disk('temp')->delete($curriculum_nombre);
         }
-        if (isset($this->data['ctrabajo_path'])) {
-            $ctrabajo = Storage::disk('temp')->get($this->data['ctrabajo']);
-            $ctrabajo_nombre = $this->data['ctrabajo'];
+        if (isset($this->preinscripcion['ctrabajo'])) {
+            $ctrabajo = Storage::disk('temp')->get($this->preinscripcion['ctrabajo']);
+            $ctrabajo_nombre = $this->preinscripcion['ctrabajo'];
 
             $this->disk->put($dir['path'] . '/' . $ctrabajo_nombre, $ctrabajo);
             Storage::disk('temp')->delete($ctrabajo_nombre);
         }
-        if (isset($this->data['nota_path'])) {
-            $nota = Storage::disk('temp')->get($this->data['nota']);
-            $nota_nombre = $this->data['nota'];
+        if (isset($this->preinscripcion['nota'])) {
+            $nota = Storage::disk('temp')->get($this->preinscripcion['nota']);
+            $nota_nombre = $this->preinscripcion['nota'];
 
             $this->disk->put($dir['path'] . '/' . $nota_nombre, $nota);
             Storage::disk('temp')->delete($nota_nombre);
-        }
-
-        $this->data['estado'] = 'sin verificar';
-
-        if($this->preinscripcion)
-        {
-            $this->preinscripcion->update($this->data);
-            
-        }else{
-            $this->data['timecheck'] = time();
-            $preinscripcion = Preinscripcion::create($this->data);
-            Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
         }
     }
 }
