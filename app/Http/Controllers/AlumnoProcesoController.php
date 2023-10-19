@@ -6,6 +6,7 @@ use App\Mail\BajaMesaMotivos;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Instancia;
+use App\Models\Proceso;
 use App\Models\Sede;
 use App\Models\Carrera;
 use App\Models\MesaAlumno;
@@ -35,7 +36,7 @@ class AlumnoProcesoController extends Controller
      * @param int $id
      * @return Application|Factory|View|RedirectResponse
      */
-    public function vista_procesos(int $id){
+    public function vista_procesos(int $id, Carrera $carrera, int $year){
         $alumno = Alumno::find($id);
 
         if(!$alumno)
@@ -45,8 +46,21 @@ class AlumnoProcesoController extends Controller
             ]);
         }
 
+        $procesos = Proceso::select('procesos.*' )
+            ->join('materias', 'procesos.materia_id', 'materias.id')
+            ->where('materias.carrera_id', $carrera->id)
+            ->where('materias.año', $year)
+            ->where('procesos.alumno_id', $id)
+            ->orderBy('materias.nombre', 'ASC')
+            ->get();
+
+
+
         return view('proceso.alumno',[
-            'alumno' => $alumno
+            'alumno' => $alumno,
+            'procesos' => $procesos,
+            'carrera' => $carrera,
+            'year' => $year
         ]);
     }
 
@@ -76,7 +90,14 @@ class AlumnoProcesoController extends Controller
                 'ciclo_lectivo' => date('Y')
             ]);
         }
-        $carrera = Carrera::find($idCarrera);
+
+        $carrera = Carrera::select('carreras.*')
+            ->join('materias', 'materias.carrera_id', 'carreras.id')
+            ->where('carreras.id', $idCarrera)
+            ->orderBy('materias.nombre', 'ASC')
+            ->first();;
+
+
 
 
         if(!$alumno)

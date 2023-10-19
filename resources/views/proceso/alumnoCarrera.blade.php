@@ -80,7 +80,12 @@
         </div>
         <div class="card border-info p-0">
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
-                <p class="card-text text-right m-1 p-1 me-5">1° Año</p>
+                <p class="card-text text-right m-1 p-1 me-5">1° Año
+                    <a class="btn btn-sm btn-info" title="Ver notas proceso"
+                       href="{{ route('proceso.alumno',['id'=>$alumno->id,'carrera'=>$carrera->id, 'year'=> 1]) }}" >
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </p>
             </div>
             <div class="card-footer border-bottom col-sm-12 mx-auto">
                 <div class="row">
@@ -158,7 +163,12 @@
 
         <div class="card border-info p-0">
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
-                <p class="card-text text-right m-1 p-1 me-5">2° Año</p>
+                <p class="card-text text-right m-1 p-1 me-5">2° Año
+                    <a class="btn btn-sm btn-info" title="Ver notas proceso"
+                       href="{{ route('proceso.alumno',['id'=>$alumno->id,'carrera'=>$carrera->id, 'year'=> 2]) }}" >
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </p>
             </div>
             <div class="card-footer border-bottom col-sm-12 mx-auto">
                 <div class="row">
@@ -236,7 +246,12 @@
 
         <div class="card border-info p-0">
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
-                <p class="card-text text-right m-1 p-1 me-5">3° Año</p>
+                <p class="card-text text-right m-1 p-1 me-5">3° Año
+                    <a class="btn btn-sm btn-info" title="Ver notas proceso"
+                        href="{{ route('proceso.alumno',['id'=>$alumno->id,'carrera'=>$carrera->id, 'year'=> 3]) }}" >
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </p>
             </div>
             <div class="card-footer border-bottom col-sm-12 mx-auto">
                 <div class="row">
