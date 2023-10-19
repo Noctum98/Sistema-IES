@@ -19,7 +19,7 @@
         @endif
         <hr>
         <h5 class="text-info">
-            Mesas de exámen
+            Mesas de examen
         </h5>
         @if(count($inscripciones)>0)
             <ul class="list-group list-group-flush">
