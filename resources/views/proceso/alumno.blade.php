@@ -4,16 +4,25 @@
         <div class="row">
             <div class="col-sm-6">
                 <h4>
-                <i>
-                    {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }} <br/>
-                    <small class="float-right me-5" style="font-size: 0.6em">DNI: {{$alumno->dni}}</small>
-                </i>
+                    <i>
+                        {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }} <br/>
+                        <small class="float-right me-5" style="font-size: 0.6em">DNI: {{$alumno->dni}}</small>
+                    </i>
                 </h4>
             </div>
             <div class="col-sm-6">
                 <h6 class="text-primary">
                     Notas de proceso <br/>
                     {{$carrera->nombre}}  {{$year}} año
+                    <br/>
+                    <small>
+                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id])}}"
+                           class="btn btn-sm btn-light "
+                        >
+                            Volver a la libreta
+
+                        </a>
+                    </small>
                 </h6>
             </div>
         </div>
