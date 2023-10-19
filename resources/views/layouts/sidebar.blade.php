@@ -136,10 +136,10 @@
                 </a>
 
 {{--                <!-------}}
-                    <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
-                        Mi proceso
-                    </a>
+{{--                    <a class="nav-link" href="{{ route('proceso.alumno',Auth::user()->alumno()) }}">--}}
+{{--                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>--}}
+{{--                        Mi proceso--}}
+{{--                    </a>--}}
 {{--                     ----->--}}
                 @endif
                 <a class="nav-link" href="https://drive.google.com/drive/folders/1crwsQzH8bVTu2c6oWFN5Qf4-ra7lVSzG" target="__blank">
