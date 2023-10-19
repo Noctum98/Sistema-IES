@@ -1,49 +1,59 @@
 @extends('layouts.app-prueba')
 @section('content')
     <div class="container">
-        <h4 class="text-info">
-            Mis procesos <br/>
-            <small style="font-size: 0.5em">
+        <div class="row">
+            <div class="col-sm-6">
+                <h4>
                 <i>
-                    {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }}
+                    {{ ucwords($alumno->nombres.' '.$alumno->apellidos) }} <br/>
+                    <small class="float-right me-5" style="font-size: 0.6em">DNI: {{$alumno->dni}}</small>
                 </i>
-            </small>
-        </h4>
+                </h4>
+            </div>
+            <div class="col-sm-6">
+                <h6 class="text-primary">
+                    Notas de proceso <br/>
+                    {{$carrera->nombre}}  {{$year}} año
+                </h6>
+            </div>
+        </div>
+
         <hr>
         <div class="table-responsive">
             <table class="table">
                 <thead class="thead-dark">
-                    <tr>
+                <tr>
                     <th>
                         Materia
                     </th>
                     <th>
-                        Condición
+                        <small> Regularidad</small>
                     </th>
                     <th>
                         <small>
-                            Nota final <br/> Parciales
+                            Trabajos <br/>
+                            Prácticos
                         </small>
                     </th>
                     <th>
                         <small>
-                            Nota final <br/>
-                            T. Prácticos
+                            Parciales
                         </small>
                     </th>
+
                     <th class="text-right pr-3">
-                        Asistencia final
+                        <small>Asistencia final</small>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($alumno->procesos as $proceso)
+                @foreach($procesos as $proceso)
                     <tr>
                         <td>
                             {{ $proceso->materia->nombre }}
                         </td>
-                        <td>
-                            {{ ucwords($proceso->estado) }}
+                        <td class="text-center">
+                            {{ ucwords($proceso->estado->nombre??'No indicado') }}
                         </td>
                         <td>
                             {{ $proceso->final_parciales ?  : 'Sin asignar'}}
