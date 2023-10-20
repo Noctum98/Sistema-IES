@@ -401,9 +401,11 @@ class AlumnoController extends Controller
 
             $rutaCompleta = storage_path("app/{$rutaArchivo}");
 
+            $mimeType = mime_content_type($rutaCompleta);
+
             if (Storage::disk('local')->exists($rutaArchivo)) {
                 $headers = [
-                    'Content-Type' => 'application/pdf',
+                    'Content-Type' => $mimeType,
                 ];
 
                 return response()->file($rutaCompleta, $headers);
