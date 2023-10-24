@@ -46,8 +46,7 @@ class MatriculacionController extends Controller
         })
             ->with(['alumnos' => function ($query) use ($user_id) {
                 $query->where('alumnos.user_id', $user_id);
-            }, 'sede'])
-            ->where('matriculacion_habilitada', true)->get();
+            }, 'sede'])->get();
 
 
         return view('matriculacion.index', ['carreras' => $carreras]);
