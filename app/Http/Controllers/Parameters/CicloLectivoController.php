@@ -39,7 +39,7 @@ class CicloLectivoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCicloLectivoRequest  $request
+     * @param \App\Http\Requests\StoreCicloLectivoRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCicloLectivoRequest $request)
@@ -50,7 +50,7 @@ class CicloLectivoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
+     * @param \App\Models\CicloLectivo $cicloLectivo
      * @return \Illuminate\Http\Response
      */
     public function show(CicloLectivo $cicloLectivo)
@@ -61,19 +61,22 @@ class CicloLectivoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\CicloLectivo $cicloLectivo
+     * @return Application|Factory|View|\Illuminate\Http\Response
      */
     public function edit(CicloLectivo $cicloLectivo)
     {
-        //
+
+        return view('parameters.ciclo_lectivo.modal.form_editar_ciclo_lectivo')->with([
+            'cicloLectivo' => $cicloLectivo,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCicloLectivoRequest  $request
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
+     * @param \App\Http\Requests\UpdateCicloLectivoRequest $request
+     * @param \App\Models\CicloLectivo $cicloLectivo
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCicloLectivoRequest $request, CicloLectivo $cicloLectivo)
@@ -94,7 +97,7 @@ class CicloLectivoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
+     * @param \App\Models\CicloLectivo $cicloLectivo
      * @return \Illuminate\Http\Response
      */
     public function destroy(CicloLectivo $cicloLectivo)
