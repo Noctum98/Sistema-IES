@@ -393,7 +393,6 @@ class AlumnoController extends Controller
                     fpassthru($rawData);
                 }, 200, [
                     'Content-Type' => $file['mimetype'],
-                    //'Content-disposition' => 'attachment; filename="'.$filename.'"', // force download?
                 ]);
             }
         } else {
