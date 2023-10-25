@@ -1,6 +1,5 @@
 $(document).ready(function () {
-
-    /* Script Articulo Séptimo
+    /*
     let secundario = $("#condicion_s").val();
     let trabajo_relacionado = $("#trabajo_relacionado1").is(":checked")
     let edad = $("#edad").val();
@@ -82,7 +81,6 @@ $(document).ready(function () {
         }
     });
     */
-
     $("#materia_s1").change(function(e){
         let checked = $(this).is(":checked");
 
