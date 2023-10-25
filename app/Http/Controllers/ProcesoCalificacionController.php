@@ -91,10 +91,15 @@ class ProcesoCalificacionController extends Controller
                 $procesoModular->update();
             }
             $user = Auth::user();
-            $this->cargoProcesoService->grabaCalificacion(
-                $procesoCalificacion->calificacion()->first()->cargo_id, $calificacion->ciclo_lectivo,
-                $proceso->id, $procesoCalificacion->calificacion()->first()->materia_id, $user
-            );
+
+            if($procesoCalificacion->calificacion()->first()->cargo_id)
+            {
+                $this->cargoProcesoService->grabaCalificacion(
+                    $procesoCalificacion->calificacion()->first()->cargo_id, $calificacion->ciclo_lectivo,
+                    $proceso->id, $procesoCalificacion->calificacion()->first()->materia_id, $user
+                );
+            }
+           
 
             $response = $procesoCalificacion;
         } else {

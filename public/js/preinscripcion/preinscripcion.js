@@ -7,11 +7,9 @@ $(document).ready(function () {
     var nacionalidad = $("#nacionalidad").val();
     var articulo_septimo = $("#articulo_septimo").is(":checked");
 
+
+
     verificarDNI(nacionalidad);
-
-
-    
-
 
     if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trabajo_relacionado) {
         $("#7mo").removeClass('d-none');
