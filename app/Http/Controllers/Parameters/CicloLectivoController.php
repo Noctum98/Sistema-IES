@@ -9,6 +9,7 @@ use App\Models\Parameters\CicloLectivo;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Response;
 
 class CicloLectivoController extends Controller
 {
@@ -29,7 +30,7 @@ class CicloLectivoController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -39,8 +40,8 @@ class CicloLectivoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCicloLectivoRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\StoreCicloLectivoRequest $request
+     * @return Response
      */
     public function store(StoreCicloLectivoRequest $request)
     {
@@ -50,8 +51,8 @@ class CicloLectivoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\CicloLectivo $cicloLectivo
+     * @return Response
      */
     public function show(CicloLectivo $cicloLectivo)
     {
@@ -61,24 +62,34 @@ class CicloLectivoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\CicloLectivo $cicloLectivo
+     * @return Application|Factory|View|Response
      */
     public function edit(CicloLectivo $cicloLectivo)
     {
-        //
+
+        return view('parameters.ciclo_lectivo.modal.form_editar_ciclo_lectivo')->with([
+            'cicloLectivo' => $cicloLectivo,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCicloLectivoRequest  $request
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
-     * @return \Illuminate\Http\Response
+     * @param UpdateCicloLectivoRequest $request
+     * @param CicloLectivo $cicloLectivo
+     * @return Application|Factory|View
      */
     public function update(UpdateCicloLectivoRequest $request, CicloLectivo $cicloLectivo)
     {
-        //
+        $cicloLectivo->update($request->all());
+
+        $ciclos = CicloLectivo::all()->sortByDesc("year");
+
+        return view('parameters.ciclo_lectivo.admin', [
+            'ciclos' => $ciclos,
+        ]);
+
     }
 
     /**
@@ -94,8 +105,8 @@ class CicloLectivoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CicloLectivo  $cicloLectivo
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\CicloLectivo $cicloLectivo
+     * @return Response
      */
     public function destroy(CicloLectivo $cicloLectivo)
     {

@@ -64,6 +64,8 @@
                     <tr
                         @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
                             class="text-muted"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}"
                         @endif
                     >
                         <td class="py-auto">

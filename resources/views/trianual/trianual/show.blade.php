@@ -73,7 +73,7 @@
             <button class="btn btn-primary button-observaciones col-sm-3" type="button"
 {{--                    data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"--}}
             >
-                    Agregar obsevaciones
+                    Agregar observaciones
                 </button>
 
             <div class="overlay-observaciones">
@@ -97,7 +97,6 @@
     <script>
         $(document).ready(function () {
             $(".button").click(function () {
-                console.log('106')
                 $(".overlay").show({width: "0px"});
             });
             $(".oculto").click(function () {

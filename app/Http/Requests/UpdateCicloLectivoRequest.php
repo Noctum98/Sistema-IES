@@ -13,7 +13,7 @@ class UpdateCicloLectivoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateCicloLectivoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'anual' => 'required|date',
+            'snd_sem' => 'required|date',
+            'fst_sem' => 'required|date'
         ];
     }
 }
