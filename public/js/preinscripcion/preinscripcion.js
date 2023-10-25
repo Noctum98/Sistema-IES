@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    /* Script Articulo Séptimo
     let secundario = $("#condicion_s").val();
     let trabajo_relacionado = $("#trabajo_relacionado1").is(":checked")
     let edad = $("#edad").val();
@@ -7,11 +8,9 @@ $(document).ready(function () {
     var nacionalidad = $("#nacionalidad").val();
     var articulo_septimo = $("#articulo_septimo").is(":checked");
 
+
+
     verificarDNI(nacionalidad);
-
-
-    
-
 
     if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trabajo_relacionado) {
         $("#7mo").removeClass('d-none');
@@ -82,6 +81,7 @@ $(document).ready(function () {
             $("#archivos_articulo_septimo").addClass('d-none');
         }
     });
+    */
 
     $("#materia_s1").change(function(e){
         let checked = $(this).is(":checked");
