@@ -283,7 +283,7 @@ class Alumno extends Model
                 'equivalencias.materia_id' => $materia,
                 'equivalencias.ciclo_lectivo' => $ciclo_lectivo,
             ]
-        )->select('nota')
+        )
             ->first();
 
         $user = User::find($equivalencia->user_id);
