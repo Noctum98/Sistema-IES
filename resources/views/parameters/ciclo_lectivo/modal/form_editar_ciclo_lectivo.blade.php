@@ -5,54 +5,34 @@
 </style>
 <form action="{{ route('ciclo_lectivo.update', ['ciclo_lectivo' => $cicloLectivo->id]) }}"
       method="POST">
+    @csrf {{ method_field('PUT') }})
 
     <div class="form-group mb-3">
-        <label > Ciclo lectivo {{$cicloLectivo->year}} </label>
+        <label> Ciclo lectivo {{$cicloLectivo->year}} </label>
 
     </div>
     <div class="form-group mb-3">
-        <label for="fecha_regularidad">Fecha Regularidad <sup>*</sup></label>
-{{--        <input type="date" name="fecha_regularidad" id="fecha_regularidad" class="form-control"--}}
-{{--               value="{{date_format(new DateTime($regularidad->fecha_regularidad),'Y-m-d' )}}"--}}
-{{--               required>--}}
-    </div>
-
-    <div class="form-group mb-3">
-        <label for="observaciones">Observaciones <sup>*</sup> </label>
-{{--        <textarea name="observaciones" id="observaciones" class="form-control"--}}
-
-{{--                  required>{{$regularidad->observaciones}}</textarea>--}}
+        <label for="fst_sem">Fecha regularidad 1<sup>er</sup> Semestre <sup>*</sup></label>
+        <input type="date" name="fst_sem" id="fst_sem" class="form-control"
+               value="{{date_format(new DateTime($cicloLectivo->fst_sem),'Y-m-d' )}}"
+               required>
     </div>
     <div class="form-group mb-3">
-        <label for="fecha_vencimiento">Fecha Vencimiento</label>
-{{--        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control"--}}
-{{--               value="{{date_format(new DateTime($regularidad->fecha_vencimiento),'Y-m-d' )}}"--}}
-{{--               placeholder="Fecha Vencimiento" required>--}}
+        <label for="snd_sem">Fecha regularidad 2<sup>do</sup> Semestre <sup>*</sup></label>
+        <input type="date" name="snd_sem" id="snd_sem" class="form-control"
+               value="{{date_format(new DateTime($cicloLectivo->snd_sem),'Y-m-d' )}}"
+               required>
     </div>
-
-
     <div class="form-group mb-3">
-        <label for="estado_id">Condición <sup>*</sup></label>
-        <select name="estado_id" id="estado_id" class="form-select" required>
-            <option value="">Seleccione regularidad</option>
-            @foreach($estados as $estado)
-                @if($estado->id == $regularidad->obtenerEstado()->id)
-                    <option selected value="{{ $estado->id }}">{{ $estado->nombre }}</option>
-                @else
-                    <option value="{{ $estado->id }}">{{ $estado->nombre }}</option>
-                @endif
-
-            @endforeach
-        </select>
+        <label for="anual">Fecha regularidad anual <sup>*</sup></label>
+        <input type="date" name="anual" id="anual" class="form-control"
+               value="{{date_format(new DateTime($cicloLectivo->anual),'Y-m-d' )}}"
+               required>
     </div>
-    <hr/>
-{{--    <div class="form-group mb-3">--}}
-{{--        <label for="ciclo_anterior">Ciclo lectivo original</label>--}}
-{{--        <input name="ciclo_anterior" id="ciclo_anterior" class="form-control" type="number" min="1986"  />--}}
 
-{{--    </div>--}}
+
     <hr>
-            <input name="proceso_id" id="proceso_id"  type="hidden" value="{{$regularidad->proceso_id}}"  />
+    <input name="ciclo_lectivo" id="ciclo_lectivo" type="hidden" value="{{$cicloLectivo->id}}"/>
     <sup>*</sup> <small>Campos requeridos</small><br/>
     <input type="submit" value="Guardar" class="btn btn-primary">
 </form>

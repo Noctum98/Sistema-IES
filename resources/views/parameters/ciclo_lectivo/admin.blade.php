@@ -49,6 +49,14 @@
                                 <i class="fa fa-spinner fa-spin" style="display: none"
                                    id="loader{{$ciclo->id}}"></i>
                             </a>
+                            <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
+                               data-bs-target="#modalModal"
+                               data-loader="{{$ciclo->id}}"
+                               data-attr="{{ route('ciclo_lectivo_especial.create', $ciclo) }}">
+                                <i class="fas fa-edit text-gray-300"></i>
+                                <i class="fa fa-spinner fa-spin" style="display: none"
+                                   id="loader{{$ciclo->id}}"></i>
+                            </a>
                         </td>
 
                     </tr>
@@ -69,15 +77,36 @@
                 $(".overlay").hide({width: "100%"});
             });
 
-            $(".button-observaciones").click(function () {
-                console.log('114')
-                $(".overlay-observaciones").show({width: "0px"});
-            });
-            $(".oculto-observaciones").click(function () {
-                $(".overlay-observaciones").hide({width: "100%"});
-            });
         })
         $(document).on('click', '#editButton', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+
+            $.ajax({
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                },
+                // return the result
+                success: function (result) {
+                    $('#modalModal').modal("show");
+                    $('#modalBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+
+        $(document).on('click', '#agregarButton', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');
             let referencia = $(this).attr('data-loader');

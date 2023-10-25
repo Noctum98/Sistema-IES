@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Parameters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCicloLectivoEspecialRequest;
 use App\Http\Requests\UpdateCicloLectivoEspecialRequest;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Parameters\CicloLectivoEspecial;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class CicloLectivoEspecialController extends Controller
 {
@@ -22,11 +26,13 @@ class CicloLectivoEspecialController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function create()
+    public function create(CicloLectivo $cicloLectivo)
     {
-        //
+        return view('parameters.ciclo_lectivo_especial.modal.form_agregar_ciclo_lectivo_especial')->with([
+            'cicloLectivo' => $cicloLectivo,
+        ]);
     }
 
     /**
