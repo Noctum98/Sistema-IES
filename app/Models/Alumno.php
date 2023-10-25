@@ -287,8 +287,11 @@ class Alumno extends Model
             ->first();
 
         $user = User::find($equivalencia->user_id);
+        if($user){
+            $nombreApellido = $user->getApellidoNombre();
+        }
         /** @var Equivalencias $equivalencia */
-        return "Resolución: " . $equivalencia->resolution . " del " . $equivalencia->fecha . ". Cargada por: " . $user->getApellidoNombre();
+        return "Resolución: " . $equivalencia->resolution . " del " . $equivalencia->fecha . ". Cargada por: " . $nombreApellido;
     }
 
     /**
