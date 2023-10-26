@@ -133,7 +133,11 @@
                 </td>
                 {{-- Columna Nota Promedio Trabajos Prácticos --}}
                 <td>
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
                     @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp , 2, '.', ','))
+                    @else
+                        -
+                    @endif
                 </td>
                 {{-- Columna Parciales --}}
                 <td>
