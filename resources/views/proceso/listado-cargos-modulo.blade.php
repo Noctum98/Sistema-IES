@@ -103,13 +103,12 @@
                                                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                                                     <td class="p-2">
                                                         <h6>
-{{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                                                            {{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                                                             @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
                                                                     @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
                                                                     2, '.', ',') )
-
 
                                                                 @endif
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
@@ -134,7 +133,8 @@
                 {{-- Columna Nota Promedio Trabajos Prácticos --}}
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp , 2, '.', ','))
+                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp
+                        , 2, '.', ','))
                     @else
                         -
                     @endif
@@ -221,11 +221,17 @@
                 </td>
                 {{-- Nota Promedio Parciales --}}
                 <td>
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps , 2, '.', ','))
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
+                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps
+                        , 2, '.', ','))
+                    @else
+                        -
+                    @endif
                 </td>
                 {{-- Columna Nota Final --}}
                 <td>
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo, 2, '.', ','))
+                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo,
+                    2, '.', ','))
                     <br/>
                     <small>
 
