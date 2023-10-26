@@ -258,5 +258,4 @@
             </tbody>
         </table>
     @endforeach
-
 </div>
