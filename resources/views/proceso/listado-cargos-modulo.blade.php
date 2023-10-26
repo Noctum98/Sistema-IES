@@ -230,14 +230,18 @@
                 </td>
                 {{-- Columna Nota Final --}}
                 <td>
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo,
-                    2, '.', ','))
-                    <br/>
-                    <small>
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
+                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo,
+                        2, '.', ','))
+                        <br/>
+                        <small>
 
-                        {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
+                            {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
 
-                    </small>
+                        </small>
+                    @else
+                        -
+                    @endif
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
