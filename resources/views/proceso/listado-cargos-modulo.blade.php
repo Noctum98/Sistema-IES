@@ -136,7 +136,7 @@
                         @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp
                         , 2, '.', ','))
                     @else
-                        -
+                        No asignado
                     @endif
                 </td>
                 {{-- Columna Parciales --}}
@@ -225,7 +225,7 @@
                         @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps
                         , 2, '.', ','))
                     @else
-                        -
+                        No asignado
                     @endif
                 </td>
                 {{-- Columna Nota Final --}}
@@ -240,7 +240,7 @@
 
                         </small>
                     @else
-                        -
+                        No asignado
                     @endif
                 </td>
                 <td>
@@ -258,5 +258,4 @@
             </tbody>
         </table>
     @endforeach
-
 </div>
