@@ -79,8 +79,7 @@ class CargoController extends Controller
 
         return view('cargo.detail', [
             'cargo' => $cargo,
-            'materias' => $materias,
-            'users' => $users,
+            'materias' => $materias
         ]);
     }
 
