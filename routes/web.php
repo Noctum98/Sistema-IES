@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActaVolanteController;
+use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
@@ -121,6 +122,10 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+});
+
+Route::prefix('encuesta_socioeconomica')->group(function () {
+    Route::get('/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
 });
 
 Route::prefix('alumno/carrera')->group(function () {
