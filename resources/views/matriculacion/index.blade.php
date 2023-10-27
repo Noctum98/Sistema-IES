@@ -32,10 +32,10 @@
                     <td>{{ $carrera->sede->nombre}}</td>
 
                     <td>
-                        <a href="" class="btn btn-sm btn-secondary"  data-bs-toggle="modal" data-bs-target="#carreraAño{{$carrera->id}}">
+                        <button type="button" class="btn btn-sm btn-secondary"  data-bs-toggle="modal" data-bs-target="#carreraAño{{$carrera->id}}" {{ !$carrera->matriculacion_habilitada ? 'disabled' :'' }}>
                         <i class="fas fa-paste"></i>
                             Inscribirse
-                        </a>
+                        </button>
                         @include('matriculacion.modals.años')
                     </td>
                 </tr>

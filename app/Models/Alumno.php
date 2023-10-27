@@ -269,7 +269,30 @@ class Alumno extends Model
         )->select('nota')
             ->first();
         return $equivalencias->nota;
+    }
 
+    /**
+     * @param $materia
+     * @param $ciclo_lectivo
+     * @return string
+     */
+    public function infoEquivalenciaMateriaCicloLectivo($materia, $ciclo_lectivo): string
+    {
+        $equivalencia = Equivalencias::where([
+                'equivalencias.alumno_id' => $this->id,
+                'equivalencias.materia_id' => $materia,
+                'equivalencias.ciclo_lectivo' => $ciclo_lectivo,
+            ]
+        )
+            ->first();
+
+        $user = User::find($equivalencia->user_id);
+        $nombreApellido = "";
+        if($user){
+            $nombreApellido = ". Cargada por: " . $user->getApellidoNombre();
+        }
+        /** @var Equivalencias $equivalencia */
+        return "Resolución: " . $equivalencia->resolution . " del " . $equivalencia->fecha . $nombreApellido;
     }
 
     /**

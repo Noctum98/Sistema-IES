@@ -103,13 +103,12 @@
                                                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                                                     <td class="p-2">
                                                         <h6>
-{{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+                                                            {{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
                                                             @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
                                                                     @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
                                                                     2, '.', ',') )
-
 
                                                                 @endif
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
@@ -133,7 +132,12 @@
                 </td>
                 {{-- Columna Nota Promedio Trabajos Prácticos --}}
                 <td>
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp , 2, '.', ','))
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
+                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp
+                        , 2, '.', ','))
+                    @else
+                        No asignado
+                    @endif
                 </td>
                 {{-- Columna Parciales --}}
                 <td>
@@ -217,17 +221,27 @@
                 </td>
                 {{-- Nota Promedio Parciales --}}
                 <td>
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps , 2, '.', ','))
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
+                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps
+                        , 2, '.', ','))
+                    @else
+                        No asignado
+                    @endif
                 </td>
                 {{-- Columna Nota Final --}}
                 <td>
-                    @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo, 2, '.', ','))
-                    <br/>
-                    <small>
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
+                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo,
+                        2, '.', ','))
+                        <br/>
+                        <small>
 
-                        {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
+                            {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
 
-                    </small>
+                        </small>
+                    @else
+                        No asignado
+                    @endif
                 </td>
                 <td>
                     {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
@@ -244,5 +258,4 @@
             </tbody>
         </table>
     @endforeach
-
 </div>
