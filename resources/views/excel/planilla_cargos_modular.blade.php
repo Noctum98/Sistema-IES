@@ -28,21 +28,21 @@
             <td>{{ mb_strtoupper($proceso->alumno->apellidos).', '.ucwords($proceso->alumno->nombre) }}</td>
             <td>{{ number_format($proceso->procesoModularOne->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id, $ciclo_lectivo) , 2, '.', ',')}}</td>
             <td>
-                @if(number_format($cargo->getCargoProceso($proceso->id)))
+            @if($cargo->getCargoProceso($proceso->id))
                 {{ number_format($cargo->getCargoProceso($proceso->id)->nota_tp , 2, '.', ',') }}
                 @else
                 No asignado
                 @endif
             </td>
             <td>
-                @if(number_format($cargo->getCargoProceso($proceso->id)))
+            @if($cargo->getCargoProceso($proceso->id))
                 {{ number_format($cargo->getCargoProceso($proceso->id)->nota_ps , 2, '.', ',') }}
                 @else
                 No asignado
                 @endif
             </td>
             <td>
-            @if(number_format($cargo->getCargoProceso($proceso->id)))
+            @if($cargo->getCargoProceso($proceso->id))
                 {{ number_format($cargo->getCargoProceso($proceso->id)->nota_cargo, 2, '.', ',') }}
                 @else
                 No asignado
