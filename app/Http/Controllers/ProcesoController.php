@@ -267,12 +267,27 @@ class ProcesoController extends Controller
                     $proceso = null;
                 }
                 if ($proceso) {
-                    Proceso::create([
+
+                    $proceso_deleted = Proceso::withTrashed()
+                    ->where([
                         'alumno_id' => $alumno->id,
-                        'estado' => 'en curso',
                         'materia_id' => $proceso,
                         'ciclo_lectivo' => date('Y')
-                    ]);
+                    ])
+                    ->latest('deleted_at')
+                    ->first();
+
+                    if($proceso_deleted)
+                    {
+                        $proceso_deleted->restore();
+                    }else{
+                        Proceso::create([
+                            'alumno_id' => $alumno->id,
+                            'estado' => 'en curso',
+                            'materia_id' => $proceso,
+                            'ciclo_lectivo' => date('Y')
+                        ]);
+                    }    
                 }
             }
         }

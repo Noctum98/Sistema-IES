@@ -27,10 +27,30 @@
         <tr>
             <td>{{ mb_strtoupper($proceso->alumno->apellidos).', '.ucwords($proceso->alumno->nombre) }}</td>
             <td>{{ number_format($proceso->procesoModularOne->obtenerPorcentajeActividadesAprobadasPorMateriaCargo($materia->id, $cargo->id, $ciclo_lectivo) , 2, '.', ',')}}</td>
-            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_tp , 2, '.', ',') }}</td>
-            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_ps , 2, '.', ',') }}</td>
-            <td>{{ number_format($cargo->getCargoProceso($proceso->id)->nota_cargo, 2, '.', ',') }}</td>
-            <td>{{ optional(optional($proceso->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}</td>
+            <td>
+                @if(number_format($cargo->getCargoProceso($proceso->id)))
+                {{ number_format($cargo->getCargoProceso($proceso->id)->nota_tp , 2, '.', ',') }}
+                @else
+                No asignado
+                @endif
+            </td>
+            <td>
+                @if(number_format($cargo->getCargoProceso($proceso->id)))
+                {{ number_format($cargo->getCargoProceso($proceso->id)->nota_ps , 2, '.', ',') }}
+                @else
+                No asignado
+                @endif
+            </td>
+            <td>
+            @if(number_format($cargo->getCargoProceso($proceso->id)))
+                {{ number_format($cargo->getCargoProceso($proceso->id)->nota_cargo, 2, '.', ',') }}
+                @else
+                No asignado
+                @endif
+            </td>
+            <td>
+                {{ optional(optional($proceso->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
+            </td>
             <td>{{ optional($cargo->obtenerProcesoCargo(optional($proceso)->id))->isClose() ? 'Cerrado' : 'Abierto' }}</td>
         </tr>
         @endforeach
