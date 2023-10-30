@@ -108,48 +108,101 @@
                     <h4>¿Tenes acceso a internet?</h4>
                 </label>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde celular con datos" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde celular con datos" id="acceso_internet1">
+                    <label class="form-check-label" for="acceso_internet1">
                         Desde tu celular, con datos móviles
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde casa en red" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde casa en red" id="acceso_internet2">
+                    <label class="form-check-label" for="acceso_internet2">
                         Desde tu casa, en red
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde casa de conocido" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde casa de conocido" id="acceso_internet3">
+                    <label class="form-check-label" for="acceso_internet3">
                         Desde la casa de un conocido o familiar
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde celular familiar" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde celular familiar" id="acceso_internet4">
+                    <label class="form-check-label" for="acceso_internet4">
                         Desde el celular familiar
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="no tiene" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="no tiene" id="acceso_internet5">
+                    <label class="form-check-label" for="acceso_internet5">
                         No tengo acceso a internet
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde red publica o wifi" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="desde red publica o wifi" id="acceso_internet6">
+                    <label class="form-check-label" for="acceso_internet6">
                         Desde alguna red publica de WIFI
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
+                    <input class="form-check-input" name="acceso_internet[]" type="checkbox" value="" id="acceso_internet7">
+                    <label class="form-check-label" for="acceso_internet7">
                         Otros
                     </label>
                 </div>
                 <input type="text" class="form-control mt-2" id="empresa_telefono" name="acceso_internet[]" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Qué herramientas tecnológicas posees?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="tu celular personal" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        Tu celular personal
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="pc" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        Pc
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="notebook o netbook" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        Notebook o netbook
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="tablet" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        Tablet
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="celular familiar" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        Celular familiar
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="no tengo" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        No tengo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="herramientas_tecnologicas[]" type="checkbox" value="" id="herramientas_tecnologicas1">
+                    <label class="form-check-label" for="herramientas_tecnologicas1">
+                        Otro
+                    </label>
+                </div>
+                <input type="text" class="form-control mt-2" id="herramienta_tecnologica" name="herramientas_tecnologicas[]" disabled>
             </div>
         </div>
     </div>
