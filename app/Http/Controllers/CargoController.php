@@ -72,7 +72,9 @@ class CargoController extends Controller
 
     public function show($id)
     {
-
+        $users = User::whereHas('roles', function ($query) {
+            return $query->where('nombre', 'profesor');
+        })->get();
 
         $cargo = Cargo::find($id);
         $materias = Materia::where('carrera_id', $cargo->carrera_id)->get();
