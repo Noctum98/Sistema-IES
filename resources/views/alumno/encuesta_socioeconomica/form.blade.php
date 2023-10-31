@@ -207,5 +207,278 @@
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Durante el ciclo lectivo anterior estuviste vinculado/a a alguna actividad educativa de manera virtual?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="vinculacion_ciclo" id="vinculacion_ciclo1" value="si">
+                    <label class="form-check-label" for="vinculacion_ciclo1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="vinculacion_ciclo" id="vinculacion_ciclo2" value="no">
+                    <label class="form-check-label" for="vinculacion_ciclo2">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Condición laboral del/ de la estudiante</h4>
+                </label>
+                <p><i>Ocupada/o: Trabaja para otra persona y le hacen aportes de jubilación y obra social - Independiente: Trabaja para sí o para familiar - Subocupada/o: Trabaja de manera inestable para otra persona pero no le realizan aportes jubilatorio ni le pagan obra social - Desocupada/o: Está buscando activamente trabajo y no encuentra</i></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral" id="condicion_laboral1" value="ocupada/o">
+                    <label class="form-check-label" for="condicion_laboral1">
+                        Ocupada/o
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral" id="condicion_laboral2" value="independiente">
+                    <label class="form-check-label" for="condicion_laboral2">
+                        Independiente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral" id="condicion_laboral3" value="subocupada/o">
+                    <label class="form-check-label" for="condicion_laboral3">
+                        Subocupada/o
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral" id="condicion_laboral4" value="desocupada/o">
+                    <label class="form-check-label" for="condicion_laboral4">
+                        Desocupada/o
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral" id="condicion_laboral5" value="solo estudio">
+                    <label class="form-check-label" for="condicion_laboral5">
+                        Solo estudio
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="lugar_y_horario_trabajo" class="text-primary">
+                    <h4>Lugar y horario de trabajo</h4>
+                </label>
+                <p><i>En caso de que trabaje, coloque la empresa/puesto y los días y horarios de trabajo. Si no trabaja, coloque "no trabajo"</i></p>
+                <input type="text" class="form-control mt-2" id="lugar_y_horario_trabajo" name="lugar_y_horario_trabajo" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Tu trabajo está relacionado con la carrera en la que te has inscripto?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="trabajo_relacionado" id="trabajo_relacionado1" value="si">
+                    <label class="form-check-label" for="trabajo_relacionado1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="trabajo_relacionado" id="trabajo_relacionado2" value="no">
+                    <label class="form-check-label" for="trabajo_relacionado2">
+                        No
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="trabajo_relacionado" id="trabajo_relacionado3" value="parcialmente">
+                    <label class="form-check-label" for="trabajo_relacionado3">
+                        Parcialmente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="trabajo_relacionado" id="trabajo_relacionado4" value="no trabajo">
+                    <label class="form-check-label" for="trabajo_relacionado4">
+                        No trabajo
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Sos jefe/a de hogar?</h4>
+                </label>
+                <p><i>Jefe/a de hogar: persona que mantiene económicamente a su grupo conviviente, o que posee el sueldo más alto y estable del grupo conviviente.</i></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="jefe_hogar" id="jefe_hogar1" value="si">
+                    <label class="form-check-label" for="jefe_hogar1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="jefe_hogar" id="jefe_hogar2" value="no">
+                    <label class="form-check-label" for="jefe_hogar2">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Tenés hijos/as a cargo?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="hijos_a_cargo" id="hijos_a_cargo1" value="si">
+                    <label class="form-check-label" for="hijos_a_cargo1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="hijos_a_cargo" id="hijos_a_cargo2" value="no">
+                    <label class="form-check-label" for="hijos_a_cargo2">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Estás embarazada?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="embarazada" id="embarazada1" value="si">
+                    <label class="form-check-label" for="embarazada1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="embarazada" id="embarazada2" value="no">
+                    <label class="form-check-label" for="embarazada2">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>En caso de que tengas hijos/as, indicá en número ¿Cuántos/as? (si no tenes, colocá 0)</h4>
+                </label>
+                <input type="number" class="form-control mt-2" id="cantidad_hijos" name="cantidad_hijos" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Qué herramientas tecnológicas posees?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="menos de 45 días" id="edad_hijos1">
+                    <label class="form-check-label" for="edad_hijos1">
+                        Menos de 45 días
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="de 45 días a 6 meses" id="edad_hijos2">
+                    <label class="form-check-label" for="edad_hijos2">
+                        De 45 días a 6 meses
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="de 1 a 3 años" id="edad_hijos3">
+                    <label class="form-check-label" for="edad_hijos3">
+                        De 1 a 3 años
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value=" de 4 y 5 años" id="edad_hijos3">
+                    <label class="form-check-label" for="edad_hijos3">
+                        De 4 y 5 años
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="de 6 a 13 años" id="edad_hijos4">
+                    <label class="form-check-label" for="edad_hijos4">
+                        De 6 a 13 años
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="de 14 a 18 años" id="edad_hijos6">
+                    <label class="form-check-label" for="edad_hijos6">
+                        De 14 a 18 años
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="de 19 a 21 años" id="edad_hijos5">
+                    <label class="form-check-label" for="edad_hijos5">
+                        De 19 a 21 años
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="más de 21 años" id="edad_hijos7">
+                    <label class="form-check-label" for="edad_hijos7">
+                        Más de 21 años
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="edad_hijos[]" type="checkbox" value="no tenés hijos" id="edad_hijos8">
+                    <label class="form-check-label" for="edad_hijos8">
+                        No tenés hijos
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Tenés obra social?</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="obra_social" id="obra_social1" value="si">
+                    <label class="form-check-label" for="obra_social1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="obra_social" id="obra_social2" value="no">
+                    <label class="form-check-label" for="obra_social2">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection
