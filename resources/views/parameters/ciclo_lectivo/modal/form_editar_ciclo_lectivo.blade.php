@@ -5,7 +5,7 @@
 </style>
 <form action="{{ route('ciclo_lectivo.update', ['ciclo_lectivo' => $cicloLectivo->id]) }}"
       method="POST">
-    @csrf {{ method_field('PUT') }})
+    @csrf {{ method_field('PUT') }}
 
     <div class="form-group mb-3">
         <label> Ciclo lectivo {{$cicloLectivo->year}} </label>

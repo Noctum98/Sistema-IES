@@ -28,7 +28,7 @@
                     <th scope="col">Cierre 1<sup>er</sup> Semestre</th>
                     <th scope="col">Cierre 2<sup>do</sup> Semestre</th>
                     <th scope="col">Cierre Anual</th>
-                    <th scope="col"><i class="fa fa-cogs"></i></th>
+                    <th class="text-center" scope="col"><i class="fa fa-cogs"></i></th>
                 </tr>
                 </thead>
 
@@ -36,11 +36,11 @@
                 <tbody>
                 @foreach($ciclos as $ciclo)
                     <tr class="w-100">
-                        <td scope="row">{{$ciclo->year}}</td>
-                        <td>{{$ciclo->fst_sem}}</td>
-                        <td>{{$ciclo->snd_sem}}</td>
-                        <td>{{$ciclo->anual}}</td>
-                        <td>
+                        <td class="text-center" scope="row">{{$ciclo->year}}</td>
+                        <td class="text-center"> {{$ciclo->fst_sem}}</td>
+                        <td class="text-center">{{$ciclo->snd_sem}}</td>
+                        <td class="text-center">{{$ciclo->anual}}</td>
+                        <td class="text-center">
                             <a class="btn btn-sm btn-warning" data-bs-toggle="modal" id="editButton"
                                data-bs-target="#modalModal"
                                data-loader="{{$ciclo->id}}"
@@ -109,17 +109,27 @@
         $(document).on('click', '#agregarButton', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');
+
             let referencia = $(this).attr('data-loader');
             const $laoder = $('#loader' + referencia);
+            $("#modalModal").on("hidden.bs.modal", function(){
+                $("#modalBody").html("");
+            });
 
             $.ajax({
+
                 url: href,
                 beforeSend: function () {
                     $laoder.show();
+                    $("#modalBody").html("");
                 },
                 // return the result
                 success: function (result) {
+
+
                     $('#modalModal').modal("show");
+
+
                     $('#modalBody').html(result).show();
                 },
                 complete: function () {
