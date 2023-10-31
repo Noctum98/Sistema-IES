@@ -275,22 +275,8 @@
             <a href="{{ route('descargar_ficha',$alumno->id) }}" class="col-md-2  btn btn-sm btn-primary"><i
                     class="fas fa-download"></i> Descargar PDF</a>
 
-            @if((Session::has('coordinador') || Session::has('admin') || Session::has('regente')) && $alumno->user)
-                <button
-                    class="ml-2  btn btn-sm btn-secondary {{ !$alumno->user->activo ? 'd-none' : '' }} desactivar"
-                    id="desactivar-{{$alumno->user->id}}">
-                    Desactivar Usuario
-                </button>
-
-                <button
-                    class="ml-2  btn btn-sm btn-success {{ $alumno->user->activo == 1 ? 'd-none' : '' }} activar"
-                    id="activar-{{$alumno->user->id}}">
-                    Activar Usuario
-                </button>
-
-                <button class="ml-2  btn btn-sm btn-info btn-password" id="{{$alumno->user->id}}">
-                    Restablecer Contraseña
-                </button>
+            @if((Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos')) && $alumno->user)
+            
 
             @endif
         </div>
