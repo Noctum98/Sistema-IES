@@ -111,7 +111,7 @@
                                     @endif
                                 @endif
                             @else
-                                {{$proceso->alumno()->first()->getNotaEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}
+{{--                                {{$proceso->alumno()->first()->getNotaEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}--}}
                             @endif
 
                         </td>

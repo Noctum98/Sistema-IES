@@ -72,7 +72,7 @@
                 {{ $proceso->procesoModularOne->nota_final_nota ? $proceso->procesoModularOne->nota_final_nota : '-'}}
             </td>
             <td style="text-align: right;">
-                {{ $proceso->procesoModularOne->nota_global ? $proceso->procesoModularOne->nota_global : '-' }}
+                {{ $proceso->nota_global ? $proceso->nota_global : '-' }}
             </td>
             <td>
                 {{ $proceso->cierre ? mb_strtoupper($proceso->estado->nombre) : '-' }}
