@@ -108,7 +108,6 @@ class CalificacionController extends Controller
             ->where('procesos.materia_id', $calificacion->materia_id)
             ->where('procesos.ciclo_lectivo', $calificacion->ciclo_lectivo);
 
-
         if ($calificacion->comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($calificacion) {
                 $query->whereHas('comisiones', function ($query) use ($calificacion) {
