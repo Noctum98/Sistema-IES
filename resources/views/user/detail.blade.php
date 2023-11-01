@@ -60,7 +60,7 @@
                 <ul class="m-0 p-0">
                     @foreach($user->materias as $materia)
                         <li class="mt-3">
-                            {{ $materia->nombre.' - '.$materia->carrera->nombre.' - '.$materia->carrera->sede->nombre }}
+                            {{ $materia->nombre.' - '.$materia->carrera->nombre.' ( '.$materia->carrera->resolucion.' '.$materia->carrera->turno.' ) '.$materia->carrera->sede->nombre }}
                             -
                             <form
                                 action="{{ route('delete_materias_carreras',['user_id'=> $user->id,'materia_id'=>$materia->id]) }}"
@@ -79,7 +79,7 @@
                     @foreach($user->cargos as $cargo)
 
                         <li class="mt-3">
-                            {{ $cargo->nombre.' - '.$cargo->carrera->nombre.' - '.$cargo->carrera->sede->nombre }}
+                            {{ $cargo->nombre.' - '.$cargo->carrera->nombre.' ( '.$cargo->carrera->resolucion.' '.$cargo->carrera->turno.' ) '.$cargo->carrera->sede->nombre }}
                             -
                             <form
                                 action="{{ route('delete_cargo_carreras',['user_id'=> $user->id,'cargo_id'=>$cargo->id]) }}"

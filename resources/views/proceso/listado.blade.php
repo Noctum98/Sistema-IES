@@ -172,7 +172,7 @@
             @else
             'No se encontraron procesos'
             @endif
-            @include('proceso.modals.cargar_etapa_campo');
+            @include('proceso.modals.cargar_etapa_campo')
 
     </div>
     @endsection
