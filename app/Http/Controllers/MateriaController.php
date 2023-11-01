@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Exports\AlumnosMateriaExport;
 use App\Models\User;
 use App\Services\MateriaService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
@@ -39,6 +42,10 @@ class MateriaController extends Controller
 
     // Vistas
 
+    /**
+     * @param int $carrera_id
+     * @return Application|Factory|View
+     */
     public function vista_admin(int $carrera_id)
     {
         $ruta = 'materia.admin';

@@ -49,14 +49,14 @@
                                 <i class="fa fa-spinner fa-spin" style="display: none"
                                    id="loader{{$ciclo->id}}"></i>
                             </a>
-                            <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
-                               data-bs-target="#modalModal"
-                               data-loader="{{$ciclo->id}}"
-                               data-attr="{{ route('ciclo_lectivo_especial.create', $ciclo) }}">
-                                <i class="fas fa-edit text-gray-300"></i>
-                                <i class="fa fa-spinner fa-spin" style="display: none"
-                                   id="loader{{$ciclo->id}}"></i>
-                            </a>
+{{--                            <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"--}}
+{{--                               data-bs-target="#modalModal"--}}
+{{--                               data-loader="{{$ciclo->id}}"--}}
+{{--                               data-attr="{{ route('ciclo_lectivo_especial.create', $ciclo) }}">--}}
+{{--                                <i class="fas fa-edit text-gray-300"></i>--}}
+{{--                                <i class="fa fa-spinner fa-spin" style="display: none"--}}
+{{--                                   id="loader{{$ciclo->id}}"></i>--}}
+{{--                            </a>--}}
                         </td>
 
                     </tr>
