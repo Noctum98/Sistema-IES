@@ -480,5 +480,184 @@
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Recibis:</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="PROGRESAR/ PRONAFE" id="subsidios1">
+                    <label class="form-check-label" for="subsidios1">
+                        PROGRESAR/ PRONAFE
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="medio boleto" id="subsidios2">
+                    <label class="form-check-label" for="subsidios2">
+                        Medio boleto estudiantil de Vías y Medios de transporte
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="beca municipal" id="subsidios3">
+                    <label class="form-check-label" for="subsidios3">
+                        Beca Municipal
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="beca de transporte" id="subsidios4">
+                    <label class="form-check-label" for="subsidios4">
+                        Beca de Transporte
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="beca de fotocopias" id="subsidios5">
+                    <label class="form-check-label" for="subsidios5">
+                        Beca de fotocopias
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="aporte por capacitación" id="subsidios6">
+                    <label class="form-check-label" for="subsidios6">
+                        Aporte por capacitación de parte de la empresa en la que trabajas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="IFE O Plan social" id="subsidios8">
+                    <label class="form-check-label" for="subsidios8">
+                        IFE O Plan social
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="no recibo Ninguna" id="subsidios9">
+                    <label class="form-check-label" for="subsidios9">
+                        No recibo Ninguna
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Si te has inscripto en PROGRESAR en el ciclo lectivo 2022, te pedimos que adjuntes comprobante</h4>
+                </label>
+                <input type="file" class="form-control mt-2" id="comprobanete_progresar" name="comprobanete_progresar">
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Kilómetros de distancia desde tu domicilio hasta el IES</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies1" value="menos de 1 Km.">
+                    <label class="form-check-label" for="distancia_ies1">
+                        Menos de 1 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies2" value="desde 1,1 Km. a 3 Km.">
+                    <label class="form-check-label" for="distancia_ies2">
+                        Desde 1,1 Km. a 3 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies3" value="desde 3,1 km a 7 km">
+                    <label class="form-check-label" for="distancia_ies3">
+                        Desde 3,1 km a 7 km
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies4" value="desde 7,1 a 15 Km.">
+                    <label class="form-check-label" for="distancia_ies4">
+                        Desde 7,1 a 15 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies5" value="desde 15,1 Km. a  25 Km.">
+                    <label class="form-check-label" for="distancia_ies5">
+                        Desde 15,1 Km. a 25 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies6" value="desde 25,1 Km. a 35 km.">
+                    <label class="form-check-label" for="distancia_ies6">
+                        Desde 25,1 Km. a 35 km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies7" value="desde 35,1 Km. a 45 Km.">
+                    <label class="form-check-label" for="distancia_ies7">
+                        Desde 35,1 Km. a 45 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="distancia_ies" id="distancia_ies8" value="más de 45,1 Km.">
+                    <label class="form-check-label" for="distancia_ies8">
+                        Más de 45,1 Km.
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Transporte utilizado para concurrir al IES</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" name="subsidios[]" type="checkbox" value="colectivo" id="transporte_utilizado1">
+                    <label class="form-check-label" for="transporte_utilizado1">
+                    Colectivo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="auto propio" id="transporte_utilizado2">
+                    <label class="form-check-label" for="transporte_utilizado2">
+                    Auto propio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="auto de otra persona" id="transporte_utilizado3">
+                    <label class="form-check-label" for="transporte_utilizado3">
+                    Auto de otra persona
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="caminando un trayecto mayor de 3 Km." id="transporte_utilizado3">
+                    <label class="form-check-label" for="transporte_utilizado3">
+                    Caminando un trayecto mayor de 3 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="caminando un trayecto menor a 3 Km." id="transporte_utilizado4">
+                    <label class="form-check-label" for="transporte_utilizado4">
+                    Caminando un trayecto menor a 3 Km.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="bicicleta" id="transporte_utilizado5">
+                    <label class="form-check-label" for="transporte_utilizado5">
+                    Bicicleta
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="moto" id="transporte_utilizado6">
+                    <label class="form-check-label" for="transporte_utilizado6">
+                        Moto
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection
