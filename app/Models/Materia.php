@@ -217,8 +217,10 @@ class Materia extends Model
 
     public function correlativasArray()
     {
-        $correlativas =  MateriasCorrelativa::where('materia_id', $this->id)->get();
-
+        $correlativas =  MateriasCorrelativa::select('correlativa_id')
+        ->where('materia_id', $this->id)
+            ->get()->toArray();
+        $correlativas = array_column($correlativas, 'correlativa_id');
         return $correlativas;
 
 

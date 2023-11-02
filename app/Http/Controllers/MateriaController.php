@@ -78,7 +78,7 @@ class MateriaController extends Controller
     {
         $materia = Materia::find($id);
         $materias = Materia::where('carrera_id', $materia->carrera_id)->get();
-        dd($materia->correlativasArray());
+
         return view('materia.edit', [
             'materia' => $materia,
             'materias' => $materias,

@@ -167,7 +167,7 @@
                                             @else
                                                 @if($mater->id != $materia->id)
                                                     <option value="{{ $mater->id }}">
-                                                        {{ $mater->nombre }} }}
+                                                        {{ $mater->nombre }}
                                                     </option>
                                                 @endif
 
