@@ -35,16 +35,38 @@ class InstanciaController extends Controller
 
     public function vista_admin(Request $request,$todos = null)
     {
+        $sedes = Auth::user()->sedes;
+        $carreras = Auth::user()->carreras->pluck('id');
+
+        //dd($carreras->toArray());
         if(!$todos)
         {
-            $instancia = Instancia::orderBy('id','desc')->take(4)->get();
+            $instancia = Instancia::where(function ($query) use ($carreras) {
+                $query->where('general', 1)
+                    ->orWhereHas('carreras', function ($query) use ($carreras) {
+                        $query->whereIn('carreras.id', $carreras);
+                    });
+                })
+                ->orderBy('id','desc')->take(4)->get();
+            if(Session::has('admin'))
+            {
+                $instancia = Instancia::orderBy('id','desc')->take(4)->get();
+            }
         }else{
-            $instancia = Instancia::orderBy('id','desc')->get();
+            $instancia = Instancia::where(function ($query) use ($carreras) {
+                $query->where('general', 1)
+                    ->orWhereHas('carreras', function ($query) use ($carreras) {
+                        $query->whereIn('carreras.id', $carreras);
+                    });
+                })
+                ->orderBy('id','desc')->get();
+
+            if(Session::has('admin'))
+            {
+                $instancia = Instancia::orderBy('id','desc')->get();
+
+            }
         }
-
-        $sedes = Auth::user()->sedes;
-
-        //dd($instancia);
 
         return view('mesa.admin', [
             'instancias' => $instancia,
