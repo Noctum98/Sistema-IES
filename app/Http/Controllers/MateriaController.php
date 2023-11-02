@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AlumnosMateriaExport;
+use App\Models\MateriasCorrelativa;
 use App\Models\User;
 use App\Services\MateriaService;
 use Illuminate\Contracts\Foundation\Application;
@@ -32,7 +33,7 @@ class MateriaController extends Controller
      * @param MateriaService $materiaService
      * @param ProcesoService $procesoService
      */
-    function __construct(MateriaService $materiaService,ProcesoService $procesoService)
+    function __construct(MateriaService $materiaService, ProcesoService $procesoService)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos-areaSocial');
@@ -77,7 +78,7 @@ class MateriaController extends Controller
     {
         $materia = Materia::find($id);
         $materias = Materia::where('carrera_id', $materia->carrera_id)->get();
-
+        dd($materia->correlativasArray());
         return view('materia.edit', [
             'materia' => $materia,
             'materias' => $materias,
@@ -103,6 +104,8 @@ class MateriaController extends Controller
 
     public function editar(int $id, Request $request)
     {
+        $input = $request->all();
+        $correlativas = $input['correlativa']??null;
         $validate = $this->validate($request, [
             'nombre' => ['required'],
             'año' => ['required', 'numeric', 'max:3'],
@@ -110,7 +113,27 @@ class MateriaController extends Controller
         ]);
 
         $materia = Materia::find($id);
+
         $materia->update($request->all());
+
+        $materiasCorrelativa = MateriasCorrelativa::where([
+            'materias_correlativas.materia_id' => $materia->id,
+        ])->get();
+        if ($materiasCorrelativa) {
+            foreach ($materiasCorrelativa as $mater) {
+                $mater->delete();
+            }
+        }
+
+        foreach ($correlativas as $correlativa){
+            MateriasCorrelativa::create([
+                'correlativa_id'=>$correlativa,
+                'materia_id'=> $materia->id,
+                'operador_id' =>  Auth::user()->id
+            ]);
+        }
+
+
 
 
         return redirect()->route('materia.editar', ['id' => $id])->with([
@@ -149,7 +172,7 @@ class MateriaController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->join('materias', 'materias.id', 'procesos.materia_id')
             ->where('materias.id', $id)
-            ->where('procesos.ciclo_lectivo',date('Y'))
+            ->where('procesos.ciclo_lectivo', date('Y'))
             ->orderBy('alumnos.apellidos', 'asc')
             ->get();
 
@@ -167,12 +190,12 @@ class MateriaController extends Controller
         }
     }
 
-    public function cierre_tradicional(Request $request, $materia_id, $ciclo_lectivo,$comision_id = null)
+    public function cierre_tradicional(Request $request, $materia_id, $ciclo_lectivo, $comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('ciclo_lectivo',$ciclo_lectivo);
+            ->where('ciclo_lectivo', $ciclo_lectivo);
 
 
         if ($comision_id) {
@@ -185,24 +208,20 @@ class MateriaController extends Controller
 
         $procesos = $procesos->get();
 
-        $estadoNoRegular = Estados::where('identificador',2)->first();
+        $estadoNoRegular = Estados::where('identificador', 2)->first();
 
-        foreach($procesos as $proceso)
-        {
-            $procesoRepetido = $this->procesoService->verificarRepetido($proceso,$procesos);
+        foreach ($procesos as $proceso) {
+            $procesoRepetido = $this->procesoService->verificarRepetido($proceso, $procesos);
 
-            if(!$procesoRepetido)
-            {
+            if (!$procesoRepetido) {
                 return redirect()->back()->with([
-                    'alert_danger' => 'El proceso del alumno '.$proceso->alumno->getApellidosNombresAttribute().' está duplicado, debe unificar las notas en uno solo, y dejar vacío la que no corresponde, el sistema eliminará automaticamente el proceso sin notas ni asistencia.'
+                    'alert_danger' => 'El proceso del alumno ' . $proceso->alumno->getApellidosNombresAttribute() . ' está duplicado, debe unificar las notas en uno solo, y dejar vacío la que no corresponde, el sistema eliminará automaticamente el proceso sin notas ni asistencia.'
                 ]);
             }
         }
-        foreach($procesos as $proceso)
-        {
+        foreach ($procesos as $proceso) {
 
-            if(!$proceso->estado_id)
-            {
+            if (!$proceso->estado_id) {
                 $proceso->estado_id = $estadoNoRegular->id;
             }
 
@@ -243,13 +262,13 @@ class MateriaController extends Controller
 
     private function getIdsByModel($models): array
     {
-         $ids = [];
+        $ids = [];
 
-         foreach ($models as $model){
-             array_push($ids, $model->id) ;
-         }
+        foreach ($models as $model) {
+            array_push($ids, $model->id);
+        }
 
-         return$ids;
+        return $ids;
 
     }
 }

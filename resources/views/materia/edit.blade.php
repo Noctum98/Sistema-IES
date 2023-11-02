@@ -1,9 +1,8 @@
 @extends('layouts.app-prueba')
 <link href="{{ asset('vendors/select2/css/select2.min.css') }}" rel="stylesheet">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="{{ asset('css/font-awesome/4.6.1/css/font-awesome.min.css') }}" rel="stylesheet"/>
 <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"
-      integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA=="
+      href="{{ asset('css/select2-bootstrap-theme/select2-bootstrap.min.css')}}"
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @section('content')
     <style>
@@ -65,20 +64,25 @@
                 </div>
 
                 <div class="card-header border-radius col-sm-12 flex-column">
+                    <div class="row text-center">
+                        <div class="col-sm-7 mx-auto">
 
-                    <div class="col-sm-8 mx-auto">
-                        <p>
-                            Edición de:
-                        </p>
-                        <h5 class="card-title">
-                            {{ $materia->nombre }}
-                        </h5>
+                            <h5 class="card-title">
+                                <small>Edición de</small> {{ $materia->nombre }}
+                            </h5>
+                        </div>
+                        <div class="col-sm-5 mx-auto">
+                            <h5 class="card-title">
+                                {{ $materia->carrera->nombre }}
+                            </h5>
+                            <p>
+                                {{$materia->carrera->sede->nombre}}
+                            </p>
+                        </div>
                     </div>
                 </div>
-                {{--                <div class="card-body col-sm-1 ">--}}
-                {{--                </div>--}}
+
             </div>
-            {{--            <div class="row">--}}
             <div class="card-body">
                 <div class="col-md-12">
                     @if(@session('message'))
@@ -98,8 +102,8 @@
                                     <input type="text" id="nombre" name="nombre"
                                            class="form-control @error('nombre') is-invalid @enderror"
                                            value="{{ $materia->nombre }}" required
-                                    @if(!Session::has('admin'))
-                                        readonly
+                                           @if(!Session::has('admin'))
+                                               readonly
                                         @endif
                                     />
                                     @error('nombre')
@@ -152,17 +156,21 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="correlativa">Correlatividad: </label>
-                                    <select class="form-control select2" id="correlativa" name="correlativa">
-                                        <option value="">No es correlativa</option>
+                                    <select class="form-control select2" id="correlativa"
+                                            name="correlativa[]" multiple="multiple">
+                                        <option value="">No tiene correlativa</option>
                                         @foreach($materias as $mater)
-                                            @if($materia->correlativa == $mater->id)
-                                                <option value="{{ $materia->id }}" selected="selected">
+                                            @if(in_array($mater->id, $materia->correlativasArray()))
+                                                <option value="{{ $mater->id }}" selected="selected">
                                                     {{ $mater->nombre }}
                                                 </option>
                                             @else
-                                                <option value="{{ $materia->id }}">
-                                                    {{ $mater->nombre }}
-                                                </option>
+                                                @if($mater->id != $materia->id)
+                                                    <option value="{{ $mater->id }}">
+                                                        {{ $mater->nombre }} }}
+                                                    </option>
+                                                @endif
+
                                             @endif
 
                                         @endforeach
@@ -183,7 +191,7 @@
                                             ☑ Habilitada
                                         </option>
                                         <option value="0" {{ !$materia->etapa_campo ? 'selected="selected' : '' }}>
-                                             ☒ Deshabilitada
+                                            ☒ Deshabilitada
 
                                         </option>
                                     </select>
