@@ -4,7 +4,7 @@
         <a href="{{route('carrera.admin')}}">
             <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
         </a>
-        <h2 class="h1 text-info">
+        <h2 class="text-info">
             Plan de estudios de {{ $carrera->nombre }}
         </h2>
         <hr>
@@ -27,7 +27,7 @@
         @if(@session('error_procesos'))
             {{ @session('error_procesos') }}
         @endif
-        <div class="col-md-8">
+        <div class="col-md-12">
 
             <h3 class="text-secondary">Primer Año</h3>
             <table class="table table-hover mt-4">
@@ -62,6 +62,14 @@
 
                                     @endif
                                 </sup>
+                                    <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
+                                       data-bs-target="#modalModal"
+                                       data-loader="{{$materia->id}}"
+                                       data-attr="{{ route('ciclo_lectivo_especial.create', $materia) }}">
+                                        <i class="fas fa-edit text-gray-300"></i>
+                                        <i class="fa fa-spinner fa-spin" style="display: none"
+                                           id="loader{{$materia->id}}"></i>
+                                    </a>
                             </td>
                         </tr>
                     @endif
@@ -97,6 +105,15 @@
                                         </a>
                                     @endif
                                 </sup>
+                                    <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
+                                       data-bs-target="#modalModal"
+                                       data-loader="{{$materia->id}}"
+                                       data-attr="{{ route('ciclo_lectivo_especial.create', $materia) }}">
+                                        <i class="fas fa-edit text-gray-300"></i>
+                                        <i class="fa fa-spinner fa-spin" style="display: none"
+                                           id="loader{{$materia->id}}"></i>
+                                    </a>
+
                             </td>
                         </tr>
                     @endif
@@ -130,14 +147,23 @@
 
                                 <sup class="badge badge-info" title="Total Comisiones">
                                     {{$materia->getTotalAttribute()}}
-                                </sup>
-                                @if($materia->getTotalAttribute() > 0)
+
+                                    @if($materia->getTotalAttribute() > 0)
 
 								<a href="{{ route('comisiones.ver',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>date('Y')])}}/?año={{$materia->año}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
+                                            <i class="fa fa-eye"></i>
+                                        </a>
 
-                                @endif
+                                    @endif
+                                </sup>
+                                <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
+                                   data-bs-target="#modalModal"
+                                   data-loader="{{$materia->id}}"
+                                   data-attr="{{ route('ciclo_lectivo_especial.create', $materia) }}">
+                                    <i class="fas fa-edit text-gray-300"></i>
+                                    <i class="fa fa-spinner fa-spin" style="display: none"
+                                       id="loader{{$materia->id}}"></i>
+                                </a>
 
 
                             </td>
@@ -152,6 +178,60 @@
         </a>
     </div>
     @include('comision.modals.crear_comision')
+    @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $(".button").click(function () {
+                $(".overlay").show({width: "0px"});
+            });
+            $(".oculto").click(function () {
+                $(".overlay").hide({width: "100%"});
+            });
+
+        })
+
+
+        $(document).on('click', '#agregarButton', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+            $("#modalModal").on("hidden.bs.modal", function () {
+                $("#modalBody").html("");
+            });
+
+            $.ajax({
+
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                    $("#modalBody").html("");
+                },
+                // return the result
+                success: function (result) {
+
+
+                    $('#modalModal').modal("show");
+
+
+                    $('#modalBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+    </script>
 @endsection
 @section('scripts')
 <script src="{{ asset('js/comision/crear.js') }}"></script>

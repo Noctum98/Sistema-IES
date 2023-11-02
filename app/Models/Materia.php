@@ -14,7 +14,6 @@ class Materia extends Model
 
     protected $fillable = [
         'carrera_id',
-        'correlativa',
         'año',
         'nombre',
         'regimen',
@@ -223,6 +222,24 @@ class Materia extends Model
             return null;
         }
          return  $actaVolante;
+
+
+    }
+
+    public function correlativas()
+    {
+        return MateriasCorrelativa::where([
+            'materia_id' => $this->id
+        ]);
+    }
+
+    public function correlativasArray()
+    {
+        $correlativas =  MateriasCorrelativa::select('correlativa_id')
+        ->where('materia_id', $this->id)
+            ->get()->toArray();
+        $correlativas = array_column($correlativas, 'correlativa_id');
+        return $correlativas;
 
 
     }

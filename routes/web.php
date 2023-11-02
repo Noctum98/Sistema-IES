@@ -46,10 +46,19 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
+use App\Mail\VerifiedPreEnroll;
+use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Calificacion;
 use App\Models\Comision;
+use App\Models\Materia;
+use App\Models\Preinscripcion;
+use App\Models\Proceso;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +140,26 @@ Route::prefix('cargo')->group(function () {
     Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
 });
 
+// Rutas de Carreras
+Route::prefix('carreras')->group(function () {
+    // Vistas
+    Route::get('/', [CarreraController::class, 'vista_admin'])->name('carrera.admin');
+    Route::get('crear', [CarreraController::class, 'vista_crear'])->name('carrera.crear');
+    Route::get('personal/{id}', [CarreraController::class, 'vista_agregarPersonal'])->name('carrera.personal');
+    Route::get('editar/{id}', [CarreraController::class, 'vista_editar'])->name('carrera.editar');
+    Route::post('/sedes', [CarreraController::class, 'carrerasPorSedes']);
+
+    // Acciones
+    Route::post('crear-carrera', [CarreraController::class, 'crear'])->name('crear_carrera');
+    Route::post('agregar-personal/{id}', [CarreraController::class, 'agregar_personal'])
+        ->name('agregar_personal');
+    Route::post('editar-carrera/{id}', [CarreraController::class, 'editar'])->name('editar_carrera');
+    Route::get('vista-carreras/{instancia}', [CarreraController::class, 'vistaCarrera'])->name('carrera.vista_carrera');
+    Route::get('verProfesores/{carrera_id}', [CarreraController::class, 'verProfesores'])->name(
+        'carrera.ver_profesores'
+    );
+});
+
 //Ruta de Ciclo lectivo
 Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
 
@@ -146,9 +175,9 @@ Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
 
     // Especial
     Route::get('/especial/listado', [CicloLectivoEspecialController::class, 'index'])->name('ciclo_lectivo_especial.index');
-    Route::post('/especial/{ciclo_lectivo}/guarda', [CicloLectivoEspecialController::class, 'store'])->name('ciclo_lectivo_especial.store');
+    Route::post('/especial/{materia}/guarda', [CicloLectivoEspecialController::class, 'store'])->name('ciclo_lectivo_especial.store');
     Route::get('/especial/{ciclo_lectivo_especial}/ver', [CicloLectivoEspecialController::class, 'show'])->name('ciclo_lectivo_especial.show');
-    Route::get('/especial/{ciclo_lectivo}/crear', [CicloLectivoEspecialController::class, 'create'])->name('ciclo_lectivo_especial.create');
+    Route::get('/especial/{materia}/crear', [CicloLectivoEspecialController::class, 'create'])->name('ciclo_lectivo_especial.create');
     Route::delete('/especial/{ciclo_lectivo_especial}/borrar', [CicloLectivoEspecialController::class, 'destroy'])->name('ciclo_lectivo_especial.destroy');
     Route::put('/especial/{ciclo_lectivo_especial}/actualizar', [CicloLectivoEspecialController::class, 'update'])->name('ciclo_lectivo_especial.update');
     Route::get('/especial/{ciclo_lectivo_especial}/edit', [CicloLectivoEspecialController::class, 'edit'])->name('ciclo_lectivo_especial.edit');
@@ -305,26 +334,6 @@ Route::prefix('personal')->group(function () {
 });
 
 
-// Rutas de Carreras
-Route::prefix('carreras')->group(function () {
-    // Vistas
-    Route::get('/', [CarreraController::class, 'vista_admin'])->name('carrera.admin');
-    Route::get('crear', [CarreraController::class, 'vista_crear'])->name('carrera.crear');
-    Route::get('personal/{id}', [CarreraController::class, 'vista_agregarPersonal'])->name('carrera.personal');
-    Route::get('editar/{id}', [CarreraController::class, 'vista_editar'])->name('carrera.editar');
-    Route::post('/sedes', [CarreraController::class, 'carrerasPorSedes']);
-
-    // Acciones
-    Route::post('crear-carrera', [CarreraController::class, 'crear'])->name('crear_carrera');
-    Route::post('agregar-personal/{id}', [CarreraController::class, 'agregar_personal'])
-        ->name('agregar_personal');
-    Route::post('editar-carrera/{id}', [CarreraController::class, 'editar'])->name('editar_carrera');
-    Route::get('vista-carreras/{instancia}', [CarreraController::class, 'vistaCarrera'])->name('carrera.vista_carrera');
-    Route::get('verProfesores/{carrera_id}', [CarreraController::class, 'verProfesores'])->name(
-        'carrera.ver_profesores'
-    );
-});
-
 // Rutas de Materias
 Route::prefix('carreras/materias')->group(function () {
     // Vistas
@@ -340,30 +349,11 @@ Route::prefix('carreras/materias')->group(function () {
     );
 });
 
-// Rutas de Módulos
-Route::prefix('modulos')->group(function () {
-    Route::get('/ver/{materia}', [ModulosController::class, 'ver_modulo'])->name('modulos.ver');
-    Route::post('/agregarCargo', [ModulosController::class, 'agregarCargo'])->name('modulos.agregarCargo');
-});
-
-
 Route::get('/selectMateriasCarrera/{id}', [MateriaController::class, 'selectMaterias']);
 Route::get('/selectMateriasCarreraInscripto/{idCarrera}/{idAlumno}/{ciclo_lectivo}', [MateriaController::class, 'selectMateriasInscripto']);
 Route::get('/selectCargosCarrera/{id}', [CargoController::class, 'selectCargos']);
 Route::get('/buscaUsuarioByUsername/{busqueda}', [UserController::class, 'getUsuarioByUsernameOrNull']);
 
-Route::prefix('alumno/carrera')->group(function () {
-    Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
-        'alumnoCarrera.year'
-    );
-});
-Route::prefix('equivalencias')->group(function () {
-
-    Route::get('create/{id}', [EquivalenciasController::class, 'create'])->name('equivalencias.create');
-    Route::post('/', [EquivalenciasController::class, 'store'])->name('equivalencias_store');
-    Route::post('/update/{equivalencia}', [EquivalenciasController::class, 'update'])->name('equivalencias.update');
-    Route::get('borrar/{equivalencia}', [EquivalenciasController::class, 'destroy'])->name('equivalencias.borrar');
-});
 
 // Rutas de preinscripciones
 Route::prefix('preinscripcion')->group(function () {
@@ -452,6 +442,7 @@ Route::prefix('proceso')->group(function () {
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
     Route::post('calcularPorcentaje', [ProcesoCalificacionController::class, 'calcularPorcentaje']);
     Route::get('procesosCalificaciones/{proceso_id}', [ProcesoCalificacionController::class, 'show']);
+
 });
 
 // Rutas de Asistencia
@@ -634,16 +625,7 @@ Route::prefix('calificacion')->group(function () {
     Route::get('edit/{calificacion}', [CalificacionController::class, 'edit'])->name('calificacion.edit');
     Route::delete('/{id}', [CalificacionController::class, 'delete'])->name('calificacion.delete');
 });
-Route::prefix('moduloProfesor')->group(function () {
-    Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name(
-        'modulo_profesor.vincular_cargo_modulo'
-    );
-    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo']
-    )->name('modulo_profesor.form_agregar_cargo_modulo');
-    Route::delete('delete/{materia}/{cargo}/{user}', [ModuloProfesorController::class, 'destroy'])->name(
-        'modulo_profesor.destroy'
-    );
-});
+
 
 Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/', [ProcesoCalificacionController::class, 'store']);
@@ -651,18 +633,6 @@ Route::prefix('procesoCalificacion')->group(function () {
     Route::post('/delete', [ProcesoCalificacionController::class, 'delete']);
 });
 
-// Rutas de Parciales
-Route::prefix('proceso-modular')->group(function () {
-    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
-        'proceso_modular.list'
-    );
-    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
-    )->name('proceso_modular.procesa_ponderacion_modular');
-    Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
-    )->name('proceso_modular.procesa_estados_modular');
-    Route::get('/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}', [ProcesoModularController::class, 'procesaNotaModular']
-    )->name('proceso_modular.procesa_notas_modular');
-});
 
 Route::prefix('estadistica')->group(function () {
     Route::get('datos', [AlumnoController::class, 'vista_datos']);
@@ -745,46 +715,3 @@ Route::get('/ruta_funcionalidades', function () {
     echo "<br>";
     echo env('GOOGLE_DRIVE_FOLDER_ID');
 })->middleware('app.roles:admin');
-Route::get('/prueba-post-size', function () {
-    $alumnos = Alumno::all();
-    $comisiones = Comision::where('nombre', 'Única')->get();
-
-    foreach ($alumnos as $alumno) {
-        foreach ($alumno->procesos_actuales as $proceso) {
-            $carrera = $proceso->materia->carrera;
-            $alumno_carrera = AlumnoCarrera::where([
-                'alumno_id' => $alumno->id,
-                'carrera_id' => $carrera->id,
-                'ciclo_lectivo' => date('Y')
-            ])->first();
-
-            if (!$alumno_carrera) {
-                $alumno_carrera = AlumnoCarrera::create([
-                    'alumno_id' => $alumno->id,
-                    'carrera_id' => $carrera->id,
-                    'año' => $proceso->materia->año,
-                    'ciclo_lectivo' => date('Y')
-                ]);
-
-                echo $alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion . ' | ';
-                Log::info($alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion);
-            }
-        }
-    }
-
-    foreach ($comisiones as $comision) {
-        foreach ($comision->procesos as $proceso) {
-            if (!$comision->hasAlumno($proceso->alumno_id)) {
-                $comision->alumnos()->attach(Alumno::find($proceso->alumno_id));
-            }
-        }
-    }
-
-
-    echo "ENV";
-    echo env('MAIL_USERNAME');
-    echo env('MAIL_PASSWORD');
-    echo "CONFIG";
-    echo config('app.MAIL_USERNAME');
-    echo config('app.MAIL_PASSWORD');
-});
