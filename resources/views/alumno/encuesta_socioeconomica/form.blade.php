@@ -616,37 +616,37 @@
                 <div class="form-check">
                     <input class="form-check-input" name="subsidios[]" type="checkbox" value="colectivo" id="transporte_utilizado1">
                     <label class="form-check-label" for="transporte_utilizado1">
-                    Colectivo
+                        Colectivo
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="auto propio" id="transporte_utilizado2">
                     <label class="form-check-label" for="transporte_utilizado2">
-                    Auto propio
+                        Auto propio
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="auto de otra persona" id="transporte_utilizado3">
                     <label class="form-check-label" for="transporte_utilizado3">
-                    Auto de otra persona
+                        Auto de otra persona
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="caminando un trayecto mayor de 3 Km." id="transporte_utilizado3">
                     <label class="form-check-label" for="transporte_utilizado3">
-                    Caminando un trayecto mayor de 3 Km.
+                        Caminando un trayecto mayor de 3 Km.
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="caminando un trayecto menor a 3 Km." id="transporte_utilizado4">
                     <label class="form-check-label" for="transporte_utilizado4">
-                    Caminando un trayecto menor a 3 Km.
+                        Caminando un trayecto menor a 3 Km.
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" name="transporte_utilizado[]" type="checkbox" value="bicicleta" id="transporte_utilizado5">
                     <label class="form-check-label" for="transporte_utilizado5">
-                    Bicicleta
+                        Bicicleta
                     </label>
                 </div>
                 <div class="form-check">
@@ -658,6 +658,327 @@
             </div>
         </div>
     </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Si te has inscripto en PROGRESAR en el ciclo lectivo 2022, te pedimos que adjuntes comprobante</h4>
+                </label>
+                <input type="file" class="form-control mt-2" id="comprobanete_progresar" name="comprobanete_progresar">
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Cantidad de personas que conviven con vos</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_convivientes" id="cantidad_convivientes1" value="vivo solo">
+                    <label class="form-check-label" for="cantidad_convivientes1">
+                        Vivo solo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_convivientes" id="cantidad_convivientes2" value="de 1 a 2 personas">
+                    <label class="form-check-label" for="cantidad_convivientes2">
+                        De 1 a 2 personas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_convivientes" id="cantidad_convivientes3" value="de 3 a 4 personas">
+                    <label class="form-check-label" for="cantidad_convivientes3">
+                        De 3 a 4 personas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_convivientes" id="cantidad_convivientes4" value="de 5 a 6 personas">
+                    <label class="form-check-label" for="cantidad_convivientes4">
+                        De 5 a 6 personas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_convivientes" id="cantidad_convivientes5" value="más de 7 personas">
+                    <label class="form-check-label" for="cantidad_convivientes5">
+                        Más de 7 personas
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Cantidad de lugares para dormir que posee tu vivienda</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_lugares_dormir" id="cantidad_lugares_dormir1" value="monoambiente">
+                    <label class="form-check-label" for="cantidad_lugares_dormir1">
+                        Mi vivienda es un monoambiente (No posee separado los espacios de comida y descanso)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_lugares_dormir" id="cantidad_lugares_dormir2" value="solo una habitacion">
+                    <label class="form-check-label" for="cantidad_lugares_dormir2">
+                        Posee solo una habitación exclusiva para dormir
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_lugares_dormir" id="cantidad_lugares_dormir3" value="dos habitaciones">
+                    <label class="form-check-label" for="cantidad_lugares_dormir3">
+                        Posee dos habitaciones para dormir
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cantidad_lugares_dormir" id="cantidad_lugares_dormir4" value="tres o mas habitaciones">
+                    <label class="form-check-label" for="cantidad_lugares_dormir4">
+                        Posee tres o más habitaciones para dormir
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Ingresos mensuales del grupo familiar</h4>
+                </label>
+                <p><i>Colocar el monto aproximado de ingresos que tiene el grupo familiar conviviente mensualmente.</i></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales1" value="Menos de $50000">
+                    <label class="form-check-label" for="ingresos_mensuales1">
+                        Menos de $ 50000
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales2" value="Entre $50.0001 y $ 80.000">
+                    <label class="form-check-label" for="ingresos_mensuales2">
+                        Entre $50.0001 y $ 80.000
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales3" value="Entre $80.001 y 100.000">
+                    <label class="form-check-label" for="ingresos_mensuales3">
+                        Entre $80.001 y 100.000
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales3" value="Más de $ 100.001">
+                    <label class="form-check-label" for="ingresos_mensuales3">
+                        Más de $ 100.001
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Condición laboral del Jefe/a de hogar</h4>
+                </label>
+                <p><i>Recuerda que la/el jefa/e de hogar es aquella persona conviviente con mayor ingreso. Ocupada/o: Trabaja para otra persona y le hacen aportes de jubilación y obra social - Independiente: Trabaja para sí mismo o para familiar - Subocupada/o: Trabaja de manera inestable para otra persona pero no le realizan aportes jubilatorio ni le pagan obra social - Desocupada/o: Está buscando activamente trabajo y no encuentra.</i></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar1" value="Ocupada/o">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar1">
+                        Ocupada/o
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar2" value="Independiente">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar2">
+                        Independiente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar3" value="Subocupada/o">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar3">
+                        Subocupada/o
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar3" value="Desocupada/o">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar3">
+                        Desocupada/o
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar4" value="Jubilada/o o Pensionada/o">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar4">
+                        Jubilada/o o Pensionada/o
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Máximo nivel educativo alcanzado por del Padre</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar1" value="Analfabeto">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar1">
+                        Analfabeto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="condicion_laboral_jefe_hogar" id="condicion_laboral_jefe_hogar2" value="Primario incompleto">
+                    <label class="form-check-label" for="condicion_laboral_jefe_hogar2">
+                        Primario incompleto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre1" value="Secundario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre1">
+                        Secundario incompleto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre2" value="Secundario completo">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre2">
+                        Secundario completo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre3" value="Superior no universitario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre3">
+                        Superior no universitario incompleto
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre3" value="Superior no universitario completo">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre3">
+                        Superior no universitario completo
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre4" value="Universitario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre4">
+                        Universitario incompleto
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre5" value="Universitario completo">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre5">
+                        Universitario completo
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre6" value="Desconozco ese dato">
+                    <label class="form-check-label" for="maximo_nivel_educativo_padre6">
+                        Desconozco ese dato
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Máximo nivel educativo alcanzado por del Madre</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre1" value="Analfabeto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre1">
+                        Analfabeto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre2" value="Primario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre2">
+                        Primario incompleto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre3" value="Secundario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre3">
+                        Secundario incompleto
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre4" value="Secundario completo">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre4">
+                        Secundario completo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre5" value="Superior no universitario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre5">
+                        Superior no universitario incompleto
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre6" value="Superior no universitario completo">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre6">
+                        Superior no universitario completo
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre7" value="Universitario incompleto">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre7">
+                        Universitario incompleto
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre7" value="Universitario completo">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre7">
+                        Universitario completo
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre8" value="Desconozco ese dato">
+                    <label class="form-check-label" for="maximo_nivel_educativo_madre8">
+                        Desconozco ese dato
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>En cuanto a la situación de salud de tu grupo conviviente, poseen: Marca con una tilde lo que corresponde.</h4>
+                </label>
+                <div class="row col-md-12">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">Jefe de Hogar</div>
+                    <div class="col-md-3">Otro familiar conviviente</div>
+                    <div class="col-md-3">Ninguno posee problema</div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">Jefe de Hogar</div>
+                    <div class="col-md-3">Otro familiar conviviente</div>
+                    <div class="col-md-3">Ninguno posee problema</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
 
 </div>
 @endsection
