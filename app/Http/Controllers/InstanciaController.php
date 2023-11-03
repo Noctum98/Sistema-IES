@@ -144,7 +144,6 @@ class InstanciaController extends Controller
         $instancia = Instancia::find($id);
         $instancia->update($request->all());
 
-
         if(!$request['general'])
         {
             $this->instanciaService->agregarSedes($request,$instancia);
