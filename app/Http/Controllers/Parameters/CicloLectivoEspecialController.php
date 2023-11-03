@@ -47,7 +47,7 @@ class CicloLectivoEspecialController extends Controller
      */
     public function store(StoreCicloLectivoEspecialRequest $request)
     {
-        //
+        dd($request);
     }
 
     /**
