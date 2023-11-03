@@ -8,7 +8,7 @@
         Administrar instancias de mesas
     </h2>
     <hr>
-    @if(Auth::user()->rol == 'rol_admin')
+    @if(Session::has('admin') || Session::has('regente'))
     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Crear Instancia
     </button>
@@ -35,10 +35,9 @@
                     <th scope="col">Tipo</th>
                     <th scope="col">Año</th>
                     <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
-                    @if(Session::has('admin'))
+                    @if(Session::has('admin') || Session::has('regente'))
                     <th scope="col">Inhabilitar/Habilitar Mesa</th>
                     <th scope="col">Inhabilitar/Habilitar Bajas</th>
-
                     @endif
                 </tr>
             </thead>
@@ -52,7 +51,7 @@
                         <button type="button" class="btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#modal{{$instancia->id}}">
                             Ver Inscripciones
                         </button>
-                        @if(Session::has('admin'))
+                        @if(Session::has('admin') || Session::has('regente'))
                         <button type="button" class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit{{$instancia->id}}">
                             Editar Mesa
                         </button>
