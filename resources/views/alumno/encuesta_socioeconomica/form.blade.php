@@ -964,21 +964,97 @@
                 </label>
                 <div class="row col-md-12">
                     <div class="col-md-3"></div>
-                    <div class="col-md-3">Jefe de Hogar</div>
+                    <div class="col-md-2">Jefe de Hogar</div>
                     <div class="col-md-3">Otro familiar conviviente</div>
-                    <div class="col-md-3">Ninguno posee problema</div>
+                    <div class="col-md-4">Ninguno posee problema</div>
                 </div>
-                <div class="row col-md-12">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3">Jefe de Hogar</div>
-                    <div class="col-md-3">Otro familiar conviviente</div>
-                    <div class="col-md-3">Ninguno posee problema</div>
+                <div class="row col-md-12 text-center">
+                    <div class="col-md-3 text-left">Enfermedad</div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_enfermedad[]" id="familia_enfermedad1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_enfermedad[]" id="familia_enfermedad2" value="Otro Familia Conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_enfermedad[]" id="familia_enfermedad3" value="Ninguno Posee P">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12 text-center">
+                    <div class="col-md-3 text-left">Discapacidad</div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_discapacidad[]" id="familia_discapacidad1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_discapacidad[]" id="familia_discapacidad2" value="Otro Familia Conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_discapacidad[]" id="familia_discapacidad3" value="Ninguno Posee P">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12 text-center">
+                    <div class="col-md-3 text-left">Obra Social</div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_obra_social[]" id="familia_obra_social1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_obra_social[]" id="familia_obra_social2" value="Otro Familia Conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="familia_obra_social[]" id="familia_obra_social3" value="Ninguno Posee P">
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
-    
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>En el último tiempo, ¿has atravesado vos o tu grupo familiar conviviente, alguna de las siguientes situaciones?</h4>
+                </label>
+                <p><i>Marca con una tilde lo que corresponde.</i></p>
+                <div class="row col-md-12">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-2">Jefe de Hogar</div>
+                    <div class="col-md-2">Ingresante</div>
+                    <div class="col-md-2">Otro conviviente</div>
+                    <div class="col-md-3">No posee ningun problema</div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-2">Jefe de Hogar</div>
+                    <div class="col-md-2">Ingresante</div>
+                    <div class="col-md-2">Otro conviviente</div>
+                    <div class="col-md-3">No posee ningun problema</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 </div>
 @endsection
