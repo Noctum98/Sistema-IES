@@ -112,7 +112,7 @@ class MateriaController extends Controller
     public function editar(int $id, Request $request)
     {
         $input = $request->all();
-        $correlativas = $input['correlativa']??null;
+        $correlativas = $input['correlativa'] ?? null;
         $validate = $this->validate($request, [
             'nombre' => ['required'],
             'año' => ['required', 'numeric', 'max:3'],
@@ -131,16 +131,15 @@ class MateriaController extends Controller
                 $mater->delete();
             }
         }
-
-        foreach ($correlativas as $correlativa){
-            MateriasCorrelativa::create([
-                'correlativa_id'=>$correlativa,
-                'materia_id'=> $materia->id,
-                'operador_id' =>  Auth::user()->id
-            ]);
+        if ($correlativas) {
+            foreach ($correlativas as $correlativa) {
+                MateriasCorrelativa::create([
+                    'correlativa_id' => $correlativa,
+                    'materia_id' => $materia->id,
+                    'operador_id' => Auth::user()->id
+                ]);
+            }
         }
-
-
 
 
         return redirect()->route('materia.editar', ['id' => $id])->with([

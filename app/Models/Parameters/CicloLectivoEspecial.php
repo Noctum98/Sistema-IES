@@ -13,6 +13,8 @@ class CicloLectivoEspecial extends Model
         'ciclo_lectivo_id',
         'cierre_ciclo',
         'materia_id',
+        'sede_id',
+        'regimen'
     ];
 
 

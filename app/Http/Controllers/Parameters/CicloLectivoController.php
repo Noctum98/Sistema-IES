@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCicloLectivoRequest;
 use App\Http\Requests\UpdateCicloLectivoRequest;
 use App\Models\Parameters\CicloLectivo;
+use App\Models\Sede;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -95,11 +96,16 @@ class CicloLectivoController extends Controller
     /**
      * Solo lista los ciclo lectivos especiales según el ciclo lectivo
      * @param CicloLectivo $cicloLectivo
-     * @return void
+     *
      */
     public function especial(CicloLectivo $cicloLectivo)
     {
-        dd($cicloLectivo);
+        $sedes = Sede::all();
+        return view('parameters.ciclo_lectivo_especial.modal.form_agregar_ciclo_lectivo_especial')->with([
+
+            'ciclo_lectivo' => $cicloLectivo,
+            'sedes' => $sedes
+        ]);
     }
 
     /**
