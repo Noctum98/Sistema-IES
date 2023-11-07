@@ -46,19 +46,9 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
-use App\Mail\VerifiedPreEnroll;
 use App\Models\ActaVolante;
-use App\Models\Alumno;
-use App\Models\AlumnoCarrera;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Calificacion;
-use App\Models\Comision;
-use App\Models\Materia;
-use App\Models\Preinscripcion;
-use App\Models\Proceso;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Carrera;
 
 /*
 |--------------------------------------------------------------------------
@@ -707,11 +697,19 @@ Route::prefix('usuarios')->group(function () {
 });
 
 Route::get('/ruta_funcionalidades', function () {
-    echo env('GOOGLE_DRIVE_CLIENT_ID');
-    echo "<br>";
-    echo env('GOOGLE_DRIVE_CLIENT_SECRET');
-    echo "<br>";
-    echo env('GOOGLE_DRIVE_REFRESH_TOKEN');
-    echo "<br>";
-    echo env('GOOGLE_DRIVE_FOLDER_ID');
+    $carreras = Carrera::all();
+    $carrerasAprobados = [];
+    $carrerasInscriptos = [];
+    foreach($carreras as $carrera)
+    {
+        $actasVolantesCount = ActaVolante::whereHas('materia',function($query) use ($carrera){
+            return $query->where('carrera_id',$carrera->id);
+        })
+        ->where('instancia_id',16)
+        ->count();
+
+        $carrerasInscriptos[] = [$carrera->nombre => $actasVolantesCount];
+    }
+
+    dd($carrerasInscriptos);
 })->middleware('app.roles:admin');
