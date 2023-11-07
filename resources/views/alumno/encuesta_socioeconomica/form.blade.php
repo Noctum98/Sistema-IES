@@ -968,7 +968,7 @@
                     <div class="col-md-3">Otro familiar conviviente</div>
                     <div class="col-md-4">Ninguno posee problema</div>
                 </div>
-                <div class="row col-md-12 text-center">
+                <div class="row col-md-12 text-center p-2">
                     <div class="col-md-3 text-left">Enfermedad</div>
                     <div class="col-md-2">
                         <div class="form-check">
@@ -987,7 +987,7 @@
                     </div>
                 </div>
 
-                <div class="row col-md-12 text-center">
+                <div class="row col-md-12 text-center p-2">
                     <div class="col-md-3 text-left">Discapacidad</div>
                     <div class="col-md-2">
                         <div class="form-check">
@@ -1006,7 +1006,7 @@
                     </div>
                 </div>
 
-                <div class="row col-md-12 text-center">
+                <div class="row col-md-12 text-center p-2">
                     <div class="col-md-3 text-left">Obra Social</div>
                     <div class="col-md-2">
                         <div class="form-check">
@@ -1043,18 +1043,388 @@
                     <div class="col-md-2">Otro conviviente</div>
                     <div class="col-md-3">No posee ningun problema</div>
                 </div>
-                <div class="row col-md-12">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-2">Jefe de Hogar</div>
-                    <div class="col-md-2">Ingresante</div>
-                    <div class="col-md-2">Otro conviviente</div>
-                    <div class="col-md-3">No posee ningun problema</div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Desalojo de la vivienda
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="desalojo_vivienda[]" id="desalojo_vivienda1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="desalojo_vivienda[]" id="desalojo_vivienda2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="desalojo_vivienda[]" id="desalojo_vivienda3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="desalojo_vivienda[]" id="desalojo_vivienda4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Violencia intrafamiliar
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_intrafamiliar[]" id="violencia_intrafamiliar1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_intrafamiliar[]" id="violencia_intrafamiliar2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_intrafamiliar[]" id="violencia_intrafamiliar3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_intrafamiliar[]" id="violencia_intrafamiliar4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Violencia de género
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_genero[]" id="violencia_genero1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_genero[]" id="violencia_genero2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_genero[]" id="violencia_genero3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="violencia_genero[]" id="violencia_genero4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Fallecimiento de conviviente
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="fallecimiento_conviviente[]" id="fallecimiento_conviviente1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="fallecimiento_conviviente[]" id="fallecimiento_conviviente2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="fallecimiento_conviviente[]" id="fallecimiento_conviviente3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="fallecimiento_conviviente[]" id="fallecimiento_conviviente4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Situaciones de consumo Problemático
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="situaciones_consumo[]" id="situaciones_consumo1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="situaciones_consumo[]" id="situaciones_consumo2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="situaciones_consumo[]" id="situaciones_consumo3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="situaciones_consumo[]" id="situaciones_consumo4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Accidentes graves
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="accidentes_graves[]" id="accidentes_graves1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="accidentes_graves[]" id="accidentes_graves2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="accidentes_graves[]" id="accidentes_graves3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="accidentes_graves[]" id="accidentes_graves4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Condenas extramuros
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="condenas_extramuros[]" id="condenas_extramuros1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="condenas_extramuros[]" id="condenas_extramuros2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="condenas_extramuros[]" id="condenas_extramuros3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="condenas_extramuros[]" id="condenas_extramuros4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Embargo judicial al ingreso
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="embargo_judicial[]" id="embargo_judicial1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="embargo_judicial[]" id="embargo_judicial2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="embargo_judicial[]" id="embargo_judicial3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="embargo_judicial[]" id="embargo_judicial4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Problemas judiciales
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="problemas_judiciales[]" id="problemas_judiciales1" value="Jefe de Hogar">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="problemas_judiciales[]" id="problemas_judiciales2" value="Ingresante">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="problemas_judiciales[]" id="problemas_judiciales3" value="Otro conviviente">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="problemas_judiciales[]" id="problemas_judiciales4" value="Ninguno Posee Problema">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4> En tu vivienda contás con:</h4>
+                </label>
+                <div class="row col-md-12 text-center">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-2">Si</div>
+                    <div class="col-md-2">No</div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Agua potable
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="agua_potable" id="agua_potable1" value="Si">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="agua_potable" id="agua_potable1" value="No">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Luz eléctrica
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="luz_electrica" id="luz_electrica1" value="Si">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="luz_electrica" id="luz_electrica2" value="No">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Gas envasado
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gas_envasado" id="gas_envasado" value="Si">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gas_envasado" id="gas_envasado" value="No">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                        Gas Natural
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gas_natural" id="gas_natural1" value="Si">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gas_natural" id="gas_natural2" value="No">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>Tenencia de la vivienda</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tenencia_vivienda" id="tenencia_vivienda1" value="claro">
+                    <label class="form-check-label" for="tenencia_vivienda1">
+                        Propia
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="tenencia_vivienda" id="tenencia_vivienda2" value="movistar">
+                    <label class="form-check-label" for="tenencia_vivienda2">
+                        Alquilada
+                    </label>
+                </div>
+                <div class="form-check disabled">
+                    <input class="form-check-input" type="radio" name="tenencia_vivienda" id="tenencia_vivienda3" value="personal">
+                    <label class="form-check-label" for="tenencia_vivienda3">
+                        Con Deuda
+                    </label>
+                </div>
+                <div class="form-check disabled">
+                    <input class="form-check-input" type="radio" name="tenencia_vivienda" id="tenencia_vivienda4" value="personal">
+                    <label class="form-check-label" for="tenencia_vivienda4">
+                        Cedida o Prestada
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4> El baño de la vivienda:</h4>
+                </label>
+                <div class="row col-md-12 text-center">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-2">Si</div>
+                    <div class="col-md-2">No</div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                    Se encuentra dentro de la vivienda
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="baño_dentro" id="baño_dentro1" value="Si">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="baño_dentro" id="baño_dentro2" value="No">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 text-center p-2">
+                    <div class="col-md-3 text-left">
+                    Tiene descarga de agua
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="baño_con_descarga" id="baño_con_descarga1" value="Si">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="baño_con_descarga" id="baño_con_descarga2" value="No">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 @endsection
