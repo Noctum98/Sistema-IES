@@ -51,7 +51,7 @@ class Mesa extends Model
 
     public function mesa_inscriptos()
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where('estado_baja', false);
+        return $this->hasMany('App\Models\MesaAlumno')->where('estado_baja', false)->orderBy('apellidos', 'ASC');
     }
 
 
@@ -67,7 +67,7 @@ class Mesa extends Model
                 ->take($take);
         }
 
-        return $inscriptos->get();
+        return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
     public function mesa_inscriptos_segundo($orden = 1, $all = false)
@@ -82,7 +82,7 @@ class Mesa extends Model
             ->take($take);
         }
 
-        return $inscriptos->get();
+        return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
     public function bajas_primero()

@@ -47,6 +47,10 @@
                         <label for="limite">Limite</label>
                         <input type="number" name="limite" class="form-control" required />
                     </div>
+                    <div class="form-group">
+                        <label for="año">Año</label>
+                        <input type="number" name="año" class="form-control" required />
+                    </div>
                     <input type="submit" class="btn btn-success" value="Crear">
                 </form>
             </div>
