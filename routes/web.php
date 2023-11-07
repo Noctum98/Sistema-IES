@@ -49,6 +49,7 @@ use App\Http\Controllers\UserMateriaController;
 use App\Models\ActaVolante;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Carrera;
+use App\Models\Sede;
 
 /*
 |--------------------------------------------------------------------------
@@ -542,6 +543,8 @@ Route::prefix('mesas')->group(function () {
     )->name(
         'generar_pdf_acta_volante'
     );
+    Route::get('/resumen/{instancia_id}',[ActaVolanteController::class,'resumenInstancia'])->name('mesas.resumen');
+
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
@@ -697,27 +700,10 @@ Route::prefix('usuarios')->group(function () {
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
 });
 
-Route::get('/ruta_funcionalidades/{sede_id}', function ($sede_id) {
-    $carreras = Carrera::where('sede_id',$sede_id)->get();
-    $carrerasInscriptos = [];
-    foreach($carreras as $carrera)
-    {
-        $actasVolantesCount = ActaVolante::whereHas('materia',function($query) use ($carrera){
-            return $query->where('carrera_id',$carrera->id);
-        })
-        ->where('instancia_id',16)
-        ->count();
+Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
+    
+    
+    
 
-        $actasVolantesCountA = ActaVolante::whereHas('materia',function($query) use ($carrera){
-            return $query->where('carrera_id',$carrera->id);
-        })
-        ->where('instancia_id',16)
-        ->where('promedio','>','4')
-        ->count();
-
-        $carrerasInscriptos[$carrera->nombre.':'.$carrera->resolucion] =  $actasVolantesCount;
-        $carrerasInscriptos[$carrera->nombre.':'.$carrera->resolucion.'-Aprobados'] = $actasVolantesCountA;
-    }
-
-    dd($carrerasInscriptos);
+    
 })->middleware('app.roles:admin');

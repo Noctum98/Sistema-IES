@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActaVolante;
 use App\Models\Mesa;
 use App\Models\MesaAlumno;
+use App\Models\Sede;
 use App\Services\MesaService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -41,8 +42,8 @@ class ActaVolanteController extends Controller
                 'materia_id' => $mesa->materia_id,
                 'estado_baja' => 0
             ])->get();
-            
-            $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$mesa->materia,$mesa->instancia);
+
+            $this->mesaService->verificarInscripcionesEspeciales($inscripciones, $mesa->materia, $mesa->instancia);
         }
 
         return view('mesa.acta_volante.show', [
@@ -120,4 +121,36 @@ class ActaVolanteController extends Controller
 
         return $request;
     }
+
+    public function resumenInstancia(Request $request, $instancia_id)
+    {
+        $sedes = Sede::all();
+        $carrerasInscriptos = [];
+
+        foreach($sedes as $sede) {
+            foreach($sede->carreras as $carrera) {
+                $actasVolantesCount = ActaVolante::whereHas('materia', function ($query) use ($carrera, $instancia_id) {
+                    return $query->where('carrera_id', $carrera->id);
+                })
+                ->where('instancia_id', $instancia_id)
+                ->count();
+
+                $actasVolantesCountA = ActaVolante::whereHas('materia', function ($query) use ($carrera) {
+                    return $query->where('carrera_id', $carrera->id);
+                })
+                ->where('instancia_id', $instancia_id)
+                ->where('promedio', '>', '3')
+                ->count();
+
+                $carrerasInscriptos[$carrera->id] =  $actasVolantesCount;
+                $carrerasInscriptos[$carrera->id . '-aprobados'] = $actasVolantesCountA;
+            }
+        }
+
+        return view('estadistica.mesas',[
+            'sedes' => $sedes,
+            'carrerasInscriptos' => $carrerasInscriptos
+        ]);
+    }
 }
+
