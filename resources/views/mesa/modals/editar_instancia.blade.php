@@ -49,6 +49,10 @@
                         <label for="limite">Limite</label>
                         <input type="number" name="limite" class="form-control" value="{{$instancia->limite}}" required />
                     </div>
+                    <div class="form-group">
+                        <label for="año">Año</label>
+                        <input type="number" name="año" class="form-control" value="{{ $instancia->año }}" required />
+                    </div>
                     <input type="submit" class="btn btn-success" value="Editar">
                 </form>
             </div>

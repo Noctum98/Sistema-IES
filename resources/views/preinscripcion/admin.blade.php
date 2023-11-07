@@ -29,8 +29,10 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Nombre</th>
+					<th scope="col">Resolución</th>
 					<th scope="col">Turno</th>
 					<th scope="col">Ubicación</th>
+					<th scope="col">Preins. Disponible</th>
 					<th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
 				</tr>
 			</thead>
@@ -38,8 +40,16 @@
 				@foreach ($carreras as $carrera)
 				<tr style="cursor:pointer;">
 					<td>{{ $carrera->nombre }}</td>
+					<td>{{ $carrera->resolucion }}</td>
 					<td><b>{{ ucwords($carrera->turno) }}<b></td>
 					<td>{{ $carrera->sede->nombre }}</td>
+					<td>
+						@if($carrera->preinscripcion_habilitada)
+						<i class='fas fa-check' style='font-size:14px;color:green'></i>
+						@else
+						<i class='fas fa-times' style='font-size:14px;color:red'></i>
+						@endif
+					</td>
 					<td>
 						<a href="{{ route('pre.all',['id'=>$carrera->id]) }}" class="btn btn-sm btn-primary">
 							Ver respuestas
