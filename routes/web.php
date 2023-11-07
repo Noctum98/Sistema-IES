@@ -164,8 +164,9 @@ Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
     Route::get('{ciclo_lectivo}/especial', [CicloLectivoController::class, 'especial'])->name('ciclo_lectivo.especial');
 
     // Especial
+    Route::post('/especial', [CicloLectivoEspecialController::class, 'store'])->name('ciclo_lectivo_especial.store');
     Route::get('/especial/listado', [CicloLectivoEspecialController::class, 'index'])->name('ciclo_lectivo_especial.index');
-    Route::post('/especial/{materia}/guarda', [CicloLectivoEspecialController::class, 'store'])->name('ciclo_lectivo_especial.store');
+    Route::post('/especial/{materia}/guarda', [CicloLectivoEspecialController::class, 'store_materia'])->name('ciclo_lectivo_especial.store_materia');
     Route::get('/especial/{ciclo_lectivo_especial}/ver', [CicloLectivoEspecialController::class, 'show'])->name('ciclo_lectivo_especial.show');
     Route::get('/especial/{materia}/crear', [CicloLectivoEspecialController::class, 'create'])->name('ciclo_lectivo_especial.create');
     Route::delete('/especial/{ciclo_lectivo_especial}/borrar', [CicloLectivoEspecialController::class, 'destroy'])->name('ciclo_lectivo_especial.destroy');

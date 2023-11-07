@@ -5,61 +5,10 @@
       href="{{ asset('css/select2-bootstrap-theme/select2-bootstrap.min.css')}}"
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @section('content')
-    <style>
-        .card {
-            /*margin-top: 2em;*/
-            padding: 0 0.5em;
-            border-radius: 2em;
-            /*text-align: center;*/
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .card li {
-            list-style: none;
-        }
-
-        .card_img {
-            /*width: 65%;*/
-            /*border-radius: 50%;*/
-            border-radius: 2em;
-            margin: 0 auto 0 -50px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            background: #1a1e21;
-            color: white;
-            font-size: 6em;
-            font-weight: bold;
-        }
-
-        .card .card-title {
-            font-weight: 700;
-            font-size: 1.5em;
-        }
-
-        /*.card .btn {*/
-        /*    border-radius: 2em;*/
-        /*    background-color: teal;*/
-        /*    color: #ffffff;*/
-        /*    padding: 0.5em 1.5em;*/
-        /*}*/
-
-        .border-radius {
-            border-radius: 2em 2em 0 0;
-            padding: 1em;
-        }
-
-        .card .btn:hover {
-            background-color: rgba(0, 128, 128, 0.7);
-            color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .select2-container .select2-selection--single {
-            height: calc(1.6em + .75rem + 2px)
-        }
-    </style>
+    @include('layouts.cssCard')
     <div class="container-fluid">
         <div class="card">
-            <div class="row">
+            <div class="row p-1">
                 <div>
                 </div>
 
@@ -115,7 +64,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="año">Año:</label>
                                     <input type="number" id="año" name="año"
@@ -132,7 +81,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="regimen">Régimen:</label>
                                     <select class="form-control select2" id="regimen" name="regimen">
@@ -147,6 +96,29 @@
                                         <option
                                             value="Cuatrimestral (2do)" {{ $materia->regimen == 'Cuatrimestral (2do)' ?  'selected="selected"' :'' }}>
                                             Cuatrimestral (2do)
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="cierre_diferido">Diferenciada <sup>*</sup>: </label>
+                                    <select class="form-control select2" id="cierre_diferido" name="cierre_diferido">
+                                        <option
+                                            value="1"
+                                            @if($materia->cierre_diferido)
+                                                selected="selected"
+                                            @endif
+                                        >
+                                            ☑ Si
+                                        </option>
+                                        <option
+                                            value="0"
+                                            @if(!$materia->cierre_diferido)
+                                                selected="selected"
+                                            @endif
+                                        >
+                                            ☒ No
                                         </option>
                                     </select>
                                 </div>
@@ -200,12 +172,35 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Editar materia">
+                            <p>
+                                <sup>*</sup>
+                                La materia tiene un cierre de ciclo lectivo distinto o un régimen distinto
+                                para la sede
+                            </p>
+                            @if($materia->cierre_diferido)
+
+
+                                <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
+                                   data-bs-target="#modalModal"
+                                   data-loader="{{$materia->id}}"
+                                   data-attr="{{ route('ciclo_lectivo_especial.create', $materia->id) }}">
+                                    <i class="fas fa-edit text-gray-300"></i>
+                                    <i class="fa fa-spinner fa-spin" style="display: none"
+                                       id="loader{{$materia->id}}"></i>
+                                    Agregar fechas diferenciadas
+                                </a>
+                            @endif
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
+
     </div>
+    @if($materia->cierre_diferido)
+        @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')
+    @endif
 @endsection
 @section('scripts')
 
@@ -220,6 +215,43 @@
                 placeholder: 'Seleccione una opción',
                 allowClear: true
             });
+        });
+        $(document).on('click', '#agregarButton', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+            $("#modalModal").on("hidden.bs.modal", function(){
+                $("#modalBody").html("");
+            });
+
+            $.ajax({
+
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                    $("#modalBody").html("");
+                },
+                // return the result
+                success: function (result) {
+
+
+                    $('#modalModal').modal("show");
+
+
+                    $('#modalBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
         });
     </script>
 

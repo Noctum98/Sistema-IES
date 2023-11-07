@@ -20,7 +20,8 @@ class Materia extends Model
         'tipo_materia_id',
         'asistencia_ponderada',
         'proceso_ponderado',
-        'etapa_campo'
+        'etapa_campo',
+        'cierre_diferido'
     ];
 
     public function carrera()
