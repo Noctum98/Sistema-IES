@@ -697,9 +697,8 @@ Route::prefix('usuarios')->group(function () {
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
 });
 
-Route::get('/ruta_funcionalidades', function () {
-    $carreras = Carrera::all();
-    $carrerasAprobados = [];
+Route::get('/ruta_funcionalidades/{sede_id}', function ($sede_id) {
+    $carreras = Carrera::where('sede_id',$sede_id)->get();
     $carrerasInscriptos = [];
     foreach($carreras as $carrera)
     {
@@ -709,7 +708,15 @@ Route::get('/ruta_funcionalidades', function () {
         ->where('instancia_id',16)
         ->count();
 
-        $carrerasInscriptos[] = [$carrera->nombre => $actasVolantesCount];
+        $actasVolantesCountA = ActaVolante::whereHas('materia',function($query) use ($carrera){
+            return $query->where('carrera_id',$carrera->id);
+        })
+        ->where('instancia_id',16)
+        ->where('promedio','>','4')
+        ->count();
+
+        $carrerasInscriptos[$carrera->nombre.':'.$carrera->resolucion] =  $actasVolantesCount;
+        $carrerasInscriptos[$carrera->nombre.':'.$carrera->resolucion.'-Aprobados'] = $actasVolantesCountA;
     }
 
     dd($carrerasInscriptos);
