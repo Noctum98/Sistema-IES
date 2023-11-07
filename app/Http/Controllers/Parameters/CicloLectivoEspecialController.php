@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Parameters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCicloLectivoEspecialRequest;
 use App\Http\Requests\UpdateCicloLectivoEspecialRequest;
+use App\Models\ActaVolante;
 use App\Models\Materia;
 use App\Models\Parameters\CicloLectivo;
 use App\Models\Parameters\CicloLectivoEspecial;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CicloLectivoEspecialController extends Controller
 {
@@ -32,8 +34,8 @@ class CicloLectivoEspecialController extends Controller
     public function create(Materia $materia)
     {
 
-        $ciclosLectivos = CicloLectivo::all();
-        return view('parameters.ciclo_lectivo_especial.modal.form_agregar_ciclo_lectivo_especial')->with([
+        $ciclosLectivos = CicloLectivo::all()->sortBy('year',1, true ,);
+        return view('materia.modal.form_agregar_ciclo_lectivo_especial')->with([
             'materia' => $materia,
             'ciclos_lectivos' => $ciclosLectivos,
         ]);
@@ -42,12 +44,23 @@ class CicloLectivoEspecialController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCicloLectivoEspecialRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCicloLectivoEspecialRequest $request
+     * @return RedirectResponse
      */
     public function store(StoreCicloLectivoEspecialRequest $request)
     {
-        dd($request);
+        $validate = $this->validate($request, [
+            'ciclo_lectivo_id' => ['required'],
+            'regimen' => ['required'],
+            'sede_id' => ['required'],
+            'materia_id' => ['required'],
+            'cierre_ciclo' => ['required'],
+        ]);
+         CicloLectivoEspecial::create($request->all());
+         $materia = $request->get('materia_id');
+        return redirect()->route('materia.editar', ['id' => $materia])->with([
+            'message' => 'Materia editada correctamente!',
+        ]);
     }
 
     /**
