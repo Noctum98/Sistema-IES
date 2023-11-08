@@ -55,6 +55,7 @@
                         <button type="button" class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit{{$instancia->id}}">
                             Editar Mesa
                         </button>
+                        <a href="{{ route('mesas.resumen',$instancia->id) }}" class="btn btn-sm btn-light">Ver Informe</a>
                         @endif
                         @if(Session::has('admin') or Session::has('coordinador') )
                         <a class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#vistaSeleccionMateria" id="vistaMateria" data-loader="{{$instancia->id}}-materia" data-attr="{{ route('materia.vista_materia', ['instancia' => $instancia->id]) }}">

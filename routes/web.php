@@ -47,19 +47,10 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
-use App\Mail\VerifiedPreEnroll;
 use App\Models\ActaVolante;
-use App\Models\Alumno;
-use App\Models\AlumnoCarrera;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Calificacion;
-use App\Models\Comision;
-use App\Models\Materia;
-use App\Models\Preinscripcion;
-use App\Models\Proceso;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Carrera;
+use App\Models\Sede;
 
 /*
 |--------------------------------------------------------------------------
@@ -557,6 +548,8 @@ Route::prefix('mesas')->group(function () {
     )->name(
         'generar_pdf_acta_volante'
     );
+    Route::get('/resumen/{instancia_id}',[ActaVolanteController::class,'resumenInstancia'])->name('mesas.resumen');
+
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
     Route::put('/cerrarActaVolante/{mesa_id}', [MesaController::class, 'cierreProfesor'])->name('mesa.cerrar_acta');
@@ -712,12 +705,10 @@ Route::prefix('usuarios')->group(function () {
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
 });
 
-Route::get('/ruta_funcionalidades', function () {
-    echo env('GOOGLE_DRIVE_CLIENT_ID');
-    echo "<br>";
-    echo env('GOOGLE_DRIVE_CLIENT_SECRET');
-    echo "<br>";
-    echo env('GOOGLE_DRIVE_REFRESH_TOKEN');
-    echo "<br>";
-    echo env('GOOGLE_DRIVE_FOLDER_ID');
+Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
+    
+    
+    
+
+    
 })->middleware('app.roles:admin');
