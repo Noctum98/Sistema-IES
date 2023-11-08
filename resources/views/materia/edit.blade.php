@@ -178,8 +178,6 @@
                                 para la sede
                             </p>
                             @if($materia->cierre_diferido)
-
-
                                 <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="agregarButton"
                                    data-bs-target="#modalModal"
                                    data-loader="{{$materia->id}}"
@@ -195,12 +193,50 @@
 
                 </div>
             </div>
+
+            @if($materia->cierre_diferido)
+                @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')
+            <div class="col-sm-12 text-center">
+                <h4>Cierres diferidos</h4>
+            </div>
+                <table class="table text-center">
+                    <thead class="bg-dark text-white">
+                    <tr>
+                        <th>
+                            Ciclo Lectivo
+                        </th>
+                        <th>
+                            Cierre ciclo
+                        </th>
+                        <th>
+                            Régimen
+                        </th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    @foreach($materia->ciclosLectivosDiferenciados() as $cicloLectivo )
+                        <tr>
+                            <td>
+                                {{$cicloLectivo->ciclo_lectivo_id}}
+                            </td>
+                            <td>
+                                {{date_format(new DateTime($cicloLectivo->cierre_ciclo),'d-m-Y')}}
+
+                            </td>
+                            <td>
+                                {{$cicloLectivo->regimen}}
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+
+            @endif
         </div>
 
     </div>
-    @if($materia->cierre_diferido)
-        @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')
-    @endif
 @endsection
 @section('scripts')
 
@@ -209,7 +245,7 @@
     <script>
         $(document).ready(function () {
             $(".select2").select2({
-                // dropdownParent: $('#agregaModal'),
+// dropdownParent: $('#agregaModal'),
                 theme: "classic",
                 width: "100%",
                 placeholder: 'Seleccione una opción',
@@ -222,7 +258,7 @@
 
             let referencia = $(this).attr('data-loader');
             const $laoder = $('#loader' + referencia);
-            $("#modalModal").on("hidden.bs.modal", function(){
+            $("#modalModal").on("hidden.bs.modal", function () {
                 $("#modalBody").html("");
             });
 
@@ -233,7 +269,7 @@
                     $laoder.show();
                     $("#modalBody").html("");
                 },
-                // return the result
+// return the result
                 success: function (result) {
 
 
