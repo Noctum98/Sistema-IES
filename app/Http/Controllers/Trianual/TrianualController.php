@@ -159,8 +159,8 @@ class TrianualController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\Trianual\StoreTrianualRequest $request
-     * @return Application|Factory|View
+     * @param StoreTrianualRequest $request
+     *
      */
     public function store(StoreTrianualRequest $request)
     {
@@ -179,10 +179,12 @@ class TrianualController extends Controller
             ]);
         }
 
+
         $trianual = Trianual::where(
             'alumno_id', $alumno->id
         )
             ->first();
+
 
         if ($trianual) {
             return view('trianual.trianual.index', [
@@ -190,17 +192,19 @@ class TrianualController extends Controller
                 'sedes' => Sede::all(),
                 'busqueda' => $alumno->dni,
                 'alumnos' => [$alumno],
-
             ]);
         }
+
         $carrera = $alumno->alumno_carrera()->first()->carrera();
         if (!$carrera) {
             $carrera = $this->carreraService->getCarrera($request->get('carrera'));
         }
+
         if ($request->get('cohorte')) {
             $alumno->cohorte = $request->get('cohorte');
             $alumno->update();
         }
+
 
         $datos['carrera_id'] = $carrera->id;
         $datos['cohorte'] = $alumno->cohorte ?? $request->get('cohorte');
@@ -217,12 +221,10 @@ class TrianualController extends Controller
         $datos['sede_id'] = $carrera->sede_id;
         $trianual = Trianual::create($datos);
 
-        return view('trianual.detalle.detail', [
+
+        return redirect()->route('trianual.ver', [
             'trianual' => $trianual,
-            'alumno' => $alumno,
-
         ]);
-
 
     }
 

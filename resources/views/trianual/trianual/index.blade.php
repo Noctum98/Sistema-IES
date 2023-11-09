@@ -29,9 +29,17 @@
             </div>
         </div>
         <div class="col-8 mx-auto text-center">
-            <h1 class="text-dark">
-                <i>Trianual <span id="datos-trianual">{{ucfirst($busqueda)}}</span></i>
-            </h1>
+            <h4 class="text-dark">
+                <i>Trianual
+                    @if($alumnos and count($alumnos) == 1)
+                        {{$alumnos[0]->getApellidosNombresAttribute()}}
+                        <small class="ml-5">D.N.I.: {{$alumnos[0]->dni}}</small><br/>
+                    @endif
+                    <small>
+                    Búsqueda por: <span id="datos-trianual">{{ucfirst($busqueda)}}</span>
+                    </small>
+                </i>
+            </h4>
         </div>
 
         <hr>
@@ -46,7 +54,7 @@
                 @foreach($alumnos as $alumno)
                     <div class="row border-bottom pb-2">
                         <div class="col-6">
-                            {{$alumno->getApellidosNombresAttribute()}}
+                            {{$alumno->getApellidosNombresAttribute()}}<br/>
                             <small class="ml-5">D.N.I.: {{$alumno->dni}}</small>
                             <small class="ml-5">Cohorte: {{$alumno->cohorte}}</small>
                         </div>
@@ -54,7 +62,7 @@
                             @if($alumno->getTrianual()->first())
 
                                 <a href="{{route('trianual.ver', ['trianual' => $alumno->getTrianual()->first()->id])}}"
-                                   class="btn btn-sm  btn-info">
+                                   class="btn btn-sm btn-info">
                                     Ver trianual
                                 </a>
 

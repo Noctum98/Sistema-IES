@@ -14,14 +14,21 @@
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col" class="text-center"><i class="fa fa-cogs"></i></th>
+                            <th scope="col">Materia</th>
+{{--                            <th scope="col">Nombre</th>--}}
+{{--                            <th scope="col" class="text-center"><i class="fa fa-cogs"></i></th>--}}
                         </tr>
                         </thead>
                         <tbody>
-<tr><td>ok</td></tr>
-{{--                        Aqui @foreach() @endforeach--}}
+                        @foreach($trianual->getDetalle as $detalle)
+                            <tr>
+                                <td>
+                                      {{$detalle->getMateria()}}
+                                </td>
+                            </tr>
+                        @endforeach
+
+
                         </tbody>
                     </table>
 

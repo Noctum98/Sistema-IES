@@ -71,7 +71,7 @@ class DetalleTrianualController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Trianual\StoreDetalleTrianualRequest $request
-     * @return Application|Factory|View|\Illuminate\Http\Response
+     *
      */
     public function store(StoreDetalleTrianualRequest $request)
     {
@@ -92,16 +92,28 @@ class DetalleTrianualController extends Controller
 
         $data = $request->all();
 
+        $detalleTrianual = DetalleTrianual::where([
+            'materia_id' => $data['materia_id'],
+            'trianual_id' => $data['trianual_id']
+        ])
+            ->first();
+        if($detalleTrianual){
+            $detalleTrianual->update($data);
+            return redirect()->route('trianual.ver', [
+                'trianual' => $data['trianual_id'],
+            ]);
+        }
+
         $trianual = Trianual::find($data['trianual_id']);
+
+
         $data['proceso_id'] = $this->procesoService->procesoPorAlumnoMateria($trianual->alumno_id, $data['materia_id'])->id ?? null;
         $data['equivalencia_id'] = $this->equivalenciasService->equivalenciaPorAlumnoMateria($trianual->alumno_id, $data['materia_id'])->id ?? null;
         $data['operador_id'] = Auth::user()->id;
         $detalleTrianual = DetalleTrianual::create($data);
 
-        return view('trianual.detalle.detail', [
+        return redirect()->route('trianual.ver', [
             'trianual' => $trianual,
-            'alumno' => $trianual->getAlumno(),
-
         ]);
 
     }
