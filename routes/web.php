@@ -701,9 +701,9 @@ Route::prefix('usuarios')->group(function () {
 });
 
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
-    
-    
-    
 
-    
+
+
+
+
 })->middleware('app.roles:admin');

@@ -8,6 +8,7 @@
             position: fixed;
             /*left:0;top:0;*/
             display: none;
+            z-index: 100;
         }
         .overlay-observaciones{
             background: #f0f0f0;
@@ -16,6 +17,7 @@
             position: fixed;
             /*left:0;top:0;*/
             display: none;
+            z-index: 200;
         }
     </style>
     <div class="container">
@@ -97,7 +99,9 @@
     <script>
         $(document).ready(function () {
             $(".button").click(function () {
-                $(".overlay").show({width: "0px"});
+                $(".overlay").show({
+                    width: "0px",
+                });
             });
             $(".oculto").click(function () {
                 $(".overlay").hide({width: "100%"});
