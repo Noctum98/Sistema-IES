@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -240,8 +241,29 @@ class Materia extends Model
         ->where('materia_id', $this->id)
             ->get()->toArray();
         $correlativas = array_column($correlativas, 'correlativa_id');
+
+
         return $correlativas;
 
+
+    }
+
+    public function ciclosLectivosDiferenciados()
+    {
+
+        return CicloLectivoEspecial::where([
+           'materia_id'=> $this->id,
+           'sede_id'=> $this->sede()->id
+        ])
+            ->get()
+        ;
+
+
+    }
+
+    public function sede()
+    {
+        return $this->carrera()->first()->sede()->first();
 
     }
 
