@@ -142,6 +142,7 @@ class TrianualController extends Controller
         $coordinadores = User::whereHas('roles', function ($query) {
             return $query->where('nombre', 'coordinador');
         })->get();
+
         $bedeles = User::whereHas('roles', function ($query) {
             return $query->where('nombre', 'seccionAlumnos');
         })->get();
