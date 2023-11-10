@@ -95,7 +95,7 @@ class AlumnoProcesoController extends Controller
             ->join('materias', 'materias.carrera_id', 'carreras.id')
             ->where('carreras.id', $idCarrera)
             ->orderBy('materias.nombre', 'ASC')
-            ->first();;
+            ->first();
 
 
 

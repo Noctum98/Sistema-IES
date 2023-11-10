@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Alumno;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Alumno\EncuestaSocioeconomicaRequest;
 use App\Models\Alumno;
 use App\Models\Carrera;
 use Illuminate\Http\Request;
@@ -17,8 +18,13 @@ class EncuestaSocioeconomicaController extends Controller
 
         return view('alumno.encuesta_socioeconomica.form',['alumno'=>$alumno,'carrera'=>$carrera]);
     }
-    public function show(Request $request,$id)
+    public function show(EncuestaSocioeconomicaRequest $request,$id)
     {
 
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
     }
 }
