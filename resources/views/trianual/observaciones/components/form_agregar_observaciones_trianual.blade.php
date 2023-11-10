@@ -2,17 +2,20 @@
     sup {
         color: #dc3545;
     }
+
     .select2-selection__rendered {
         line-height: 31px !important;
     }
+
     .select2-container .select2-selection--single {
         height: 35px !important;
     }
+
     .select2-selection__arrow {
         height: 34px !important;
     }
 </style>
-<div class="col-sm-5" >
+<div class="col-sm-5">
     <h5 class="text-dark text-center" id="agregarObservaciones">Agregar observaciones</h5>
     <form action="{{ route('observaciones_trianual.guardar') }}" method="POST">
 
@@ -23,19 +26,19 @@
                 <select name="year" id="year" class="form-control years" required>
                     <option value=''> - Seleccione año -</option>
 
-                        <option value="1">Primer Año</option>
-                        <option value="2">Segundo Año</option>
-                        <option value="3">Tercer Año</option>
+                    <option value="1">Primer Año</option>
+                    <option value="2">Segundo Año</option>
+                    <option value="3">Tercer Año</option>
 
                 </select>
             </div>
             <div class="form-group">
-                <label for="observation">Observación <sup>*</sup></label>
-                <textarea name="observation" id="observation" class="form-select" required>
+                <label for="observaciones">Observaciones <sup>*</sup></label>
+                    <br/>
+                    <textarea name="observaciones" id="observaciones" class="form-control col-sm-12" cols="50" required></textarea>
 
-                </textarea>
+
             </div>
-
 
 
         </div>

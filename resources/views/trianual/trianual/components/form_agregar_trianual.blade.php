@@ -71,7 +71,9 @@
             @if($campo == 'promedio')
                 <div class="form-group mb-3 col-6">
                     <label for="promedio">Promedio</label>
-                    <input id="promedio" name="promedio" class="form-control" type="number">
+                    <input id="promedio" name="promedio" class="form-control" type="number"
+                           min="0"
+                    >
                 </div>
             @endif
             @if($campo == 'fecha_egreso')

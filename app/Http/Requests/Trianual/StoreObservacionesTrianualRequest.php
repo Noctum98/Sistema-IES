@@ -13,7 +13,7 @@ class StoreObservacionesTrianualRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreObservacionesTrianualRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'year' => 'required',
+            'observation' => 'required'
         ];
     }
 }
