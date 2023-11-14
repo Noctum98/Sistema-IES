@@ -125,7 +125,6 @@
                         </th>
                         <th>N. Final <br/> Ponderación
                         </th>
-
                         <th>
                             Cierre
                         </th>
