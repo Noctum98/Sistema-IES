@@ -38,7 +38,7 @@
                             </h5>
 
                             <p class="card-text">
-                                Ponderación: {{$cargo->cargo->ponderacion($modulo->id)}}<br/>
+                                Ponderación: {{$cargo->cargo->ponderacion($modulo->id)}}%<br/>
                                 TFI:
                                 @if ($cargo->cargo->relacionCargoModulo($modulo->id)->carga_tfi === 0)
                                     <i class="fa fa-times text-danger"></i>
