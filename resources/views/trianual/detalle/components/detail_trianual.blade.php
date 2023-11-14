@@ -1,4 +1,4 @@
-<div class="col-md-12 mt-5" >
+<div class="col-md-12 mt-5">
 
     @if(count($detalles) > 0)
 
@@ -16,33 +16,28 @@
                 <tbody>
 
                 @foreach($detalles as $detalle)
-<tr>
-                    <td>
-                        @if($detalle->recursado == 0)
+                    @if($detalle->)
+                    <tr>
+                        <td>
                             {{$detalle->getMateria()->nombre}}
-                        @else
-                            Recursado {{$detalle->recursado}}
-                        @endif
-
-                    </td>
-                    <td>{{$detalle->getCondicion()->nombre}}</td>
-                    <td>
-                        @if($detalle->getEquivalencia())
-                            {{$detalle->getEquivalencia()->nota}}
-                        @else
-                            <i class='fa fa-minus'></i>
-                        @endif
-
-                    </td>
-                    <td>
-                        @if($detalle->proceso_id)
-{{--                            {{$detalle->proceso_id}}--}}
-                            <button class="btn btn-sm btn-info">Ver Proceso</button>
-                        @else
-                            <i class='fa fa-minus'></i>
-                        @endif
                         </td>
-</tr>
+                        <td>{{$detalle->getCondicion()->nombre}}</td>
+                        <td>
+                            @if($detalle->getEquivalencia())
+                                {{$detalle->getEquivalencia()->nota}}
+                            @else
+                                <i class='fa fa-minus'></i>
+                            @endif
+                        </td>
+                        <td>
+                            @if($detalle->proceso_id)
+                                {{--                            {{$detalle->proceso_id}}--}}
+                                <button class="btn btn-sm btn-info">Ver Proceso</button>
+                            @else
+                                <i class='fa fa-minus'></i>
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
                 </tbody>
             </table>
