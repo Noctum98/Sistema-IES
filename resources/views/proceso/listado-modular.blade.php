@@ -77,7 +77,8 @@
                 <span><strong><i>Importante:</i></strong></span>
             </div>
             <div>
-                <small><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los Parciales.</i></small><br/>
+                <small><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los
+                        Parciales.</i></small><br/>
                 <small><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></small>
             </div>
         </div>
@@ -122,9 +123,8 @@
                             <a href="{{ route('asis.admin', ['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
                                class="text-white"> Asistencia % </a>
                         </th>
-                                                <th>Nota Final Cursado
-                                                </th>
-
+                        <th>N. Final <br/> Ponderación
+                        </th>
                         <th>
                             Cierre
                         </th>
@@ -180,10 +180,9 @@
                                 {{ $proceso->asistencia() ? optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
                                 %
                             </td>
-                            <td>
-                                --
-                                {{--                                {{optional($proceso->getCargosProcesos($cargo->id))->nota_cargo}}<br/>--}}
-                                {{--                                <small>{{optional($proceso->getCargosProcesos($cargo->id))->nota_ponderada}}</small>--}}
+                            <td class="text-center">
+                                {{optional($proceso->getCargosProcesos($cargo->id))->nota_cargo}}<br/>
+                                <small style="font-size: 0.8em">{{optional($proceso->getCargosProcesos($cargo->id))->nota_ponderada}}</small>
                             </td>
                             {{--                            <td>--}}
                             {{--                                <form action="" id="{{ $proceso->id }}">--}}
