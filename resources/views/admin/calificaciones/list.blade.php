@@ -9,7 +9,7 @@
             @foreach($carreras as $carrera)
 
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card border-primary h-100">
 
                         <div class="card-body">
                             <h5 class="card-title">#{{ $carrera->id}} - {{$carrera->nombre }}</h5>
@@ -21,12 +21,20 @@
                                 @elseif($carrera->estado == 2)
                                     <span class="text-primary font-weight-bold">En Apertura</span>
                                 @endif
-                                Res. N°.: {{ $carrera->resolucion }}
+                                Res. N°.: {{ $carrera->resolucion }}<br/>
+                                Tipo: <i>{{ucwords($carrera->tipo)}}</i>
                             </p>
                         </div>
                         <div class="card-footer">
                             <small>{{ $carrera->sede->nombre }}</small><br/>
-                            <a href="#" class="btn btn-primary">Acceder a notas</a>
+                            <a href="{{route('admin.calificaciones.materias', ['carrera_id' => $carrera->id])}}"
+                               class="btn btn-primary">Acceder a
+                                @if($carrera->tipo == 'modular' || $carrera->tipo == 'modular2')
+                                    Módulo
+                                @else
+                                    Materia
+                                @endif
+                            </a>
                         </div>
 
                     </div>
