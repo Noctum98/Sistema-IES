@@ -24,7 +24,7 @@
             <hr>
 
             <div class="mb-3">
-            @if(Session::has('coordinador') || Session::has('admin'))
+            @if(Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('admin'))
 
                 <button class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#inscribirAlumno">
                     Inscribir alumno

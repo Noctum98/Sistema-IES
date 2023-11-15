@@ -701,7 +701,9 @@ class ProcesoModularService
 
         $suma = array_sum($notaCalificacion);
 
+
         $cuenta = count($notaCalificacion);
+
         $promedio = 0;
         if ($cuenta > 0) {
             $promedio = $suma / $cuenta;
@@ -784,7 +786,7 @@ class ProcesoModularService
      */
     public function getTotalCargo($cargo, Materia $materia, Proceso $proceso)
     {
-        $calificacionService = new CalificacionService();
+        $calificacionService = $this->getServiceCalificacion();
         $weighing = $cargo->ponderacion($materia->id);
         // Busco solo los parciales
         $calificaciones_parcial = $calificacionService->calificacionesInCargos([$cargo->id],
@@ -828,15 +830,64 @@ class ProcesoModularService
     }
 
 
+    public function getNotaCargo(int $cant_tps, int $cant_parciales, $sumaTps, $sumaPs)
+    {
+        $calificacionService = $this->getServiceCalificacion();
+
+        $configuration = Configuration::first();
+
+
+        if ($configuration->value_parcial != null) {
+            $value_parcial = $configuration->value_parcial / 100;
+            $total_cargo = $sumaTps / $cant_tps * (1 - $value_parcial) + $sumaPs / $cant_parciales * $value_parcial;
+        } else {
+            $cuenta = $cant_tps + $cant_parciales;
+            $suma = $sumaTps + $sumaPs;
+            $total_cargo = $suma / $cuenta;
+        }
+
+        return $total_cargo;
+    }
+
+
+    /**
+     * @param $notaCargo
+     * @param Cargo $cargo
+     * @param $materia_id
+     * @return float|int
+     */
+    public function getPonderacionCargo($notaCargo, $cargo_id, $materia_id)
+    {
+
+        $cargo = Cargo::find($cargo_id);
+        $weighing = $cargo->ponderacion($materia_id);
+        echo $weighing;
+
+        return $weighing / 100 * $notaCargo;
+
+
+    }
+
+
     /**
      * @param $procesoModular
      * @param $cicloLectivo
      * @return void <b>Graba el ciclo lectivo en el proceso modular</b>
      */
-    public function setCicloLectivo($procesoModular, $cicloLectivo):void
+    public function setCicloLectivo($procesoModular, $cicloLectivo): void
     {
         $pm = ProcesoModular::find($procesoModular);
         $pm->ciclo_lectivo = $cicloLectivo;
         $pm->update();
+    }
+
+    /**
+     * @return CalificacionService
+     */
+    protected function getServiceCalificacion(): CalificacionService
+    {
+        return new CalificacionService();
+
+
     }
 }
