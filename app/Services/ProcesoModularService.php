@@ -830,20 +830,29 @@ class ProcesoModularService
     }
 
 
+    /**
+     * @param int $cant_tps
+     * @param int $cant_parciales
+     * @param $sumaTps
+     * @param $sumaPs
+     * @return float|int
+     */
     public function getNotaCargo(int $cant_tps, int $cant_parciales, $sumaTps, $sumaPs)
     {
         $calificacionService = $this->getServiceCalificacion();
 
         $configuration = Configuration::first();
 
-
+        $total_cargo = 0;
         if ($configuration->value_parcial != null) {
             $value_parcial = $configuration->value_parcial / 100;
             $total_cargo = $sumaTps / $cant_tps * (1 - $value_parcial) + $sumaPs / $cant_parciales * $value_parcial;
         } else {
             $cuenta = $cant_tps + $cant_parciales;
-            $suma = $sumaTps + $sumaPs;
-            $total_cargo = $suma / $cuenta;
+            if($cuenta > 0) {
+                $suma = $sumaTps + $sumaPs;
+                $total_cargo = $suma / $cuenta;
+            }
         }
 
         return $total_cargo;
