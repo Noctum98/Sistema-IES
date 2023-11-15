@@ -217,7 +217,7 @@ class ProcesoModularController extends Controller
                 $porcentajeAsistencia = $asistenciaModular->porcentaje;
             }
 
-            dd($porcentajeAsistencia, $cargo, $proceso->id);
+//            dd($porcentajeAsistencia, $cargo, $proceso->id);
             if ($cargoProceso) {
                 $cargoProceso->cantidad_tp = count($tps);
                 $cargoProceso->cantidad_ps = count($parciales);
