@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
+use App\Models\CargoProceso;
 use App\Models\Configuration;
 use App\Models\Estados;
 use App\Models\Materia;
@@ -681,6 +682,32 @@ class ProcesoModularService
     }
 
     /**
+     * @param Materia $materia
+     * @param Proceso $proceso
+     * @return float|int
+     */
+    public function revisaPorcentajeProceso(Materia $materia, Proceso $proceso)
+    {
+        $total_modulo = 0;
+        $asistencia_modular_service = new AsistenciaModularService();
+        foreach ($materia->cargos()->get() as $cargo) {
+            $asistenciaPonderada = $asistencia_modular_service->getPorcentajeCargoAsistencia(
+                $materia,
+                $cargo
+            );
+            $asistenciaPorcentaje = CargoProceso::where([
+                'proceso_id'=> $proceso->id,
+                'cargo_id'=>$cargo->id
+            ])->first()->porcentaje_asistencia;
+
+            $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje;
+
+        }
+        return $total_modulo;
+
+    }
+
+    /**
      * @param ProcesoCalificacionService $procesoCalificacionService
      * @param $calificaciones
      * @param Proceso $proceso
@@ -773,6 +800,23 @@ class ProcesoModularService
         ])->first();
 
         $procesoModular->promedio_final_nota = round($nota);
+
+        $procesoModular->update();
+
+    }
+
+    /**
+     * @param $proceso
+     * @param $porcentaje
+     * @return void
+     */
+    public function setPorcentajeProceso($proceso, $porcentaje)
+    {
+        $procesoModular = ProcesoModular::where([
+            'proceso_id' => $proceso
+        ])->first();
+
+        $procesoModular->asistencia_final_porcentaje = round($porcentaje);
 
         $procesoModular->update();
 

@@ -249,9 +249,11 @@ class ProcesoModularController extends Controller
 
 
         $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
+        $porcentaje = $service->revisaPorcentajeProceso($materia, $proceso);
 
 
         $service->setNotaProceso($proceso_id, $nota_proceso);
+        $service->setPorcentajeProceso($proceso_id, $porcentaje);
 
         return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
