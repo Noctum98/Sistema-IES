@@ -14,7 +14,7 @@ class AddAsistenciaPorcentajeTableCargoProcesos extends Migration
     public function up()
     {
         Schema::table('cargo_procesos', function (Blueprint $table) {
-            $table->integer('porcentaje_asistencia');
+            $table->integer('porcentaje_asistencia')->nullable();
         });
     }
 
