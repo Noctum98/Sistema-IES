@@ -21,10 +21,28 @@ class CalificacionService
             ->get();
     }
 
+    /**
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return mixed
+     */
     public function calificacionesByProceso($proceso_id, $calificacion_id)
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
             ->where('proceso_calificacion.calificacion_id', $calificacion_id)
+            ->where('proceso_calificacion.proceso_id', $proceso_id)
+            ->get();
+    }
+
+    /**
+     * @param int $proceso_id
+     * @param array $calificacion_id
+     * @return mixed
+     */
+    public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id)
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->where('proceso_calificacion.proceso_id', $proceso_id)
             ->get();
     }

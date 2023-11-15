@@ -123,7 +123,8 @@
                             <a href="{{ route('asis.admin', ['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
                                class="text-white"> Asistencia % </a>
                         </th>
-                        <th>N. Final <br/> Ponderación
+                        <th>N. Final /<br/>
+                            <small style="font-size: 0.8em">(Ponderación)</small>
                         </th>
                         <th>
                             Cierre
@@ -182,7 +183,7 @@
                             </td>
                             <td class="text-center">
                                 {{optional($proceso->getCargosProcesos($cargo->id))->nota_cargo}}<br/>
-                                <small style="font-size: 0.8em">{{optional($proceso->getCargosProcesos($cargo->id))->nota_ponderada}}</small>
+                                <small style="font-size: 0.8em">({{optional($proceso->getCargosProcesos($cargo->id))->nota_ponderada}})</small>
                             </td>
                             {{--                            <td>--}}
                             {{--                                <form action="" id="{{ $proceso->id }}">--}}
