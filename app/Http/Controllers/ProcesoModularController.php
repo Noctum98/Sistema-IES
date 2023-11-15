@@ -205,9 +205,9 @@ class ProcesoModularController extends Controller
 //
 //            ])->first();
 
-            if($asistencia){
-                $porcentajeAsistencia = $asistencia->porcentaje;
-            }
+//            if($asistencia){
+//                $porcentajeAsistencia = $asistencia->porcentaje;
+//            }
 
 
             if ($cargoProceso) {
