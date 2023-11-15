@@ -198,12 +198,12 @@ class ProcesoModularController extends Controller
             $ponderacion_cargo = $service->getPonderacionCargo($total_cargo, $cargo, $materia->id);
 
             $porcentajeAsistencia = null;
-            $asistencia = AsistenciaModular::where([
-                'proceso_id' => $proceso->id,
-                'materia_id' => $materia->id,
-                'cargo_id' => $cargo,
-
-            ])->first();
+//            $asistencia = AsistenciaModular::where([
+//                'proceso_id' => $proceso->id,
+//                'materia_id' => $materia->id,
+//                'cargo_id' => $cargo,
+//
+//            ])->first();
 
             if($asistencia){
                 $porcentajeAsistencia = $asistencia->porcentaje;
