@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AsistenciaModular;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
 use App\Models\Estados;
@@ -166,8 +167,6 @@ class ProcesoModularController extends Controller
             throw new Exception('No se encontró la materia');
         }
 
-
-        // Obtengo los cargos (ids)
         $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
 
         $calificacionService = new CalificacionService();
@@ -198,6 +197,18 @@ class ProcesoModularController extends Controller
 
             $ponderacion_cargo = $service->getPonderacionCargo($total_cargo, $cargo, $materia->id);
 
+            $porcentajeAsistencia = null;
+            $asistencia = AsistenciaModular::where([
+                'proceso_id' => $proceso->id,
+                'materia_id' => $materia->id,
+                'cargo_id' => $cargo,
+
+            ])->first();
+
+            if($asistencia){
+                $porcentajeAsistencia = $asistencia->porcentaje;
+            }
+
 
             if ($cargoProceso) {
                 $cargoProceso->cantidad_tp = count($tps);
@@ -221,6 +232,8 @@ class ProcesoModularController extends Controller
 
                 $cargoProceso->nota_ponderada = $ponderacion_cargo;
 
+                $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
+
                 $cargoProceso->update();
             }
 
@@ -228,8 +241,6 @@ class ProcesoModularController extends Controller
 
 
         $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
-
-
 
 
         $service->setNotaProceso($proceso_id, $nota_proceso);
