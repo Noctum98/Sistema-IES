@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActaVolanteController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
@@ -88,6 +89,13 @@ Route::prefix('acreditacion')->group(function () {
 
 // Rutas Actas volantes
 Route::resource('actas_volantes', ActaVolanteController::class);
+
+// Rutas Admin
+Route::prefix('admin')->group(function () {
+    Route::get('/calificaciones/{orden?}', [AdminController::class, 'vista_calificaciones'])->name('admin.calificaciones');
+    Route::get('/calificaciones/{carrera_id}/carrera', [AdminController::class, 'vista_calificaciones_materias'])->name('admin.calificaciones.materias');
+    Route::get('/calificaciones/{materia_id}/cargo', [AdminController::class, 'vista_calificaciones_cargos'])->name('admin.calificaciones.cargos');
+});
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {

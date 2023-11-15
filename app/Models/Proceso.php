@@ -140,4 +140,14 @@ class Proceso extends Model
 
         return false;
     }
+
+    public function getCargosProcesos($cargo)
+    {
+        return CargoProceso::where([
+            'cargo_id' => $cargo,
+            'proceso_id' => $this->id
+        ])->first();
+    }
+
+
 }
