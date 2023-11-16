@@ -85,7 +85,8 @@
                                                placeholder="%"
                                                @if(!Session::has('profesor') or $proceso->cierre == 1)
                                                    disabled
-                                            @endif >
+                                            @endif
+                                        >
                                         <div class="input-group-append">
                                             <button type="submit"
                                                     class="btn btn-info btn-sm  input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
