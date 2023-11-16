@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
+use App\Models\CargoProceso;
 use App\Models\Configuration;
 use App\Models\Estados;
 use App\Models\Materia;
@@ -688,6 +689,32 @@ class ProcesoModularService
     }
 
     /**
+     * @param Materia $materia
+     * @param Proceso $proceso
+     * @return float|int
+     */
+    public function revisaPorcentajeProceso(Materia $materia, Proceso $proceso)
+    {
+        $total_modulo = 0;
+        $asistencia_modular_service = new AsistenciaModularService();
+        foreach ($materia->cargos()->get() as $cargo) {
+            $asistenciaPonderada = $asistencia_modular_service->getPorcentajeCargoAsistencia(
+                $materia,
+                $cargo
+            );
+            $asistenciaPorcentaje = CargoProceso::where([
+                'proceso_id'=> $proceso->id,
+                'cargo_id'=>$cargo->id
+            ])->first()->porcentaje_asistencia;
+
+            $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje;
+
+        }
+        return $total_modulo;
+
+    }
+
+    /**
      * @param ProcesoCalificacionService $procesoCalificacionService
      * @param $calificaciones
      * @param Proceso $proceso
@@ -786,6 +813,23 @@ class ProcesoModularService
     }
 
     /**
+     * @param $proceso
+     * @param $porcentaje
+     * @return void
+     */
+    public function setPorcentajeProceso($proceso, $porcentaje)
+    {
+        $procesoModular = ProcesoModular::where([
+            'proceso_id' => $proceso
+        ])->first();
+
+        $procesoModular->asistencia_final_porcentaje = round($porcentaje);
+
+        $procesoModular->update();
+
+    }
+
+    /**
      * @param $cargo
      * @param Materia $materia
      * @param Proceso $proceso
@@ -843,20 +887,29 @@ class ProcesoModularService
     }
 
 
+    /**
+     * @param int $cant_tps
+     * @param int $cant_parciales
+     * @param $sumaTps
+     * @param $sumaPs
+     * @return float|int
+     */
     public function getNotaCargo(int $cant_tps, int $cant_parciales, $sumaTps, $sumaPs)
     {
         $calificacionService = $this->getServiceCalificacion();
 
         $configuration = Configuration::first();
 
-
+        $total_cargo = 0;
         if ($configuration->value_parcial != null) {
             $value_parcial = $configuration->value_parcial / 100;
             $total_cargo = $sumaTps / $cant_tps * (1 - $value_parcial) + $sumaPs / $cant_parciales * $value_parcial;
         } else {
             $cuenta = $cant_tps + $cant_parciales;
-            $suma = $sumaTps + $sumaPs;
-            $total_cargo = $suma / $cuenta;
+            if($cuenta > 0) {
+                $suma = $sumaTps + $sumaPs;
+                $total_cargo = $suma / $cuenta;
+            }
         }
 
         return $total_cargo;

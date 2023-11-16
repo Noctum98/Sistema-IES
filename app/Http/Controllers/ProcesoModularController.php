@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asistencia;
+use App\Models\AsistenciaModular;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
 use App\Models\Estados;
@@ -166,8 +168,6 @@ class ProcesoModularController extends Controller
             throw new Exception('No se encontró la materia');
         }
 
-
-        // Obtengo los cargos (ids)
         $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
 
         $calificacionService = new CalificacionService();
@@ -198,7 +198,26 @@ class ProcesoModularController extends Controller
 
             $ponderacion_cargo = $service->getPonderacionCargo($total_cargo, $cargo, $materia->id);
 
+            $porcentajeAsistencia = null;
 
+            $asistencia = Asistencia::where(
+                [
+                    'proceso_id' => $proceso->id,
+                ]
+            )->first();
+
+
+            $asistenciaModular = AsistenciaModular::where([
+                'asistencia_id' => $asistencia->id,
+                'cargo_id' => $cargo,
+
+            ])->first();
+
+            if ($asistenciaModular) {
+                $porcentajeAsistencia = $asistenciaModular->porcentaje;
+            }
+
+//            dd($porcentajeAsistencia, $cargo, $proceso->id);
             if ($cargoProceso) {
                 $cargoProceso->cantidad_tp = count($tps);
                 $cargoProceso->cantidad_ps = count($parciales);
@@ -221,6 +240,8 @@ class ProcesoModularController extends Controller
 
                 $cargoProceso->nota_ponderada = $ponderacion_cargo;
 
+                $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
+
                 $cargoProceso->update();
             }
 
@@ -228,11 +249,11 @@ class ProcesoModularController extends Controller
 
 
         $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
-
-
+        $porcentaje = $service->revisaPorcentajeProceso($materia, $proceso);
 
 
         $service->setNotaProceso($proceso_id, $nota_proceso);
+        $service->setPorcentajeProceso($proceso_id, $porcentaje/100);
 
         return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
