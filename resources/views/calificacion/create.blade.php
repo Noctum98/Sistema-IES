@@ -83,8 +83,7 @@
                                                id="calificacion-procentaje-{{ $proceso->id }}"
                                                value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                                placeholder="%"
-                                               @if(!Session::has('profesor') or $proceso->cierre == 1  or Auth::user()->id != $calificacion->user_id or
-                                                optional($proceso->procesoCalificacion($calificacion->id))->close == 1 or optional(optional($calificacion->modelCargo()->first())->obtenerProcesoCargo($proceso->id))->isClose())
+                                               @if(!Session::has('profesor') or $proceso->cierre == 1)
                                                    disabled
                                             @endif >
                                         <div class="input-group-append">
@@ -111,7 +110,7 @@
                                     @endif
                                 @endif
                             @else
-{{--                                {{$proceso->alumno()->first()->getNotaEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}--}}
+                                {{--                                {{$proceso->alumno()->first()->getNotaEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}--}}
                             @endif
 
                         </td>
