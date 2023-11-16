@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Alumno;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Alumno\EncuestaSocioeconomicaRequest;
 use App\Models\Alumno;
+use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Carrera;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,9 @@ class EncuestaSocioeconomicaController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(EncuestaSocioeconomicaRequest $request)
     {
-        dd($request->all());
+        $encuestaSocioeconomica = EncuestaSocioeconomica::create($request->all());
+
     }
 }

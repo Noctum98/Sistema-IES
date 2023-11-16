@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Trianual\Trianual;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -129,6 +130,11 @@ class Alumno extends Model
     public function alumno_carrera()
     {
         return $this->hasMany(AlumnoCarrera::class, 'alumno_id');
+    }
+
+    public function encuesta_socioeconomica(): HasOne
+    {
+        return $this->hasOne(EncuestaSocioeconomica::class,'alumno_id');
     }
 
     public function hasCarrera($carrera_id)

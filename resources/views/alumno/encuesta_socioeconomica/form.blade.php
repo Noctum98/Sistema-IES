@@ -88,18 +88,21 @@
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="empresa_telefono" id="empresa_telefono3" value="twneti" {{ old('empresa_telefono') == 'twneti' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="empresa_telefono3">
+                        <input class="form-check-input" type="radio" name="empresa_telefono" id="empresa_telefono4" value="twneti" {{ old('empresa_telefono') == 'twneti' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="empresa_telefono4">
                             Twenti
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" id="empresa_telefono3" value="otra" {{ old('empresa_telefono') == 'otra' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="empresa_telefono3">
+                        <input class="form-check-input" type="radio" name="empresa_telefono" id="empresa_telefono5" value="otra" {{ old('empresa_telefono') == 'otra' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="empresa_telefono5">
                             Otra
                         </label>
                     </div>
-                    <input type="text" class="form-control mt-2" id="empresa_telefono" name="empresa_telefono" value="{{ old('empresa_telefono') }}" {{ old('empresa_telefono') == 'otra' ? 'checked' : '' }}>
+                    <div class="form-group d-none" id="otra_telefono">
+                        <label for="empresa_telefonoOtra">Cual?</label>
+                        <input type="text" class="form-control mt-2" id="empresa_telefonoOtra" name="empresa_telefono" value="{{ old('empresa_telefono') }}" {{ old('empresa_telefono') == 'otra' ? 'checked' : '' }}>
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,7 +156,10 @@
                             Otros
                         </label>
                     </div>
-                    <input type="text" class="form-control mt-2" id="empresa_telefono" name="acceso_internet[]" value="{{ old('acceso_internet_otro') }}" {{ in_array('', old('acceso_internet', [])) ? 'checked' : '' }}>
+                    <div class="form-group d-none" id="otra_acceso">
+                        <label for="acceso_otro">Cual?</label>
+                        <input type="text" class="form-control mt-2" id="acceso_otro" name="acceso_internet[]" value="{{ old('acceso_internet_otro') }}" {{ in_array('', old('acceso_internet', [])) ? 'checked' : '' }}>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1561,4 +1567,7 @@
         <input type="submit" value="Siguiente" class="btn btn-primary col-md-12">
     </form>
 </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/alumnos/encuesta_socioeconomica.js') }}"></script>
 @endsection
