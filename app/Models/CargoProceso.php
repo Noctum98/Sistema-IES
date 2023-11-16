@@ -22,6 +22,7 @@ class CargoProceso extends Model
         'suma_ps',
         'nota_ps',
         'nota_cargo',
-        'nota_ponderada'
+        'nota_ponderada',
+        'porcentaje_asistencia'
     ];
 }

@@ -1,5 +1,5 @@
 @if($mesa)
-@if(Session::has('coordinador') || Session::has('admin'))
+@if(Session::has('coordinador') || Session::has('seccionAlumnos') ||Session::has('admin'))
 
 <button class="mt-2 btn btn-sm btn-secondary button-modal" id="{{$llamado}}" data-bs-toggle="modal" data-bs-target="#libro_folio_{{$llamado.$mesa->comision_id ?? ''}}">
     Libro/Folio

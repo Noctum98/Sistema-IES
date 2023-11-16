@@ -303,6 +303,10 @@ class CargoProcesoService
         $this->grabaNotaPonderadaCargo($cargo, $cicloLectivo, $proceso, $materia, $user);
     }
 
+    public function getNotas()
+    {
+
+    }
 
 
 

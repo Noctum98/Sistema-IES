@@ -58,6 +58,7 @@
             <tr>
                 {{-- Columna cargo --}}
                 <td>
+                <small style="font-size: 0.8em">(#{{$cargo->id}})</small>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
                 {{-- Columna Porcentaje de Actividades Aprobadas --}}
