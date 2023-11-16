@@ -52,12 +52,15 @@
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios3" value="otro" {{ old('identidad_genero') == 'otro' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="exampleRadios3">
+                        <input class="form-check-input" type="radio" name="identidad_genero" id="identidad_genero_4" value="otro" {{ old('identidad_genero') == 'otro' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="identidad_genero_4">
                             Otros
                         </label>
                     </div>
-                    <input type="text" class="form-control mt-2" id="identidad_genero_otra" name="identidad_genero_otra" value="{{ old('identidad_genero_otra') }}" {{ old('identidad_genero') != 'otro' ? 'checked' : '' }}>
+                    <div class="form-group d-none" id="otra_identidad_genero">
+                        <label for="identidad_genero_otra">Cual?</label>
+                        <input type="text" class="form-control mt-2" id="identidad_genero_otra" name="identidad_genero_otra" value="{{ old('identidad_genero_otra') }}" {{ old('identidad_genero') != 'otro' ? 'checked' : '' }}>
+                    </div>
                 </div>
             </div>
         </div>
