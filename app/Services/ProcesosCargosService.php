@@ -6,16 +6,26 @@ use App\Models\ProcesoModular;
 use App\Models\ProcesosCargos;
 use DateTime;
 
-class ProcesosCargosService{
+class ProcesosCargosService
+{
 
-    public function crear(int $proceso, int $cargo, int $user ){
+    /**
+     * @param int $proceso
+     * @param int $cargo
+     * @param int $user
+     * @param bool $cierre
+     * @return ProcesosCargos
+     */
+    public function crear(int $proceso, int $cargo, int $user, bool $cierre = true):ProcesosCargos
+    {
 
         $data['proceso_id'] = $proceso;
         $data['cargo_id'] = $cargo;
         $data['operador_id'] = $user;
-        $data['cierre'] =  new DateTime('now');
-
-           return ProcesosCargos::create($data);
+        if ($cierre) {
+            $data['cierre'] = new DateTime('now');
+        }
+        return ProcesosCargos::create($data);
 
     }
 
@@ -25,13 +35,14 @@ class ProcesosCargosService{
      * @param int $user <i>id</i> de usuario
      * @return void
      */
-    public function actualizar(int $proceso, int $cargo, int $user){
+    public function actualizar(int $proceso, int $cargo, int $user)
+    {
 
         $pc = $this->getProcesoCargo($proceso, $cargo);
 
-        if($pc){
+        if ($pc) {
             $this->cierraProcesoCargo($cargo, $proceso, $user);
-        }else{
+        } else {
             $this->crear($proceso, $cargo, $user);
         }
     }
@@ -47,7 +58,7 @@ class ProcesosCargosService{
     {
         $pc = $this->getProcesoCargo($proceso, $cargo);
 
-        if(!$pc){
+        if (!$pc) {
             $pc = $this->crear($proceso, $cargo, $user);
         }
 

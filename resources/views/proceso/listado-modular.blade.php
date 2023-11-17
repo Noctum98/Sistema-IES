@@ -145,12 +145,12 @@
                                                 class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                                 <b>{{$proceso->procesoCalificacion($cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
                                                 <small>
-                                ({{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
-
+                                                    ({{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
                                                     @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
                                                         %
                                                     @endif
-                                                    )</small>
+                                                    )
+                                                </small>
                             </span>
 
 
@@ -180,10 +180,19 @@
                             <td>
                                 {{ $proceso->asistencia() ? optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
                                 %
+
                             </td>
                             <td class="text-center">
-                                {{optional($proceso->getCargosProcesos($cargo->id))->nota_cargo}}<br/>
-                                <small style="font-size: 0.8em">({{optional($proceso->getCargosProcesos($cargo->id))->nota_ponderada}})</small>
+                                @if($proceso->getCargosProcesos($cargo->id))
+                                    {{$proceso->getCargosProcesos($cargo->id)->nota_cargo}}<br/>
+                                    <small
+                                        style="font-size: 0.8em">({{$proceso->getCargosProcesos($cargo->id)->nota_ponderada}}
+                                        )</small>
+                                @else
+                                    <a href="{{route('cargo_proceso.store', ['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}">
+                                    -Generar Cargo Proceso-
+                                    </a>
+                                @endif
                             </td>
                             {{--                            <td>--}}
                             {{--                                <form action="" id="{{ $proceso->id }}">--}}
