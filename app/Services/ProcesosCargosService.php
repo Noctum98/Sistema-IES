@@ -16,7 +16,7 @@ class ProcesosCargosService
      * @param bool $cierre
      * @return ProcesosCargos
      */
-    public function crear(int $proceso, int $cargo, int $user, bool $cierre = true):ProcesosCargos
+    public function crear(int $proceso, int $cargo, int $user, bool $cierre = true): ProcesosCargos
     {
 
         $data['proceso_id'] = $proceso;
@@ -35,9 +35,8 @@ class ProcesosCargosService
      * @param int $user <i>id</i> de usuario
      * @return void
      */
-    public function actualizar(int $proceso, int $cargo, int $user)
+    public function actualizar(int $proceso, int $cargo, int $user):void
     {
-
         $pc = $this->getProcesoCargo($proceso, $cargo);
 
         if ($pc) {
@@ -62,24 +61,20 @@ class ProcesosCargosService
             $pc = $this->crear($proceso, $cargo, $user);
         }
 
-        if ($pc->isClose() and !$cierra) {
-            $pc->cierre = null;
-        } else {
-            $pc->cierre = new DateTime('now');
+        $pc->cierre = new DateTime('now');
 
-            $pm = ProcesoModular::where([
-                'proceso_id' => $proceso,
-            ])->first();
+        $pm = ProcesoModular::where([
+            'proceso_id' => $proceso,
+        ])->first();
 
-            $pms = new ProcesoModularService();
+        $pms = new ProcesoModularService();
 
-            $pms->grabaEstadoPorProcesoModular($pm);
+        $pms->grabaEstadoPorProcesoModular($pm);
 
-            $procesoService = new ProcesoService();
-            $procesoService->cierraProcesoDesdeModular($proceso);
+        $procesoService = new ProcesoService();
+        $procesoService->cierraProcesoDesdeModular($proceso);
 
 
-        };
         $pc->operador_id = $user;
         $pc->update();
     }
@@ -89,7 +84,8 @@ class ProcesosCargosService
      * @param int $cargo
      * @return ProcesosCargos
      */
-    protected function getProcesoCargo(int $proceso, int $cargo)
+    protected
+    function getProcesoCargo(int $proceso, int $cargo)
     {
         return ProcesosCargos::where([
             'proceso_id' => $proceso,

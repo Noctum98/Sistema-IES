@@ -47,7 +47,8 @@
                     <h6>
                         Cargos:
                         @foreach($materia->cargos()->get() as $cargo)
-                            <a href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                            <a href="{{ route('proceso.listadoCargo',
+                                ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
                                class="btn btn-info" title="Ver proceso cargo">
                                 {{$cargo->nombre}}
                                 @if(Session::has('admin'))
@@ -92,7 +93,7 @@
                 </small></i></p>
         <p class="mb-1"><small style="font-size: 0.8em">
                 <u>Aclaraciones:</u><br/>
-                <span class="col-sm-12" >
+                <span class="col-sm-12">
                     <b>'N Proceso'</b>: <i>Nota Proceso.</i>
                 <b>'% Asist. Final'</b>: <i>Porcentaje Asistencia Final.</i>
                 <b>'N TFI'</b>: <i>Nota Trabajo Final Integrador.</i>
@@ -112,25 +113,26 @@
             </small>
         </p>
 
-@if(isset($comision))
+        @if(isset($comision))
 
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
-       class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
-@else
+            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
+               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
+        @else
 
-    <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}" class="btn btn-sm btn-success"><i
-                class="fas fa-download"></i> Descargar
-        planilla</a>
+            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}"
+               class="btn btn-sm btn-success"><i
+                    class="fas fa-download"></i> Descargar
+                planilla</a>
         @endif
-{{--
-    @if($puede_procesar)
-        <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
-           class="btn btn-warning">
-            Cerrar Notas
-        </a>
-    @endif
+        {{--
+            @if($puede_procesar)
+                <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
+                   class="btn btn-warning">
+                    Cerrar Notas
+                </a>
+            @endif
 
-@endif --}}
+        @endif --}}
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}
@@ -183,15 +185,26 @@
                                           class="form_nota_global">
                                         <div class="input-group">
                                             <input type="text"
-                                                   class="form-control btn-sm nota_global {{ $proceso->procesoRelacionado->nota_global >= 4 ? 'text-success' : '' }} {{ $proceso->procesoRelacionado->nota_global < 4 ? 'text-danger' : '' }}"
+                                                   class="form-control btn-sm nota_global
+                                                   @classAprobado($proceso->procesoRelacionado->nota_global)"
                                                    id="global-{{ $proceso->procesoRelacionado->id }}"
-                                                   value="{{ $proceso->procesoRelacionado->nota_global != -1 ? $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                   @if(($proceso->procesoRelacionado->estado && ($proceso->procesoRelacionado->estado->identificador != 5 || $proceso->procesoRelacionado->estado->identificador != 7)) ||   !$puede_procesar || $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                   value="{{ $proceso->procesoRelacionado->nota_global != -1 ?
+                                                            $proceso->procesoRelacionado->nota_global : 'A' }}"
+                                                   @if(($proceso->procesoRelacionado->estado
+                                                        && ($proceso->procesoRelacionado->estado->identificador != 5
+                                                        || $proceso->procesoRelacionado->estado->identificador != 7))
+                                                        || !$puede_procesar
+                                                        || $proceso->procesoRelacionado->cierre)
+                                                       disabled
+                                                @endif>
                                             <div class="input-group-append">
                                                 <button type="submit"
                                                         class="btn btn-info btn-sm input-group-text"
                                                         id="btn-global-{{ $proceso->procesoRelacionado->id }}"
-                                                        @if(!Session::has('profesor') or $proceso->procesoRelacionado->cierre) disabled @endif>
+                                                        @if(!Session::has('profesor') or
+                                                            $proceso->procesoRelacionado->cierre)
+                                                            disabled
+                                                    @endif>
                                                     <i class="fa fa-save"></i>
                                                 </button>
                                             </div>
@@ -203,8 +216,7 @@
                                            id="{{$proceso->procesoRelacionado->id}}"
                                            @if($proceso->procesoRelacionado->cierre == 1)
                                                checked
-                                           @endif
-                                           @if($proceso->procesoRelacionado->cierre == 0)
+                                           @else
                                                unchecked
                                         @endif
                                     />
@@ -272,17 +284,13 @@
                                 <td colspan="2">
                                     <button type="button" class="btn btn-sm btn-primary"
                                             data-bs-toggle="collapse" data-bs-target="#cargo-{{$proceso->id}}">
-                                        Cargos <i class="fas fa-caret-square-down"></i> </button>
-
-                                    {{--                                <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">--}}
-                                    {{--                                    <i class="fa fa-spinner fa-spin"></i>--}}
-                                    {{--                                </span>--}}
+                                        Cargos <i class="fas fa-caret-square-down"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="9" class="border-top-0 border-info">
                                     <div id="cargo-{{$proceso->id}}" class="collapse p-0 m-0">
-                                    @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
+                                        @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
                                     </div>
                                 </td>
                             </tr>
