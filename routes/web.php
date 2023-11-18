@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\CargoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
@@ -137,6 +138,10 @@ Route::prefix('cargo')->group(function () {
     Route::post('editar-cargo/{cargo}', [CargoController::class, 'editar'])->name('editar_cargo');
     Route::delete('delete/{cargo}', [CargoController::class, 'destroy'])->name('cargo.delete');
     Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
+});
+
+Route::prefix('cargo_proceso')->group(function () {
+    Route::get('/{proceso_id}/{cargo_id}', [CargoProcesoController::class, 'store'])->name('cargo_proceso.store');
 });
 
 // Rutas de Carreras

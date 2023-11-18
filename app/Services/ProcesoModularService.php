@@ -904,12 +904,12 @@ class ProcesoModularService
 
 
     /**
-     * @param $notaCargo
-     * @param Cargo $cargo
-     * @param $materia_id
+     * @param int $notaCargo
+     * @param int $cargo_id
+     * @param int $materia_id
      * @return float|int
      */
-    public function getPonderacionCargo($notaCargo, $cargo_id, $materia_id)
+    public function getPonderacionCargo(int $notaCargo, int $cargo_id, int $materia_id)
     {
 
         $cargo = Cargo::find($cargo_id);

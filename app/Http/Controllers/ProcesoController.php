@@ -13,6 +13,7 @@ use App\Models\Proceso;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesosCargosService;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -33,8 +34,8 @@ class ProcesoController extends Controller
      */
     function __construct(CicloLectivoService $cicloLectivoService)
     {
-        $this->middleware('app.auth',['except'=>'delete']);
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',['except'=>'delete']);
+        $this->middleware('app.auth', ['except' => 'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial', ['except' => 'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
     }
 
@@ -72,12 +73,12 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function vista_listado($materia_id,$ciclo_lectivo,$comision_id = null)
+    public function vista_listado($materia_id, $ciclo_lectivo, $comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('procesos.ciclo_lectivo',$ciclo_lectivo);
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -93,7 +94,7 @@ class ProcesoController extends Controller
         }
         $procesos->orderBy('alumnos.apellidos', 'asc');
         $procesos = $procesos->get();
-//        $procesos = $procesos->dd();
+
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
             'tipo_id' => 1,
@@ -114,17 +115,17 @@ class ProcesoController extends Controller
             'comision' => $comision,
             'calificaciones' => $calificaciones,
             'estados' => $estados,
-            'ciclo_lectivo'=>$ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
     }
 
-    public function vista_listadoCargo($materia_id, $cargo_id,$ciclo_lectivo = null, $comision_id = null)
+    public function vista_listadoCargo($materia_id, $cargo_id, $ciclo_lectivo = null, $comision_id = null)
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
-        $procesos = $this->getProcesosMateria($materia_id, $ciclo_lectivo,  $comision_id);
+        $procesos = $this->getProcesosMateria($materia_id, $ciclo_lectivo, $comision_id);
 
         $comision = null;
         if ($comision_id) {
@@ -251,7 +252,7 @@ class ProcesoController extends Controller
     {
         $alumno = Alumno::find($id);
         $procesos = $request['materias'];
-        $alumno_procesos = $alumno->procesos->where('ciclo_lectivo',date('Y'));
+        $alumno_procesos = $alumno->procesos->where('ciclo_lectivo', date('Y'));
 
         foreach ($alumno_procesos as $proceso) {
 
@@ -269,25 +270,24 @@ class ProcesoController extends Controller
                 if ($proceso) {
 
                     $proceso_deleted = Proceso::withTrashed()
-                    ->where([
-                        'alumno_id' => $alumno->id,
-                        'materia_id' => $proceso,
-                        'ciclo_lectivo' => date('Y')
-                    ])
-                    ->latest('deleted_at')
-                    ->first();
+                        ->where([
+                            'alumno_id' => $alumno->id,
+                            'materia_id' => $proceso,
+                            'ciclo_lectivo' => date('Y')
+                        ])
+                        ->latest('deleted_at')
+                        ->first();
 
-                    if($proceso_deleted)
-                    {
+                    if ($proceso_deleted) {
                         $proceso_deleted->restore();
-                    }else{
+                    } else {
                         Proceso::create([
                             'alumno_id' => $alumno->id,
                             'estado' => 'en curso',
                             'materia_id' => $proceso,
                             'ciclo_lectivo' => date('Y')
                         ]);
-                    }    
+                    }
                 }
             }
         }
@@ -300,31 +300,30 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function delete(Request $request,$id,$alumno_id)
+    public function delete(Request $request, $id, $alumno_id)
     {
-        $alumno = Alumno::select('id')->where('id',$alumno_id)->first();
+        $alumno = Alumno::select('id')->where('id', $alumno_id)->first();
 
         $proceso = Proceso::where([
             'id' => $id,
             'alumno_id' => $alumno_id
         ])->first();
 
-        if($proceso)
-        {
+        if ($proceso) {
             $proceso->delete();
 
             $data = [
                 'status' => 'success',
                 'message' => 'Proceso eliminado'
             ];
-        }else{
+        } else {
             $data = [
                 'status' => 'error',
                 'message' => 'Error'
             ];
         }
 
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     public function cambiaEstado(Request $request): JsonResponse
@@ -349,39 +348,23 @@ class ProcesoController extends Controller
     public function cambiaCierre(Request $request): JsonResponse
     {
         $user = Auth::user();
+
         $proceso = Proceso::find($request['proceso_id']);
 
-        // Actualizamos el proceso
 
-        if ($request['cierre'] == 'true') {
-            $proceso->cierre = 1;
-        }
-        if ($request['cierre'] == 'false') {
-            $proceso->cierre = 0;
-        }
+        $proceso = $this->cierreToTrue($request['cierre'], $proceso);
+
         $proceso->operador_id = $user->id;
 
         $proceso->update();
 
-        //
-
-        if ($request['tipo'] and $request['tipo'] == 'modular' and $request['cargo']) {
-            $cargo_id = $request['cargo'];
-            $procesoService = new ProcesosCargosService();
-            $procesoService->actualizar($proceso->id, $cargo_id, $user->id);
-        } else {
-            $proceso->operador_id = $user->id;
-            $proceso->update();
-
-            if ($proceso->materia()->first()) {
-                if ($proceso->materia()->first()->cargos()->get()) {
-                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
-                        $procesoService = new ProcesosCargosService();
-                        $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
-                    }
-                }
+        if ($proceso->cierre == 1 && $proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+            foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                $procesoService = new ProcesosCargosService();
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
             }
         }
+
 
         return response()->json($proceso, 200);
     }
@@ -391,30 +374,24 @@ class ProcesoController extends Controller
         $user = Auth::user();
         $proceso = Proceso::find($request['proceso_id']);
 
-        // Actualizamos el proceso
 
-        if ($request['cierre'] == 'true') {
-            $proceso->cierre = 1;
-        }
-        if ($request['cierre'] == 'false') {
-            $proceso->cierre = 0;
-        }
+        $proceso = $this->cierreToTrue($request['cierre'], $proceso);
+
         $proceso->operador_id = $user->id;
 
         $proceso->update();
 
         //
 
-        if($proceso->materia()->first()){
-            if ($proceso->materia()->first()->cargos()->get()) {
-                foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
-                    $procesoService = new ProcesosCargosService();
-                    $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
-                }
+        if ($proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+            foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                $procesoService = new ProcesosCargosService();
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
             }
         }
 
-        if ($request['tipo'] and $request['tipo'] == 'modular' and $request['cargo']) {
+
+        if ($request['tipo'] && $request['tipo'] == 'modular' && $request['cargo']) {
             $cargo_id = $request['cargo'];
             $procesoService = new ProcesosCargosService();
             $procesoService->actualizar($proceso->id, $cargo_id, $user->id);
@@ -422,15 +399,14 @@ class ProcesoController extends Controller
             $proceso->operador_id = $user->id;
             $proceso->update();
 
-            if ($proceso->materia()->first()) {
-                if ($proceso->materia()->first()->cargos()->get()) {
-                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
-                        $procesoService = new ProcesosCargosService();
-                        $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
-                    }
+            if ($proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+                foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                    $procesoService = new ProcesosCargosService();
+                    $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
                 }
             }
         }
+
 
         return response()->json($proceso, 200);
     }
@@ -447,14 +423,15 @@ class ProcesoController extends Controller
         $cargo_id = null,
         $comision_id = null,
         bool $cierre_coordinador = false
-    ) {
+    )
+    {
 
         $user = Auth::user();
-        if($comision_id == 0){
+        if ($comision_id == 0) {
             $comision_id = null;
         }
         $procesos = $this->getProcesosMateria($materia_id, $comision_id);
-        if ($cargo_id and !$cierre_coordinador) {
+        if ($cargo_id && !$cierre_coordinador) {
             $procesoService = new ProcesosCargosService();
             foreach ($procesos as $proceso) {
                 $procesoService->cierraProcesoCargo($cargo_id, $proceso->id, $user->id, true);
@@ -465,30 +442,29 @@ class ProcesoController extends Controller
                 $proceso->operador_id = $user->id;
                 $proceso->update();
 
-                if ($proceso->materia()->first()) {
-                    if ($proceso->materia()->first()->cargos()->get()) {
-                        foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
-                            $procesoService = new ProcesosCargosService();
-                            $procesoService->cierraProcesoCargo($cargo->id, $proceso->id, $user->id, true);
-                        }
+                if ($proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+                    foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                        $procesoService = new ProcesosCargosService();
+                        $procesoService->cierraProcesoCargo($cargo->id, $proceso->id, $user->id, true);
                     }
                 }
+
             }
         }
 
-        $data = '/'.$materia_id;
-        if($cargo_id){
-            $data .= '/'.$cargo_id;
+        $data = '/' . $materia_id;
+        if ($cargo_id) {
+            $data .= '/' . $cargo_id;
         }
-        if($comision_id){
-            $data .= '/'.$comision_id;
-        }
-
-        if($cierre_coordinador){
-            return redirect("proceso-modular/listado". $data)->with('status', 'Procesos Cerrados');
+        if ($comision_id) {
+            $data .= '/' . $comision_id;
         }
 
-        return redirect("proceso/listado-cargo". $data)->with('status', 'Procesos Cerrados');
+        if ($cierre_coordinador) {
+            return redirect("proceso-modular/listado" . $data)->with('status', 'Procesos Cerrados');
+        }
+
+        return redirect("proceso/listado-cargo" . $data)->with('status', 'Procesos Cerrados');
     }
 
 
@@ -564,7 +540,7 @@ class ProcesoController extends Controller
      * @param null $comision_id <integer | null> <i>id</i> de la comisión, puede ser null.
      * @return Collection
      */
-    protected function getProcesosMateria($materia_id,$ciclo_lectivo, $comision_id=null): Collection
+    protected function getProcesosMateria($materia_id, $ciclo_lectivo, $comision_id = null): Collection
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
@@ -582,5 +558,19 @@ class ProcesoController extends Controller
         $procesos->orderBy('alumnos.apellidos', 'asc');
 
         return $procesos->get();
+    }
+
+    /**
+     * @param $cierre
+     * @param Proceso $proceso
+     * @return Proceso
+     */
+    protected function cierreToTrue($cierre, Proceso $proceso): Proceso
+    {
+        $proceso->cierre = 0;
+        if ($cierre == 'true') {
+            $proceso->cierre = 1;
+        }
+        return $proceso;
     }
 }
