@@ -10,9 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use phpDocumentor\Reflection\Types\Null_;
 
+/**
+ *  Class Cargo
+ * This is the model class for table "cargos"
+ *
+ * @property integer $id
+ */
 class Cargo extends Model
 {
     use HasFactory;
+
 
     protected $table = 'cargos';
     protected $fillable = ['nombre','carrera_id', 'tipo_materia_id'];

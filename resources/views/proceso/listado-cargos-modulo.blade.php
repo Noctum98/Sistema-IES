@@ -245,8 +245,11 @@
                     @endif
                 </td>
                 <td>
-                    {{optional(optional($proceso->procesoRelacionado()->first()->asistencia())->getByAsistenciaCargo($cargo->id))->porcentaje }}
-                    %
+                    @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
+                        {{$cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->porcentaje_asistencia}}%
+                    @else
+                        No asignado
+                    @endif
                 </td>
                 <td>
                     @if (optional($cargo->obtenerProcesoCargo(optional($proceso->procesoRelacionado()->first())->id))->isClose())

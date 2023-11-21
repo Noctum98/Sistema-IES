@@ -170,80 +170,12 @@ class ProcesoModularController extends Controller
 
         $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
 
-        $calificacionService = new CalificacionService();
-
-
         foreach ($cargos as $cargo) {
             $cargoProceso = CargoProceso::where([
                 'proceso_id' => $proceso->id,
                 'cargo_id' => $cargo
             ])->first();
-            $tps = $calificacionService->calificacionesInCargos([$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
-            $parciales = $calificacionService->calificacionesInCargos([$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
-
-
-            $notasTps = $calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
-
-            $sumaTps = array_sum($notasTps->pluck('nota')->toArray());
-
-            $sumaPs = null;
-
-            foreach ($parciales as $ps) {
-                if (is_numeric($calificacionService->calificacionParcialByProceso($proceso->id, $ps->id))) {
-                    $sumaPs += $calificacionService->calificacionParcialByProceso($proceso->id, $ps->id);
-                }
-            }
-
-            $total_cargo = $service->getNotaCargo(count($tps), count($parciales), $sumaTps, $sumaPs);
-
-            $ponderacion_cargo = $service->getPonderacionCargo($total_cargo, $cargo, $materia->id);
-
-            $porcentajeAsistencia = null;
-
-            $asistencia = Asistencia::where(
-                [
-                    'proceso_id' => $proceso->id,
-                ]
-            )->first();
-
-
-            $asistenciaModular = AsistenciaModular::where([
-                'asistencia_id' => $asistencia->id,
-                'cargo_id' => $cargo,
-
-            ])->first();
-
-            if ($asistenciaModular) {
-                $porcentajeAsistencia = $asistenciaModular->porcentaje;
-            }
-
-//            dd($porcentajeAsistencia, $cargo, $proceso->id);
-            if ($cargoProceso) {
-                $cargoProceso->cantidad_tp = count($tps);
-                $cargoProceso->cantidad_ps = count($parciales);
-
-                $cargoProceso->suma_tp = $sumaTps;
-                $cargoProceso->suma_ps = $sumaPs;
-
-                $notaTps = null;
-                $notaParciales = null;
-                if (count($tps) > 0 and $sumaTps > 0) {
-                    $notaTps = $sumaTps / count($tps);
-                }
-                if (count($parciales) > 0 and $sumaPs > 0) {
-                    $notaParciales = $sumaPs / count($parciales);
-                }
-                $cargoProceso->nota_tp = $notaTps;
-                $cargoProceso->nota_ps = $notaParciales;
-
-                $cargoProceso->nota_cargo = $total_cargo;
-
-                $cargoProceso->nota_ponderada = $ponderacion_cargo;
-
-                $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
-
-                $cargoProceso->update();
-            }
+            $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
 
         }
 
@@ -323,5 +255,17 @@ class ProcesoModularController extends Controller
     public function destroy(ProcesoModular $procesoModular)
     {
         //
+    }
+
+    /**
+     * @param int $cargo_id
+     * @param Proceso $proceso
+     * @param Materia $materia
+     * @param CargoProceso $cargoProceso
+     * @return CargoProceso
+     */
+    protected function actualizaCargoProceso(int $cargo_id, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
+    {
+        return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }
 }
