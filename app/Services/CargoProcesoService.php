@@ -356,18 +356,18 @@ class CargoProcesoService
             ]
         )->first();
 
+        if($asistencia) {
+            $asistenciaModular = AsistenciaModular::where([
+                'asistencia_id' => $asistencia->id,
+                'cargo_id' => $cargo,
 
-        $asistenciaModular = AsistenciaModular::where([
-            'asistencia_id' => $asistencia->id,
-            'cargo_id' => $cargo,
+            ])->first();
 
-        ])->first();
+            if ($asistenciaModular) {
+                $porcentajeAsistencia = $asistenciaModular->porcentaje;
+            }
 
-        if ($asistenciaModular) {
-            $porcentajeAsistencia = $asistenciaModular->porcentaje;
         }
-
-
         $cargoProceso->cantidad_tp = count($tps);
         $cargoProceso->cantidad_ps = count($parciales);
 
