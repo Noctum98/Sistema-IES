@@ -50,6 +50,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use App\Models\ActaVolante;
+use App\Models\Alumno\EncuestaSocioeconomica;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Carrera;
 use App\Models\Sede;
@@ -125,7 +126,8 @@ Route::prefix('alumnos')->group(function () {
 });
 
 Route::prefix('encuesta_socioeconomica')->group(function () {
-    Route::get('/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
+    Route::get('personal/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
+    Route::get('motivacional/{encuesta_id}/{carrera_id}',[EncuestaSocioeconomica::class,'showForm2'])->name('encuesta_socioeconomica.showForm2');
     Route::post('/store',[EncuestaSocioeconomicaController::class,'store'])->name('encuesta_socioeconomica.store');
 });
 

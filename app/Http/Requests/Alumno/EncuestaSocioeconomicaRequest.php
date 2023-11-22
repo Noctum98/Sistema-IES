@@ -27,7 +27,6 @@ class EncuestaSocioeconomicaRequest extends FormRequest
             'alumno_id' => 'required',
             'nombre_preferido' => 'required',
             'identidad_genero' => 'required',
-            'identidad_genero_otra' => 'string',
             'edad_encuesta' => 'number',
             'empresa_telefono' => 'required',
             'acceso_internet' => 'required',

@@ -14,15 +14,25 @@
         </div>
     </div>
 
-    <form action="{{ route('encuesta_socioeconomica.store') }}" method="POST">
+    <form action="{{ route('encuesta_socioeconomica.store') }}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="alumno_id" value="{{ $alumno->id }}">
+        <input type="hidden" name="carrera_id" value="{{ $carrera->id }}">
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card mb-3">
             <div class="card-body">
                 <div class="form-group">
                     <label for="nombre_preferido" class="text-primary">
                         <h4>¿Cómo te gusta que te llamen?</h4>
                     </label>
-                    <input type="text" class="form-control mt-2" id="nombre_preferido" name="nombre_preferido" required>
+                    <input type="text" class="form-control mt-2" id="nombre_preferido" name="nombre_preferido" value="{{ old('nombre_preferido') }}" required>
                 </div>
             </div>
         </div>
@@ -34,25 +44,25 @@
                         <h4>Identidad de género</h4>
                     </label>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios1" value="femenino" {{ old('identidad_genero') == 'femenino' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios1" value="femenino" {{ old('identidad_genero') == 'femenino' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="exampleRadios1">
                             Femenino
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios2" value="masculino" {{ old('identidad_genero') == 'masculino' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios2" value="masculino" {{ old('identidad_genero') == 'masculino' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="exampleRadios2">
                             Masculino
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios3" value="transgénero" {{ old('identidad_genero') == 'transgénero' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="identidad_genero" id="exampleRadios3" value="transgénero" {{ old('identidad_genero') == 'transgénero' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="exampleRadios3">
                             Trangénero
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="identidad_genero" id="identidad_genero_4" value="otro" {{ old('identidad_genero') == 'otro' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="identidad_genero" id="identidad_genero_4" value="otro" {{ old('identidad_genero') == 'otro' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="identidad_genero_4">
                             Otros
                         </label>
@@ -104,7 +114,7 @@
                     </div>
                     <div class="form-group d-none" id="otra_telefono">
                         <label for="empresa_telefonoOtra">Cual?</label>
-                        <input type="text" class="form-control mt-2" id="empresa_telefonoOtra" name="empresa_telefono" value="{{ old('empresa_telefono') }}" {{ old('empresa_telefono') == 'otra' ? 'checked' : '' }}>
+                        <input type="text" class="form-control mt-2" id="empresa_telefonoOtra" name="empresa_telefonoOtra" value="{{ old('empresa_telefono') }}" {{ old('empresa_telefono') == 'otra' ? 'checked' : '' }}>
                     </div>
                 </div>
             </div>
