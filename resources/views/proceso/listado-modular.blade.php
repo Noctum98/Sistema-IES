@@ -194,8 +194,11 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                     </small>
                                 @else
                                     <a href="{{route('cargo_proceso.store',
-['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}">
-                                        -Generar Cargo Proceso-
+['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm">
+                                       <i class="fa fa-cogs"></i>
+                                        <small title="Por favor haga clic aquí">
+                                            Agregar alumno a planilla modular
+                                        </small>
                                     </a>
                                 @endif
                             </td>
