@@ -23,12 +23,36 @@
             border-color: rgba(52, 58, 64, 0.75);
         }
 
-
     </style>
     <div class="container-fluid w-100" id="container-scroll">
-        <a href="{{url()->previous()}}">
-            <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
-        </a>
+        <div class="row m-0">
+            <div class="col-sm-6 text-left">
+                <a href="{{url()->previous()}}">
+                    <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+                </a>
+            </div>
+
+            <div class="col-sm-6 text-right">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo {{$ciclo_lectivo}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                            <li>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                   href="{{ route('proceso_modular.list',
+                                    ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
+                                    {{$i}}
+                                </a>
+                            </li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         @if($acciones)
             <div>
                 @foreach($acciones as $accion)
@@ -56,14 +80,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 text-center">
                 @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
                     <h6>
                         Cargos:
                         @foreach($materia->cargos()->get() as $cargo)
                             <a href="{{ route('proceso.listadoCargo',
                                 ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
-                               class="btn btn-info" title="Ver proceso cargo">
+                               class="btn btn-info btn-sm" title="Ver proceso cargo">
                                 {{$cargo->nombre}}
                                 @if(Session::has('admin'))
                                     {{$cargo->id}}
@@ -73,26 +97,7 @@
                     </h6>
                 @endif
             </div>
-            <div class="col-4">
-                <div class="dropdown">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
-                            data-bs-toggle="dropdown">
-                        Ciclo lectivo {{$ciclo_lectivo}}
-                    </button>
-                    <ul class="dropdown-menu">
-                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
-                            <li>
 
-                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                   href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
-                                    {{$i}}
-                                </a>
-
-                            </li>
-                        @endfor
-                    </ul>
-                </div>
-            </div>
         </div>
         <div id="alerts">
         </div>
