@@ -116,28 +116,34 @@
                             </small></i></small>
                 </div>
                 <div class="me-auto col-sm-4">
-                    <small style="font-size: 0.8em">
-                        <u>Aclaraciones:</u><br/>
-                    </small>
+                    <small><strong><i>
+                                <u>Aclaraciones:</u>
+                            </i></strong></small>
                 </div>
                 <div class="col-sm-8">
             <span class="col-sm-12 m-0">
+                <small>
                 <b>'N Proceso'</b>: <i>Nota Proceso.</i>
                 <b>'% Asist. Final'</b>: <i>Porcentaje Asistencia Final.</i>
                 <b>'N TFI'</b>: <i>Nota Trabajo Final Integrador.</i>
                 <b>'N Final'</b>: <i>Nota Final.</i>
+                </small>
             </span>
                     <br/>
                     <span class="col-sm-12 m-0">
+                        <small>
                 <b>'N Global'</b>: <i>Nota Global.</i>
                 <b>'% Act. Ap.'</b>: <i>Porcentaje de actividades del cargo aprobadas.</i>
                 <b>'TP's'</b>: <i>Trabajos Prácticos.</i>
                 <b>'N TPs x̄'</b>: <i>Nota Promedio Trabajos Prácticos.</i>
+                        </small>
                 </span><br/>
                     <span class="col-sm-12 m-0">
+                        <small>
                 <b>'N Ps x̄'</b>: <i>Nota Promedio Parciales.</i>
                 <b>'P's'</b>: <i>Parciales.</i>
                 <b>'% Asist.'</b>: <i>Porcentaje asistencia.</i>
+                        </small>
                 </span>
                 </div>
             </div>
