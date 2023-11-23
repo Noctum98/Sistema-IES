@@ -102,10 +102,10 @@
         </div>
         <div class="d-flex alert alert-info w-75 mx-auto">
             <div class="row m-0 p-0">
-                <div class="me-auto col-sm-4">
+                <div class="me-auto col-sm-3">
                     <small><strong><i>Importante: </i></strong></small>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-9">
                     <small class="mb-1"><i><small>
                                 Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
                                 Los procesos se editan desde cada cargo individualmente.
@@ -115,12 +115,12 @@
                                 @endif
                             </small></i></small>
                 </div>
-                <div class="me-auto col-sm-4">
+                <div class="me-auto col-sm-3">
                     <small><strong><i>
                                 <u>Aclaraciones:</u>
                             </i></strong></small>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-9">
             <span class="col-sm-12 m-0">
                 <small>
                 <b>'N Proceso'</b>: <i>Nota Proceso.</i>
