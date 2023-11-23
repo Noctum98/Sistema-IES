@@ -118,6 +118,23 @@ class ProcesoModularService
             ->get();
     }
 
+    public function obtenerProcesosModularesNoVinculadosByProcesos(array $procesos, $materia_id, $ciclo_lectivo)
+    {
+
+//        $procesos = Proceso::select('procesos.id')
+//            ->where('materia_id', '=', $materia_id)
+//            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+//            ->get();
+
+        return Proceso::select('procesos.id')
+            ->where('materia_id', '=', $materia_id)
+            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->whereNotIn(
+                'procesos.id',$procesos
+            )
+            ->get();
+    }
+
     /**
      * ProcesoModularService.php:147
      * @param $materia_id <b>id</b> de la materia
@@ -132,6 +149,27 @@ class ProcesoModularService
             ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
             ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
+            ->orderBy('alumnos.apellidos', 'asc')
+            ->get();
+    }
+
+    public function obtenerProcesosModularesByIdProcesos(array $procesos)
+    {
+        return ProcesoModular::select(
+            'proceso_modular.*'
+        )
+            ->whereIn('proceso_id', $procesos)
+            ->get();
+    }
+
+    public function obtenerProcesosByMateria($materia_id, $ciclo_lectivo)
+    {
+        return Proceso::select(
+            'procesos.*'
+        )
+            ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('materia_id', $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
             ->orderBy('alumnos.apellidos', 'asc')
             ->get();
     }
@@ -696,8 +734,8 @@ class ProcesoModularService
                 $cargo
             );
             $asistenciaPorcentaje = CargoProceso::where([
-                'proceso_id'=> $proceso->id,
-                'cargo_id'=>$cargo->id
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo->id
             ])->first()->porcentaje_asistencia;
 
             $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje;
@@ -893,7 +931,7 @@ class ProcesoModularService
             $total_cargo = $sumaTps / $cant_tps * (1 - $value_parcial) + $sumaPs / $cant_parciales * $value_parcial;
         } else {
             $cuenta = $cant_tps + $cant_parciales;
-            if($cuenta > 0) {
+            if ($cuenta > 0) {
                 $suma = $sumaTps + $sumaPs;
                 $total_cargo = $suma / $cuenta;
             }
@@ -914,11 +952,8 @@ class ProcesoModularService
 
         $cargo = Cargo::find($cargo_id);
         $weighing = $cargo->ponderacion($materia_id);
-        echo $weighing;
 
         return $weighing / 100 * $notaCargo;
-
-
     }
 
 

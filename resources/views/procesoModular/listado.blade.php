@@ -38,11 +38,25 @@
                 @endforeach
             </div>
         @endif
+        <div class="row-cols-1">
+            <div class="card w-75 mx-auto">
+                <div class="card-header text-center text-primary">
+                    <div class="card-title">
+                        Notas de Proceso Módulo <u>{{ $materia->nombre }}</u>
+                    </div>
+                    <div class="card-subtitle">
+                        <p>Año: {{$materia->año}}° - Carrera: {{$materia->carrera->nombre}}</p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="blockquote blockquote-footer mt-1 mb-0">
+                        Prof.: {{$materia->getProfesoresModulares()}}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-8">
-                <h4 class="text-info">
-                    Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
-                </h4>
+            <div class="col-12">
                 @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
                     <h6>
                         Cargos:

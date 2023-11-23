@@ -331,7 +331,6 @@ class CargoProcesoService
         $tps = $this->calificacionService->calificacionesInCargos([$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
         $parciales = $this->calificacionService->calificacionesInCargos([$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
 
-
         $notasTps = $this->calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
 
         $sumaTps = array_sum($notasTps->pluck('nota')->toArray());

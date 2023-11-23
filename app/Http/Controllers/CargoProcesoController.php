@@ -69,7 +69,9 @@ class CargoProcesoController extends Controller
      */
     public function store(StoreCargoProcesoRequest $request, int $proceso_id, int $cargo_id): RedirectResponse
     {
+
         $user = Auth::user();
+
         /** @var Proceso $proceso */
         $proceso = Proceso::find($proceso_id);
 
@@ -89,6 +91,7 @@ class CargoProcesoController extends Controller
             'cargo_id' => $cargo->id
         ])->first();
 
+
         $procesosCargos = ProcesosCargos::where([
             'proceso_id' => $proceso->id,
             'cargo_id' => $cargo->id
@@ -100,7 +103,7 @@ class CargoProcesoController extends Controller
 
         if (!$cargoProceso) {
             $cargoProceso = $this->cargoProcesoService->generaCargoProceso(
-                $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo);
+                $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
         }
 
         $materia = Materia::find($proceso->materia_id);

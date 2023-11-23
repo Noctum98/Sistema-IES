@@ -130,6 +130,19 @@ class Proceso extends Model
         ])->first();
     }
 
+    /**
+     * @param int $cargo
+     * @return bool
+     */
+    public function isClose(int $cargo): bool
+    {
+        $procesoCargo = $this->obtenerProcesoCargo($cargo);
+        if($procesoCargo && $procesoCargo->cierre){
+            return true;
+        }
+        return false;
+    }
+
     public function obtenerRegularidad()
     {
         return Regularidad::where([

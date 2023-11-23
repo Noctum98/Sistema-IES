@@ -22,11 +22,13 @@ class ProcesosCargosService
         $data['proceso_id'] = $proceso;
         $data['cargo_id'] = $cargo;
         $data['operador_id'] = $user;
+        $data['cierre'] = null;
+
         if ($cierre) {
             $data['cierre'] = new DateTime('now');
         }
-        return ProcesosCargos::create($data);
 
+        return ProcesosCargos::create($data);
     }
 
     /**
