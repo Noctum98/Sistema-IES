@@ -14,7 +14,7 @@
         }
 
     </style>
-    <div class="container" id="container-scroll">
+    <div class="container-fluid" id="container-scroll">
 
         <div class="d-flex justify-content-between">
             <div>
@@ -74,14 +74,31 @@
         <div id="alerts">
 
         </div>
-        <div class="d-flex alert alert-info w-75 mx-auto">
-            <div class="me-auto">
+        <div class="d-flex alert alert-info w-100 mx-auto">
+            <div class="col-sm-2">
                 <span><strong><i>Importante:</i></strong></span>
             </div>
             <div>
                 <small><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los
                         Parciales.</i></small><br/>
                 <small><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></small>
+                <br/>
+                <small>
+                    <i class="fa fa-plus mr-2"
+                       title="Por favor haga clic aquí para agregar al alumno a la planilla modular">
+                    </i>
+                    Si algún alumno no está cargado en la planilla modular, por favor agréguelo presionado el
+                    botón
+                </small>
+                <br/>
+                <small>
+                    <i class="fa fa-upload mr-2"
+                       title="Por favor haga clic aquí para actualizar planilla modular">
+                    </i>
+                    Para mantener actualizadas las notas en la planilla modular por favor presione el botón
+                    <br/>
+                </small>
+
             </div>
         </div>
 
@@ -121,8 +138,12 @@
                             <small style="font-size: 0.8em">(Ponderación)</small>
                         </th>
                         <th>
-                            Cierre
+                            <i class="fa fa-upload"></i>
                         </th>
+                        <th>
+                            Cerrar notas
+                        </th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -136,7 +157,7 @@
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
-                                                    class="{{ $proceso->procesoCalificacion(
+                                                class="{{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                                 <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
@@ -154,7 +175,7 @@
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                        class="{{ $proceso->procesoCalificacion(
+                                                    class="{{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
@@ -189,21 +210,29 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                 @if($proceso->getCargosProcesos($cargo->id))
                                     {{$proceso->getCargosProcesos($cargo->id)->nota_cargo}}<br/>
                                     <small
-                                            style="font-size: 0.8em">
+                                        style="font-size: 0.8em">
                                         ({{$proceso->getCargosProcesos($cargo->id)->nota_ponderada}})
                                     </small>
                                 @else
                                     <a href="{{route('cargo_proceso.store',
-['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm">
-                                        <i class="fa fa-cogs"></i>
-                                        <small title="Por favor haga clic aquí">
-                                            Agregar alumno a planilla modular
-                                        </small>
+['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-plus" title="Por favor haga clic aquí"></i>
+
                                     </a>
                                 @endif
                             </td>
 
-                            <td>
+                            <td class="text-center">
+                                @if($proceso->getCargosProcesos($cargo->id))
+                                    <a href="{{route('cargo_proceso.actualizar',
+['cargo_proceso' => $proceso->getCargosProcesos($cargo->id)])}}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-upload" title="Por favor actualice haciendo clic aquí"></i>
+                                    </a>
+                                @else
+                                    <small><i class="fa fa-arrow-left"></i> </small>
+                                @endif
+                            </td>
+                            <td class="text-center">
                                 <span class="d-none" id="span-{{$proceso->id}}">
                                     <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
                                 </span>
@@ -226,6 +255,7 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                     @endif
                                 </span>
                             </td>
+
 
                         </tr>
                     @endforeach
