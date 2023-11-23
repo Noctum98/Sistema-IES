@@ -136,7 +136,7 @@
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
-                                                class="{{ $proceso->procesoCalificacion(
+                                                    class="{{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                                 <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
@@ -154,7 +154,7 @@
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                    class="{{ $proceso->procesoCalificacion(
+                                                        class="{{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
@@ -189,13 +189,13 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                 @if($proceso->getCargosProcesos($cargo->id))
                                     {{$proceso->getCargosProcesos($cargo->id)->nota_cargo}}<br/>
                                     <small
-                                        style="font-size: 0.8em">
+                                            style="font-size: 0.8em">
                                         ({{$proceso->getCargosProcesos($cargo->id)->nota_ponderada}})
                                     </small>
                                 @else
                                     <a href="{{route('cargo_proceso.store',
 ['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm">
-                                       <i class="fa fa-cogs"></i>
+                                        <i class="fa fa-cogs"></i>
                                         <small title="Por favor haga clic aquí">
                                             Agregar alumno a planilla modular
                                         </small>
@@ -217,7 +217,10 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                         <label for="{{$proceso->id}}"></label>
                                         <input type="checkbox" class="check-cierre"
                                                id="{{$proceso->id}}"
-                                               {{$proceso->obtenerProcesoCargo($cargo->id) ? 'checked':'unchecked'}}
+                                               @if($proceso->obtenerProcesoCargo($cargo->id))
+                                                   {{$proceso->obtenerProcesoCargo($cargo->id)->isClose() ?
+                                                    'checked':'unchecked'}}
+                                               @endif
                                                data-tipo="modular" data-cargo="{{$cargo->id}}"
                                         >
                                     @endif

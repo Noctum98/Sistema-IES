@@ -44,7 +44,9 @@ class ProcesoModularController extends Controller
      * @param CicloLectivoService $cicloLectivoService
      * @param CargoProcesoService $cargoProcesoService
      */
-    public function __construct(CicloLectivoService $cicloLectivoService, CargoProcesoService $cargoProcesoService)
+    public function __construct(
+        CicloLectivoService $cicloLectivoService,
+        CargoProcesoService $cargoProcesoService)
     {
         $this->cicloLectivoService = $cicloLectivoService;
         $this->cargoProcesoService = $cargoProcesoService;
@@ -67,22 +69,29 @@ class ProcesoModularController extends Controller
         $cargo = Cargo::find($cargo_id);
 
         $puedeProcesar = false;
-        if ($cargo and Auth::user()->hasCargo($cargo_id) and $cargo->responsableTFI($materia->id)) {
+
+        if ($cargo && Auth::user()->hasCargo($cargo_id) && $cargo->responsableTFI($materia->id)) {
             $puedeProcesar = true;
         }
 
-        if (Auth::user()->hasAnyRole('coordinador') or Auth::user()->hasAnyRole('admin')) {
+        if (Auth::user()->hasAnyRole('coordinador') || Auth::user()->hasAnyRole('admin')) {
             $puedeProcesar = true;
         }
         $user = Auth::user();
 
         $acciones = [];
+
         $serviceModular = new ProcesoModularService();
 
-        $procesos = $serviceModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
+        $proc = $serviceModular->obtenerProcesosByMateria($materia->id, $ciclo_lectivo);
+        $arrayProcesos = $proc->pluck('id')->toArray();
+        $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
-
-        if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id, $ciclo_lectivo)) > 0) {
+        if (count(
+            $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
+                $arrayProcesos, $materia, $ciclo_lectivo)
+            ) > 0)
+        {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
@@ -185,7 +194,7 @@ class ProcesoModularController extends Controller
 
 
         $service->setNotaProceso($proceso_id, $nota_proceso);
-        $service->setPorcentajeProceso($proceso_id, $porcentaje/100);
+        $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
 
         return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
