@@ -82,55 +82,72 @@
         <div class="row">
             <div class="col-12 text-center">
                 @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
-                    <h6>
-                        Cargos:
-                        @foreach($materia->cargos()->get() as $cargo)
-                            <a href="{{ route('proceso.listadoCargo',
+                    <h6> Cargos: </h6>
+                    @foreach($materia->cargos()->get() as $cargo)
+                        <a href="{{ route('proceso.listadoCargo',
                                 ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
-                               class="btn btn-info btn-sm" title="Ver proceso cargo">
-                                {{$cargo->nombre}}
-                                @if(Session::has('admin'))
-                                    {{$cargo->id}}
-                                @endif
-                            </a>
-                        @endforeach
-                    </h6>
+                           class="btn btn-info btn-sm" title="Ver proceso cargo">
+                            {{$cargo->nombre}}
+                            @if(Session::has('admin'))
+                                {{$cargo->id}}
+                            @endif
+                        </a>
+                    @endforeach
+
                 @endif
             </div>
 
         </div>
         <div id="alerts">
         </div>
-        <p class="mb-1"><strong><i>Importante:</i></strong></p>
-        <p class="mb-1"><i><small>
-                    Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
-                    Los procesos se editan desde cada cargo individualmente.
+        <div class="d-flex alert alert-info w-75 mx-auto">
+            <div class="row m-0 p-0">
+                <div class="me-auto col-sm-4">
+                    <small><strong><i>Importante: </i></strong></small>
+                </div>
+                <div class="col-sm-8">
+                    <small class="mb-1"><i><small>
+                                Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
+                                Los procesos se editan desde cada cargo individualmente.
 
-                    @if($puede_procesar)
-                        <b>Usted tiene permisos de edición</b>
-                    @endif
-                </small></i></p>
-        <p class="mb-1"><small style="font-size: 0.8em">
-                <u>Aclaraciones:</u><br/>
-                <span class="col-sm-12">
-                    <b>'N Proceso'</b>: <i>Nota Proceso.</i>
+                                @if($puede_procesar)
+                                    <br/><b>Usted tiene permisos de edición</b>
+                                @endif
+                            </small></i></small>
+                </div>
+                <div class="me-auto col-sm-4">
+                    <small><strong><i>
+                                <u>Aclaraciones:</u>
+                            </i></strong></small>
+                </div>
+                <div class="col-sm-8">
+            <span class="col-sm-12 m-0">
+                <small>
+                <b>'N Proceso'</b>: <i>Nota Proceso.</i>
                 <b>'% Asist. Final'</b>: <i>Porcentaje Asistencia Final.</i>
                 <b>'N TFI'</b>: <i>Nota Trabajo Final Integrador.</i>
                 <b>'N Final'</b>: <i>Nota Final.</i>
-                </span><br/>
-                <span class="col-sm-12 m-0">
+                </small>
+            </span>
+                    <br/>
+                    <span class="col-sm-12 m-0">
+                        <small>
                 <b>'N Global'</b>: <i>Nota Global.</i>
                 <b>'% Act. Ap.'</b>: <i>Porcentaje de actividades del cargo aprobadas.</i>
                 <b>'TP's'</b>: <i>Trabajos Prácticos.</i>
                 <b>'N TPs x̄'</b>: <i>Nota Promedio Trabajos Prácticos.</i>
+                        </small>
                 </span><br/>
-                <span class="col-sm-12 m-0">
+                    <span class="col-sm-12 m-0">
+                        <small>
                 <b>'N Ps x̄'</b>: <i>Nota Promedio Parciales.</i>
                 <b>'P's'</b>: <i>Parciales.</i>
                 <b>'% Asist.'</b>: <i>Porcentaje asistencia.</i>
+                        </small>
                 </span>
-            </small>
-        </p>
+                </div>
+            </div>
+        </div>
 
         @if(isset($comision))
 
