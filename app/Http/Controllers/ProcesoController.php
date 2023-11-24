@@ -345,6 +345,11 @@ class ProcesoController extends Controller
         return response()->json($data, 200);
     }
 
+    /**
+     * Cerramos el proceso completo
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function cambiaCierre(Request $request): JsonResponse
     {
         $user = Auth::user();

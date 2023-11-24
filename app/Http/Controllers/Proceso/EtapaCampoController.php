@@ -129,9 +129,9 @@ class EtapaCampoController extends Controller
     {
         $proceso = Proceso::find($proceso_id);
         $proceso->update(['habilitado_campo'=>$habilitacion]);
-        Log::info($proceso_id);
-        Log::info($habilitacion);
-        Log::info($proceso);
+        // Log::info($proceso_id);
+        // Log::info($habilitacion);
+        // Log::info($proceso);
 
         return response($proceso,200);
     }

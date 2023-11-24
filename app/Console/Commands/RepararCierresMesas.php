@@ -48,8 +48,7 @@ class RepararCierresMesas extends Command
             '07-10-2023',
             '10-10-2023',
             '20-11-2023',
-            '08-12-2023',
-            '09-12-2023',
+            '08-12-2023'
         ];
     }
 
@@ -83,7 +82,6 @@ class RepararCierresMesas extends Command
                 }
                 $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
-                Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre.' '.$mesa->fecha);
             }else{
                 $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha_segundo.'-1 day'));
                 $contador = 0;
@@ -99,7 +97,6 @@ class RepararCierresMesas extends Command
                 }
                 $mesa->cierre_segundo = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
-                Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre_segundo.' '.$mesa->fecha_segundo);
             }
 
         }

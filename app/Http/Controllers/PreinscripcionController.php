@@ -326,7 +326,6 @@ class PreinscripcionController extends Controller
 
     public function editar(Request $request, $id)
     {
-        Log::info($request->all());
         $validate = $this->validate($request, [
             'nombres'       =>  ['required'],
             'apellidos'     =>  ['required'],

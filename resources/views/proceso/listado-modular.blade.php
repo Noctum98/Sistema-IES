@@ -14,7 +14,7 @@
         }
 
     </style>
-    <div class="container" id="container-scroll">
+    <div class="container-fluid" id="container-scroll">
 
         <div class="d-flex justify-content-between">
             <div>
@@ -74,14 +74,30 @@
         <div id="alerts">
 
         </div>
-        <div class="d-flex alert alert-info w-75 mx-auto">
-            <div class="me-auto">
+        <div class="d-flex alert alert-info w-100 mx-auto">
+            <div class="col-sm-2">
                 <span><strong><i>Importante:</i></strong></span>
             </div>
             <div>
                 <small><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los
                         Parciales.</i></small><br/>
                 <small><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></small>
+                <br/>
+                <small>
+                    <i class="fa fa-plus mr-2"
+                       title="Por favor haga clic aquí para agregar al alumno a la planilla modular">
+                    </i>
+                    Este signo avisa que el alumno no tiene las notas cargadas  en planilla modular.
+                    Por favor haga clic en el mismo.
+                </small>
+                <br/>
+                <small>
+                    <i class="fa fa-upload mr-2"
+                       title="Por favor haga clic aquí para actualizar planilla modular">
+                    </i>
+                    Para mantener actualizadas las notas en la planilla modular por favor presione el botón
+                </small>
+                <br/>
             </div>
         </div>
 
@@ -121,8 +137,12 @@
                             <small style="font-size: 0.8em">(Ponderación)</small>
                         </th>
                         <th>
-                            Cierre
+                            <i class="fa fa-upload"></i>
                         </th>
+                        <th>
+                            Cerrar notas
+                        </th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -194,13 +214,24 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                     </small>
                                 @else
                                     <a href="{{route('cargo_proceso.store',
-['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}">
-                                        -Generar Cargo Proceso-
+['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-plus" title="Por favor haga clic aquí"></i>
+
                                     </a>
                                 @endif
                             </td>
 
-                            <td>
+                            <td class="text-center">
+                                @if($proceso->getCargosProcesos($cargo->id))
+                                    <a href="{{route('cargo_proceso.actualizar',
+['cargo_proceso' => $proceso->getCargosProcesos($cargo->id)])}}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-upload" title="Por favor actualice haciendo clic aquí"></i>
+                                    </a>
+                                @else
+                                    <small><i class="fa fa-arrow-left"></i> </small>
+                                @endif
+                            </td>
+                            <td class="text-center">
                                 <span class="d-none" id="span-{{$proceso->id}}">
                                     <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
                                 </span>
@@ -214,12 +245,16 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                         <label for="{{$proceso->id}}"></label>
                                         <input type="checkbox" class="check-cierre"
                                                id="{{$proceso->id}}"
-                                               {{$proceso->obtenerProcesoCargo($cargo->id) ? 'checked':'unchecked'}}
+                                               @if($proceso->obtenerProcesoCargo($cargo->id))
+                                                   {{$proceso->obtenerProcesoCargo($cargo->id)->isClose() ?
+                                                    'checked':'unchecked'}}
+                                               @endif
                                                data-tipo="modular" data-cargo="{{$cargo->id}}"
                                         >
                                     @endif
                                 </span>
                             </td>
+
 
                         </tr>
                     @endforeach

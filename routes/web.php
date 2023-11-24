@@ -150,6 +150,9 @@ Route::prefix('cargo')->group(function () {
 
 Route::prefix('cargo_proceso')->group(function () {
     Route::get('/{proceso_id}/{cargo_id}', [CargoProcesoController::class, 'store'])->name('cargo_proceso.store');
+    Route::get('/{cargo_proceso}/actualizar/planilla-modular',
+        [CargoProcesoController::class, 'update'])
+        ->name('cargo_proceso.actualizar');
 });
 
 // Rutas de Carreras
@@ -428,7 +431,8 @@ Route::prefix('proceso')->group(function () {
         'proceso.listado'
     );
 
-    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo']
+    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
+        [ProcesoController::class, 'vista_listadoCargo']
     )->name(
         'proceso.listadoCargo'
     );

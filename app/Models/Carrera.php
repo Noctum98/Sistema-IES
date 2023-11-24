@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
  * Class Carrera
  * @package App\Models
  * @property int $id
+ * @property string $nombre
  */
 class Carrera extends Model
 {
