@@ -30,6 +30,12 @@
                             {{ $calificacion->materia->nombre}}</h5>
                         @if($calificacion->modelCargo()->first())
                             Cargo: <b><i>{{$calificacion->modelCargo()->first()->nombre}}</i></b>
+                            <br/>
+                            @if($calificacion->modelCargo()->first()->profesores())
+                                <small style="font-size: 0.8em" class="text-muted">
+                                    {{$calificacion->cargo()->first()->profesores()}}
+                                </small>
+                            @endif
                         @endif
                         @if($calificacion->comision)
                             <br/>
@@ -45,12 +51,6 @@
                             <br/>
                             <small>{{$calificacion->description}}</small>
                         </h4>
-                        @if($calificacion->cargo_id)
-                            @if($calificacion->cargo()->first()
-                                && $calificacion->cargo()->first()->profesores())
-                            <p>{{$calificacion->cargo()->first()->profesores()}}</p>
-                            @endif
-                        @endif
 
                     </div>
                 </div>
