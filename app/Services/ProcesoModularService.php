@@ -158,7 +158,10 @@ class ProcesoModularService
         return ProcesoModular::select(
             'proceso_modular.*'
         )
+            ->leftjoin('procesos', 'procesos.id', 'proceso_modular.proceso_id')
+            ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->whereIn('proceso_id', $procesos)
+            ->orderBy('alumnos.apellidos', 'asc')
             ->get();
     }
 
