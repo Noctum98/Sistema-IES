@@ -60,7 +60,7 @@ class AjustesInscripciones extends Command
                     ]);
 
                     echo $alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion . ' | ';
-                    Log::info($alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion);
+                    // Log::info($alumno->nombres . ' ' . $alumno->apellidos . '(' . $alumno->dni . '): ' . $carrera->nombre . '(' . $carrera->turno . ') ' . $carrera->resolucion);
                 }
             }
         }

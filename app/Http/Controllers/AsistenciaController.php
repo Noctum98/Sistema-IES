@@ -49,8 +49,8 @@ class AsistenciaController extends Controller
         }
 
 
-        Log::info('AsistenciaController - vista_carreras: '.$user->nombre.' '.$user->apellido);
-        Log::info($user->cargo_materia()->get());
+        // Log::info('AsistenciaController - vista_carreras: '.$user->nombre.' '.$user->apellido);
+        // Log::info($user->cargo_materia()->get());
 
         $cargos_materia = [];
         if(count($user->cargo_materia()->get()) > 0){

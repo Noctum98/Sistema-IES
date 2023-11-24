@@ -66,7 +66,6 @@ class LibrosController extends Controller
                     $libro = Libro::create($request->all());
                 }
 
-                Log::info($libro);
                 $this->setLibroActasVolantes($libro);
 
             }
