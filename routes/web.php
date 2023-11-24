@@ -127,7 +127,7 @@ Route::prefix('alumnos')->group(function () {
 
 Route::prefix('encuesta_socioeconomica')->group(function () {
     Route::get('personal/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
-    Route::get('motivacional/{encuesta_id}/{carrera_id}',[EncuestaSocioeconomica::class,'showForm2'])->name('encuesta_socioeconomica.showForm2');
+    Route::get('motivacional/{encuesta_id}/{carrera_id}',[EncuestaSocioeconomicaController::class,'showForm2'])->name('encuesta_socioeconomica.showForm2');
     Route::post('/store',[EncuestaSocioeconomicaController::class,'store'])->name('encuesta_socioeconomica.store');
 });
 

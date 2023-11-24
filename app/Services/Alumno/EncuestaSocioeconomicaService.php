@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Materia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EncuestaSocioeconomicaService
 {
@@ -134,6 +135,17 @@ class EncuestaSocioeconomicaService
         }
         $request['problemas_judiciales'] = $problemas_judiciales;
 
-        dd($request->all());
+
+        if($request['comprobanete_progresar'])
+        {
+            $comprobante = $request->file('comprobanete_progresar');
+            $archivo_nombre = uniqid() . $comprobante->getClientOriginalName();
+
+            Storage::disk('temp')->put($archivo_nombre, file_get_contents($comprobante));
+
+            $request['comprobanete_progresar'] = $archivo_nombre;
+        }
+
+        return $request;
     }
 }

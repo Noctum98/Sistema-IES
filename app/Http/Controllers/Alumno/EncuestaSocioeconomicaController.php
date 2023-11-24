@@ -29,7 +29,7 @@ class EncuestaSocioeconomicaController extends Controller
         return view('alumno.encuesta_socioeconomica.form',['alumno'=>$alumno,'carrera'=>$carrera]);
     }
 
-    public function showForm2(EncuestaSocioeconomicaRequest $request,$id,$carrera_id)
+    public function showForm2(Request $request,$id,$carrera_id)
     {
         $encuestaSocioeconomica = EncuestaSocioeconomica::find($id);
         $carrera = Carrera::find($carrera_id);
@@ -39,7 +39,7 @@ class EncuestaSocioeconomicaController extends Controller
 
     public function store(EncuestaSocioeconomicaRequest $request)
     {
-        $this->encuestaSocioeconomicaService->procesarDatos($request);
+        $request = $this->encuestaSocioeconomicaService->procesarDatos($request);
         $encuestaSocioeconomica = EncuestaSocioeconomica::create($request->all());
         $carrera_id = $request['carrera_id'];
 
