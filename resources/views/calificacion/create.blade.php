@@ -33,7 +33,7 @@
                             <br/>
                             @if($calificacion->modelCargo()->first()->profesores())
                                 <small style="font-size: 0.8em" class="text-muted">
-                                    {{$calificacion->cargo()->first()->profesores()}}
+                                    {{$calificacion->modelCargo()->first()->profesores()}}
                                 </small>
                             @endif
                         @endif
