@@ -14,7 +14,7 @@ class RepararUsuariosAlumnos extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'command:repararUsuariosAlumnos';
 
     /**
      * The console command description.
