@@ -46,7 +46,8 @@
                             <small>{{$calificacion->description}}</small>
                         </h4>
                         @if($calificacion->cargo_id)
-                            @if($calificacion->cargo()->first()->profesores())
+                            @if($calificacion->cargo()->first()
+                                && $calificacion->cargo()->first()->profesores())
                             <p>{{$calificacion->cargo()->first()->profesores()}}</p>
                             @endif
                         @endif
