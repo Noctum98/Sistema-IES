@@ -73,7 +73,7 @@ class AsistenciaController extends Controller
      * @param Request $request
      * @param int $id <b>id</b> de la materia.
      * @param null $ciclo_lectivo
-     * @param null $cargo_id <b>id</> del cargo.
+     * @param null $cargo_id <b>id</b> del cargo.
      * @return Application|Factory|View
      */
     public function vista_admin(Request $request, int $id,$ciclo_lectivo = null, $cargo_id = null)

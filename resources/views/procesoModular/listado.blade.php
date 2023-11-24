@@ -151,7 +151,11 @@
 
         @if(isset($comision))
 
-            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
+            <a href="{{route('excel.procesosModular',[
+                    'materia_id'=>$materia->id,
+                    'ciclo_lectivo'=>$ciclo_lectivo,
+                    'comision_id'=>$comision->id
+                    ])}}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
         @else
 
