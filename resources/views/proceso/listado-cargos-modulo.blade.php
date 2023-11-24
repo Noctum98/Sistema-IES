@@ -220,6 +220,7 @@
                         </div>
                     </div>
                 </td>
+
                 {{-- Nota Promedio Parciales --}}
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
@@ -229,6 +230,7 @@
                         No asignado
                     @endif
                 </td>
+
                 {{-- Columna Nota Final --}}
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
@@ -244,6 +246,7 @@
                         No asignado
                     @endif
                 </td>
+
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
                         {{$cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->porcentaje_asistencia}}%

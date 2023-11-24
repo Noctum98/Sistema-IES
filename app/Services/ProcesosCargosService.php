@@ -37,15 +37,14 @@ class ProcesosCargosService
      * @param int $user <i>id</i> de usuario
      * @return void
      */
-    public function actualizar(int $proceso, int $cargo, int $user):void
+    public function actualizar(int $proceso, int $cargo, int $user): void
     {
         $pc = $this->getProcesoCargo($proceso, $cargo);
 
-        if ($pc) {
-            $this->cierraProcesoCargo($cargo, $proceso, $user);
-        } else {
+        if (!$pc) {
             $this->crear($proceso, $cargo, $user);
         }
+        $this->cierraProcesoCargo($cargo, $proceso, $user, true);
     }
 
     /**
@@ -62,9 +61,9 @@ class ProcesosCargosService
         if (!$pc) {
             $pc = $this->crear($proceso, $cargo, $user);
         }
-
-        $pc->cierre = new DateTime('now');
-
+        if ($cierra) {
+            $pc->cierre = new DateTime('now');
+        }
         $pm = ProcesoModular::where([
             'proceso_id' => $proceso,
         ])->first();
@@ -72,6 +71,14 @@ class ProcesosCargosService
         $pms = new ProcesoModularService();
 
         $pms->grabaEstadoPorProcesoModular($pm);
+
+        // Esta parte debería estar como método aparte
+        $nota_tfi = $pm->trabajo_final_nota;
+        $nota_pf = $pm->promedio_final_nota;
+        $nota_final = $nota_pf * 0.8 + $nota_tfi * 0.2;
+
+        $pm->nota_final_nota = $nota_final;
+        $pm->update();
 
         $procesoService = new ProcesoService();
         $procesoService->cierraProcesoDesdeModular($proceso);
