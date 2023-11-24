@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * This is the model class for table "materias"
  *
  * @property integer $id
+ * @property integer $año
  *
  */
 class Materia extends BaseModel
@@ -254,6 +255,22 @@ class Materia extends BaseModel
     public function sede()
     {
         return $this->carrera()->first()->sede()->first();
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfesoresModulares(): string
+    {
+
+        $profesores = '';
+        if(count($this->cargos()->get()) > 0){
+            foreach ($this->cargos()->get() as $cargo){
+                /** @var Cargo $cargo */
+                $profesores .= $cargo->profesores() . "\n";
+            }
+        }
+        return $profesores;
     }
 
 }

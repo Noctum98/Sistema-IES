@@ -33,7 +33,9 @@ class CargoProcesoService
      * @param ProcesoCalificacionService $procesoCalificacionService
      * @param ProcesoModularService $procesoModularService
      */
-    public function __construct(CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService, ProcesoModularService $procesoModularService)
+    public function __construct(
+        CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService,
+        ProcesoModularService $procesoModularService)
     {
         $this->calificacionService = $calificacionService;
         $this->procesoCalificacionService = $procesoCalificacionService;
@@ -49,8 +51,10 @@ class CargoProcesoService
      */
     public function getCalificacionesPorCargo($cargo, $ciclo_lectivo, $materia): array
     {
-        $cantidadTps = $this->calificacionService->calificacionesInCargos([$cargo], $ciclo_lectivo, [self::TIPO_TP], $materia);
-        $cantidadPcs = $this->calificacionService->calificacionesInCargos([$cargo], $ciclo_lectivo, [self::TIPO_PARCIAL], $materia);
+        $cantidadTps = $this->calificacionService->calificacionesInCargos(
+            [$cargo], $ciclo_lectivo, [self::TIPO_TP], $materia);
+        $cantidadPcs = $this->calificacionService->calificacionesInCargos(
+            [$cargo], $ciclo_lectivo, [self::TIPO_PARCIAL], $materia);
 
         return [$cantidadTps, $cantidadPcs];
     }
@@ -63,9 +67,11 @@ class CargoProcesoService
      * @param $user
      * @return array <b>Cantidad de Trabajos Prácticos y Cantidad de Parciales</b>
      */
-    public function grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user): array
+    public function grabaCantidadesCalificacionesPorCargoYProcesos(
+        $cargo, $cicloLectivo, $proceso, $materia, $user): array
     {
-        list($trabajosPracticals, $parciales, $cargoProceso) = $this->getCargoProcesoYCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
+        list($trabajosPracticals, $parciales, $cargoProceso) = $this->getCargoProcesoYCalificaciones(
+            $cargo, $cicloLectivo, $proceso, $materia, $user);
 
         $cargoProceso->cantidad_tp = count($trabajosPracticals);
         $cargoProceso->cantidad_ps = count($parciales);
@@ -85,20 +91,23 @@ class CargoProcesoService
      */
     public function grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user): array
     {
-        list($trabajosPracticals, $parciales, $cargoProceso) = $this->getCargoProcesoYCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
+        list($trabajosPracticals, $parciales, $cargoProceso) = $this->getCargoProcesoYCalificaciones(
+            $cargo, $cicloLectivo, $proceso, $materia, $user);
 
         $sumaTps = null;
         $sumaPs = null;
 
         foreach ($trabajosPracticals as $tps) {
-            foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion([$tps->id], $proceso) as $notas) {
-                if (is_numeric($notas->nota) and $notas->nota > 0) {
+            foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion(
+                [$tps->id], $proceso) as $notas)
+            {
+                if (is_numeric($notas->nota) && $notas->nota > 0) {
                     $sumaTps += $notas->nota;
                 }
             }
         }
         foreach ($parciales as $ps) {
-//            $sumaPs += $this->calificacionService->notaCalificacionParcialByAlumno($this->getAlumnoId($proceso), $ps->id);
+
             if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso, $ps->id))) {
                 $sumaPs += $this->calificacionService->calificacionParcialByProceso($proceso, $ps->id);
             }
@@ -128,14 +137,14 @@ class CargoProcesoService
         $cantidadTps = $cargoProceso->cantidad_tp;
         $cantidadPs = $cargoProceso->cantidad_ps;
 
-        if (!$cantidadTps and !$cantidadPs) {
-            list($cantidadTps, $cantidadPs) = $this->grabaCantidadesCalificacionesPorCargoYProcesos($cargo, $cicloLectivo, $proceso, $materia, $user);
+        if (!$cantidadTps && !$cantidadPs) {
+            list($cantidadTps, $cantidadPs) =
+                $this->grabaCantidadesCalificacionesPorCargoYProcesos(
+                    $cargo, $cicloLectivo, $proceso, $materia, $user);
         }
-//        $sumaTps = $cargoProceso->suma_tp;
-//        $sumaPs = $cargoProceso->suma_ps;
-//        if (!$sumaTps and !$sumaPs) {
+
         list($sumaTps, $sumaPs) = $this->grabaSumaCalificaciones($cargo, $cicloLectivo, $proceso, $materia, $user);
-//        }
+
 
         $cargoProceso->nota_tp = 0;
         if ($cantidadTps > 0) {
@@ -295,6 +304,10 @@ class CargoProcesoService
     }
 
 
+    /**
+     * Para hacer
+     * @return void
+     */
     public function procesaCargoProceso()
     {
 
@@ -314,9 +327,12 @@ class CargoProcesoService
         $this->grabaNotaPonderadaCargo($cargo, $cicloLectivo, $proceso, $materia, $user);
     }
 
+    /**
+     * Para hacer
+     * @return void
+     */
     public function getNotas()
     {
-
     }
 
     /**
@@ -326,11 +342,13 @@ class CargoProcesoService
      * @param CargoProceso $cargoProceso
      * @return CargoProceso
      */
-    public function actualizaCargoProceso(int $cargo, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
+    public function actualizaCargoProceso(
+        int $cargo, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
-        $tps = $this->calificacionService->calificacionesInCargos([$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
-        $parciales = $this->calificacionService->calificacionesInCargos([$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
-
+        $tps = $this->calificacionService->calificacionesInCargos(
+            [$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
+        $parciales = $this->calificacionService->calificacionesInCargos(
+            [$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
 
         $notasTps = $this->calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
 
@@ -356,18 +374,18 @@ class CargoProcesoService
             ]
         )->first();
 
+        if($asistencia) {
+            $asistenciaModular = AsistenciaModular::where([
+                'asistencia_id' => $asistencia->id,
+                'cargo_id' => $cargo,
 
-        $asistenciaModular = AsistenciaModular::where([
-            'asistencia_id' => $asistencia->id,
-            'cargo_id' => $cargo,
+            ])->first();
 
-        ])->first();
+            if ($asistenciaModular) {
+                $porcentajeAsistencia = $asistenciaModular->porcentaje;
+            }
 
-        if ($asistenciaModular) {
-            $porcentajeAsistencia = $asistenciaModular->porcentaje;
         }
-
-
         $cargoProceso->cantidad_tp = count($tps);
         $cargoProceso->cantidad_ps = count($parciales);
 
@@ -376,10 +394,10 @@ class CargoProcesoService
 
         $notaTps = null;
         $notaParciales = null;
-        if (count($tps) > 0 and $sumaTps > 0) {
+        if (count($tps) > 0 && $sumaTps > 0) {
             $notaTps = $sumaTps / count($tps);
         }
-        if (count($parciales) > 0 and $sumaPs > 0) {
+        if (count($parciales) > 0 && $sumaPs > 0) {
             $notaParciales = $sumaPs / count($parciales);
         }
         $cargoProceso->nota_tp = $notaTps;

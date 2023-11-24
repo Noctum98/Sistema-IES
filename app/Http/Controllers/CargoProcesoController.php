@@ -64,12 +64,14 @@ class CargoProcesoController extends Controller
      *
      * @param StoreCargoProcesoRequest $request
      * @param int $proceso_id
-     * @param int $cargo_id
+     * @param $cargo_id
      * @return RedirectResponse
      */
     public function store(StoreCargoProcesoRequest $request, int $proceso_id, int $cargo_id): RedirectResponse
     {
+
         $user = Auth::user();
+
         /** @var Proceso $proceso */
         $proceso = Proceso::find($proceso_id);
 
@@ -89,6 +91,7 @@ class CargoProcesoController extends Controller
             'cargo_id' => $cargo->id
         ])->first();
 
+
         $procesosCargos = ProcesosCargos::where([
             'proceso_id' => $proceso->id,
             'cargo_id' => $cargo->id
@@ -100,7 +103,7 @@ class CargoProcesoController extends Controller
 
         if (!$cargoProceso) {
             $cargoProceso = $this->cargoProcesoService->generaCargoProceso(
-                $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo);
+                $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
         }
 
         $materia = Materia::find($proceso->materia_id);
@@ -150,7 +153,10 @@ class CargoProcesoController extends Controller
         $this->cargoProcesoService->actualizaCargoProceso($cargoProceso->cargo_id, $proceso, $materia, $cargoProceso);
 
         return redirect()->route('proceso.listadoCargo',
-            [$materia->id, $proceso->cargo_id,$proceso->ciclo_lectivo]);
+            [
+                $materia->id,
+                 $cargoProceso->cargo_id,
+                 $proceso->ciclo_lectivo]);
     }
 
     /**

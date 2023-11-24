@@ -23,12 +23,36 @@
             border-color: rgba(52, 58, 64, 0.75);
         }
 
-
     </style>
     <div class="container-fluid w-100" id="container-scroll">
-        <a href="{{url()->previous()}}">
-            <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
-        </a>
+        <div class="row m-0">
+            <div class="col-sm-6 text-left">
+                <a href="{{url()->previous()}}">
+                    <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+                </a>
+            </div>
+
+            <div class="col-sm-6 text-right">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo {{$ciclo_lectivo}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                            <li>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                   href="{{ route('proceso_modular.list',
+                                    ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
+                                    {{$i}}
+                                </a>
+                            </li>
+                        @endfor
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         @if($acciones)
             <div>
                 @foreach($acciones as $accion)
@@ -38,84 +62,100 @@
                 @endforeach
             </div>
         @endif
-        <div class="row">
-            <div class="col-8">
-                <h4 class="text-info">
-                    Notas de Proceso del Módulo <u>{{ $materia->nombre }}</u>
-                </h4>
-                @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
-                    <h6>
-                        Cargos:
-                        @foreach($materia->cargos()->get() as $cargo)
-                            <a href="{{ route('proceso.listadoCargo',
-                                ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
-                               class="btn btn-info" title="Ver proceso cargo">
-                                {{$cargo->nombre}}
-                                @if(Session::has('admin'))
-                                    {{$cargo->id}}
-                                @endif
-                            </a>
-                        @endforeach
-                    </h6>
-                @endif
-            </div>
-            <div class="col-4">
-                <div class="dropdown">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
-                            data-bs-toggle="dropdown">
-                        Ciclo lectivo {{$ciclo_lectivo}}
-                    </button>
-                    <ul class="dropdown-menu">
-                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
-                            <li>
-
-                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                   href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $i, 'cargo_id'=> $cargo_id]) }}">
-                                    {{$i}}
-                                </a>
-
-                            </li>
-                        @endfor
-                    </ul>
+        <div class="row-cols-1">
+            <div class="card w-75 mx-auto">
+                <div class="card-header text-center text-primary">
+                    <div class="card-title">
+                        Notas de Proceso Módulo <u>{{ $materia->nombre }}</u>
+                    </div>
+                    <div class="card-subtitle">
+                        <p>Año: {{$materia->año}}° - Carrera: {{$materia->carrera->nombre}}</p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="blockquote blockquote-footer mt-1 mb-0">
+                        Prof.: {{$materia->getProfesoresModulares()}}
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                @if(Session::has('coordinador') || Session::has('admmin') || Session::has('seccionAlumnos') )
+                    <h6> Cargos: </h6>
+                    @foreach($materia->cargos()->get() as $cargo)
+                        <a href="{{ route('proceso.listadoCargo',
+                                ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                           class="btn btn-info btn-sm" title="Ver proceso cargo">
+                            {{$cargo->nombre}}
+                            @if(Session::has('admin'))
+                                {{$cargo->id}}
+                            @endif
+                        </a>
+                    @endforeach
+
+                @endif
+            </div>
+
+        </div>
         <div id="alerts">
         </div>
-        <p class="mb-1"><strong><i>Importante:</i></strong></p>
-        <p class="mb-1"><i><small>
-                    Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
-                    Los procesos se editan desde cada cargo individualmente.
+        <div class="d-flex alert alert-info w-75 mx-auto">
+            <div class="row m-0 p-0">
+                <div class="me-auto col-sm-3">
+                    <small><strong><i>Importante: </i></strong></small>
+                </div>
+                <div class="col-sm-9">
+                    <small class="mb-1"><i><small>
+                                Los datos <b><i>no son definitivos</i></b> a menos que los procesos estén cerrados.
+                                Los procesos se editan desde cada cargo individualmente.
 
-                    @if($puede_procesar)
-                        <b>Usted tiene permisos de edición</b>
-                    @endif
-                </small></i></p>
-        <p class="mb-1"><small style="font-size: 0.8em">
-                <u>Aclaraciones:</u><br/>
-                <span class="col-sm-12">
-                    <b>'N Proceso'</b>: <i>Nota Proceso.</i>
+                                @if($puede_procesar)
+                                    <br/><b>Usted tiene permisos de edición</b>
+                                @endif
+                            </small></i></small>
+                </div>
+                <div class="me-auto col-sm-3">
+                    <small><strong><i>
+                                <u>Aclaraciones:</u>
+                            </i></strong></small>
+                </div>
+                <div class="col-sm-9">
+            <span class="col-sm-12 m-0">
+                <small>
+                <b>'N Proceso'</b>: <i>Nota Proceso.</i>
                 <b>'% Asist. Final'</b>: <i>Porcentaje Asistencia Final.</i>
                 <b>'N TFI'</b>: <i>Nota Trabajo Final Integrador.</i>
                 <b>'N Final'</b>: <i>Nota Final.</i>
-                </span><br/>
-                <span class="col-sm-12 m-0">
+                </small>
+            </span>
+                    <br/>
+                    <span class="col-sm-12 m-0">
+                        <small>
                 <b>'N Global'</b>: <i>Nota Global.</i>
                 <b>'% Act. Ap.'</b>: <i>Porcentaje de actividades del cargo aprobadas.</i>
                 <b>'TP's'</b>: <i>Trabajos Prácticos.</i>
                 <b>'N TPs x̄'</b>: <i>Nota Promedio Trabajos Prácticos.</i>
+                        </small>
                 </span><br/>
-                <span class="col-sm-12 m-0">
+                    <span class="col-sm-12 m-0">
+                        <small>
                 <b>'N Ps x̄'</b>: <i>Nota Promedio Parciales.</i>
                 <b>'P's'</b>: <i>Parciales.</i>
                 <b>'% Asist.'</b>: <i>Porcentaje asistencia.</i>
+                        </small>
                 </span>
-            </small>
-        </p>
+                </div>
+            </div>
+        </div>
 
         @if(isset($comision))
 
-            <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id])}}"
+            <a href="{{route('excel.procesosModular',[
+                    'materia_id'=>$materia->id,
+                    'ciclo_lectivo'=>$ciclo_lectivo,
+                    'comision_id'=>$comision->id
+                    ])}}"
                class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar planilla</a>
         @else
 

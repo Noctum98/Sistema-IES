@@ -10,6 +10,9 @@ use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
 use App\Models\User;
 use App\Services\CicloLectivoService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -100,6 +103,10 @@ class CalificacionController extends Controller
         ]);
     }
 
+    /**
+     * @param $calificacion_id
+     * @return Application|Factory|View|void
+     */
     public function create($calificacion_id)
     {
         $calificacion = Calificacion::find($calificacion_id);

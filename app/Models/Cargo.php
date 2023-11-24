@@ -136,7 +136,7 @@ class Cargo extends Model
         if(!$this->tipoCargo()->first()){
             return false;
         }
-       return ( self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador);
+       return self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador;
     }
 
     public function obtenerProcesoCargo(int $proceso)
@@ -147,7 +147,10 @@ class Cargo extends Model
         ])->first();
     }
 
-    public function profesores()
+    /**
+     * @return string <b>Con los nombres de los profesores</b> o un string vacío
+     */
+    public function profesores(): string
     {
         $users = $this->users()->get();
 

@@ -130,6 +130,19 @@ class Proceso extends Model
         ])->first();
     }
 
+    /**
+     * @param int $cargo
+     * @return bool
+     */
+    public function isClose(int $cargo): bool
+    {
+        $procesoCargo = $this->obtenerProcesoCargo($cargo);
+        if($procesoCargo && $procesoCargo->cierre){
+            return true;
+        }
+        return false;
+    }
+
     public function obtenerRegularidad()
     {
         return Regularidad::where([
@@ -179,10 +192,14 @@ class Proceso extends Model
         return false;
     }
 
-    public function getCargosProcesos($cargo)
+    /**
+     * @param int $cargo_id
+     * @return null|CargoProceso
+     */
+    public function getCargosProcesos(int $cargo_id): ?CargoProceso
     {
         return CargoProceso::where([
-            'cargo_id' => $cargo,
+            'cargo_id' => $cargo_id,
             'proceso_id' => $this->id
         ])->first();
     }
