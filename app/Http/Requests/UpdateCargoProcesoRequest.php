@@ -13,7 +13,7 @@ class UpdateCargoProcesoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

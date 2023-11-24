@@ -64,7 +64,7 @@ class CargoProcesoController extends Controller
      *
      * @param StoreCargoProcesoRequest $request
      * @param int $proceso_id
-     * @param int $cargo_id
+     * @param $cargo_id
      * @return RedirectResponse
      */
     public function store(StoreCargoProcesoRequest $request, int $proceso_id, int $cargo_id): RedirectResponse
@@ -153,7 +153,10 @@ class CargoProcesoController extends Controller
         $this->cargoProcesoService->actualizaCargoProceso($cargoProceso->cargo_id, $proceso, $materia, $cargoProceso);
 
         return redirect()->route('proceso.listadoCargo',
-            [$materia->id, $proceso->cargo_id,$proceso->ciclo_lectivo]);
+            [
+                $materia->id,
+                 $cargoProceso->cargo_id,
+                 $proceso->ciclo_lectivo]);
     }
 
     /**
