@@ -87,8 +87,8 @@
                     <i class="fa fa-plus mr-2"
                        title="Por favor haga clic aquí para agregar al alumno a la planilla modular">
                     </i>
-                    Si algún alumno no está cargado en la planilla modular, por favor agréguelo presionado el
-                    botón
+                    Este signo avisa que el alumno no tiene las notas cargadas  en planilla modular.
+                    Por favor haga clic en el mismo.
                 </small>
                 <br/>
                 <small>
@@ -96,9 +96,8 @@
                        title="Por favor haga clic aquí para actualizar planilla modular">
                     </i>
                     Para mantener actualizadas las notas en la planilla modular por favor presione el botón
-                    <br/>
                 </small>
-
+                <br/>
             </div>
         </div>
 
