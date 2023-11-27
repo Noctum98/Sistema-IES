@@ -324,7 +324,10 @@
                                 <td colspan="2">
                                     <button type="button" class="btn btn-sm btn-primary"
                                             data-bs-toggle="collapse" data-bs-target="#cargo-{{$proceso->id}}">
-                                        Cargos <i class="fas fa-caret-square-down"></i></button>
+                                        <small>
+                                        Ver cargos
+                                        </small>
+                                         <i class="fas fa-caret-square-down"></i></button>
                                 </td>
                             </tr>
                             <tr>
