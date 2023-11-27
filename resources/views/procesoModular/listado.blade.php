@@ -198,7 +198,11 @@
                         {{--                        <th class="sticky-top">Nota Final %</th>--}}
                         <th class="sticky-top text-center">N Final</th>
                         <th class="sticky-top col-sm-1">N Global</th>
-                        <th class="sticky-top">Cierre</th>
+                        <th class="sticky-top">
+                            <small>
+                                Cierre Módulo
+                            </small>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -312,10 +316,6 @@
                                     <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
-                                    {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
-                                    {{--                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>--}}
-                                    {{--                                </span>--}}
-
                                     <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
