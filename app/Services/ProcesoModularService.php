@@ -11,7 +11,9 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -744,10 +746,8 @@ class ProcesoModularService
 
             if ($asistenciaPorcentaje) {
                 $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje->porcentaje_asistencia;
-            } else {
-
-                throw new NotFoundHttpException(
-                    'En la planilla de notas del cargo no es han agregado todas las notas (+)');
+            }else{
+                Session::flash('message', 'No se han agregado las notas de modulo en la planilla de notas cargo ');
             }
 
 
