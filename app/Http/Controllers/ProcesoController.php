@@ -355,7 +355,10 @@ class ProcesoController extends Controller
         $user = Auth::user();
 
         $proceso = Proceso::find($request['proceso_id']);
-        dd($request['cargo']);
+        $cierre_modulo = true;
+        if(isset($request['cargo'])){
+            $cierre_modulo = false;
+        }
 
         $proceso = $this->cierreToTrue($request['cierre'], $proceso);
 
@@ -366,7 +369,7 @@ class ProcesoController extends Controller
         if ($proceso->cierre == 1 && $proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
             foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
                 $procesoService = new ProcesosCargosService();
-                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, false);
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, $cierre_modulo);
             }
         }
 
