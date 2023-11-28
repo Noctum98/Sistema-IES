@@ -60,7 +60,7 @@ class ProcesoModularController extends Controller
      * @param int|null $cargo_id
      * @return Application|Factory|View
      */
-    public function listado($materia, int $ciclo_lectivo = null, int $cargo_id = null)
+    public function listado($materia, int $ciclo_lectivo = null, int $cargo_id = null, $message = null)
     {
         $materia = Materia::find($materia);
 
@@ -134,7 +134,10 @@ class ProcesoModularController extends Controller
                 'ciclo_lectivo' => $ciclo_lectivo,
                 'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
             ]
-        );
+        )->with(
+            $message);
+
+
     }
 
     public function procesaPonderacionModular(Materia $materia)
@@ -182,6 +185,7 @@ class ProcesoModularController extends Controller
 
         $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
 
+        $message = null;
         foreach ($cargos as $cargo) {
             $cargoProceso = CargoProceso::where([
                 'proceso_id' => $proceso->id,
@@ -190,9 +194,9 @@ class ProcesoModularController extends Controller
             if ($cargoProceso) {
                 $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
             } else {
-                Session::flash('message',
+                $message = ['message' =>
                     'No se han agregado las notas del alumno al módulo.
-                    Se debe hacer desde las Notas de proceso cargo');
+                    Se debe hacer desde las Notas de proceso cargo'];
             }
         }
 
@@ -205,8 +209,9 @@ class ProcesoModularController extends Controller
         $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
 
         return redirect()->route('proceso_modular.list',
-            ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
-
+            ['materia' => $materia,
+                'ciclo_lectivo' => $proceso->ciclo_lectivo,
+                'cargo_id' => $cargo_id, 'message' => $message] );
     }
 
     /**
