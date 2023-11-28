@@ -161,6 +161,7 @@
                                                 <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
                                                 <small>
+                                                    <br/>
                                                     (
                                                     {{$proceso->procesoCalificacion(
     $cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
@@ -178,7 +179,9 @@
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
-                                                    <small>({{$proceso->procesoCalificacion(
+                                                    <small>
+                                                        <br/>
+                                                        ({{$proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio}}
                                                         @if(is_numeric($proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio))
