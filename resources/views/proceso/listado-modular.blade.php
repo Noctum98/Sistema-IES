@@ -265,7 +265,7 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
             </div>
             @endsection
             @section('scripts')
-                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
+{{--                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>--}}
                 <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>
