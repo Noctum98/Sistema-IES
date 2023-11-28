@@ -745,8 +745,9 @@ class ProcesoModularService
             if ($asistenciaPorcentaje) {
                 $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje->porcentaje_asistencia;
             } else {
-                return new NotFoundHttpException(
-                    'En la planilla de notas del cargo no es han cargado todos los procesos');
+
+                throw new NotFoundHttpException(
+                    'En la planilla de notas del cargo no es han agregado todas las notas (+)');
             }
 
 
