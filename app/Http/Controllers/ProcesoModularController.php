@@ -23,6 +23,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Util\Exception;
+use Session;
 
 class ProcesoModularController extends Controller
 {
@@ -88,10 +89,9 @@ class ProcesoModularController extends Controller
         $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
         if (count(
-            $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
-                $arrayProcesos, $materia, $ciclo_lectivo)
-            ) > 0)
-        {
+                $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
+                    $arrayProcesos, $materia, $ciclo_lectivo)
+            ) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
@@ -184,8 +184,13 @@ class ProcesoModularController extends Controller
                 'proceso_id' => $proceso->id,
                 'cargo_id' => $cargo
             ])->first();
-            $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
-
+            if ($cargoProceso) {
+                $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
+            } else {
+                Session::flash('message',
+                    'No se han agregado las notas del alumno al módulo.
+                    Se debe hacer desde las Notas de proceso cargo');
+            }
         }
 
 
@@ -196,7 +201,8 @@ class ProcesoModularController extends Controller
         $service->setNotaProceso($proceso_id, $nota_proceso);
         $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
 
-        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
+        return redirect()->route('proceso_modular.list',
+            ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
     }
 
