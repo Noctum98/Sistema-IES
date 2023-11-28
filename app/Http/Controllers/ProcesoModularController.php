@@ -211,7 +211,7 @@ class ProcesoModularController extends Controller
         return redirect()->route('proceso_modular.list',
             ['materia' => $materia,
                 'ciclo_lectivo' => $proceso->ciclo_lectivo,
-                'cargo_id' => $cargo_id, 'message' => $message] );
+                'cargo_id' => $cargo_id, 'message' => $message[1]] );
     }
 
     /**
