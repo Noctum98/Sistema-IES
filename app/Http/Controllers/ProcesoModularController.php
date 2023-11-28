@@ -134,10 +134,7 @@ class ProcesoModularController extends Controller
                 'ciclo_lectivo' => $ciclo_lectivo,
                 'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
             ]
-        )->with(
-            $message);
-
-
+        )->with(['message' =>$message]);
     }
 
     public function procesaPonderacionModular(Materia $materia)
