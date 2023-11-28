@@ -22,8 +22,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use PHPUnit\Util\Exception;
-use Session;
+
 
 class ProcesoModularController extends Controller
 {
@@ -154,7 +155,9 @@ class ProcesoModularController extends Controller
         $service = new ProcesoModularService();
         $service->grabaEstadoCursoEnModulo($materia->id, $ciclo_lectivo);
 
-        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id' => $cargo_id]);
+        return redirect()->route(
+            'proceso_modular.list',
+            ['materia' => $materia, 'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
     }
 
@@ -279,7 +282,8 @@ class ProcesoModularController extends Controller
      * @param CargoProceso $cargoProceso
      * @return CargoProceso
      */
-    protected function actualizaCargoProceso(int $cargo_id, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
+    protected function actualizaCargoProceso(
+        int $cargo_id, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
         return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }
