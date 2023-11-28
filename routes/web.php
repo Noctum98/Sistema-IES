@@ -267,7 +267,8 @@ Route::prefix('moduloProfesor')->group(function () {
  */
 
 Route::prefix('proceso-modular')->group(function () {
-    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
+    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}/{message?}',
+        [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
     Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
