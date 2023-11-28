@@ -360,11 +360,13 @@ class ProcesoController extends Controller
             $cierre_modulo = false;
         }
 
-        $proceso = $this->cierreToTrue($request['cierre'], $proceso);
+        if($cierre_modulo) {
+            $proceso = $this->cierreToTrue($request['cierre'], $proceso);
 
-        $proceso->operador_id = $user->id;
+            $proceso->operador_id = $user->id;
 
-        $proceso->update();
+            $proceso->update();
+        }
 
         if ($proceso->cierre == 1 && $proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
             foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
