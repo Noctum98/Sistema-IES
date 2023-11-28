@@ -87,7 +87,7 @@
                     <i class="fa fa-plus mr-2"
                        title="Por favor haga clic aquí para agregar al alumno a la planilla modular">
                     </i>
-                    Este signo avisa que el alumno no tiene las notas cargadas  en planilla modular.
+                    Este signo avisa que el alumno no tiene las notas cargadas en planilla modular.
                     Por favor haga clic en el mismo.
                 </small>
                 <br/>
@@ -156,38 +156,38 @@
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
-                                                class="{{ $proceso->procesoCalificacion(
+                                                class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                                 <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
-                                                <small>
+                                                <small class="text-center">
                                                     <br/>
                                                     (
                                                     {{$proceso->procesoCalificacion(
     $cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
                                                     @if($proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 0)
-                                                        %
+
                                                     @endif
-                                                    )
+                                                    %)
                                                 </small>
                             </span>
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                    class="{{ $proceso->procesoCalificacion(
+                                                    class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
-                                                    <small>
+                                                    <small class="text-center">
                                                         <br/>
                                                         ({{$proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio}}
                                                         @if(is_numeric($proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio))
-                                                            %
+
                                                         @endif
-                                                        )
+                                                        %)
                                                     </small>
                             </span>
 
@@ -268,7 +268,7 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
             </div>
             @endsection
             @section('scripts')
-{{--                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>--}}
+                {{--                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>--}}
                 <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>
