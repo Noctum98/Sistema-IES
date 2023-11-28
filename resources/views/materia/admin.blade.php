@@ -20,6 +20,7 @@
                             <p class="ms-5">Plan de estudios</p>
                             <h4 class="text-dark">
                                  {{ $carrera->nombre }}
+                                <br/> <small>{{ucwords($carrera->tipo)}}</small>
                             </h4>
                         </div>
                     </div>
@@ -54,6 +55,7 @@
 
                         <h3 class="text-secondary">Primer Año</h3>
                         <table class="table table-hover mt-4">
+                            <caption>1er año</caption>
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Materia</th>
