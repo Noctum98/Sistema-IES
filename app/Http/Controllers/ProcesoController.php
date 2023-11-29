@@ -35,7 +35,8 @@ class ProcesoController extends Controller
     function __construct(CicloLectivoService $cicloLectivoService)
     {
         $this->middleware('app.auth', ['except' => 'delete']);
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial', ['except' => 'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',
+            ['except' => 'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
     }
 

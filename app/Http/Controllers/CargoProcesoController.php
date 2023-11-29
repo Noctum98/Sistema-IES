@@ -116,6 +116,60 @@ class CargoProcesoController extends Controller
 
     }
 
+
+
+    /**
+     * Guarda todos lor procesos que no están en la planilla modular.
+     *
+     * @param StoreCargoProcesoRequest $request
+     * @param int $proceso_id
+     * @param $cargo_id
+     * @return RedirectResponse
+     */
+    public function all_store(int $cargo_id): RedirectResponse
+    {
+
+        $user = Auth::user();
+
+        /** @var Cargo $cargo */
+        $cargo = Cargo::find($cargo_id);
+
+        if (!$cargo) {
+            throw new Exception('No se encontró el cargo');
+        }
+
+
+
+        $cargoProceso = CargoProceso::where([
+            'proceso_id' => $proceso->id,
+            'cargo_id' => $cargo->id
+        ])->first();
+
+
+        $procesosCargos = ProcesosCargos::where([
+            'proceso_id' => $proceso->id,
+            'cargo_id' => $cargo->id
+        ])->first();
+
+        if (!$procesosCargos) {
+            $this->procesosCargosService->crear($proceso->id, $cargo->id, $user->id, false);
+        }
+
+        if (!$cargoProceso) {
+            $cargoProceso = $this->cargoProcesoService->generaCargoProceso(
+                $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
+        }
+
+        $materia = Materia::find($proceso->materia_id);
+
+        $this->cargoProcesoService->actualizaCargoProceso($cargo->id, $proceso, $materia, $cargoProceso);
+
+        return redirect()->route('proceso.listadoCargo',
+            [$materia->id, $cargo->id,$proceso->ciclo_lectivo])
+            ->with('mensaje_exitoso','Cargo proceso generado');
+
+    }
+
     /**
      * Display the specified resource.
      *

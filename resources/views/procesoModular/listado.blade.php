@@ -97,7 +97,7 @@
                            class="btn btn-info btn-sm" title="Ver proceso cargo">
                             {{$cargo->nombre}}
                             @if(Session::has('admin'))
-                                {{$cargo->id}}
+                                <small>#{{$cargo->id}}</small>
                             @endif
                         </a>
                     @endforeach
