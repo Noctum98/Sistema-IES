@@ -150,6 +150,11 @@
                         <tr>
                             <td>
                                 {{$proceso->alumno->apellidos}}, {{$proceso->alumno->nombres}}
+                                @if(Session::has('admin'))
+                                    <br/>
+                                    <small>#{{$proceso->id}}</small>
+                                @endif
+
                             </td>
                             @if(count($calificaciones) > 0)
                                 @foreach($calificaciones as $cc)
@@ -217,9 +222,9 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                     </small>
                                 @else
                                     <a href="{{route('cargo_proceso.store',
-['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm btn-primary">
+                                        ['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}"
+                                       class="btn btn-sm btn-primary">
                                         <i class="fa fa-plus" title="Por favor haga clic aquí"></i>
-
                                     </a>
                                 @endif
                             </td>
