@@ -143,7 +143,7 @@ Route::prefix('cargo')->group(function () {
 Route::prefix('cargo_proceso')->group(function () {
     Route::get('/{proceso_id}/{cargo_id}', [CargoProcesoController::class, 'store'])->name('cargo_proceso.store');
     Route::get('/{cargo_id}/cargar/procesos', [CargoProcesoController::class, 'all_store'])
-        ->name('cargo_proceso.store');
+        ->name('cargo_proceso.all_store');
     Route::get('/{cargo_proceso}/actualizar/planilla-modular',
         [CargoProcesoController::class, 'update'])
         ->name('cargo_proceso.actualizar');
