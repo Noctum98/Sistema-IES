@@ -150,6 +150,8 @@ Route::prefix('cargo')->group(function () {
 
 Route::prefix('cargo_proceso')->group(function () {
     Route::get('/{proceso_id}/{cargo_id}', [CargoProcesoController::class, 'store'])->name('cargo_proceso.store');
+    Route::get('/{cargo_id}/cargar/procesos', [CargoProcesoController::class, 'all_store'])
+        ->name('cargo_proceso.all_store');
     Route::get('/{cargo_proceso}/actualizar/planilla-modular',
         [CargoProcesoController::class, 'update'])
         ->name('cargo_proceso.actualizar');
@@ -275,7 +277,8 @@ Route::prefix('moduloProfesor')->group(function () {
  */
 
 Route::prefix('proceso-modular')->group(function () {
-    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
+    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}',
+        [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
     Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
@@ -568,7 +571,7 @@ Route::prefix('mesas')->group(function () {
     )->name(
         'generar_pdf_acta_volante'
     );
-    Route::get('/resumen/{instancia_id}',[ActaVolanteController::class,'resumenInstancia'])->name('mesas.resumen');
+    Route::get('/resumen/{instancia_id}', [ActaVolanteController::class, 'resumenInstancia'])->name('mesas.resumen');
 
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
@@ -726,5 +729,6 @@ Route::prefix('usuarios')->group(function () {
 });
 
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
-    
+
+
 })->middleware('app.roles:admin');

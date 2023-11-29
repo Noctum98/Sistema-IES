@@ -11,7 +11,10 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class ProcesoModularService
@@ -130,7 +133,7 @@ class ProcesoModularService
             ->where('materia_id', '=', $materia_id)
             ->where('ciclo_lectivo', '=', $ciclo_lectivo)
             ->whereNotIn(
-                'procesos.id',$procesos
+                'procesos.id', $procesos
             )
             ->get();
     }
@@ -725,7 +728,7 @@ class ProcesoModularService
     /**
      * @param Materia $materia
      * @param Proceso $proceso
-     * @return float|int
+     * @return NotFoundHttpException|float
      */
     public function revisaPorcentajeProceso(Materia $materia, Proceso $proceso)
     {
@@ -739,9 +742,14 @@ class ProcesoModularService
             $asistenciaPorcentaje = CargoProceso::where([
                 'proceso_id' => $proceso->id,
                 'cargo_id' => $cargo->id
-            ])->first()->porcentaje_asistencia;
+            ])->first();
 
-            $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje;
+            if ($asistenciaPorcentaje) {
+                $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje->porcentaje_asistencia;
+            }else{
+                Session::flash('message', 'No se han agregado las notas de modulo en la planilla de notas cargo ');
+            }
+
 
         }
         return $total_modulo;

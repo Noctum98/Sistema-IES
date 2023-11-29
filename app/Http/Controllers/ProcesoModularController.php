@@ -22,7 +22,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use PHPUnit\Util\Exception;
+
 
 class ProcesoModularController extends Controller
 {
@@ -88,10 +90,9 @@ class ProcesoModularController extends Controller
         $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
         if (count(
-            $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
-                $arrayProcesos, $materia, $ciclo_lectivo)
-            ) > 0)
-        {
+                $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
+                    $arrayProcesos, $materia, $ciclo_lectivo)
+            ) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
@@ -154,7 +155,9 @@ class ProcesoModularController extends Controller
         $service = new ProcesoModularService();
         $service->grabaEstadoCursoEnModulo($materia->id, $ciclo_lectivo);
 
-        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id' => $cargo_id]);
+        return redirect()->route(
+            'proceso_modular.list',
+            ['materia' => $materia, 'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id' => $cargo_id]);
 
     }
 
@@ -179,13 +182,19 @@ class ProcesoModularController extends Controller
 
         $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
 
+        $message = null;
         foreach ($cargos as $cargo) {
             $cargoProceso = CargoProceso::where([
                 'proceso_id' => $proceso->id,
                 'cargo_id' => $cargo
             ])->first();
-            $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
-
+            if ($cargoProceso) {
+                $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
+            } else {
+                Session::flash('message',
+                    'No se han agregado las notas del alumno al módulo.
+                    Se debe hacer desde las Notas de proceso cargo');
+            }
         }
 
 
@@ -196,8 +205,10 @@ class ProcesoModularController extends Controller
         $service->setNotaProceso($proceso_id, $nota_proceso);
         $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
 
-        return redirect()->route('proceso_modular.list', ['materia' => $materia, 'ciclo_lectivo' => $proceso->ciclo_lectivo, 'cargo_id' => $cargo_id]);
-
+        return redirect()->route('proceso_modular.list',
+            ['materia' => $materia,
+                'ciclo_lectivo' => $proceso->ciclo_lectivo,
+                'cargo_id' => $cargo_id] );
     }
 
     /**
@@ -273,7 +284,8 @@ class ProcesoModularController extends Controller
      * @param CargoProceso $cargoProceso
      * @return CargoProceso
      */
-    protected function actualizaCargoProceso(int $cargo_id, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
+    protected function actualizaCargoProceso(
+        int $cargo_id, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
         return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }

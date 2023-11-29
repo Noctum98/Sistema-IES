@@ -35,7 +35,8 @@ class ProcesoController extends Controller
     function __construct(CicloLectivoService $cicloLectivoService)
     {
         $this->middleware('app.auth', ['except' => 'delete']);
-        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial', ['except' => 'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',
+            ['except' => 'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
     }
 
@@ -355,18 +356,23 @@ class ProcesoController extends Controller
         $user = Auth::user();
 
         $proceso = Proceso::find($request['proceso_id']);
+        $cierre_modulo = true;
+        if(isset($request['cargo'])){
+            $cierre_modulo = false;
+        }
 
+        if($cierre_modulo) {
+            $proceso = $this->cierreToTrue($request['cierre'], $proceso);
 
-        $proceso = $this->cierreToTrue($request['cierre'], $proceso);
+            $proceso->operador_id = $user->id;
 
-        $proceso->operador_id = $user->id;
-
-        $proceso->update();
+            $proceso->update();
+        }
 
         if ($proceso->cierre == 1 && $proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
             foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
                 $procesoService = new ProcesosCargosService();
-                $procesoService->actualizar($proceso->id, $cargo->id, $user->id);
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, $cierre_modulo);
             }
         }
 

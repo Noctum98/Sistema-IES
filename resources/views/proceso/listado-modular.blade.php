@@ -87,7 +87,7 @@
                     <i class="fa fa-plus mr-2"
                        title="Por favor haga clic aquí para agregar al alumno a la planilla modular">
                     </i>
-                    Este signo avisa que el alumno no tiene las notas cargadas  en planilla modular.
+                    Este signo avisa que el alumno no tiene las notas cargadas en planilla modular.
                     Por favor haga clic en el mismo.
                 </small>
                 <br/>
@@ -150,41 +150,49 @@
                         <tr>
                             <td>
                                 {{$proceso->alumno->apellidos}}, {{$proceso->alumno->nombres}}
+                                @if(Session::has('admin'))
+                                    <br/>
+                                    <small>#{{$proceso->id}}</small>
+                                @endif
+
                             </td>
                             @if(count($calificaciones) > 0)
                                 @foreach($calificaciones as $cc)
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
-                                                class="{{ $proceso->procesoCalificacion(
+                                                class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                                 <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
-                                                <small>
+                                                <small class="text-center">
+                                                    <br/>
                                                     (
                                                     {{$proceso->procesoCalificacion(
     $cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
                                                     @if($proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 0)
-                                                        %
+
                                                     @endif
-                                                    )
+                                                    %)
                                                 </small>
                             </span>
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                    class="{{ $proceso->procesoCalificacion(
+                                                    class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
-                                                    <small>({{$proceso->procesoCalificacion(
+                                                    <small class="text-center">
+                                                        <br/>
+                                                        ({{$proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio}}
                                                         @if(is_numeric($proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio))
-                                                            %
+
                                                         @endif
-                                                        )
+                                                        %)
                                                     </small>
                             </span>
 
@@ -214,9 +222,9 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
                                     </small>
                                 @else
                                     <a href="{{route('cargo_proceso.store',
-['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}" class="btn btn-sm btn-primary">
+                                        ['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}"
+                                       class="btn btn-sm btn-primary">
                                         <i class="fa fa-plus" title="Por favor haga clic aquí"></i>
-
                                     </a>
                                 @endif
                             </td>
@@ -265,7 +273,7 @@ optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje :
             </div>
             @endsection
             @section('scripts')
-                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
+                {{--                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>--}}
                 <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>

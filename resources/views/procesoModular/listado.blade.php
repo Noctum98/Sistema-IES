@@ -25,6 +25,14 @@
 
     </style>
     <div class="container-fluid w-100" id="container-scroll">
+        @if(@session('message'))
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close"
+                        data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                {{ @session('message') }}
+            </div>
+        @endif
         <div class="row m-0">
             <div class="col-sm-6 text-left">
                 <a href="{{url()->previous()}}">
@@ -89,7 +97,7 @@
                            class="btn btn-info btn-sm" title="Ver proceso cargo">
                             {{$cargo->nombre}}
                             @if(Session::has('admin'))
-                                {{$cargo->id}}
+                                <small>#{{$cargo->id}}</small>
                             @endif
                         </a>
                     @endforeach
@@ -198,7 +206,11 @@
                         {{--                        <th class="sticky-top">Nota Final %</th>--}}
                         <th class="sticky-top text-center">N Final</th>
                         <th class="sticky-top col-sm-1">N Global</th>
-                        <th class="sticky-top">Cierre</th>
+                        <th class="sticky-top">
+                            <small>
+                                Cierre Módulo
+                            </small>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -312,10 +324,6 @@
                                     <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
-                                    {{--                                <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">--}}
-                                    {{--                                    <small style="font-size: 0.6em" class="text-white">Cambio realizado</small>--}}
-                                    {{--                                </span>--}}
-
                                     <span class="d-none" id="spin-{{$proceso->procesoRelacionado->id}}">
                                     <i class="fa fa-spinner fa-spin"></i>
                                 </span>
@@ -324,7 +332,10 @@
                                 <td colspan="2">
                                     <button type="button" class="btn btn-sm btn-primary"
                                             data-bs-toggle="collapse" data-bs-target="#cargo-{{$proceso->id}}">
-                                        Cargos <i class="fas fa-caret-square-down"></i></button>
+                                        <small>
+                                        Ver cargos
+                                        </small>
+                                         <i class="fas fa-caret-square-down"></i></button>
                                 </td>
                             </tr>
                             <tr>
