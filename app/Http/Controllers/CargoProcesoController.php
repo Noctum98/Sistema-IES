@@ -126,7 +126,9 @@ class CargoProcesoController extends Controller
      * @param $cargo_id
      * @return RedirectResponse
      */
-    public function all_store(int $cargo_id): RedirectResponse
+    public function all_store(
+        int $cargo_id, int $materia_id,
+        int $ciclo_lectivo, int $comision_id = null): RedirectResponse
     {
 
         $user = Auth::user();
@@ -137,6 +139,8 @@ class CargoProcesoController extends Controller
         if (!$cargo) {
             throw new Exception('No se encontró el cargo');
         }
+
+        $procesos = $this->getProcesosMateria($materia_id, $ciclo_lectivo, $comision_id);
 
 
 
