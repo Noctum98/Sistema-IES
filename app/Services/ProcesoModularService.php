@@ -127,7 +127,9 @@ class ProcesoModularService
             ->where('materia_id', '=', $materia_id)
             ->where('ciclo_lectivo', '=', $ciclo_lectivo)
             ->whereNotIn(
-                'procesos.id', $procesos
+                'procesos.id',
+                ProcesoModular::select('proceso_modular.proceso_id')
+                ->whereIn('proceso_modular.proceso_id', $procesos)
             )
             ->get();
     }
