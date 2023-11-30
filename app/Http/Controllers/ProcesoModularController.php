@@ -91,6 +91,7 @@ class ProcesoModularController extends Controller
 
         $cantidad_procesos = $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
             $arrayProcesos, $materia, $ciclo_lectivo);
+
         if (count($cantidad_procesos) == 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
@@ -121,6 +122,7 @@ class ProcesoModularController extends Controller
             }
         }
 
+        $acciones[] = count($cantidad_procesos);
         $estados = Estados::all();
 
 
