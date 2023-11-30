@@ -123,6 +123,7 @@ class ProcesoModularController extends Controller
         }
 
         $acciones[] = count($proc);
+        $acciones[] = count($arrayProcesos);
         $estados = Estados::all();
 
 
