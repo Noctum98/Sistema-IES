@@ -124,8 +124,8 @@ class ProcesoModularService
     public function obtenerProcesosModularesNoVinculadosByProcesos(array $procesos, $materia_id, $ciclo_lectivo)
     {
         return Proceso::select('procesos.id')
-            ->where('materia_id', '=', $materia_id)
-            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->where('materia_id',  $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
             ->whereNotIn(
                 'procesos.id',
                 ProcesoModular::select('proceso_modular.proceso_id')
