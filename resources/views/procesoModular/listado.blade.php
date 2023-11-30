@@ -33,6 +33,16 @@
                 {{ @session('message') }}
             </div>
         @endif
+            @if($acciones)
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close"
+                            data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    @foreach($acciones as $accion)
+                        {{$accion}}
+                    @endforeach
+                </div>
+            @endif
         <div class="row m-0">
             <div class="col-sm-6 text-left">
                 <a href="{{url()->previous()}}">
@@ -61,15 +71,7 @@
             </div>
         </div>
 
-        @if($acciones)
-            <div>
-                @foreach($acciones as $accion)
-                    <span class="invalid-feedback d-block" role="alert">
-                        {{$accion}}
-                    </span>
-                @endforeach
-            </div>
-        @endif
+
         <div class="row-cols-1">
             <div class="card w-75 mx-auto">
                 <div class="card-header text-center text-primary">
