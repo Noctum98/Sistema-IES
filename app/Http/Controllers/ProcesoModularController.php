@@ -122,7 +122,7 @@ class ProcesoModularController extends Controller
         }
 
         $estados = Estados::all();
-        $acciones [] = "Cantidad de procesos {$cantidad_procesos}";
+        $acciones [] = "Cantidad de procesos " . count($cantidad_procesos);
 
         return view('procesoModular.listado', [
                 'materia' => $materia,
