@@ -39,7 +39,7 @@
                             data-bs-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
                     @foreach($acciones as $accion)
-                        {{$accion}}
+                        <small>{{$accion}}</small><br/>
                     @endforeach
                 </div>
             @endif
