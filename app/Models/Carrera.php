@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+//use Illuminate\Database\Eloquent;
 
+/**
+ * Class Carrera
+ * @package App\Models
+ * @property int $id
+ * @property string $nombre
+ */
 class Carrera extends Model
 {
     use HasFactory;

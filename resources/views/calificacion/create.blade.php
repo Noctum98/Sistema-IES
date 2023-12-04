@@ -6,6 +6,19 @@
                 <a href="{{url()->previous()}}">
                     <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
                 </a>
+                @if($calificacion->cargo_id)
+                <br/>
+                <a href="{{route('proceso.listadoCargo', [
+                        'materia_id' => $calificacion->materia->id,
+                        'cargo_id' => $calificacion->cargo_id
+                    ])}}">
+                    <button class="btn btn-outline-success">
+                        <i class="fas fa-angle-left"></i>
+                        Ver planilla cargo
+                    </button>
+                </a>
+                @endif
+
             </div>
             <div class="col-10">
                 <div class="row">
@@ -17,6 +30,12 @@
                             {{ $calificacion->materia->nombre}}</h5>
                         @if($calificacion->modelCargo()->first())
                             Cargo: <b><i>{{$calificacion->modelCargo()->first()->nombre}}</i></b>
+                            <br/>
+                            @if($calificacion->modelCargo()->first()->profesores())
+                                <small style="font-size: 0.8em" class="text-muted">
+                                    {{$calificacion->modelCargo()->first()->profesores()}}
+                                </small>
+                            @endif
                         @endif
                         @if($calificacion->comision)
                             <br/>
@@ -25,13 +44,14 @@
                         <h6>Ciclo lectivo: {{$calificacion->ciclo_lectivo}}</h6>
                     </div>
                     <div class="col-sm-8">
-                        <h4 class="text-info">
+                        <h4 class="text-dark">
                             {{ $calificacion->nombre}}
                             <br/>
                             <small>{{$calificacion->tipo()->first()->nombre}}</small>
                             <br/>
                             <small>{{$calificacion->description}}</small>
                         </h4>
+
                     </div>
                 </div>
             </div>
@@ -89,7 +109,12 @@
                                         >
                                         <div class="input-group-append">
                                             <button type="submit"
-                                                    class="btn btn-info btn-sm  input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">
+                                                    class="btn btn-info btn-sm  input-group-text
+                                                    @if(!Session::has('profesor')
+                                                        or $proceso->cierre == 1 )
+                                                        disabled
+                                                   @endif
+                                                   ">
                                                 <i class="fa fa-save"></i></button>
                                         </div>
                                     </div>

@@ -8,7 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
+/**
+ *  Class Proceso
+ * This is the model class for table "procesos"
+ *
+ * @property integer $id
+ * @property integer $alumno_id
+ * @property integer $materia_id
+ * @property boolean $habilitado_campo
+ * @property integer $ciclo_lectivo
+ * @property integer $cargo_id
+ * @property integer $operador_id
+ * @property integer $nota_recuperatorio
+ * @property integer $nota_global
+ * @property integer $porcentaje_final_calificaciones
+ * @property integer $final_calificaciones
+ * @property boolean $cierre
+ * @property integer $estado_id
+ * @property double $final_asistencia
+ *
+ * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
+ * @method static Builder create(array $attributes = [])
+ * @method public Builder update(array $values)
+ * @method EloquentModel|Collection|null static $this find($id, $columns = ['*']) Find a model by its primary key.
+ * @method static EloquentBuilder find($value)
+ */
 class Proceso extends Model
 {
     use HasFactory, SoftDeletes;
@@ -25,10 +54,15 @@ class Proceso extends Model
         'operador_id',
         'cargo_id',
         'ciclo_lectivo',
-        'habilitado_campo'
+        'habilitado_campo',
+        'final_asistencia'
     ];
 
     //Relations
+
+    /**
+     * @return BelongsTo
+     */
     public function materia(): BelongsTo
     {
         return $this->belongsTo('App\Models\Materia', 'materia_id');
@@ -84,12 +118,29 @@ class Proceso extends Model
             ->get();
     }
 
+    /**
+     * @param int $cargo
+     * @return mixed
+     */
     public function obtenerProcesoCargo(int $cargo)
     {
         return ProcesosCargos::where([
             'cargo_id' => $cargo,
             'proceso_id' => $this->id
         ])->first();
+    }
+
+    /**
+     * @param int $cargo
+     * @return bool
+     */
+    public function isClose(int $cargo): bool
+    {
+        $procesoCargo = $this->obtenerProcesoCargo($cargo);
+        if($procesoCargo && $procesoCargo->cierre){
+            return true;
+        }
+        return false;
     }
 
     public function obtenerRegularidad()
@@ -141,10 +192,14 @@ class Proceso extends Model
         return false;
     }
 
-    public function getCargosProcesos($cargo)
+    /**
+     * @param int $cargo_id
+     * @return null|CargoProceso
+     */
+    public function getCargosProcesos(int $cargo_id): ?CargoProceso
     {
         return CargoProceso::where([
-            'cargo_id' => $cargo,
+            'cargo_id' => $cargo_id,
             'proceso_id' => $this->id
         ])->first();
     }

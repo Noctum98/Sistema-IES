@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property double $asistencia_final_porcentaje
+ * @property double $nota_final_porcentaje
+ * @property double $nota_final_nota
+ */
 class ProcesoModular extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = "proceso_modular";
     protected $fillable = [

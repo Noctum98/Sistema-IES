@@ -4,14 +4,23 @@ namespace App\Models;
 
 use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Materia extends Model
+
+/**
+ *  Class Materia
+ * This is the model class for table "materias"
+ *
+ * @property integer $id
+ * @property integer $año
+ *
+ */
+class Materia extends BaseModel
 {
-    use HasFactory;
 
     protected $fillable = [
         'carrera_id',
@@ -25,9 +34,12 @@ class Materia extends Model
         'cierre_diferido'
     ];
 
-    public function carrera()
+    /**
+     * @return BelongsTo
+     */
+    public function carrera(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Carrera', 'carrera_id');
+        return $this->belongsTo(Carrera::class, 'carrera_id');
     }
 
     public function profesores()
@@ -147,7 +159,10 @@ class Materia extends Model
 
     public function proceso($alumno_id)
     {
-        return Proceso::where(['materia_id' => $this->id, 'alumno_id', $alumno_id, 'ciclo_lectivo' => date('Y')])->first();
+        return Proceso::where([
+            'materia_id' => $this->id,
+            'alumno_id', $alumno_id,
+            'ciclo_lectivo' => date('Y')])->first();
     }
 
     public function procesoAlumnoMateria(int $alumno)
@@ -169,7 +184,7 @@ class Materia extends Model
             ]
         )->first();
 
-        if(!$proceso){
+        if (!$proceso) {
             return null;
         }
         return $proceso;
@@ -180,11 +195,9 @@ class Materia extends Model
      * @param $alumno_id
      * @return mixed
      */
-    public function getEstadoAlumnoPorMateria($alumno_id):string
+    public function getEstadoAlumnoPorMateria($alumno_id): string
     {
         $estado = '-';
-
-
 
         $proceso = Proceso::where([
                 'materia_id' => $this->id,
@@ -192,21 +205,19 @@ class Materia extends Model
             ]
         )->first();
 
-
-        if(!$proceso){
+        if (!$proceso) {
             return $estado;
         }
 
         $regularidad = Regularidad::where([
             'proceso_id' => $proceso->id
-        ])->first()
-        ;
+        ])->first();
 
-        if($regularidad){
-            return $regularidad->obtenerEstado()->regularidad . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>' ;
+        if ($regularidad) {
+            return $regularidad->obtenerEstado()->regularidad . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
         }
 
-        return $proceso->regularidad??'-';
+        return $proceso->regularidad ?? '-';
 
     }
 
@@ -220,10 +231,10 @@ class Materia extends Model
             ->first();
 
 
-        if(!$actaVolante){
+        if (!$actaVolante) {
             return null;
         }
-         return  $actaVolante;
+        return $actaVolante;
 
 
     }
@@ -237,8 +248,8 @@ class Materia extends Model
 
     public function correlativasArray()
     {
-        $correlativas =  MateriasCorrelativa::select('correlativa_id')
-        ->where('materia_id', $this->id)
+        $correlativas = MateriasCorrelativa::select('correlativa_id')
+            ->where('materia_id', $this->id)
             ->get()->toArray();
         $correlativas = array_column($correlativas, 'correlativa_id');
 
@@ -252,20 +263,32 @@ class Materia extends Model
     {
 
         return CicloLectivoEspecial::where([
-           'materia_id'=> $this->id,
-           'sede_id'=> $this->sede()->id
+            'materia_id' => $this->id,
+            'sede_id' => $this->sede()->id
         ])
-            ->get()
-        ;
-
+            ->get();
 
     }
 
     public function sede()
     {
         return $this->carrera()->first()->sede()->first();
-
     }
 
+    /**
+     * @return string
+     */
+    public function getProfesoresModulares(): string
+    {
+
+        $profesores = '';
+        if(count($this->cargos()->get()) > 0){
+            foreach ($this->cargos()->get() as $cargo){
+                /** @var Cargo $cargo */
+                $profesores .= $cargo->profesores() . "\n";
+            }
+        }
+        return $profesores;
+    }
 
 }

@@ -96,10 +96,10 @@ class ProcesoCalificacionController extends Controller
             {
                 $this->cargoProcesoService->grabaCalificacion(
                     $procesoCalificacion->calificacion()->first()->cargo_id, $calificacion->ciclo_lectivo,
-                    $proceso->id, $procesoCalificacion->calificacion()->first()->materia_id, $user
+                    $proceso->id, $procesoCalificacion->calificacion()->first()->materia_id, $user->id
                 );
             }
-           
+
 
             $response = $procesoCalificacion;
         } else {

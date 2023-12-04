@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
+use App\Http\Controllers\CargoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
@@ -139,6 +140,16 @@ Route::prefix('cargo')->group(function () {
     Route::post('agregar_tipo/{cargo}', [CargoController::class, 'agregarTipoCargo'])->name('cargo.agrega_tipo_Cargo');
 });
 
+Route::prefix('cargo_proceso')->group(function () {
+    Route::get('/{proceso_id}/{cargo_id}', [CargoProcesoController::class, 'store'])->name('cargo_proceso.store');
+    Route::get('/{cargo_proceso}/actualizar/planilla-modular',
+        [CargoProcesoController::class, 'update'])
+        ->name('cargo_proceso.actualizar');
+    Route::get('/{cargo_id}/{materia_id}/{ciclo_lectivo}/cargar/procesos/{comision_id?}',
+        [CargoProcesoController::class, 'all_store'])
+        ->name('cargo_proceso.all_store');
+});
+
 // Rutas de Carreras
 Route::prefix('carreras')->group(function () {
     // Vistas
@@ -259,7 +270,8 @@ Route::prefix('moduloProfesor')->group(function () {
  */
 
 Route::prefix('proceso-modular')->group(function () {
-    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}', [ProcesoModularController::class, 'listado'])->name(
+    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}',
+        [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
     Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
@@ -415,7 +427,8 @@ Route::prefix('proceso')->group(function () {
         'proceso.listado'
     );
 
-    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}', [ProcesoController::class, 'vista_listadoCargo']
+    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
+        [ProcesoController::class, 'vista_listadoCargo']
     )->name(
         'proceso.listadoCargo'
     );
@@ -551,7 +564,7 @@ Route::prefix('mesas')->group(function () {
     )->name(
         'generar_pdf_acta_volante'
     );
-    Route::get('/resumen/{instancia_id}',[ActaVolanteController::class,'resumenInstancia'])->name('mesas.resumen');
+    Route::get('/resumen/{instancia_id}', [ActaVolanteController::class, 'resumenInstancia'])->name('mesas.resumen');
 
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
     Route::get('/mesaByComision/{materia_id}/{instancia_id}/{comision_id?}', [MesaController::class, 'mesaByComision']);
@@ -709,9 +722,6 @@ Route::prefix('usuarios')->group(function () {
 });
 
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
-
-
-
 
 
 })->middleware('app.roles:admin');

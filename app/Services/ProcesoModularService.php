@@ -11,7 +11,10 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class ProcesoModularService
@@ -118,6 +121,19 @@ class ProcesoModularService
             ->get();
     }
 
+    public function obtenerProcesosModularesNoVinculadosByProcesos(array $procesos, $materia_id, $ciclo_lectivo)
+    {
+        return Proceso::select('procesos.id')
+            ->where('materia_id',  $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
+            ->whereNotIn(
+                'procesos.id',
+                ProcesoModular::select('proceso_modular.proceso_id')
+                ->whereIn('proceso_modular.proceso_id', $procesos)
+            )
+            ->get();
+    }
+
     /**
      * ProcesoModularService.php:147
      * @param $materia_id <b>id</b> de la materia
@@ -132,6 +148,30 @@ class ProcesoModularService
             ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia_id)
             ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
+            ->orderBy('alumnos.apellidos', 'asc')
+            ->get();
+    }
+
+    public function obtenerProcesosModularesByIdProcesos(array $procesos)
+    {
+        return ProcesoModular::select(
+            'proceso_modular.*'
+        )
+            ->leftjoin('procesos', 'procesos.id', 'proceso_modular.proceso_id')
+            ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->whereIn('proceso_id', $procesos)
+            ->orderBy('alumnos.apellidos', 'asc')
+            ->get();
+    }
+
+    public function obtenerProcesosByMateria($materia_id, $ciclo_lectivo)
+    {
+        return Proceso::select(
+            'procesos.*'
+        )
+            ->leftjoin('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('materia_id', $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
             ->orderBy('alumnos.apellidos', 'asc')
             ->get();
     }
@@ -691,7 +731,7 @@ class ProcesoModularService
     /**
      * @param Materia $materia
      * @param Proceso $proceso
-     * @return float|int
+     * @return NotFoundHttpException|float
      */
     public function revisaPorcentajeProceso(Materia $materia, Proceso $proceso)
     {
@@ -703,11 +743,16 @@ class ProcesoModularService
                 $cargo
             );
             $asistenciaPorcentaje = CargoProceso::where([
-                'proceso_id'=> $proceso->id,
-                'cargo_id'=>$cargo->id
-            ])->first()->porcentaje_asistencia;
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo->id
+            ])->first();
 
-            $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje;
+            if ($asistenciaPorcentaje) {
+                $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje->porcentaje_asistencia;
+            }else{
+                Session::flash('message', 'No se han agregado las notas de modulo en la planilla de notas cargo ');
+            }
+
 
         }
         return $total_modulo;
@@ -906,7 +951,7 @@ class ProcesoModularService
             $total_cargo = $sumaTps / $cant_tps * (1 - $value_parcial) + $sumaPs / $cant_parciales * $value_parcial;
         } else {
             $cuenta = $cant_tps + $cant_parciales;
-            if($cuenta > 0) {
+            if ($cuenta > 0) {
                 $suma = $sumaTps + $sumaPs;
                 $total_cargo = $suma / $cuenta;
             }
@@ -917,21 +962,18 @@ class ProcesoModularService
 
 
     /**
-     * @param $notaCargo
-     * @param Cargo $cargo
-     * @param $materia_id
+     * @param int $notaCargo
+     * @param int $cargo_id
+     * @param int $materia_id
      * @return float|int
      */
-    public function getPonderacionCargo($notaCargo, $cargo_id, $materia_id)
+    public function getPonderacionCargo(int $notaCargo, int $cargo_id, int $materia_id)
     {
 
         $cargo = Cargo::find($cargo_id);
         $weighing = $cargo->ponderacion($materia_id);
-        echo $weighing;
 
         return $weighing / 100 * $notaCargo;
-
-
     }
 
 

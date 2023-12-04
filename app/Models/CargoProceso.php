@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ *  Class CargoProceso
+ * This is the model class for table "cargo_procesos"
+ *
+ * @property integer $id
+ * @property integer $cargo_id
+ * @property integer $proceso_id
+ */
 class CargoProceso extends Model
 {
     use HasFactory;

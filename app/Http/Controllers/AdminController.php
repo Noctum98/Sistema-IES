@@ -32,27 +32,23 @@ class AdminController extends Controller
         ]);
     }
 
-    public function vista_calificaciones_materias(Request $request, Carrera $carrera_id)
+    public function vista_calificaciones_materias(Request $request, Carrera $carrera)
     {
         $ruta = 'admin.calificaciones.materias';
-//        $carrera = Carrera::find($carrera_id);
-        $materias = Materia::where('carrera_id', $carrera_id->id)->orderBy('año')->get();
 
-//        if ($carrera->tipo == 'modular' || $carrera->tipo == 'modular2') {
-//            $ruta = 'materia.admin-modular';
-//        }
+        $materias = Materia::where('carrera_id', $carrera->id)->orderBy('año')->get();
 
         return view($ruta, [
-            'carrera' => $carrera_id,
+            'carrera' => $carrera,
             'materias' => $materias,
         ]);
     }
 
-    public function vista_calificaciones_cargos(Request $request, Materia $materia_id)
+    public function vista_calificaciones_cargos(Request $request, Materia $materia)
     {
         $ruta = 'admin.calificaciones.cargos';
 //        $carrera = Carrera::find($carrera_id);
-        $cargosMateria = CargoMateria::where('materia_id', $materia_id->id)->orderBy('ponderacion')->get();
+        $cargosMateria = CargoMateria::where('materia_id', $materia->id)->orderBy('ponderacion')->get();
 
 //        if ($carrera->tipo == 'modular' || $carrera->tipo == 'modular2') {
 //            $ruta = 'materia.admin-modular';
@@ -60,13 +56,13 @@ class AdminController extends Controller
 
         $tieneTfi = false;
         foreach ($cargosMateria as $cargo){
-            if($cargo->cargo->responsableTFI($materia_id->id)){
+            if($cargo->cargo->responsableTFI($materia->id)){
                 $tieneTfi = true;
             }
         }
 
         return view($ruta, [
-            'modulo' => $materia_id,
+            'modulo' => $materia,
             'cargos' => $cargosMateria,
             'tieneTfi' => $tieneTfi
         ]);

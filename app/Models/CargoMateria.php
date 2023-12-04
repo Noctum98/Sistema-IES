@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class CargoMateria extends Model
+class CargoMateria extends BaseModel
 {
     use HasFactory;
     protected $table = 'cargo_materia';

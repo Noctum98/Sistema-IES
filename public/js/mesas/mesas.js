@@ -45,11 +45,10 @@ $(document).ready(function () {
         let comision_id = $(this).data('comision_id');
 
         let mesa_id = $(this).data('mesa_id');
-        var spinner = "#spin-"+llamado;
+        var spinner = "#spin-" + llamado;
         var check = "#check-" + llamado;
 
-        if(comision_id)
-        {
+        if (comision_id) {
             spinner = spinner + '_' + comision_id;
             check = check + '_' + comision_id;
         }
@@ -59,27 +58,25 @@ $(document).ready(function () {
             $(check).addClass('d-none');
         }
 
-        if(comision_id)
-        {
-            var libro = $("#libro-" + llamado+"_"+comision_id).val();
-            var folios = $(".folios_"+llamado+"_"+comision_id).get();
+        if (comision_id) {
+            var libro = $("#libro-" + llamado + "_" + comision_id).val();
+            var folios = $(".folios_" + llamado + "_" + comision_id).get();
 
-        }else{
+        } else {
             var libro = $("#libro-" + llamado).val();
-            var folios = $(".folios_"+llamado).get();
+            var folios = $(".folios_" + llamado).get();
         }
         console.log(folios);
 
-        
+
 
         let folios_array = [];
 
         for (let index = 1; index <= folios.length; index++) {
-            if(!comision_id)
-            {
-                folios_array.push( $("#folio-" + llamado + '-' + index).val() +'-'+ index );
-            }else{
-                folios_array.push( $("#folio-" + llamado + '-' + index + '-' + comision_id).val() +'-'+ index );
+            if (!comision_id) {
+                folios_array.push($("#folio-" + llamado + '-' + index).val() + '-' + index);
+            } else {
+                folios_array.push($("#folio-" + llamado + '-' + index + '-' + comision_id).val() + '-' + index);
             }
         }
         let data_json = {
@@ -91,7 +88,7 @@ $(document).ready(function () {
         };
 
         console.log(data_json);
-        
+
         let url = '/libros';
 
         $.ajax({
@@ -103,6 +100,6 @@ $(document).ready(function () {
                 $(check).removeClass('d-none');
             }
         });
-        
+
     })
 });
