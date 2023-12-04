@@ -29,6 +29,7 @@ class AlumnoProcesoController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
     }
     // Vistas
 
@@ -65,9 +66,11 @@ class AlumnoProcesoController extends Controller
     }
 
     public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera){
-        if(!Auth::check()){
-            return Redirect::route('login')->withInput()->with('errmessage', 'Aún no se ha identificado en el sistema.');
-        }
+//        if(!Auth::check()){
+//            return Redirect::route('login')
+//                ->withInput()
+//                ->with('errmessage', 'Aún no se ha identificado en el sistema.');
+//        }
 
         $pase = false;
         $alumno = Alumno::find($idAlumno);
