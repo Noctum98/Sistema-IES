@@ -82,8 +82,11 @@ class Proceso extends Model
 
     public function estadoRegularidad()
     {
-        $estados = Estados::find($this->estado_id);
-            return $estados->regularidad;
+        $estado = Estados::find($this->estado_id);
+        if (!$estado) {
+            return 'No registrado';
+        }
+        return $estado->regularidad;
     }
 
     public function etapaCampo(): HasOne
@@ -100,7 +103,6 @@ class Proceso extends Model
     {
         return $this->hasOne(ProcesoModular::class);
     }
-
 
 
     // Functions
@@ -145,7 +147,7 @@ class Proceso extends Model
     public function isClose(int $cargo): bool
     {
         $procesoCargo = $this->obtenerProcesoCargo($cargo);
-        if($procesoCargo && $procesoCargo->cierre){
+        if ($procesoCargo && $procesoCargo->cierre) {
             return true;
         }
         return false;
@@ -192,8 +194,7 @@ class Proceso extends Model
             'alumno_id' => $this->alumno_id
         ])->first();
 
-        if($equivalencia)
-        {
+        if ($equivalencia) {
             return true;
         }
 
