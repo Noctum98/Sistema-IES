@@ -12,6 +12,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Support\HigherOrderCollectionProxy;
 
 /**
  *  Class Proceso
@@ -76,6 +77,13 @@ class Proceso extends Model
     public function estado()
     {
         return $this->belongsTo(Estados::class, 'estado_id');
+    }
+
+
+    public function estadoRegularidad()
+    {
+        $estados = Estados::find($this->estado_id);
+            return $estados->regularidad;
     }
 
     public function etapaCampo(): HasOne
