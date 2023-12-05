@@ -167,7 +167,7 @@ class CargoProcesoController extends Controller
                     $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
             }
 
-            $materia = Materia::find($proceso->materia_id);
+
 
             $this->cargoProcesoService->actualizaCargoProceso($cargo->id, $proceso, $materia, $cargoProceso);
         }
