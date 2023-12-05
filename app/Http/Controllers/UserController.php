@@ -258,18 +258,12 @@ class UserController extends Controller
     public function cambiar_contra(Request $request)
     {
         $user = Auth::user();
-        $alumno = Alumno::where('user_id',$user->id)->first();
-
         $validate = $this->validate($request, [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $new_password = Hash::make($request->input('password'));
         $user->password = $new_password;
-
-        if($alumno){
-            $user->username = $alumno->dni;
-        }
         
         $user->update();
 
