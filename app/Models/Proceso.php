@@ -12,6 +12,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Support\HigherOrderCollectionProxy;
 
 /**
  *  Class Proceso
@@ -78,6 +79,16 @@ class Proceso extends Model
         return $this->belongsTo(Estados::class, 'estado_id');
     }
 
+
+    public function estadoRegularidad()
+    {
+        $estado = Estados::find($this->estado_id);
+        if (!$estado) {
+            return 'No registrado';
+        }
+        return $estado->regularidad;
+    }
+
     public function etapaCampo(): HasOne
     {
         return $this->hasOne(EtapaCampo::class, 'proceso_id');
@@ -92,7 +103,6 @@ class Proceso extends Model
     {
         return $this->hasOne(ProcesoModular::class);
     }
-
 
 
     // Functions
@@ -137,7 +147,7 @@ class Proceso extends Model
     public function isClose(int $cargo): bool
     {
         $procesoCargo = $this->obtenerProcesoCargo($cargo);
-        if($procesoCargo && $procesoCargo->cierre){
+        if ($procesoCargo && $procesoCargo->cierre) {
             return true;
         }
         return false;
@@ -184,8 +194,7 @@ class Proceso extends Model
             'alumno_id' => $this->alumno_id
         ])->first();
 
-        if($equivalencia)
-        {
+        if ($equivalencia) {
             return true;
         }
 

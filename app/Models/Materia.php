@@ -214,10 +214,11 @@ class Materia extends BaseModel
         ])->first();
 
         if ($regularidad) {
-            return $regularidad->obtenerEstado()->regularidad . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
+            return $regularidad->obtenerEstado()->regularidad
+                . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
         }
 
-        return $proceso->regularidad ?? '-';
+        return $proceso->estadoRegularidad() ?? '-';
 
     }
 
