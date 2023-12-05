@@ -408,8 +408,14 @@ class UserController extends Controller
     public function regenerar_contra(Request $request, $id)
     {
         $user = User::find($id);
+
+        $alumno = Alumno::where('user_id',$user->id)->first();
+        
         $new_password = Hash::make('12345678');
         $user->password = $new_password;
+        if($alumno){
+            $user->username = $alumno->dni;
+        }
         $user->update();
 
         return response()->json(['status' => 'success']);
