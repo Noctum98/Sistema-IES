@@ -383,6 +383,8 @@ class AlumnoMesaController extends Controller
             $id = $inscripcion->materia_id;
         }
 
+        ActaVolante::where('mesa_alumno_id',$inscripcion->id)->delete();
+
         return redirect()->back()->with([
             'alert_warning' => 'Se ha dado de baja la inscripción correctamente'
         ]);
