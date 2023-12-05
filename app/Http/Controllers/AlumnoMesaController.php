@@ -321,6 +321,8 @@ class AlumnoMesaController extends Controller
         $inscripcion->motivo_baja = 'Baja del alumno';
         $inscripcion->update();
 
+        ActaVolante::where('mesa_alumno_id',$inscripcion->id)->delete();
+
         return redirect()->back();
     }
 
