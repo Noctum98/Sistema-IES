@@ -155,7 +155,7 @@ class ProcesoController extends Controller
             $cargo_id, $procesos->pluck('id')->toArray()));
 
         $vincular = false;
-        if ($cantCargosProcesos < $procesos) {
+        if ($cantCargosProcesos < count($procesos)) {
             $vincular = true;
         }
 
