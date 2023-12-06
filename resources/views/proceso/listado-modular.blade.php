@@ -110,7 +110,7 @@
         <a href="{{ route('cargo_proceso.all_store',
             ['cargo_id'=> $cargo->id, 'materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo,]) }}"
            class="btn btn-primary m-1 ">
-            Vincular las notas a la planilla modular
+            Vincular las notas a la planilla modular {{$vincular}}}
         </a>
         </div>
         @if(count($procesos) > 0)
