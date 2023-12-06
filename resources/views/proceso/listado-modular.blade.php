@@ -101,17 +101,19 @@
             </div>
         </div>
         <div class="btn-group" role="group" aria-label="Botones de acción">
-        <a href="{{ route('proceso_modular.list',
+            <a href="{{ route('proceso_modular.list',
 ['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id]) }}"
-           class="btn btn-info m-1">
-            Ver planilla general del módulo <b>{{$materia->nombre}}</b>
-        </a>
-{{--            Para agregar cuando esté el proceso listo--}}
-        <a href="{{ route('cargo_proceso.all_store',
+               class="btn btn-info m-1">
+                Ver planilla general del módulo <b>{{$materia->nombre}}</b>
+            </a>
+            {{--            Para agregar cuando esté el proceso listo--}}
+            @if($vincular)
+                <a href="{{ route('cargo_proceso.all_store',
             ['cargo_id'=> $cargo->id, 'materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo,]) }}"
-           class="btn btn-primary m-1 ">
-            Vincular las notas a la planilla modular {{$vincular}}}
-        </a>
+                   class="btn btn-primary m-1 ">
+                    Vincular las notas a la planilla modular
+                </a>
+            @endif
         </div>
         @if(count($procesos) > 0)
             <div class="table-responsive tableFixHead">
