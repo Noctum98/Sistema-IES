@@ -146,10 +146,7 @@ class CargoProcesoController extends Controller
 
         $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
 
-
-
         foreach ($procesos as $proceso) {
-
             $cargoProceso = CargoProceso::where([
                 'proceso_id' => $proceso->id,
                 'cargo_id' => $cargo->id

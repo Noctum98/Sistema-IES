@@ -33,4 +33,14 @@ class CargoProceso extends Model
         'nota_ponderada',
         'porcentaje_asistencia'
     ];
+
+    public function getCargosProcesosByProcesos(int $cargo_id, array $procesos)
+    {
+        $mesas = CargoProceso::select('cargo_procesos.*')
+            ->where('cargo_id', $cargo_id)
+            ->whereIn('proceso_id', $procesos);
+
+
+        return $mesas->get();
+    }
 }
