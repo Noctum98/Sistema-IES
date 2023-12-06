@@ -144,9 +144,9 @@ class CargoProcesoController extends Controller
         /** @var @var Materia $materia */
         $materia = Materia::find($materia_id);
 
-        $procesos = $materia->getProcesos($materia_id, $ciclo_lectivo, $comision_id);
+        $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
 
-        dd($procesos);
+
 
         foreach ($procesos as $proceso) {
 
