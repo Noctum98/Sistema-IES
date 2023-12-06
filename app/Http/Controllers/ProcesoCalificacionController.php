@@ -10,6 +10,7 @@ use App\Services\CargoProcesoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ProcesoCalificacionController extends Controller
@@ -63,7 +64,7 @@ class ProcesoCalificacionController extends Controller
                     $procesoCalificacion->nota = $this->calcularNota((int)$request['porcentaje']);
                 } else {
                     $procesoCalificacion->porcentaje = -1;
-                    $procesoCalificacion->nota = 0;
+                    $procesoCalificacion->nota = -1;
                 }
                 $procesoCalificacion->update();
             } else {

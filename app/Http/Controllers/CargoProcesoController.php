@@ -37,6 +37,7 @@ class CargoProcesoController extends Controller
     {
         $this->cargoProcesoService = $cargoProcesoService;
         $this->procesosCargosService = $procesosCargosService;
+        $this->middleware('auth');
     }
 
     /**
@@ -111,19 +112,19 @@ class CargoProcesoController extends Controller
         $this->cargoProcesoService->actualizaCargoProceso($cargo->id, $proceso, $materia, $cargoProceso);
 
         return redirect()->route('proceso.listadoCargo',
-            [$materia->id, $cargo->id,$proceso->ciclo_lectivo])
-            ->with('mensaje_exitoso','Cargo proceso generado');
+            [$materia->id, $cargo->id, $proceso->ciclo_lectivo])
+            ->with('mensaje_exitoso', 'Cargo proceso generado');
 
     }
-
 
 
     /**
      * Guarda todos lor procesos que no están en la planilla modular.
      *
-     * @param StoreCargoProcesoRequest $request
-     * @param int $proceso_id
-     * @param $cargo_id
+     * @param int $cargo_id
+     * @param int $materia_id
+     * @param int $ciclo_lectivo
+     * @param int|null $comision_id
      * @return RedirectResponse
      */
     public function all_store(
@@ -140,37 +141,37 @@ class CargoProcesoController extends Controller
             throw new Exception('No se encontró el cargo');
         }
 
-        $procesos = $this->getProcesosMateria($materia_id, $ciclo_lectivo, $comision_id);
+        /** @var @var Materia $materia */
+        $materia = Materia::find($materia_id);
 
+        $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
 
+        foreach ($procesos as $proceso) {
+            $cargoProceso = CargoProceso::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo->id
+            ])->first();
 
-        $cargoProceso = CargoProceso::where([
-            'proceso_id' => $proceso->id,
-            'cargo_id' => $cargo->id
-        ])->first();
+            $procesosCargos = ProcesosCargos::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo->id
+            ])->first();
 
+            if (!$procesosCargos) {
+                $this->procesosCargosService->crear($proceso->id, $cargo->id, $user->id, false);
+            }
 
-        $procesosCargos = ProcesosCargos::where([
-            'proceso_id' => $proceso->id,
-            'cargo_id' => $cargo->id
-        ])->first();
+            if (!$cargoProceso) {
+                $cargoProceso = $this->cargoProcesoService->generaCargoProceso(
+                    $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
+            }
 
-        if (!$procesosCargos) {
-            $this->procesosCargosService->crear($proceso->id, $cargo->id, $user->id, false);
+            $this->cargoProcesoService->actualizaCargoProceso($cargo->id, $proceso, $materia, $cargoProceso);
         }
-
-        if (!$cargoProceso) {
-            $cargoProceso = $this->cargoProcesoService->generaCargoProceso(
-                $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
-        }
-
-        $materia = Materia::find($proceso->materia_id);
-
-        $this->cargoProcesoService->actualizaCargoProceso($cargo->id, $proceso, $materia, $cargoProceso);
 
         return redirect()->route('proceso.listadoCargo',
-            [$materia->id, $cargo->id,$proceso->ciclo_lectivo])
-            ->with('mensaje_exitoso','Cargo proceso generado');
+            [$materia->id, $cargo->id, $ciclo_lectivo])
+            ->with('mensaje_exitoso', 'Cargos procesos generados');
 
     }
 
@@ -213,8 +214,8 @@ class CargoProcesoController extends Controller
         return redirect()->route('proceso.listadoCargo',
             [
                 $materia->id,
-                 $cargoProceso->cargo_id,
-                 $proceso->ciclo_lectivo]);
+                $cargoProceso->cargo_id,
+                $proceso->ciclo_lectivo]);
     }
 
     /**

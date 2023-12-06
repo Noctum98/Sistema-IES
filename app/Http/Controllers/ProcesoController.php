@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Models\Calificacion;
 use App\Models\Cargo;
+use App\Models\CargoProceso;
 use App\Models\Comision;
 use App\Models\Estados;
 use App\Models\Materia;
@@ -148,6 +149,17 @@ class ProcesoController extends Controller
         $estados = Estados::all();
         $cargo = Cargo::find($cargo_id);
 
+        $cargosProcesos = new CargoProceso();
+
+        $cantCargosProcesos = count($cargosProcesos->getCargosProcesosByProcesos(
+            $cargo_id, $procesos->pluck('id')->toArray()));
+
+        $vincular = false;
+        if ($cantCargosProcesos < count($procesos)) {
+            $vincular = true;
+        }
+
+
         return view('proceso.listado-modular', [
             'procesos' => $procesos,
             'materia' => $materia,
@@ -157,6 +169,7 @@ class ProcesoController extends Controller
             'cargo' => $cargo,
             'ciclo_lectivo' => $ciclo_lectivo,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'vincular' => $vincular
         ]);
     }
 
@@ -357,11 +370,11 @@ class ProcesoController extends Controller
 
         $proceso = Proceso::find($request['proceso_id']);
         $cierre_modulo = true;
-        if(isset($request['cargo'])){
+        if (isset($request['cargo'])) {
             $cierre_modulo = false;
         }
 
-        if($cierre_modulo) {
+        if ($cierre_modulo) {
             $proceso = $this->cierreToTrue($request['cierre'], $proceso);
 
             $proceso->operador_id = $user->id;

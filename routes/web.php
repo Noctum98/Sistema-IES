@@ -662,8 +662,7 @@ Route::prefix('etapa_campo')->group(function () {
 
 Route::prefix('excel')->group(function () {
     Route::get('alumnos/{carrera_id}/{year}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'alumnos_year'])->name('excel.alumnosAño');
-    Route::get('alumnos/all', [ExcelController::class, 'all_alumnos']);
-    Route::get('alumnos/sedes/sede/{sede_id}', [ExcelController::class, 'all_alumnos']);
+    Route::get('alumnos/all', [ExcelController::class, 'all_alumnos'])->name('excel.all_alumnos');
     Route::get('procesos/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ExcelController::class, 'planilla_notas_tradicional'])->name(
         'excel.procesos'
     );
