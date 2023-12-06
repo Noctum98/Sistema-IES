@@ -121,9 +121,10 @@ class CargoProcesoController extends Controller
     /**
      * Guarda todos lor procesos que no están en la planilla modular.
      *
-     * @param StoreCargoProcesoRequest $request
-     * @param int $proceso_id
-     * @param $cargo_id
+     * @param int $cargo_id
+     * @param int $materia_id
+     * @param int $ciclo_lectivo
+     * @param int|null $comision_id
      * @return RedirectResponse
      */
     public function all_store(
@@ -145,13 +146,14 @@ class CargoProcesoController extends Controller
 
         $procesos = $materia->getProcesos($materia_id, $ciclo_lectivo, $comision_id);
 
+        dd($procesos);
+
         foreach ($procesos as $proceso) {
 
             $cargoProceso = CargoProceso::where([
                 'proceso_id' => $proceso->id,
                 'cargo_id' => $cargo->id
             ])->first();
-
 
             $procesosCargos = ProcesosCargos::where([
                 'proceso_id' => $proceso->id,
@@ -166,8 +168,6 @@ class CargoProcesoController extends Controller
                 $cargoProceso = $this->cargoProcesoService->generaCargoProceso(
                     $cargo->id, $proceso->id, $user->id, $proceso->ciclo_lectivo, false);
             }
-
-
 
             $this->cargoProcesoService->actualizaCargoProceso($cargo->id, $proceso, $materia, $cargoProceso);
         }
