@@ -281,7 +281,7 @@ class Materia extends BaseModel
      * @param int $comision_id
      * @return Proceso[]|Builder[]|Collection|_IH_Proceso_C
      */
-    public function getProcesos(int $ciclo_lectivo, int $comision_id)
+    public function getProcesos(int $ciclo_lectivo, int $comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
