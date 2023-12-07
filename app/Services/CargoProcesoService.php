@@ -348,14 +348,24 @@ class CargoProcesoService
     public function actualizaCargoProceso(
         int $cargo, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
+
         $tps = $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
+
         $parciales = $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
 
         $notasTps = $this->calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
 
-        $sumaTps = array_sum($notasTps->pluck('nota')->toArray());
+        $sumaTps = null;
+        foreach ($notasTps as $tps) {
+            if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso->id, $tps->id))) {
+                $sumaTps += $this->calificacionService->calificacionParcialByProceso($proceso->id, $tps->id);
+            }
+        }
+
+
+//        $sumaTps = array_sum($notasTps->pluck('nota')->toArray());
 
         $sumaPs = null;
 
@@ -407,7 +417,6 @@ class CargoProcesoService
         $cargoProceso->nota_ps = $notaParciales;
 
         $cargoProceso->nota_cargo = $total_cargo;
-
         $cargoProceso->nota_ponderada = $ponderacion_cargo;
 
         $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
