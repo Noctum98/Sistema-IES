@@ -11,6 +11,7 @@ use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 
+use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesosCargosService;
 use Illuminate\Contracts\Foundation\Application;
@@ -29,16 +30,19 @@ class ProcesoController extends Controller
      * @var CicloLectivoService
      */
     private $cicloLectivoService;
+    private CargoProcesoService $cargoProcesoService;
 
     /**
      * @param CicloLectivoService $cicloLectivoService
+     * @param CargoProcesoService $cargoProcesoService
      */
-    function __construct(CicloLectivoService $cicloLectivoService)
+    function __construct(CicloLectivoService $cicloLectivoService, CargoProcesoService $cargoProcesoService)
     {
         $this->middleware('app.auth', ['except' => 'delete']);
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',
             ['except' => 'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
+        $this->cargoProcesoService = $cargoProcesoService;
     }
 
     // Vistas
@@ -123,6 +127,7 @@ class ProcesoController extends Controller
 
     public function vista_listadoCargo($materia_id, $cargo_id, $ciclo_lectivo = null, $comision_id = null)
     {
+        $user = Auth::user();
         if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
@@ -154,9 +159,13 @@ class ProcesoController extends Controller
         $cantCargosProcesos = count($cargosProcesos->getCargosProcesosByProcesos(
             $cargo_id, $procesos->pluck('id')->toArray()));
 
-        $vincular = false;
+//        $vincular = false;
         if ($cantCargosProcesos < count($procesos)) {
-            $vincular = true;
+
+            $this->cargoProcesoService->allStore(
+                $materia_id, $cargo_id, $ciclo_lectivo, $user->id, $comision_id);
+
+//            $vincular = true;
         }
 
 
@@ -169,7 +178,7 @@ class ProcesoController extends Controller
             'cargo' => $cargo,
             'ciclo_lectivo' => $ciclo_lectivo,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
-            'vincular' => $vincular
+//            'vincular' => $vincular
         ]);
     }
 

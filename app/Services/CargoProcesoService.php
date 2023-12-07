@@ -9,6 +9,7 @@ use App\Models\CargoProceso;
 use App\Models\Configuration;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Models\ProcesosCargos;
 
 class CargoProcesoService
 {
@@ -27,6 +28,7 @@ class CargoProcesoService
      * @var ProcesoModularService
      */
     private $procesoModularService;
+    private ProcesosCargosService $procesosCargosService;
 
     /**
      * @param CalificacionService $calificacionService
@@ -35,11 +37,12 @@ class CargoProcesoService
      */
     public function __construct(
         CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService,
-        ProcesoModularService $procesoModularService)
+        ProcesoModularService $procesoModularService, ProcesosCargosService $procesosCargosService)
     {
         $this->calificacionService = $calificacionService;
         $this->procesoCalificacionService = $procesoCalificacionService;
         $this->procesoModularService = $procesoModularService;
+        $this->procesosCargosService = $procesosCargosService;
     }
 
     /**
@@ -413,5 +416,45 @@ class CargoProcesoService
 
         return $cargoProceso;
 
+    }
+
+    /**
+     * @param int $materia_id
+     * @param int $cargo_id
+     * @param int $ciclo_lectivo
+     * @param int $user_id
+     * @param int|null $comision_id
+     * @return void
+     */
+    public function allStore(
+        int $materia_id, int $cargo_id, int $ciclo_lectivo, int $user_id, int $comision_id = null)
+    {
+        /** @var Materia $materia */
+        $materia = Materia::find($materia_id);
+
+        $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
+
+        foreach ($procesos as $proceso) {
+            $cargoProceso = CargoProceso::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo_id
+            ])->first();
+
+            $procesosCargos = ProcesosCargos::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo_id
+            ])->first();
+
+            if (!$procesosCargos) {
+                $this->procesosCargosService->crear($proceso->id, $cargo_id, $user_id, false);
+            }
+
+            if (!$cargoProceso) {
+                $cargoProceso = $this->generaCargoProceso(
+                    $cargo_id, $proceso->id, $user_id, $ciclo_lectivo, false);
+            }
+
+            $this->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
+        }
     }
 }
