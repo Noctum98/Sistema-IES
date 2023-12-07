@@ -358,9 +358,9 @@ class CargoProcesoService
         $notasTps = $this->calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
 
         $sumaTps = null;
-        foreach ($notasTps as $tps) {
-            if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso->id, $tps->id))) {
-                $sumaTps += $this->calificacionService->calificacionParcialByProceso($proceso->id, $tps->id);
+        foreach ($notasTps as $tp) {
+            if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso->id, $tp->id))) {
+                $sumaTps += $this->calificacionService->calificacionParcialByProceso($proceso->id, $tp->id);
             }
         }
 
