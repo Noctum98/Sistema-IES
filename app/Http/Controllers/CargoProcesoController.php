@@ -141,7 +141,7 @@ class CargoProcesoController extends Controller
             throw new Exception('No se encontró el cargo');
         }
 
-        /** @var @var Materia $materia */
+        /** @var Materia $materia */
         $materia = Materia::find($materia_id);
 
         $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);

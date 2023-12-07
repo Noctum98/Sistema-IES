@@ -9,6 +9,7 @@ use App\Models\CargoProceso;
 use App\Models\Configuration;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Models\ProcesosCargos;
 
 class CargoProcesoService
 {
@@ -27,6 +28,7 @@ class CargoProcesoService
      * @var ProcesoModularService
      */
     private $procesoModularService;
+    private ProcesosCargosService $procesosCargosService;
 
     /**
      * @param CalificacionService $calificacionService
@@ -35,11 +37,12 @@ class CargoProcesoService
      */
     public function __construct(
         CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService,
-        ProcesoModularService $procesoModularService)
+        ProcesoModularService $procesoModularService, ProcesosCargosService $procesosCargosService)
     {
         $this->calificacionService = $calificacionService;
         $this->procesoCalificacionService = $procesoCalificacionService;
         $this->procesoModularService = $procesoModularService;
+        $this->procesosCargosService = $procesosCargosService;
     }
 
     /**
@@ -345,14 +348,24 @@ class CargoProcesoService
     public function actualizaCargoProceso(
         int $cargo, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
+
         $tps = $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
+
         $parciales = $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
 
         $notasTps = $this->calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
 
-        $sumaTps = array_sum($notasTps->pluck('nota')->toArray());
+        $sumaTps = null;
+        foreach ($notasTps as $tp) {
+            if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso->id, $tp->id))) {
+                $sumaTps += $this->calificacionService->calificacionParcialByProceso($proceso->id, $tp->id);
+            }
+        }
+
+
+//        $sumaTps = array_sum($notasTps->pluck('nota')->toArray());
 
         $sumaPs = null;
 
@@ -404,7 +417,6 @@ class CargoProcesoService
         $cargoProceso->nota_ps = $notaParciales;
 
         $cargoProceso->nota_cargo = $total_cargo;
-
         $cargoProceso->nota_ponderada = $ponderacion_cargo;
 
         $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
@@ -413,5 +425,45 @@ class CargoProcesoService
 
         return $cargoProceso;
 
+    }
+
+    /**
+     * @param int $materia_id
+     * @param int $cargo_id
+     * @param int $ciclo_lectivo
+     * @param int $user_id
+     * @param int|null $comision_id
+     * @return void
+     */
+    public function allStore(
+        int $materia_id, int $cargo_id, int $ciclo_lectivo, int $user_id, int $comision_id = null)
+    {
+        /** @var Materia $materia */
+        $materia = Materia::find($materia_id);
+
+        $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
+
+        foreach ($procesos as $proceso) {
+            $cargoProceso = CargoProceso::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo_id
+            ])->first();
+
+            $procesosCargos = ProcesosCargos::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo_id
+            ])->first();
+
+            if (!$procesosCargos) {
+                $this->procesosCargosService->crear($proceso->id, $cargo_id, $user_id, false);
+            }
+
+            if (!$cargoProceso) {
+                $cargoProceso = $this->generaCargoProceso(
+                    $cargo_id, $proceso->id, $user_id, $ciclo_lectivo, false);
+            }
+
+            $this->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
+        }
     }
 }
