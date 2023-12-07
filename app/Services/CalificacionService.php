@@ -39,7 +39,7 @@ class CalificacionService
      * @param array $calificacion_id
      * @return mixed
      */
-    public function calificacionesArrayByProceso(int $proceso_id,array $calificacion_id)
+    public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id)
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
             ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
