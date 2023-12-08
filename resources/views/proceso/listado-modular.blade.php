@@ -142,7 +142,7 @@
                                class="text-white"> Asistencia % </a>
                         </th>
                         <th>N. Final /<br/>
-                            <small style="font-size: 0.8em">(Ponderación)</small>
+                            <small style="font-size: 0.8em">(Ponderación {{$cargo->ponderacion($materia->id)}})</small>
                         </th>
                         <th>
                             <i class="fa fa-upload"></i>
