@@ -34,6 +34,7 @@ class CargoProcesoService
      * @param CalificacionService $calificacionService
      * @param ProcesoCalificacionService $procesoCalificacionService
      * @param ProcesoModularService $procesoModularService
+     * @param ProcesosCargosService $procesosCargosService
      */
     public function __construct(
         CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService,
@@ -351,6 +352,8 @@ class CargoProcesoService
 
         $tps = $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
+
+        dd($tps);
 
         $parciales = $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
