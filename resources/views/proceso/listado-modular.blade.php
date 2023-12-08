@@ -125,32 +125,35 @@
                         </th>
                         @if(count($calificaciones) > 0)
                             @foreach($calificaciones as $calificacion)
-                                <th><a href="{{ route('calificacion.create',$calificacion->id) }}"
+                                <th class="text-center">
+                                    <a href="{{ route('calificacion.create',$calificacion->id) }}"
                                        class="text-white" title="{{$calificacion->description}}"
                                        data-bs-toggle="tooltip"
                                        data-bs-placement="top"
                                     >{{$calificacion->nombre}}</a></th>
                             @endforeach
                         @else
-                            <th>
+                            <th class="text-center">
                                 -
                             </th>
                         @endif
-                        <th>
+                        <th class="text-center">
                             <a href="{{ route('asis.admin',
 ['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
                                class="text-white"> Asistencia % </a>
                         </th>
-                        <th>N. Final /<br/>
+                        <th class="text-center">N. Final /<br/>
                             <small style="font-size: 0.8em">
                                 (Ponderación {{$cargo->ponderacion($materia->id)}}%)
                             </small>
                         </th>
-                        <th>
+                        <th class="text-center">
                             <i class="fa fa-upload"></i>
                         </th>
-                        <th>
-                            Cerrar notas
+                        <th class="text-center">
+                            <small>
+                                Cerrar notas
+                            </small>
                         </th>
 
                     </tr>
@@ -164,11 +167,10 @@
                                     <br/>
                                     <small>#{{$proceso->id}}</small>
                                 @endif
-
                             </td>
                             @if(count($calificaciones) > 0)
                                 @foreach($calificaciones as $cc)
-                                    <td>
+                                    <td class="text-center">
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
                                                     class="text-center {{ $proceso->procesoCalificacion(
@@ -210,11 +212,11 @@
                                     </td>
                                 @endforeach
                             @else
-                                <td>
+                                <td class="text-center">
                                     -
                                 </td>
                             @endif
-                            <td>
+                            <td class="text-center">
                                 {{ $proceso->asistencia() ?
                                 optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
                                 %
@@ -269,8 +271,6 @@
                                     @endif
                                 </span>
                             </td>
-
-
                         </tr>
                     @endforeach
                     </tbody>
@@ -284,8 +284,5 @@
                 <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>
-
-
                 </script>
-
 @endsection
