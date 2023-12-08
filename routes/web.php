@@ -193,8 +193,8 @@ Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
     Route::put('/especial/{ciclo_lectivo_especial}/actualizar', [CicloLectivoEspecialController::class, 'update'])->name('ciclo_lectivo_especial.update');
     Route::get('/especial/{ciclo_lectivo_especial}/edit', [CicloLectivoEspecialController::class, 'edit'])->name('ciclo_lectivo_especial.edit');
 });
-// Rutas de comisiones
 
+// Rutas de comisiones
 Route::resource('comisiones', ComisionController::class);
 Route::get('comision/edit/{comision_id}', [ComisionController::class, 'edit'])->name('comision.edit');
 Route::get('verComisiones/{carrera_id}', [ComisionController::class, 'index'])->name('comisiones.ver');
@@ -265,6 +265,19 @@ Route::prefix('moduloProfesor')->group(function () {
     );
 });
 
+// Rutas de Personal
+Route::prefix('personal')->group(function () {
+    // Vistas
+    Route::get('/', [PersonalController::class, 'vista_admin'])->name('personal.admin');
+    Route::get('crear', [PersonalController::class, 'vista_crear'])->name('personal.crear');
+    Route::get('ficha/{id}', [PersonalController::class, 'vista_detalle'])->name('personal.ficha');
+    Route::get('editar/{id}', [PersonalController::class, 'vista_editar'])->name('personal.editar');
+
+    // Acciones
+    Route::post('crear-personal', [PersonalController::class, 'crear_personal'])->name('crear_personal');
+    Route::post('edita-personal/{id}', [PersonalController::class, 'editar_personal'])->name('editar_personal');
+});
+
 /**
  * Rutas ProcesoModular
  */
@@ -310,6 +323,19 @@ Route::prefix('sedes')->group(function () {
     Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
 });
 
+Route::prefix('usuario_cargo')->group(function () {
+    Route::delete('delete/{user_id}/{cargo_id}', [UserCargoController::class, 'delete'])->name('delete_cargo_carreras');
+});
+
+/**
+ * Usuario carrera
+ */
+Route::prefix('usuario_carrera')->group(function () {
+    Route::delete('delete/{user_id}', [UserCarreraController::class, 'delete'])->name('delete_user_carrera');
+});
+Route::prefix('usuario_carrera')->group(function () {
+    Route::delete('delete/{user_id}', [UserCarreraController::class, 'delete'])->name('delete_user_carrera');
+});
 
 Route::prefix('usuario_materia')->group(function () {
     Route::delete('delete/{user_id}/{materia_id}', [UserMateriaController::class, 'delete'])->name(
@@ -317,36 +343,11 @@ Route::prefix('usuario_materia')->group(function () {
     );
 });
 
-Route::prefix('usuario_carrera')->group(function () {
-    Route::delete('delete/{user_id}', [UserCarreraController::class, 'delete'])->name('delete_user_carrera');
-});
-
-Route::prefix('usuario_cargo')->group(function () {
-    Route::delete('delete/{user_id}/{cargo_id}', [UserCargoController::class, 'delete'])->name('delete_cargo_carreras');
-});
-
-Route::prefix('usuario_carrera')->group(function () {
-    Route::delete('delete/{user_id}', [UserCarreraController::class, 'delete'])->name('delete_user_carrera');
-});
 
 //Ruta de Roles
 Route::resource('roles', RolController::class);
 
-// Rutas de Personal
-Route::prefix('personal')->group(function () {
-    // Vistas
-    Route::get('/', [PersonalController::class, 'vista_admin'])->name('personal.admin');
-    Route::get('crear', [PersonalController::class, 'vista_crear'])->name('personal.crear');
-    Route::get('ficha/{id}', [PersonalController::class, 'vista_detalle'])->name('personal.ficha');
-    Route::get('editar/{id}', [PersonalController::class, 'vista_editar'])->name('personal.editar');
-
-    // Acciones
-    Route::post('crear-personal', [PersonalController::class, 'crear_personal'])->name('crear_personal');
-    Route::post('edita-personal/{id}', [PersonalController::class, 'editar_personal'])->name('editar_personal');
-});
-
-
-// Rutas de Materias
+// Rutas de carreras/materia
 Route::prefix('carreras/materias')->group(function () {
     // Vistas
     Route::get('/{carrera_id}', [MateriaController::class, 'vista_admin'])->name('materia.admin');

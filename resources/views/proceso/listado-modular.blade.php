@@ -107,13 +107,13 @@
                 Ver planilla general del módulo <b>{{$materia->nombre}}</b>
             </a>
             {{--            Para agregar cuando esté el proceso listo--}}
-            @if($vincular)
-                <a href="{{ route('cargo_proceso.all_store',
-            ['cargo_id'=> $cargo->id, 'materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo,]) }}"
-                   class="btn btn-primary m-1 ">
-                    Vincular las notas a la planilla modular
-                </a>
-            @endif
+            {{--            @if($vincular)--}}
+            {{--                <a href="{{ route('cargo_proceso.all_store',--}}
+            {{--            ['cargo_id'=> $cargo->id, 'materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo,]) }}"--}}
+            {{--                   class="btn btn-primary m-1 ">--}}
+            {{--                    Vincular las notas a la planilla modular--}}
+            {{--                </a>--}}
+            {{--            @endif--}}
         </div>
         @if(count($procesos) > 0)
             <div class="table-responsive tableFixHead">
@@ -169,7 +169,7 @@
                                     <td>
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
-                                                class="text-center {{ $proceso->procesoCalificacion(
+                                                    class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
                                                 <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
@@ -188,7 +188,7 @@
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                    class="text-center {{ $proceso->procesoCalificacion(
+                                                        class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
@@ -217,15 +217,15 @@
                             @endif
                             <td>
                                 {{ $proceso->asistencia() ?
-optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
+                                optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
                                 %
-
                             </td>
+                            {{-- Nota final--}}
                             <td class="text-center">
                                 @if($proceso->getCargosProcesos($cargo->id))
                                     {{$proceso->getCargosProcesos($cargo->id)->nota_cargo}}<br/>
                                     <small
-                                        style="font-size: 0.8em">
+                                            style="font-size: 0.8em">
                                         ({{$proceso->getCargosProcesos($cargo->id)->nota_ponderada}})
                                     </small>
                                 @else
