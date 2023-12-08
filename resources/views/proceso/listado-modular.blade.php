@@ -175,12 +175,10 @@
     $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
                                                 <small class="text-center">
                                                     <br/>
-                                                    (
-                                                    {{$proceso->procesoCalificacion(
-    $cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
+                                                    ({{$proceso->procesoCalificacion(
+    $cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : '0'}}
                                                     @if($proceso->procesoCalificacion(
     $cc->id)->porcentaje >= 0)
-
                                                     @endif
                                                     %)
                                                 </small>
@@ -198,7 +196,6 @@
     $cc->id)->porcentaje_recuperatorio}}
                                                         @if(is_numeric($proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio))
-
                                                         @endif
                                                         %)
                                                     </small>
