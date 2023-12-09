@@ -291,18 +291,41 @@ class CargoProcesoService
         return $cargoProceso;
     }
 
-    public function getAlumnoId(int $proceso)
+    /**
+     * Recupera el alumno_id asociado con el proceso dado.
+     *
+     * @param int $proceso El ID del proceso para obtener el alumno_id.
+     *
+     * @return int El alumno_id asociado con el proceso.
+     */
+    public function getAlumnoId(int $proceso): int
     {
         return Proceso::find($proceso)->alumno_id;
     }
 
-    public function getWeighingCargo(int $cargo, int $materia)
+
+    /**
+     * Recupera la ponderación del cargo.
+     *
+     * @param int $cargo ID del cargo.
+     * @param int $materia ID de la materia.
+     *
+     * @return float Ponderación para la materia en el cargo especificado.
+     */
+    public function getWeighingCargo(int $cargo, int $materia): float
     {
         $cargo = Cargo::find($cargo);
         return $cargo->ponderacion($materia);
     }
 
-    public function getCicloLectivo($proceso)
+    /**
+     * Obtiene el ciclo lectivo asociado al proceso dado.
+     *
+     * @param int $proceso El ID del proceso para obtener el ciclo lectivo.
+     *
+     * @return int El ciclo lectivo asociado con el proceso.
+     */
+    public function getCicloLectivo(int $proceso): int
     {
         return Proceso::find($proceso)->ciclo_lectivo;
     }
@@ -319,11 +342,14 @@ class CargoProcesoService
 
 
     /**
-     * @param $cargo
-     * @param $cicloLectivo
-     * @param $proceso
-     * @param $materia
-     * @param $user
+     * Graba la calificación de un cargo.
+     *
+     * @param mixed $cargo El cargo al que se le va a grabar la calificación.
+     * @param mixed $cicloLectivo El ciclo lectivo al que pertenece el cargo.
+     * @param mixed $proceso El proceso al que pertenece el cargo.
+     * @param mixed $materia La materia a la que corresponde el cargo.
+     * @param mixed $user El usuario que realiza la grabación de la calificación.
+     *
      * @return void
      */
     public function grabaCalificacion($cargo, $cicloLectivo, $proceso, $materia, $user): void
@@ -350,84 +376,22 @@ class CargoProcesoService
         int $cargo, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
 
-        $tps = $this->getCalificaciones(self::TIPO_TP, $cargo, $proceso, $materia);
+        list($tps, $parciales) = $this->getCalificacionesDetails($cargo, $proceso, $materia);
 
-        $parciales = $this->getCalificaciones(self::TIPO_PARCIAL, $cargo, $proceso, $materia);
+        $sumaTps = $this->calculateSumaTps($proceso->id, $tps);
 
-        $notasTps = $this->calificacionService
-            ->calificacionesArrayByProceso($proceso->id, $tps->pluck('id')->toArray());
-
-        $sumaTps = null;
-
-        // Este bucle esencialmente calcula el total acumulativo para los valores nota en el array $notasTps.
-        foreach ($notasTps as $tp) {
-            $ptp = 0;
-            if (is_numeric($tp->nota)) {
-
-                if ($tp->nota >= 0) {
-                    $ptp = $tp->nota;
-                }
-                $sumaTps += $ptp;
-            }
-        }
-
-        $sumaPs = null;
-        foreach ($parciales as $ps) {
-            if (is_numeric($this->calificacionService->calificacionParcialByProceso($proceso->id, $ps->id))) {
-                $sumaPs += $this->calificacionService->calificacionParcialByProceso($proceso->id, $ps->id);
-            }
-        }
+        $sumaPs = $this->calculateSumaPs($proceso->id, $parciales);
 
         $total_cargo = $this->procesoModularService->getNotaCargo(count($tps), count($parciales), $sumaTps, $sumaPs);
 
         $ponderacion_cargo = $this->procesoModularService->getPonderacionCargo($total_cargo, $cargo, $materia->id);
 
-        $porcentajeAsistencia = null;
+        $porcentajeAsistencia = $this->calculatePorcentajeAsistencia($proceso->id, $cargo);
 
-        $asistencia = Asistencia::where(
-            [
-                'proceso_id' => $proceso->id,
-            ]
-        )->first();
-
-        if ($asistencia) {
-            $asistenciaModular = AsistenciaModular::where([
-                'asistencia_id' => $asistencia->id,
-                'cargo_id' => $cargo,
-
-            ])->first();
-
-            if ($asistenciaModular) {
-                $porcentajeAsistencia = $asistenciaModular->porcentaje;
-            }
-
-        }
-        $cargoProceso->cantidad_tp = count($tps);
-        $cargoProceso->cantidad_ps = count($parciales);
-
-        $cargoProceso->suma_tp = $sumaTps;
-        $cargoProceso->suma_ps = $sumaPs;
-
-        $notaTps = null;
-        $notaParciales = null;
-        if (count($tps) > 0 && $sumaTps > 0) {
-            $notaTps = $sumaTps / count($tps);
-        }
-        if (count($parciales) > 0 && $sumaPs > 0) {
-            $notaParciales = $sumaPs / count($parciales);
-        }
-        $cargoProceso->nota_tp = $notaTps;
-        $cargoProceso->nota_ps = $notaParciales;
-
-        $cargoProceso->nota_cargo = $total_cargo;
-        $cargoProceso->nota_ponderada = $ponderacion_cargo;
-
-        $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
-
-        $cargoProceso->update();
-
-
-        return $cargoProceso;
+        return $this->updateCargoProceso(
+            $cargoProceso, $tps, $parciales,
+            $sumaTps, $sumaPs, $total_cargo,
+            $ponderacion_cargo, $porcentajeAsistencia);
 
     }
 
@@ -464,7 +428,7 @@ class CargoProcesoService
 
             if (!$cargoProceso) {
                 $cargoProceso = $this->generaCargoProceso(
-                    $cargo_id, $proceso->id, $user_id, $ciclo_lectivo, false);
+                    $cargo_id, $proceso->id, $user_id, $ciclo_lectivo);
             }
 
             $this->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
@@ -474,7 +438,7 @@ class CargoProcesoService
     /**
      * Recupera las calificaciones dados un tipo, cargo, proceso y materia.
      *
-     * @param string $tipo El tipo de calificaciones a recuperar.
+     * @param int $tipo El tipo de calificaciones a recuperar.
      * @param int $cargo El cargo id.
      * @param Proceso $proceso El proceso objeto.
      * @param Materia $materia La materia objeto.
@@ -485,5 +449,123 @@ class CargoProcesoService
     {
         return $this->calificacionService->calificacionesInCargos(
             [$cargo], $proceso->ciclo_lectivo, [$tipo], $materia->id);
+    }
+
+    /**
+     * Obtiene los detalles de las calificaciones para un cargo, proceso y materia dados.
+     *
+     * @param int $cargo El ID del cargo.
+     * @param Proceso $proceso El objeto del proceso.
+     * @param Materia $materia El objeto de la materia.
+     * @return array Un array que contiene los detalles de las calificaciones,
+     * donde el primer elemento del array son las calificaciones de los Trabajos Prácticos (TPs)
+     *               y el segundo elemento del array son las calificaciones parciales.
+     */
+    private function getCalificacionesDetails(int $cargo, Proceso $proceso, Materia $materia): array
+    {
+        $tps = $this->getCalificaciones(self::TIPO_TP, $cargo, $proceso, $materia);
+        $parciales = $this->getCalificaciones(self::TIPO_PARCIAL, $cargo, $proceso, $materia);
+
+        return [$tps, $parciales];
+    }
+
+    /**
+     * Calcula la suma de las notas de los trabajos prácticos (TPs) para un proceso dado.
+     *
+     * @param int $id El ID del proceso.
+     * @param array $tps Un array de objetos TP asociados con el proceso.
+     * @return int|null La suma total de las notas de los TPs. Si no existen TPs, retorna null.
+     */
+    private function calculateSumaTps(int $id, array $tps): ?int
+    {
+        $notasTps = $this->calificacionService->calificacionesArrayByProceso($id, $tps->pluck('id')->toArray());
+        $sumaTps = 0;
+
+        foreach ($notasTps as $tp) {
+            if (is_numeric($tp->nota) && $tp->nota >= 0) {
+                $sumaTps += $tp->nota;
+            }
+        }
+
+        return $sumaTps;
+    }
+
+    /**
+     * Calcula la suma de las calificaciones parciales para un proceso dado.
+     *
+     * @param int $procesoId El ID del proceso.
+     * @param array $parciales Un array de objetos parciales asociados con el proceso.
+     * @return int|null La suma total de las calificaciones parciales. Si no existen parciales, retorna null.
+     */
+    private function calculateSumaPs(int $procesoId, array $parciales): ?int
+    {
+        $sumaPs = 0;
+
+        foreach ($parciales as $ps) {
+            $calificacionParcial = $this->calificacionService->calificacionParcialByProceso($procesoId, $ps->id);
+
+            if (is_numeric($calificacionParcial)) {
+                $sumaPs += $calificacionParcial;
+            }
+        }
+
+        return $sumaPs;
+    }
+
+    /**
+     * Calcula el porcentaje de asistencia para un proceso y cargo dado.
+     *
+     * @param int $procesoId El ID del proceso.
+     * @param int $cargo El ID del cargo.
+     * @return float|null El porcentaje de asistencia. Si no se encuentra la asistencia, retorna null.
+     */
+    private function calculatePorcentajeAsistencia(int $procesoId, int $cargo): ?float
+    {
+        $asistencia = Asistencia::where(['proceso_id' => $procesoId])->first();
+
+        if ($asistencia) {
+            $asistenciaModular = AsistenciaModular::where(
+                ['asistencia_id' => $asistencia->id, 'cargo_id' => $cargo]
+            )->first();
+            if ($asistenciaModular) {
+                return $asistenciaModular->porcentaje;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Actualiza un objeto CargoProceso con los valores de trabajos prácticos,
+     * parciales, sumas y porcentaje de asistencia dados.
+     *
+     * @param CargoProceso $cargoProceso El objeto CargoProceso a actualizar.
+     * @param array $tps Un array de objetos Trabajos Prácticos (TPs).
+     * @param array $parciales Un array de objetos parciales.
+     * @param int|null $sumaTps La suma total de las calificaciones de los TPs.
+     * @param int|null $sumaPs La suma total de las calificaciones parciales.
+     * @param float $total_cargo La nota total del cargo.
+     * @param float $ponderacion_cargo La nota ponderada del cargo.
+     * @param float|null $porcentajeAsistencia El porcentaje de asistencia.
+     * @return CargoProceso Retorna el objeto CargoProceso actualizado.
+     */
+    private function updateCargoProceso(
+                                        CargoProceso $cargoProceso, $tps, $parciales,
+                                        ?int         $sumaTps, ?int $sumaPs, $total_cargo,
+                                        $ponderacion_cargo, ?float $porcentajeAsistencia): CargoProceso
+    {
+        $cargoProceso->cantidad_tp = count($tps);
+        $cargoProceso->cantidad_ps = count($parciales);
+        $cargoProceso->suma_tp = $sumaTps;
+        $cargoProceso->suma_ps = $sumaPs;
+        $cargoProceso->nota_tp = count($tps) > 0 && $sumaTps > 0 ? $sumaTps / count($tps) : null;
+        $cargoProceso->nota_ps = count($parciales) > 0 && $sumaPs > 0 ? $sumaPs / count($parciales) : null;
+        $cargoProceso->nota_cargo = $total_cargo;
+        $cargoProceso->nota_ponderada = $ponderacion_cargo;
+        $cargoProceso->porcentaje_asistencia = $porcentajeAsistencia;
+
+        $cargoProceso->update();
+
+        return $cargoProceso;
     }
 }
