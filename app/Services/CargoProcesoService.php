@@ -10,6 +10,7 @@ use App\Models\Configuration;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesosCargos;
+use Illuminate\Support\Collection;
 
 class CargoProcesoService
 {
@@ -37,7 +38,7 @@ class CargoProcesoService
      * @param ProcesosCargosService $procesosCargosService
      */
     public function __construct(
-        CalificacionService $calificacionService, ProcesoCalificacionService $procesoCalificacionService,
+        CalificacionService   $calificacionService, ProcesoCalificacionService $procesoCalificacionService,
         ProcesoModularService $procesoModularService, ProcesosCargosService $procesosCargosService)
     {
         $this->calificacionService = $calificacionService;
@@ -103,8 +104,7 @@ class CargoProcesoService
 
         foreach ($trabajosPracticals as $tps) {
             foreach ($this->procesoCalificacionService->obtenerNotaProcesoCalificacion(
-                [$tps->id], $proceso) as $notas)
-            {
+                [$tps->id], $proceso) as $notas) {
                 if (is_numeric($notas->nota) && $notas->nota > 0) {
                     $sumaTps += $notas->nota;
                 }
@@ -350,15 +350,11 @@ class CargoProcesoService
         int $cargo, Proceso $proceso, Materia $materia, CargoProceso $cargoProceso): CargoProceso
     {
 
-        $tps = $this->calificacionService->calificacionesInCargos(
-            [$cargo], $proceso->ciclo_lectivo, [self::TIPO_TP], $materia->id);
+        $tps = $this->getCalificaciones(self::TIPO_TP, $cargo, $proceso, $materia);
+        $parciales = $this->getCalificaciones(self::TIPO_PARCIAL, $cargo, $proceso, $materia);
 
-        dd($tps);
-
-        $parciales = $this->calificacionService->calificacionesInCargos(
-            [$cargo], $proceso->ciclo_lectivo, [self::TIPO_PARCIAL], $materia->id);
-
-        $notasTps = $this->calificacionService->calificacionesArrayByProceso($proceso->id, $tps->pluck('id'));
+        $notasTps = $this->calificacionService
+            ->calificacionesArrayByProceso($proceso->id, $tps->pluck('id')->toArray());
 
         $sumaTps = null;
         foreach ($notasTps as $tp) {
@@ -390,7 +386,7 @@ class CargoProcesoService
             ]
         )->first();
 
-        if($asistencia) {
+        if ($asistencia) {
             $asistenciaModular = AsistenciaModular::where([
                 'asistencia_id' => $asistencia->id,
                 'cargo_id' => $cargo,
@@ -468,5 +464,21 @@ class CargoProcesoService
 
             $this->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
         }
+    }
+
+    /**
+     * Recupera las calificaciones dados un tipo, cargo, proceso y materia.
+     *
+     * @param string $tipo El tipo de calificaciones a recuperar.
+     * @param int $cargo El cargo id.
+     * @param Proceso $proceso El proceso objeto.
+     * @param Materia $materia La materia objeto.
+     * @return Collection Collection de calificaciones.
+     */
+    private
+    function getCalificaciones(int $tipo, int $cargo, Proceso $proceso, Materia $materia): Collection
+    {
+        return $this->calificacionService->calificacionesInCargos(
+            [$cargo], $proceso->ciclo_lectivo, [$tipo], $materia->id);
     }
 }
