@@ -369,10 +369,8 @@ class CargoProcesoService
                     $ptp = $tp->nota;
                 }
                 $sumaTps += $ptp;
-                echo 'suma parcial tps' . $sumaTps . '\n';
             }
         }
-        echo 'suma total tps' . $sumaTps . '\n';
 
         $sumaPs = null;
         foreach ($parciales as $ps) {
@@ -429,7 +427,7 @@ class CargoProcesoService
 
         $cargoProceso->update();
 
-        dd($cargoProceso);
+
         return $cargoProceso;
 
     }
