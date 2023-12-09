@@ -120,6 +120,7 @@ class CalificacionService
     public function calificacionTpByProceso(int $proceso_id, int $calificacion_id):float
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
+        echo 'proceso_Calificación '. $proceso_calificacion . '\n';
         $ptp  = 0;
         if (isset($proceso_calificacion)) {
             $ptp = $proceso_calificacion[0]->nota ?? 0;
