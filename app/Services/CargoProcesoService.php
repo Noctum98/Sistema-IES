@@ -473,10 +473,10 @@ class CargoProcesoService
      * Calcula la suma de las notas de los trabajos prácticos (TPs) para un proceso dado.
      *
      * @param int $id El ID del proceso.
-     * @param array $tps Un array de objetos TP asociados con el proceso.
+     * @param Collection $tps Un array de objetos TP asociados con el proceso.
      * @return int|null La suma total de las notas de los TPs. Si no existen TPs, retorna null.
      */
-    private function calculateSumaTps(int $id, array $tps): ?int
+    private function calculateSumaTps(int $id, Collection $tps): ?int
     {
         $notasTps = $this->calificacionService->calificacionesArrayByProceso($id, $tps->pluck('id')->toArray());
         $sumaTps = 0;
