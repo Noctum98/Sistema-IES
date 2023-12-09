@@ -47,8 +47,8 @@ class CalificacionService
     public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id)
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
-            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->where('proceso_calificacion.proceso_id', $proceso_id)
+            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->get();
     }
 
