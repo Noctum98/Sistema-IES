@@ -359,7 +359,7 @@ class CargoProcesoService
         $sumaTps = null;
         foreach ($notasTps as $tp) {
             if (is_numeric($this->calificacionService->calificacionTpByProceso($proceso->id, $tp->id))) {
- dd($this->calificacionService->calificacionTpByProceso($proceso->id, $tp->id));
+
                 $sumaTps += $this->calificacionService->calificacionTpByProceso($proceso->id, $tp->id);
                 echo $sumaTps;
             }
