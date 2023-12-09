@@ -494,10 +494,10 @@ class CargoProcesoService
      * Calcula la suma de las calificaciones parciales para un proceso dado.
      *
      * @param int $procesoId El ID del proceso.
-     * @param array $parciales Un array de objetos parciales asociados con el proceso.
+     * @param Collection $parciales Un array de objetos parciales asociados con el proceso.
      * @return int|null La suma total de las calificaciones parciales. Si no existen parciales, retorna null.
      */
-    private function calculateSumaPs(int $procesoId, array $parciales): ?int
+    private function calculateSumaPs(int $procesoId, Collection $parciales): ?int
     {
         $sumaPs = 0;
 
