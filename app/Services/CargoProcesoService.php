@@ -352,11 +352,11 @@ class CargoProcesoService
 
         $tps = $this->getCalificaciones(self::TIPO_TP, $cargo, $proceso, $materia);
 
-        echo 'trabajos practicos' . $tps . '<br/>';
         $parciales = $this->getCalificaciones(self::TIPO_PARCIAL, $cargo, $proceso, $materia);
 
         $notasTps = $this->calificacionService
             ->calificacionesArrayByProceso($proceso->id, $tps->pluck('id')->toArray());
+        echo 'notas ' . $notasTps . '<br/>';
 
         $sumaTps = null;
         foreach ($notasTps as $tp) {
