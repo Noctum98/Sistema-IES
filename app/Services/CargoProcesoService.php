@@ -356,17 +356,23 @@ class CargoProcesoService
 
         $notasTps = $this->calificacionService
             ->calificacionesArrayByProceso($proceso->id, $tps->pluck('id')->toArray());
-        echo 'notas ' . $notasTps . '<br/>';
+
 
         $sumaTps = null;
-        foreach ($notasTps as $tp) {
-            if (is_numeric($this->calificacionService->calificacionTpByProceso($proceso->id, $tp->id))) {
 
-                $sumaTps += $this->calificacionService->calificacionTpByProceso($proceso->id, $tp->id);
-                echo 'suma parcial tps'. $sumaTps .'\n';
+        // Este bucle esencialmente calcula el total acumulativo para los valores nota en el array $notasTps.
+        foreach ($notasTps as $tp) {
+            $ptp = 0;
+            if (is_numeric($tp->nota)) {
+
+                if ($tp->nota >= 0) {
+                    $ptp = $tp->nota;
+                }
+                $sumaTps += $ptp;
+                echo 'suma parcial tps' . $sumaTps . '\n';
             }
         }
-        echo 'suma total tps'. $sumaTps . '\n';
+        echo 'suma total tps' . $sumaTps . '\n';
 
         $sumaPs = null;
         foreach ($parciales as $ps) {
