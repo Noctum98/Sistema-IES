@@ -357,7 +357,6 @@ class CargoProcesoService
         $notasTps = $this->calificacionService
             ->calificacionesArrayByProceso($proceso->id, $tps->pluck('id')->toArray());
 
-
         $sumaTps = null;
 
         // Este bucle esencialmente calcula el total acumulativo para los valores nota en el array $notasTps.
