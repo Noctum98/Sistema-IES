@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Calificacion;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
+use Illuminate\Support\Collection;
+use LaravelIdea\Helper\App\Models\_IH_ProcesoCalificacion_C;
 
 class CalificacionService
 {
@@ -34,12 +36,15 @@ class CalificacionService
             ->get();
     }
 
+
     /**
-     * @param int $proceso_id
-     * @param array $calificacion_id
-     * @return mixed
+     * Retorna un array con las calificaciones de un proceso específico
+     *
+     * @param int $proceso_id El ID del proceso
+     * @param mixed $calificacion_id El ID o IDs de las calificaciones (array o string)
+     * @return ProcesoCalificacion[] Array de objetos ProcesoCalificacion
      */
-    public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id)
+    public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id): array
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
             ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
@@ -234,12 +239,15 @@ class CalificacionService
     }
 
     /**
-     * @param $cargos <b>Cargos</b> del módulo
-     * @param int $ciclo_lectivo <b>Ciclo lectivo</b>
-     * @param array $tipos <b>Tipo</b> de calificación
-     * @return mixed
+     * Retorna las calificaciones que corresponden a ciertos cargos en un ciclo lectivo y materia determinados.
+     *
+     * @param array $cargos Los cargos para los cuales se desea obtener las calificaciones.
+     * @param int $ciclo_lectivo El ciclo lectivo del cual se desean obtener las calificaciones.
+     * @param array $tipos Los tipos de calificaciones que se desean obtener.
+     * @param int $materia El ID de la materia de la cual se desean obtener las calificaciones.
+     * @return Collection Una colección que contiene las calificaciones correspondientes.
      */
-    public function calificacionesInCargos(array $cargos , int $ciclo_lectivo, array $tipos, int $materia)
+    public function calificacionesInCargos(array $cargos , int $ciclo_lectivo, array $tipos, int $materia): Collection
     {
         return Calificacion::select('calificaciones.*')
             ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
