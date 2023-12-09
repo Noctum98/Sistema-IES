@@ -351,6 +351,8 @@ class CargoProcesoService
     {
 
         $tps = $this->getCalificaciones(self::TIPO_TP, $cargo, $proceso, $materia);
+
+        echo 'trabajos practicos' . $tps . '<br/>';
         $parciales = $this->getCalificaciones(self::TIPO_PARCIAL, $cargo, $proceso, $materia);
 
         $notasTps = $this->calificacionService
