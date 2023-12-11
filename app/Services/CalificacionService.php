@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Calificacion;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
+use Illuminate\Support\Collection;
+use LaravelIdea\Helper\App\Models\_IH_ProcesoCalificacion_C;
 
 class CalificacionService
 {
@@ -34,16 +36,19 @@ class CalificacionService
             ->get();
     }
 
+
     /**
-     * @param int $proceso_id
-     * @param array $calificacion_id
-     * @return mixed
+     * Retorna un array con las calificaciones de un proceso específico
+     *
+     * @param int $proceso_id El ID del proceso
+     * @param mixed $calificacion_id El ID o IDs de las calificaciones (array o string)
+     * @return ProcesoCalificacion[] Array de objetos ProcesoCalificacion
      */
     public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id)
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
-            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->where('proceso_calificacion.proceso_id', $proceso_id)
+            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->get();
     }
 
@@ -79,6 +84,13 @@ class CalificacionService
         return max($pp, $pr);
     }
 
+    /**
+     * Procesa las calificaciones desde el proceso.
+     *
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return mixed La nota máxima del parcial o el recuperatorio
+     */
     public function calificacionParcialByProceso($proceso_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
@@ -95,27 +107,29 @@ class CalificacionService
         return max($pp, $pr);
     }
 
+
     /**
-     * Procesa las calificaciones desde el proceso.
+     * Obtiene la calificación para el Trabajo Práctico (TP) especificado por el proceso.
      *
-     * @param $proceso_id
-     * @param $calificacion_id
-     * @return mixed La nota máxima del parcial o el recuperatorio
+     * @param int $proceso_id El ID del proceso por el cual buscamos la calificación.
+     * @param int $calificacion_id El ID de la calificación que estamos buscando.
+     * @return float La calificación obtenida por el TP para el proceso especificado.
+     * Retornará 0 en caso de que la calificación no haya sido establecida (valor -1)
+     * o el proceso no exista.
      */
-    public function notaCalificacionParcialByProceso($proceso_id, $calificacion_id)
+    public function calificacionTpByProceso(int $proceso_id, int $calificacion_id):float
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
 
-        $pp = $pr = 0;
+        $ptp  = 0;
         if (isset($proceso_calificacion)) {
-            $pp = $proceso_calificacion[0]->nota ?? 0;
-            if ($pp == -1) {
-                $pp = 0;
+            $ptp = $proceso_calificacion[0]->nota ?? 0;
+            if ($ptp == -1) {
+                $ptp = 0;
             }
-            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
         }
 
-        return max($pp, $pr);
+        return $ptp;
     }
 
 
@@ -234,12 +248,15 @@ class CalificacionService
     }
 
     /**
-     * @param $cargos <b>Cargos</b> del módulo
-     * @param int $ciclo_lectivo <b>Ciclo lectivo</b>
-     * @param array $tipos <b>Tipo</b> de calificación
-     * @return mixed
+     * Retorna las calificaciones que corresponden a ciertos cargos en un ciclo lectivo y materia determinados.
+     *
+     * @param array $cargos Los cargos para los cuales se desea obtener las calificaciones.
+     * @param int $ciclo_lectivo El ciclo lectivo del cual se desean obtener las calificaciones.
+     * @param array $tipos Los tipos de calificaciones que se desean obtener.
+     * @param int $materia El ID de la materia de la cual se desean obtener las calificaciones.
+     * @return Collection Una colección que contiene las calificaciones correspondientes.
      */
-    public function calificacionesInCargos(array $cargos , int $ciclo_lectivo, array $tipos, int $materia)
+    public function calificacionesInCargos(array $cargos , int $ciclo_lectivo, array $tipos, int $materia): Collection
     {
         return Calificacion::select('calificaciones.*')
             ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
