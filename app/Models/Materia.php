@@ -205,7 +205,7 @@ class Materia extends BaseModel
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
-        )->first();
+        )->latest('created_at')->first();
 
         if (!$proceso) {
             return $estado;

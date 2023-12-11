@@ -47,8 +47,8 @@ class CalificacionService
     public function calificacionesArrayByProceso(int $proceso_id, $calificacion_id)
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
-            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->where('proceso_calificacion.proceso_id', $proceso_id)
+            ->whereIn('proceso_calificacion.calificacion_id', $calificacion_id)
             ->get();
     }
 
@@ -84,6 +84,13 @@ class CalificacionService
         return max($pp, $pr);
     }
 
+    /**
+     * Procesa las calificaciones desde el proceso.
+     *
+     * @param $proceso_id
+     * @param $calificacion_id
+     * @return mixed La nota máxima del parcial o el recuperatorio
+     */
     public function calificacionParcialByProceso($proceso_id, $calificacion_id)
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
@@ -100,27 +107,29 @@ class CalificacionService
         return max($pp, $pr);
     }
 
+
     /**
-     * Procesa las calificaciones desde el proceso.
+     * Obtiene la calificación para el Trabajo Práctico (TP) especificado por el proceso.
      *
-     * @param $proceso_id
-     * @param $calificacion_id
-     * @return mixed La nota máxima del parcial o el recuperatorio
+     * @param int $proceso_id El ID del proceso por el cual buscamos la calificación.
+     * @param int $calificacion_id El ID de la calificación que estamos buscando.
+     * @return float La calificación obtenida por el TP para el proceso especificado.
+     * Retornará 0 en caso de que la calificación no haya sido establecida (valor -1)
+     * o el proceso no exista.
      */
-    public function notaCalificacionParcialByProceso($proceso_id, $calificacion_id)
+    public function calificacionTpByProceso(int $proceso_id, int $calificacion_id):float
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
 
-        $pp = $pr = 0;
+        $ptp  = 0;
         if (isset($proceso_calificacion)) {
-            $pp = $proceso_calificacion[0]->nota ?? 0;
-            if ($pp == -1) {
-                $pp = 0;
+            $ptp = $proceso_calificacion[0]->nota ?? 0;
+            if ($ptp == -1) {
+                $ptp = 0;
             }
-            $pr = $proceso_calificacion[0]->nota_recuperatorio ?? 0;
         }
 
-        return max($pp, $pr);
+        return $ptp;
     }
 
 
