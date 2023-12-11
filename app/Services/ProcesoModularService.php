@@ -844,7 +844,7 @@ class ProcesoModularService
             'proceso_id' => $proceso
         ])->first();
 
-        $procesoModular->promedio_final_nota = round($nota);
+        $procesoModular->promedio_final_nota = round($nota, 0);
 
         $procesoModular->update();
 
