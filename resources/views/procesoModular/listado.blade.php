@@ -193,7 +193,15 @@
         @endif
 
         @if(count($procesos) > 0)
-            <div class="table-responsive mt-2">
+                <ul class="nav nav-tabs" id="mainTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="table-responsive-tab" data-bs-toggle="tab"
+                           href="#table-principal" role="tab">Notas</a>
+                    </li>
+                </ul>
+
+
+            <div class="table-responsive mt-2" id="table-principal">
                 <table class="table table-hover" id="job-table">
                     <thead class="thead-dark text-white" style="z-index: 100">
                     <tr class="fijar">
@@ -356,6 +364,31 @@
                 @endif
 
             </div>
+                <div class="tab-content" id="mainTabContent">
+                    <div class="tab-pane fade show active" id="table-responsive" role="tabpanel">
+                        <!-- Nav-tabs para cada cargo -->
+                        <ul class="nav nav-tabs" id="cargoTab" role="tablist">
+                            @foreach($materia->cargos()->get() as $cargo)
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link @if($loop->first) active @endif" id="cargo-{{ $cargo->id }}-tab" data-bs-toggle="tab" href="#cargo-{{ $cargo->id }}" role="tab">
+                                        {{ $cargo->nombre }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <!-- Contenido de nav-tab para cada cargo -->
+                        <div class="tab-content" id="cargoTabContent">
+                            @foreach($materia->cargos()->get() as $cargo)
+                                <div class="tab-pane fade @if($loop->first) show active @endif" id="cargo-{{ $cargo->id }}" role="tabpanel">
+                                    <!-- Aquí es donde insertarías tu tabla o las notas por cada cargo -->
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <!-- Puedes agregar más contenido de tab-pane para otras secciones aquí -->
+                </div>
+    </div>
             @endsection
             @section('scripts')
                 <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
