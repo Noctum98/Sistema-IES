@@ -86,12 +86,13 @@ class ProcesoModularController extends Controller
         $serviceModular = new ProcesoModularService();
 
         $proc = $serviceModular->obtenerProcesosByMateria($materia->id, $ciclo_lectivo);
+
         $arrayProcesos = $proc->pluck('id')->toArray();
+
         $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
         $cantidad_procesos = $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
             $arrayProcesos, $materia->id, $ciclo_lectivo);
-
 
         if (count($cantidad_procesos) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
@@ -123,9 +124,7 @@ class ProcesoModularController extends Controller
             }
         }
 
-
         $estados = Estados::all();
-
 
         return view('procesoModular.listado', [
                 'materia' => $materia,
