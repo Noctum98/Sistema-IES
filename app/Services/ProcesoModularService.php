@@ -847,6 +847,7 @@ class ProcesoModularService
         /** @var Proceso $proceso */
         $proceso = Proceso::find($proceso);
 
+        dd($nota, round($nota, 0));
         $procesoModular->promedio_final_nota = round($nota, 0);
 
         $procesoModular->update();
