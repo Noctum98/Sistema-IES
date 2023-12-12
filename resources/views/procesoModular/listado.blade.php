@@ -194,26 +194,26 @@
 
         @if(count($procesos) > 0)
             <div class="tab-content" id="mainTabContent">
-                    <ul class="nav nav-tabs" id="cargoTab" role="tablist">
+                <ul class="nav nav-tabs" id="cargoTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active"
+                           id="table-principal" data-bs-toggle="tab"
+                           href="#table-principal" role="tab">Notas</a>
+                    </li>
+                    @foreach($materia->cargos()->get() as $cargo)
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active"
-                               id="table-principal" data-bs-toggle="tab"
-                               href="#table-principal" role="tab">Notas</a>
+                            <a class="nav-link"
+                               id="cargo-{{ $cargo->id }}-tab" data-bs-toggle="tab"
+                               href="#cargo-{{ $cargo->id }}" role="tab">
+                                {{ $cargo->nombre }}
+                            </a>
                         </li>
-                        @foreach($materia->cargos()->get() as $cargo)
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link"
-                                   id="cargo-{{ $cargo->id }}-tab" data-bs-toggle="tab"
-                                   href="#cargo-{{ $cargo->id }}" role="tab">
-                                    {{ $cargo->nombre }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
+                    @endforeach
+                </ul>
 
-                    <div class="tab-content" id="cargoTabContent">
-                        <div class="tab-pane fade show active" id="table-principal"
-                             role="tabpanel">
+                <div class="tab-content" id="cargoTabContent">
+                    <div class="tab-pane fade show active" id="table-principal"
+                         role="tabpanel">
                         <div class="table-responsive mt-2" id="table-principal_notas">
                             <table class="table table-hover" id="job-table">
                                 <thead class="thead-dark text-white" style="z-index: 100">
@@ -374,32 +374,26 @@
                                 @endforeach
                                 </tbody>
                                 {{--                    @include('proceso.modals.tps-mostrar')--}}
-                                @else
-                                    'No se encontraron procesos'
-                            @endif
+
                             </table>
 
                         </div>
-                        </div>
-                        @foreach($materia->cargos()->get() as $cargo)
-                            <div class="tab-pane fade"  id="cargo-{{ $cargo->id }}"
-                                 role="tabpanel">
-                                <!-- Aquí es donde insertarías tu tabla o las notas por cada cargo -->
-                            </div>
-                        @endforeach
-
-                        <!-- Nav-tabs para cada cargo -->
-
-
-                        <!-- Contenido de nav-tab para cada cargo -->
-
-
                     </div>
 
+                    @foreach($materia->cargos()->get() as $cargo)
+                        <div class="tab-pane fade" id="cargo-{{ $cargo->id }}"
+                             role="tabpanel">
+                            <!-- Aquí es donde insertarías tu tabla o las notas por cada cargo -->
+                        </div>
+                    @endforeach
                 </div>
-                <!-- Puedes agregar más contenido de tab-pane para otras secciones aquí -->
+
             </div>
+        @else
+            'No se encontraron procesos'
+        @endif
     </div>
+
 @endsection
 @section('scripts')
     <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
