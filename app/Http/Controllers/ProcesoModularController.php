@@ -289,4 +289,17 @@ class ProcesoModularController extends Controller
     {
         return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }
+
+    public function cargaTabsCargo($cargo_id, $materia_id) {
+        // Obtiene el cargo y la materia
+        $cargo = Cargo::find($cargo_id);
+        $materia = Materia::find($materia_id);
+
+        // Obtener las notas de la relación entre el cargo y la materia
+        // Esta depende de cómo hayas definido las relaciones en tus modelos
+        $notas = $cargo->materias()->wherePivot('materia_id', $materia_id)->get(); // actualiza esto si es necesario
+
+        // Renderizar la vista con las notas
+        return view('procesoModular.cargo_tab', ['notas' => $notas]);
+    }
 }
