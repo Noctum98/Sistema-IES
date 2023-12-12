@@ -197,7 +197,7 @@
                 <ul class="nav nav-tabs" id="cargoTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active"
-                           id="table-principal" data-bs-toggle="tab"
+                           id="table-principal-tab" data-bs-toggle="tab"
                            href="#table-principal" role="tab">Notas</a>
                     </li>
                     @foreach($materia->cargos()->get() as $cargo)
