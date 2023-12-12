@@ -86,12 +86,13 @@ class ProcesoModularController extends Controller
         $serviceModular = new ProcesoModularService();
 
         $proc = $serviceModular->obtenerProcesosByMateria($materia->id, $ciclo_lectivo);
+
         $arrayProcesos = $proc->pluck('id')->toArray();
+
         $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
         $cantidad_procesos = $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
             $arrayProcesos, $materia->id, $ciclo_lectivo);
-
 
         if (count($cantidad_procesos) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
@@ -123,9 +124,7 @@ class ProcesoModularController extends Controller
             }
         }
 
-
         $estados = Estados::all();
-
 
         return view('procesoModular.listado', [
                 'materia' => $materia,
@@ -167,9 +166,8 @@ class ProcesoModularController extends Controller
     public function procesaNotaModular($materia, int $proceso_id, $cargo_id = null): RedirectResponse
     {
 
-        // 435 24053 12
-
         $service = new ProcesoModularService();
+
         /** @var Proceso $proceso */
         $proceso = Proceso::find($proceso_id);
 
@@ -203,7 +201,6 @@ class ProcesoModularController extends Controller
 
         $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
         $porcentaje = $service->revisaPorcentajeProceso($materia, $proceso);
-
 
         $service->setNotaProceso($proceso_id, $nota_proceso);
         $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);

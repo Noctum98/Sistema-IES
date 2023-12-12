@@ -851,9 +851,16 @@ class ProcesoModularService
             'proceso_id' => $proceso
         ])->first();
 
-        $procesoModular->promedio_final_nota = round($nota);
+        /** @var Proceso $proceso */
+        $proceso = Proceso::find($proceso);
+
+        $procesoModular->promedio_final_nota = round($nota, 0);
 
         $procesoModular->update();
+
+        $proceso->final_calificaciones = round($nota, 0);
+
+        $proceso->update();
 
     }
 
@@ -871,6 +878,12 @@ class ProcesoModularService
         $procesoModular->asistencia_final_porcentaje = round($porcentaje);
 
         $procesoModular->update();
+
+        $proceso = Proceso::find($proceso);
+
+        $proceso->porcentaje_final_calificaciones = round($porcentaje, 0);
+
+        $proceso->update();
 
     }
 
