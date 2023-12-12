@@ -380,19 +380,22 @@
                             </table>
 
                         </div>
-
-                        <!-- Nav-tabs para cada cargo -->
-
-
-                        <!-- Contenido de nav-tab para cada cargo -->
-
+                        </div>
                         @foreach($materia->cargos()->get() as $cargo)
                             <div class="tab-pane fade @if($loop->first) show active @endif" id="cargo-{{ $cargo->id }}"
                                  role="tabpanel">
                                 <!-- Aquí es donde insertarías tu tabla o las notas por cada cargo -->
                             </div>
                         @endforeach
+
+                        <!-- Nav-tabs para cada cargo -->
+
+
+                        <!-- Contenido de nav-tab para cada cargo -->
+
+
                     </div>
+
                 </div>
                 <!-- Puedes agregar más contenido de tab-pane para otras secciones aquí -->
             </div>
