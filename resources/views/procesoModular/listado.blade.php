@@ -194,16 +194,15 @@
 
         @if(count($procesos) > 0)
             <div class="tab-content" id="mainTabContent">
-                <div class="tab-pane fade show active" id="table-responsive" role="tabpanel">
-
                     <ul class="nav nav-tabs" id="cargoTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="table-responsive-tab" data-bs-toggle="tab"
+                            <a class="nav-link active"
+                               id="table-principal" data-bs-toggle="tab"
                                href="#table-principal" role="tab">Notas</a>
                         </li>
                         @foreach($materia->cargos()->get() as $cargo)
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link @if($loop->first) active @endif"
+                                <a class="nav-link"
                                    id="cargo-{{ $cargo->id }}-tab" data-bs-toggle="tab"
                                    href="#cargo-{{ $cargo->id }}" role="tab">
                                     {{ $cargo->nombre }}
@@ -213,7 +212,9 @@
                     </ul>
 
                     <div class="tab-content" id="cargoTabContent">
-                        <div class="table-responsive mt-2" id="table-principal">
+                        <div class="tab-pane fade  show active" id="table-principal"
+                             role="tabpanel">
+                        <div class="table-responsive mt-2" id="table-principal_notas">
                             <table class="table table-hover" id="job-table">
                                 <thead class="thead-dark text-white" style="z-index: 100">
                                 <tr class="fijar">
