@@ -206,6 +206,7 @@
                                id="cargo-{{ $cargo->id }}-tab" data-bs-toggle="tab"
                                href="#cargo-{{ $cargo->id }}" role="tab"
                                data-materia="{{$materia->id}}"
+                               data-ciclo="{{$ciclo_lectivo}}"
                             >
                                 {{ $cargo->nombre }}
                             </a>

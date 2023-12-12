@@ -1,3 +1,3 @@
-@foreach($notas as $nota)
-    $nota->
+@foreach($calificaciones as $nota)
+    {{$nota->id}} <br/>
 @endforeach

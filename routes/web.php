@@ -287,7 +287,7 @@ Route::prefix('proceso-modular')->group(function () {
         [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
-    Route::get('/tabs_cargo/{cargo_id}/{materia_id}',
+    Route::get('/tabs_cargo/{cargo_id}/{materia_id}/{ciclo_lectivo}',
         [ProcesoModularController::class, 'cargaTabsCargo']
     )->name('proceso_modular.carga_tabs_cargo');
 
