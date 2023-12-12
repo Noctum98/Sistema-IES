@@ -289,4 +289,35 @@ class ProcesoModularController extends Controller
     {
         return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }
+
+    public function cargaTabsCargo($cargo_id, $materia_id, $ciclo_lectivo) {
+        // Obtiene el cargo y la materia
+        $cargo = Cargo::find($cargo_id);
+        $materia = Materia::find($materia_id);
+
+
+        $calificaciones = $this->obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo);
+
+
+        // Renderizar la vista con las notas
+        return view('procesoModular.cargo_tab',
+            ['calificaciones' => $calificaciones]);
+    }
+
+    private function obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo) {
+        // Obtiene el cargo.
+        $cargo = Cargo::find($cargo_id);
+
+
+        // Obtener las calificaciones de la relación entre el cargo y la materia
+        // Asume que las relaciones están definidas en tus modelos
+        // Ordena las calificaciones por el campo 'tipo_id'.
+        $calificaciones = $cargo->calificacionesCargo()
+            ->where('materia_id', $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
+            ->orderBy('tipo_id')->get();
+
+        return $calificaciones;
+
+    }
 }
