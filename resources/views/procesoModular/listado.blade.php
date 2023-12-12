@@ -212,7 +212,7 @@
                     </ul>
 
                     <div class="tab-content" id="cargoTabContent">
-                        <div class="tab-pane fade  show active" id="table-principal"
+                        <div class="tab-pane fade show active" id="table-principal"
                              role="tabpanel">
                         <div class="table-responsive mt-2" id="table-principal_notas">
                             <table class="table table-hover" id="job-table">
@@ -382,7 +382,7 @@
                         </div>
                         </div>
                         @foreach($materia->cargos()->get() as $cargo)
-                            <div class="tab-pane fade @if($loop->first) show active @endif" id="cargo-{{ $cargo->id }}"
+                            <div class="tab-pane fade"  id="cargo-{{ $cargo->id }}"
                                  role="tabpanel">
                                 <!-- Aquí es donde insertarías tu tabla o las notas por cada cargo -->
                             </div>
