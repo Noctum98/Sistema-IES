@@ -176,7 +176,7 @@ class PreinscripcionController extends Controller
 
             $preinscripciones = $preinscripciones->get();
         } else {
-            if (Session::has('coordinador') || Session::has('seccionAlumnos') && !Session::has('admin') && !Session::has('regente') {
+            if (Session::has('coordinador') || Session::has('seccionAlumnos') && !Session::has('admin') && !Session::has('regente')) {
                 $carreras = Auth::user()->carreras;
             } else {
                 $carreras = Carrera::where('estado',0)->orderBy('sede_id','ASC')->get();
