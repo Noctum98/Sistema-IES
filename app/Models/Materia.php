@@ -278,15 +278,12 @@ class Materia extends BaseModel
 
     /**
      * @param int $ciclo_lectivo
-     * @param int $comision_id
+     * @param int|null $comision_id
      * @return Proceso[]|Builder[]|Collection|_IH_Proceso_C
      */
     public function getProcesos(int $ciclo_lectivo, int $comision_id = null)
     {
-        $procesos = Proceso::select('procesos.*')
-            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $this->id)
-            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
+        $procesos = $this->getBuilderProceso($ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -299,5 +296,19 @@ class Materia extends BaseModel
         $procesos->orderBy('alumnos.apellidos', 'asc');
 
         return $procesos->get();
+    }
+
+    /**
+     * Obtenga el queryBuilder para recuperar Procesos.
+     *
+     * @param int $ciclo_lectivo El ciclo lectivo de los registros de Proceso a recuperar.
+     * @return Builder El generador de consultas para recuperar registros de Proceso.
+     */
+    protected function getBuilderProceso(int $ciclo_lectivo): Builder
+    {
+        return Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $this->id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
     }
 }

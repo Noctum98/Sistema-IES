@@ -208,7 +208,7 @@ class ProcesoModularController extends Controller
         return redirect()->route('proceso_modular.list',
             ['materia' => $materia,
                 'ciclo_lectivo' => $proceso->ciclo_lectivo,
-                'cargo_id' => $cargo_id] );
+                'cargo_id' => $cargo_id]);
     }
 
     /**
@@ -290,21 +290,40 @@ class ProcesoModularController extends Controller
         return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }
 
-    public function cargaTabsCargo($cargo_id, $materia_id, $ciclo_lectivo) {
-        // Obtiene el cargo y la materia
+    /**
+     * Esta función carga las pestañas de un determinado Cargo en la vista 'procesoModular.cargo_tab'.
+     *
+     * @param mixed $cargo_id El ID del Cargo que se va a buscar.
+     * @param mixed $materia_id El ID de la Materia que se va a buscar.
+     * @param mixed $ciclo_lectivo El ciclo lectivo al cual pertenece el Cargo y la Materia.
+     * @param int|null $comision_id (opcional) El ID de la Comisión a la que pertenece
+     *                              el Cargo y la Materia. Si no se proporciona, será null.
+     *
+     * @return \Illuminate\View\View Devuelve una vista llamada 'procesoModular.cargo_tab'
+     *                  con un array de datos que incluye las Calificaciones ordenadas por
+     *                                         tipo, el Cargo y los Procesos de la Materia.
+     */
+    public function cargaTabsCargo($cargo_id, $materia_id, $ciclo_lectivo, int $comision_id = null)
+    {
         $cargo = Cargo::find($cargo_id);
         $materia = Materia::find($materia_id);
 
+        $ponderacion = $cargo->ponderacion($materia->id);
 
         $calificaciones = $this->obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo);
 
+        $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
 
-        // Renderizar la vista con las notas
         return view('procesoModular.cargo_tab',
-            ['calificaciones' => $calificaciones]);
+            ['calificaciones' => $calificaciones,
+                'cargo' => $cargo,
+                'procesos' => $procesos,
+                'ponderacion' => $ponderacion
+            ]);
     }
 
-    private function obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo) {
+    private function obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo)
+    {
         // Obtiene el cargo.
         $cargo = Cargo::find($cargo_id);
 
