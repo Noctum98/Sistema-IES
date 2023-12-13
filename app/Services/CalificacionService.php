@@ -36,6 +36,21 @@ class CalificacionService
             ->get();
     }
 
+    /**
+     * Obtener la calificación del proceso por ID de proceso y el ID de calificación
+     *
+     * @param int $proceso_id proceso ID
+     * @param int $calificacion_id calificacion ID
+     * @return ProcesoCalificacion|null ProcesoCalificacion object o null si no encuentra
+     */
+    public function getCalificacionByProceso(int $proceso_id, int $calificacion_id): ProcesoCalificacion
+    {
+        return ProcesoCalificacion::select('proceso_calificacion.*')
+            ->where('proceso_calificacion.calificacion_id', $calificacion_id)
+            ->where('proceso_calificacion.proceso_id', $proceso_id)
+            ->first();
+    }
+
 
     /**
      * Retorna un array con las calificaciones de un proceso específico
