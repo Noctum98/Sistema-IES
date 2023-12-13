@@ -7,7 +7,7 @@
             </th>
             @if(count($calificaciones) > 0)
                 @foreach($calificaciones as $calificacion)
-                    @if($calificacion->tipo()->descripcion == 2)
+                    @if($calificacion->tipo()->first()->descripcion == 2)
                         <th class="text-center">
                         <span
                             class="text-white" title="{{$calificacion->description}}"
@@ -20,7 +20,7 @@
                     @endif
                 @endforeach
                 @foreach($calificaciones as $calificacion)
-                    @if($calificacion->tipo()->descripcion == 1)
+                    @if($calificacion->tipo()->first()->descripcion == 1)
                         <th class="text-center">
                         <span
                             class="text-white" title="{{$calificacion->description}}"
@@ -49,7 +49,7 @@
                 </small>
             </th>
             @foreach($calificaciones as $calificacion)
-                @if($calificacion->tipo()->descripcion == 3)
+                @if($calificacion->tipo()->first()->descripcion == 3)
                     <th class="text-center">
                         <span
                             class="text-white" title="{{$calificacion->description}}"
