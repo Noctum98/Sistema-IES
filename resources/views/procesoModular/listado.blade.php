@@ -204,7 +204,10 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link"
                                id="cargo-{{ $cargo->id }}-tab" data-bs-toggle="tab"
-                               href="#cargo-{{ $cargo->id }}" role="tab">
+                               href="#cargo-{{ $cargo->id }}" role="tab"
+                               data-materia="{{$materia->id}}"
+                               data-ciclo="{{$ciclo_lectivo}}"
+                            >
                                 {{ $cargo->nombre }}
                             </a>
                         </li>
@@ -397,6 +400,7 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
+    <script src="{{ asset('js/proceso_modular/cambia_tabs.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
     <script src="{{ asset('js/proceso/ver_tps.js') }}"></script>
