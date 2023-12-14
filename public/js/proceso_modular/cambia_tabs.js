@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
     $('#cargoTab a').on('click', function (event) {
         event.preventDefault();
 
@@ -6,19 +6,25 @@ $(document).ready(function(){
         let cargoID = $(this).attr('href').replace('#cargo-', '');
         let materiaID = $(this).data('materia');
         let cicloLectivo = $(this).data('ciclo');
+        let target = $(event.target).attr("href"); // Get the target tab pane.
+
+        $(target).children(".spinner-border").show();
 
         // Aquí estás usando el ID del cargo para hacer una llamada AJAX al servidor y recuperar las notas
         $.ajax({
             url: '/proceso-modular/tabs_cargo/' + cargoID + '/' + materiaID + '/' + cicloLectivo,  // Actualiza esto a tu URL del servidor
             method: 'GET',
-            success: function(data) {
+            success: function (data) {
                 // Coloca las notas en el div apropiado
                 $('#cargo-' + cargoID).html(data);
 
                 // Aquí se activa la tab recién cargada
+                $(target).children(".spinner-border").hide();
                 $(event.target).tab('show');
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
+                $(target).children(".spinner-border").hide(); // Hide Spinner.
+                alert('Ocurrió un error al cargar los datos.');
                 console.log(textStatus, errorThrown);
             }
         });
