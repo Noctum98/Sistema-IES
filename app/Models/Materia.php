@@ -5,12 +5,11 @@ namespace App\Models;
 use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use LaravelIdea\Helper\App\Models\_IH_Proceso_C;
+use Illuminate\Database\Query\Builder;
 
 
 /**
@@ -296,15 +295,12 @@ class Materia extends BaseModel
 
     /**
      * @param int $ciclo_lectivo
-     * @param int $comision_id
-     * @return Proceso[]|Builder[]|Collection|_IH_Proceso_C
+     * @param int|null $comision_id
+     * @return Proceso[]|Collection
      */
     public function getProcesos(int $ciclo_lectivo, int $comision_id = null)
     {
-        $procesos = Proceso::select('procesos.*')
-            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $this->id)
-            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
+        $procesos = $this->getBuilderProceso($ciclo_lectivo);
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -317,5 +313,18 @@ class Materia extends BaseModel
         $procesos->orderBy('alumnos.apellidos', 'asc');
 
         return $procesos->get();
+    }
+
+    /**
+     * Obtenga el queryBuilder para recuperar Procesos.
+     *
+     * @param int $ciclo_lectivo El ciclo lectivo de los registros de Proceso a recuperar.
+     */
+    protected function getBuilderProceso(int $ciclo_lectivo)
+    {
+        return Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $this->id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
     }
 }

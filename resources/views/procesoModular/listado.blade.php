@@ -193,6 +193,10 @@
         @endif
 
         @if(count($procesos) > 0)
+                <div class="spinner-border" id="spinner-border"
+                     style="display: none;" role="status">
+                    <span class="sr-only">Cargando...</span>
+                </div>
             <div class="tab-content" id="mainTabContent">
                 <ul class="nav nav-tabs" id="cargoTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -386,7 +390,7 @@
                     @foreach($materia->cargos()->get() as $cargo)
                         <div class="tab-pane fade" id="cargo-{{ $cargo->id }}"
                              role="tabpanel">
-                            <!-- Aquí es donde insertarías tu tabla o las notas por cada cargo -->
+
                         </div>
                     @endforeach
                 </div>
