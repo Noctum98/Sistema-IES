@@ -43,7 +43,7 @@ class CalificacionService
      * @param int $calificacion_id calificacion ID
      * @return ProcesoCalificacion|null ProcesoCalificacion object o null si no encuentra
      */
-    public function getCalificacionByProceso(int $proceso_id, int $calificacion_id): ProcesoCalificacion
+    public function getCalificacionByProceso(int $proceso_id, int $calificacion_id): ?ProcesoCalificacion
     {
         return ProcesoCalificacion::select('proceso_calificacion.*')
             ->where('proceso_calificacion.calificacion_id', $calificacion_id)
