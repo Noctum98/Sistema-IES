@@ -80,7 +80,7 @@
                 </td>
                 @if(count($calificaciones) > 0)
                     @foreach($calificaciones as $cc)
-                        @if($calificacion->tipo()->first()->descripcion == 2)
+                        @if($cc->tipo()->first()->descripcion == 2)
                             <td class="text-center">
                                 @if($cc->getProcesosCalificacionByProceso($proceso->id))
                                     <span
@@ -100,7 +100,7 @@
                         @endif
                     @endforeach
                     @foreach($calificaciones as $cc)
-                        @if($calificacion->tipo()->first()->descripcion == 1)
+                        @if($cc->tipo()->first()->descripcion == 1)
                             <td class="text-center">
                                 @if($cc->getProcesosCalificacionByProceso($proceso->id))
                                     <span
@@ -158,7 +158,7 @@
                 </td>
                 {{--            Nota TFI --}}
                 @foreach($calificaciones as $cc)
-                    @if($calificacion->tipo()->first()->descripcion == 3)
+                    @if($cc->tipo()->first()->descripcion == 3)
                         <td class="text-center">
                             @if($cc->getProcesosCalificacionByProceso($proceso->id))
                                 <span
