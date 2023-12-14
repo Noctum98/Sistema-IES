@@ -5,12 +5,11 @@ namespace App\Models;
 use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use LaravelIdea\Helper\App\Models\_IH_Proceso_C;
+use Illuminate\Database\Query\Builder;
 
 
 /**
@@ -279,7 +278,7 @@ class Materia extends BaseModel
     /**
      * @param int $ciclo_lectivo
      * @param int|null $comision_id
-     * @return Proceso[]|Builder[]|Collection|_IH_Proceso_C
+     * @return Proceso[]|Collection
      */
     public function getProcesos(int $ciclo_lectivo, int $comision_id = null)
     {
@@ -302,7 +301,6 @@ class Materia extends BaseModel
      * Obtenga el queryBuilder para recuperar Procesos.
      *
      * @param int $ciclo_lectivo El ciclo lectivo de los registros de Proceso a recuperar.
-     * @return Builder El generador de consultas para recuperar registros de Proceso.
      */
     protected function getBuilderProceso(int $ciclo_lectivo): Builder
     {
