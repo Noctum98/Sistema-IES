@@ -82,14 +82,14 @@
                     @foreach($calificaciones as $cc)
                         @if($calificacion->tipo()->first()->descripcion == 2)
                             <td class="text-center">
-                                @if($cc->getProcesosCalificacionByProceso($procesos->id))
+                                @if($cc->getProcesosCalificacionByProceso($proceso->id))
                                     <span
                                         class="text-center @classAprobado(
-                                        $cc->getProcesosCalificacionByProceso($procesos->id)->nota)
+                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)
                                             ">
                                             <b>
-                                                {{$cc->getProcesosCalificacionByProceso($procesos->id)->nota != -1
-                                            ? $cc->getProcesosCalificacionByProceso($procesos->id)->nota
+                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1
+                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota
                                             : 'A'}}
                                             </b>
                                     </span>
@@ -102,26 +102,26 @@
                     @foreach($calificaciones as $cc)
                         @if($calificacion->tipo()->first()->descripcion == 1)
                             <td class="text-center">
-                                @if($cc->getProcesosCalificacionByProceso($procesos->id))
+                                @if($cc->getProcesosCalificacionByProceso($proceso->id))
                                     <span
                                         class="text-center @classAprobado(
-                                        $cc->getProcesosCalificacionByProceso($procesos->id)->nota)
+                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)
                                             ">
                                             <b>
-                                                {{$cc->getProcesosCalificacionByProceso($procesos->id)->nota != -1
-                                            ? $cc->getProcesosCalificacionByProceso($procesos->id)->nota
+                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1
+                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota
                                             : 'A'}}
                                             </b>
                                         </span>
-                                    @if($cc->getProcesosCalificacionByProceso($procesos->id)->nota_recuperatorio)
+                                    @if($cc->getProcesosCalificacionByProceso($proceso->id)->nota_recuperatorio)
                                         <br/>
                                         <span
                                             class="text-center @classAprobado(
-                                        $cc->getProcesosCalificacionByProceso($procesos->id)->nota_recuperatorio)
+                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota_recuperatorio)
                                             ">
                                         <i>(R:
-                                        {{$cc->getProcesosCalificacionByProceso($procesos->id)->nota_recuperatorio != -1
-                                        ? $cc->getProcesosCalificacionByProceso($procesos->id)->nota_recuperatorio
+                                        {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota_recuperatorio != -1
+                                        ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota_recuperatorio
                                         : 'A'}}
                                         )</i>
                                     </span>
@@ -160,14 +160,14 @@
                 @foreach($calificaciones as $cc)
                     @if($calificacion->tipo()->first()->descripcion == 3)
                         <td class="text-center">
-                            @if($cc->getProcesosCalificacionByProceso($procesos->id))
+                            @if($cc->getProcesosCalificacionByProceso($proceso->id))
                                 <span
                                     class="text-center @classAprobado(
-                                        $cc->getProcesosCalificacionByProceso($procesos->id)->nota)
+                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)
                                             ">
                                             <b>
-                                                {{$cc->getProcesosCalificacionByProceso($procesos->id)->nota != -1
-                                            ? $cc->getProcesosCalificacionByProceso($procesos->id)->nota
+                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1
+                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota
                                             : 'A'}}
                                             </b>
                                     </span>
