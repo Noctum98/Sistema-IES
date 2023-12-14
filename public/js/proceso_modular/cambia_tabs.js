@@ -6,9 +6,8 @@ $(document).ready(function () {
         let cargoID = $(this).attr('href').replace('#cargo-', '');
         let materiaID = $(this).data('materia');
         let cicloLectivo = $(this).data('ciclo');
-        let target = $(event.target).attr("href"); // Get the target tab pane.
-
-        $(target).children(".spinner-border").show();
+        let spinner = $('.spinner-border')
+        spinner.show()
 
         // Aquí estás usando el ID del cargo para hacer una llamada AJAX al servidor y recuperar las notas
         $.ajax({
@@ -19,11 +18,11 @@ $(document).ready(function () {
                 $('#cargo-' + cargoID).html(data);
 
                 // Aquí se activa la tab recién cargada
-                $(target).children(".spinner-border").hide();
+                spinner.hide();
                 $(event.target).tab('show');
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $(target).children(".spinner-border").hide(); // Hide Spinner.
+                spinner.hide();
                 alert('Ocurrió un error al cargar los datos.');
                 console.log(textStatus, errorThrown);
             }
