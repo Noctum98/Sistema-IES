@@ -193,8 +193,8 @@
         @endif
 
         @if(count($procesos) > 0)
-                <div class="spinner-border" style="display: none;" role="status">
-                    <i class="fa fa-spin fa-spinner"></i>
+                <div class="spinner-border" id="spinner-border"
+                     style="display: none;" role="status">
                     <span class="sr-only">Cargando...</span>
                 </div>
             <div class="tab-content" id="mainTabContent">
