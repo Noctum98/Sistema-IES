@@ -24,7 +24,6 @@ $(document).ready(function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $('#spinner-border').hide()
-                alert('Ocurrió un error al cargar los datos.');
                 console.log(textStatus, errorThrown);
             }
         });
