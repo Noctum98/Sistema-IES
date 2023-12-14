@@ -193,6 +193,10 @@
         @endif
 
         @if(count($procesos) > 0)
+                <div class="spinner-border" style="display: none;" role="status">
+                    <i class="fa fa-spin fa-spinner"></i>
+                    <span class="sr-only">Cargando...</span>
+                </div>
             <div class="tab-content" id="mainTabContent">
                 <ul class="nav nav-tabs" id="cargoTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -217,10 +221,6 @@
                 <div class="tab-content" id="cargoTabContent">
                     <div class="tab-pane fade show active" id="table-principal"
                          role="tabpanel">
-                        <div class="spinner-border" style="display: none;" role="status">
-                            <i class="fa fa-spin fa-spinner"></i>
-                            <span class="sr-only">Cargando...</span>
-                        </div>
                         <div class="table-responsive mt-2" id="table-principal_notas">
                             <table class="table table-hover" id="job-table">
                                 <thead class="thead-dark text-white" style="z-index: 100">
@@ -390,10 +390,6 @@
                     @foreach($materia->cargos()->get() as $cargo)
                         <div class="tab-pane fade" id="cargo-{{ $cargo->id }}"
                              role="tabpanel">
-                            <div class="spinner-border" style="display: none;" role="status">
-                                <i class="fa fa-spin fa-spinner"></i>
-                                <span class="sr-only">Cargando...</span>
-                            </div>
 
                         </div>
                     @endforeach
