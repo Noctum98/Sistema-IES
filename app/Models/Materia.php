@@ -302,7 +302,7 @@ class Materia extends BaseModel
      *
      * @param int $ciclo_lectivo El ciclo lectivo de los registros de Proceso a recuperar.
      */
-    protected function getBuilderProceso(int $ciclo_lectivo): Builder
+    protected function getBuilderProceso(int $ciclo_lectivo)
     {
         return Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
