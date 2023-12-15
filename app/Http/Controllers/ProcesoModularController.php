@@ -235,7 +235,9 @@ class ProcesoModularController extends Controller
         }
 
         $procesoModular = ProcesoModular::where([
-            'proceso_id' => $proceso->id]);
+            'proceso_id' => $proceso->id])
+            ->first()
+        ;
 
         if (!$procesoModular) {
             $data['proceso_id'] = $proceso->id;
