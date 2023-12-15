@@ -161,8 +161,13 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </span>
 
-                        <input type="hidden" name="checkcoordinador" id="coordinador" value="{{ Session::has('coordinador') ? 1 : 0 }}">
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ $proceso->cierre && !Session::has('coordinador') ? 'disabled' : '' }}>
+                        <input type="hidden" name="checkcoordinador" id="coordinador"
+                               value="{{ Session::has('coordinador') ? 1 : 0 }}">
+
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}"
+                            {{$proceso->cierre == false ? 'unchecked':'checked'}}
+                            {{ $proceso->cierre && (!Session::has('coordinador')
+                            && !Session::has('admin')) ? 'disabled' : '' }}>
                     </td>
 
                 </tr>

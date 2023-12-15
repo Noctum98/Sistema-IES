@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Util\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class ProcesoModularController extends Controller
@@ -86,13 +87,15 @@ class ProcesoModularController extends Controller
         $serviceModular = new ProcesoModularService();
 
         $proc = $serviceModular->obtenerProcesosByMateria($materia->id, $ciclo_lectivo);
+
         $arrayProcesos = $proc->pluck('id')->toArray();
+
         $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
-        if (count(
-                $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
-                    $arrayProcesos, $materia, $ciclo_lectivo)
-            ) > 0) {
+        $cantidad_procesos = $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
+            $arrayProcesos, $materia->id, $ciclo_lectivo);
+
+        if (count($cantidad_procesos) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
@@ -164,9 +167,8 @@ class ProcesoModularController extends Controller
     public function procesaNotaModular($materia, int $proceso_id, $cargo_id = null): RedirectResponse
     {
 
-        // 435 24053 12
-
         $service = new ProcesoModularService();
+
         /** @var Proceso $proceso */
         $proceso = Proceso::find($proceso_id);
 
@@ -201,14 +203,95 @@ class ProcesoModularController extends Controller
         $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
         $porcentaje = $service->revisaPorcentajeProceso($materia, $proceso);
 
-
         $service->setNotaProceso($proceso_id, $nota_proceso);
         $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
 
         return redirect()->route('proceso_modular.list',
             ['materia' => $materia,
                 'ciclo_lectivo' => $proceso->ciclo_lectivo,
-                'cargo_id' => $cargo_id] );
+                'cargo_id' => $cargo_id]);
+    }
+
+
+    public function procesaNotaModularProceso($materia, int $proceso_id, int $cargo_id = null)
+    {
+        $user = Auth::user();
+
+        /** @var Proceso $proceso */
+        $proceso = Proceso::find($proceso_id);
+        if (!$proceso) {
+            throw new NotFoundHttpException('No se encontró el proceso indicado');
+        }
+
+        /** @var Materia $materia */
+        $materia = Materia::find($materia);
+        if (!$materia) {
+            throw new NotFoundHttpException('No se encontró la materia indicada');
+        }
+
+        $cargoGeneral = Cargo::find($cargo_id);
+        if (!$cargoGeneral) {
+            throw new NotFoundHttpException('No se encontró el cargo indicado');
+        }
+
+        $procesoModular = ProcesoModular::where([
+            'proceso_id' => $proceso->id]);
+
+        if (!$procesoModular) {
+            $data['proceso_id'] = $proceso->id;
+            $data['ciclo_lectivo'] = $proceso->ciclo_lectivo;
+            $procesoModular = ProcesoModular::create($data);
+        }
+
+        $service = new ProcesoModularService();
+
+        $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
+
+        foreach ($cargos as $cargo) {
+            $cargoProceso = CargoProceso::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo
+            ])->first();
+            if ($cargoProceso) {
+                $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
+            }
+            $this->cargoProcesoService->grabaNotaPonderadaCargo(
+                $cargo->id,
+                $proceso->ciclo_lectivo,
+                $proceso->id,
+                $materia->id,
+                $user->id);
+        }
+
+        $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
+        $porcentaje = $service->revisaPorcentajeProceso($materia, $proceso);
+
+        $service->setNotaProceso($proceso_id, $nota_proceso);
+        $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
+
+        $ciclo_lectivo = $proceso->ciclo_lectivo;
+
+        $puedeProcesar = false;
+
+        if (Auth::user()->hasCargo($cargo_id)
+            && $cargoGeneral->responsableTFI($materia->id)) {
+            $puedeProcesar = true;
+        }
+
+        if (Auth::user()->hasAnyRole('coordinador') || Auth::user()->hasAnyRole('admin')) {
+            $puedeProcesar = true;
+        }
+
+        $asistenciaModular = new AsistenciaModularService();
+
+        $asistenciaModular->calculateFinalAsistenciaModularPercentage($materia, $procesoModular);
+
+        return view('procesoModular.filaProceso',
+            [
+                'proceso' => $procesoModular,
+                'puede_procesar' => $puedeProcesar,
+
+            ]);
     }
 
     /**
@@ -289,4 +372,55 @@ class ProcesoModularController extends Controller
     {
         return $this->cargoProcesoService->actualizaCargoProceso($cargo_id, $proceso, $materia, $cargoProceso);
     }
+
+    /**
+     * Esta función carga las pestañas de un determinado Cargo en la vista 'procesoModular.cargo_tab'.
+     *
+     * @param mixed $cargo_id El ID del Cargo que se va a buscar.
+     * @param mixed $materia_id El ID de la Materia que se va a buscar.
+     * @param mixed $ciclo_lectivo El ciclo lectivo al cual pertenece el Cargo y la Materia.
+     * @param int|null $comision_id (opcional) El ID de la Comisión a la que pertenece
+     *                              el Cargo y la Materia. Si no se proporciona, será null.
+     *
+     * @return \Illuminate\View\View Devuelve una vista llamada 'procesoModular.cargo_tab'
+     *                  con un array de datos que incluye las Calificaciones ordenadas por
+     *                                         tipo, el Cargo y los Procesos de la Materia.
+     */
+    public function cargaTabsCargo($cargo_id, $materia_id, $ciclo_lectivo, int $comision_id = null)
+    {
+        $cargo = Cargo::find($cargo_id);
+        $materia = Materia::find($materia_id);
+
+        $ponderacion = $cargo->ponderacion($materia->id);
+
+        $calificaciones = $this->obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo);
+
+        $procesos = $materia->getProcesos($ciclo_lectivo, $comision_id);
+
+        return view('procesoModular.cargo_tab',
+            ['calificaciones' => $calificaciones,
+                'cargo' => $cargo,
+                'procesos' => $procesos,
+                'ponderacion' => $ponderacion
+            ]);
+    }
+
+    private function obtenerCalificacionesOrdenadasPorTipo($cargo_id, $materia_id, $ciclo_lectivo)
+    {
+        // Obtiene el cargo.
+        $cargo = Cargo::find($cargo_id);
+
+
+        // Obtener las calificaciones de la relación entre el cargo y la materia
+        // Asume que las relaciones están definidas en tus modelos
+        // Ordena las calificaciones por el campo 'tipo_id'.
+        $calificaciones = $cargo->calificacionesCargo()
+            ->where('materia_id', $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
+            ->orderBy('tipo_id')->get();
+
+        return $calificaciones;
+    }
+
+
 }

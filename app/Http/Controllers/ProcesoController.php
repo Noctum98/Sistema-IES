@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Models\Calificacion;
 use App\Models\Cargo;
+use App\Models\CargoProceso;
 use App\Models\Comision;
 use App\Models\Estados;
 use App\Models\Materia;
 use App\Models\Proceso;
 
+use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesosCargosService;
 use Illuminate\Contracts\Foundation\Application;
@@ -28,16 +30,19 @@ class ProcesoController extends Controller
      * @var CicloLectivoService
      */
     private $cicloLectivoService;
+    private CargoProcesoService $cargoProcesoService;
 
     /**
      * @param CicloLectivoService $cicloLectivoService
+     * @param CargoProcesoService $cargoProcesoService
      */
-    function __construct(CicloLectivoService $cicloLectivoService)
+    function __construct(CicloLectivoService $cicloLectivoService, CargoProcesoService $cargoProcesoService)
     {
         $this->middleware('app.auth', ['except' => 'delete']);
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',
             ['except' => 'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
+        $this->cargoProcesoService = $cargoProcesoService;
     }
 
     // Vistas
@@ -122,6 +127,7 @@ class ProcesoController extends Controller
 
     public function vista_listadoCargo($materia_id, $cargo_id, $ciclo_lectivo = null, $comision_id = null)
     {
+        $user = Auth::user();
         if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
@@ -148,6 +154,21 @@ class ProcesoController extends Controller
         $estados = Estados::all();
         $cargo = Cargo::find($cargo_id);
 
+        $cargosProcesos = new CargoProceso();
+
+        $cantCargosProcesos = count($cargosProcesos->getCargosProcesosByProcesos(
+            $cargo_id, $procesos->pluck('id')->toArray()));
+
+//        $vincular = false;
+        if ($cantCargosProcesos < count($procesos)) {
+
+            $this->cargoProcesoService->allStore(
+                $materia_id, $cargo_id, $ciclo_lectivo, $user->id, $comision_id);
+
+//            $vincular = true;
+        }
+
+
         return view('proceso.listado-modular', [
             'procesos' => $procesos,
             'materia' => $materia,
@@ -157,6 +178,7 @@ class ProcesoController extends Controller
             'cargo' => $cargo,
             'ciclo_lectivo' => $ciclo_lectivo,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+//            'vincular' => $vincular
         ]);
     }
 
@@ -357,11 +379,11 @@ class ProcesoController extends Controller
 
         $proceso = Proceso::find($request['proceso_id']);
         $cierre_modulo = true;
-        if(isset($request['cargo'])){
+        if (isset($request['cargo'])) {
             $cierre_modulo = false;
         }
 
-        if($cierre_modulo) {
+        if ($cierre_modulo) {
             $proceso = $this->cierreToTrue($request['cierre'], $proceso);
 
             $proceso->operador_id = $user->id;

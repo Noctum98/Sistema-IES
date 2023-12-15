@@ -70,7 +70,10 @@ class UserService
     public function mesasPresidente()
     {
         $user = Auth::user();
-        $mesas = Mesa::where('presidente_id', $user->id)->orderBy('id','DESC')->paginate(10);
+        $mesas = Mesa::where('presidente_id', $user->id)
+    ->orWhere('presidente_segundo_id', $user->id)
+    ->orderBy('id', 'DESC')
+    ->paginate(10);
 
         /*
             Mesa::select('mesas.*','instancias.nombre','instancias.año','carreras.nombre')

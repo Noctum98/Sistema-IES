@@ -258,13 +258,13 @@ class UserController extends Controller
     public function cambiar_contra(Request $request)
     {
         $user = Auth::user();
-
         $validate = $this->validate($request, [
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $new_password = Hash::make($request->input('password'));
         $user->password = $new_password;
+        
         $user->update();
 
         return redirect()->back()->with([
@@ -408,8 +408,14 @@ class UserController extends Controller
     public function regenerar_contra(Request $request, $id)
     {
         $user = User::find($id);
+
+        $alumno = Alumno::where('user_id',$user->id)->first();
+        
         $new_password = Hash::make('12345678');
         $user->password = $new_password;
+        if($alumno){
+            $user->username = $alumno->dni;
+        }
         $user->update();
 
         return response()->json(['status' => 'success']);

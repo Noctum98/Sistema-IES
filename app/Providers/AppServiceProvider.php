@@ -30,7 +30,11 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         Blade::directive("colorAprobado", function ($value){
                 return "<?php if($value < 4): ?>
-                            <span class='text-danger bg-white p-1'><?php echo $value ?></span>
+                            <?php if($value < 0): ?>
+                                <span class='text-danger bg-white p-1'>A</span>
+                            <?php else: ?>
+                                <span class='text-danger bg-white p-1'><?php echo $value ?></span>
+                            <?php endif; ?>
                         <?php else: ?>
                             <span class='text-success bg-white p-1'><?php echo $value ?></span>
                         <?php endif; ?>";

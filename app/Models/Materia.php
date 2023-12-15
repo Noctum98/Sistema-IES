@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 
 
 /**
@@ -185,7 +186,7 @@ class Materia extends BaseModel
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
-        )->first();
+        )->latest('created_at')->first();
 
         if (!$proceso) {
             return $estado;
@@ -196,10 +197,11 @@ class Materia extends BaseModel
         ])->first();
 
         if ($regularidad) {
-            return $regularidad->obtenerEstado()->regularidad . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
+            return $regularidad->obtenerEstado()->regularidad
+                . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
         }
 
-        return $proceso->regularidad ?? '-';
+        return $proceso->estadoRegularidad() ?? '-';
 
     }
 
@@ -273,4 +275,38 @@ class Materia extends BaseModel
         return $profesores;
     }
 
+    /**
+     * @param int $ciclo_lectivo
+     * @param int|null $comision_id
+     * @return Proceso[]|Collection
+     */
+    public function getProcesos(int $ciclo_lectivo, int $comision_id = null)
+    {
+        $procesos = $this->getBuilderProceso($ciclo_lectivo);
+
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
+                });
+            });
+        }
+
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+
+        return $procesos->get();
+    }
+
+    /**
+     * Obtenga el queryBuilder para recuperar Procesos.
+     *
+     * @param int $ciclo_lectivo El ciclo lectivo de los registros de Proceso a recuperar.
+     */
+    protected function getBuilderProceso(int $ciclo_lectivo)
+    {
+        return Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $this->id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
+    }
 }

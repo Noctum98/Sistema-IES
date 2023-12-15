@@ -123,17 +123,13 @@ class ProcesoModularService
 
     public function obtenerProcesosModularesNoVinculadosByProcesos(array $procesos, $materia_id, $ciclo_lectivo)
     {
-
-//        $procesos = Proceso::select('procesos.id')
-//            ->where('materia_id', '=', $materia_id)
-//            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
-//            ->get();
-
         return Proceso::select('procesos.id')
-            ->where('materia_id', '=', $materia_id)
-            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->where('materia_id',  $materia_id)
+            ->where('ciclo_lectivo', $ciclo_lectivo)
             ->whereNotIn(
-                'procesos.id', $procesos
+                'procesos.id',
+                ProcesoModular::select('proceso_modular.proceso_id')
+                ->whereIn('proceso_modular.proceso_id', $procesos)
             )
             ->get();
     }
@@ -848,9 +844,16 @@ class ProcesoModularService
             'proceso_id' => $proceso
         ])->first();
 
-        $procesoModular->promedio_final_nota = round($nota);
+        /** @var Proceso $proceso */
+        $proceso = Proceso::find($proceso);
+
+        $procesoModular->promedio_final_nota = round($nota, 0);
 
         $procesoModular->update();
+
+        $proceso->final_calificaciones = round($nota, 0);
+
+        $proceso->update();
 
     }
 
@@ -868,6 +871,12 @@ class ProcesoModularService
         $procesoModular->asistencia_final_porcentaje = round($porcentaje);
 
         $procesoModular->update();
+
+        $proceso = Proceso::find($proceso);
+
+        $proceso->porcentaje_final_calificaciones = round($porcentaje, 0);
+
+        $proceso->update();
 
     }
 

@@ -68,6 +68,21 @@ class Calificacion extends Model
 
     }
 
+
+    /**
+     * Obtiene el objeto ProcesoCalificacion relacionado con el proceso_id dado.
+     *
+     * @param int $proceso_id El ID del proceso para el que se debe recuperar el ProcesoCalificacion.
+     *
+     * @return ProcesoCalificacion|null El objeto ProcesoCalificacion relacionado con el proceso_id dado,
+     * o null si no se encuentra.
+     */
+    public function getProcesosCalificacionByProceso(int $proceso_id): ?ProcesoCalificacion
+    {
+            $calificacionService = new CalificacionService();
+            return $calificacionService->getCalificacionByProceso($proceso_id, $this->id);
+    }
+
     public function modelCargo(): BelongsTo
     {
         return $this->belongsTo(Cargo::class,'cargo_id');
