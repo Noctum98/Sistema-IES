@@ -421,6 +421,7 @@
 @section('scripts')
     <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
     <script src="{{ asset('js/proceso_modular/cambia_tabs.js') }}"></script>
+    <script src="{{ asset('js/proceso_modular/cargaComprobacionNotas.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
     <script src="{{ asset('js/proceso/ver_tps.js') }}"></script>
