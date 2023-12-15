@@ -35,7 +35,12 @@
                     $contador++;
                     @endphp
                 @endwhile
+                @if($llamado == 1)
                     <input type="submit" class="btn btn-success btn-guardar" data-folio="{{ $llamado.'-'.$contador }}" data-comision_id="{{ $mesa->comision_id }}" data-mesa_id="{{$mesa->id}}" value="Guardar" {{ !$mesa->cierre_profesor ? 'disabled' : '' }}>
+                @else
+                <input type="submit" class="btn btn-success btn-guardar" data-folio="{{ $llamado.'-'.$contador }}" data-comision_id="{{ $mesa->comision_id }}" data-mesa_id="{{$mesa->id}}" value="Guardar" {{ !$mesa->cierre_profesor_segundo ? 'disabled' : '' }}>
+
+                @endif
                     <span class="d-none" id="spin-{{$llamado}}">
                         <i class="fa fa-spinner fa-spin"></i>
                     </span>

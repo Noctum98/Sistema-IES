@@ -287,12 +287,22 @@ Route::prefix('proceso-modular')->group(function () {
         [ProcesoModularController::class, 'listado'])->name(
         'proceso_modular.list'
     );
-    Route::get('/procesaPonderacionModular/{materia}', [ProcesoModularController::class, 'procesaPonderacionModular']
+    Route::get('/tabs_cargo/{cargo_id}/{materia_id}/{ciclo_lectivo}',
+        [ProcesoModularController::class, 'cargaTabsCargo']
+    )->name('proceso_modular.carga_tabs_cargo');
+
+    Route::get('/procesaPonderacionModular/{materia}',
+        [ProcesoModularController::class, 'procesaPonderacionModular']
     )->name('proceso_modular.procesa_ponderacion_modular');
-    Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}', [ProcesoModularController::class, 'procesaEstadosModular']
+    Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}',
+        [ProcesoModularController::class, 'procesaEstadosModular']
     )->name('proceso_modular.procesa_estados_modular');
-    Route::get('/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}', [ProcesoModularController::class, 'procesaNotaModular']
+    Route::get('/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}',
+        [ProcesoModularController::class, 'procesaNotaModular']
     )->name('proceso_modular.procesa_notas_modular');
+    Route::get('/procesaNotaModularProcesp/{materia}/{proceso_id}/proceso/{cargo_id?}',
+        [ProcesoModularController::class, 'procesaNotaModularProceso']
+    )->name('proceso_modular.procesa_notas_modular_proceso');
 });
 
 /**

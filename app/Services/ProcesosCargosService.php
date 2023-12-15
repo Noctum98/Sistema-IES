@@ -78,9 +78,9 @@ class ProcesosCargosService
         // Esta parte debería estar como método aparte
         $nota_tfi = $pm->trabajo_final_nota;
         $nota_pf = $pm->promedio_final_nota;
-        $nota_final = $nota_pf * 0.8 + $nota_tfi * 0.2;
+        $nota_final = round($nota_pf, 0) * 0.8 + round($nota_tfi,0) * 0.2;
 
-        $pm->nota_final_nota = $nota_final;
+        $pm->nota_final_nota = round($nota_final, 0);
         $pm->update();
 
         $procesoService = new ProcesoService();
