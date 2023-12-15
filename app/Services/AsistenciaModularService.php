@@ -87,41 +87,7 @@ class AsistenciaModularService
         $cargos = $this->obtenerCargosPorModulo($materia);
         $procesos = $serviceProcesoModular->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
         foreach ($procesos as $proceso) {
-            $asistencia_final_p = 0;
-
-            foreach ($cargos as $cargo) {
-                /** @var ProcesoModular $proceso */
-                $ponderacion_cargo = $cargo->ponderacion($materia->id);
-
-                /**
-                 * Aquí tengo que calcular la ponderación de la asistencia por asistencia modular
-                 * La relación es proceso→asistencia(proceso_id)→asistencia_modular(asistencia_id)
-                 * filtrando por cargo
-                 */
-
-                if ($proceso->procesoRelacionado()->first()) {
-                    if ($proceso->procesoRelacionado()->first()->asistencia()) {
-                        if ($proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)) {
-                            $asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia(
-                            )->getByAsistenciaCargo(
-                                $cargo->id
-                            )->porcentaje;
-
-
-                            $asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
-                        }
-                    }
-                }
-
-                //$asistencia_cargo = $proceso->procesoRelacionado()->first()->asistencia()->getByAsistenciaCargo($cargo->id)->porcentaje;
-
-
-                //$asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
-            }
-            $proceso->asistencia_final_porcentaje = $asistencia_final_p;
-
-
-            $proceso->update();
+            $this->calculateFinalAsistenciaModularPercentage($materia, $proceso);
 
             $cant += 1;
 
@@ -168,5 +134,42 @@ class AsistenciaModularService
         return  $cargo->ponderacion($materia->id);
     }
 
+    /**
+     * @param Materia $materia
+     * @param ProcesoModular $proceso
+     * @return void
+     */
+    public function calculateFinalAsistenciaModularPercentage(
+        Materia $materia, ProcesoModular $proceso): void
+    {
+        $asistencia_final_p = 0;
+
+        $cargos = $this->obtenerCargosPorModulo($materia);
+        foreach ($cargos as $cargo) {
+            /** @var ProcesoModular $proceso */
+            $ponderacion_cargo = $cargo->ponderacion($materia->id);
+
+            /**
+             * Aquí tengo que calcular la ponderación de la asistencia por asistencia modular
+             * La relación es proceso→asistencia(proceso_id)→asistencia_modular(asistencia_id)
+             * filtrando por cargo
+             */
+
+            if ($proceso->procesoRelacionado()->first()) {
+                if ($proceso->procesoRelacionado()->first()->asistencia()) {
+                    if ($proceso->procesoRelacionado()->first()->asistencia()
+                        ->getByAsistenciaCargo($cargo->id)) {
+                        $asistencia_cargo = $proceso->procesoRelacionado()->first()
+                            ->asistencia()->getByAsistenciaCargo(
+                                $cargo->id
+                            )->porcentaje;
+                        $asistencia_final_p += $asistencia_cargo * $ponderacion_cargo / 100;
+                    }
+                }
+            }
+        }
+        $proceso->asistencia_final_porcentaje = $asistencia_final_p;
+        $proceso->update();
+    }
 
 }

@@ -193,10 +193,10 @@
         @endif
 
         @if(count($procesos) > 0)
-                <div class="spinner-border" id="spinner-border"
-                     style="display: none;" role="status">
-                    <span class="sr-only">Cargando...</span>
-                </div>
+            <div class="spinner-border" id="spinner-border"
+                 style="display: none;" role="status">
+                <span class="sr-only">Cargando...</span>
+            </div>
             <div class="tab-content" id="mainTabContent">
                 <ul class="nav nav-tabs" id="cargoTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -246,12 +246,14 @@
                                 <tbody>
                                 @foreach($procesos as $proceso)
                                     @if($proceso->procesoRelacionado)
-                                        <tr class="bg-secondary text-white font-weight-bold">
+                                        <tr class="bg-secondary text-white font-weight-bold" id="pfn-{{$proceso->id}}">
                                             <td>
                                                 {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
                                             </td>
                                             <td class="text-center">
+
                                                 @colorAprobado($proceso->promedio_final_nota)
+
                                             </td>
                                             <td class="text-center">
                                                 {{$proceso->asistencia_final_porcentaje}} %
@@ -348,10 +350,24 @@
                                                 @endif
                                             </td>
                                             <td class="text-center" colspan="2">
-                                                <a href="{{route('proceso_modular.procesa_notas_modular', ['materia' => $materia->id, 'proceso_id' => $proceso->procesoRelacionado->id, 'cargo' => $cargo_id ])}}"
+                                                <a href="{{route('proceso_modular.procesa_notas_modular',
+                                                    ['materia' => $materia->id,
+                                                    'proceso_id' => $proceso->procesoRelacionado->id,
+                                                    'cargo' => $cargo_id ])}}"
                                                    class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
                                                     Comprobar notas
                                                 </a>
+
+{{--                                                <a href="#"--}}
+{{--                                                   data-url="{{route('proceso_modular.procesa_notas_modular_proceso',--}}
+{{--                                                    ['materia' => $materia->id,--}}
+{{--                                                     'proceso_id' => $proceso->procesoRelacionado->id,--}}
+{{--                                                     'cargo' => $cargo_id ])}}"--}}
+{{--                                                data-trOne="pfn-{{$proceso->id}}"--}}
+{{--                                                   class="btn btn-sm btn-primary text-white check-notes-btn"--}}
+{{--                                                   style="font-size: 0.8em">--}}
+{{--                                                    Comprobar notas--}}
+{{--                                                </a>--}}
                                                 <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
