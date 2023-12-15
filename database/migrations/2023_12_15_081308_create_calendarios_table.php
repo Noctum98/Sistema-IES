@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFechasTable extends Migration
+class CreateCalendariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class CreateFechasTable extends Migration
      */
     public function up()
     {
-        Schema::create('fechas', function (Blueprint $table) {
+        Schema::create('calendarios', function (Blueprint $table) {
             $table->id();
+            $table->integer('dia');
+            $table->integer('mes');
+            $table->string('fecha');
+            $table->text('descripcion')->nullable();
+            $table->string('tipo');
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ class CreateFechasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fechas');
+        Schema::dropIfExists('calendarios');
     }
 }

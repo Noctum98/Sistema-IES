@@ -43,6 +43,7 @@ use App\Http\Controllers\LibrosController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MatriculacionController;
 use App\Http\Controllers\MesaController;
+use App\Http\Controllers\Parameters\CalendarioController;
 use App\Http\Controllers\Proceso\EtapaCampoController;
 use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
@@ -169,6 +170,8 @@ Route::prefix('carreras')->group(function () {
         'carrera.ver_profesores'
     );
 });
+
+Route::resource('calendario',CalendarioController::class);
 
 //Ruta de Ciclo lectivo
 Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
