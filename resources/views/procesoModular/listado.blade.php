@@ -363,7 +363,7 @@
                                                     ['materia' => $materia->id,
                                                      'proceso_id' => $proceso->procesoRelacionado->id,
                                                      'cargo_id' => $cargo_id ])}}"
-                                                data-trOne="pfn-{{$proceso->id}}"
+                                                data-trone="pfn-{{$proceso->id}}"
                                                    class="btn btn-sm btn-primary text-white check-notes-btn"
                                                    style="font-size: 0.8em">
                                                     Comprobar notas
