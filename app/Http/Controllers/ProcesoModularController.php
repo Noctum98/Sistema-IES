@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Util\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class ProcesoModularController extends Controller
@@ -211,6 +212,88 @@ class ProcesoModularController extends Controller
                 'cargo_id' => $cargo_id]);
     }
 
+
+    public function procesaNotaModularProceso($materia, int $proceso_id, int $cargo_id = null)
+    {
+        $user = Auth::user();
+
+        /** @var Proceso $proceso */
+        $proceso = Proceso::find($proceso_id);
+        if (!$proceso) {
+            throw new NotFoundHttpException('No se encontró el proceso indicado');
+        }
+
+        /** @var Materia $materia */
+        $materia = Materia::find($materia);
+        if (!$materia) {
+            throw new NotFoundHttpException('No se encontró la materia indicada');
+        }
+
+        $cargoGeneral = Cargo::find($cargo_id);
+        if (!$cargoGeneral) {
+            throw new NotFoundHttpException('No se encontró el cargo indicado');
+        }
+
+        $procesoModular = ProcesoModular::where([
+            'proceso_id' => $proceso->id]);
+
+        if (!$procesoModular) {
+            $data['proceso_id'] = $proceso->id;
+            $data['ciclo_lectivo'] = $proceso->ciclo_lectivo;
+            $procesoModular = ProcesoModular::create($data);
+        }
+
+        $service = new ProcesoModularService();
+
+        $cargos = $service->obtenerCargosPorModulo($materia)->pluck('id');
+
+        foreach ($cargos as $cargo) {
+            $cargoProceso = CargoProceso::where([
+                'proceso_id' => $proceso->id,
+                'cargo_id' => $cargo
+            ])->first();
+            if ($cargoProceso) {
+                $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
+            }
+            $this->cargoProcesoService->grabaNotaPonderadaCargo(
+                $cargo->id,
+                $proceso->ciclo_lectivo,
+                $proceso->id,
+                $materia->id,
+                $user->id);
+        }
+
+        $nota_proceso = $service->revisaNotasProceso($materia, $proceso);
+        $porcentaje = $service->revisaPorcentajeProceso($materia, $proceso);
+
+        $service->setNotaProceso($proceso_id, $nota_proceso);
+        $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
+
+        $ciclo_lectivo = $proceso->ciclo_lectivo;
+
+        $puedeProcesar = false;
+
+        if (Auth::user()->hasCargo($cargo_id)
+            && $cargoGeneral->responsableTFI($materia->id)) {
+            $puedeProcesar = true;
+        }
+
+        if (Auth::user()->hasAnyRole('coordinador') || Auth::user()->hasAnyRole('admin')) {
+            $puedeProcesar = true;
+        }
+
+        $asistenciaModular = new AsistenciaModularService();
+
+        $asistenciaModular->calculateFinalAsistenciaModularPercentage($materia, $procesoModular);
+
+        return view('procesoModular.filaProceso',
+            [
+                'proceso' => $procesoModular,
+                'puede_procesar' => $puedeProcesar,
+
+            ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -337,6 +420,7 @@ class ProcesoModularController extends Controller
             ->orderBy('tipo_id')->get();
 
         return $calificaciones;
-
     }
+
+
 }
