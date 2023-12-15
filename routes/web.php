@@ -300,7 +300,7 @@ Route::prefix('proceso-modular')->group(function () {
     Route::get('/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}',
         [ProcesoModularController::class, 'procesaNotaModular']
     )->name('proceso_modular.procesa_notas_modular');
-    Route::get('/procesaNotaModular/{materia}/{proceso_id}/proceso/{cargo_id?}',
+    Route::get('/procesaNotaModularProcesp/{materia}/{proceso_id}/proceso/{cargo_id?}',
         [ProcesoModularController::class, 'procesaNotaModularProceso']
     )->name('proceso_modular.procesa_notas_modular_proceso');
 });
