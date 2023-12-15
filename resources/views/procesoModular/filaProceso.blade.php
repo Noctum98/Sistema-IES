@@ -1,5 +1,5 @@
 <td>
-    {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
+    - {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
 </td>
 <td class="text-center">
                                                 <span id="pfn-{{$proceso->id}}" class="m-0 p-0">

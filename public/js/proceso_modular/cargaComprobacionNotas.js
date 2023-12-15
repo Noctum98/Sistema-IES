@@ -3,7 +3,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         let url = $(this).data('url'); // Obtén la URL desde el data attribute
-        let trOneProceso = $(this).data('trOne'); // Obtén la URL desde el data attribute
+        let trOneProceso = $(this).data('trone'); // Obtén la URL desde el data attribute
 console.log(trOneProceso)
         $.ajax({
             url: url,
