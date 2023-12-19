@@ -185,10 +185,11 @@
                         @if ($proceso->cierre == 1)
                             <i class="fa fa-check text-success"></i>
                         @elseif($proceso->obtenerProcesoCargo($cargo->id))
-                            {{$proceso->obtenerProcesoCargo($cargo->id)->isClose()
-                             ?'<i class="fa fa-check text-success"></i>'
-                             :'<i class="fa fa-minus text-danger"></i>'
-                             }}
+                            @if($proceso->obtenerProcesoCargo($cargo->id)->isClose())
+                                <i class="fa fa-check text-success"></i>
+                            @else
+                                <i class="fa fa-minus text-danger"></i>
+                            @endif
                         @else
                             <i class="fa fa-minus text-danger"></i>
                         @endif
