@@ -350,20 +350,21 @@
                                                 @endif
                                             </td>
                                             <td class="text-center" colspan="2">
-{{--                                                <a href="{{route('proceso_modular.procesa_notas_modular',--}}
-{{--                                                    ['materia' => $materia->id,--}}
-{{--                                                    'proceso_id' => $proceso->procesoRelacionado->id,--}}
-{{--                                                    'cargo' => $cargo_id ])}}"--}}
-{{--                                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">--}}
-{{--                                                    Comprobar notas--}}
-{{--                                                </a>--}}
+                                                {{--                                                <a href="{{route('proceso_modular.procesa_notas_modular',--}}
+                                                {{--                                                    ['materia' => $materia->id,--}}
+                                                {{--                                                    'proceso_id' => $proceso->procesoRelacionado->id,--}}
+                                                {{--                                                    'cargo' => $cargo_id ])}}"--}}
+                                                {{--                                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">--}}
+                                                {{--                                                    Comprobar notas--}}
+                                                {{--                                                </a>--}}
 
                                                 <a href="#"
                                                    data-url="{{route('proceso_modular.procesa_notas_modular_proceso',
                                                     ['materia' => $materia->id,
                                                      'proceso_id' => $proceso->procesoRelacionado->id,
                                                      'cargo_id' => $cargo_id ])}}"
-                                                data-trone="pfn-{{$proceso->id}}"
+                                                   data-trone="pfn-{{$proceso->id}}"
+                                                   data-proceso="{{$proceso->procesoRelacionado->id}}"
                                                    class="btn btn-sm btn-primary text-white check-notes-btn"
                                                    style="font-size: 0.8em">
                                                     Comprobar notas
