@@ -350,24 +350,24 @@
                                                 @endif
                                             </td>
                                             <td class="text-center" colspan="2">
-                                                <a href="{{route('proceso_modular.procesa_notas_modular',
-                                                    ['materia' => $materia->id,
-                                                    'proceso_id' => $proceso->procesoRelacionado->id,
-                                                    'cargo' => $cargo_id ])}}"
-                                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">
-                                                    Comprobar notas
-                                                </a>
-
-{{--                                                <a href="#"--}}
-{{--                                                   data-url="{{route('proceso_modular.procesa_notas_modular_proceso',--}}
+{{--                                                <a href="{{route('proceso_modular.procesa_notas_modular',--}}
 {{--                                                    ['materia' => $materia->id,--}}
-{{--                                                     'proceso_id' => $proceso->procesoRelacionado->id,--}}
-{{--                                                     'cargo' => $cargo_id ])}}"--}}
-{{--                                                data-trOne="pfn-{{$proceso->id}}"--}}
-{{--                                                   class="btn btn-sm btn-primary text-white check-notes-btn"--}}
-{{--                                                   style="font-size: 0.8em">--}}
+{{--                                                    'proceso_id' => $proceso->procesoRelacionado->id,--}}
+{{--                                                    'cargo' => $cargo_id ])}}"--}}
+{{--                                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">--}}
 {{--                                                    Comprobar notas--}}
 {{--                                                </a>--}}
+
+                                                <a href="#"
+                                                   data-url="{{route('proceso_modular.procesa_notas_modular_proceso',
+                                                    ['materia' => $materia->id,
+                                                     'proceso_id' => $proceso->procesoRelacionado->id,
+                                                     'cargo_id' => $cargo_id ])}}"
+                                                data-trone="pfn-{{$proceso->id}}"
+                                                   class="btn btn-sm btn-primary text-white check-notes-btn"
+                                                   style="font-size: 0.8em">
+                                                    Comprobar notas
+                                                </a>
                                                 <span class="d-none" id="span-{{$proceso->procesoRelacionado->id}}">
                                     <small style="font-size: 0.8em" class="bg-success p-1">Cambio realizado</small>
                                 </span>
@@ -421,6 +421,7 @@
 @section('scripts')
     <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
     <script src="{{ asset('js/proceso_modular/cambia_tabs.js') }}"></script>
+    <script src="{{ asset('js/proceso_modular/cargaComprobacionNotas.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
     <script src="{{ asset('js/proceso/ver_tps.js') }}"></script>

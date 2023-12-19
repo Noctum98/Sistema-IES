@@ -2,6 +2,7 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
+
                 @if(!Session::has('alumno'))
                 <div class="sb-sidenav-menu-heading">Administración</div>
                 <a class="nav-link" href="{{ route('usuarios.mis_datos')}}">
@@ -10,6 +11,10 @@
                 </a>
                 @endif
                 @if(Session::has('admin')|| Session::has('regente'))
+                <a class="nav-link" href="{{ route('calendario.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
+                    Calendario
+                </a>
                 <a class="nav-link" href="{{ route('usuarios.admin') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                     Usuarios
