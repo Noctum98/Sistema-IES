@@ -216,6 +216,7 @@ class ProcesoModularController extends Controller
     public function procesaNotaModularProceso($materia, int $proceso_id, int $cargo_id = null)
     {
         $user = Auth::user();
+        $puedeProcesar = false;
 
         /** @var Proceso $proceso */
         $proceso = Proceso::find($proceso_id);
@@ -229,13 +230,20 @@ class ProcesoModularController extends Controller
             throw new NotFoundHttpException('No se encontró la materia indicada');
         }
 
-        $cargoGeneral = Cargo::find($cargo_id);
-        if (!$cargoGeneral) {
-            throw new NotFoundHttpException('No se encontró el cargo indicado');
+        if ($cargo_id) {
+            $cargoGeneral = Cargo::find($cargo_id);
+            if (!$cargoGeneral) {
+                throw new NotFoundHttpException('No se encontró el cargo indicado');
+            }
+            if (Auth::user()->hasCargo($cargo_id)
+                && $cargoGeneral->responsableTFI($materia->id)) {
+                $puedeProcesar = true;
+            }
         }
 
         $procesoModular = ProcesoModular::where([
-            'proceso_id' => $proceso->id]);
+            'proceso_id' => $proceso->id])
+            ->first();
 
         if (!$procesoModular) {
             $data['proceso_id'] = $proceso->id;
@@ -256,7 +264,7 @@ class ProcesoModularController extends Controller
                 $this->actualizaCargoProceso($cargo, $proceso, $materia, $cargoProceso);
             }
             $this->cargoProcesoService->grabaNotaPonderadaCargo(
-                $cargo->id,
+                $cargo,
                 $proceso->ciclo_lectivo,
                 $proceso->id,
                 $materia->id,
@@ -268,15 +276,6 @@ class ProcesoModularController extends Controller
 
         $service->setNotaProceso($proceso_id, $nota_proceso);
         $service->setPorcentajeProceso($proceso_id, $porcentaje / 100);
-
-        $ciclo_lectivo = $proceso->ciclo_lectivo;
-
-        $puedeProcesar = false;
-
-        if (Auth::user()->hasCargo($cargo_id)
-            && $cargoGeneral->responsableTFI($materia->id)) {
-            $puedeProcesar = true;
-        }
 
         if (Auth::user()->hasAnyRole('coordinador') || Auth::user()->hasAnyRole('admin')) {
             $puedeProcesar = true;
@@ -290,7 +289,6 @@ class ProcesoModularController extends Controller
             [
                 'proceso' => $procesoModular,
                 'puede_procesar' => $puedeProcesar,
-
             ]);
     }
 
