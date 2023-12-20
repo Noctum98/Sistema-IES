@@ -45,4 +45,9 @@ class EncuestaSocioeconomicaController extends Controller
 
         return redirect()->route('encuesta_socioeconomica.showForm2',['encuesta_id'=>$encuestaSocioeconomica->id,'carrera_id'=>$carrera_id]);
     }
+
+    public function store2(Request $request)
+    {
+        dd($request->all());
+    }
 }

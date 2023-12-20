@@ -11,6 +11,8 @@
         </div>
     </div>
 
+    <form action="{{ route('encuesta_socioeconomica.store2') }}" method="POST">
+        <input type="hidden" name="enc" value="{{ $encuesta_socioeconomica->id }}">
     <div class="card mb-3">
         <div class="card-body">
             <div class="form-group">
@@ -545,5 +547,137 @@
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Sobre qué temas te gustaría recibir más capacitación?</h4>
+                </label>
+                <input type="text" class="form-control mt-2" id="temas_capacitacion" name="temas_capacitacion" value="{{ old('temas_capacitacion') }}" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Realizás actividades extras a la carrera? especificá si es así</h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras1" value="Actividades físicas" {{ old('actividades_extras') === 'Actividades físicas' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras1">
+                    Actividades físicas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras2" value="Actividades musicales" {{ old('actividades_extras') === 'Actividades musicales' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras2">
+                    Actividades musicales
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras3" value="Actividades intelectuales" {{ old('actividades_extras') === 'Actividades intelectuales' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras3">
+                    Actividades intelectuales
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras4" value="Actividades artísticas" {{ old('actividades_extras') === 'Actividades artísticas' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras4">
+                    Actividades artísticas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras56" value="Actividades de impacto social" {{ old('actividades_extras') === 'Actividades de impacto social' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras56">
+                    Actividades de impacto social
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras6" value="No realizo actividad extra" {{ old('actividades_extras') === 'No realizo actividad extra' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras6">
+                    No realizo actividad extra
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="actividades_extras" id="actividades_extras7" value="otro" {{ old('actividades_extras') === 'otro' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="actividades_extras7">
+                        Otros
+                    </label>
+                </div>
+                <div class="form-group d-none" id="actividades_extras_otra">
+                    <label for="actividades_extras_otro">Cual?</label>
+                    <input type="text" class="form-control mt-2" id="actividades_extras_otro" name="actividades_extras_otro" value="{{ old('actividades_extras_otro') }}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre_preferido" class="text-primary">
+                    <h4>¿Te gustaría hacer alguna? especificá si es así </h4>
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras1" value="Actividades físicas" {{ old('desc_actividades_extras') === 'Actividades físicas' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras1">
+                    Actividades físicas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras2" value="Actividades musicales" {{ old('desc_actividades_extras') === 'Actividades musicales' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras2">
+                    Actividades musicales
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras3" value="Actividades intelectuales" {{ old('desc_actividades_extras') === 'Actividades intelectuales' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras3">
+                    Actividades intelectuales
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras4" value="Actividades artísticas" {{ old('desc_actividades_extras') === 'Actividades artísticas' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras4">
+                    Actividades artísticas
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras56" value="Actividades de impacto social" {{ old('desc_actividades_extras') === 'Actividades de impacto social' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras56">
+                    Actividades de impacto social
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras6" value="No deseo o puedo realizar otra actividad extra educativa" {{ old('desc_actividades_extras') === 'No deseo o puedo realizar otra actividad extra educativa' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras6">
+                    No deseo o puedo realizar otra actividad extra educativa
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras11" value="Ya realizo actividad extraeducativa" {{ old('desc_actividades_extras') === 'Ya realizo actividad extraeducativa' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras11">
+                    Ya realizo actividad extraeducativa
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="desc_actividades_extras" id="desc_actividades_extras7" value="otro" {{ old('desc_actividades_extras') === 'otro' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="desc_actividades_extras7">
+                        Otros
+                    </label>
+                </div>
+                <div class="form-group d-none" id="desc_actividades_extras_otra">
+                    <label for="desc_actividades_extras_otro">Cual?</label>
+                    <input type="text" class="form-control mt-2" id="desc_actividades_extras_otro" name="desc_actividades_extras_otro" value="{{ old('desc_actividades_extras_otro') }}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" value="Terminar inscripción" class="btn btn-primary col-md-12">
+
+    </form>
 </div>
 @endsection
