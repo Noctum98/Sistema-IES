@@ -93,6 +93,7 @@ class RepararCierresMesas extends Command
 
     private function isHabil($fecha)
     {
+        dd($fecha,$this->feriados);
         if (in_array($fecha, $this->feriados) || date('D', strtotime($fecha))  == 'Sat' || date('D', strtotime($fecha)) == 'Sun') {
             return false;
         } else {
