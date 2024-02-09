@@ -55,7 +55,7 @@ class RepararCierresMesas extends Command
 
         foreach ($mesas as $mesa) {
             if($llamado == 1){
-                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($mesa->fecha.'-1 day'));
                 $this->isHabil($inicio_fecha);
 
                 $contador = 0;
@@ -66,13 +66,13 @@ class RepararCierresMesas extends Command
                     }
     
                     if($contador != 2){
-                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                        $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
                 $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
             }else{
-                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha_segundo.'-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($mesa->fecha_segundo.'-1 day'));
                 $contador = 0;
                 while ($contador < 2) {
                     
@@ -81,7 +81,7 @@ class RepararCierresMesas extends Command
                     }
     
                     if($contador != 2){
-                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                        $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
                 $mesa->cierre_segundo = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
