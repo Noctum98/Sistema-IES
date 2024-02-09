@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Instancia;
 use App\Models\Mesa;
+use App\Models\Parameters\Calendario;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -34,22 +36,6 @@ class RepararCierresMesas extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->feriados = [
-            '19-02-2023',
-            '20-02-2023',
-            '21-02-2023',
-            '26-02-2023',
-            '27-02-2023',
-            '28-02-2023',
-            '09-07-2023',
-            '15-08-2023',
-            '25-08-2023',
-            '02-09-2023',
-            '07-10-2023',
-            '10-10-2023',
-            '20-11-2023',
-            '08-12-2023'
-        ];
     }
 
     /**
@@ -61,6 +47,9 @@ class RepararCierresMesas extends Command
     {
         $instancia_id = (int) $this->argument('instancia_id');
         $llamado = (int) $this->argument('llamado');
+        $instancia = Instancia::find($instancia_id);
+        $feriados = Calendario::select('fecha')->get();
+        $this->feriados = $this->limpiarFeriados($feriados,$instancia);
 
         $mesas = Mesa::where('instancia_id', $instancia_id)->get();
 
@@ -128,5 +117,17 @@ class RepararCierresMesas extends Command
         }
         
         return $fecha . 'T' . $hora;
+    }
+
+    private function limpiarFeriados($feriados,$instancia)
+    {
+        $feriadosLimpios = [];
+        foreach($feriados as $feriado)
+        {
+            $feriadoLimpio = $feriado->fecha.'-'.$instancia->año;
+            array_push($feriadosLimpios,$feriadoLimpio);
+        }
+
+        return $feriadosLimpios;
     }
 }
