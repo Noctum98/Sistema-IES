@@ -161,7 +161,10 @@ class MatriculacionController extends Controller
         }
 
         if ($alumno->hasCarrera($carrera_id)) {
-            $mensaje = "Ya estas inscripto a esta carrera.";
+            return view('matriculacion.card_finalizada', [
+                'alumno' => $alumno,
+                'mensaje' => 'Ya estas inscripto a esta carrera.'
+            ]); 
         } else {
             $carrera = Carrera::find($carrera_id);
 
@@ -175,17 +178,11 @@ class MatriculacionController extends Controller
             if (isset($request['materias'])) {
                 $this->procesoService->inscribir($alumno->id, $request['materias']);
             }
-
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
-
-
-            $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
         }
 
-
-        return view('matriculacion.card_finalizada', [
-            'alumno' => $alumno,
-            'mensaje' => $mensaje
+        return redirect()->route('encuesta_socioeconomica.showForm',[
+            'alumno_id'=>$alumno->id,
+            'carrera_id' => $carrera->id
         ]);
     }
 

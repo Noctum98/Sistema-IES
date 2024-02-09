@@ -2,8 +2,10 @@
 
 namespace App\Models\Alumno;
 
+use App\Models\Alumno;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EncuestaSocioeconomica extends Model
 {
@@ -76,4 +78,9 @@ class EncuestaSocioeconomica extends Model
         'actividades_extras',
         'desc_actividades_extras'
     ];
+
+    public function alumno(): BelongsTo
+    {
+        return $this->belongsTo(Alumno::class,'alumno_id');
+    }
 }

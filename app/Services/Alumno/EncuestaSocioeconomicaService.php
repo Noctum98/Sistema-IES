@@ -148,4 +148,62 @@ class EncuestaSocioeconomicaService
 
         return $request;
     }
+
+    public function procesarDatos2($request)
+    {
+        if($request['motivo_para_estudiar_otro'])
+        {
+            $request['motivo_para_estudiar'] = $request['motivo_para_estudiar'].'|'.$request['motivo_para_estudiar_otro'];
+        }
+
+        if($request['conocimiento_instituto_otro'])
+        {
+            $request['conocimiento_instituto'] = $request['conocimiento_instituto'].'|'.$request['conocimiento_instituto_otro'];
+        }
+
+        if($request['como_ingresa_otro'])
+        {
+            $request['como_ingresa'] = $request['como_ingresa'].'|'.$request['como_ingresa_otro'];
+        }
+
+        if($request['desc_actividades_extras_otro'])
+        {
+            $request['desc_actividades_extras'] = $request['desc_actividades_extras'].'|'.$request['desc_actividades_extras_otro'];
+        }
+
+        if($request['dificultad_estudio'])
+        {
+            $dificultad_estudio = '';
+            foreach($request['dificultad_estudio'] as $dificultad)
+            {
+                $dificultad_estudio = $dificultad_estudio.'|'.$dificultad;
+            }
+
+            $request['dificultad_estudio'] = $dificultad_estudio;
+        }
+
+        if($request['herramientas_estudio'])
+        {
+            $herramientas_estudio = '';
+            foreach($request['herramientas_estudio'] as $herramienta)
+            {
+                $herramientas_estudio = $herramientas_estudio.'|'.$herramienta;
+            }
+
+            $request['herramientas_estudio'] = $herramientas_estudio;
+        }
+
+        if($request['lugar_trabajo'])
+        {
+            $lugar_trabajo = '';
+            foreach($request['lugar_trabajo'] as $lugar)
+            {
+                $lugar_trabajo = $lugar_trabajo.'|'.$lugar;
+            }
+
+            $request['lugar_trabajo'] = $lugar_trabajo;
+        }
+
+        return $request;
+    }
 }

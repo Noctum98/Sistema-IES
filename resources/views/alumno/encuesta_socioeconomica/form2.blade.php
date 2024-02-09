@@ -13,6 +13,7 @@
 
     <form action="{{ route('encuesta_socioeconomica.store2') }}" method="POST">
         <input type="hidden" name="enc" value="{{ $encuesta_socioeconomica->id }}">
+        <input type="hidden" name="carrera_id" value="{{ $carrera->id }}">
     <div class="card mb-3">
         <div class="card-body">
             <div class="form-group">
@@ -33,7 +34,7 @@
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="motivo_para_estudiar" id="motivo_para_estudiar3" value="tener mayor acceso laboral" {{ old('motivo_para_estudiar') === 'tener mayor acceso laboral' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="motivo_para_estudiar3">motivo_para_estudiar
+                    <label class="form-check-label" for="motivo_para_estudiar3">
                         Tener mayor acceso laboral
                     </label>
                 </div>
@@ -444,8 +445,8 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="herramientas_estudio[]" type="checkbox" value="Utilización de material de apoyo visual y/o auditivo" id="herramientas_estudio3" {{ in_array('Utilización de material de apoyo visual y/o auditivo', old('herramientas_estudio', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="herramientas_estudio3">
+                    <input class="form-check-input" name="herramientas_estudio[]" type="checkbox" value="Utilización de material de apoyo visual y/o auditivo" id="herramientas_estudio6" {{ in_array('Utilización de material de apoyo visual y/o auditivo', old('herramientas_estudio', [])) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="herramientas_estudio6">
                         Utilización de material de apoyo visual y/o auditivo
                     </label>
                 </div>

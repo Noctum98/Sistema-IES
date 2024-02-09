@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Alumno;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Alumno\EncuestaSocioeconomicaRequest;
+use App\Mail\MatriculacionSuccessEmail;
 use App\Models\Alumno;
 use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Carrera;
 use App\Services\Alumno\EncuestaSocioeconomicaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class EncuestaSocioeconomicaController extends Controller
 {
@@ -48,6 +50,20 @@ class EncuestaSocioeconomicaController extends Controller
 
     public function store2(Request $request)
     {
-        dd($request->all());
+        $request = $this->encuestaSocioeconomicaService->procesarDatos2($request);
+        $carrera = Carrera::find($request['carrera_id']);
+        $encuestaSocioeconomica = EncuestaSocioeconomica::find($request['enc']);
+        if($encuestaSocioeconomica)
+        {
+            $encuestaSocioeconomica->update($request->all());
+        }
+
+        Mail::to($request['email'])->send(new MatriculacionSuccessEmail($encuestaSocioeconomica->alumno, $carrera));
+        $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
+
+        return view('matriculacion.card_finalizada', [
+            'alumno' => $encuestaSocioeconomica->alumno,
+            'mensaje' => $mensaje
+        ]); 
     }
 }
