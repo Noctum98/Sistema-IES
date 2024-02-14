@@ -114,6 +114,8 @@ class RepararCierresMesas extends Command
                 break;
             case 'vespertino':
                 $hora = $this::T_V;
+            case 'virtual':
+                $hora = $this::T_V;
         }
         
         return $fecha . 'T' . $hora;
