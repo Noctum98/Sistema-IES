@@ -48,15 +48,15 @@ class RepararCierresMesas extends Command
         $instancia_id = (int) $this->argument('instancia_id');
         $llamado = (int) $this->argument('llamado');
         $instancia = Instancia::find($instancia_id);
-        $feriados = Calendario::select('fecha')->get();
+        $feriados = Calendario::all();
         $this->feriados = $this->limpiarFeriados($feriados,$instancia);
 
         $mesas = Mesa::where('instancia_id', $instancia_id)->get();
 
         foreach ($mesas as $mesa) {
-            
             if($llamado == 1){
-                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($mesa->fecha.'-1 day'));
+                $this->isHabil($inicio_fecha);
 
                 $contador = 0;
                 while ($contador < 2) {
@@ -66,13 +66,13 @@ class RepararCierresMesas extends Command
                     }
     
                     if($contador != 2){
-                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                        $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
                 $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
             }else{
-                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha_segundo.'-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($mesa->fecha_segundo.'-1 day'));
                 $contador = 0;
                 while ($contador < 2) {
                     
@@ -81,7 +81,7 @@ class RepararCierresMesas extends Command
                     }
     
                     if($contador != 2){
-                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                        $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
                 $mesa->cierre_segundo = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
@@ -114,6 +114,8 @@ class RepararCierresMesas extends Command
                 break;
             case 'vespertino':
                 $hora = $this::T_V;
+            case 'virtual':
+                $hora = $this::T_V;
         }
         
         return $fecha . 'T' . $hora;
@@ -124,7 +126,7 @@ class RepararCierresMesas extends Command
         $feriadosLimpios = [];
         foreach($feriados as $feriado)
         {
-            $feriadoLimpio = $feriado->fecha.'-'.$instancia->año;
+            $feriadoLimpio = $feriado->dia.'-'.$feriado->mes.'-'.$instancia->año;
             array_push($feriadosLimpios,$feriadoLimpio);
         }
 
