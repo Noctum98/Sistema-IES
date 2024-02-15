@@ -33,7 +33,7 @@
 			@if(isset($carreras))
 			@foreach($carreras as $carrera)
 			<a type="button" href="#" class="list-group-item list-group-item-action mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{$carrera->id}}">
-				{{$carrera->nombre.' - Res: '.$carrera->resolucion}} {{ $carrera->nombre == 'Enfermería Profesional' ? '('.ucwords($carrera->turno).')': '' }}
+				{{ $carrera->sede->nombre }} - {{$carrera->nombre.' - Res: '.$carrera->resolucion}} {{ $carrera->nombre == 'Enfermería Profesional' ? '('.ucwords($carrera->turno).')': '' }}
 			</a>
 			<div class="modal fade" id="exampleModal{{$carrera->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg" role="document">
