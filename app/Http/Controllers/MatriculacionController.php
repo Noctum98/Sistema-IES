@@ -328,31 +328,18 @@ class MatriculacionController extends Controller
         ]);
 
         $mail_check = MailCheck::where('email', $request['email'])->first();
+        $request['timecheck'] = time().$request['email'];
 
         if ($mail_check && $mail_check->checked) {
-            $alumno = Alumno::where('email', $mail_check->email)->first();
 
-            if ($alumno && $alumno->lastProcesoCarrera($carrera_id)) {
-                return redirect()->route('matriculacion.edit', [
-                    'carrera_id' => $carrera_id,
-                    'alumno_id'  => $alumno->id,
-                    'year'        => $año
-                ]);
-            } else {
-                return redirect()->route('matriculacion.create', [
-                    'id' => $carrera_id,
-                    'year' => $año,
-                    'timecheck' => true
-                ]);
-            }
+            return redirect()->route('matriculacion.create', [
+                'id' => $carrera_id,
+                'year' => $año,
+                'timecheck' => true
+            ]);
         } elseif ($mail_check && !$mail_check->checked) {
             Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         } else {
-            do {
-                $newTimecheckValue = time().$request['email'];
-            } while (MailCheck::where('timecheck', $newTimecheckValue)->exists());
-
-            $duplicate->update(['timecheck' => $newTimecheckValue]);
             $mail_check = MailCheck::create($request->all());
 
             Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
