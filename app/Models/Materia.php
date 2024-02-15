@@ -180,7 +180,7 @@ class Materia extends BaseModel
      */
     public function getEstadoAlumnoPorMateria($alumno_id): string
     {
-        $estado = '-';
+        $estado = 'No indicado o no cursado';
 
         $proceso = Proceso::where([
                 'materia_id' => $this->id,
@@ -201,7 +201,7 @@ class Materia extends BaseModel
                 . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
         }
 
-        return $proceso->estadoRegularidad() ?? '-';
+        return $proceso->estadoRegularidad() ?? 'No indicado o no cursado';
 
     }
 
