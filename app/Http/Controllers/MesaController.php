@@ -308,11 +308,11 @@ class MesaController extends Controller
 
         $libro = Libro::where(['mesa_id'=>$mesa->id,'orden'=>$orden,'llamado'=>$llamado])->first();
 
-        Log::info('MesaController - acta_volante');
-        Log::info($mesa);
-        Log::info($comision);
-        Log::info($instancia);
-        Log::info($carrera);
+        // Log::info('MesaController - acta_volante');
+        // Log::info($mesa);
+        // Log::info($comision);
+        // Log::info($instancia);
+        // Log::info($carrera);
 
         $data = [
             'instancia' => $instancia,

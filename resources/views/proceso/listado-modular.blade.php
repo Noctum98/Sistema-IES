@@ -14,7 +14,7 @@
         }
 
     </style>
-    <div class="container" id="container-scroll">
+    <div class="container-fluid" id="container-scroll">
 
         <div class="d-flex justify-content-between">
             <div>
@@ -36,12 +36,14 @@
                             <li>
                                 @if($comision)
                                     <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                       href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ,'comision_id' => $comision->id]) }}">
+                                       href="{{ route('proceso.listadoCargo',
+['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ,'comision_id' => $comision->id]) }}">
                                         {{$i}}
                                     </a>
                                 @else
                                     <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
-                                       href="{{ route('proceso.listadoCargo', ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ]) }}">
+                                       href="{{ route('proceso.listadoCargo',
+['materia_id'=> $materia->id, 'cargo_id' => $cargo->id,'ciclo_lectivo' => $i ]) }}">
                                         {{$i}}
                                     </a>
                                 @endif
@@ -72,35 +74,50 @@
         <div id="alerts">
 
         </div>
-        <div class="d-flex alert alert-info w-75 mx-auto">
-            <div class="me-auto">
+        <div class="d-flex alert alert-info w-100 mx-auto">
+            <div class="col-sm-2">
                 <span><strong><i>Importante:</i></strong></span>
             </div>
             <div>
                 <small><i>Después de la letra R se muestra la nota del recuperatorio, solo en el caso de los
                         Parciales.</i></small><br/>
                 <small><i>Al hacer clic en el nombre de la calificación, redirige a la misma.</i></small>
+                <br/>
+                <small>
+                    <i class="fa fa-plus mr-2"
+                       title="Por favor haga clic aquí para agregar al alumno a la planilla modular">
+                    </i>
+                    Este signo avisa que el alumno no tiene las notas cargadas en planilla modular.
+                    Por favor haga clic en el mismo.
+                </small>
+                <br/>
+                <small>
+                    <i class="fa fa-upload mr-2"
+                       title="Por favor haga clic aquí para actualizar planilla modular">
+                    </i>
+                    Para mantener actualizadas las notas en la planilla modular por favor presione el botón
+                </small>
+                <br/>
             </div>
         </div>
-
-
-        {{-- @if($comision)
-            <!-----<a href="{{ route('excel.procesos',['materia_id'=>$materia->id,'comision_id'=>$comision->id]) }}"
-               class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Planilla</a>-->
-        @else
-        <!---
-            <a href="{{ route('excel.procesos',['materia_id'=>$materia->id]) }}" class="btn btn-sm btn-success">Descargar
-                Planilla</a>-->
-
-        @endif --}}
-        <a href="{{ route('proceso_modular.list', ['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id]) }}"
-           class="btn btn-secondary">
-            Ver Módulo {{$materia->nombre}}
-        </a>
-
+        <div class="btn-group" role="group" aria-label="Botones de acción">
+            <a href="{{ route('proceso_modular.list',
+['materia'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo, 'cargo_id'=> $cargo->id]) }}"
+               class="btn btn-info m-1">
+                Ver planilla general del módulo <b>{{$materia->nombre}}</b>
+            </a>
+            {{--            Para agregar cuando esté el proceso listo--}}
+            {{--            @if($vincular)--}}
+            {{--                <a href="{{ route('cargo_proceso.all_store',--}}
+            {{--            ['cargo_id'=> $cargo->id, 'materia_id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo,]) }}"--}}
+            {{--                   class="btn btn-primary m-1 ">--}}
+            {{--                    Vincular las notas a la planilla modular--}}
+            {{--                </a>--}}
+            {{--            @endif--}}
+        </div>
         @if(count($procesos) > 0)
             <div class="table-responsive tableFixHead">
-                <table class="table mt-4 ">
+                <table class="table mt-4" aria-describedby="tabla de notas del cargo">
                     <thead class="thead-dark ">
                     <tr>
                         <th>
@@ -108,27 +125,37 @@
                         </th>
                         @if(count($calificaciones) > 0)
                             @foreach($calificaciones as $calificacion)
-                                <th><a href="{{ route('calificacion.create',$calificacion->id) }}"
+                                <th class="text-center">
+                                    <a href="{{ route('calificacion.create',$calificacion->id) }}"
                                        class="text-white" title="{{$calificacion->description}}"
                                        data-bs-toggle="tooltip"
                                        data-bs-placement="top"
                                     >{{$calificacion->nombre}}</a></th>
                             @endforeach
                         @else
-                            <th>
+                            <th class="text-center">
                                 -
                             </th>
                         @endif
-                        <th>
-                            <a href="{{ route('asis.admin', ['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
+                        <th class="text-center">
+                            <a href="{{ route('asis.admin',
+['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
                                class="text-white"> Asistencia % </a>
                         </th>
-                        <th>N. Final /<br/>
-                            <small style="font-size: 0.8em">(Ponderación)</small>
+                        <th class="text-center">N. Final /<br/>
+                            <small style="font-size: 0.8em">
+                                (Ponderación {{$cargo->ponderacion($materia->id)}}%)
+                            </small>
                         </th>
-                        <th>
-                            Cierre
+                        <th class="text-center">
+                            <i class="fa fa-upload"></i>
                         </th>
+                        <th class="text-center">
+                            <small>
+                                Cerrar notas
+                            </small>
+                        </th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -136,33 +163,45 @@
                         <tr>
                             <td>
                                 {{$proceso->alumno->apellidos}}, {{$proceso->alumno->nombres}}
+                                @if(Session::has('admin'))
+                                    <br/>
+                                    <small>#{{$proceso->id}}</small>
+                                @endif
                             </td>
                             @if(count($calificaciones) > 0)
                                 @foreach($calificaciones as $cc)
-                                    <td>
+                                    <td class="text-center">
                                         @if($proceso->procesoCalificacion($cc->id))
                                             <span
-                                                class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                                                <b>{{$proceso->procesoCalificacion($cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
-                                                <small>
-                                ({{$proceso->procesoCalificacion($cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : 'A'}}
-
-                                                    @if($proceso->procesoCalificacion($cc->id)->porcentaje >= 0)
-                                                        %
+                                                    class="text-center {{ $proceso->procesoCalificacion(
+    $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
+                                                <b>{{$proceso->procesoCalificacion(
+    $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
+                                                <small class="text-center">
+                                                    <br/>
+                                                    ({{$proceso->procesoCalificacion(
+    $cc->id)->porcentaje != -1 ? $proceso->procesoCalificacion($cc->id)->porcentaje : '0'}}
+                                                    @if($proceso->procesoCalificacion(
+    $cc->id)->porcentaje >= 0)
                                                     @endif
-                                                    )</small>
+                                                    %)
+                                                </small>
                             </span>
-
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                    class="{{ $proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
-                                                    R: <b>{{$proceso->procesoCalificacion($cc->id)->nota_recuperatorio}}</b>
-                                                    <small>({{$proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio}}
-                                                        @if(is_numeric($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio))
-                                                            %
+                                                        class="text-center {{ $proceso->procesoCalificacion(
+    $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
+                                                    R: <b>{{$proceso->procesoCalificacion(
+    $cc->id)->nota_recuperatorio}}</b>
+                                                    <small class="text-center">
+                                                        <br/>
+                                                        ({{$proceso->procesoCalificacion(
+    $cc->id)->porcentaje_recuperatorio}}
+                                                        @if(is_numeric($proceso->procesoCalificacion(
+    $cc->id)->porcentaje_recuperatorio))
                                                         @endif
-                                                        )
+                                                        %)
                                                     </small>
                             </span>
 
@@ -173,31 +212,43 @@
                                     </td>
                                 @endforeach
                             @else
-                                <td>
+                                <td class="text-center">
                                     -
                                 </td>
                             @endif
-                            <td>
-                                {{ $proceso->asistencia() ? optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
+                            <td class="text-center">
+                                {{ $proceso->asistencia() ?
+                                optional($proceso->asistencia()->getByAsistenciaCargo($cargo->id))->porcentaje : '-' }}
                                 %
                             </td>
+                            {{-- Nota final--}}
                             <td class="text-center">
-                                {{optional($proceso->getCargosProcesos($cargo->id))->nota_cargo}}<br/>
-                                <small style="font-size: 0.8em">({{optional($proceso->getCargosProcesos($cargo->id))->nota_ponderada}})</small>
+                                @if($proceso->getCargosProcesos($cargo->id))
+                                    {{$proceso->getCargosProcesos($cargo->id)->nota_cargo}}<br/>
+                                    <small
+                                            style="font-size: 0.8em">
+                                        ({{$proceso->getCargosProcesos($cargo->id)->nota_ponderada}})
+                                    </small>
+                                @else
+                                    <a href="{{route('cargo_proceso.store',
+                                        ['proceso_id' => $proceso->id, 'cargo_id' => $cargo->id])}}"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fa fa-plus" title="Por favor haga clic aquí"></i>
+                                    </a>
+                                @endif
                             </td>
-                            {{--                            <td>--}}
-                            {{--                                <form action="" id="{{ $proceso->id }}">--}}
-                            {{--                                    <input type="number"--}}
-                            {{--                                           class="form-control nota_final {{ $proceso->final_calificaciones >= 4 ? 'text-success' : 'text-danger' }}"--}}
-                            {{--                                           id="nota-{{ $proceso->id }}"--}}
-                            {{--                                           value="{{ $proceso->final_calificaciones ? $proceso->final_calificaciones : '' }}"--}}
-                            {{--                                           @if($proceso->cierre || !$proceso->estado_id) disabled @endif>--}}
-                            {{--                                    <button type="submit"--}}
-                            {{--                                            class="btn btn-info btn-sm col-md-12 input-group-text @if(!Session::has('profesor') or $proceso->cierre == 1 ) disabled @endif">--}}
-                            {{--                                        <i class="fa fa-save"></i></button>--}}
-                            {{--                                </form>--}}
-                            {{--                            </td>--}}
-                            <td>
+
+                            <td class="text-center">
+                                @if($proceso->getCargosProcesos($cargo->id))
+                                    <a href="{{route('cargo_proceso.actualizar',
+['cargo_proceso' => $proceso->getCargosProcesos($cargo->id)])}}" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-upload" title="Por favor actualice haciendo clic aquí"></i>
+                                    </a>
+                                @else
+                                    <small><i class="fa fa-arrow-left"></i> </small>
+                                @endif
+                            </td>
+                            <td class="text-center">
                                 <span class="d-none" id="span-{{$proceso->id}}">
                                     <small style="font-size: 0.6em" class="text-success">Cambio realizado</small>
                                 </span>
@@ -208,16 +259,18 @@
                                      @if ($proceso->cierre == 1)
                                         <i class="fa fa-check text-success"></i>
                                     @else
+                                        <label for="{{$proceso->id}}"></label>
                                         <input type="checkbox" class="check-cierre"
                                                id="{{$proceso->id}}"
-                                               {{$proceso->obtenerProcesoCargo($cargo->id) ? 'checked':'unchecked'}}
-                                               data-tipo="modular"
-                                               data-cargo="{{$cargo->id}}"
+                                               @if($proceso->obtenerProcesoCargo($cargo->id))
+                                                   {{$proceso->obtenerProcesoCargo($cargo->id)->isClose() ?
+                                                    'checked':'unchecked'}}
+                                               @endif
+                                               data-tipo="modular" data-cargo="{{$cargo->id}}"
                                         >
                                     @endif
                                 </span>
                             </td>
-
                         </tr>
                     @endforeach
                     </tbody>
@@ -227,12 +280,9 @@
             </div>
             @endsection
             @section('scripts')
-                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>
+                {{--                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>--}}
                 <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>
-
-
                 </script>
-
 @endsection

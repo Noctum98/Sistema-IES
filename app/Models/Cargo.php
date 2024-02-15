@@ -10,9 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use phpDocumentor\Reflection\Types\Null_;
 
+/**
+ *  Class Cargo
+ * This is the model class for table "cargos"
+ *
+ * @property integer $id
+ */
 class Cargo extends Model
 {
     use HasFactory;
+
 
     protected $table = 'cargos';
     protected $fillable = ['nombre','carrera_id', 'tipo_materia_id'];
@@ -129,7 +136,7 @@ class Cargo extends Model
         if(!$this->tipoCargo()->first()){
             return false;
         }
-       return ( self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador);
+       return self::IDENTIFICADOR_TIPO_PRACTICA_PROFESIONAL == $this->tipoCargo()->first()->identificador;
     }
 
     public function obtenerProcesoCargo(int $proceso)
@@ -140,7 +147,10 @@ class Cargo extends Model
         ])->first();
     }
 
-    public function profesores()
+    /**
+     * @return string <b>Con los nombres de los profesores</b> o un string vacío
+     */
+    public function profesores(): string
     {
         $users = $this->users()->get();
 

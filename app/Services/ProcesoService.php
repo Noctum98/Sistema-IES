@@ -26,14 +26,16 @@ class ProcesoService
     {
         $proceso = Proceso::find($proceso);
         if ($proceso) {
+            /** @var ProcesoModular $procesoModular */
             $procesoModular = ProcesoModular::where([
                 'proceso_id' => $proceso->id
             ])->first();
             if ($procesoModular) {
                 /** @var Proceso $proceso */
                 $proceso->cierre = 1;
-                $proceso->final_calificaciones = $procesoModular->nota_final_nota;
+                $proceso->final_calificaciones = round($procesoModular->nota_final_nota, 0);
                 $proceso->porcentaje_final_calificaciones = $procesoModular->nota_final_porcentaje;
+                $proceso->final_asistencia = $procesoModular->asistencia_final_porcentaje;
                 $proceso->update();
             }
         }

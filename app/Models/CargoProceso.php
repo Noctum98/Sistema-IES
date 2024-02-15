@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ *  Class CargoProceso
+ * This is the model class for table "cargo_procesos"
+ *
+ * @property integer $id
+ * @property integer $cargo_id
+ * @property integer $proceso_id
+ */
 class CargoProceso extends Model
 {
     use HasFactory;
@@ -25,4 +33,14 @@ class CargoProceso extends Model
         'nota_ponderada',
         'porcentaje_asistencia'
     ];
+
+    public function getCargosProcesosByProcesos(int $cargo_id, array $procesos)
+    {
+        $mesas = CargoProceso::select('cargo_procesos.*')
+            ->where('cargo_id', $cargo_id)
+            ->whereIn('proceso_id', $procesos);
+
+
+        return $mesas->get();
+    }
 }

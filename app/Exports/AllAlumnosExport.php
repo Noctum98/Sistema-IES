@@ -14,20 +14,20 @@ class AllAlumnosExport implements FromView,WithEvents
     use RegistersEventListeners;
 
 
-    public $carreras;
+    public $alumnos;
 
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($carreras)
+    public function __construct($alumnos)
     {
-        $this->carreras = $carreras;
+        $this->alumnos = $alumnos;
     }
 
     public function view(): View
     {
         return view('excel.all_alumnos',[
-            'carreras' => $this->carreras
+            'alumnos' => $this->alumnos
         ]);
     }
 

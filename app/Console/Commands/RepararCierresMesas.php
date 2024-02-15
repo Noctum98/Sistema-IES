@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Instancia;
 use App\Models\Mesa;
+use App\Models\Parameters\Calendario;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -34,24 +36,6 @@ class RepararCierresMesas extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->feriados = [
-            '19-02-2023',
-            '20-02-2023',
-            '21-02-2023',
-            '26-02-2023',
-            '27-02-2023',
-            '28-02-2023',
-            '09-07-2023',
-            '15-08-2023',
-            '25-08-2023',
-            '02-09-2023',
-            '07-10-2023',
-            '10-10-2023',
-            '20-11-2023',
-            '21-11-2023',
-            '08-12-2023',
-            '09-12-2023',
-        ];
     }
 
     /**
@@ -63,13 +47,16 @@ class RepararCierresMesas extends Command
     {
         $instancia_id = (int) $this->argument('instancia_id');
         $llamado = (int) $this->argument('llamado');
+        $instancia = Instancia::find($instancia_id);
+        $feriados = Calendario::all();
+        $this->feriados = $this->limpiarFeriados($feriados,$instancia);
 
         $mesas = Mesa::where('instancia_id', $instancia_id)->get();
 
         foreach ($mesas as $mesa) {
-            
             if($llamado == 1){
-                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha.'-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($mesa->fecha.'-1 day'));
+                $this->isHabil($inicio_fecha);
 
                 $contador = 0;
                 while ($contador < 2) {
@@ -79,14 +66,13 @@ class RepararCierresMesas extends Command
                     }
     
                     if($contador != 2){
-                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                        $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
                 $mesa->cierre = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
-                Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre.' '.$mesa->fecha);
             }else{
-                $inicio_fecha = date("d-m-Y", strtotime($mesa->fecha_segundo.'-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($mesa->fecha_segundo.'-1 day'));
                 $contador = 0;
                 while ($contador < 2) {
                     
@@ -95,12 +81,11 @@ class RepararCierresMesas extends Command
                     }
     
                     if($contador != 2){
-                        $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                        $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
                     }
                 }
                 $mesa->cierre_segundo = strtotime($this->setFechaTurno($mesa->materia,$inicio_fecha));
                 $mesa->update();
-                Log::info('Mesa: '.$mesa->id.' - cierre: '.$mesa->cierre_segundo.' '.$mesa->fecha_segundo);
             }
 
         }
@@ -129,8 +114,22 @@ class RepararCierresMesas extends Command
                 break;
             case 'vespertino':
                 $hora = $this::T_V;
+            case 'virtual':
+                $hora = $this::T_V;
         }
         
         return $fecha . 'T' . $hora;
+    }
+
+    private function limpiarFeriados($feriados,$instancia)
+    {
+        $feriadosLimpios = [];
+        foreach($feriados as $feriado)
+        {
+            $feriadoLimpio = $feriado->dia.'-'.$feriado->mes.'-'.$instancia->año;
+            array_push($feriadosLimpios,$feriadoLimpio);
+        }
+
+        return $feriadosLimpios;
     }
 }

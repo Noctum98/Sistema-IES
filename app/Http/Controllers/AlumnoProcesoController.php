@@ -29,6 +29,7 @@ class AlumnoProcesoController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
     }
     // Vistas
 
@@ -64,10 +65,12 @@ class AlumnoProcesoController extends Controller
         ]);
     }
 
+    /**
+     * @param int $idAlumno
+     * @param int $idCarrera
+     * @return Application|Factory|View|RedirectResponse
+     */
     public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera){
-        if(!Auth::check()){
-            return Redirect::route('login')->withInput()->with('errmessage', 'Aún no se ha identificado en el sistema.');
-        }
 
         $pase = false;
         $alumno = Alumno::find($idAlumno);
@@ -95,10 +98,7 @@ class AlumnoProcesoController extends Controller
             ->join('materias', 'materias.carrera_id', 'carreras.id')
             ->where('carreras.id', $idCarrera)
             ->orderBy('materias.nombre', 'ASC')
-            ->first();;
-
-
-
+            ->first();
 
         if(!$alumno)
         {
@@ -106,6 +106,7 @@ class AlumnoProcesoController extends Controller
                 'alumno_notIsset' => 'No se encontró el alumno solicitado'
             ]);
         }
+
         if(!$carrera)
         {
             return redirect()->route('alumno.admin')->with([

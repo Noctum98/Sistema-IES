@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+//use Illuminate\Database\Eloquent;
 
+/**
+ * Class Carrera
+ * @package App\Models
+ * @property int $id
+ * @property string $nombre
+ */
 class Carrera extends Model
 {
     use HasFactory;
@@ -44,6 +51,12 @@ class Carrera extends Model
     {
         return $this->belongsToMany(Alumno::class)->withTimestamps()->orderBy('apellidos');
     }
+
+    public function alumnosVerificados()
+    {
+        return $this->belongsToMany(Alumno::class)->where('aprobado',true)->where('user_id','!=',null)->withTimestamps()->orderBy('apellidos');
+    }
+
 
     public function cargos()
     {

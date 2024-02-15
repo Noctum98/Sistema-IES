@@ -4,14 +4,24 @@ namespace App\Models;
 
 use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 
-class Materia extends Model
+
+/**
+ *  Class Materia
+ * This is the model class for table "materias"
+ *
+ * @property integer $id
+ * @property integer $año
+ *
+ */
+class Materia extends BaseModel
 {
-    use HasFactory;
 
     protected $fillable = [
         'carrera_id',
@@ -25,9 +35,12 @@ class Materia extends Model
         'cierre_diferido'
     ];
 
-    public function carrera()
+    /**
+     * @return BelongsTo
+     */
+    public function carrera(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Carrera', 'carrera_id');
+        return $this->belongsTo(Carrera::class, 'carrera_id');
     }
 
     public function tipoMateria(): BelongsTo
@@ -136,7 +149,10 @@ class Materia extends Model
 
     public function proceso($alumno_id)
     {
-        return Proceso::where(['materia_id' => $this->id, 'alumno_id', $alumno_id, 'ciclo_lectivo' => date('Y')])->first();
+        return Proceso::where([
+            'materia_id' => $this->id,
+            'alumno_id', $alumno_id,
+            'ciclo_lectivo' => date('Y')])->first();
     }
 
     /**
@@ -151,7 +167,7 @@ class Materia extends Model
             ]
         )->first();
 
-        if(!$proceso){
+        if (!$proceso) {
             return null;
         }
         return $proceso;
@@ -162,33 +178,30 @@ class Materia extends Model
      * @param $alumno_id
      * @return mixed
      */
-    public function getEstadoAlumnoPorMateria($alumno_id):string
+    public function getEstadoAlumnoPorMateria($alumno_id): string
     {
         $estado = '-';
-
-
 
         $proceso = Proceso::where([
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
-        )->first();
+        )->latest('created_at')->first();
 
-
-        if(!$proceso){
+        if (!$proceso) {
             return $estado;
         }
 
         $regularidad = Regularidad::where([
             'proceso_id' => $proceso->id
-        ])->first()
-        ;
+        ])->first();
 
-        if($regularidad){
-            return $regularidad->obtenerEstado()->regularidad . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>' ;
+        if ($regularidad) {
+            return $regularidad->obtenerEstado()->regularidad
+                . ' <sup> <i>' . $regularidad->observaciones . '</i></sup>';
         }
 
-        return $proceso->regularidad??'-';
+        return $proceso->estadoRegularidad() ?? '-';
 
     }
 
@@ -202,10 +215,10 @@ class Materia extends Model
             ->first();
 
 
-        if(!$actaVolante){
+        if (!$actaVolante) {
             return null;
         }
-         return  $actaVolante;
+        return $actaVolante;
 
 
     }
@@ -219,8 +232,8 @@ class Materia extends Model
 
     public function correlativasArray()
     {
-        $correlativas =  MateriasCorrelativa::select('correlativa_id')
-        ->where('materia_id', $this->id)
+        $correlativas = MateriasCorrelativa::select('correlativa_id')
+            ->where('materia_id', $this->id)
             ->get()->toArray();
         $correlativas = array_column($correlativas, 'correlativa_id');
 
@@ -234,20 +247,66 @@ class Materia extends Model
     {
 
         return CicloLectivoEspecial::where([
-           'materia_id'=> $this->id,
-           'sede_id'=> $this->sede()->id
+            'materia_id' => $this->id,
+            'sede_id' => $this->sede()->id
         ])
-            ->get()
-        ;
-
+            ->get();
 
     }
 
     public function sede()
     {
         return $this->carrera()->first()->sede()->first();
-
     }
 
+    /**
+     * @return string
+     */
+    public function getProfesoresModulares(): string
+    {
 
+        $profesores = '';
+        if(count($this->cargos()->get()) > 0){
+            foreach ($this->cargos()->get() as $cargo){
+                /** @var Cargo $cargo */
+                $profesores .= $cargo->profesores() . "\n";
+            }
+        }
+        return $profesores;
+    }
+
+    /**
+     * @param int $ciclo_lectivo
+     * @param int|null $comision_id
+     * @return Proceso[]|Collection
+     */
+    public function getProcesos(int $ciclo_lectivo, int $comision_id = null)
+    {
+        $procesos = $this->getBuilderProceso($ciclo_lectivo);
+
+        if ($comision_id) {
+            $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
+                $query->whereHas('comisiones', function ($query) use ($comision_id) {
+                    $query->where('comisiones.id', $comision_id);
+                });
+            });
+        }
+
+        $procesos->orderBy('alumnos.apellidos', 'asc');
+
+        return $procesos->get();
+    }
+
+    /**
+     * Obtenga el queryBuilder para recuperar Procesos.
+     *
+     * @param int $ciclo_lectivo El ciclo lectivo de los registros de Proceso a recuperar.
+     */
+    protected function getBuilderProceso(int $ciclo_lectivo)
+    {
+        return Proceso::select('procesos.*')
+            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
+            ->where('procesos.materia_id', $this->id)
+            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
+    }
 }
