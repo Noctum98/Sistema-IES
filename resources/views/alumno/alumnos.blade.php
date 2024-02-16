@@ -39,9 +39,11 @@
 		</div>
 		@endif
 		<div class="col-md-12 row mb-3">
-			<div class="col-md-4">
+			<div class="row col-md-12">
 
-				<a href="{{ route('excel.alumnosDatos',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="d-block btn btn-secondary mb-2"><i class="fas fa-download"></i> Descargar Datos</a>
+				<a href="{{ route('excel.alumnosDatos',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="d-block btn btn-sm btn-secondary m-1 col-3"><i class="fas fa-download"></i> Descargar Datos</a>
+				<a href="{{ route('register.alumnos',$carrera->id) }}" class="d-block btn btn-sm btn-info m-1 col-3"><i class="fas fa-user"></i> Registrar Usuario/Alumno</a>
+
 			</div>
 			<div id="accordion">
 				<div class="card">
