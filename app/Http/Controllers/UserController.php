@@ -401,7 +401,7 @@ class UserController extends Controller
         return redirect()->route('alumno.detalle', [
             'id' => $alumno->id,
         ])->with([
-            'mensaje_exitoso' => 'El usuario para el alumno ' . $alumno->nombres . ' ' . $alumno->apellidos . ' se ha creado exitosamente.',
+            'mensaje_exitoso' => 'La matriculación del alumno ' . $alumno->nombres . ' ' . $alumno->apellidos . ' ha sido aprobada correctamente.',
         ]);
     }
 
