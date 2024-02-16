@@ -119,7 +119,8 @@ class RegisterController extends Controller
         $request['alumno_id'] = $alumno->id;
         $inscripcion = AlumnoCarrera::create($request->all());
 
-        return redirect()->route('alumno.carrera',['carrera_id'=>$inscripcion->carrera_id, 'ciclo_lectivo' => $inscripcion->ciclo_lectivo]);
+        return redirect()->route('alumno.carrera',['carrera_id'=>$inscripcion->carrera_id, 'ciclo_lectivo' => $inscripcion->ciclo_lectivo])
+        ->with(['alert_success'=>'Alumno registrado correctamente.']);
     }
 
     /**

@@ -145,7 +145,11 @@
         <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
         @endif
 
+        @if(!$matriculacion->encuesta_socioeconomica && $año == 1)
+        <input type="submit" value="Siguiente" class="btn btn-primary mt-3 col-md-12">
+        @else
         <input type="submit" value="Editar Inscripción" class="btn btn-primary mt-3 col-md-12">
+        @endif
     </form>
 </div>
 @endsection

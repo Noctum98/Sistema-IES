@@ -39,7 +39,7 @@
         <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
         @endif
         
-        <input type="submit" value="Inscribirme" class="btn btn-primary col-md-12">
+        <input type="submit" value="Siguiente" class="btn btn-primary col-md-12">
     </form>
     @else
         @include('matriculacion.check_email')
