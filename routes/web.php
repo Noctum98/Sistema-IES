@@ -36,6 +36,7 @@ use App\Http\Controllers\AlumnoCarreraController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\Config\AuditController;
@@ -69,6 +70,8 @@ use App\Models\Sede;
 
 
 Auth::routes();
+Route::get('/register-alumno/{carrera_id}',[RegisterController::class,'showRegistrationAlumnosForm'])->name('register.alumnos');
+Route::post('register-alumno',[RegisterController::class,'registerAlumno'])->name('register.alumno.store');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name(

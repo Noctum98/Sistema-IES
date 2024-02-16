@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
+use App\Models\Carrera;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Rol;
@@ -15,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -95,13 +99,28 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
-        $user = $this->create($request->all());
-        event(new Registered($user));
+        $user = $this->registerEvent($request);
 
         return redirect()->route('usuarios.detalle',[
             'id' => $user->id,
         ]);
+    }
+
+    public function registerAlumno(Request $request)
+    {
+        $user = $this->registerEvent($request);
+
+        $request['dni'] = $request['username'];
+        $request['nombres'] = $request['nombre'];
+        $request['apellidos'] = $request['apellido'];
+        $request['user_id'] = $user->id;
+        $alumno = Alumno::create($request->all());
+
+        $request['alumno_id'] = $alumno->id;
+        $inscripcion = AlumnoCarrera::create($request->all());
+
+        return redirect()->route('alumno.carrera',['carrera_id'=>$inscripcion->carrera_id, 'ciclo_lectivo' => $inscripcion->ciclo_lectivo])
+        ->with(['alert_success'=>'Alumno registrado correctamente.']);
     }
 
     /**
@@ -116,5 +135,33 @@ class RegisterController extends Controller
         }
 
         return view('auth.register', compact('roles'));
+    }
+
+    public function showRegistrationAlumnosForm(Request $request,$carrera_id)
+    {
+        $user = Auth::user();
+        $carreras = $user->carreras;
+
+        if(Session::has('admin') || Session::has('regente'))
+        {
+            $carreras = Carrera::orderBy('sede_id','asc')->get();
+        }
+
+        $data = [
+            'roles' => Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'alumno')->get(),
+            'carreraSelected' => Carrera::find($carrera_id),
+            'carreras' => $carreras
+        ];
+
+        return view('auth.register-alumnos',$data);
+    }
+
+    private function registerEvent($request)
+    {
+        $this->validator($request->all())->validate();
+        $user = $this->create($request->all());
+        event(new Registered($user));
+
+        return $user;
     }
 }

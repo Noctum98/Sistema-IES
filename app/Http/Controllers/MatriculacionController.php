@@ -234,7 +234,7 @@ class MatriculacionController extends Controller
         if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
             Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
         }
-
+        
         return redirect()->route('matriculacion.edit', [
             'alumno_id' => $alumno->id,
             'carrera_id' => $carrera_id,

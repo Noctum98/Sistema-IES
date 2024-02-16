@@ -86,17 +86,11 @@ class AlumnoMesaController extends Controller
         } else {
 
             if ($instancia->tipo == 0) {
-                $insc = MesaAlumno::where([
+                $inscripciones = MesaAlumno::where([
                     'dni' => $alumno['dni'],
-                ])->whereNotNull('mesa_id')->get();
-                $inscripciones = [];
-
-                foreach ($insc as $inscripcion) {
-
-                    if ($inscripcion->mesa->instancia_id == $instancia->id) {
-                        $inscripciones[] = $inscripcion;
-                    }
-                }
+                ])->whereHas('mesa',function($query) use ($instancia){
+                    return $query->where('instancia_id',$instancia->id);
+                })->get();
             } else {
                 $inscripciones = MesaAlumno::where([
                     'dni' => $alumno['dni'],
