@@ -56,7 +56,7 @@ class AlumnoController extends Controller
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
         if (Session::has('admin') || Session::has('areaSocial') || Session::has('regente')) {
-            $carreras = Carrera::orerBy('sede_id','asc')->get();
+            $carreras = Carrera::orderBy('sede_id','asc')->get();
         } else {
             $carreras = $user->carreras;
         }
