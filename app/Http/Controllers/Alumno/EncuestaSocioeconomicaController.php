@@ -42,7 +42,15 @@ class EncuestaSocioeconomicaController extends Controller
     public function store(EncuestaSocioeconomicaRequest $request)
     {
         $request = $this->encuestaSocioeconomicaService->procesarDatos($request);
-        $encuestaSocioeconomica = EncuestaSocioeconomica::create($request->all());
+        $encuestaSocioeconomicaExist = EncuestaSocioeconomica::where('alumno_id',$request['alumno_id'])->first();
+
+        if($encuestaSocioeconomicaExist)
+        {
+            $encuestaSocioeconomica = $encuestaSocioeconomicaExist->update($request->all());
+
+        }else{
+            $encuestaSocioeconomica = EncuestaSocioeconomica::create($request->all());
+        }
         $carrera_id = $request['carrera_id'];
 
         return redirect()->route('encuesta_socioeconomica.showForm2',['encuesta_id'=>$encuestaSocioeconomica->id,'carrera_id'=>$carrera_id]);

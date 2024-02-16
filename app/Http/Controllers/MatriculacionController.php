@@ -35,6 +35,7 @@ class MatriculacionController extends Controller
     ) {
         $this->procesoService = $procesoService;
         $this->mailService = $mailService;
+        $this->middleware('auth');
     }
 
     public function index(Request $request)
@@ -234,14 +235,23 @@ class MatriculacionController extends Controller
         if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
             Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
         }
-        
-        return redirect()->route('matriculacion.edit', [
-            'alumno_id' => $alumno->id,
-            'carrera_id' => $carrera_id,
-            'year'      => $año
-        ])->with([
-            'mensaje_editado' => 'Datos editados correctamente'
-        ]);
+
+
+        if($año == 1 && !$alumno->encuesta_socioeconomica)
+        {
+            return redirect()->route('encuesta_socioeconomica.showForm',[
+                'alumno_id'=>$alumno->id,
+                'carrera_id' => $carrera->id
+            ]);
+        }else{
+            return redirect()->route('matriculacion.edit', [
+                'alumno_id' => $alumno->id,
+                'carrera_id' => $carrera_id,
+                'year'      => $año
+            ])->with([
+                'mensaje_editado' => 'Datos editados correctamente'
+            ]);
+        } 
     }
 
     public function delete(Request $request, $id)
