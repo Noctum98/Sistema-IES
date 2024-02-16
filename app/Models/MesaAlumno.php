@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -59,18 +60,23 @@ class MesaAlumno extends Model
 
     /**
      * @return string <i>Fecha de la mesa de la nota promedio tomada</i>
+     * @throws Exception
      */
     public function fechaMesa(): string
     {
         /** @var Mesa $mesa */
         $mesa = $this->mesa()->first();
-        $fecha = $mesa->fecha;
-        if ($this->segundo_llamado) {
-            $fecha = $mesa->fecha_segundo;
-        }
-        $fecha = new \Datetime($fecha);
+        if($mesa) {
+            $fecha = $mesa->fecha;
+            if ($this->segundo_llamado) {
+                $fecha = $mesa->fecha_segundo;
+            }
+            $fecha = new \Datetime($fecha);
 
-        return $fecha->format('d-m-Y');
+            return $fecha->format('d-m-Y');
+        }
+
+        return 'Sin mesa';
 
     }
 }
