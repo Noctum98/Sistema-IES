@@ -14,6 +14,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
+use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\Materia;
 use App\Models\Proceso;
@@ -86,17 +87,11 @@ class AlumnoMesaController extends Controller
         } else {
 
             if ($instancia->tipo == 0) {
-                $insc = MesaAlumno::where([
+                $inscripciones = MesaAlumno::where([
                     'dni' => $alumno['dni'],
-                ])->whereNotNull('mesa_id')->get();
-                $inscripciones = [];
-
-                foreach ($insc as $inscripcion) {
-
-                    if ($inscripcion->mesa->instancia_id == $instancia->id) {
-                        $inscripciones[] = $inscripcion;
-                    }
-                }
+                ])->whereHas('mesa',function($query) use ($instancia){
+                    return $query->where('instancia_id',$instancia->id);
+                })->get();
             } else {
                 $inscripciones = MesaAlumno::where([
                     'dni' => $alumno['dni'],
@@ -180,16 +175,11 @@ class AlumnoMesaController extends Controller
                 'estado_baja' => false
             ])->get();
         } else {
-            $insc = MesaAlumno::where([
-                'dni' => $alumno['dni']
-            ])->whereNotNull('mesa_id')->get();
-
-            $mesas_alumnos = [];
-            foreach ($insc as $inscripcion) {
-                if ($inscripcion->mesa->instancia_id == $instancia->id) {
-                    $mesas_alumnos[] = $inscripcion;
-                }
-            }
+            $mesas_alumnos = MesaAlumno::where([
+                'dni' => $alumno['dni'],
+            ])->whereHas('mesa',function($query) use ($instancia){
+                return $query->where('instancia_id',$instancia->id);
+            })->get();
         }
 
         if ((count($mesas_alumnos) + count($datos) - 1) > $instancia->limite) {
@@ -401,15 +391,11 @@ class AlumnoMesaController extends Controller
                 'instancia_id' => $instancia->id
             ])->get();
         } else {
-            $insc = MesaAlumno::where([
+            $inscripciones = MesaAlumno::where([
                 'dni' => $dni,
-            ])->whereNotNull('mesa_id')->get();
-            $inscripciones = [];
-            foreach ($insc as $inscripcion) {
-                if ($inscripcion->mesa->instancia_id == $instancia->id) {
-                    array_push($inscripciones, $inscripcion);
-                }
-            }
+            ])->whereHas('mesa',function($query) use ($instancia){
+                return $query->where('instancia_id',$instancia->id);
+            })->get();
         }
 
         if (count($inscripciones) == 0) {
