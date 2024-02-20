@@ -334,4 +334,28 @@ class Alumno extends Model
         return $this->hasOne(Trianual::class, 'alumno_id');
     }
 
+    /**
+     * Verifica si el estudiante tiene alguna calificación.
+     *
+     * @return bool Devuelve verdadero si el estudiante tiene calificaciones, falso en caso contrario.
+     */
+    public function hasNotas(): bool
+    {
+        $notas = $this->hasManyThrough(
+            ProcesoCalificacion::class, // Modelo destino
+            Proceso::class, // Modelo intermedio
+            'alumno_id', // FK en tabla modelo intermedio
+            'proceso_id', // FK en tabla modelo destino
+            'id',  // PK tabla local
+            'id'  // PK Tabla intermedia
+        )->get();
+
+        if ($notas->isNotEmpty()) {
+                return true;
+            }
+            return false;
+    }
+
+
+
 }

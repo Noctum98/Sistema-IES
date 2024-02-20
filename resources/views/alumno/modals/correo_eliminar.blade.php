@@ -1,4 +1,5 @@
-<div class="modal fade" id="eliminarMatriculacionModal{{$carrera->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="eliminarMatriculacionModal{{$carrera->id}}" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,12 +9,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" method="POST">
+                <form action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}"
+                      method="POST">
                     @csrf
                     {{ method_field('DELETE') }}
                     <h6>Error en:</h6>
                     <div class="form-check m-0 p-0">
-                        <input type="checkbox" name="errores[]" id="sede" class="form-checkbox" value="Unidad Académica">
+                        <input type="checkbox" name="errores[]" id="sede" class="form-checkbox"
+                               value="Unidad Académica">
                         <label for="sede">Unidad Académica</label>
                     </div>
                     <div class="form-check m-0 p-0">
@@ -29,7 +32,11 @@
                         <textarea name="motivo" id="motivo" cols="20" rows="5" class="form-control"></textarea>
                     </div>
                     <div class="alert alert-danger">
-                        !ATENCIÓN! Al pulsar "Eliminar inscripción" se borrará tanto el alumno, como los procesos a los que se ha inscripto en esa carrera.
+                        @if($alumno->hasNotas())
+                            El alumno tiene calificaciones<br/>
+                        @endif
+                        !ATENCIÓN! Al pulsar "Eliminar inscripción" se borrará tanto el alumno, como los procesos a los
+                        que se ha inscripto en esa carrera. Las notas asociadas también serán eliminadas.
                     </div>
                     <button type="submit" class="btn btn-sm btn-danger">Eliminar inscripción</button>
                     <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal">Cerrar</button>

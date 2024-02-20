@@ -42,6 +42,10 @@
             color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
+
+        .disabled {
+            pointer-events: all !important;
+        }
     </style>
     <div class="container alumno">
         {{--        <h3 class="text-info">--}}
@@ -180,8 +184,8 @@
                                         Ver Libreta
                                         <small
                                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                Beta
-                                                <span class="visually-hidden">Funcionalidad Beta</span>
+                                            Beta
+                                            <span class="visually-hidden">Funcionalidad Beta</span>
                                         </small>
                                     </a>
 
@@ -214,27 +218,50 @@
                                                 @include('alumno.modals.carreras_year')
                                             @endif
                                         @elseif(Session::has('alumno'))
-                                                <button class="btn btn-sm btn-primary col-md-3 mr-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
-                                                    materias inscriptas {{$ciclo_lectivo}}
-                                                </button>
-                                                @include('alumno.modals.carreras_matriculacion')
+                                            <button class="btn btn-sm btn-primary col-md-3 mr-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
+                                                materias inscriptas {{$ciclo_lectivo}}
+                                            </button>
+                                            @include('alumno.modals.carreras_matriculacion')
                                         @endif
                                         @if(Session::has('admin'))
-                                            <button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal"
-                                                    data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">
-                                                Eliminar
-                                                Inscripción
+                                            <button class="btn btn-sm btn-secondary col-md-3"
+
+                                                    @if($alumno->hasNotas())
+                                                    title="El alumno tiene calificaciones."
+                                                    @endif
+                                                        data-bs-toggle="modal"
+                                                    data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}"
+
+                                            >
+                                                Eliminar Inscripción
+
                                             </button>
+
                                             @include('alumno.modals.correo_eliminar')
                                         @elseif(Session::has('regente') || Session::has('coordinador'))
                                             @if(Auth::user()->hasCarrera($carrera->id))
-                                                <button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal"
-                                                        data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}">
+                                                <button class="btn btn-sm btn-secondary col-md-3
+                                                    @if($alumno->hasNotas())
+                                                        disabled
+                                                    @endif
+                                                    "
+                                                        @if($alumno->hasNotas())
+                                                            disabled="disabled"
+                                                        title="El alumno tiene calificaciones. No se puede eliminar"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        data-bs-title="Tooltip on top"
+                                                        @else
+                                                            data-bs-toggle="modal"
+                                                        data-bs-target="#eliminarMatriculacionModal{{$carrera->id}}"
+                                                    @endif
+                                                >
                                                     Eliminar Inscripción
                                                 </button>
-                                                @include('alumno.modals.correo_eliminar')
+                                                @if($alumno->hasNotas())
+                                                    @include('alumno.modals.correo_eliminar')
+                                                @endif
                                             @endif
                                         @endif
                                     </div>
@@ -277,11 +304,11 @@
 
             @if((Session::has('coordinador') || Session::has('admin') || Session::has('regente') || Session::has('seccionAlumnos')) && $alumno->user)
                 @if(Session::has('coordinador') || Session::has('admin') || Session::has('regente'))
-                <button
-                    class="ml-2  btn btn-sm btn-secondary {{ !$alumno->user->activo ? 'd-none' : '' }} desactivar"
-                    id="desactivar-{{$alumno->user->id}}">
-                    Desactivar Usuario
-                </button>
+                    <button
+                        class="ml-2  btn btn-sm btn-secondary {{ !$alumno->user->activo ? 'd-none' : '' }} desactivar"
+                        id="desactivar-{{$alumno->user->id}}">
+                        Desactivar Usuario
+                    </button>
                 @endif
                 <button
                     class="ml-2  btn btn-sm btn-success {{ $alumno->user->activo == 1 ? 'd-none' : '' }} activar"
