@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
+use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Estados;
 use App\Models\Materia;
@@ -68,6 +69,17 @@ class ProcesoController extends Controller
             'materias' => $mis_materias,
             'procesos' => $procesos,
         ]);
+    }
+
+    public function vista_admin(Request $request,$alumno_id,$carrera_id,$ciclo_lectivo)
+    {
+        $datos = [
+            'alumno' => Alumno::find($alumno_id),
+            'carrera' => Carrera::find($carrera_id),
+            'ciclo_lectivo' => $ciclo_lectivo
+        ];
+
+        return view('alumno.materias',$datos);
     }
 
     public function vista_detalle(int $id)

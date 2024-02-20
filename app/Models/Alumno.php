@@ -171,9 +171,10 @@ class Alumno extends Model
     }
 
 
-    public function hasProceso($materia_id)
+    public function hasProceso($materia_id,$ciclo_lectivo = null)
     {
-        if ($this->procesos->where('materia_id', $materia_id)->where('ciclo_lectivo', date('Y'))->first()) {
+        $ciclo = $ciclo_lectivo ?? date('Y');
+        if ($this->procesos->where('materia_id', $materia_id)->where('ciclo_lectivo',$ciclo)->first()) {
             return true;
         }
         return false;

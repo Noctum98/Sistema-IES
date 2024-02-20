@@ -76,7 +76,7 @@
                         {{ ucwords($alumno->apellidos) }}, {{ ucwords($alumno->nombres) }}
                     </h5>
                     <p class="card-text">
-                        <strong>Edad:</strong> {{ $alumno->edad ? $alumno->edad.' '.años : 'Sin asignar' }}<br />
+                        <strong>Edad:</strong> {{ $alumno->edad ? $alumno->edad.' '.'años' : 'Sin asignar' }}<br />
                         <strong>Teléfono Celular:</strong> {{ $alumno->telefono ? : 'Sin Asignar' }}<br />
                         <strong>Teléfono Fijo:</strong> {{ $alumno->telefono_fijo ? : 'Sin Asignar' }}
                     </p>
@@ -95,7 +95,7 @@
                     <li><strong>Fecha de nacimiento: </strong> {{ $alumno->fecha ? : 'Sin Asignar' }}</li>
                     <li><strong>N° de documento: </strong> {{ $alumno->dni ? : 'Sin Asignar' }}</li>
                     <li><strong>C.U.I.L.: </strong> {{ $alumno->cuil ? : 'Sin Asignar' }}</li>
-                    <li> <strong>Edad:</strong> {{ $alumno->edad ? $alumno->edad.' '.años : 'Sin asignar' }}<br />
+                    <li> <strong>Edad:</strong> {{ $alumno->edad ? $alumno->edad.' '.'años' : 'Sin asignar' }}<br />
                     </li>
                     <li><strong>Género: </strong> {{ ucwords($alumno->genero ? : 'Sin Asignar') }}</li>
                     <li>
@@ -186,9 +186,12 @@
                         <div class="row">
                             @if(Session::has('admin'))
 
+                            <a href="{{ route('proceso.admin',['alumno_id' => $alumno->id,'carrera_id' =>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-primary col-md-3 mr-2">Ver materias</a>
+
+                            {{--
                             <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
                                 materias
-                            </button>
+                            </button>--}}
                             @include('alumno.modals.carreras_matriculacion')
 
                             <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año
