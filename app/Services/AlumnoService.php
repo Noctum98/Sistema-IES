@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Materia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
