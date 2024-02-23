@@ -62,7 +62,12 @@ class AlumnoService
             'dni' => $busqueda
         ])->first();
 
-        if ($alumno && $alumno->hasCarrera($carrera_id)) {
+        $alumnoCarrera = AlumnoCarrera::where([
+            'alumno_id'=>$alumno->id,
+            'carrera_id' => $carrera_id
+        ])->first();
+
+        if ($alumno && $alumnoCarrera) {
             return $alumno;
         } else {
             return null;
