@@ -1,8 +1,13 @@
 $(document).ready(function () {
+    function toggleElementDisplay(proceso_id, elementPrefix, initialClass, finalClass) {
+        $(`#${elementPrefix}-${proceso_id}`).removeClass(initialClass);
+        $(`#${elementPrefix}-${proceso_id}`).addClass(finalClass);
+    }
+
     $(".form_nota_final").submit(function (event) {
         event.preventDefault();
         let proceso_id = $(this).attr('id');
-        let nota_final = $('#nota-'+proceso_id).val();
+        let nota_final = $('#nota-' + proceso_id).val();
 
         let url = '/proceso/cambia/nota_final';
         let data = {
@@ -10,10 +15,8 @@ $(document).ready(function () {
             "nota_final": nota_final,
         };
         $("#alerts").html("");
-        $('#span-'+proceso_id).removeClass('d-block')
-        $('#span-'+proceso_id).addClass('d-none')
-        $('#spin-'+proceso_id).removeClass('d-none')
-        $('#spin-'+proceso_id).addClass('d-block')
+        toggleElementDisplay(proceso_id, 'span', 'd-block', 'd-none');
+        toggleElementDisplay(proceso_id, 'spin', 'd-none', 'd-block');
 
 
         $.ajax({
@@ -35,30 +38,29 @@ $(document).ready(function () {
                         }
                     }
                 } else {
-                    $('#nota-'+proceso_id).removeClass("text-danger");
-                    $('#nota-'+proceso_id).removeClass("text-success");
-                    if(response.nota >= 4){
-                        $('#nota-'+proceso_id).addClass("text-success");
-                    }else if(response.nota >= 0 && response.nota < 4){
-                        $('#nota-'+proceso_id).addClass("text-danger");
-                    }else{
-                        $('#nota-'+proceso_id).removeClass("text-danger");
-                        $('#nota-'+proceso_id).removeClass("text-success");
+                    let notaElement = $('#nota-' + proceso_id);
+                    notaElement.removeClass("text-danger");
+                    notaElement.removeClass("text-success");
+                    if (response.nota >= 4) {
+                        notaElement.addClass("text-success");
+                    } else if (response.nota >= 0 && response.nota < 4) {
+                        notaElement.addClass("text-danger");
+                    } else {
+                        notaElement.removeClass("text-danger");
+                        notaElement.removeClass("text-success");
                     }
-                    $('#span-'+proceso_id).removeClass('d-none')
-                    $('#span-'+proceso_id).addClass('d-block')
-                    $('#spin-'+proceso_id).removeClass('d-block')
-                    $('#spin-'+proceso_id).addClass('d-none')
+                    toggleElementDisplay(proceso_id, 'span', 'd-block', 'd-none');
+                    toggleElementDisplay(proceso_id, 'spin', 'd-none', 'd-block');
 
                 }
             }
         });
     });
 
-    $(".form_nota_global").submit(function(event){
+    $(".form_nota_global").submit(function (event) {
         event.preventDefault();
         let proceso_id = $(this).attr('id');
-        let nota_global = $('#global-'+proceso_id).val();
+        let nota_global = $('#global-' + proceso_id).val();
 
         console.log(proceso_id)
 
@@ -68,11 +70,8 @@ $(document).ready(function () {
             "nota_global": nota_global,
         };
         $("#alerts").html("");
-        $('#span-'+proceso_id).removeClass('d-block')
-        $('#span-'+proceso_id).addClass('d-none')
-        $('#spin-'+proceso_id).removeClass('d-none')
-        $('#spin-'+proceso_id).addClass('d-block')
-
+        toggleElementDisplay(proceso_id, 'span', 'd-block', 'd-none');
+        toggleElementDisplay(proceso_id, 'spin', 'd-none', 'd-block');
 
         $.ajax({
             method: "POST",
@@ -93,23 +92,20 @@ $(document).ready(function () {
                         }
                     }
                 } else {
-                    $('#global-'+proceso_id).removeClass("text-danger");
-                    $('#global-'+proceso_id).removeClass("text-success");
-                    if(response.nota >= 4){
-                        $('#global-'+proceso_id).addClass("text-success");
-                    }else{
-                        $('#global-'+proceso_id).addClass("text-danger");
+                    let globalElement = $('#global-' + proceso_id);
+                    globalElement.removeClass("text-danger");
+                    globalElement.removeClass("text-success");
+                    if (response.nota >= 4) {
+                        globalElement.addClass("text-success");
+                    } else {
+                        globalElement.addClass("text-danger");
                     }
 
-                    $('#select_'+proceso_id).val(response.estado).change();
-
-                    console.log($('#select_'+proceso_id));
+                    $('#select_' + proceso_id).val(response.estado).change();
 
 
-                    $('#span-'+proceso_id).removeClass('d-none')
-                    $('#span-'+proceso_id).addClass('d-block')
-                    $('#spin-'+proceso_id).removeClass('d-block')
-                    $('#spin-'+proceso_id).addClass('d-none')
+                    toggleElementDisplay(proceso_id, 'span', 'd-none', 'd-block');
+                    toggleElementDisplay(proceso_id, 'spin', 'd-block', 'd-none');
 
                 }
             }
