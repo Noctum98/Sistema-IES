@@ -42,8 +42,9 @@
 			<div class="row col-md-12">
 
 				<a href="{{ route('excel.alumnosDatos',['carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="d-block btn btn-sm btn-secondary m-1 col-3"><i class="fas fa-download"></i> Descargar Datos</a>
+				@if(Session::has('admin') || Session::has('coordinador') || Session::has('regente') || Session::has('seccionAlumnos'))
 				<a href="{{ route('register.alumnos',$carrera->id) }}" class="d-block btn btn-sm btn-info m-1 col-3"><i class="fas fa-user"></i> Registrar Usuario/Alumno</a>
-
+				@endif
 			</div>
 			<div id="accordion">
 				<div class="card">
