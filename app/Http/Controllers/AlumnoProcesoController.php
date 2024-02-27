@@ -100,6 +100,9 @@ class AlumnoProcesoController extends Controller
             ->orderBy('materias.nombre', 'ASC')
             ->first();
 
+
+
+
         if(!$alumno)
         {
             return redirect()->route('alumno.admin')->with([

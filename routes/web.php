@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActaVolanteController;
+use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
 use App\Http\Controllers\CargoProcesoController;
@@ -35,6 +36,7 @@ use App\Http\Controllers\AlumnoCarreraController;
 use App\Http\Controllers\PreinscripcionController;
 use App\Http\Controllers\InstanciaController;
 use App\Http\Controllers\AlumnoMesaController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\Config\AuditController;
@@ -50,6 +52,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
 use App\Models\ActaVolante;
+use App\Models\Alumno\EncuestaSocioeconomica;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Carrera;
 use App\Models\Sede;
@@ -67,6 +70,8 @@ use App\Models\Sede;
 
 
 Auth::routes();
+Route::get('/register-alumno/{carrera_id}',[RegisterController::class,'showRegistrationAlumnosForm'])->name('register.alumnos');
+Route::post('register-alumno',[RegisterController::class,'registerAlumno'])->name('register.alumno.store');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name(
@@ -122,6 +127,14 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+});
+
+Route::prefix('encuesta_socioeconomica')->group(function () {
+    Route::get('personal/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
+    Route::get('motivacional/{encuesta_id}/{carrera_id}',[EncuestaSocioeconomicaController::class,'showForm2'])->name('encuesta_socioeconomica.showForm2');
+    Route::post('/store',[EncuestaSocioeconomicaController::class,'store'])->name('encuesta_socioeconomica.store');
+    Route::post('/store2',[EncuestaSocioeconomicaController::class,'store2'])->name('encuesta_socioeconomica.store2');
+
 });
 
 Route::prefix('alumno/carrera')->group(function () {
@@ -425,8 +438,11 @@ Route::prefix('preinscripcion')->group(function () {
 // Rutas de Proceso
 Route::prefix('proceso')->group(function () {
     // Vistas
+    Route::get('/admin/{alumno_id}/{carrera_id}/{ciclo_lectivo}',[ProcesoController::class,'vista_admin'])->name('proceso.admin');
     Route::get('inscribir/{id}', [ProcesoController::class, 'vista_inscribir'])->name('proceso.inscribir');
+
     Route::get('detalle/{id}', [ProcesoController::class, 'vista_detalle'])->name('proceso.detalle');
+
     // Vista Alumno
     Route::get('/mis_procesos/{id}/{carrera}/{year}', [AlumnoProcesoController::class, 'vista_procesos'])->name('proceso.alumno');
     Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])->name('proceso.alumnoCarrera');
@@ -435,11 +451,13 @@ Route::prefix('proceso')->group(function () {
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
         'inscribir_proceso'
     );
-    Route::post('administrar/{alumno_id}', [ProcesoController::class, 'administrar'])->name('proceso.administrar');
+    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribir');
+    Route::get('delete/{proceso_id}',[ProcesoController::class,'eliminar']);
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
     Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
         'proceso.listado'
     );
+    Route::get('/{id}',[ProcesoController::class,'getProceso']);
 
     Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
         [ProcesoController::class, 'vista_listadoCargo']
@@ -588,6 +606,7 @@ Route::prefix('mesas')->group(function () {
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
+
 
 Route::prefix('matriculacion')->group(function () {
     Route::get('/carrera/{id}/{year}/{timecheck?}', [MatriculacionController::class, 'create'])->name(

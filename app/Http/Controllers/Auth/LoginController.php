@@ -48,4 +48,17 @@ class LoginController extends Controller
         
         return $credentials;
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if(!session('roles')){
+            session(['roles'=>true]);
+            foreach($user->roles as $rol){
+                session([$rol->nombre=>$rol]);
+            }
+        }
+
+        return redirect()->intended('/home');
+
+    }
 }

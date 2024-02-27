@@ -47,7 +47,6 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="fecha">Fecha de Nacimiento</label>
-                @if(!isset($matriculacion))
                 <input type="date" name="fecha" id="fecha" class="form-control" value="{{ old('fecha') }}" required />
 
                 @error('fecha')
@@ -55,10 +54,6 @@
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                @else
-                <input type="text" name="fecha" id="fecha" value="{{ $matriculacion->fecha }}" class="form-control" required />
-
-                @endif
             </div>
             <div class="form-group col-md-6">
                 <label for="edad">Edad</label>
