@@ -31,7 +31,7 @@ $(document).ready(function () {
                             $([document.documentElement, document.body]).animate({
                                 scrollTop: $("#container-scroll").offset().top
                             }, 100);
-            
+
                         }
                     }
                 } else {
@@ -89,7 +89,7 @@ $(document).ready(function () {
                             $([document.documentElement, document.body]).animate({
                                 scrollTop: $("#container-scroll").offset().top
                             }, 100);
-            
+
                         }
                     }
                 } else {
@@ -100,6 +100,12 @@ $(document).ready(function () {
                     }else{
                         $('#global-'+proceso_id).addClass("text-danger");
                     }
+
+                    $('#select_'+proceso_id).val(response.estado).change();
+
+                    console.log($('#select_'+proceso_id));
+
+
                     $('#span-'+proceso_id).removeClass('d-none')
                     $('#span-'+proceso_id).addClass('d-block')
                     $('#spin-'+proceso_id).removeClass('d-block')
