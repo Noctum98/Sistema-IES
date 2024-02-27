@@ -35,6 +35,7 @@ class MatriculacionController extends Controller
     ) {
         $this->procesoService = $procesoService;
         $this->mailService = $mailService;
+        $this->middleware('auth');
     }
 
     public function index(Request $request)
@@ -161,7 +162,10 @@ class MatriculacionController extends Controller
         }
 
         if ($alumno->hasCarrera($carrera_id)) {
-            $mensaje = "Ya estas inscripto a esta carrera.";
+            return view('matriculacion.card_finalizada', [
+                'alumno' => $alumno,
+                'mensaje' => 'Ya estas inscripto a esta carrera.'
+            ]); 
         } else {
             $carrera = Carrera::find($carrera_id);
 
@@ -175,17 +179,11 @@ class MatriculacionController extends Controller
             if (isset($request['materias'])) {
                 $this->procesoService->inscribir($alumno->id, $request['materias']);
             }
-
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
-
-
-            $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
         }
 
-
-        return view('matriculacion.card_finalizada', [
-            'alumno' => $alumno,
-            'mensaje' => $mensaje
+        return redirect()->route('encuesta_socioeconomica.showForm',[
+            'alumno_id'=>$alumno->id,
+            'carrera_id' => $carrera->id
         ]);
     }
 
@@ -234,17 +232,27 @@ class MatriculacionController extends Controller
 
         $alumno->update($request->all());
 
-        if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
-            Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
-        }
 
-        return redirect()->route('matriculacion.edit', [
-            'alumno_id' => $alumno->id,
-            'carrera_id' => $carrera_id,
-            'year'      => $año
-        ])->with([
-            'mensaje_editado' => 'Datos editados correctamente'
-        ]);
+        if($año == 1 && !$alumno->encuesta_socioeconomica)
+        {
+            return redirect()->route('encuesta_socioeconomica.showForm',[
+                'alumno_id'=>$alumno->id,
+                'carrera_id' => $carrera->id
+            ]);
+        }else{
+
+            if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
+                Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
+            }
+            
+            return redirect()->route('matriculacion.edit', [
+                'alumno_id' => $alumno->id,
+                'carrera_id' => $carrera_id,
+                'year'      => $año
+            ])->with([
+                'mensaje_editado' => 'Datos editados correctamente'
+            ]);
+        } 
     }
 
     public function delete(Request $request, $id)
@@ -331,31 +339,18 @@ class MatriculacionController extends Controller
         ]);
 
         $mail_check = MailCheck::where('email', $request['email'])->first();
+        $request['timecheck'] = time().$request['email'];
 
         if ($mail_check && $mail_check->checked) {
-            $alumno = Alumno::where('email', $mail_check->email)->first();
 
-            if ($alumno && $alumno->lastProcesoCarrera($carrera_id)) {
-                return redirect()->route('matriculacion.edit', [
-                    'carrera_id' => $carrera_id,
-                    'alumno_id'  => $alumno->id,
-                    'year'        => $año
-                ]);
-            } else {
-                return redirect()->route('matriculacion.create', [
-                    'id' => $carrera_id,
-                    'year' => $año,
-                    'timecheck' => true
-                ]);
-            }
+            return redirect()->route('matriculacion.create', [
+                'id' => $carrera_id,
+                'year' => $año,
+                'timecheck' => true
+            ]);
         } elseif ($mail_check && !$mail_check->checked) {
             Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));
         } else {
-            do {
-                $newTimecheckValue = time().$request['email'];
-            } while (MailCheck::where('timecheck', $newTimecheckValue)->exists());
-
-            $duplicate->update(['timecheck' => $newTimecheckValue]);
             $mail_check = MailCheck::create($request->all());
 
             Mail::to($request['email'])->send(new CheckEmail($mail_check, $carrera_id, $año));

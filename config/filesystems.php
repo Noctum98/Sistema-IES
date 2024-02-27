@@ -55,6 +55,13 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+
+        'comprobantes_progresar' => [
+            'driver' => 'local',
+            'root' => storage_path('app/comprobantes_progresar'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
     ],
 
     /*

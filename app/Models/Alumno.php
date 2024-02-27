@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Trianual\Trianual;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -133,6 +134,11 @@ class Alumno extends Model
         return $this->hasMany(AlumnoCarrera::class, 'alumno_id');
     }
 
+    public function encuesta_socioeconomica(): HasOne
+    {
+        return $this->hasOne(EncuestaSocioeconomica::class,'alumno_id');
+    }
+
     public function hasCarrera($carrera_id)
     {
 
@@ -152,6 +158,11 @@ class Alumno extends Model
         ])->latest()->first();
     }
 
+    public function procesoByMateria($materia_id,$ciclo_lectivo)
+    {
+        return $this->hasOne(Proceso::class)->where('materia_id',$materia_id)->where('ciclo_lectivo',$ciclo_lectivo)->first();
+    }
+
     public function lastProcesoCarrera($carrera_id, $ciclo_lectivo = null)
     {
         $alumnoCarrera = AlumnoCarrera::where([
@@ -167,9 +178,10 @@ class Alumno extends Model
     }
 
 
-    public function hasProceso($materia_id)
+    public function hasProceso($materia_id,$ciclo_lectivo = null)
     {
-        if ($this->procesos->where('materia_id', $materia_id)->where('ciclo_lectivo', date('Y'))->first()) {
+        $ciclo = $ciclo_lectivo ?? date('Y');
+        if ($this->procesos->where('materia_id', $materia_id)->where('ciclo_lectivo',$ciclo)->first()) {
             return true;
         }
         return false;

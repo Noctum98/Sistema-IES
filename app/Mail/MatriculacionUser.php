@@ -13,6 +13,7 @@ class MatriculacionUser extends Mailable
     use Queueable, SerializesModels;
 
     public $alumno;
+    public $carrera_id;
     public $mailService;
 
     /**
@@ -20,9 +21,10 @@ class MatriculacionUser extends Mailable
      *
      * @return void
      */
-    public function __construct($alumno)
+    public function __construct($alumno,$carrera_id)
     {
         $this->alumno = $alumno;
+        $this->carrera_id = $carrera_id;
         $this->mailService = new MailService();
         $this->subject('Matriculación IESVU 9015');
     }
@@ -43,7 +45,8 @@ class MatriculacionUser extends Mailable
         $this->mailService->store($datos);
 
         return $this->view('mail.matriculacion_user',[
-            'alumno' => $this->alumno
+            'alumno' => $this->alumno,
+            'carrera_id' => $this->carrera_id
         ]);
     }
 }

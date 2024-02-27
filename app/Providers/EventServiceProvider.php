@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Proceso;
+use App\Observers\AlumnoCarreraObserver;
 use App\Observers\AlumnoObserver;
 use App\Observers\ProcesoObserver;
 use Illuminate\Auth\Events\Registered;
@@ -37,5 +39,6 @@ class EventServiceProvider extends ServiceProvider
     {
         Proceso::observe(ProcesoObserver::class);
         Alumno::observe(AlumnoObserver::class);
+        AlumnoCarrera::observe(AlumnoCarreraObserver::class);
     }
 }

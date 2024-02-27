@@ -49,9 +49,11 @@
 	<div class="row">
 		<div class="detalle-pre">
 			<br>
-			<p>Tus datos han sido verificados correctamente. Podrás ingresar al sistema DATA-IESVU con los siguientes datos:</p>
+			<p>Tu usuario ha sido creado correctamente. Podrás ingresar al sistema DATA-IESVU con los siguientes datos:</p>
 			<p>Usuario: {{ $alumno->dni }}</p>
             <p>Contraseña: {{ $alumno->dni }}</p>
+			<p>Una vez que ingreses al sistema deberás completar los datos del formulario para quedar debidamente matriculado.</p>
+			<a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera_id,'year'=>1]) }}" class="btn">ENLACE A DATA IESVU</a>
 		</div>
 	</div>		
 </div>
