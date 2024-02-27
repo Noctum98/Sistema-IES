@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
@@ -62,6 +63,11 @@ class User extends Authenticatable
     public function alumnos()
     {
         return $this->belongsToMany(Alumno::class)->withTimestamps();
+    }
+
+    public function alumnoOne(): HasOne
+    {
+        return $this->hasOne(Alumno::class,'user_id');
     }
 
     public function alumno()

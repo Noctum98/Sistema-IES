@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('proceso.administrar',$alumno->id) }}" method="POST">
+                <form action="" method="POST">
                     <fieldset {{ Auth::user()->hasRole('alumno') ? 'disabled': '' }}>
                     @csrf
                     @foreach($carrera->materias as $materia)

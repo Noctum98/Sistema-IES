@@ -1,5 +1,5 @@
 <div class="form-group row">
-    <label for="nombre" class="col-md-4 col-form-label text-md-right">DNI</label>
+    <label for="username" class="col-md-4 col-form-label text-md-right">DNI</label>
 
     <div class="col-md-6">
         <input id="username" type="number" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
@@ -71,7 +71,7 @@
     <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
 
     <div class="col-md-6">
-        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" readonly required autocomplete="new-password">
 
         @error('password')
         <span class="invalid-feedback d-block" role="alert">
@@ -85,7 +85,7 @@
     <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
 
     <div class="col-md-6">
-        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" readonly>
     </div>
 </div>
 <div class="form-group row {{ isset($rolesHidden) ? 'd-none' : '' }}">

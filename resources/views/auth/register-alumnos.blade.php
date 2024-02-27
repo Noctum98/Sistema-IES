@@ -21,6 +21,8 @@
                         @csrf
 
                         @include('auth.register-form',['rolesHidden'=>true])
+                        <input type="hidden" name="user_id" id="user_id" disabled>
+                        <input type="hidden" id="register_alumno" value="1">
 
                         <div class="form-group">
                         </div>

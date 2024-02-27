@@ -84,9 +84,9 @@
 
 										<td class="text-center">
 											@if($alumno->aprobado)
-											<i class='fas fa-user-check' style='font-size:14px;color:green'></i>
+											<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 											@else
-											<i class='fas fa-user-times' style='font-size:14px;color:red'></i>
+											<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
 											@endif
 										</td>
 										@endif
@@ -136,7 +136,7 @@
 										<td>{{ $alumno->dni }}</td>
 										@if($ciclo_lectivo == date('Y'))
 
-										<td>
+										<td class="text-center">
 											@if($alumno->aprobado)
 											<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 											@else
@@ -189,7 +189,7 @@
 										<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
 										<td>{{ $alumno->dni }}</td>
 										@if($ciclo_lectivo == date('Y'))
-										<td>
+										<td class="text-center">
 											@if($alumno->aprobado)
 											<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 											@else

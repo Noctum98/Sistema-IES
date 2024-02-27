@@ -76,7 +76,9 @@ class ProcesoController extends Controller
         $datos = [
             'alumno' => Alumno::find($alumno_id),
             'carrera' => Carrera::find($carrera_id),
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+
         ];
 
         return view('alumno.materias',$datos);
@@ -283,55 +285,34 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function administrar(Request $request, $id)
+    public function inscribir(Request $request, $alumno_id,$materia_id,$ciclo_lectivo)
     {
-        $alumno = Alumno::find($id);
-        $procesos = $request['materias'];
-        $alumno_procesos = $alumno->procesos->where('ciclo_lectivo', date('Y'));
+        $materia = Materia::find($materia_id);
+        $proceso = Proceso::create([
+            'alumno_id' => $alumno_id,
+            'materia_id' => $materia_id,
+            'ciclo_lectivo' => $ciclo_lectivo
+        ]);
 
-        foreach ($alumno_procesos as $proceso) {
-
-            if (!$procesos || !in_array($proceso->materia_id, $procesos)) {
-                $proceso->delete();
-            }
-        }
-
-        if ($procesos) {
-            // Si el rol que viene en el form ya lo tiene no lo crea y pasa al siguiente
-            foreach ($procesos as $key => $proceso) {
-                if ($alumno->hasProceso($proceso)) {
-                    $proceso = null;
-                }
-                if ($proceso) {
-
-                    $proceso_deleted = Proceso::withTrashed()
-                        ->where([
-                            'alumno_id' => $alumno->id,
-                            'materia_id' => $proceso,
-                            'ciclo_lectivo' => date('Y')
-                        ])
-                        ->latest('deleted_at')
-                        ->first();
-
-                    if ($proceso_deleted) {
-                        $proceso_deleted->restore();
-                    } else {
-                        Proceso::create([
-                            'alumno_id' => $alumno->id,
-                            'estado' => 'en curso',
-                            'materia_id' => $proceso,
-                            'ciclo_lectivo' => date('Y')
-                        ]);
-                    }
-                }
-            }
-        }
-
-
-        return redirect()->route('alumno.detalle', [
-            'id' => $alumno->id,
+        return redirect()->route('proceso.admin', [
+            'alumno_id' => $alumno_id,'carrera_id'=>$materia->carrera_id,'ciclo_lectivo'=>$ciclo_lectivo
         ])->with([
-            'mensaje_procesos' => 'Se han actualizado los procesos',
+            'alert_success' => 'Incripción generada correctamente.',
+        ]);
+    }
+
+    public function eliminar(Request $request,$id)
+    {
+        $proceso = Proceso::find($id);
+        $carrera = $proceso->materia->carrera;
+        $alumno = $proceso->alumno;
+        $ciclo_lectivo = $proceso->ciclo_lectivo;
+        $proceso->delete();
+
+        return redirect()->route('proceso.admin', [
+            'alumno_id' => $alumno->id,'carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo
+        ])->with([
+            'alert_warning' => 'Incripción eliminada correctamente.',
         ]);
     }
 
@@ -577,6 +558,13 @@ class ProcesoController extends Controller
         }
 
         return response()->json($response, $response['code']);
+    }
+
+    public function getProceso(Request $request,$id)
+    {
+        $proceso = Proceso::find($id);
+
+        return response()->json($proceso,200);
     }
 
     /**

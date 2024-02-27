@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MatriculacionUser;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
@@ -89,12 +91,16 @@ class RegisterController extends Controller
             'rol' => $data['roles'][0] ? 'rol_'.$data['roles'][0] : '',
         ]);
 
+       $this->attachRoles($data,$user);
+
+        return $user;
+    }
+
+    private function attachRoles($data,$user){
         foreach($data['roles'] as $role)
         {
             $user->roles()->attach(Rol::where('nombre', $role)->first());
         }
-
-        return $user;
     }
 
     public function register(Request $request)
@@ -108,14 +114,34 @@ class RegisterController extends Controller
 
     public function registerAlumno(Request $request)
     {
-        $user = $this->registerEvent($request);
+        if(!$request['user_id'])
+        {
+            $user = $this->registerEvent($request);
 
-        $request['dni'] = $request['username'];
-        $request['nombres'] = $request['nombre'];
-        $request['apellidos'] = $request['apellido'];
-        $request['user_id'] = $user->id;
-        $alumno = Alumno::create($request->all());
+            $request['dni'] = $request['username'];
+            $request['nombres'] = $request['nombre'];
+            $request['apellidos'] = $request['apellido'];
+            $request['user_id'] = $user->id;
+            $alumno = Alumno::create($request->all());
+            Mail::to($alumno->email)->send(new MatriculacionUser($alumno,$request['carrera_id']));
 
+        }else{
+            $alumno = Alumno::where('user_id',$request['user_id'])->first();
+        }
+        
+        if(!$alumno)
+        {
+            $user = User::find($request['user_id']);
+            $this->attachRoles($request,$user);
+            $request['dni'] = $user->username;
+            $request['nombres'] = $user->nombre;
+            $request['apellidos'] = $user->apellido;
+            $request['email'] = $user->email;
+            $request['telefono'] = $user->telefono;
+            $request['user_id'] = $user->id;
+            $alumno = Alumno::create($request->all());
+        }
+        
         $request['alumno_id'] = $alumno->id;
         $inscripcion = AlumnoCarrera::create($request->all());
 

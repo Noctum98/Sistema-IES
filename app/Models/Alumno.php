@@ -156,6 +156,11 @@ class Alumno extends Model
         ])->latest()->first();
     }
 
+    public function procesoByMateria($materia_id,$ciclo_lectivo)
+    {
+        return $this->hasOne(Proceso::class)->where('materia_id',$materia_id)->where('ciclo_lectivo',$ciclo_lectivo)->first();
+    }
+
     public function lastProcesoCarrera($carrera_id, $ciclo_lectivo = null)
     {
         $alumnoCarrera = AlumnoCarrera::where([
