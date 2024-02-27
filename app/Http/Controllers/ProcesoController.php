@@ -543,11 +543,24 @@ class ProcesoController extends Controller
         if (!$validate->fails()) {
             $proceso = Proceso::find($request['proceso_id']);
             $proceso->nota_global = $nota_global;
+
+            if ($nota_global >= 4) {
+                $estado = Estados::where(
+                    ['identificador' => 7]
+                )->first();
+            } else {
+                $estado = Estados::where(
+                    ['identificador' => 5]
+                )->first();
+            }
+            $proceso->estado_id = $estado->id;
+
             $proceso->update();
 
             $response = [
                 'code' => 200,
                 'nota' => $proceso->nota_global,
+                'estado' => $proceso->estado_id
             ];
 
         } else {

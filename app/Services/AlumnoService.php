@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Materia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
@@ -62,7 +63,12 @@ class AlumnoService
             'dni' => $busqueda
         ])->first();
 
-        if ($alumno && $alumno->hasCarrera($carrera_id)) {
+        $alumnoCarrera = AlumnoCarrera::where([
+            'alumno_id'=>$alumno->id,
+            'carrera_id' => $carrera_id
+        ])->first();
+
+        if ($alumno && $alumnoCarrera) {
             return $alumno;
         } else {
             return null;
