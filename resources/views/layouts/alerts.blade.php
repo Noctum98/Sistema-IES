@@ -25,3 +25,8 @@
     {{@session('alert_info')}}
 </div>
 @endif
+@if(@session('message'))
+    <div class="col-md-6 alert alert-success">
+        {{@session('message')}}
+    </div>
+@endif
