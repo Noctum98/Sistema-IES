@@ -17,6 +17,7 @@ use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\Trianual\AcreditacionController;
 use App\Http\Controllers\Trianual\DetalleTrianualController;
+use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use App\Http\Controllers\Trianual\ObservacionesTrianualController;

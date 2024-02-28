@@ -84,7 +84,7 @@
                             @if(!$alumno->cohorte)
                                 <a href="{{ route('alumno.admin',['busqueda' => $alumno->dni]) }}"
                                    class="btn btn-sm btn-warning" title="Completar desde aquí">
-                                    <small>Los datos del alumno están incompletos</small>
+                                    <small>Por favor agregar cohorte</small>
                                 </a>
                             @endif
                         </div>

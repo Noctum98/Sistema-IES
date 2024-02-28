@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Trianual;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Trianual\StoreDetalleTrianualRequest;
 use App\Http\Requests\Trianual\UpdateDetalleTrianualRequest;
+use App\Models\Estados;
 use App\Models\Trianual\DetalleTrianual;
 use App\Models\Trianual\Trianual;
 use App\Services\EquivalenciasService;
@@ -110,10 +111,34 @@ class DetalleTrianualController extends Controller
         $data['proceso_id'] = $this->procesoService->procesoPorAlumnoMateria($trianual->alumno_id, $data['materia_id'])->id ?? null;
         $data['equivalencia_id'] = $this->equivalenciasService->equivalenciaPorAlumnoMateria($trianual->alumno_id, $data['materia_id'])->id ?? null;
         $data['operador_id'] = Auth::user()->id;
-        $detalleTrianual = DetalleTrianual::create($data);
 
-        return redirect()->route('trianual.ver', [
+        $detalleTrianual = DetalleTrianual::where([
+            'trianual_id' => $trianual->id,
+            'materia_id' => $data['materia_id']
+        ])->first();
+        $message = 'La materia ya está agregada';
+        if (!$detalleTrianual) {
+            $detalleTrianual = DetalleTrianual::create($data);
+            $message = 'Detalle agregado correctamente';
+        }
+
+//        return view('trianual.detalle.detail', [
+//            'trianual' => $trianual,
+//            'alumno' => $trianual->getAlumno(),
+//
+//        ]);
+
+        $estados = Estados::all();
+        $detalles = $this->detalleTrianualService->detallesPorTrianual($trianual->id);
+
+        session(['alert_success'=>$message]);
+
+
+
+        return view('trianual.trianual.show', [
             'trianual' => $trianual,
+            'estados' => $estados,
+            'detalles' => $detalles
         ]);
 
     }

@@ -2,9 +2,9 @@
 
 @section('content')
 	<div class="container">
-		<h2 class="h1 text-info">
+		<h4 class="text-info">
 		Crear Sede
-		</h2>
+		</h4>
 		<span>Crea sedes en caso de necesitarlas</span>
 		<hr>
 		@if(@session('message'))
