@@ -58,7 +58,7 @@
                     Agregar materia
                 </button>
 
-            <div class="overlay">
+            <div class="overlay" style="z-index: 100">
                 <button class="oculto">
                     Cerrar
                 </button>
@@ -76,7 +76,7 @@
                     Agregar observaciones
                 </button>
 
-            <div class="overlay-observaciones">
+            <div class="overlay-observaciones" style="z-index: 100">
                 <button class="oculto-observaciones">
                     Cerrar
                 </button>
