@@ -452,7 +452,7 @@ Route::prefix('proceso')->group(function () {
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
         'inscribir_proceso'
     );
-    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribir');
+    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
     Route::get('delete/{proceso_id}',[ProcesoController::class,'eliminar']);
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
     Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
