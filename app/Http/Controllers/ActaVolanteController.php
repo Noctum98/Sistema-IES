@@ -159,13 +159,13 @@ class ActaVolanteController extends Controller
 
         $materia = Materia::find($materia_id);
 
-        $actas = $materia->getActasVolantes($alumno_id);
+        $actas = $materia->getActasVolantesConLibro($alumno_id);
 
         $actas = $actas->sortByDesc('created_at');
 
         $result = $actas->map(function($acta){
             return [
-                'nota' => $acta->promedio, // Change this to your actual field name for note.
+                'nota' => $acta->promedio == -1 ? 'A': $acta->promedio, // Change this to your actual field name for note.
                 'fecha' => $acta->mesaAlumno()->first()->fechaMesa(), // Change this to your actual field name for date.
             ];
         });

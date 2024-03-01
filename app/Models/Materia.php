@@ -243,12 +243,13 @@ class Materia extends BaseModel
      * @return ActaVolante[]|Collection|null Devuelve una colección de ActaVolantes para el alumno especificado,
      *  o null si no se encuentran ActaVolantes.
      */
-    public function getActasVolantes($alumno_id)
+    public function getActasVolantesConLibro($alumno_id)
     {
         $actaVolantes = ActaVolante::where([
             'alumno_id' => $alumno_id,
             'materia_id' => $this->id
         ])
+            ->whereNotNull('libro_id')
             ->orderBy('updated_at', 'DESC')
             ->get();
 
@@ -301,8 +302,8 @@ class Materia extends BaseModel
     {
 
         $profesores = '';
-        if(count($this->cargos()->get()) > 0){
-            foreach ($this->cargos()->get() as $cargo){
+        if (count($this->cargos()->get()) > 0) {
+            foreach ($this->cargos()->get() as $cargo) {
                 /** @var Cargo $cargo */
                 $profesores .= $cargo->profesores() . "\n";
             }

@@ -30,16 +30,23 @@ $(document).ready(function () {
                         data = Object.values(data);
                     }
 
-                    data.forEach(item => {
-                        result += `<p>
+                    if(data.length) {
+
+                        data.forEach(item => {
+                            result += `<p>
                         <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                          ${item.nota}
                          <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                         ${item.fecha} </p>`;
-                    });
+                        });
+                    }
+                    else
+                    {
+                        result = `<p>No se encontraron actas anteriores</p>`
+                    }
                     console.log(result)
                 }else{
-                   result = `<p>No se encontraron datos anteriores</p>`
+                   result = `<p>No se encontraron actas anteriores</p>`
                 }
 
 
