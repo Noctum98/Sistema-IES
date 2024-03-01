@@ -62,9 +62,6 @@ class EtapaCampoController extends Controller
      */
     public function store(EtapaCampoRequest $request)
     {
-        $this->validate($request,[
-
-        ]);
         $request = $this->calcularPorcentaje($request);
 
         $etapa_campo = EtapaCampo::create($request->all());

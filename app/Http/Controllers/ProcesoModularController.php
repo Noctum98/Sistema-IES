@@ -51,6 +51,7 @@ class ProcesoModularController extends Controller
         CicloLectivoService $cicloLectivoService,
         CargoProcesoService $cargoProcesoService)
     {
+        $this->middleware('app.auth');
         $this->cicloLectivoService = $cicloLectivoService;
         $this->cargoProcesoService = $cargoProcesoService;
     }
