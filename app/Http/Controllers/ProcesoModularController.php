@@ -113,6 +113,10 @@ class ProcesoModularController extends Controller
                         $materia->id,
                         $user->id);
                 }
+
+                if($cargo->responsableTFI($materia->id) && $user->hasCargo($cargo->id)){
+                    $puedeProcesar = true;
+                }
             }
 
             $acciones[] = "Procesando % modulares para {$materia->nombre}";
