@@ -15,30 +15,114 @@
                 </thead>
                 <tbody>
 
+                <tr>
+                    <td colspan="5">1er Año</td>
+                </tr>
                 @foreach($detalles as $detalle)
-                    @if($detalle->)
-                    <tr>
-                        <td>
-                            {{$detalle->getMateria()->nombre}}
-                        </td>
-                        <td>{{$detalle->getCondicion()->nombre}}</td>
-                        <td>
-                            @if($detalle->getEquivalencia())
-                                {{$detalle->getEquivalencia()->nota}}
-                            @else
-                                <i class='fa fa-minus'></i>
-                            @endif
-                        </td>
-                        <td>
-                            @if($detalle->proceso_id)
-                                {{--                            {{$detalle->proceso_id}}--}}
-                                <button class="btn btn-sm btn-info">Ver Proceso</button>
-                            @else
-                                <i class='fa fa-minus'></i>
-                            @endif
-                        </td>
-                    </tr>
+
+                    @if($detalle->getMateria()->año == 1)
+                        <tr>
+                            <td>
+                                {{$detalle->getMateria()->nombre}}
+                            </td>
+                            <td>{{$detalle->getCondicion()->nombre}}</td>
+                            <td>
+                                @if($detalle->getEquivalencia())
+                                    {{$detalle->getEquivalencia()->nota}}
+                                @else
+                                    <i class='fa fa-minus'></i>
+                                @endif
+                            </td>
+                            <td>
+                                @if($detalle->proceso_id)
+                                    {{--                            {{$detalle->proceso_id}}--}}
+                                    <button class="btn btn-sm btn-info">Ver Proceso</button>
+                                @else
+                                    <i class='fa fa-minus'></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
                 @endforeach
+                <tr>
+                    <td colspan="5" class="text-left text-black">
+                        <strong>Observaciones 1<sup>er</sup> año </strong> <br/>
+                        <p class="text-right">{!! $trianual->getObservacionesByYear(1) !!}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">2do Año</td>
+                </tr>
+                @foreach($detalles as $detalle)
+
+                    @if($detalle->getMateria()->año == 2)
+                        <tr>
+                            <td>
+                                {{$detalle->getMateria()->nombre}}
+                            </td>
+                            <td>{{$detalle->getCondicion()->nombre}}</td>
+                            <td>
+                                @if($detalle->getEquivalencia())
+                                    {{$detalle->getEquivalencia()->nota}}
+                                @else
+                                    <i class='fa fa-minus'></i>
+                                @endif
+                            </td>
+                            <td>
+                                @if($detalle->proceso_id)
+                                    {{--                            {{$detalle->proceso_id}}--}}
+                                    <button class="btn btn-sm btn-info">Ver Proceso</button>
+                                @else
+                                    <i class='fa fa-minus'></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
+                @endforeach
+                <tr>
+                    <td colspan="5" class="text-left text-black">
+                        <strong>Observaciones 2<sup>do</sup> año </strong> <br/>
+                        <p class="text-right">{!! $trianual->getObservacionesByYear(2) !!}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">3er Año</td>
+                </tr>
+                @foreach($detalles as $detalle)
+
+                    @if($detalle->getMateria()->año == 3)
+                        <tr>
+                            <td>
+                                {{$detalle->getMateria()->nombre}}
+                            </td>
+                            <td>{{$detalle->getCondicion()->nombre}}</td>
+                            <td>
+                                @if($detalle->getEquivalencia())
+                                    {{$detalle->getEquivalencia()->nota}}
+                                @else
+                                    <i class='fa fa-minus'></i>
+                                @endif
+                            </td>
+                            <td>
+                                @if($detalle->proceso_id)
+                                    {{--                            {{$detalle->proceso_id}}--}}
+                                    <button class="btn btn-sm btn-info">Ver Proceso</button>
+                                @else
+                                    <i class='fa fa-minus'></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
+                @endforeach
+                <tr>
+                    <td colspan="5" class="text-left text-black">
+                        <strong>Observaciones 3<sup>er</sup> año </strong> <br/>
+                        <p class="text-right">{!! $trianual->getObservacionesByYear(3) !!}</p>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 

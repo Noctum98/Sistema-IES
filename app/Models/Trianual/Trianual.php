@@ -46,14 +46,51 @@ class Trianual extends Model
      */
     public function getAlumno()
     {
-        return $this->belongsTo(Alumno::class,'alumno_id', 'id')->first();
+        return $this->belongsTo(Alumno::class, 'alumno_id', 'id')->first();
     }
+
     public function getCarrera()
     {
-        return $this->belongsTo(Carrera::class,'carrera_id', 'id')->first();
+        return $this->belongsTo(Carrera::class, 'carrera_id', 'id')->first();
     }
+
     public function getOperador($id)
     {
         return User::find($id);
+    }
+
+    public function observacionesTrianuales()
+    {
+        return $this->hasMany(ObservacionesTrianual::class);
+    }
+
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class, 'alumno_id');
+    }
+
+    public function detalleTrianual()
+    {
+        return $this->hasOne(DetalleTrianual::class);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getObservacionesByYear($year)
+    {
+        $observaciones = ObservacionesTrianual::where([
+            'trianual_id' => $this->id,
+            'year' => $year
+        ])->first();
+
+        if ($observaciones) {
+            return $observaciones->observaciones;
+        }
+        return 'Sin Observaciones';
+
+
     }
 }

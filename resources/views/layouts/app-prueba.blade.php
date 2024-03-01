@@ -8,20 +8,21 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>DATA IESVU</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="{{asset('css/simple-datatables_style.css')}}" rel="stylesheet" />
 
 
     <script src="{{ asset('js/main.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
     <script src="{{asset('js/jquery_1.11.3.js')}}"></script>
-
+    <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
     <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('vendors/select2/js/i18n/es.js') }}"></script>
 
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
 
     @yield('scripts')
-    <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
+
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/select2/css/select2.css') }}" rel="stylesheet">

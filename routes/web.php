@@ -17,6 +17,7 @@ use App\Http\Controllers\RegularidadController;
 use App\Http\Controllers\TipoCalificacionesController;
 use App\Http\Controllers\Trianual\AcreditacionController;
 use App\Http\Controllers\Trianual\DetalleTrianualController;
+use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use App\Models\Trianual\ObservacionesTrianual;
@@ -451,7 +452,7 @@ Route::prefix('proceso')->group(function () {
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
         'inscribir_proceso'
     );
-    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribir');
+    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
     Route::get('delete/{proceso_id}',[ProcesoController::class,'eliminar']);
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
     Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
@@ -606,6 +607,11 @@ Route::prefix('mesas')->group(function () {
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
+Route::prefix('actasVolantes')->group(function () {
+    Route::get('/anteriores/{materia_id}/{alumno_id}/', [ActaVolanteController::class, 'notasAnteriores'])->name(
+        'acta-volante.anteriores-notas'
+    );
+});
 
 
 Route::prefix('matriculacion')->group(function () {
@@ -713,10 +719,10 @@ Route::prefix('mail')->group(function () {
 });
 
 Route::prefix('observaciones_trianual')->group(function () {
-    Route::get('/', [ObservacionesTrianual::class, 'index'])->name('observaciones_trianual.listar');
-    Route::post('/', [ObservacionesTrianual::class, 'store'])->name('observaciones_trianual.guardar');
-    Route::get('/crear/{alumno}', [ObservacionesTrianual::class, 'create'])->name('observaciones_trianual.crear');
-    Route::get('/ver/{trianual}', [ObservacionesTrianual::class, 'show'])->name('observaciones_trianual.ver');
+    Route::get('/', [ObservacionesTrianualController::class, 'index'])->name('observaciones_trianual.listar');
+    Route::post('/', [ObservacionesTrianualController::class, 'store'])->name('observaciones_trianual.guardar');
+    Route::get('/crear/{alumno}', [ObservacionesTrianualController::class, 'create'])->name('observaciones_trianual.crear');
+    Route::get('/ver/{trianual}', [ObservacionesTrianualController::class, 'show'])->name('observaciones_trianual.ver');
 });
 
 Route::resource('registros', AuditController::class);

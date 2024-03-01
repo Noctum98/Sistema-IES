@@ -13,11 +13,25 @@ use Illuminate\Database\Query\Builder;
 
 
 /**
- *  Class Materia
- * This is the model class for table "materias"
- *
- * @property integer $id
- * @property integer $año
+ * Class Materia
+ * @package App\Models
+ * @property int $carrera_id
+ * @property int $año
+ * @property string $nombre
+ * @property string $regimen
+ * @property int $tipo_materia_id
+ * @property float $asistencia_ponderada
+ * @property float $proceso_ponderado
+ * @property string $etapa_campo
+ * @property string $cierre_diferido
+ * @property-read Carrera $carrera
+ * @property-read TipoMateria $tipoMateria
+ * @property-read null|Collection|Cargo[] $cargos
+ * @property-read Materia $correlativa
+ * @property-read null|Collection|MesaAlumno[] $mesa_inscriptos
+ * @property-read null|Collection|Mesa[] $mesas
+ * @property-read null|Collection|Comision[] $comisiones
+ * @property-read int $total
  *
  */
 class Materia extends BaseModel
@@ -219,8 +233,30 @@ class Materia extends BaseModel
             return null;
         }
         return $actaVolante;
+    }
 
 
+    /**
+     * Devuelve los ActaVolantes para el alumno especificado.
+     *
+     * @param int $alumno_id El ID del alumno.
+     * @return ActaVolante[]|Collection|null Devuelve una colección de ActaVolantes para el alumno especificado,
+     *  o null si no se encuentran ActaVolantes.
+     */
+    public function getActasVolantesConLibro($alumno_id)
+    {
+        $actaVolantes = ActaVolante::where([
+            'alumno_id' => $alumno_id,
+            'materia_id' => $this->id
+        ])
+            ->whereNotNull('libro_id')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+
+        if (!$actaVolantes) {
+            return null;
+        }
+        return $actaVolantes;
     }
 
     public function correlativas()
@@ -266,8 +302,8 @@ class Materia extends BaseModel
     {
 
         $profesores = '';
-        if(count($this->cargos()->get()) > 0){
-            foreach ($this->cargos()->get() as $cargo){
+        if (count($this->cargos()->get()) > 0) {
+            foreach ($this->cargos()->get() as $cargo) {
                 /** @var Cargo $cargo */
                 $profesores .= $cargo->profesores() . "\n";
             }
