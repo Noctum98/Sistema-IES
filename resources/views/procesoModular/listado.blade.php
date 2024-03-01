@@ -274,19 +274,21 @@
                                                                id="global-{{ $proceso->procesoRelacionado->id }}"
                                                                value="{{ $proceso->procesoRelacionado->nota_global != -1 ?
                                                             $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                               @if(($proceso->procesoRelacionado->estado
-                                                                    && ($proceso->procesoRelacionado->estado->identificador != 5
-                                                                    || $proceso->procesoRelacionado->estado->identificador != 7))
-                                                                    || !$puede_procesar
-                                                                    || $proceso->procesoRelacionado->cierre)
+                                                               {{--                                                               @if(($proceso->procesoRelacionado->estado--}}
+                                                               {{--                                                                    && ($proceso->procesoRelacionado->estado->identificador != 5--}}
+                                                               {{--                                                                    || $proceso->procesoRelacionado->estado->identificador != 7))--}}
+                                                               {{--                                                                    || !$puede_procesar--}}
+                                                               {{--                                                                    || $proceso->procesoRelacionado->cierre)--}}
+                                                               {{--                                                                   disabled--}}
+                                                               {{--                                                            @endif>--}}
+                                                               @if(!$puede_procesar || $proceso->procesoRelacionado->cierre)
                                                                    disabled
                                                             @endif>
                                                         <div class="input-group-append">
                                                             <button type="submit"
                                                                     class="btn btn-info btn-sm input-group-text"
                                                                     id="btn-global-{{ $proceso->procesoRelacionado->id }}"
-                                                                    @if(!Session::has('profesor') or
-                                                                        $proceso->procesoRelacionado->cierre)
+                                                                    @if(!$puede_procesar || $proceso->procesoRelacionado->cierre)
                                                                         disabled
                                                                 @endif>
                                                                 <i class="fa fa-save"></i>
