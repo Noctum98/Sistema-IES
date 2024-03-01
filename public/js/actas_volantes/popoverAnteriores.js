@@ -18,21 +18,43 @@ $(document).ready(function () {
 
         //Vinculamos el popover a nuestro elemento
         $(this).popover('show');
-
+        let result = '';
         fetch(`/actasVolantes/anteriores/${materiaId}/${alumnoId}`)
             .then(response => response.json())
             .then(data => {
-                let result = '';
-                data.forEach(item => {
-                    result += `<p>${item.fecha} - ${item.nota}</p>`;
-                });
-                console.log(result)
 
+                console.log(data)
+                if (data || Object.keys(data).length > 0){
+
+                    if (!Array.isArray(data)) {
+                        data = Object.values(data);
+                    }
+
+                    data.forEach(item => {
+                        result += `<p>
+                        <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
+                         ${item.nota}
+                         <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
+                        ${item.fecha} </p>`;
+                    });
+                    console.log(result)
+                }else{
+                   result = `<p>No se encontraron datos anteriores</p>`
+                }
+
+
+
+            })
+            .catch((error) => {
+                result = `<p>Error: ${error}</p>`
+                console.error('Error:', error);
+            })
+            .finally(() =>{
                 // Tomamos el popover del elemento y actualizamos su contenido
                 popover.hide();// hide, in case that it is opening.
                 popover.disable()
 
-               let popover2 =  new bootstrap.Popover(this, {
+                let popover2 = new bootstrap.Popover(this, {
                     trigger: 'manual',
                     title: 'Notas anteriores',
                     content: result,
@@ -43,9 +65,8 @@ $(document).ready(function () {
                 });
                 popover2.show();
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+
+        ;
 
 
     });
@@ -53,5 +74,6 @@ $(document).ready(function () {
     // Cerrar todos los popovers cuando se hace clic en cualquier lugar fuera del popover
     $('html').on('click', function() {
         $('.popoverElement').popover('hide');
+        $('.popover').popover('hide');
     });
 });

@@ -78,6 +78,7 @@
                 </div>
             </div>
         </div>
+        {{--    Primer año      --}}
         <div class="card border-info p-0">
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
                 <p class="card-text text-right m-1 p-1 me-5">1° Año
@@ -147,6 +148,12 @@
                                                 {{$materia->getActaVolante($alumno->id)
                                                 ->mesaAlumno()->first()->fechaMesa()}}
                                             </small>
+                                            <small class="popoverElement"
+                                                   data-bs-toggle="popover"
+                                                   data-alumno-id="{{$alumno->id}}"
+                                                   data-materia-id="{{$materia->id}}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </small>
                                         @else
                                             -
                                         @endif
@@ -162,6 +169,7 @@
             </div>
         </div>
 
+        {{--    Segundo año     --}}
         <div class="card border-info p-0">
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
                 <p class="card-text text-right m-1 p-1 me-5">2° Año
@@ -230,6 +238,12 @@
                                                 <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                                                 {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
                                             </small>
+                                            <small class="popoverElement"
+                                                   data-bs-toggle="popover"
+                                                   data-alumno-id="{{$alumno->id}}"
+                                                   data-materia-id="{{$materia->id}}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </small>
                                         @else
                                             -
                                         @endif
@@ -244,7 +258,7 @@
                 </div>
             </div>
         </div>
-
+        {{--         Tercer año --}}
         <div class="card border-info p-0">
             <div class="card-header bg-info text-dark col-sm-12 mx-auto mx-0 px-0 pt-0">
                 <p class="card-text text-right m-1 p-1 me-5">3° Año
@@ -314,13 +328,13 @@
                                                 <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                                                 {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
                                             </small>
-                                        <br/>
-                                            <span class="popoverElement"
+
+                                            <small class="popoverElement"
                                                    data-bs-toggle="popover"
-                                                  data-alumno-id="{{$alumno->id}}"
+                                                   data-alumno-id="{{$alumno->id}}"
                                                    data-materia-id="{{$materia->id}}">
-                                                <i class="fa fa-eye"></i>
-                                            </span>
+                                                <i class="fa fa-eye text-info"></i>
+                                            </small>
                                         @else
                                             -
                                         @endif
@@ -339,5 +353,5 @@
         @endsection
         @section('scripts')
             <script src="{{ asset('js/actas_volantes/popoverAnteriores.js') }}"></script>
-        @endsection
+@endsection
 

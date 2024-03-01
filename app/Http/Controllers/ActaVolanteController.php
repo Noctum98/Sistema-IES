@@ -170,7 +170,9 @@ class ActaVolanteController extends Controller
             ];
         });
 
-       return $result;
+
+
+       return json_encode($result) ;
 
 
 
