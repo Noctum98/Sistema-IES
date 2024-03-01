@@ -314,6 +314,13 @@
                                                 <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                                                 {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
                                             </small>
+                                        <br/>
+                                            <span class="popoverElement"
+                                                   data-bs-toggle="popover"
+                                                  data-alumno-id="{{$alumno->id}}"
+                                                   data-materia-id="{{$materia->id}}">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
                                         @else
                                             -
                                         @endif
@@ -328,4 +335,9 @@
                 </div>
             </div>
         </div>
-@endsection
+
+        @endsection
+        @section('scripts')
+            <script src="{{ asset('js/actas_volantes/popoverAnteriores.js') }}"></script>
+        @endsection
+
