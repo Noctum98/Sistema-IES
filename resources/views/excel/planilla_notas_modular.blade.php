@@ -50,6 +50,7 @@
             <th class="sticky-top text-center">Nota Final</th>
             <th class="sticky-top col-sm-1">Nota Global</th>
             <th class="sticky-top col-sm-1">Regularidad</th>
+            <th class="sticky-top col-sm-1">Estado</th>
         </tr>
     </thead>
     <tbody>
@@ -77,6 +78,7 @@
             <td>
                 {{ $proceso->cierre ? mb_strtoupper($proceso->estado->nombre) : '-' }}
             </td>
+            <td>{{ $proceso->cierre ? 'CERRADO' : 'ABIERTO' }}</td>
         </tr>
         @endif
         @endforeach

@@ -26,17 +26,17 @@
                 </div>
                 <div class="form-group">
                     <label for="primera_evaluacion">Evaluación 1</label>
-                    <input type="number" class="form-control" name="primera_evaluacion" id="primera_evaluacion" pattern="^[1-9]|10$" required disabled>
+                    <input type="number" class="form-control" name="primera_evaluacion" id="primera_evaluacion" pattern="^[1-9]|10$" disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="segunda_evaluacion">Evaluación 2</label>
-                    <input type="number" class="form-control" name="segunda_evaluacion" id="segunda_evaluacion" pattern="^[1-9]|10$" required disabled>
+                    <input type="number" class="form-control" name="segunda_evaluacion" id="segunda_evaluacion" pattern="^[1-9]|10$" disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="tercera_evaluacion">Evaluación 3</label>
-                    <input type="number" class="form-control" name="tercera_evaluacion" id="tercera_evaluacion" pattern="^[1-9]|10$" required disabled>
+                    <input type="number" class="form-control" name="tercera_evaluacion" id="tercera_evaluacion" pattern="^[1-9]|10$" disabled>
                 </div>
                 <p id="porcentaje_final"></p>
                 <hr>
