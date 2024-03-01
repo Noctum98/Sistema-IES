@@ -51,6 +51,9 @@ class ProcesoModularController extends Controller
         CicloLectivoService $cicloLectivoService,
         CargoProcesoService $cargoProcesoService)
     {
+        $this->middleware('app.auth', ['except' => 'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',
+            ['except' => 'delete']);
         $this->cicloLectivoService = $cicloLectivoService;
         $this->cargoProcesoService = $cargoProcesoService;
     }
