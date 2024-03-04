@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActaVolante;
+use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaAlumno;
 use App\Models\Sede;
@@ -151,6 +152,30 @@ class ActaVolanteController extends Controller
             'sedes' => $sedes,
             'carrerasInscriptos' => $carrerasInscriptos
         ]);
+    }
+
+    public function notasAnteriores(Request $request, $materia_id, $alumno_id)
+    {
+
+        $materia = Materia::find($materia_id);
+
+        $actas = $materia->getActasVolantesConLibro($alumno_id);
+
+        $actas = $actas->sortByDesc('created_at');
+
+        $result = $actas->map(function($acta){
+            return [
+                'nota' => $acta->promedio == -1 ? 'A': $acta->promedio, // Change this to your actual field name for note.
+                'fecha' => $acta->mesaAlumno()->first()->fechaMesa(), // Change this to your actual field name for date.
+            ];
+        });
+
+
+
+       return json_encode($result) ;
+
+
+
     }
 }
 

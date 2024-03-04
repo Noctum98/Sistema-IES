@@ -607,6 +607,11 @@ Route::prefix('mesas')->group(function () {
 });
 
 Route::resource('actasVolantes', ActaVolanteController::class);
+Route::prefix('actasVolantes')->group(function () {
+    Route::get('/anteriores/{materia_id}/{alumno_id}/', [ActaVolanteController::class, 'notasAnteriores'])->name(
+        'acta-volante.anteriores-notas'
+    );
+});
 
 
 Route::prefix('matriculacion')->group(function () {

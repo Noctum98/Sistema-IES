@@ -13,11 +13,11 @@
     }
 </style>
 @if (session('error'))
-    <div class="alert alert-danger">
-        <ul>
-            <li>{{ session('error') }}</li>
-        </ul>
-    </div>
+<div class="alert alert-danger">
+    <ul>
+        <li>{{ session('error') }}</li>
+    </ul>
+</div>
 @endif
 <div class="container" id="container-scroll">
     <a href="{{url()->previous()}}">
@@ -47,11 +47,11 @@
     @endif
 
     @if(Session::has('coordinador') || Session::has('admin'))
-        @if(!$comision)
-        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
-        @else
-        <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
-        @endif
+    @if(!$comision)
+    <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+    @else
+    <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+    @endif
     @endif
 
     <div class="table-responsive tableFixHead">
@@ -65,10 +65,10 @@
                     <th>Promedio TP</th>
                     @if(count($calificaciones) > 0)
                     @foreach($calificaciones as $calificacion)
-                    <th><a href="{{ route('calificacion.create',$calificacion->id) }}"  title="{{$calificacion->nombre}}" class="text-white">
-                        {{ substr($calificacion->nombre, 0, 9) }}
-                        {{ strlen($calificacion->nombre) > 9 ? '...' : '' }}
-                    </a></th>
+                    <th><a href="{{ route('calificacion.create',$calificacion->id) }}" title="{{$calificacion->nombre}}" class="text-white">
+                            {{ substr($calificacion->nombre, 0, 9) }}
+                            {{ strlen($calificacion->nombre) > 9 ? '...' : '' }}
+                        </a></th>
                     @endforeach
                     @endif
                     <th> <a href="{{ route('asis.inicio') }}" class="text-white"> Asistencia % </a></th>
@@ -119,12 +119,18 @@
                     @endif
                     <td>
                         <span class="badge badge-secondary">
-                        {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
+                            {{ $proceso->asistencia() ? $proceso->asistencia()->porcentaje_final : '-' }} %
                         </span>
                     </td>
                     @if($materia->etapa_campo)
                     <td>
-                    <button class="btn btn-sm btn-info modals-cargar" data-bs-toggle="modal" data-bs-target="#etapaCampo" id="{{$proceso->id}}" data-campo="{{$proceso->etapaCampo ? $proceso->etapaCampo->id : null }}" data-habilitado="{{$proceso->habilitado_campo}}">Habilitar/Cargar</button>
+
+                        @if(!$proceso->habilitado_campo)
+                        <button class="btn btn-sm btn-info modals-cargar" data-bs-toggle="modal" data-bs-target="#etapaCampo" id="{{$proceso->id}}" data-campo="{{$proceso->etapaCampo ? $proceso->etapaCampo->id : null }}" data-habilitado="{{$proceso->habilitado_campo}}">Habilitar/Cargar</button>
+                        @else
+                        <button class="btn btn-sm btn-success modals-cargar" data-bs-toggle="modal" data-bs-target="#etapaCampo" id="{{$proceso->id}}" data-campo="{{$proceso->etapaCampo ? $proceso->etapaCampo->id : null }}" data-habilitado="{{$proceso->habilitado_campo}}">Cargar
+                        </button>
+                        @endif
 
                     </td>
                     @endif
@@ -161,12 +167,9 @@
                             <i class="fa fa-spinner fa-spin"></i>
                         </span>
 
-                        <input type="hidden" name="checkcoordinador" id="coordinador"
-                               value="{{ Session::has('coordinador') ? 1 : 0 }}">
+                        <input type="hidden" name="checkcoordinador" id="coordinador" value="{{ Session::has('coordinador') ? 1 : 0 }}">
 
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}"
-                            {{$proceso->cierre == false ? 'unchecked':'checked'}}
-                            {{ $proceso->cierre && (!Session::has('coordinador')
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ $proceso->cierre && (!Session::has('coordinador')
                             && !Session::has('admin')) ? 'disabled' : '' }}>
                     </td>
 
