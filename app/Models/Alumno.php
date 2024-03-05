@@ -4,14 +4,158 @@ namespace App\Models;
 
 use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Trianual\Trianual;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Carrera;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Alumno
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int $año
+ * @property string $nombres
+ * @property string $apellidos
+ * @property string $email
+ * @property string $telefono
+ * @property string|null $telefono_fijo
+ * @property string $dni
+ * @property string|null $cuil
+ * @property string|null $imagen
+ * @property string|null $fecha
+ * @property string|null $edad
+ * @property string|null $genero
+ * @property string|null $regularidad
+ * @property string|null $nacionalidad
+ * @property string|null $provincia
+ * @property string|null $localidad
+ * @property string|null $calle
+ * @property string|null $n_calle
+ * @property string|null $barrio
+ * @property string|null $manzana
+ * @property int|null $casa
+ * @property string|null $codigo_postal
+ * @property string|null $estado_civil
+ * @property string|null $ocupacion
+ * @property string|null $g_sanguineo
+ * @property string|null $escolaridad
+ * @property string|null $condicion_s
+ * @property string|null $escuela_s
+ * @property string|null $materias_s
+ * @property int|null $titulo_s
+ * @property string|null $articulo_septimo
+ * @property int|null $privacidad
+ * @property int|null $poblacion_indigena
+ * @property string|null $discapacidad_mental
+ * @property string|null $discapacidad_intelectual
+ * @property string|null $discapacidad_visual
+ * @property string|null $discapacidad_auditiva
+ * @property string|null $discapacidad_motriz
+ * @property string|null $acompañamiento_motriz
+ * @property string|null $matriculacion
+ * @property string|null $pase
+ * @property string|null $fecha_primera_acreditacion
+ * @property string|null $fecha_ultima_acreditacion
+ * @property string|null $legajo_completo
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int|null $comision_id
+ * @property string|null $cohorte
+ * @property int|null $active
+ * @property string|null $aprobado
+ * @property Carbon|null $deleted_at
+ * @property int|null $operador_id
+ * @property-read Collection<int, AlumnoCarrera> $alumno_carrera
+ * @property-read int|null $alumno_carrera_count
+ * @property-read Collection<int, AlumnoAsistencia> $asistencias
+ * @property-read int|null $asistencias_count
+ * @property-read Collection<int, Carrera> $carreras
+ * @property-read int|null $carreras_count
+ * @property-read Collection<int, Carrera> $carrerasDistinct
+ * @property-read int|null $carreras_distinct_count
+ * @property-read Collection<int, Comision> $comisiones
+ * @property-read int|null $comisiones_count
+ * @property-read EncuestaSocioeconomica|null $encuesta_socioeconomica
+ * @property-read mixed $apellidos_nombres
+ * @property-read Collection<int, Proceso> $lastProceso
+ * @property-read int|null $last_proceso_count
+ * @property-read Collection<int, Materia> $materias
+ * @property-read int|null $materias_count
+ * @property-read Collection<int, Proceso> $procesos
+ * @property-read int|null $procesos_count
+ * @property-read Collection<int, Proceso> $procesos_actuales
+ * @property-read int|null $procesos_actuales_count
+ * @property-read User|null $user
+ * @method static Builder|Alumno newModelQuery()
+ * @method static Builder|Alumno newQuery()
+ * @method static Builder|Alumno onlyTrashed()
+ * @method static Builder|Alumno query()
+ * @method static Builder|Alumno whereAcompañamientoMotriz($value)
+ * @method static Builder|Alumno whereActive($value)
+ * @method static Builder|Alumno whereApellidos($value)
+ * @method static Builder|Alumno whereAprobado($value)
+ * @method static Builder|Alumno whereArticuloSeptimo($value)
+ * @method static Builder|Alumno whereAño($value)
+ * @method static Builder|Alumno whereBarrio($value)
+ * @method static Builder|Alumno whereCalle($value)
+ * @method static Builder|Alumno whereCasa($value)
+ * @method static Builder|Alumno whereCodigoPostal($value)
+ * @method static Builder|Alumno whereCohorte($value)
+ * @method static Builder|Alumno whereComisionId($value)
+ * @method static Builder|Alumno whereCondicionS($value)
+ * @method static Builder|Alumno whereCreatedAt($value)
+ * @method static Builder|Alumno whereCuil($value)
+ * @method static Builder|Alumno whereDeletedAt($value)
+ * @method static Builder|Alumno whereDiscapacidadAuditiva($value)
+ * @method static Builder|Alumno whereDiscapacidadIntelectual($value)
+ * @method static Builder|Alumno whereDiscapacidadMental($value)
+ * @method static Builder|Alumno whereDiscapacidadMotriz($value)
+ * @method static Builder|Alumno whereDiscapacidadVisual($value)
+ * @method static Builder|Alumno whereDni($value)
+ * @method static Builder|Alumno whereEdad($value)
+ * @method static Builder|Alumno whereEmail($value)
+ * @method static Builder|Alumno whereEscolaridad($value)
+ * @method static Builder|Alumno whereEscuelaS($value)
+ * @method static Builder|Alumno whereEstadoCivil($value)
+ * @method static Builder|Alumno whereFecha($value)
+ * @method static Builder|Alumno whereFechaPrimeraAcreditacion($value)
+ * @method static Builder|Alumno whereFechaUltimaAcreditacion($value)
+ * @method static Builder|Alumno whereGSanguineo($value)
+ * @method static Builder|Alumno whereGenero($value)
+ * @method static Builder|Alumno whereId($value)
+ * @method static Builder|Alumno whereImagen($value)
+ * @method static Builder|Alumno whereLegajoCompleto($value)
+ * @method static Builder|Alumno whereLocalidad($value)
+ * @method static Builder|Alumno whereManzana($value)
+ * @method static Builder|Alumno whereMateriasS($value)
+ * @method static Builder|Alumno whereMatriculacion($value)
+ * @method static Builder|Alumno whereNCalle($value)
+ * @method static Builder|Alumno whereNacionalidad($value)
+ * @method static Builder|Alumno whereNombres($value)
+ * @method static Builder|Alumno whereOcupacion($value)
+ * @method static Builder|Alumno whereOperadorId($value)
+ * @method static Builder|Alumno wherePase($value)
+ * @method static Builder|Alumno wherePoblacionIndigena($value)
+ * @method static Builder|Alumno wherePrivacidad($value)
+ * @method static Builder|Alumno whereProvincia($value)
+ * @method static Builder|Alumno whereRegularidad($value)
+ * @method static Builder|Alumno whereTelefono($value)
+ * @method static Builder|Alumno whereTelefonoFijo($value)
+ * @method static Builder|Alumno whereTituloS($value)
+ * @method static Builder|Alumno whereUpdatedAt($value)
+ * @method static Builder|Alumno whereUserId($value)
+ * @method static Builder|Alumno withTrashed()
+ * @method static Builder|Alumno withoutTrashed()
+ * @mixin Eloquent
+ */
 class Alumno extends Model
 {
     use HasFactory, SoftDeletes;
@@ -73,17 +217,17 @@ class Alumno extends Model
         'legajo_completo'
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function carreras()
+    public function carreras(): BelongsToMany
     {
         return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo', date('Y'));
     }
 
-    public function carrerasDistinct()
+    public function carrerasDistinct(): BelongsToMany
     {
         return $this->belongsToMany(Carrera::class)->distinct();
     }
@@ -99,17 +243,17 @@ class Alumno extends Model
 
 
 
-    public function comisiones()
+    public function comisiones(): BelongsToMany
     {
         return $this->belongsToMany(Comision::class)->withTimestamps();
     }
 
-    public function procesos()
+    public function procesos(): HasMany
     {
         return $this->hasMany('App\Models\Proceso');
     }
 
-    public function procesos_actuales()
+    public function procesos_actuales(): HasMany
     {
         return $this->hasMany(Proceso::class)->where('ciclo_lectivo', date('Y'))->orderBy('id');
     }
@@ -119,17 +263,17 @@ class Alumno extends Model
         return $this->hasMany(Proceso::class)->where('ciclo_lectivo', $date)->orderBy('id')->get();
     }
 
-    public function lastProceso()
+    public function lastProceso(): HasMany
     {
         return $this->hasMany(Proceso::class)->latest();
     }
 
-    public function asistencias()
+    public function asistencias(): HasMany
     {
         return $this->hasMany('App\Models\AlumnoAsistencia');
     }
 
-    public function alumno_carrera()
+    public function alumno_carrera(): HasMany
     {
         return $this->hasMany(AlumnoCarrera::class, 'alumno_id');
     }
@@ -139,7 +283,7 @@ class Alumno extends Model
         return $this->hasOne(EncuestaSocioeconomica::class,'alumno_id');
     }
 
-    public function hasCarrera($carrera_id)
+    public function hasCarrera($carrera_id): bool
     {
 
         if ($this->carreras->where('id', $carrera_id)->first()) {
@@ -148,7 +292,7 @@ class Alumno extends Model
         return false;
     }
 
-    public function procesoCarrera($carrera_id, $alumno_id, $ciclo_lectivo = null)
+    public function procesoCarrera($carrera_id, $alumno_id, $ciclo_lectivo = null): AlumnoCarrera
     {
 
         return AlumnoCarrera::where([
@@ -163,7 +307,7 @@ class Alumno extends Model
         return $this->hasOne(Proceso::class)->where('materia_id',$materia_id)->where('ciclo_lectivo',$ciclo_lectivo)->first();
     }
 
-    public function lastProcesoCarrera($carrera_id, $ciclo_lectivo = null)
+    public function lastProcesoCarrera($carrera_id, $ciclo_lectivo = null): AlumnoCarrera
     {
         $alumnoCarrera = AlumnoCarrera::where([
             'carrera_id' => $carrera_id,
@@ -178,7 +322,7 @@ class Alumno extends Model
     }
 
 
-    public function hasProceso($materia_id,$ciclo_lectivo = null)
+    public function hasProceso($materia_id,$ciclo_lectivo = null): bool
     {
         $ciclo = $ciclo_lectivo ?? date('Y');
         if ($this->procesos->where('materia_id', $materia_id)->where('ciclo_lectivo',$ciclo)->first()) {
@@ -187,7 +331,7 @@ class Alumno extends Model
         return false;
     }
 
-    public function hasComision($comision_id)
+    public function hasComision($comision_id): bool
     {
         if ($this->comisiones->where('id', $comision_id)->first()) {
             return true;
@@ -215,7 +359,7 @@ class Alumno extends Model
         return $respuesta;
     }
 
-    // Functiones Estáticas
+    // Funciones Estáticas
 
     public static function alumnosAño($year, $carrera_id, $ciclo_lectivo, $comision_id)
     {
@@ -232,14 +376,15 @@ class Alumno extends Model
         }
 
 
-        $alumnos = $alumnos->where('aprobado', true)
-            ->orderBy('alumnos.apellidos', 'asc')
+        return $alumnos->where('aprobado', true)
+            ->orderBy('alumnos.apellidos')
             ->get();
-
-        return $alumnos;
     }
 
-    public function getApellidosNombresAttribute()
+    /**
+     * @return string
+     */
+    public function getApellidosNombresAttribute(): string
     {
         return mb_strtoupper($this->apellidos) . ', ' . ucwords($this->nombres);
     }
@@ -263,7 +408,7 @@ class Alumno extends Model
         return Equivalencias::where([
                 'equivalencias.alumno_id' => $this->id,]
         )
-            ->orderBy('equivalencias.fecha', 'asc')
+            ->orderBy('equivalencias.fecha')
             ->get();
     }
 
@@ -323,9 +468,7 @@ class Alumno extends Model
         return "Resolución: " . $equivalencia->resolution . " del " . $equivalencia->fecha . $nombreApellido;
     }
 
-    /**
-     * @return mixed
-     */
+
     public function getRegularidades()
     {
         return Regularidad::select('regularidades.*')
@@ -333,7 +476,7 @@ class Alumno extends Model
             ->leftJoin('materias', 'materias.id', 'procesos.materia_id')
             ->where('procesos.alumno_id', $this->id)
             ->orderBy('procesos.ciclo_lectivo', 'desc')
-            ->orderBy('materias.nombre', 'asc')
+            ->orderBy('materias.nombre')
             ->get();
     }
 
@@ -385,5 +528,14 @@ class Alumno extends Model
     }
 
 
+
+
+    /**
+     * @return string
+     */
+    public function getDocumento():string
+    {
+        return $this->t_documento?$this->t_documento .": " : " " . $this->dni;
+    }
 
 }

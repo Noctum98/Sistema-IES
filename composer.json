@@ -19,6 +19,7 @@
         "nao-pon/flysystem-google-drive": "~1.1"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Trianual;
 use App\Http\Requests\Trianual\StoreTrianualRequest;
 use App\Http\Requests\Trianual\UpdateTrianualRequest;
 use App\Models\Alumno;
+use App\Models\Carrera;
 use App\Models\Estados;
 use App\Models\Proceso;
 use App\Models\Sede;
@@ -13,6 +14,7 @@ use App\Models\User;
 use App\Services\AlumnoService;
 use App\Services\CarreraService;
 use App\Services\Trianual\DetalleTrianualService;
+use App\Services\Trianual\TrianualService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -50,18 +52,25 @@ class TrianualController extends Controller
     /**
      * @var DetalleTrianualService
      */
-    private $detalleTrianualService;
+    private DetalleTrianualService $detalleTrianualService;
+    private TrianualService $trianualService;
 
     /**
      * @param AlumnoService $alumnoService
      * @param CarreraService $carreraService
+     * @param TrianualService $trianualService
      * @param DetalleTrianualService $detalleTrianualService
      */
-    public function __construct(AlumnoService $alumnoService, CarreraService $carreraService, DetalleTrianualService $detalleTrianualService)
+    public function __construct(AlumnoService   $alumnoService, CarreraService $carreraService,
+                                TrianualService $trianualService, DetalleTrianualService $detalleTrianualService)
     {
+        $this->middleware('app.auth', ['except' => 'delete']);
+        $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-profesor-areaSocial',
+            ['except' => 'delete']);
         $this->alumnoService = $alumnoService;
         $this->carreraService = $carreraService;
         $this->detalleTrianualService = $detalleTrianualService;
+        $this->trianualService = $trianualService;
     }
 
     /**
@@ -275,12 +284,29 @@ class TrianualController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Trianual $trianual
+     * @param Trianual $trianual
      * @return Response
      */
     public function destroy(Trianual $trianual)
     {
         //
+    }
+
+    public function alumnos(Request $request)
+    {
+
+
+        $carrera_id = $request->route('carrera_id');
+        $year = $request->route('year');
+        $ciclo_lectivo = $request->route('ciclo_lectivo') ?? date('Y');
+
+        $carrera = Carrera::find($carrera_id);
+
+
+        $alumnos = $this->trianualService->getAlumnosDeCarreraYearCicloLectivo($carrera_id, $year, $ciclo_lectivo);
+
+
+        return view('trianual.trianual.alumnos', compact('alumnos', 'carrera', 'year'));
     }
 
 
