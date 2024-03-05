@@ -732,6 +732,7 @@ Route::prefix('trianual')->group(function () {
     Route::post('/', [TrianualController::class, 'store'])->name('trianual.guardar');
     Route::get('/crear/{alumno}', [TrianualController::class, 'create'])->name('trianual.crear');
     Route::get('/ver/{trianual}', [TrianualController::class, 'show'])->name('trianual.ver');
+    Route::get('/alumnos-ver/{carrera_id}/{year}/{ciclo_lectivo?}', [TrianualController::class, 'alumnos'])->name('trianual.ver_alumnos');
 });
 
 //Ruta de usuario administrador
