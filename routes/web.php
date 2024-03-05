@@ -20,7 +20,6 @@ use App\Http\Controllers\Trianual\DetalleTrianualController;
 use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
-use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
