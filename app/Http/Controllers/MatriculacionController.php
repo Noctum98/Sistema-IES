@@ -87,7 +87,14 @@ class MatriculacionController extends Controller
         $alumno = Alumno::find($alumno_id);
         $carrera = Carrera::find($carrera_id);
 
+        if (!$carrera->matriculacion_habilitada) {
+            if(!Session::has('admin') && !Session::has('coordinador') && !Session::has('regente') && !Session::has('seccionAlumnos') ){
+                
+                return redirect()->back()->with(['alert_warning' => 'La carrera no tiene la matriculación habilitada.']);
+            }
+        }
 
+        
         if (!$alumno->aprobado || !Session::has('alumno')) {
             if (!$año) {
                 $alumno_carrera = AlumnoCarrera::where([
@@ -100,6 +107,8 @@ class MatriculacionController extends Controller
         } else {
             return redirect()->back()->with(['alert_success' => 'Tu matriculación ya fue verificada, no puedes editarla.']);
         }
+
+       
 
         return view('matriculacion.edit', [
             'matriculacion' => $alumno,
