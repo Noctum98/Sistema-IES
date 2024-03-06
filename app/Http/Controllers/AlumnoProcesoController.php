@@ -37,17 +37,17 @@ class AlumnoProcesoController extends Controller
      * @param int $id
      * @return Application|Factory|View|RedirectResponse
      */
-    public function vista_procesos(int $id, Carrera $carrera, int $year){
+    public function vista_procesos(int $id, Carrera $carrera, int $year)
+    {
         $alumno = Alumno::find($id);
 
-        if(!$alumno)
-        {
+        if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'El alumno no existe'
             ]);
         }
 
-        $procesos = Proceso::select('procesos.*' )
+        $procesos = Proceso::select('procesos.*')
             ->join('materias', 'procesos.materia_id', 'materias.id')
             ->where('materias.carrera_id', $carrera->id)
             ->where('materias.año', $year)
@@ -56,8 +56,7 @@ class AlumnoProcesoController extends Controller
             ->get();
 
 
-
-        return view('proceso.alumno',[
+        return view('proceso.alumno', [
             'alumno' => $alumno,
             'procesos' => $procesos,
             'carrera' => $carrera,
@@ -70,7 +69,8 @@ class AlumnoProcesoController extends Controller
      * @param int $idCarrera
      * @return Application|Factory|View|RedirectResponse
      */
-    public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera){
+    public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera)
+    {
 
         $pase = false;
         $alumno = Alumno::find($idAlumno);
@@ -81,7 +81,8 @@ class AlumnoProcesoController extends Controller
             }
 
         }
-        if (Session::has('coordinador') || Session::has('admin')) {
+        if (Session::has('coordinador') || Session::has('admin') || Session::has('areaSocial')
+            || Session::has('regente') || Session::has('seccionAlumnos')) {
             $pase = true;
         }
 
@@ -101,17 +102,13 @@ class AlumnoProcesoController extends Controller
             ->first();
 
 
-
-
-        if(!$alumno)
-        {
+        if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'No se encontró el alumno solicitado'
             ]);
         }
 
-        if(!$carrera)
-        {
+        if (!$carrera) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'No se encontró la carrera solicitada'
             ]);
@@ -122,14 +119,13 @@ class AlumnoProcesoController extends Controller
             'carrera_id' => $carrera->id,
         ])->first();
 
-        if(!$alumnoCarrera)
-        {
+        if (!$alumnoCarrera) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'No se encontró la carrera solicitada para el alumno indicado'
             ]);
         }
 
-        return view('proceso.alumnoCarrera',[
+        return view('proceso.alumnoCarrera', [
             'alumno' => $alumno,
             'carrera' => $carrera
         ]);
