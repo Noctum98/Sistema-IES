@@ -36,6 +36,7 @@ class MatriculacionController extends Controller
         $this->procesoService = $procesoService;
         $this->mailService = $mailService;
         $this->middleware('auth');
+        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all','vista_verificadas','vista_verificadas']]);
     }
 
     public function index(Request $request)

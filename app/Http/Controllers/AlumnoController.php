@@ -229,7 +229,7 @@ class AlumnoController extends Controller
             $fuera_mendoza = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
                 return $query->where('sede_id', $sede_id);
             })->where('provincia', '!=', 'Mendoza')
-                ->orWhere('provincia', '!=', 'mendoza')->count();
+            ->Where('provincia', '!=', 'mendoza')->count();
 
 
             if ($localidad && $localidad != 0) {
