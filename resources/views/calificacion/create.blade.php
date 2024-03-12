@@ -99,7 +99,7 @@
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
                                     <div class="input-group my-0">
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control datablur"
                                                id="calificacion-procentaje-{{ $proceso->id }}"
                                                value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                                placeholder="%"
@@ -149,7 +149,7 @@
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
                                     <div class="input-group">
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control datablur"
                                                id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}"
                                                value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio : '' }}"
                                                placeholder="%"

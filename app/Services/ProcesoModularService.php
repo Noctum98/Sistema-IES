@@ -164,7 +164,15 @@ class ProcesoModularService
             ->get();
     }
 
-    public function obtenerProcesosByMateria($materia_id, $ciclo_lectivo)
+    /**
+     * Recupera una lista de procesos relacionados con una asignatura específica y un año académico.
+     *
+     * @param int $materia_id El `ID` del módulo para filtrar.
+     * @param int $ciclo_lectivo El año académico para filtrar.
+     *
+     * @return \Illuminate\Support\Collection||Proceso[] Una colección de objetos de Proceso que coinciden con los criterios dados.
+     */
+    public function obtenerProcesosByMateria(int $materia_id, int $ciclo_lectivo): \Illuminate\Support\Collection
     {
         return Proceso::select(
             'procesos.*'
@@ -194,7 +202,7 @@ class ProcesoModularService
     }
 
     /**
-     * ProcesoModularController.php:57
+     * ProcesoModularController.php:157
      * @param Materia $materia
      * @param null $ciclo_lectivo
      * @return int
@@ -237,12 +245,6 @@ class ProcesoModularService
                     $ponderacion_asignada = $ponderacion_cargo_materia->ponderacion ?? 0;
                     $promedio_final_p += $porcentaje_cargo * $ponderacion_asignada / 100;
 
-                }
-                $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
-
-                $proceso->promedio_final_nota = round(max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0));
-
-                if (!$proceso->trabajo_final_porcentaje) {
                     if ($cargo->responsableTFI($materia->id)) {
                         $tfp = $procesoCalificacionService->obtenerProcesoCalificacionByProcesoMateriaCargoTipo(
                             $proceso->procesoRelacionado()->first()->id,
@@ -255,7 +257,13 @@ class ProcesoModularService
                             $proceso->trabajo_final_nota = $tfp->nota;
                         }
                     }
+
                 }
+                $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
+
+                $proceso->promedio_final_nota = round(max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0));
+
+
 
                 $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
                 $proceso->nota_final_nota = round(round($proceso->trabajo_final_nota) * 0.2 + round($proceso->promedio_final_nota) * 0.8);

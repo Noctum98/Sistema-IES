@@ -1,19 +1,31 @@
 $(document).ready(function () {
+
+    console.log('3')
+
+    $(".datablur").blur(function() {
+
+        const $form = $(this).closest("form");
+        $form.submit();
+    });
+
+
     $("form").submit(function (e) {
+        let porcentaje;
         e.preventDefault();
-        var theForm = $(this);
-        var proceso_id = theForm.attr("id");
-        var calificacion_id = $('#calificacion_id').val();
+
+        const theForm = $(this);
+        const proceso_id = theForm.attr("id");
+        const calificacion_id = $('#calificacion_id').val();
 
         if(theForm.hasClass('form-recuperatorio')){
-            var porcentaje = $('#calificacion-procentaje-recuperatorio-' + proceso_id).val();
+            porcentaje = $('#calificacion-procentaje-recuperatorio-' + proceso_id).val();
             let url = "/procesoCalificacion/recuperatorio";
             let data = {
                 "porcentaje": porcentaje,
                 "proceso_id": proceso_id,
                 "calificacion_id": calificacion_id
             }
-    
+
             if(porcentaje.trim() == ""){
                 url = "/procesoCalificacion/delete"
                 data = {
@@ -39,7 +51,7 @@ $(document).ready(function () {
                                 $("#alerts").append("<div class='alert alert-danger'>" + element[0] + "</div>");
                             }
                         }
-                    } else {   
+                    } else {
                         if (response.nota_recuperatorio >= 4) {
                             $(".nota-recuperatorio-" + proceso_id).html("<p class='text-success font-weight-bold'>" + response.nota_recuperatorio + "</p>");
                         } else if(response.nota_recuperatorio < 4 && response.nota_recuperatorio >= 0) {
@@ -52,10 +64,10 @@ $(document).ready(function () {
                     }
                 }
             });
-            
-            
+
+
         }else{
-            var porcentaje = $('#calificacion-procentaje-' + proceso_id).val();
+            porcentaje = $('#calificacion-procentaje-' + proceso_id).val();
             let url = "/procesoCalificacion";
             let data = {
                 "porcentaje": porcentaje,
@@ -70,7 +82,7 @@ $(document).ready(function () {
                     "calificacion_id": calificacion_id,
                 }
             }
-    
+
             $("#spinner-" + proceso_id).html("<div class='spinner-border text-primary mt-2' role='status' id='spinner-info'><span class='sr-only'>Loading...</span></div>")
             $.ajax({
                 method: "POST",
@@ -79,7 +91,7 @@ $(document).ready(function () {
                 //dataType: "dataType",
                 success: function (response) {
                     $("#spinner-info").remove();
-    
+
                     if (response.errors) {
                         for (const key in response.errors) {
                             if (Object.hasOwnProperty.call(response.errors, key)) {
