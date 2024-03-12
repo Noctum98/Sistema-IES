@@ -574,7 +574,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="nombre_preferido" class="text-primary">
-                        <h4>Si te has inscripto en PROGRESAR en el ciclo lectivo 2022, te pedimos que adjuntes comprobante</h4>
+                        <h4>Si te has inscripto en PROGRESAR en el ciclo lectivo anterior, te pedimos que adjuntes comprobante</h4>
                     </label>
                     <input type="file" class="form-control mt-2" id="comprobanete_progresar" name="comprobanete_progresar" value="{{ old('comprobanete_progresar') }}">
                 </div>
