@@ -310,7 +310,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="nombre_preferido" class="text-primary">
-                    <h4>¿Considerás que necesitas ayuda para estudiar?</h4>
+                    <h4>¿Cuánto tiempo le dedicas al estudio?</h4>
                 </label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="horas_estudio" id="horas_estudio2" value="Menos de 1 hora" {{ old('horas_estudio') === 'Menos de 1 hora' ? 'checked' : '' }}>
