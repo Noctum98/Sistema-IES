@@ -321,7 +321,7 @@
                                          <span class="d-sm-none mr-5">
                                              Nota final
                                         </span>
-                                        @if($materia->getActaVolante($alumno->id))
+                                        @if($materia->getActaVolante($alumno->id) && !$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->estado_baja)
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                                             @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
                                             <small style="font-size: 0.8em">
