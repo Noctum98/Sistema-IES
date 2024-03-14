@@ -37,6 +37,10 @@ class ProcesoCalificacionController extends Controller
         return response()->json($proceso->procesosCalificaciones(), 200);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request): JsonResponse
     {
         $ausente = false;
@@ -96,8 +100,11 @@ class ProcesoCalificacionController extends Controller
             if($procesoCalificacion->calificacion()->first()->cargo_id)
             {
                 $this->cargoProcesoService->grabaCalificacion(
-                    $procesoCalificacion->calificacion()->first()->cargo_id, $calificacion->ciclo_lectivo,
-                    $proceso->id, $procesoCalificacion->calificacion()->first()->materia_id, $user->id
+                    $procesoCalificacion->calificacion()->first()->cargo_id,
+                    $calificacion->ciclo_lectivo,
+                    $proceso->id,
+                    $procesoCalificacion->calificacion()->first()->materia_id,
+                    $user->id
                 );
             }
 
