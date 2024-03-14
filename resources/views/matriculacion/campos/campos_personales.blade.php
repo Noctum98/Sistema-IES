@@ -30,7 +30,7 @@
                 @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="telefono_fijo">Teléfono Fijo</label>
+                <label for="telefono_fijo">Teléfono de Contacto</label>
                 <input type="text" name="telefono_fijo" id="telefono_fijo" value=" {{ isset($matriculacion) ? $matriculacion->telefono_fijo : old('telefono') }} " class="form-control"  >
 
                 @error('telefono_fijo')

@@ -5,7 +5,7 @@
         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
     </a>
     <h2 class="h1 mb-4 text-info">
-        Editar inscripción de {{ $matriculacion->nombres.' '.$matriculacion->apellidos }}
+        Inscripción de {{ $matriculacion->nombres.' '.$matriculacion->apellidos }}
     </h2>
     @if(@session('mensaje_editado'))
     <div class="alert alert-success">
@@ -129,6 +129,10 @@
 
         @include('matriculacion.campos')
         <hr>
+        @include('matriculacion.campos.campos_generales')
+        @include('matriculacion.campos.campos_domicilio')
+        @include('matriculacion.campos.campos_personales')
+        @include('matriculacion.campos.campos_discapacidad')
         @if($año == 1)
         @include('matriculacion.campos.campos_primero')
         @elseif($año == 2)
@@ -136,19 +140,11 @@
         @elseif($año == 3)
         @include('matriculacion.campos.campos_tercero')
         @endif
-        @include('matriculacion.campos.campos_generales')
-        @include('matriculacion.campos.campos_domicilio')
-        @include('matriculacion.campos.campos_personales')
-        @include('matriculacion.campos.campos_discapacidad')
 
-        @if($año == 1 && !Auth::user())
-        <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
-        @endif
-
-        @if(!$matriculacion->encuesta_socioeconomica && $año == 1)
+        @if(!$matriculacion->encuesta_socioeconomica)
         <input type="submit" value="Siguiente" class="btn btn-primary mt-3 col-md-12">
         @else
-        <input type="submit" value="Editar Inscripción" class="btn btn-primary mt-3 col-md-12">
+        <input type="submit" value="Editar Matriculación" class="btn btn-primary mt-3 col-md-12">
         @endif
     </form>
 </div>

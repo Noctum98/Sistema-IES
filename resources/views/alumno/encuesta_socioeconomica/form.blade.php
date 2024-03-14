@@ -313,7 +313,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="nombre_preferido" class="text-primary">
-                        <h4>¿Tu trabajo está relacionado con la carrera en la que te has inscripto?</h4>
+                        <h4>¿Tu trabajo está relacionado con la carrera en la que te has inscripto/que estás cursando?</h4>
                     </label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="trabajo_relacionado" id="trabajo_relacionado1" value="si" {{ old('trabajo_relacionado') == 'si' ? 'checked' : '' }}>
@@ -395,7 +395,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="nombre_preferido" class="text-primary">
-                        <h4>¿Estás embarazada?</h4>
+                        <h4>¿Estás embarazada o tu pareja lo está?</h4>
                     </label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="embarazada" id="embarazada1" value="si" {{ old('embarazada') == 'si' ? 'checked' : '' }}>
@@ -493,6 +493,81 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="nombre_preferido" class="text-primary">
+                        <h4>En cuanto a tu situación de salud, declaras poseer:</h4>
+                    </label>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="enfermedad" id="situacion_salud1" {{ is_array(old('situacion_salud')) && in_array('enfermedad', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud1">
+                            Enfermedad
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="discapacidad" id="situacion_salud2" {{ is_array(old('situacion_salud')) && in_array('discapacidad', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud2">
+                            Discapacidad
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="tratamiento médico permanente" id="situacion_salud3" {{ is_array(old('situacion_salud')) && in_array('tratamiento médico permanente', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud3">
+                            Tratamiento médico permanente
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="tomar medicación permanente " id="situacion_salud4" {{ is_array(old('situacion_salud')) && in_array('tomar medicación permanente ', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud4">
+                            Tomar medicación permanente
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="buen estado de salud" id="situacion_salud5" {{ is_array(old('situacion_salud')) && in_array('buen estado de salud', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud5">
+                            Buen estado de salud
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="problemática relacionada a la Salud Mental" id="situacion_salud6" {{ is_array(old('situacion_salud')) && in_array('problemática relacionada a la Salud Mental', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud6">
+                            Problemática relacionada a la Salud Mental
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" name="situacion_salud[]" type="checkbox" value="otros" id="situacion_salud7" {{ is_array(old('situacion_salud')) && in_array('otros', old('situacion_salud')) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="situacion_salud7">
+                            Otros
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="cud" class="text-primary">
+                        <h4>Si en la pregunta anteriór marcaste que posees una discapacidad expresa si tenes o no CUD (Certificado Único de Discapacidad)</h4>
+                    </label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="cud" id="cud1" value="si" {{ old('cud') == 'si' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="cud1">
+                            Si
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="cud" id="cud2" value="no" {{ old('cud') == 'no' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="cud2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="nombre_preferido" class="text-primary">
                         <h4>¿Tenés obra social?</h4>
                     </label>
                     <div class="form-check">
@@ -516,7 +591,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="nombre_preferido" class="text-primary">
-                        <h4>Recibis:</h4>
+                        <h4>En el presente ciclo lectivo recibís o has gestionado:</h4>
                     </label>
                     <div class="form-check">
                         <input class="form-check-input" name="subsidios[]" type="checkbox" value="PROGRESAR/ PRONAFE" id="subsidios1" {{ in_array('PROGRESAR/ PRONAFE', old('subsidios', [])) ? 'checked' : '' }}>
@@ -566,17 +641,6 @@
                             No recibo Ninguna
                         </label>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="nombre_preferido" class="text-primary">
-                        <h4>Si te has inscripto en PROGRESAR en el ciclo lectivo anterior, te pedimos que adjuntes comprobante</h4>
-                    </label>
-                    <input type="file" class="form-control mt-2" id="comprobanete_progresar" name="comprobanete_progresar" value="{{ old('comprobanete_progresar') }}">
                 </div>
             </div>
         </div>
@@ -775,27 +839,27 @@
                     </label>
                     <p><i>Colocar el monto aproximado de ingresos que tiene el grupo familiar conviviente mensualmente.</i></p>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales1" value="Menos de $50000" {{ old('ingresos_mensuales') == 'Menos de $50000' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales1" value="Menos de $200.000" {{ old('ingresos_mensuales') == 'Menos de $50000' ? 'checked' : '' }}>
                         <label class="form-check-label" for="ingresos_mensuales1">
-                            Menos de $ 50000
+                            Menos de $ 200.000
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales2" value="Entre $50.0001 y $ 80.000" {{ old('ingresos_mensuales') == 'Entre $50.0001 y $ 80.000' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales2" value="Entre Entre $200.0001 y $300.000" {{ old('ingresos_mensuales') == 'Entre $50.0001 y $ 80.000' ? 'checked' : '' }}>
                         <label class="form-check-label" for="ingresos_mensuales2">
-                            Entre $50.0001 y $ 80.000
+                            Entre $200.0001 y $300.000
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales3" value="Entre $80.001 y 100.000" {{ old('ingresos_mensuales') == 'Entre $80.001 y 100.000' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales3" value="Entre $300.001 y $400.000" {{ old('ingresos_mensuales') == 'Entre $80.001 y 100.000' ? 'checked' : '' }}>
                         <label class="form-check-label" for="ingresos_mensuales3">
-                            Entre $80.001 y 100.000
+                            Entre $300.001 y $400.000
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales4" value="Más de $ 100.001" {{ old('ingresos_mensuales') == 'Más de $ 100.001' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="ingresos_mensuales" id="ingresos_mensuales4" value="Más de $ 400.001" {{ old('ingresos_mensuales') == 'Más de $ 100.001' ? 'checked' : '' }}>
                         <label class="form-check-label" for="ingresos_mensuales4">
-                            Más de $ 100.001
+                            Más de $ 400.001
                         </label>
                     </div>
                 </div>
@@ -1293,6 +1357,32 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="problemas_judiciales[]" id="problemas_judiciales4" value="Ninguno Posee Problema" {{ in_array('Ninguno Posee Problema', old('problemas_judiciales', [])) ? 'checked' : '' }}>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12 text-center p-2">
+                        <div class="col-md-3 text-left">
+                            Problemas de salud mental
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="problemas_salud_mental[]" id="problemas_salud_mental1" value="Jefe de Hogar" {{ in_array('Jefe de Hogar', old('problemas_salud_mental', [])) ? 'checked' : '' }}>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="problemas_salud_mental[]" id="problemas_salud_mental2" value="Ingresante" {{ in_array('Ingresante', old('problemas_salud_mental', [])) ? 'checked' : '' }}>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="problemas_salud_mental[]" id="problemas_salud_mental3" value="Otro conviviente" {{ in_array('Otro conviviente', old('problemas_salud_mental', [])) ? 'checked' : '' }}>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="problemas_salud_mental[]" id="problemas_salud_mental4" value="Ninguno Posee Problema" {{ in_array('Ninguno Posee Problema', old('problemas_salud_mental', [])) ? 'checked' : '' }}>
                             </div>
                         </div>
                     </div>
