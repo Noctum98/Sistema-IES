@@ -27,7 +27,13 @@
                         <label for="motivo_opcional">Otro motivo (opcional):</label>
                         <textarea name="motivos[]" id="motivo_opcional" cols="10" rows="3" class="form-control"></textarea>
                     </div>
-                    <input type="submit" class="btn btn-danger" value="Dar baja">
+                    
+                    @if($inscripcion->acta_volante)
+                    <div class="alert alert-danger">
+                        El alumno ya tiene una nota cargada en el acta volante, no se puede eliminar esta inscripción.
+                    </div>
+                    @endif
+                    <input type="submit" class="btn btn-danger" value="Dar baja" {{ $inscripcion->acta_volante ? 'disabled' : '' }}>
                 </form>
             </div>
         </div>
