@@ -82,7 +82,7 @@
                     <p class="card-text">
                         <strong>Edad:</strong> {{ $alumno->edad ? $alumno->edad.' '.'años' : 'Sin asignar' }}<br />
                         <strong>Teléfono Celular:</strong> {{ $alumno->telefono ? : 'Sin Asignar' }}<br />
-                        <strong>Teléfono Fijo:</strong> {{ $alumno->telefono_fijo ? : 'Sin Asignar' }}
+                        <strong>Teléfono de Contacto:</strong> {{ $alumno->telefono_fijo ? : 'Sin Asignar' }}
                     </p>
                 </div>
             </div>
@@ -190,31 +190,21 @@
                                     </a>
 
                         <div class="row">
-                            @if(Session::has('admin'))
+                            @if(Session::has('admin') || Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos'))
 
                             <a href="{{ route('proceso.admin',['alumno_id' => $alumno->id,'carrera_id' =>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-primary col-md-3 mr-2">Ver materias</a>
-
-                            {{--
-                            <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
-                                materias
-                            </button>--}}
-                            @include('alumno.modals.carreras_matriculacion')
 
                             <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año
                             </button>
                             @include('alumno.modals.carreras_year')
-                            @elseif(Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos') || Session::has('areaSocial'))
+                            @elseif(Session::has('areaSocial'))
                             @if(Auth::user()->hasCarrera($carrera->id) || Session::has('areaSocial'))
                             <button class="btn btn-sm btn-primary col-md-3 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasMatriculacionModal{{$carrera->id}}">Ver
                                 materias
                             </button>
                             @include('alumno.modals.carreras_matriculacion')
 
-                                                <button class="btn btn-sm btn-primary col-md-3 mr-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#carrerasAñoModal{{$carrera->id}}">Cambiar año
-                                                </button>
-                                                @include('alumno.modals.carreras_year')
+
                                             @endif
                                         @elseif(Session::has('alumno'))
                                             <button class="btn btn-sm btn-primary col-md-3 mr-2"

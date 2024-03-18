@@ -68,7 +68,7 @@ class EncuestaSocioeconomicaController extends Controller
 
         Mail::to($encuestaSocioeconomica->alumno->email)->send(new MatriculacionSuccessEmail($encuestaSocioeconomica->alumno, $carrera));
         $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
-
+        //Año agregar a mensaje
         return view('matriculacion.card_finalizada', [
             'alumno' => $encuestaSocioeconomica->alumno,
             'mensaje' => $mensaje

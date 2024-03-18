@@ -72,7 +72,7 @@
                                 @if($alumno->hasProceso($materia->id,$ciclo_lectivo))
                                 <button class="btn btn-sm btn-danger btn-eliminar" data-bs-toggle="modal" data-bs-target="#eliminarProcesoModal" data-proceso_id="{{$alumno->procesoByMateria($materia->id,$ciclo_lectivo)->id}}">Eliminar <i class="fa fa-trash"></i></button>
                                 @else
-                                <a class="btn btn-sm btn-success" href="{{ route('proceso.inscribir',['alumno_id'=>$alumno->id,'materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}">Inscribir <i class="fas fa-pencil-alt"></i></a>
+                                <a class="btn btn-sm btn-success" href="{{ route('proceso.inscribirAlumno',['alumno_id'=>$alumno->id,'materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}">Inscribir <i class="fas fa-pencil-alt"></i></a>
                                 @endif
                             </td>
                         </tr>

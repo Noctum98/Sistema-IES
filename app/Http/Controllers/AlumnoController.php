@@ -176,7 +176,7 @@ class AlumnoController extends Controller
         $ciclo_lectivo = $ciclo_lectivo ?? date('Y');
 
         $pase = true;
-        if (Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin'))) {
+        if (Session::has('alumno') && (!Session::has('coordinador') && !Session::has('admin') && !Session::has('regente') && !Session::has('areaSocial'))) {
             if (Auth::user()->id != $alumno->user_id) {
                 $pase = false;
             }
