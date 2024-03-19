@@ -283,6 +283,18 @@ class CalificacionService
             ->get();
     }
 
+    public function calificacionesCargos(int $cargo , int $ciclo_lectivo, int $tipo, int $materia): Collection
+    {
+        return Calificacion::select('calificaciones.*')
+            ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
+            ->where('ciclo_lectivo', '=', $ciclo_lectivo)
+            ->where('materia_id', '=', $materia)
+            ->where('cargo_id', $cargo)
+            ->where('tipo_calificaciones.descripcion', $tipo)
+            ->get()
+            ;
+    }
+
     public function cuentaCalificacionesByCargo($cargo_id, $ciclo_lectivo): int
     {
         return count($this->calificacionesByCargo($cargo_id, $ciclo_lectivo));
