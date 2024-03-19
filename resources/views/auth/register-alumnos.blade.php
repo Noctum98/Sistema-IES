@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="año" class="col-md-4 col-form-label text-md-right">Año</label>
+                            <label for="año" class="col-md-4 col-form-label text-md-right">Año de cursado</label>
 
                             <div class="col-md-6">
                                 <input id="año" type="number" class="form-control" name="año" required>
@@ -56,6 +56,16 @@
                                 <input id="ciclo_lectivo" type="number" class="form-control" name="ciclo_lectivo" value="{{ date('Y') }}" required>
                             </div>
                         </div>
+
+                        @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

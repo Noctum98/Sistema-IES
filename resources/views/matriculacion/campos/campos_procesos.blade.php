@@ -16,13 +16,7 @@
         <strong> _ {{ $carrera->nombre.' ('.ucwords($carrera->turno).') - '.$carrera->sede->nombre }} </strong>
         <br>
         _ Año: {{ $matriculacion->lastProcesoCarrera($carrera->id)->año }}
-
-    </div>
-
-</div>
-
-{{--
-    @if($matriculacion->procesos_actuales->count() > 0)
+        @if($matriculacion->procesos_actuales->count() > 0)
         <p>Materias {{date('Y')}}: </p>
 
         
@@ -36,5 +30,8 @@
         <div class="spinner-border text-secondary d-none" role="status" id="spinner">
             <span class="sr-only">Loading...</span>
         </div> 
-        @endif    
---}}
+        @endif
+    </div>
+
+</div>
+

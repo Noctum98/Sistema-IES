@@ -140,8 +140,7 @@
         @elseif($año == 3)
         @include('matriculacion.campos.campos_tercero')
         @endif
-
-        @if(!$matriculacion->encuesta_socioeconomica)
+        @if(!$matriculacion->getEncuestaSocioeconomica() || ($matriculacion->getEncuestaSocioeconomica() && !$matriculacion->getEncuestaSocioeconomica()->completa))
         <input type="submit" value="Siguiente" class="btn btn-primary mt-3 col-md-12">
         @else
         <input type="submit" value="Editar Matriculación" class="btn btn-primary mt-3 col-md-12">

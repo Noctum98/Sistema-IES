@@ -82,7 +82,8 @@ class EncuestaSocioeconomica extends Model
         'problemas_salud_mental',
         'dia_actividades',
         'horario_actividades',
-        'otro_comentario'
+        'otro_comentario',
+        'completa'
     ];
 
     public function alumno(): BelongsTo
