@@ -56,7 +56,13 @@ class AlumnoController extends Controller
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
         if (Session::has('admin') || Session::has('areaSocial') || Session::has('regente')) {
-            $carreras = Carrera::orderBy('sede_id','asc')->get();
+            
+            if(Session::has('areaSocial'))
+            {
+                $carreras = Carrera::whereIn('sede_id', $sedes)->orderBy('sede_id', 'asc')->get();
+            }else{
+                $carreras = Carrera::orderBy('sede_id','asc')->get();
+            }
         } else {
             $carreras = $user->carreras;
         }
@@ -175,7 +181,7 @@ class AlumnoController extends Controller
         $ciclo_lectivo = $ciclo_lectivo ?? date('Y');
 
         $pase = true;
-        if (Session::has('alumno') && (!Session::has('coordinador') || Session::has('admin'))) {
+        if (Session::has('alumno') && (!Session::has('coordinador') && !Session::has('admin') && !Session::has('regente') && !Session::has('areaSocial'))) {
             if (Auth::user()->id != $alumno->user_id) {
                 $pase = false;
             }

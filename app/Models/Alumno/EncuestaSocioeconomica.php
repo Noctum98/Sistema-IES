@@ -76,7 +76,14 @@ class EncuestaSocioeconomica extends Model
         'lugar_trabajo',
         'temas_capacitacion',
         'actividades_extras',
-        'desc_actividades_extras'
+        'desc_actividades_extras',
+        'situacion_salud',
+        'cud',
+        'problemas_salud_mental',
+        'dia_actividades',
+        'horario_actividades',
+        'otro_comentario',
+        'completa'
     ];
 
     public function alumno(): BelongsTo

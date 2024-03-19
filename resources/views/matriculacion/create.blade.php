@@ -34,10 +34,6 @@
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
-
-        @if($año == 1)
-        <iframe class="mt-2" src="{{ $carrera->link_inscripcion }}" width="740" height="400" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
-        @endif
         
         <input type="submit" value="Siguiente" class="btn btn-primary col-md-12">
     </form>

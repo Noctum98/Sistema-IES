@@ -134,7 +134,12 @@ class Alumno extends Model
 
     public function encuesta_socioeconomica(): HasOne
     {
-        return $this->hasOne(EncuestaSocioeconomica::class,'alumno_id');
+        return $this->hasOne(EncuestaSocioeconomica::class);
+    }
+
+    public function getEncuestaSocioeconomica()
+    {
+        return EncuestaSocioeconomica::where('alumno_id',$this->id)->first();
     }
 
     public function hasCarrera($carrera_id)

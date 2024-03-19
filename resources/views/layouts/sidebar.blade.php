@@ -3,7 +3,7 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
 
-                @if(!Session::has('alumno'))
+                @if(!Session::has('alumno') || (Session::has('alumno') && count(Session::all()) >1) )
                 <div class="sb-sidenav-menu-heading">Administración</div>
                 <a class="nav-link" href="{{ route('usuarios.mis_datos')}}">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>

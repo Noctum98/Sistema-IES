@@ -70,7 +70,13 @@ class EncuestaSocioeconomicaRequest extends FormRequest
             'baño_con_descarga' => 'required',
             'piso_vivienda' => 'required',
             'construccion_vivienda' => 'required',
-            'condicion_vivienda' => 'required'
+            'condicion_vivienda' => 'required',
+            'situacion_salud'=> 'required',
+            'cud'=> 'required',
+            'problemas_salud_mental'=> 'required'
+            //'dia_actividades'=> 'required',
+            //'horario_actividades'=> 'required',
+            //'otro_comentario' => 'required',
         ];
     }
 }

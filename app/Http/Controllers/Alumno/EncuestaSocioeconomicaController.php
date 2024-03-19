@@ -46,7 +46,8 @@ class EncuestaSocioeconomicaController extends Controller
 
         if($encuestaSocioeconomicaExist)
         {
-            $encuestaSocioeconomica = $encuestaSocioeconomicaExist->update($request->all());
+            $encuestaSocioeconomicaExist->update($request->all());
+            $encuestaSocioeconomica = $encuestaSocioeconomicaExist;
 
         }else{
             $encuestaSocioeconomica = EncuestaSocioeconomica::create($request->all());
@@ -59,6 +60,7 @@ class EncuestaSocioeconomicaController extends Controller
     public function store2(Request $request)
     {
         $request = $this->encuestaSocioeconomicaService->procesarDatos2($request);
+        $request['completa'] = true;
         $carrera = Carrera::find($request['carrera_id']);
         $encuestaSocioeconomica = EncuestaSocioeconomica::find($request['enc']);
         if($encuestaSocioeconomica)
@@ -68,7 +70,7 @@ class EncuestaSocioeconomicaController extends Controller
 
         Mail::to($encuestaSocioeconomica->alumno->email)->send(new MatriculacionSuccessEmail($encuestaSocioeconomica->alumno, $carrera));
         $mensaje = "Felicidades te has matriculado correctamente a " . $carrera->nombre . " " . $carrera->sede->nombre;
-
+        //Año agregar a mensaje
         return view('matriculacion.card_finalizada', [
             'alumno' => $encuestaSocioeconomica->alumno,
             'mensaje' => $mensaje
