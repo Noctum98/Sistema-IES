@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Calificacion;
+use App\Models\Nota;
 use App\Models\ProcesoCalificacion;
 use App\Models\TipoCalificacion;
 use Illuminate\Support\Collection;
@@ -10,9 +11,9 @@ use LaravelIdea\Helper\App\Models\_IH_ProcesoCalificacion_C;
 
 class CalificacionService
 {
- public const TIPO_PARCIAL = 1;
- public const TIPO_TP = 2;
- public const TIPO_TFI = 3;
+    public const TIPO_PARCIAL = 1;
+    public const TIPO_TP = 2;
+    public const TIPO_TFI = 3;
 
     public function calificacionesByAlumno($alumno_id, $calificacion_id)
     {
@@ -132,11 +133,11 @@ class CalificacionService
      * Retornará 0 en caso de que la calificación no haya sido establecida (valor -1)
      * o el proceso no exista.
      */
-    public function calificacionTpByProceso(int $proceso_id, int $calificacion_id):float
+    public function calificacionTpByProceso(int $proceso_id, int $calificacion_id): float
     {
         $proceso_calificacion = $this->calificacionesByProceso($proceso_id, $calificacion_id);
 
-        $ptp  = 0;
+        $ptp = 0;
         if (isset($proceso_calificacion)) {
             $ptp = $proceso_calificacion[0]->nota ?? 0;
             if ($ptp == -1) {
@@ -271,16 +272,15 @@ class CalificacionService
      * @param int $materia El ID de la materia de la cual se desean obtener las calificaciones.
      * @return Collection Una colección que contiene las calificaciones correspondientes.
      */
-    public function calificacionesInCargos(array $cargos , int $ciclo_lectivo, array $tipos, int $materia): Collection
+    public function calificacionesInCargos(array $cargos, int $ciclo_lectivo, array $tipos, int $materia): Collection
     {
         return Calificacion::select('calificaciones.*')
-            ->join('tipo_calificaciones','calificaciones.tipo_id','tipo_calificaciones.id')
+            ->join('tipo_calificaciones', 'calificaciones.tipo_id', 'tipo_calificaciones.id')
             ->where('ciclo_lectivo', '=', $ciclo_lectivo)
             ->where('materia_id', '=', $materia)
             ->whereIn('cargo_id', $cargos)
             ->whereIn('tipo_calificaciones.descripcion', $tipos)
-            ->get()
-            ;
+            ->get();
     }
 
     public function cuentaCalificacionesByCargo($cargo_id, $ciclo_lectivo): int
@@ -329,6 +329,25 @@ class CalificacionService
     public function cuentaCalificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo): int
     {
         return count($this->calificacionesByMateriaCargoTipo($materia_id, $cargo_id, $tipo_id, $ciclo_lectivo));
+    }
+
+    public function getNotaByPorcentaje(int $porcentaje, $year = null)
+    {
+        if (!$year) {
+            $year = date('Y');
+        }
+        $nota = Nota::select('notas.*')
+            ->where('min', '<=', $porcentaje)
+            ->where('max', '>=', $porcentaje)
+            ->where('year', '<', $year)
+            ->orderBy('year', 'DESC')
+            ->first();
+
+        if ($nota) {
+            return $nota->valor;
+        }
+        return null;
+
     }
 
 }
