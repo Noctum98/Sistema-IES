@@ -15,7 +15,10 @@ class CondicionCarrera extends Model
         'nombre',
         'identificador',
         'habilitado',
+        'operador_id'
     ];
+
+
 
     protected function operador(): BelongsTo
     {
