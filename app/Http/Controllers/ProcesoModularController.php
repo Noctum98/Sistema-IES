@@ -83,6 +83,7 @@ class ProcesoModularController extends Controller
         if (Auth::user()->hasAnyRole('coordinador') || Auth::user()->hasAnyRole('admin')) {
             $puedeProcesar = true;
         }
+
         $user = Auth::user();
 
         $acciones = [];
@@ -93,12 +94,13 @@ class ProcesoModularController extends Controller
 
         $arrayProcesos = $proc->pluck('id')->toArray();
 
-        $procesos = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
+        $procesosModulares = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
-        $cantidad_procesos = $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
+
+        $cantidad_procesos_no_vinculados = $serviceModular->obtenerProcesosModularesNoVinculadosByProcesos(
             $arrayProcesos, $materia->id, $ciclo_lectivo);
 
-        if (count($cantidad_procesos) > 0) {
+        if (count($cantidad_procesos_no_vinculados) > 0) {
             $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
@@ -108,16 +110,16 @@ class ProcesoModularController extends Controller
              */
 
             foreach ($materia->cargos()->get() as $cargo) {
-                foreach ($procesos as $proceso) {
+                foreach ($procesosModulares as $procesoModular) {
                     $this->cargoProcesoService->grabaNotaPonderadaCargo(
                         $cargo->id,
                         $ciclo_lectivo,
-                        $proceso->proceso_id,
+                        $procesoModular->proceso_id,
                         $materia->id,
                         $user->id);
                 }
 
-                if($cargo->responsableTFI($materia->id) && $user->hasCargo($cargo->id)){
+                if ($cargo->responsableTFI($materia->id) && $user->hasCargo($cargo->id)) {
                     $puedeProcesar = true;
                 }
             }
@@ -138,7 +140,7 @@ class ProcesoModularController extends Controller
                 'materia' => $materia,
                 'cargo_id' => $cargo_id,
                 'acciones' => $acciones,
-                'procesos' => $procesos,
+                'procesos' => $procesosModulares,
                 'puede_procesar' => $puedeProcesar,
                 'estados' => $estados,
                 'ciclo_lectivo' => $ciclo_lectivo,

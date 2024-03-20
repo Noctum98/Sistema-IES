@@ -95,7 +95,7 @@
                     <h6> Cargos: </h6>
                     @foreach($materia->cargos()->get() as $cargo)
                         <a href="{{ route('proceso.listadoCargo',
-                                ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id]) }}"
+                                ['materia_id'=> $materia->id, 'cargo_id' => $cargo->id, $ciclo_lectivo]) }}"
                            class="btn btn-info btn-sm" title="Ver proceso cargo">
                             {{$cargo->nombre}}
                             @if(Session::has('admin'))
@@ -249,6 +249,10 @@
                                         <tr class="bg-secondary text-white font-weight-bold" id="pfn-{{$proceso->id}}">
                                             <td>
                                                 {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
+                                                @if(Session::has('admin'))
+                                                    <small><br/>(Proceso: {{$proceso->procesoRelacionado->id}}
+                                                        )</small>
+                                                @endif
                                             </td>
                                             <td class="text-center">
 
