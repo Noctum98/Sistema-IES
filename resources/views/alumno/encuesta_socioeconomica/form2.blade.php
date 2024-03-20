@@ -14,6 +14,15 @@
     <form action="{{ route('encuesta_socioeconomica.store2') }}" method="POST">
         <input type="hidden" name="enc" value="{{ $encuesta_socioeconomica->id }}">
         <input type="hidden" name="carrera_id" value="{{ $carrera->id }}">
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card mb-3">
             <div class="card-body">
                 <div class="form-group">

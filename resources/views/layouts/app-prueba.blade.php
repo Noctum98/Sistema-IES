@@ -18,8 +18,10 @@
     <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
     <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('vendors/select2/js/i18n/es.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
+
 
     @yield('scripts')
 
