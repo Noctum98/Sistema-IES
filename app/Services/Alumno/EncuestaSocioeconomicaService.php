@@ -210,6 +210,17 @@ class EncuestaSocioeconomicaService
             $request['lugar_trabajo'] = $lugar_trabajo;
         }
 
+        if($request['horario_actividades'])
+        {
+            $horario_actividades = '';
+            foreach($request['horario_actividades'] as $horario)
+            {
+                $horario_actividades = $horario_actividades.'|'.$horario;
+            }
+
+            $request['horario_actividades'] = $horario_actividades;
+        }
+
         return $request;
     }
 }
