@@ -34,7 +34,24 @@ class EncuestaSocioeconomicaService
         {
             $edad_hijos = $edad_hijos.'|'.$edad;
         }
+
         $request['edad_hijos'] = $edad_hijos;
+
+        $situacion_salud = '';
+        foreach($request['situacion_salud'] as $situacion)
+        {
+            $situacion_salud = $situacion_salud.'|'.$situacion;
+        }
+
+        $request['situacion_salud'] = $situacion_salud;
+
+        $problemas_salud_mental = '';
+        foreach($request['problemas_salud_mental'] as $problema)
+        {
+            $problemas_salud_mental = $problemas_salud_mental.'|'.$problema;
+        }
+
+        $request['problemas_salud_mental'] = $problemas_salud_mental;
 
         $subsidios = '';
         foreach($request['subsidios'] as $subsidio)
@@ -134,17 +151,6 @@ class EncuestaSocioeconomicaService
             $problemas_judiciales = $problemas_judiciales.'|'.$pjudicial;
         }
         $request['problemas_judiciales'] = $problemas_judiciales;
-
-
-        if($request['comprobanete_progresar'])
-        {
-            $comprobante = $request->file('comprobanete_progresar');
-            $archivo_nombre = uniqid() . $comprobante->getClientOriginalName();
-
-            Storage::disk('temp')->put($archivo_nombre, file_get_contents($comprobante));
-
-            $request['comprobanete_progresar'] = $archivo_nombre;
-        }
 
         return $request;
     }
