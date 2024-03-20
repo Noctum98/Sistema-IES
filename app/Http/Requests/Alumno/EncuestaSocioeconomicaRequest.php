@@ -73,10 +73,10 @@ class EncuestaSocioeconomicaRequest extends FormRequest
             'condicion_vivienda' => 'required',
             'situacion_salud'=> 'required',
             'cud'=> 'required',
-            'problemas_salud_mental'=> 'required',
-            'dia_actividades'=> 'required',
-            'horario_actividades'=> 'required',
-            'otro_comentario' => 'required',
+            'problemas_salud_mental'=> 'required'
+            //'dia_actividades'=> 'required',
+            //'horario_actividades'=> 'required',
+            //'otro_comentario' => 'required',
         ];
     }
 }

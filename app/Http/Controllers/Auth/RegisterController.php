@@ -114,6 +114,10 @@ class RegisterController extends Controller
 
     public function registerAlumno(Request $request)
     {
+        $this->validate($request,[
+            'año' => 'required|integer|max:3|min:1'
+        ]);
+        
         if(!$request['user_id'])
         {
             $user = $this->registerEvent($request);
