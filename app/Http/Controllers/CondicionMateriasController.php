@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\CondicionCarrera;
+use App\Models\CondicionMateria;
+use App\Models\Operador;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,34 +12,34 @@ use Exception;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
-class CondicionCarrerasController extends Controller
+class CondicionMateriasController extends Controller
 {
 
     /**
-     * Mostar un listing de condiciones carreras.
+     * Muestra un listado de condiciones materia.
      *
      * @return View
      */
     public function index()
     {
-        $condicionCarreras = CondicionCarrera::paginate(15)->withQueryString();
+        $condicionMaterias = CondicionMateria::paginate(15)->withQueryString();
 
-        return view('condicion_carreras.index', compact('condicionCarreras'));
+        return view('condicion_materias.index', compact('condicionMaterias'));
     }
 
     /**
-     * Muestra el formulario de creación de una nueva condición carrera.
+     *Muestra un formulario para crear nueva condición materia.
      *
      * @return View
      */
     public function create()
     {
 
-        return view('condicion_carreras.create');
+        return view('condicion_materias.create');
     }
 
     /**
-     * Guarda una nueva condición carrera.
+     * Guarda una nueva condición materia.
      *
      * @param Request $request
      *
@@ -49,30 +50,28 @@ class CondicionCarrerasController extends Controller
 
         $data = $this->getData($request);
 
+        CondicionMateria::create($data);
 
-        CondicionCarrera::create($data);
-
-        return redirect()->route('condicion_carreras.condicion_carrera.index')
-            ->with('success_message', 'Condición Carrera fue guardada correctamente.');
+        return redirect()->route('condicion_materias.condicion_materia.index')
+            ->with('success_message', 'Condición Materia creada correctamente.');
     }
 
     /**
-     * Mostrar una condición carrera en específico.
+     * Muestra una condición materia específica.
      *
      * @param int $id
      *
      * @return View
      */
-    public function show(int $id): View
+    public function show(int $id)
     {
-        $condicionCarrera = CondicionCarrera::findOrFail($id);
+        $condicionMateria = CondicionMateria::findOrFail($id);
 
-        return view('condicion_carreras.show', compact('condicionCarrera'));
+        return view('condicion_materias.show', compact('condicionMateria'));
     }
 
-
     /**
-     * Muestra el formulario de edición de una condición carrera específica.
+     * Muestra un formulario para editar una condición materia.
      *
      * @param int $id
      *
@@ -80,14 +79,14 @@ class CondicionCarrerasController extends Controller
      */
     public function edit(int $id)
     {
-        $condicionCarrera = CondicionCarrera::findOrFail($id);
-        $Users = User::pluck('username', 'id')->all();
+        $condicionMateria = CondicionMateria::findOrFail($id);
+        $operadors = User::pluck('id', 'id')->all();
 
-        return view('condicion_carreras.edit', compact('condicionCarrera', 'Users'));
+        return view('condicion_materias.edit', compact('condicionMateria', 'operadors'));
     }
 
     /**
-     * Actualizar una condición carrera específica.
+     * Actualiza una condición materia específica.
      *
      * @param int $id
      * @param Request $request
@@ -99,15 +98,15 @@ class CondicionCarrerasController extends Controller
 
         $data = $this->getData($request);
 
-        $condicionCarrera = CondicionCarrera::findOrFail($id);
-        $condicionCarrera->update($data);
+        $condicionMateria = CondicionMateria::findOrFail($id);
+        $condicionMateria->update($data);
 
-        return redirect()->route('condicion_carreras.condicion_carrera.index')
-            ->with('success_message', 'Condición Carrera ha sido actualizada correctamente.');
+        return redirect()->route('condicion_materias.condicion_materia.index')
+            ->with('success_message', 'Condición Materia actualizada correctamente.');
     }
 
     /**
-     * Borra una condición carrera específica.
+     * Borra una condición materia especifíca.
      *
      * @param int $id
      *
@@ -116,11 +115,11 @@ class CondicionCarrerasController extends Controller
     public function destroy(int $id)
     {
         try {
-            $condicionCarrera = CondicionCarrera::findOrFail($id);
-            $condicionCarrera->delete();
+            $condicionMateria = CondicionMateria::findOrFail($id);
+            $condicionMateria->delete();
 
-            return redirect()->route('condicion_carreras.condicion_carrera.index')
-                ->with('success_message', 'Condición Carrera correctamente borrada.');
+            return redirect()->route('condicion_materias.condicion_materia.index')
+                ->with('success_message', 'Condición Materia borrada correctamente.');
         } catch (Exception $exception) {
 
             return back()->withInput()
@@ -130,7 +129,7 @@ class CondicionCarrerasController extends Controller
 
 
     /**
-     * Obtenga los datos de la request.
+     * Get the request's data from the request.
      *
      * @param Request $request
      * @return array
