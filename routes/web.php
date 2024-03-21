@@ -57,6 +57,7 @@ use App\Models\Alumno\EncuestaSocioeconomica;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Carrera;
 use App\Models\Sede;
+use App\Http\Controllers\CondicionCarrerasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -763,3 +764,22 @@ Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
 
 
 })->middleware('app.roles:admin');
+
+Route::group([
+    'prefix' => 'condicion_carreras',
+], function () {
+    Route::get('/', [CondicionCarrerasController::class, 'index'])
+         ->name('condicion_carreras.condicion_carrera.index');
+    Route::get('/create', [CondicionCarrerasController::class, 'create'])
+         ->name('condicion_carreras.condicion_carrera.create');
+    Route::get('/show/{condicionCarrera}',[CondicionCarrerasController::class, 'show'])
+         ->name('condicion_carreras.condicion_carrera.show')->where('id', '[0-9]+');
+    Route::get('/{condicionCarrera}/edit',[CondicionCarrerasController::class, 'edit'])
+         ->name('condicion_carreras.condicion_carrera.edit')->where('id', '[0-9]+');
+    Route::post('/', [CondicionCarrerasController::class, 'store'])
+         ->name('condicion_carreras.condicion_carrera.store');
+    Route::put('condicion_carrera/{condicionCarrera}', [CondicionCarrerasController::class, 'update'])
+         ->name('condicion_carreras.condicion_carrera.update')->where('id', '[0-9]+');
+    Route::delete('/condicion_carrera/{condicionCarrera}',[CondicionCarrerasController::class, 'destroy'])
+         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
+});
