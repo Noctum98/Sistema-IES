@@ -59,7 +59,8 @@ class AlumnoController extends Controller
             
             if(Session::has('areaSocial'))
             {
-                $carreras = Carrera::whereIn('sede_id', $sedes)->orderBy('sede_id', 'asc')->get();
+                $sedesIds = $sedes->pluck('id')->toArray();
+                $carreras = Carrera::whereIn('sede_id', $sedesIds)->orderBy('sede_id', 'asc')->get();
             }else{
                 $carreras = Carrera::orderBy('sede_id','asc')->get();
             }
