@@ -20,6 +20,7 @@
     <script src="{{ asset('vendors/select2/js/i18n/es.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
 
 
@@ -110,6 +111,7 @@
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 </script>
+
 </body>
 
 </html>

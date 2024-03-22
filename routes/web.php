@@ -693,7 +693,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 
 Route::prefix('estadistica')->group(function () {
     Route::get('datos', [AlumnoController::class, 'vista_datos']);
-    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
+    Route::get('obtenerGraficos/{sede_id?}/{carrera_id?}/{year?}', [AlumnoController::class, 'obtenerGraficos']);
 });
 
 Route::resource('etapa_campo', EtapaCampoController::class);

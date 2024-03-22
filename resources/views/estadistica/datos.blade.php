@@ -17,88 +17,26 @@
 		<div class="form-group">
 			<label for="carrera_id">Carreras</label>
 			<select name="carrera_id" id="carrera_id" class="form-select">
-			<option value="">Ninguna</option>
-			@foreach($carreras as $carrera)
+				<option value="">Ninguna</option>
+				@foreach($carreras as $carrera)
 				<option value="{{ $carrera->id }}" {{ isset($carrera_id) && $carrera->id == $carrera_id ? 'selected':'' }}>{{ $carrera->nombre.' ('.$carrera->turno.') - '.$carrera->sede->nombre }}</option>
-			@endforeach
+				@endforeach
 			</select>
-					
+
 		</div>
 		<div class="form-group">
-			<label for="localidad">Localidad</label>
-			<input type="text" class="form-control" id="localidad" name="localidad" value="{{ isset($localidad) ? $localidad : '' }}">
+			<label for="localidad">Año</label>
+			<input type="text" class="form-control" id="año" name="año" value="{{ isset($año) ? $año : '' }}">
 		</div>
-		<div class="form-group">
-			<label for="edad">Edad</label>
-			<input type="number" name="edad" id="edad" class="form-control" value="{{ isset($edad) ? $edad : '' }}">
-		</div>
+
 		<input type="submit" value="Buscar" class="btn btn-success">
 	</form>
+	<div>
+		<canvas id="identidad_genero" class="d-none"></canvas>
+	</div>
 
-	@if(isset($status) && $status == 1)
-	<table class="table mt-4">
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">Dato</th>
-				<th scope="col">Cantidad</th>
-			</tr>
-		</thead>
-		<tbody>
-			@if($edad)
-			<tr>
-				<td>Edad: {{$edad}} </td>
-				<td>{{$edades}}</td>
-			</tr>
-			@endif
-			<tr>
-				<td>Discapacidad Visual: </td>
-				<td>{{ $discapacidad_visual }}</td>
-			</tr>
 
-			<tr>
-				<td>Discapacidad Motriz:</td>
-				<td>{{ $discapacidad_motriz }}</td>
-			</tr>
 
-			<tr>
-				<td>Discapacidad Mental:</td>
-				<td>{{ $discapacidad_mental }}</td>
-			</tr>
-
-			<tr>
-				<td>Discapacidad Intelectual:</td>
-				<td>{{ $discapacidad_intelectual }}</td>
-			</tr>
-
-			<tr>
-				<td>Discapacidad Auditiva:</td>
-				<td>{{ $discapacidad_auditiva }}</td>
-			</tr>
-
-			<tr>
-				<td>Población Indigena</td>
-				<td>{{$poblacion_indigena}}</td>
-			</tr>
-
-			<tr>
-				<td>Privado de libertad:</td>
-				<td>{{$privacidad}}</td>
-			</tr>
-
-			@if($localidad)
-			<tr>
-				<td>Localidad: {{ $localidad }}</td>
-				<td>{{$localidad_cantidad}}</td>
-			</tr>
-			@endif
-
-			<tr>
-				<td>Fuera de Mendoza</td>
-				<td>{{$fuera_mendoza}}</td>
-			</tr>
-		</tbody>
-	</table>
-	@endif
 </div>
 @endsection
 @section('scripts')
