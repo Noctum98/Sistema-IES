@@ -87,10 +87,11 @@ class MatriculacionController extends Controller
     {
         $alumno = Alumno::find($alumno_id);
         $carrera = Carrera::find($carrera_id);
+        Log::info('MatriculacionController - edit '.$alumno->dni);
 
         if (!$carrera->matriculacion_habilitada) {
             if(!Session::has('admin') && !Session::has('coordinador') && !Session::has('regente') && !Session::has('seccionAlumnos') ){
-                
+                Log::info('Ingresé a redirect no habilitada!');
                 return redirect()->back()->with(['alert_warning' => 'La carrera no tiene la matriculación habilitada.']);
             }
         }
@@ -106,6 +107,8 @@ class MatriculacionController extends Controller
                 $año = $alumno_carrera->año;
             }
         } else {
+            Log::info('Ingresé a redirect verificada!');
+
             return redirect()->back()->with(['alert_success' => 'Tu matriculación ya fue verificada, no puedes editarla.']);
         }
 
