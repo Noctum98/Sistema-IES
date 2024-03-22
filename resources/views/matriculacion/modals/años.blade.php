@@ -32,7 +32,7 @@
 
             </div>
             <div class="modal-footer">
-            <button id="link_matriculacion" data-carrera="{{ $carrera->id }}" class="btn btn-primary">Elegir</button>
+            <button data-carrera="{{ $carrera->id }}" class="btn btn-primary link_matriculacion">Elegir</button>
 
             </div>
             </form>
