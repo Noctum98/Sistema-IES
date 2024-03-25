@@ -43,6 +43,8 @@ class MatriculacionController extends Controller
     {
         $user_id = Auth::user()->id;
 
+        $alumno = Alumno::where('user_id',$user_id)->first();
+
         $carreras = Carrera::whereHas('alumnos', function ($query) use ($user_id) {
             $query->where('alumnos.user_id', $user_id);
         })
@@ -51,7 +53,7 @@ class MatriculacionController extends Controller
             }, 'sede'])->get();
 
 
-        return view('matriculacion.index', ['carreras' => $carreras]);
+        return view('matriculacion.index', ['carreras' => $carreras,'alumno'=>$alumno]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)

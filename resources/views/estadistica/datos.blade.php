@@ -31,8 +31,17 @@
 
 		<input type="submit" value="Buscar" class="btn btn-success">
 	</form>
-	<div>
-		<canvas id="identidad_genero" class="d-none"></canvas>
+
+	<div id="graficos" class="d-none mt-3">
+		<div class="card">
+			<div class="card-header p-3 bg-info text-center">
+				Identidad de género
+			</div>
+			<div class="card-body">
+				<canvas id="identidad_genero"></canvas>
+			</div>
+		</div>
+
 	</div>
 
 
