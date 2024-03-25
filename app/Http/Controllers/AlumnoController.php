@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Carrera;
 use App\Models\Preinscripcion;
 use App\Models\Sede;
+use App\Services\Alumno\EncuestaSocioeconomicaService;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
 use Illuminate\Http\Request;
@@ -20,6 +22,7 @@ class AlumnoController extends Controller
 {
 
     protected $alumnoService;
+    protected $encuestaSocioeconomicaService;
     /**
      * @var CicloLectivoService $cicloLectivoService
      */
@@ -31,15 +34,18 @@ class AlumnoController extends Controller
      */
     public function __construct(
         AlumnoService       $alumnoService,
-        CicloLectivoService $cicloLectivoService
+        CicloLectivoService $cicloLectivoService,
+        EncuestaSocioeconomicaService $encuestaSocioeconomicaService
     ) {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
             'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial-equivalencias',
             ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir', 'vista_equivalencias']]
         );
+        $this->middleware('app.roles:admin', ['only' => 'vista_datos']);
         $this->alumnoService = $alumnoService;
         $this->cicloLectivoService = $cicloLectivoService;
+        $this->encuestaSocioeconomicaService = $encuestaSocioeconomicaService;
     }
 
     // Vistas
@@ -57,12 +63,12 @@ class AlumnoController extends Controller
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
         if (Session::has('admin') || Session::has('areaSocial') || Session::has('regente')) {
-            
-            if(Session::has('areaSocial'))
-            {
-                $carreras = Carrera::whereIn('sede_id', $sedes)->orderBy('sede_id', 'asc')->get();
-            }else{
-                $carreras = Carrera::orderBy('sede_id','asc')->get();
+
+            if (Session::has('areaSocial')) {
+                $sedesIds = $sedes->pluck('id')->toArray();
+                $carreras = Carrera::whereIn('sede_id', $sedesIds)->orderBy('sede_id', 'asc')->get();
+            } else {
+                $carreras = Carrera::orderBy('sede_id', 'asc')->get();
             }
         } else {
             $carreras = $user->carreras;
@@ -253,85 +259,41 @@ class AlumnoController extends Controller
         }
     }
 
-    public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $localidad = null, $edad = null)
+    public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $año = null)
     {
-        $data = [];
-        if ($sede_id) {
-
-            $discapacidad_visual = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('discapacidad_visual', true)->count();
-
-            $discapacidad_motriz = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('discapacidad_motriz', true)->count();
-
-
-            $discapacidad_mental = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('discapacidad_mental', true)->count();
-
-            $discapacidad_intelectual = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('discapacidad_intelectual', '!=', 'ninguna')->count();
-
-            $discapacidad_auditiva = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('discapacidad_auditiva', '!=', 'ninguna')->count();
-
-            $poblacion_indigena = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('poblacion_indigena', true)->count();
-
-            $privacidad = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('privacidad', true)->count();
-
-            $fuera_mendoza = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                return $query->where('sede_id', $sede_id);
-            })->where('provincia', '!=', 'Mendoza')
-            ->Where('provincia', '!=', 'mendoza')->count();
-
-
-            if ($localidad && $localidad != 0) {
-                $localidad_cantidad = Alumno::whereHas('carreras', function ($query) use ($sede_id) {
-                    return $query->where('sede_id', $sede_id);
-                })->where('localidad', $request['localidad'])->count();
-            }
-
-            if ($edad && $edad != 0) {
-                $edades = Alumno::whereHas('carreras', function ($query) use ($sede_id, $carrera_id) {
-                    if ($carrera_id && $carrera_id != 0) {
-                        return $query->where('carreras.id', $carrera_id);
-                    } else {
-                        return $query->where('sede_id', $sede_id);
-                    }
-                })->where('edad', $edad)->count();
-            }
-
-            $data = [
-                'status' => true,
-                'edad' => $edad ?? null,
-                'localidad' => $localidad ?? null,
-                'sede_id' => $sede_id ?? null,
-                'carrera_id' => $carrera_id ?? null,
-                'edades' => $edades ?? null,
-                'discapacidad_visual' => $discapacidad_visual ?? null,
-                'discapacidad_motriz' => $discapacidad_motriz ?? null,
-                'discapacidad_mental' => $discapacidad_mental ?? null,
-                'discapacidad_intelectual' => $discapacidad_intelectual ?? null,
-                'discapacidad_auditiva' => $discapacidad_auditiva ?? null,
-                'poblacion_indigena' => $poblacion_indigena ?? null,
-                'privacidad' => $privacidad ?? null,
-                'localidad_cantidad' => $localidad_cantidad ?? null,
-                'fuera_mendoza' => $fuera_mendoza ?? null,
-            ];
-        }
-
         $data['sedes'] = Sede::all();
         $data['carreras'] = Carrera::all();
 
         return view('estadistica.datos', $data);
+    }
+
+    public function obtenerGraficos(Request $request, $sede_id = null, $carrera_id = null, $año = null)
+    {
+        $parameters = [
+            'año' => $año,
+            'carrera_id' => $carrera_id,
+            'sede_id' => $sede_id
+        ];
+        $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
+            $query->whereHas('carreras', function ($query) use ($parameters) {
+                $query->where('carreras.id', $parameters['carrera_id']);
+            })->whereHas('carreras', function ($query) use ($parameters) {
+                $query->where('año', $parameters['año']);
+            });
+        })->get();
+
+        $datos = $this->encuestaSocioeconomicaService->formatearDatos($encuestas);
+
+        $data = [];
+        foreach ($datos as $key => $value) {
+            $data[] = [
+                'identificador' => $key,
+                'labels' => $value['labels'],
+                'data' => $value['data']
+            ];
+        }
+
+        return response()->json(['data' => $data], 200);
     }
 
 
@@ -402,7 +364,7 @@ class AlumnoController extends Controller
                 ]);
             }
         } else {
-            $rutaArchivo = 'temp/'.$nombre;
+            $rutaArchivo = 'temp/' . $nombre;
 
             $rutaCompleta = storage_path("app/{$rutaArchivo}");
 

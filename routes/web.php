@@ -56,6 +56,9 @@ use App\Models\Alumno\EncuestaSocioeconomica;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Carrera;
 use App\Models\Sede;
+use App\Http\Controllers\CondicionCarrerasController;
+use App\Http\Controllers\CondicionMateriasController;
+use App\Http\Controllers\CondicionMateriaApiDocsApiDocsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -689,7 +692,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 
 Route::prefix('estadistica')->group(function () {
     Route::get('datos', [AlumnoController::class, 'vista_datos']);
-    Route::get('datos/{sede_id?}/{carrera_id?}/{edad?}/{localidad?}', [AlumnoController::class, 'vista_datos']);
+    Route::get('obtenerGraficos/{sede_id?}/{carrera_id?}/{year?}', [AlumnoController::class, 'obtenerGraficos']);
 });
 
 Route::resource('etapa_campo', EtapaCampoController::class);
@@ -763,3 +766,43 @@ Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
 
 
 })->middleware('app.roles:admin');
+
+Route::group([
+    'prefix' => 'condicion_carreras',
+], function () {
+    Route::get('/', [CondicionCarrerasController::class, 'index'])
+         ->name('condicion_carreras.condicion_carrera.index');
+    Route::get('/create', [CondicionCarrerasController::class, 'create'])
+         ->name('condicion_carreras.condicion_carrera.create');
+    Route::get('/show/{condicionCarrera}',[CondicionCarrerasController::class, 'show'])
+         ->name('condicion_carreras.condicion_carrera.show')->where('id', '[0-9]+');
+    Route::get('/{condicionCarrera}/edit',[CondicionCarrerasController::class, 'edit'])
+         ->name('condicion_carreras.condicion_carrera.edit')->where('id', '[0-9]+');
+    Route::post('/', [CondicionCarrerasController::class, 'store'])
+         ->name('condicion_carreras.condicion_carrera.store');
+    Route::put('condicion_carrera/{condicionCarrera}', [CondicionCarrerasController::class, 'update'])
+         ->name('condicion_carreras.condicion_carrera.update')->where('id', '[0-9]+');
+    Route::delete('/condicion_carrera/{condicionCarrera}',[CondicionCarrerasController::class, 'destroy'])
+         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
+});
+
+Route::group([
+    'prefix' => 'condicion_materias',
+], function () {
+    Route::get('/', [CondicionMateriasController::class, 'index'])
+         ->name('condicion_materias.condicion_materia.index');
+    Route::get('/create', [CondicionMateriasController::class, 'create'])
+         ->name('condicion_materias.condicion_materia.create');
+    Route::get('/show/{condicionMateria}',[CondicionMateriasController::class, 'show'])
+         ->name('condicion_materias.condicion_materia.show');
+    Route::get('/{condicionMateria}/edit',[CondicionMateriasController::class, 'edit'])
+         ->name('condicion_materias.condicion_materia.edit');
+    Route::post('/', [CondicionMateriasController::class, 'store'])
+         ->name('condicion_materias.condicion_materia.store');
+    Route::put('condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'update'])
+         ->name('condicion_materias.condicion_materia.update');
+    Route::delete('/condicion_materia/{condicionMateria}',[CondicionMateriasController::class, 'destroy'])
+         ->name('condicion_materias.condicion_materia.destroy');
+});
+Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
+     ->name('api-docs.condicion_materias.condicion_materia.index');

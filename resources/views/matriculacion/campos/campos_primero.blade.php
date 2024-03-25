@@ -24,6 +24,13 @@
         <p>b- A la vez, tener autorización para cursar espacios / módulos del año siguiente superior no correlativos al espacio / módulo que recursa.</p>
         <p>Usted deberá marcar los espacios curriculares / módulos de primer año a recursar.</p>
         <p>Deberá marcar los espacios curriculares / módulos de segundo año en los cuales se lo autorizó a cursar. </p>
+        <br>
+        <p>Deberá inscribirse como <b>"ESTUDIANTE REINSCRIPTO EN PRIMER AÑO":</b></p>
+        <p>a- Una vez que realizó el pedido de excepción para reinscribirse en la carrera, fue notificado/a de su aprobación formal para su reingreso.</p>
+        <p>b- Actualizó toda la documentación requerida para el completamiento del Legajo.</p>
+        <p>c- Deberá inscribirse a todos los espacios curriculares con los que cuenta acreditación en su cursado anterior.</p>
+        <p>Observación: Una vez reinscripto deberá comunicarse con la coordinación de carrera para establecer los espacios curriculares que deberá realizar pedido de equivalencia o cursar nuevamente.</p>
+
         </p>
         <h5>INSCRIPCIÓN A PRIMER AÑO</h5>
         <div class="form-check">
@@ -49,6 +56,12 @@
             <input class="form-check-input" type="radio" name="regularidad" id="recursante_diferenciado_primero" value="recursante_diferenciado_primero" {{ old('regularidad') == 'recursante_diferenciado_primero' ? 'checked' : '' }}>
             <label class="form-check-label" for="recursante_diferenciado_primero">
                 RECURSANTE CON TRAYECTORIA DIFERENCIADA DE CURSADO EN SEGUNDO AÑO
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="regularidad" id="reinscripto_primero" value="reinscripto_primero" {{ old('regularidad') == 'reinscripto_primero' ? 'checked' : '' }}>
+            <label class="form-check-label" for="reinscripto_primero">
+                REINSCRIPTO
             </label>
         </div>
         @endif

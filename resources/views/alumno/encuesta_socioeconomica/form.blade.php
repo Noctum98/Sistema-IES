@@ -921,6 +921,12 @@
                         </label>
                     </div>
                     <div class="form-check">
+                        <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre20" value="Primario completo" {{ old('maximo_nivel_educativo_padre') == 'Primario completo' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="maximo_nivel_educativo_padre20">
+                            Primario completo
+                        </label>
+                    </div>
+                    <div class="form-check">
                         <input class="form-check-input" type="radio" name="maximo_nivel_educativo_padre" id="maximo_nivel_educativo_padre2" value="Primario incompleto" {{ old('maximo_nivel_educativo_padre') == 'Primario incompleto' ? 'checked' : '' }}>
                         <label class="form-check-label" for="maximo_nivel_educativo_padre2">
                             Primario incompleto
@@ -983,6 +989,12 @@
                         <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre1" value="Analfabeto" {{ old('maximo_nivel_educativo_madre') == 'Analfabeto' ? 'checked' : '' }}>
                         <label class="form-check-label" for="maximo_nivel_educativo_madre1">
                             Analfabeto
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="maximo_nivel_educativo_madre" id="maximo_nivel_educativo_madre10" value="Primario completo" {{ old('maximo_nivel_educativo_madre') == 'Primario completo' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="maximo_nivel_educativo_madre10">
+                            Primario completo
                         </label>
                     </div>
                     <div class="form-check">

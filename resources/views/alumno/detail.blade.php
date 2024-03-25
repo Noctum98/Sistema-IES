@@ -148,7 +148,23 @@
                     </li>
                     <li><strong>Privación de libertad o en regímenes
                             semi-abiertos:</strong> {{$alumno->privacidad ? 'Si' : 'No'}} </li>
+                    
+                    @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+                    <li>
+                        <div class="alert alert-danger">
+                            <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL SIN COMPLETAR</strong>
+                        </div>
+                    </li>
+                    @else
+                    <li>
+                        <div class="alert alert-success">
+                            <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL COMPLETA</strong>
+                        </div>
+                    </li>
+                    @endif
                 </ul>
+
+
 
                 <ul class="datos-academicos col-md-6">
                     <li>

@@ -27,16 +27,22 @@
 
 
                     <td>{{ $carrera->nombre.' - '.strtoupper($carrera->turno) }}</td>
-                                        <td>{{ $carrera->resolucion }}</td>
+                    <td>{{ $carrera->resolucion }}</td>
 
                     <td>{{ $carrera->sede->nombre}}</td>
 
                     <td>
-                        <button type="button" class="btn btn-sm btn-secondary"  data-bs-toggle="modal" data-bs-target="#carreraAño{{$carrera->id}}" {{ !$carrera->matriculacion_habilitada ? 'disabled' :'' }}>
-                        <i class="fas fa-paste"></i>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#carreraAño{{$carrera->id}}" {{ !$carrera->matriculacion_habilitada ? 'disabled' :'' }}>
+                            <i class="fas fa-paste"></i>
                             Inscribirse
                         </button>
                         @include('matriculacion.modals.años')
+                        @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+
+                        <a href="{{ route('encuesta_socioeconomica.showForm',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="btn btn-sm btn-danger">
+                            Completar Encuesta
+                        </a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -46,6 +52,18 @@
         <p>No hay carreras habilitadas</p>
         @endif
     </div>
+
+    @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+        <div class="alert alert-danger">
+            No has completado tu <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL</strong>, solo debe realizarse una sola vez. 
+        </div>
+    @endif
+
+    @if($alumno->aprobado && $alumno->getEncuestaSocioeconomica() && $alumno->getEncuestaSocioeconomica()->completa)
+        <div class="alert alert-success">
+            Tus inscripciones ya han sido verificadas y tienes la encuesta completa.
+        </div>
+    @endif
 </div>
 @endsection
 @section('scripts')

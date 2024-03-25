@@ -43,6 +43,12 @@ $(document).ready(function () {
         $("#tercer_año").hide();
     });
 
+    $("#reinscripto_primero").change(function (e) {
+        $("#primer_año").show();
+        $("#segundo_año").show();
+        $("#tercer_año").show();
+    });
+
     // SEGUNDO AÑO
     $("#regular_segundo").change(function (e) {
         $("#primer_año").hide();

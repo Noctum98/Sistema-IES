@@ -1,0 +1,7 @@
+[
+    {
+        "model-name": "CondicionMateria",
+        "resource-file": "condicion_materias.json",
+        "table-name": "condicion_materias"
+    }
+]
