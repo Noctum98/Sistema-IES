@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CarrerasRequest;
-use App\Models\Cargo;
-use App\Models\User;
+use App\Models\CondicionCarrera;
 use Illuminate\Http\Request;
 use App\Models\Sede;
-use App\Models\Personal;
 use App\Models\Carrera;
-use App\Services\CarreraService;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class CarreraController extends Controller
 {
-    protected $userService;
+    protected UserService $userService;
+
     function __construct(UserService $userService)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos-regente-areaSocial');
         $this->userService = $userService;
     }
+
     // Vistas
 
     public function vista_admin()
@@ -30,15 +27,18 @@ class CarreraController extends Controller
         list($user, $carreras) = $this->userService->getCarreras();
 
         return view('carrera.admin', [
-            'carreras'  => $carreras
+            'carreras' => $carreras,
+            'user' => $user
         ]);
     }
 
     public function vista_crear()
     {
         $sedes = Sede::all();
+        $condicionesCarrera = CondicionCarrera::all();
         return view('carrera.create', [
-            'sedes' => $sedes
+            'sedes' => $sedes,
+            'condicionesCarrera' => $condicionesCarrera
         ]);
     }
 
@@ -47,7 +47,7 @@ class CarreraController extends Controller
         $carrera = Carrera::find($id);
 
         return view('carrera.add_personal', [
-            'carrera'  => $carrera
+            'carrera' => $carrera
         ]);
     }
 
@@ -55,10 +55,13 @@ class CarreraController extends Controller
     {
         $carrera = Carrera::find($id);
         $sedes = Sede::all();
+        $condicionesCarrera = CondicionCarrera::all();
+
 
         return view('carrera.edit', [
-            'carrera'   => $carrera,
-            'sedes'     => $sedes,
+            'carrera' => $carrera,
+            'sedes' => $sedes,
+            'condicionesCarrera' => $condicionesCarrera
         ]);
     }
 
@@ -76,11 +79,15 @@ class CarreraController extends Controller
 
     public function editar(int $id, CarrerasRequest $request)
     {
+
+
         $carrera = Carrera::find($id);
+        $carrera->condicionCarrera()->associate($request->condicion_id);
         $carrera->update($request->all());
 
+
         return redirect()->route('carrera.editar', ['id' => $carrera->id])->with([
-            'message'   =>      'Datos editados correctamente!'
+            'message' => 'Datos editados correctamente!'
         ]);
     }
 
@@ -96,9 +103,12 @@ class CarreraController extends Controller
 
     public function carrerasPorSedes(Request $request)
     {
-        $carreras =  Carrera::whereIn('sede_id',$request['sedes'])->with('sede')->orderBy('sede_id')->get();
+        $carreras = Carrera::whereIn('sede_id', $request['sedes'])
+            ->with('sede')
+            ->orderBy('sede_id')
+            ->get();
 
-        return response()->json(['status'=>'success','data'=>$carreras],200);
+        return response()->json(['status' => 'success', 'data' => $carreras]);
     }
 
     protected function verProfesores($carrera_id)
