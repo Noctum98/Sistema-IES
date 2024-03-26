@@ -134,23 +134,25 @@
                     </select>
                 </div>
                 {{--Para el nuevo ram--}}
-                <div class="col-sm-6 col-md-3">
-                    <label for="condicion_id">Condiciónes Carrera:</label>
-                    <select id="condicion_id" name="condicion_id" class="form-control">
-                        <option value="">Seleccione condición</option>
-                        @foreach($condicionesCarrera as $condicion)
+                @if(Session::has('admin'))
+                    <div class="col-sm-6 col-md-3">
+                        <label for="condicion_id">Condiciónes Carrera:</label>
+                        <select id="condicion_id" name="condicion_id" class="form-control">
+                            <option value="">Seleccione condición</option>
+                            @foreach($condicionesCarrera as $condicion)
 
-                            <option value="{{ $condicion->id }}">{{ $condicion->nombre }}</option>
+                                <option value="{{ $condicion->id }}">{{ $condicion->nombre }}</option>
 
-                        @endforeach
-                    </select>
+                            @endforeach
+                        </select>
 
-                    @error('cargo')
-                    <span class="invalid-feedback d-block" role="alert">
+                        @error('condicion')
+                        <span class="invalid-feedback d-block" role="alert">
 							<strong>{{ $message }}</strong>
 						</span>
-                    @enderror
-                </div>
+                        @enderror
+                    </div>
+                @endif
 
                 <div class="form-group">
                     <input type="submit" value="Agregar carrera" class="btn btn-success">

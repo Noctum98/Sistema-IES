@@ -25,8 +25,9 @@
                     <th scope="col">Ubicación</th>
                     <th scope="col">Tipo</th>
                     {{-- Para el nuevo ram --}}
-                    <th scope="col">Condición</th>
-
+                    @if(Session::has('admin'))
+                        <th scope="col">Condición</th>
+                    @endif
                     <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                 </tr>
                 </thead>
@@ -50,8 +51,10 @@
                         @endif
                         <td>{{ $carrera->sede->nombre }}</td>
                         <td>{{ ucfirst($carrera->tipo) }}</td>
-{{--                         Para el nuevo ram--}}
-                         <td>{{ ucfirst(optional($carrera->condicionCarrera)->nombre) }}</td>
+                        {{--                         Para el nuevo ram--}}
+                        @if(Session::has('admin'))
+                            <td>{{ ucfirst(optional($carrera->condicionCarrera)->nombre) }}</td>
+                        @endif
                         <td>
                             @if(Session::has('admin') || Session::has('regente'))
                                 <a href="{{ route('carrera.editar',['id'=>$carrera->id]) }}"
