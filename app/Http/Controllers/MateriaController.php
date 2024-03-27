@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\AlumnosMateriaExport;
 use App\Models\MateriasCorrelativa;
+use App\Models\MateriasCorrelativasCursado;
 use App\Models\User;
 use App\Services\MateriaService;
 use Illuminate\Contracts\Foundation\Application;
@@ -106,6 +107,7 @@ class MateriaController extends Controller
     {
         $input = $request->all();
         $correlativas = $input['correlativa'] ?? null;
+        $correlativasCursado = $input['correlativa_cursado'] ?? null;
         $validate = $this->validate($request, [
             'nombre' => ['required'],
             'año' => ['required', 'numeric', 'max:3'],
@@ -128,6 +130,24 @@ class MateriaController extends Controller
             foreach ($correlativas as $correlativa) {
                 MateriasCorrelativa::create([
                     'correlativa_id' => $correlativa,
+                    'materia_id' => $materia->id,
+                    'operador_id' => Auth::user()->id
+                ]);
+            }
+        }
+
+        $materiasCorrelativaCursado = MateriasCorrelativasCursado::where([
+            'materias_correlativas_cursados.materia_id' => $materia->id,
+        ])->get();
+        if ($materiasCorrelativaCursado) {
+            foreach ($materiasCorrelativaCursado as $materCursado) {
+                $materCursado->delete();
+            }
+        }
+        if ($correlativasCursado) {
+            foreach ($correlativasCursado as $correlativaC) {
+                MateriasCorrelativasCursado::create([
+                    'previa_id' => $correlativaC,
                     'materia_id' => $materia->id,
                     'operador_id' => Auth::user()->id
                 ]);
