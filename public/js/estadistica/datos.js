@@ -2,7 +2,7 @@ $(document).ready(function () {
   $('#accordionPreguntas').on('shown.bs.collapse', function () {
     // Renderizar la gráfica cada vez que se abre un elemento del acordeón
     renderizarGrafica();
-});
+  });
 
   $("#datos-form").submit(function (e) {
     e.preventDefault();
@@ -13,9 +13,9 @@ $(document).ready(function () {
 
     let url = '/estadistica/obtenerGraficos/' + sede_id + "/" + carrera_id + '/' + año;
 
-    $.get(url, function (response) {  
+    $.get(url, function (response) {
       $("#graficos").removeClass('d-none');
-    
+
       response.data.forEach(element => {
         renderizarGrafica(element)
       });
@@ -25,16 +25,15 @@ $(document).ready(function () {
 
   renderizarGrafica = function (element) {
     const ctx = document.getElementById(element.identificador);
+    console.log(element);
     new Chart(ctx, {
-      type: 'pie',
+      type: element.type,
       data: {
         labels: element.labels,
         datasets: [{
           label: 'Cantidad',
           data: element.data,
           borderWidth: 1,
-          backgroundColor: ['#FF6384', '#36A2EB','#FFCE56']
-
         }]
       },
       options: {
@@ -42,7 +41,7 @@ $(document).ready(function () {
           labels: {
             render: 'percentage',
             fontColor: 'black',
-            size:25
+            size: 25
           }
         },
         scales: {

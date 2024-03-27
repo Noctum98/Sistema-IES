@@ -67,7 +67,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="casa">Casa</label>
-                <input type="number" name="casa" id="casa" value=" {{ isset($matriculacion) ? $matriculacion->casa : old('casa') }} " class="form-control">
+                <input type="number" name="casa" id="casa" value="{{ isset($matriculacion) ? $matriculacion->casa : old('casa') }}" class="form-control">
 
                 @error('casa')
                 <span class="invalid-feedback d-block" role="alert">
@@ -77,7 +77,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="codigo_postal">Código Postal</label>
-                <input type="number" name="codigo_postal" id="codigo_postal" value=" {{ isset($matriculacion) ? $matriculacion->codigo_postal : old('codigo_postal') }} " class="form-control" required />
+                <input type="number" name="codigo_postal" id="codigo_postal" value="{{ isset($matriculacion) ? $matriculacion->codigo_postal : old('codigo_postal') }}" class="form-control" required />
 
                 @error('codigo_postal')
                 <span class="invalid-feedback d-block" role="alert">

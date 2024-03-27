@@ -18,8 +18,8 @@
     <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
     <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('vendors/select2/js/i18n/es.js') }}"></script>
-    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 
 
