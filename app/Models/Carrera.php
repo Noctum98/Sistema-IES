@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 //use Illuminate\Database\Eloquent;
@@ -117,7 +118,37 @@ class Carrera extends Model
 
     public function materiasInscripto($idAlumno)
     {
-
-
+        return $this->belongsToMany(Materia::class, 'inscripciones')->wherePivot('alumno_id', $idAlumno)->get();
     }
+
+    public function scopeWithSede($query)
+    {
+        return $query->with('sede');
+    }
+
+
+
+    public function scopeWithCargos($query)
+    {
+        return $query->with('cargos');
+    }
+
+    public function scopeWithAlumnos($query)
+    {
+        return $query->with('alumnos');
+    }
+
+
+    /**
+     * Obtén la relación "condicionCarrera".
+     *
+     * @return BelongsTo
+     */
+    public function condicionCarrera(): BelongsTo
+    {
+        return $this->belongsTo(CondicionCarrera::class, 'condicion_id');
+    }
+
+
+
 }

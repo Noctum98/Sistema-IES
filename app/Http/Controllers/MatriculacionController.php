@@ -95,7 +95,6 @@ class MatriculacionController extends Controller
                 return redirect()->back()->with(['alert_warning' => 'La carrera no tiene la matriculación habilitada.']);
             }
         }
-
         
         if (!$alumno->aprobado || !Session::has('alumno')) {
             if (!$año) {
@@ -109,8 +108,6 @@ class MatriculacionController extends Controller
         } else {
             return redirect()->back()->with(['alert_success' => 'Tu matriculación ya fue verificada, no puedes editarla.']);
         }
-
-       
 
         return view('matriculacion.edit', [
             'matriculacion' => $alumno,

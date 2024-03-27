@@ -47,7 +47,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="fecha">Fecha de Nacimiento</label>
-                <input type="date" name="fecha" id="fecha" class="form-control" value="{{ old('fecha') }}" required />
+                <input type="date" name="fecha" id="fecha" class="form-control" value="{{ isset($matriculacion) ? $matriculacion->fecha : old('fecha') }}" required />
 
                 @error('fecha')
                 <span class="invalid-feedback d-block" role="alert">
