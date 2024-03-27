@@ -208,6 +208,12 @@ class AlumnoController extends Controller
     {
         $data['sedes'] = Sede::all();
         $data['carreras'] = Carrera::all();
+        $data['questions'] = [
+            'Identidad de género' => 'identidad_genero',
+            'Edades' => 'edad_encuesta',
+            'Empresa de Teléfono' => 'empresa_telefono',
+            'Accesso a Internet' => 'acceso_internet'
+        ];
 
         return view('estadistica.datos', $data);
     }
@@ -234,7 +240,8 @@ class AlumnoController extends Controller
             $data[] = [
                 'identificador' => $key,
                 'labels' => $value['labels'],
-                'data' => $value['data']
+                'data' => $value['data'],
+                'type' => $value['type']
             ];
         }
 

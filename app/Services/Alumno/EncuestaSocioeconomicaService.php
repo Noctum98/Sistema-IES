@@ -198,9 +198,30 @@ class EncuestaSocioeconomicaService
         $datos = [];
         $datos['identidad_genero'] = [
             'labels' => ['Masculino', 'Femenino', 'Transgénero', 'Otro'],
+            'type' => 'pie',
             'data' => [0, 0, 0, 0]
         ];
+
+        $datos['empresa_telefono'] = [
+            'labels' => ['Claro', 'Movistar', 'Personal', 'Twenti', 'Otra'],
+            'type' => 'pie',
+            'data' => [0, 0, 0, 0, 0]
+        ];
+
+        $datos['edad_encuesta'] = [
+            'labels' => ['18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', 'Mas de 30', 'Menos de 18'],
+            'type' => 'bar',
+            'data' => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+
+        $datos['acceso_internet'] = [
+            'labels' => ['Desde tu celular, con datos móviles', 'Desde tu casa, en red', 'Desde la casa de un conocido o familiar', 'Desde el celular familiar', 'No tengo acceso a internet', 'Desde alguna red pública de WIFI', 'Otros'],
+            'type' => 'bar',
+            'data' => [0, 0, 0, 0, 0, 0, 0]
+        ];
+
         foreach ($encuestas as $encuesta) {
+
             switch ($encuesta->identidad_genero) {
                 case 'masculino':
                     $datos['identidad_genero']['data'][0]++;
@@ -215,7 +236,65 @@ class EncuestaSocioeconomicaService
                     $datos['identidad_genero']['data'][3]++;
                     break;
             }
+
+            switch ($encuesta->empresa_telefono) {
+                case 'claro':
+                    $datos['empresa_telefono']['data'][0]++;
+                    break;
+                case 'movistar':
+                    $datos['empresa_telefono']['data'][1]++;
+                    break;
+                case 'personal':
+                    $datos['empresa_telefono']['data'][2]++;
+                    break;
+                case 'twenti':
+                    $datos['empresa_telefono']['data'][3]++;
+                    break;
+                case 'otra':
+                    $datos['empresa_telefono']['data'][4]++;
+                    break;
+            }
+
+            $accesoArray = explode('|', $encuesta->acceso_internet);
+            $accesoLimpio = array_filter($accesoArray);
+
+            foreach ($accesoLimpio as $acceso) {
+                switch ($acceso) {
+                    case 'desde celular con datos':
+                        $datos['acceso_internet']['data'][0]++;
+                        break;
+                    case 'desde casa en red':
+                        $datos['acceso_internet']['data'][1]++;
+                        break;
+                    case 'desde casa de conocido':
+                        $datos['acceso_internet']['data'][2]++;
+                        break;
+                    case 'desde celular familiar':
+                        $datos['acceso_internet']['data'][3]++;
+                        break;
+                    case 'no tiene':
+                        $datos['acceso_internet']['data'][4]++;
+                        break;
+                    case 'desde red publica o wifi':
+                        $datos['acceso_internet']['data'][5]++;
+                        break;
+                    case 'otra':
+                        $datos['acceso_internet']['data'][6]++;
+                        break;
+                }
+            }
+
+
+            if ($encuesta->alumno->edad >= 18 && $encuesta->alumno->edad <= 30) {
+                $index = $encuesta->alumno->edad - 18;
+                $datos['edad_encuesta']['data'][$index]++;
+            } elseif ($encuesta->alumno->edad > 30) {
+                $datos['edad_encuesta']['data'][13]++; // Mayores de 30
+            } elseif ($encuesta->alumno->edad < 18) {
+                $datos['edad_encuesta']['data'][14]++; // Menores de 18
+            }
         }
+
 
         return $datos;
     }
