@@ -64,113 +64,137 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="año">Año:</label>
-                                    <input type="number" id="año" name="año"
-                                           class="form-control @error('año') is-invalid @enderror"
-                                           value="{{ $materia->año }}" required
-                                           @if(!Session::has('admin'))
-                                               readonly
+
+                            <div class="form-group col-sm-2">
+                                <label for="año">Año:</label>
+                                <input type="number" id="año" name="año"
+                                       class="form-control @error('año') is-invalid @enderror"
+                                       value="{{ $materia->año }}" required
+                                       @if(!Session::has('admin'))
+                                           readonly
+                                    @endif
+                                />
+                                @error('año')
+                                <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+
+
+                            <div class="form-group col-sm-4">
+                                <label for="regimen">Régimen:</label>
+                                <select class="form-control select2" id="regimen" name="regimen">
+                                    <option
+                                        value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>
+                                        Anual
+                                    </option>
+                                    <option
+                                        value="Cuatrimestral (1er)" {{ $materia->regimen == 'Cuatrimestral (1er)' ?  'selected="selected"' :'' }}>
+                                        Cuatrimestral (1er)
+                                    </option>
+                                    <option
+                                        value="Cuatrimestral (2do)" {{ $materia->regimen == 'Cuatrimestral (2do)' ?  'selected="selected"' :'' }}>
+                                        Cuatrimestral (2do)
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group col-sm-3">
+                                <label for="cierre_diferido">Diferenciada <sup>*</sup>: </label>
+                                <select class="form-control select2" id="cierre_diferido" name="cierre_diferido">
+                                    <option
+                                        value="1"
+                                        @if($materia->cierre_diferido)
+                                            selected="selected"
                                         @endif
-                                    />
-                                    @error('año')
-                                    <span class="invalid-feedback d-block" role="alert">
-			                <strong>{{ $message }}</strong>
-			            </span>
-                                    @enderror
-                                </div>
+                                    >
+                                        ☑ Si
+                                    </option>
+                                    <option
+                                        value="0"
+                                        @if(!$materia->cierre_diferido)
+                                            selected="selected"
+                                        @endif
+                                    >
+                                        ☒ No
+                                    </option>
+                                </select>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="regimen">Régimen:</label>
-                                    <select class="form-control select2" id="regimen" name="regimen">
-                                        <option
-                                            value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>
-                                            Anual
-                                        </option>
-                                        <option
-                                            value="Cuatrimestral (1er)" {{ $materia->regimen == 'Cuatrimestral (1er)' ?  'selected="selected"' :'' }}>
-                                            Cuatrimestral (1er)
-                                        </option>
-                                        <option
-                                            value="Cuatrimestral (2do)" {{ $materia->regimen == 'Cuatrimestral (2do)' ?  'selected="selected"' :'' }}>
-                                            Cuatrimestral (2do)
-                                        </option>
-                                    </select>
-                                </div>
+
+                            <div class="form-group col-sm-3">
+                                <label for="etapa_campo">Etapa de Campo</label>
+                                <select name="etapa_campo" id="etapa_campo" class="form-select"
+                                        @if(!Session::has('admin'))
+                                            disabled
+                                    @endif
+                                >
+                                    <option value="1" {{ $materia->etapa_campo ? 'selected="selected' : '' }}
+
+                                    >
+                                        ☑ Habilitada
+                                    </option>
+                                    <option value="0" {{ !$materia->etapa_campo ? 'selected="selected' : '' }}>
+                                        ☒ Deshabilitada
+
+                                    </option>
+                                </select>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="cierre_diferido">Diferenciada <sup>*</sup>: </label>
-                                    <select class="form-control select2" id="cierre_diferido" name="cierre_diferido">
-                                        <option
-                                            value="1"
-                                            @if($materia->cierre_diferido)
-                                                selected="selected"
-                                            @endif
-                                        >
-                                            ☑ Si
-                                        </option>
-                                        <option
-                                            value="0"
-                                            @if(!$materia->cierre_diferido)
-                                                selected="selected"
-                                            @endif
-                                        >
-                                            ☒ No
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
+
+
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="correlativa">Correlatividad: </label>
-                                    <select class="form-control select2" id="correlativa"
-                                            name="correlativa[]" multiple="multiple">
-                                        <option value="">No tiene correlativa</option>
-                                        @foreach($materias as $mater)
-                                            @if(in_array($mater->id, $materia->correlativasArray()))
-                                                <option value="{{ $mater->id }}" selected="selected">
+
+                                <label for="correlativa">Correlativas Mesas: </label>
+                                <select class="form-control select2" id="correlativa"
+                                        name="correlativa[]" multiple="multiple">
+                                    <option value="">No tiene correlativa</option>
+                                    @foreach($materias as $mater)
+                                        @if(in_array($mater->id, $materia->correlativasArray()))
+                                            <option value="{{ $mater->id }}" selected="selected">
+                                                {{ $mater->nombre }}
+                                            </option>
+                                        @else
+                                            @if($mater->id != $materia->id)
+                                                <option value="{{ $mater->id }}">
                                                     {{ $mater->nombre }}
                                                 </option>
-                                            @else
-                                                @if($mater->id != $materia->id)
-                                                    <option value="{{ $mater->id }}">
-                                                        {{ $mater->nombre }}
-                                                    </option>
-                                                @endif
-
                                             @endif
 
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        @endif
+
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="etapa_campo">Etapa de Campo</label>
-                                    <select name="etapa_campo" id="etapa_campo" class="form-select"
-                                            @if(!Session::has('admin'))
-                                                disabled
+
+                                <label for="correlativa_cursado">Correlativas Cursado: </label>
+                                <select class="form-select select2" id="correlativa_cursado"
+                                        name="correlativa_cursado[]" multiple="multiple">
+                                    <option value="">No tiene correlativa cursado</option>
+                                    @foreach($materias as $mater)
+                                        @if(in_array($mater->id, $materia->correlativasCursadoArray()))
+                                            <option value="{{ $mater->id }}" selected="selected">
+                                                {{ $mater->nombre }}
+                                            </option>
+                                        @else
+                                            @if($mater->id != $materia->id)
+                                                <option value="{{ $mater->id }}">
+                                                    {{ $mater->nombre }}
+                                                </option>
+                                            @endif
+
                                         @endif
-                                    >
-                                        <option value="1" {{ $materia->etapa_campo ? 'selected="selected' : '' }}
 
-                                        >
-                                            ☑ Habilitada
-                                        </option>
-                                        <option value="0" {{ !$materia->etapa_campo ? 'selected="selected' : '' }}>
-                                            ☒ Deshabilitada
-
-                                        </option>
-                                    </select>
-                                </div>
+                                    @endforeach
+                                </select>
                             </div>
+
+
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mt-2">
                             <input type="submit" class="btn btn-success" value="Editar materia">
                             <p>
                                 <sup>*</sup>
@@ -196,9 +220,9 @@
 
             @if($materia->cierre_diferido)
                 @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')
-            <div class="col-sm-12 text-center">
-                <h4>Cierres diferidos</h4>
-            </div>
+                <div class="col-sm-12 text-center">
+                    <h4>Cierres diferidos</h4>
+                </div>
                 <table class="table text-center">
                     <thead class="bg-dark text-white">
                     <tr>

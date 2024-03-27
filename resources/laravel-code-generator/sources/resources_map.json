@@ -3,5 +3,10 @@
         "model-name": "CondicionMateria",
         "resource-file": "condicion_materias.json",
         "table-name": "condicion_materias"
+    },
+    {
+        "model-name": "MateriasCorrelativasCursado",
+        "resource-file": "materias_correlativas_cursados.json",
+        "table-name": "materias_correlativas_cursados"
     }
 ]

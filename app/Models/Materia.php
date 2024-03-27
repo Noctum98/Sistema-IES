@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 
 
@@ -78,6 +79,10 @@ class Materia extends BaseModel
     public function correlativa()
     {
         return $this->belongsTo('App\Models\Materia', 'correlativa');
+    }
+    public function correlativaCursado(): HasMany
+    {
+        return $this->HasMany(Materia::class, 'correlativaCursado');
     }
 
     public function mesa_inscriptos()
@@ -279,6 +284,28 @@ class Materia extends BaseModel
 
     }
 
+    /**
+     * @return MateriasCorrelativasCursado
+     */
+    public function correlativasCursado(): MateriasCorrelativasCursado
+    {
+        return MateriasCorrelativasCursado::where([
+            'materia_id' => $this->id
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function correlativasCursadoArray(): array
+    {
+        $correlativasCursado = MateriasCorrelativasCursado::select('previa_id')
+            ->where('materia_id', $this->id)
+            ->get()->toArray();
+        return array_column($correlativasCursado, 'previa_id');
+
+    }
+
     public function ciclosLectivosDiferenciados()
     {
 
@@ -345,4 +372,6 @@ class Materia extends BaseModel
             ->where('procesos.materia_id', $this->id)
             ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
     }
+
+
 }
