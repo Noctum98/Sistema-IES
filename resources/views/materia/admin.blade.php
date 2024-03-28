@@ -20,7 +20,7 @@
                             <p class="ms-5">Plan de estudios</p>
                             <h4 class="text-dark">
                                  {{ $carrera->nombre }}
-                                <br/> <small>{{ucwords($carrera->tipo)}}</small>
+                                <br/> <small>{{ucwords($carrera->tipo)}} - <small> {{$carrera->sede->nombre}}</small></small>
                             </h4>
                         </div>
                     </div>
