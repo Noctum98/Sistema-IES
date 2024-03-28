@@ -35,9 +35,12 @@ class Carrera extends Model
         'matriculacion_habilitada'
     ];
 
-    public function sede()
+    /**
+     * @return BelongsTo
+     */
+    public function sede(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Sede', 'sede_id');
+        return $this->belongsTo(Sede::class, 'sede_id');
     }
 
     /**
