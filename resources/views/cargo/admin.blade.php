@@ -96,7 +96,7 @@
                             <td>
                                 @if(count($cargo->materias) > 0)
                                     @foreach($cargo->materias as $materia)
-                                        <div class="p-1 border border-bottom border-dark">
+                                        <div class="m-2 p-3 border border-bottom border-dark">
                                             -
                                             @if(Auth::user()->hasRole('admin'))
                                                 <small>({{$materia->id}})</small>
