@@ -148,7 +148,7 @@
                             <div class="col-sm-6">
 
                                 <label for="correlativa_cursado">Correlatividades para cursar: </label>
-                                <select class="form-select select2" id="correlativa_cursado"
+                                <select class="form-control select2" id="correlativa_cursado"
                                         name="correlativa_cursado[]" multiple="multiple">
                                     <option value="">No tiene correlativa cursado</option>
                                     @foreach($materias as $mater)
