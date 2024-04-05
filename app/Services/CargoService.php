@@ -19,6 +19,10 @@ class CargoService
         if ($busqueda['carrera_id'] && $busqueda['carrera_id'] != 'todos') {
             $cargos->where('carrera_id', $busqueda['carrera_id']);
         }
+        if ($busqueda['sede_id'] && $busqueda['sede_id'] != 'todos') {
+            $cargos->join('carreras', 'carreras.id', 'cargos.carrera_id')
+            ->where('carreras.sede_id', $busqueda['sede_id']);
+        }
 
         if ($paginate) {
             return $cargos->paginate(30);

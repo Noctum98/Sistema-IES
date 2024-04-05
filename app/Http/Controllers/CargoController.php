@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cargo;
 use App\Models\CargoMateria;
 use App\Models\Materia;
+use App\Models\Sede;
 use App\Models\TipoMateria;
 use App\Models\User;
 use App\Services\CargoService;
@@ -63,10 +64,12 @@ class CargoController extends Controller
         }
 
         $carreras = $this->carreraService->modulares();
+        $sedes = Sede::all();
 
         return view('cargo.admin', [
             'cargos' => $cargos,
             'carreras' => $carreras,
+            'sedes' => $sedes
         ]);
     }
 

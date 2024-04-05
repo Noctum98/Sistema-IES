@@ -60,6 +60,7 @@ use App\Models\Sede;
 use App\Http\Controllers\CondicionCarrerasController;
 use App\Http\Controllers\CondicionMateriasController;
 use App\Http\Controllers\CondicionMateriaApiDocsApiDocsController;
+use App\Http\Controllers\MateriasCorrelativasCursadosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +132,7 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+    Route::patch('/modifica/{id}/cohorte', [AlumnoController::class, 'updateCohorte'])->name('alumno.cohorte-update');
 });
 
 Route::prefix('encuesta_socioeconomica')->group(function () {
@@ -806,3 +808,22 @@ Route::group([
 });
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
      ->name('api-docs.condicion_materias.condicion_materia.index');
+
+Route::group([
+    'prefix' => 'materias_correlativas_cursados',
+], function () {
+    Route::get('/', [MateriasCorrelativasCursadosController::class, 'index'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
+    Route::get('/create', [MateriasCorrelativasCursadosController::class, 'create'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.create');
+    Route::get('/show/{materiasCorrelativasCursado}',[MateriasCorrelativasCursadosController::class, 'show'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.show');
+    Route::get('/{materiasCorrelativasCursado}/edit',[MateriasCorrelativasCursadosController::class, 'edit'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.edit');
+    Route::post('/', [MateriasCorrelativasCursadosController::class, 'store'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.store');
+    Route::put('materias_correlativas_cursado/{materiasCorrelativasCursado}', [MateriasCorrelativasCursadosController::class, 'update'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.update');
+    Route::delete('/materias_correlativas_cursado/{materiasCorrelativasCursado}',[MateriasCorrelativasCursadosController::class, 'destroy'])
+         ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
+});

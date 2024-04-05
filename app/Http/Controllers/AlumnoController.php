@@ -10,6 +10,7 @@ use App\Models\Sede;
 use App\Services\Alumno\EncuestaSocioeconomicaService;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -32,10 +33,11 @@ class AlumnoController extends Controller
      * @param CicloLectivoService $cicloLectivoService
      */
     public function __construct(
-        AlumnoService       $alumnoService,
-        CicloLectivoService $cicloLectivoService,
+        AlumnoService                 $alumnoService,
+        CicloLectivoService           $cicloLectivoService,
         EncuestaSocioeconomicaService $encuestaSocioeconomicaService
-    ) {
+    )
+    {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
             'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial-equivalencias',
@@ -107,7 +109,6 @@ class AlumnoController extends Controller
 
 
         //        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
-
 
 
         $data = [
@@ -199,9 +200,9 @@ class AlumnoController extends Controller
                 'carreras' => $carreras,
                 'ciclo_lectivo' => $ciclo_lectivo
             ]);
-        } else {
-            return redirect()->back();
         }
+        return redirect()->back();
+
     }
 
     public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $año = null)
@@ -372,5 +373,19 @@ class AlumnoController extends Controller
         } else {
             return view('error.error');
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function updateCohorte(Request $request, $id): JsonResponse
+    {
+        $alumno = Alumno::find($id);
+        $alumno->cohorte = $request->get('cohorte');
+        $alumno->save();
+
+        return response()->json(['new_cohorte' => $alumno->cohorte]);
     }
 }
