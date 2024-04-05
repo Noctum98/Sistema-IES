@@ -147,31 +147,8 @@
                         <div class="row">
                             <div class="col-sm-6">
 
-                                <label for="correlativa">Correlativas Mesas: </label>
-                                <select class="form-control select2" id="correlativa"
-                                        name="correlativa[]" multiple="multiple">
-                                    <option value="">No tiene correlativa</option>
-                                    @foreach($materias as $mater)
-                                        @if(in_array($mater->id, $materia->correlativasArray()))
-                                            <option value="{{ $mater->id }}" selected="selected">
-                                                {{ $mater->nombre }}
-                                            </option>
-                                        @else
-                                            @if($mater->id != $materia->id)
-                                                <option value="{{ $mater->id }}">
-                                                    {{ $mater->nombre }}
-                                                </option>
-                                            @endif
-
-                                        @endif
-
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm-6">
-
-                                <label for="correlativa_cursado">Correlativas Cursado: </label>
-                                <select class="form-select select2" id="correlativa_cursado"
+                                <label for="correlativa_cursado">Correlatividades para cursar: </label>
+                                <select class="form-control select2" id="correlativa_cursado"
                                         name="correlativa_cursado[]" multiple="multiple">
                                     <option value="">No tiene correlativa cursado</option>
                                     @foreach($materias as $mater)
@@ -192,6 +169,29 @@
                                 </select>
                             </div>
 
+                            <div class="col-sm-6">
+
+                                <label for="correlativa">Correlatividades para rendir: </label>
+                                <select class="form-control select2" id="correlativa"
+                                        name="correlativa[]" multiple="multiple">
+                                    <option value="">No tiene correlativa</option>
+                                    @foreach($materias as $mater)
+                                        @if(in_array($mater->id, $materia->correlativasArray()))
+                                            <option value="{{ $mater->id }}" selected="selected">
+                                                {{ $mater->nombre }}
+                                            </option>
+                                        @else
+                                            @if($mater->id != $materia->id)
+                                                <option value="{{ $mater->id }}">
+                                                    {{ $mater->nombre }}
+                                                </option>
+                                            @endif
+
+                                        @endif
+
+                                    @endforeach
+                                </select>
+                            </div>
 
                         </div>
                         <div class="form-group mt-2">
