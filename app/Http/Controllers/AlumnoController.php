@@ -212,7 +212,22 @@ class AlumnoController extends Controller
             'Identidad de género' => 'identidad_genero',
             'Edades' => 'edad_encuesta',
             'Empresa de Teléfono' => 'empresa_telefono',
-            'Accesso a Internet' => 'acceso_internet'
+            'Accesso a Internet' => 'acceso_internet',
+            'Herramientas Tecnológicas' => 'herramientas_tecnologicas',
+            '¿Durante el ciclo lectivo anterior estuviste vinculado/a a alguna actividad educativa de manera virtual?' => 'vinculacion_ciclo',
+            'Condición laboral del/de la estudiante' => 'condicion_laboral',
+            '¿Tu trabajo está relacionado con la carrera en la que te has inscripto/que estás cursando?' => 'trabajo_relacionado',
+            '¿Sos jefe/a de hogar?' => 'jefe_hogar',
+            '¿Tenés hijos/as a cargo?' => 'hijos_a_cargo',
+            'Edad de tus hijos' => 'edad_hijos',
+            'En cuanto a tu situación de salud, declaras poseer'=>'situacion_salud',
+            'CUD'=>'cud',
+            'Obra Social' => 'obra_social',
+            'En el presente ciclo lectivo recibís o has gestionado' => 'subsidios',
+            'Kilómetros de distancia desde tu domicilio hasta el IES' => 'distancia_ies',
+            'Transporte utilizado para concurrir al IES'=>'transporte_utilizado',
+            'Cantidad de personas que conviven con vos' => 'cantidad_convivientes',
+            'Cantidad de lugares para dormir que posee tu vivienda' => 'cantidad_lugares_dormir'
         ];
 
         return view('estadistica.datos', $data);

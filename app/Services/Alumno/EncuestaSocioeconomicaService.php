@@ -196,106 +196,94 @@ class EncuestaSocioeconomicaService
     public function formatearDatos($encuestas)
     {
         $datos = [];
-        $datos['identidad_genero'] = [
-            'labels' => ['Masculino', 'Femenino', 'Transgénero', 'Otro'],
-            'type' => 'pie',
-            'data' => [0, 0, 0, 0]
-        ];
 
-        $datos['empresa_telefono'] = [
-            'labels' => ['Claro', 'Movistar', 'Personal', 'Twenti', 'Otra'],
-            'type' => 'pie',
-            'data' => [0, 0, 0, 0, 0]
+        $opciones = [
+            'identidad_genero' => ['MASCULINO', 'FEMENINO', 'TRANSGÉNERO', 'OTRO'],
+            'empresa_telefono' => ['CLARO', 'MOVISTAR', 'PERSONAL', 'TWENTI', 'OTRA'],
+            'edad_encuesta' => ['18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', 'MÁS DE 30', 'MENOS DE 18'],
+            'condicion_laboral' => ['OCUPADA/O', 'INDEPENDIENTE', 'SUBOCUPADA/O', 'DESOCUPADA/O', 'SOLO ESTUDIO'],
+            'vinculacion_ciclo' => ['SI', 'NO'],
+            'jefe_hogar' => ['SI', 'NO'],
+            'hijos_a_cargo' => ['SI', 'NO'],
+            'trabajo_relacionado' => ['SI', 'NO', 'PARCIALMENTE', 'NO TRABAJO'],
+            'cud' => ['SI', 'NO'],
+            'obra_social' => ['SI', 'NO'],
+            'distancia_ies' => ['MENOS DE 1KM.', 'DESDE 1,1 KM. A 3 KM.', 'DESDE 3,1 KM A 7 KM', 'DESDE 7,1 A 15 KM.', 'DESDE 15,1 KM. A  25 KM.', 'DESDE 25,1 KM. A 35 KM.', 'DESDE 35,1 KM. A 45 KM.', 'MÁS DE 45,1 KM.'],
+            'cantidad_convivientes' => ['VIVO SOLO', 'DE 1 A 2 PERSONAS', 'DE 3 A 4 PERSONAS', 'DE 5 A 6 PERSONAS', 'MÁS DE 7 PERSONAS'],
+            'cantidad_lugares_dormir' => ['MONOAMBIENTE', 'SOLO UNA HABITACION', 'DOS HABITACIONES', 'TRES O MAS HABITACIONES']
         ];
+        
+        $opcionesCheckbox = [
+            'acceso_internet' => ['DESDE CELULAR CON DATOS', 'DESDE CASA EN RED', 'DESDE CASA DE CONOCIDO', 'DESDE CELULAR FAMILIAR', 'NO TIENE', 'DESDE RED PUBLICA O WIFI', 'OTRO'],
+            'herramientas_tecnologicas' => ['TU CELULAR PERSONAL', 'PC', 'NOTEBOOK O NETBOOK', 'TABLET', 'CELULAR FAMILIAR', 'NO TENGO', 'OTRO'],
+            'edad_hijos' => ['MENOS DE 45 DÍAS', 'DE 45 DÍAS A 6 MESES', 'DE 1 A 3 AÑOS', 'DE 4 Y 5 AÑOS', 'DE 6 A 13 AÑOS', 'DE 14 A 18 AÑOS', 'DE 19 A 21 AÑOS', 'MÁS DE 21 AÑOS', 'NO TENÉS HIJOS'],
+            'situacion_salud' => ['ENFERMEDAD', 'DISCAPACIDAD', 'TRATAMIENTO MÉDICO PERMANENTE', 'TOMAR MEDICACIÓN PERMANENTE', 'BUEN ESTADO DE SALUD', 'PROBLEMÁTICA RELACIONADA A LA SALUD MENTAL', 'OTROS'],
+            'subsidios' => ['PROGRESAR/ PRONAFE', 'MEDIO BOLETO', 'BECA MUNICIPAL', 'BECA DE TRANSPORTE', 'BECA DE FOTOCOPIAS', 'APORTE POR CAPACITACIÓN', 'IFE O PLAN SOCIAL', 'NO RECIBO NINGUNA'],
+            'transporte_utilizado' => ['COLECTIVO', 'AUTO PROPIO', 'AUTO DE OTRA PERSONA', 'CAMINANDO UN TRAYECTO MAYOR DE 3 KM.', 'CAMINANDO UN TRAYECTO MENOR A 3 KM.', 'BICICLETA', 'MOTO'],
+        ];
+        
 
-        $datos['edad_encuesta'] = [
-            'labels' => ['18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', 'Mas de 30', 'Menos de 18'],
-            'type' => 'bar',
-            'data' => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        ];
 
-        $datos['acceso_internet'] = [
-            'labels' => ['Desde tu celular, con datos móviles', 'Desde tu casa, en red', 'Desde la casa de un conocido o familiar', 'Desde el celular familiar', 'No tengo acceso a internet', 'Desde alguna red pública de WIFI', 'Otros'],
-            'type' => 'bar',
-            'data' => [0, 0, 0, 0, 0, 0, 0]
-        ];
+        $graficosBar = ['identidad_genero', 'empresa_telefono', 'condicion_laboral','subsidios'];
+        
+        foreach ($opciones as $campo => $labels) {
+            $datos[$campo] = [
+                'labels' => $labels,
+                'type' => in_array($campo, $graficosBar) ? 'bar' : 'pie',
+                'data' => array_fill(0, count($labels), 0)
+            ];
+        }
+
+        foreach ($opcionesCheckbox as $campo => $labels) {
+            $datos[$campo] = [
+                'labels' => $labels,
+                'type' => in_array($campo, $graficosBar) ? 'bar' : 'pie',
+                'data' => array_fill(0, count($labels), 0)
+            ];
+        }
 
         foreach ($encuestas as $encuesta) {
-
-            switch ($encuesta->identidad_genero) {
-                case 'masculino':
-                    $datos['identidad_genero']['data'][0]++;
-                    break;
-                case 'femenino':
-                    $datos['identidad_genero']['data'][1]++;
-                    break;
-                case 'transgénero':
-                    $datos['identidad_genero']['data'][2]++;
-                    break;
-                case 'otro':
-                    $datos['identidad_genero']['data'][3]++;
-                    break;
-            }
-
-            switch ($encuesta->empresa_telefono) {
-                case 'claro':
-                    $datos['empresa_telefono']['data'][0]++;
-                    break;
-                case 'movistar':
-                    $datos['empresa_telefono']['data'][1]++;
-                    break;
-                case 'personal':
-                    $datos['empresa_telefono']['data'][2]++;
-                    break;
-                case 'twenti':
-                    $datos['empresa_telefono']['data'][3]++;
-                    break;
-                case 'otra':
-                    $datos['empresa_telefono']['data'][4]++;
-                    break;
-            }
-
-            $accesoArray = explode('|', $encuesta->acceso_internet);
-            $accesoLimpio = array_filter($accesoArray);
-
-            foreach ($accesoLimpio as $acceso) {
-                switch ($acceso) {
-                    case 'desde celular con datos':
-                        $datos['acceso_internet']['data'][0]++;
-                        break;
-                    case 'desde casa en red':
-                        $datos['acceso_internet']['data'][1]++;
-                        break;
-                    case 'desde casa de conocido':
-                        $datos['acceso_internet']['data'][2]++;
-                        break;
-                    case 'desde celular familiar':
-                        $datos['acceso_internet']['data'][3]++;
-                        break;
-                    case 'no tiene':
-                        $datos['acceso_internet']['data'][4]++;
-                        break;
-                    case 'desde red publica o wifi':
-                        $datos['acceso_internet']['data'][5]++;
-                        break;
-                    case 'otra':
-                        $datos['acceso_internet']['data'][6]++;
-                        break;
+            
+            foreach($opciones as $index => $campo)
+            {
+                if($index != 'edad_encuesta')
+                {
+                    $datos[$index]['data'][array_search(mb_strtoupper($encuesta[$index]), $opciones[$index])]++;
                 }
             }
 
+            foreach($opcionesCheckbox as $index => $campoCheckbox)
+            {
+                $datos[$index] = $this->procesarCheckbox($datos, $opcionesCheckbox, $encuesta[$index], $index);
+            }
 
-            if ($encuesta->alumno->edad >= 18 && $encuesta->alumno->edad <= 30) {
-                $index = $encuesta->alumno->edad - 18;
+
+            $edad = $encuesta->alumno->edad;
+            if ($edad >= 18 && $edad <= 30) {
+                $index = $edad - 18;
                 $datos['edad_encuesta']['data'][$index]++;
-            } elseif ($encuesta->alumno->edad > 30) {
+            } elseif ($edad > 30) {
                 $datos['edad_encuesta']['data'][13]++; // Mayores de 30
-            } elseif ($encuesta->alumno->edad < 18) {
+            } elseif ($edad < 18) {
                 $datos['edad_encuesta']['data'][14]++; // Menores de 18
+            }
+
+            // Otros campos similares...
+        }
+
+        return $datos;
+    }
+
+    private function procesarCheckbox($datos, $opciones, $encuesta_campo, $campo)
+    {
+        $array = explode('|', $encuesta_campo);
+        foreach ($array as $opcion) {
+            $opcion = mb_strtoupper(trim($opcion));
+            if (in_array($opcion, $opciones[$campo])) {
+                $datos[$campo]['data'][array_search($opcion, $opciones[$campo])]++;
             }
         }
 
-
-        return $datos;
+        return $datos[$campo];
     }
 }
