@@ -63,17 +63,7 @@ class AlumnoController extends Controller
         }
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
-        if (Session::has('admin') || Session::has('areaSocial') || Session::has('regente')) {
-
-            if (Session::has('areaSocial')) {
-                $sedesIds = $sedes->pluck('id')->toArray();
-                $carreras = Carrera::whereIn('sede_id', $sedesIds)->orderBy('sede_id', 'asc')->get();
-            } else {
-                $carreras = Carrera::orderBy('sede_id', 'asc')->get();
-            }
-        } else {
-            $carreras = $user->carreras;
-        }
+        $carreras = $this->alumnoService->getCarrerasByRol($user);
 
         $data = [
             'alumnos' => $alumnos,
@@ -84,7 +74,7 @@ class AlumnoController extends Controller
             'cohorte' => $request['cohorte'],
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
             'ciclo_lectivo' => $ciclo_lectivo,
-            'sedes' => $sedes
+            'sedes' => $sedes,
         ];
 
         return view('alumno.admin', $data);
@@ -207,8 +197,9 @@ class AlumnoController extends Controller
 
     public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $año = null)
     {
-        $data['sedes'] = Sede::all();
-        $data['carreras'] = Carrera::all();
+        $user = Auth::user();
+        $data['sedes'] = $user->sedes;
+        $data['carreras'] = $this->alumnoService->getCarrerasByRol($user);
         $data['questions'] = $this->encuestaSocioeconomicaService::$questions;
         $data['questions_motivacionales'] = $this->encuestaSocioeconomicaService::$questions_motivacionales;
 
