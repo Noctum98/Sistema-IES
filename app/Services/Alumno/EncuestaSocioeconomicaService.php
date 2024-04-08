@@ -365,14 +365,19 @@ class EncuestaSocioeconomicaService
 
 
             $edad = $encuesta->alumno->edad;
-            if ($edad >= 18 && $edad <= 30) {
-                $index = $edad - 18;
-                $datos['edad_encuesta']['data'][$index]++;
-            } elseif ($edad > 30) {
-                $datos['edad_encuesta']['data'][13]++; // Mayores de 30
-            } elseif ($edad < 18) {
-                $datos['edad_encuesta']['data'][14]++; // Menores de 18
+
+            if(is_numeric($edad))
+            {
+                if ($edad >= 18 && $edad <= 30) {
+                    $index = $edad - 18;
+                    $datos['edad_encuesta']['data'][$index]++;
+                } elseif ($edad > 30) {
+                    $datos['edad_encuesta']['data'][13]++; // Mayores de 30
+                } elseif ($edad < 18) {
+                    $datos['edad_encuesta']['data'][14]++; // Menores de 18
+                }
             }
+            
             // Otros campos similares...
         }
         
