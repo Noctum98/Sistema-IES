@@ -14,7 +14,7 @@ class AddCondicionCarreraToTableCarrera extends Migration
     public function up()
     {
         Schema::table('carreras', function (Blueprint $table) {
-            $table->unsignedBigInteger('condicion_id')->nullable();
+            $table->unsignedInteger('condicion_id')->nullable();
             $table->foreign('condicion_id')->references('id')->on('condicion_carreras');
         });
     }

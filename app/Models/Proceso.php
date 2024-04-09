@@ -213,5 +213,15 @@ class Proceso extends Model
         ])->first();
     }
 
+    /**
+     * Obtiene una "condicionMateria" relacionada.
+     *
+     * @return BelongsTo
+     */
+    public function condicionMateria(): BelongsTo
+    {
+        return $this->belongsTo(CondicionMateria::class, 'condicion_materia_id');
+    }
+
 
 }
