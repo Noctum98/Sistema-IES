@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
+use App\Models\Carrera;
 use App\Models\Materia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AlumnoService
 {
@@ -99,5 +101,23 @@ class AlumnoService
     public function getMaterias($idAlumno)
     {
 //        return Materia::
+    }
+
+    public function getCarrerasByRol($user)
+    {
+        $sedes = $user->sedes;
+        if (Session::has('admin') || Session::has('areaSocial') || Session::has('regente')) {
+
+            if (Session::has('areaSocial')) {
+                $sedesIds = $sedes->pluck('id')->toArray();
+                $carreras = Carrera::whereIn('sede_id', $sedesIds)->orderBy('sede_id', 'asc')->get();
+            } else {
+                $carreras = Carrera::orderBy('sede_id', 'asc')->get();
+            }
+        } else {
+            $carreras = $user->carreras;
+        }
+
+        return $carreras;
     }
 }
