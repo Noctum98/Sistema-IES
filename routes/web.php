@@ -715,6 +715,7 @@ Route::prefix('excel')->group(function () {
     );
     Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
     Route::get('/descargarFiltro', [ExcelController::class, 'filtro_alumnos']);
+    Route::get('/encuesta/{carrera_id}/{year}',[ExcelController::class,'encuesta_socioeconomica']);
 });
 
 Route::resource('libros', LibrosController::class);

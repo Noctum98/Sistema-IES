@@ -32,9 +32,13 @@ $(document).ready(function () {
 
 
     let url = '/estadistica/obtenerGraficos/' + sede_id + "/" + carrera_id + '/' + año;
+    let urlDescargar = '/excel/encuesta/'+carrera_id+'/'+año;
+
+    $('#btn-descargar').attr('href',urlDescargar);
 
     $.get(url, function (response) {
       $("#graficos").removeClass('d-none');
+      $("#total").html(response.total);
       elementos = response.data;
       response.data.forEach(element => {
         renderizarGrafica(element)
