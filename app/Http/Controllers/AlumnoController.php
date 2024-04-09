@@ -41,9 +41,8 @@ class AlumnoController extends Controller
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
             'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial-equivalencias',
-            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir', 'vista_equivalencias']]
+            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir', 'vista_equivalencias','vista_datos']]
         );
-        $this->middleware('app.roles:admin', ['only' => 'vista_datos']);
         $this->alumnoService = $alumnoService;
         $this->cicloLectivoService = $cicloLectivoService;
         $this->encuestaSocioeconomicaService = $encuestaSocioeconomicaService;
