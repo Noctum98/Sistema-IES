@@ -28,7 +28,7 @@
 			<input type="number" class="form-control" id="año" name="año" value="{{ isset($año) ? $año : '' }}">
 		</div>
 
-		<input type="submit" value="Buscar" id="btn-submit" class="btn btn-success" disabled>
+		<input type="submit" value="Buscar" id="btn-submit" class="btn btn-primary" disabled>
 	</form>
 
 
