@@ -28,11 +28,13 @@
 			<input type="number" class="form-control" id="año" name="año" value="{{ isset($año) ? $año : '' }}">
 		</div>
 
-		<input type="submit" value="Buscar" id="btn-submit" class="btn btn-success" disabled>
+		<input type="submit" value="Buscar" id="btn-submit" class="btn btn-primary" disabled>
 	</form>
 
 
-	<div id="graficos" class="d-none">
+	<div id="graficos" class="d-none mt-3">
+		<h2><i>Total de respuestas: <span id="total"></span></i></h2>
+		<a href="" class="btn btn-sm btn-success" id="btn-descargar"><b>Descargar Datos de Encuesta</b></a>
 		<h2 class="text-primary mt-3">Encuesta Personal</h2>
 		@foreach($questions as $i => $question)
 		<div class="card mt-3">

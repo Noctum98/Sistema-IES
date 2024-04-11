@@ -3,6 +3,7 @@
 namespace App\Services\Alumno;
 
 use App\Models\Alumno;
+use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Materia;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
@@ -384,6 +385,19 @@ class EncuestaSocioeconomicaService
         $datos['dificultad_estudio']['labels'][3] = 'SUPERPOSICIÓN HORARIA CON EL TRABAJO';
 
         return $datos;
+    }
+
+    public function getEncuestas($parameters)
+    {
+        $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
+            $query->whereHas('carreras', function ($query) use ($parameters) {
+                $query->where('carreras.id', $parameters['carrera_id']);
+            })->whereHas('carreras', function ($query) use ($parameters) {
+                $query->where('año', $parameters['año']);
+            });
+        })->get();
+
+        return $encuestas;
     }
 
     private function procesarCheckbox($datos, $opciones, $encuesta_campo, $campo)

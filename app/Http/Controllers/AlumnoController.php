@@ -212,13 +212,8 @@ class AlumnoController extends Controller
             'carrera_id' => $carrera_id,
             'sede_id' => $sede_id
         ];
-        $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
-            $query->whereHas('carreras', function ($query) use ($parameters) {
-                $query->where('carreras.id', $parameters['carrera_id']);
-            })->whereHas('carreras', function ($query) use ($parameters) {
-                $query->where('año', $parameters['año']);
-            });
-        })->get();
+
+        $encuestas = $this->encuestaSocioeconomicaService->getEncuestas($parameters);
 
         $datos = $this->encuestaSocioeconomicaService->formatearDatos($encuestas);
 
@@ -232,7 +227,12 @@ class AlumnoController extends Controller
             ];
         }
 
-        return response()->json(['data' => $data], 200);
+        $response = [
+            'total' => $encuestas->count(),
+            'data' => $data
+        ];
+
+        return response()->json($response, 200);
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\AllAlumnosExport;
 use App\Exports\AlumnosDatosExport;
 use App\Exports\AlumnosYearExport;
+use App\Exports\EncuestaExport;
 use App\Exports\PlanillaNotasModularExport;
 use App\Exports\PlanillaNotasTradicionalExport;
 use Illuminate\Http\Request;
@@ -14,19 +15,38 @@ use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Services\Alumno\EncuestaSocioeconomicaService;
 use App\Services\AlumnoService;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelController extends Controller
 {
     protected $alumnoService;
+    protected $encuestaSocioeconomicaService;
 
     public function __construct(
-        AlumnoService $alumnoService
+        AlumnoService $alumnoService,
+        EncuestaSocioeconomicaService $encuestaSocioeconomicaService
     )
     {
         $this->middleware('app.auth');
         $this->alumnoService = $alumnoService;
+        $this->encuestaSocioeconomicaService = $encuestaSocioeconomicaService;
+    }
+
+    public function encuesta_socioeconomica(Request $request, $carrera_id,$year)
+    {
+        $datos = [
+            'carrera_id' => $carrera_id,
+            'año' => $year 
+        ];
+
+        $carrera = Carrera::find($carrera_id);
+        $nombreArchivo = $carrera->sede->nombre.' - '.$carrera->nombre.'('.$carrera->turno.') '.$year.'° año';
+
+        $encuestas = $this->encuestaSocioeconomicaService->getEncuestas($datos);
+
+        return Excel::download(new EncuestaExport($encuestas),$nombreArchivo.'.xlsx');
     }
 
     public function alumnos_year($carrera_id, $year,$ciclo_lectivo,$comision_id = null)
