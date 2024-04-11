@@ -131,6 +131,7 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+    Route::patch('/modifica/{id}/cohorte', [AlumnoController::class, 'updateCohorte'])->name('alumno.cohorte-update');
 });
 
 Route::prefix('encuesta_socioeconomica')->group(function () {
@@ -692,7 +693,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 
 
 Route::prefix('estadistica')->group(function () {
-    Route::get('datos', [AlumnoController::class, 'vista_datos']);
+    Route::get('datos', [AlumnoController::class, 'vista_datos'])->name('estadistica.datos');
     Route::get('obtenerGraficos/{sede_id?}/{carrera_id?}/{year?}', [AlumnoController::class, 'obtenerGraficos']);
 });
 
@@ -713,6 +714,7 @@ Route::prefix('excel')->group(function () {
     );
     Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
     Route::get('/descargarFiltro', [ExcelController::class, 'filtro_alumnos']);
+    Route::get('/encuesta/{carrera_id}/{year}',[ExcelController::class,'encuesta_socioeconomica']);
 });
 
 Route::resource('libros', LibrosController::class);

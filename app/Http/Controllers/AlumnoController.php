@@ -10,6 +10,7 @@ use App\Models\Sede;
 use App\Services\Alumno\EncuestaSocioeconomicaService;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -33,16 +34,16 @@ class AlumnoController extends Controller
      * @param CicloLectivoService $cicloLectivoService
      */
     public function __construct(
-        AlumnoService       $alumnoService,
-        CicloLectivoService $cicloLectivoService,
+        AlumnoService                 $alumnoService,
+        CicloLectivoService           $cicloLectivoService,
         EncuestaSocioeconomicaService $encuestaSocioeconomicaService
-    ) {
+    )
+    {
         $this->middleware('app.auth', ['except' => ['descargar_archivo', 'descargar_ficha']]);
         $this->middleware(
             'app.roles:admin-coordinador-regente-seccionAlumnos-areaSocial-equivalencias',
-            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir', 'vista_equivalencias']]
+            ['only' => ['vista_admin', 'vista_alumnos', 'vista_elegir', 'vista_equivalencias','vista_datos']]
         );
-        $this->middleware('app.roles:admin', ['only' => 'vista_datos']);
         $this->alumnoService = $alumnoService;
         $this->cicloLectivoService = $cicloLectivoService;
         $this->encuestaSocioeconomicaService = $encuestaSocioeconomicaService;
@@ -62,17 +63,7 @@ class AlumnoController extends Controller
         }
         $ciclo_lectivo = $request['ciclo_lectivo'] ?? date('Y');
 
-        if (Session::has('admin') || Session::has('areaSocial') || Session::has('regente')) {
-
-            if (Session::has('areaSocial')) {
-                $sedesIds = $sedes->pluck('id')->toArray();
-                $carreras = Carrera::whereIn('sede_id', $sedesIds)->orderBy('sede_id', 'asc')->get();
-            } else {
-                $carreras = Carrera::orderBy('sede_id', 'asc')->get();
-            }
-        } else {
-            $carreras = $user->carreras;
-        }
+        $carreras = $this->alumnoService->getCarrerasByRol($user);
 
         $data = [
             'alumnos' => $alumnos,
@@ -83,7 +74,7 @@ class AlumnoController extends Controller
             'cohorte' => $request['cohorte'],
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
             'ciclo_lectivo' => $ciclo_lectivo,
-            'sedes' => $sedes
+            'sedes' => $sedes,
         ];
 
         return view('alumno.admin', $data);
@@ -108,7 +99,6 @@ class AlumnoController extends Controller
 
 
         //        list($last, $ahora) = $this->cicloLectivoService->getCicloInicialYActual();
-
 
 
         $data = [
@@ -200,9 +190,9 @@ class AlumnoController extends Controller
                 'carreras' => $carreras,
                 'ciclo_lectivo' => $ciclo_lectivo
             ]);
-        } else {
-            return redirect()->back();
         }
+        return redirect()->back();
+
     }
 
     public function vista_historial(int $id)
@@ -261,14 +251,11 @@ class AlumnoController extends Controller
 
     public function vista_datos(Request $request, $sede_id = null, $carrera_id = null, $año = null)
     {
-        $data['sedes'] = Sede::all();
-        $data['carreras'] = Carrera::all();
-        $data['questions'] = [
-            'Identidad de género' => 'identidad_genero',
-            'Edades' => 'edad_encuesta',
-            'Empresa de Teléfono' => 'empresa_telefono',
-            'Accesso a Internet' => 'acceso_internet'
-        ];
+        $user = Auth::user();
+        $data['sedes'] = $user->sedes;
+        $data['carreras'] = $this->alumnoService->getCarrerasByRol($user);
+        $data['questions'] = $this->encuestaSocioeconomicaService::$questions;
+        $data['questions_motivacionales'] = $this->encuestaSocioeconomicaService::$questions_motivacionales;
 
         return view('estadistica.datos', $data);
     }
@@ -280,13 +267,8 @@ class AlumnoController extends Controller
             'carrera_id' => $carrera_id,
             'sede_id' => $sede_id
         ];
-        $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
-            $query->whereHas('carreras', function ($query) use ($parameters) {
-                $query->where('carreras.id', $parameters['carrera_id']);
-            })->whereHas('carreras', function ($query) use ($parameters) {
-                $query->where('año', $parameters['año']);
-            });
-        })->get();
+
+        $encuestas = $this->encuestaSocioeconomicaService->getEncuestas($parameters);
 
         $datos = $this->encuestaSocioeconomicaService->formatearDatos($encuestas);
 
@@ -300,7 +282,12 @@ class AlumnoController extends Controller
             ];
         }
 
-        return response()->json(['data' => $data], 200);
+        $response = [
+            'total' => $encuestas->count(),
+            'data' => $data
+        ];
+
+        return response()->json($response, 200);
     }
 
 
@@ -412,5 +399,19 @@ class AlumnoController extends Controller
         } else {
             return view('error.error');
         }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function updateCohorte(Request $request, $id): JsonResponse
+    {
+        $alumno = Alumno::find($id);
+        $alumno->cohorte = $request->get('cohorte');
+        $alumno->save();
+
+        return response()->json(['new_cohorte' => $alumno->cohorte]);
     }
 }

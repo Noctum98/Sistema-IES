@@ -1,7 +1,27 @@
 $(document).ready(function () {
-  $('#accordionPreguntas').on('shown.bs.collapse', function () {
-    // Renderizar la gráfica cada vez que se abre un elemento del acordeón
-    renderizarGrafica();
+  var elementos;
+
+  $(".btn-graph").click(function (param) { 
+    var identificadorBoton = $(this).attr('id');
+    var partes = identificadorBoton.split('-');
+    var idElement = partes[0];
+    var graph = partes[1];
+    var elemento = elementos.find(function(elemento) {
+      return elemento.identificador === idElement;
+    });
+
+    elemento.type = graph;
+    renderizarGrafica(elemento);
+  });
+
+  $("#año").change(function(e){
+    let val = $(this).val();
+    console.log(val);
+    $("#btn-submit").attr('disabled',true);
+    if(val != '' && val != undefined && val > 0 && val < 4)
+    {
+      $("#btn-submit").attr('disabled',false);
+    }
   });
 
   $("#datos-form").submit(function (e) {
@@ -12,10 +32,14 @@ $(document).ready(function () {
 
 
     let url = '/estadistica/obtenerGraficos/' + sede_id + "/" + carrera_id + '/' + año;
+    let urlDescargar = '/excel/encuesta/'+carrera_id+'/'+año;
+
+    $('#btn-descargar').attr('href',urlDescargar);
 
     $.get(url, function (response) {
       $("#graficos").removeClass('d-none');
-
+      $("#total").html(response.total);
+      elementos = response.data;
       response.data.forEach(element => {
         renderizarGrafica(element)
       });
@@ -25,7 +49,15 @@ $(document).ready(function () {
 
   renderizarGrafica = function (element) {
     const ctx = document.getElementById(element.identificador);
-    console.log(element);
+    // Obtener el gráfico existente en el canvas
+    var existingChart = Chart.getChart(ctx);
+
+    // Destruir el gráfico existente si hay alguno
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+    ctx.innerHTML = '';
     new Chart(ctx, {
       type: element.type,
       data: {
@@ -60,4 +92,6 @@ $(document).ready(function () {
       }
     });
   }
+
+  
 });
