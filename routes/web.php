@@ -61,6 +61,7 @@ use App\Http\Controllers\CondicionCarrerasController;
 use App\Http\Controllers\CondicionMateriasController;
 use App\Http\Controllers\CondicionMateriaApiDocsApiDocsController;
 use App\Http\Controllers\MateriasCorrelativasCursadosController;
+use App\Http\Controllers\AvisoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -827,4 +828,23 @@ Route::group([
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.update');
     Route::delete('/materias_correlativas_cursado/{materiasCorrelativasCursado}', [MateriasCorrelativasCursadosController::class, 'destroy'])
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
+});
+
+Route::group([
+    'prefix' => 'avisos',
+], function () {
+    Route::get('/', [AvisoController::class, 'index'])
+         ->name('aviso.aviso.index');
+    Route::get('/create', [AvisoController::class, 'create'])
+         ->name('aviso.aviso.create');
+    Route::get('/show/{aviso}',[AvisoController::class, 'show'])
+         ->name('aviso.aviso.show');
+    Route::get('/{aviso}/edit',[AvisoController::class, 'edit'])
+         ->name('aviso.aviso.edit');
+    Route::post('/', [AvisoController::class, 'store'])
+         ->name('aviso.aviso.store');
+    Route::put('aviso/{aviso}', [AvisoController::class, 'update'])
+         ->name('aviso.aviso.update');
+    Route::delete('/aviso/{aviso}',[AvisoController::class, 'destroy'])
+         ->name('aviso.aviso.destroy');
 });

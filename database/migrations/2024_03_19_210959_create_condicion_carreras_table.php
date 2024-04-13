@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('nombre');
             $table->string('identificador');
             $table->boolean('habilitado');
-            $table->unsignedInteger('operador_id');
+            $table->unsignedBigInteger('operador_id');
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('operador_id')->references('id')->on('users');
