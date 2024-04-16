@@ -25,7 +25,7 @@ class AvisoController extends Controller
      */
     public function index()
     {
-        $avisoObjects = Aviso::with('user')->paginate(25);
+        $avisoObjects = Aviso::with('user')->orderBy('visible_hasta', 'DESC')->paginate(25);
 
         return view('aviso.index', compact('avisoObjects'));
     }

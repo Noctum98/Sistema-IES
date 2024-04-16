@@ -15,7 +15,7 @@ class CreateAvisosTable extends Migration
     {
         Schema::create('avisos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('creador_id')->unsigned();
+            $table->unsignedInteger('creador_id')->unsigned();
             $table->text('mensaje');
             $table->timestamp('visible_desde')->nullable();
             $table->timestamp('visible_hasta')->nullable();

@@ -1,5 +1,7 @@
 @extends('layouts.app-prueba')
-
+<link href="{{ asset('css/font-awesome/6.5.2/css/all.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/font-awesome/6.5.2/css/v4-shims.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/font-awesome/6.5.2/css/v5-font-face.min.css') }}" rel="stylesheet"/>
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{asset('js/editor_web/styles/simditor.css')}}"/>
     <div class="card text-bg-theme">

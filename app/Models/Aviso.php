@@ -88,7 +88,7 @@ class Aviso extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('Y-m-d H:i:s');
+        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('d-m-Y H:i');
     }
 
     /**
@@ -99,35 +99,71 @@ class Aviso extends Model
      */
     public function getUpdatedAtAttribute($value)
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('Y-m-d H:i:s');
+        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('d-m-Y H:i');
     }
 
+
     /**
-     * Get visible_desde in array format
-     *
-     * @param string $value
-     * @return array
+     * @return string
      */
-    public function getVisibleDesdeAttribute($value)
+    public function getVisibleDesdeAttribute(): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('Y-m-d H:i:s');
+
+        return \DateTime::createFromFormat($this->getDateFormat(), $this->attributes['visible_desde'])->format('d-m-Y H:i');
     }
 
     /**
      * Get visible_hasta in array format
      *
-     * @param string $value
-     * @return array
      */
-    public function getVisibleHastaAttribute($value)
+    public function getVisibleHastaAttribute(): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('Y-m-d H:i:s');
+        return \DateTime::createFromFormat($this->getDateFormat(), $this->attributes['visible_hasta'])->format('d-m-Y H:i');
     }
 
 
     public function roles()
     {
         return $this->hasMany(AvisoRole::class, 'aviso_id', 'id');
+    }
+
+    public function getRoles(): string
+    {
+        $roles = $this->roles()->get();
+        $tableRoles = "";
+        foreach ($roles as $role) {
+            $tableRoles .= '<i class="fa-solid fa-check text-success"></i> ' . ucfirst($role->rol->nombre);
+        }
+        return $tableRoles;
+    }
+
+    public function getTodos(): string
+    {
+
+        if ($this->todos) {
+            return '<i class="fa-solid fa-check text-success"></i> Todos';
+        }
+        return '';
+
+    }
+
+    public function getActivo(): string
+    {
+
+        if (!$this->disabled) {
+            return '<i class="fa-solid fa-times text-danger"></i>';
+        }
+        return '<i class="fa-solid fa-check text-danger"></i>';
+
+    }
+
+    public function isVencido(): bool
+    {
+
+        if($this->visible_hasta < Carbon::now()->format('d-m-Y H:i')){
+            return true;
+        }
+        return false;
     }
 
 }

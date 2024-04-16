@@ -1,5 +1,7 @@
 @extends('layouts.app-prueba')
-
+<link href="{{ asset('css/font-awesome/6.5.2/css/all.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/font-awesome/6.5.2/css/v4-shims.min.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/font-awesome/6.5.2/css/v5-font-face.min.css') }}" rel="stylesheet"/>
 @section('content')
 
 <div class="card text-bg-theme">
@@ -33,14 +35,14 @@
 
     <div class="card-body">
         <dl class="row">
-            <dt class="text-lg-end col-lg-2 col-xl-3">Creador</dt>
-            <dd class="col-lg-10 col-xl-9">{{ optional($aviso->User)->activo }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Created At</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Autor</dt>
+            <dd class="col-lg-10 col-xl-9">{{ optional($aviso->User)->getApellidoNombre() }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Creado el</dt>
             <dd class="col-lg-10 col-xl-9">{{ $aviso->created_at }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Mensaje</dt>
             <dd class="col-lg-10 col-xl-9">{!! $aviso->mensaje !!}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Role Destinatario</dt>
-            <dd class="col-lg-10 col-xl-9">{{ $aviso->role_destinatario }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Destinado a</dt>
+            <dd class="col-lg-10 col-xl-9">{!!  $aviso->getRoles()  !!} {!! $aviso->getTodos() !!}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Updated At</dt>
             <dd class="col-lg-10 col-xl-9">{{ $aviso->updated_at }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Visible Desde</dt>
