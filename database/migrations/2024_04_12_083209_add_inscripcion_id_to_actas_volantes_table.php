@@ -14,7 +14,8 @@ class AddInscripcionIdToActasVolantesTable extends Migration
     public function up()
     {
         Schema::table('actas_volantes', function (Blueprint $table) {
-            $table->foreignId('inscripcion_id')->constrained('alumno_carrera')->nulable();
+            $table->unsignedBigInteger('inscripcion_id')->nullable();
+            $table->foreign('inscripcion_id')->references('id')->on('alumno_carrera');
         });
     }
 
