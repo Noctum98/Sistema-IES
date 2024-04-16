@@ -22,6 +22,13 @@
                         Si has iniciado sesión con los datos por defecto, recomendamos cambiar
                         tu contraseña en la sección “Mi Perfil” del menú desplegable.
                     </div>
+                    <div class="card bg-warning bg-opacity-25 pl-3">
+                        @if($avisos)
+                            @foreach($avisos as $aviso)
+                                {!! $aviso->mensaje !!}
+                            @endforeach
+                        @endif
+                    </div>
                     <div class="card bg-primary bg-opacity-25">
                         <div class="card-header">
                             <div class="card-title">
@@ -32,10 +39,10 @@
                         <div class="card-body">
                             <ul>
                                 <li>Chrome versión mayor o igual a 60</li>
-                                <li>Firefox versión mayor o igual a 60 </li>
-                                <li>Firefox versión ESR </li>
-                                <li>iOS versión mayor o igual a 12 </li>
-                                <li>Safari versión mayor o igual a 12 </li>
+                                <li>Firefox versión mayor o igual a 60</li>
+                                <li>Firefox versión ESR</li>
+                                <li>iOS versión mayor o igual a 12</li>
+                                <li>Safari versión mayor o igual a 12</li>
                                 <li>No es soportado Internet Explorer versiones menores o iguales a la v11</li>
                             </ul>
                         </div>
