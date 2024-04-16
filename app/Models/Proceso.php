@@ -79,6 +79,10 @@ class Proceso extends Model
         return $this->belongsTo(Estados::class, 'estado_id');
     }
 
+    public function inscripcionCarrera(): BelongsTo
+    {
+        return $this->belongsTo(AlumnoCarrera::class,'inscripcion_id');
+    }
 
     public function estadoRegularidad()
     {

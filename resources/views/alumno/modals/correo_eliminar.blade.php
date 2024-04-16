@@ -1,4 +1,4 @@
-<div class="modal fade" id="eliminarMatriculacionModal{{$carrera->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="eliminarMatriculacionModal{{$inscripcion->carrera_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" method="POST">
+                <form action="{{ route('matriculacion.delete',['id'=>$alumno->id,'carrera_id'=>$inscripcion->carrera_id]) }}" method="POST">
                     @csrf
                     {{ method_field('DELETE') }}
                     <h6>Error en:</h6>

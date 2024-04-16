@@ -229,9 +229,10 @@ class Materia extends BaseModel
         $actaVolante = ActaVolante::where([
             'alumno_id' => $alumno_id,
             'materia_id' => $this->id
-        ])
-            ->orderBy('updated_at', 'DESC')
-            ->first();
+        ])->whereHas('inscripcion', function($query) {
+            $query->whereRaw('YEAR(inscripciones.cohorte) <= YEAR(actas_volantes.created_at)');
+        })->orderBy('updated_at', 'DESC')
+        ->first();;
 
 
         if (!$actaVolante) {
