@@ -9,7 +9,7 @@
         </h2>
         <p class="text-info"><i>{{ $instancia->nombre }}</i></p>
         <hr>
-        
+
         @foreach($carreras as $carrera)
             <a type="button" href="{{ route('mesa.mesas',['id'=>$carrera->id,'instancia_id'=>$instancia->id]) }}"
                class="list-group-item list-group-item-action border-top mt-2 text-secondary" title="Ver calificaciones">
@@ -30,7 +30,6 @@
                     ajax: {
                         url: 'carrera/verProfesores/' + $(this).attr('id'),
                         dataType: 'json'
-                        // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
                     }
                 });
             </script>

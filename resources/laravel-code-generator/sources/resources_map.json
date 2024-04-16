@@ -8,5 +8,10 @@
         "model-name": "MateriasCorrelativasCursado",
         "resource-file": "materias_correlativas_cursados.json",
         "table-name": "materias_correlativas_cursados"
+    },
+    {
+        "model-name": "Aviso",
+        "resource-file": "avisos.json",
+        "table-name": "avisos"
     }
 ]
