@@ -16,7 +16,7 @@ class AddInscripcionIdToProcesosTable extends Migration
         Schema::table('procesos', function (Blueprint $table) {
 
             $table->unsignedBigInteger('inscripcion_id')->nullable();
-            $table->foreign('inscripcion_id')->references('id')->on('alumno_carrera');
+            $table->foreignId('inscripcion_id')->references('id')->on('alumno_carrera');
         });
     }
 
