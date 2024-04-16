@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\AvisoRole;
 use App\Models\MateriasCorrelativasCursado;
+use App\Policies\AvisoRolePolicy;
 use App\Policies\MateriasCorrelativasCursadoPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         MateriasCorrelativasCursado::class => MateriasCorrelativasCursadoPolicy::class,
+        AvisoRole::class => AvisoRolePolicy::class,
     ];
 
     /**

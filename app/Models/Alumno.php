@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -510,6 +511,16 @@ class Alumno extends Model
         return $this->hasOne(Trianual::class, 'alumno_id');
     }
 
+
+    /**
+     * Obtiene una "condicionCarrera" relacionada.
+     *
+     * @return BelongsTo
+     */
+    public function condicionCarrera(): BelongsTo
+    {
+        return $this->belongsTo(CondicionCarrera::class, 'condicion_carrera_id');
+    }
     /**
      * Verifica si el estudiante tiene alguna calificación.
      *

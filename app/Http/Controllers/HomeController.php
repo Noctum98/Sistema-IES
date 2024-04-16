@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\AuthorizerService;
+use App\Services\AvisosService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,10 +15,16 @@ class HomeController extends Controller
      * @return void
      */
     protected $roles;
-    public function __construct(
+    private AvisosService $avisosService;
+
+    /**
+     * @param AvisosService $avisosService
+     */
+    public function __construct(AvisosService $avisosService
     )
     {
         $this->middleware('auth');
+        $this->avisosService = $avisosService;
     }
 
     /**
@@ -34,7 +41,14 @@ class HomeController extends Controller
             }
         }
 
-        return view('home');
+        $avisos = $this->avisosService->getAvisos();
+
+
+
+
+
+
+        return view('home', compact('avisos'));
     }
 
     public function ayudaCargos()

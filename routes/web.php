@@ -60,6 +60,7 @@ use App\Http\Controllers\CondicionCarrerasController;
 use App\Http\Controllers\CondicionMateriasController;
 use App\Http\Controllers\CondicionMateriaApiDocsApiDocsController;
 use App\Http\Controllers\MateriasCorrelativasCursadosController;
+use App\Http\Controllers\AvisoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,8 +75,8 @@ use App\Http\Controllers\MateriasCorrelativasCursadosController;
 
 
 Auth::routes();
-Route::get('/register-alumno/{carrera_id}',[RegisterController::class,'showRegistrationAlumnosForm'])->name('register.alumnos');
-Route::post('register-alumno',[RegisterController::class,'registerAlumno'])->name('register.alumno.store');
+Route::get('/register-alumno/{carrera_id}', [RegisterController::class, 'showRegistrationAlumnosForm'])->name('register.alumnos');
+Route::post('register-alumno', [RegisterController::class, 'registerAlumno'])->name('register.alumno.store');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home/ayuda/cargos', [App\Http\Controllers\HomeController::class, 'ayudaCargos'])->name(
@@ -136,9 +137,9 @@ Route::prefix('alumnos')->group(function () {
 
 Route::prefix('encuesta_socioeconomica')->group(function () {
     Route::get('personal/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
-    Route::get('motivacional/{encuesta_id}/{carrera_id}',[EncuestaSocioeconomicaController::class,'showForm2'])->name('encuesta_socioeconomica.showForm2');
-    Route::post('/store',[EncuestaSocioeconomicaController::class,'store'])->name('encuesta_socioeconomica.store');
-    Route::post('/store2',[EncuestaSocioeconomicaController::class,'store2'])->name('encuesta_socioeconomica.store2');
+    Route::get('motivacional/{encuesta_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm2'])->name('encuesta_socioeconomica.showForm2');
+    Route::post('/store', [EncuestaSocioeconomicaController::class, 'store'])->name('encuesta_socioeconomica.store');
+    Route::post('/store2', [EncuestaSocioeconomicaController::class, 'store2'])->name('encuesta_socioeconomica.store2');
 
 });
 
@@ -189,7 +190,7 @@ Route::prefix('carreras')->group(function () {
     );
 });
 
-Route::resource('calendario',CalendarioController::class);
+Route::resource('calendario', CalendarioController::class);
 
 //Ruta de Ciclo lectivo
 Route::prefix('ciclo-lectivo')->middleware('auth')->group(function () {
@@ -443,7 +444,7 @@ Route::prefix('preinscripcion')->group(function () {
 // Rutas de Proceso
 Route::prefix('proceso')->group(function () {
     // Vistas
-    Route::get('/admin/{alumno_id}/{carrera_id}/{ciclo_lectivo}',[ProcesoController::class,'vista_admin'])->name('proceso.admin');
+    Route::get('/admin/{alumno_id}/{carrera_id}/{ciclo_lectivo}', [ProcesoController::class, 'vista_admin'])->name('proceso.admin');
     Route::get('inscribir/{id}', [ProcesoController::class, 'vista_inscribir'])->name('proceso.inscribir');
 
     Route::get('detalle/{id}', [ProcesoController::class, 'vista_detalle'])->name('proceso.detalle');
@@ -457,12 +458,12 @@ Route::prefix('proceso')->group(function () {
         'inscribir_proceso'
     );
     Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
-    Route::get('delete/{proceso_id}',[ProcesoController::class,'eliminar']);
+    Route::get('delete/{proceso_id}', [ProcesoController::class, 'eliminar']);
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
     Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
         'proceso.listado'
     );
-    Route::get('/{id}',[ProcesoController::class,'getProceso']);
+    Route::get('/{id}', [ProcesoController::class, 'getProceso']);
 
     Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
         [ProcesoController::class, 'vista_listadoCargo']
@@ -774,57 +775,76 @@ Route::group([
     'prefix' => 'condicion_carreras',
 ], function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
-         ->name('condicion_carreras.condicion_carrera.index');
+        ->name('condicion_carreras.condicion_carrera.index');
     Route::get('/create', [CondicionCarrerasController::class, 'create'])
-         ->name('condicion_carreras.condicion_carrera.create');
-    Route::get('/show/{condicionCarrera}',[CondicionCarrerasController::class, 'show'])
-         ->name('condicion_carreras.condicion_carrera.show')->where('id', '[0-9]+');
-    Route::get('/{condicionCarrera}/edit',[CondicionCarrerasController::class, 'edit'])
-         ->name('condicion_carreras.condicion_carrera.edit')->where('id', '[0-9]+');
+        ->name('condicion_carreras.condicion_carrera.create');
+    Route::get('/show/{condicionCarrera}', [CondicionCarrerasController::class, 'show'])
+        ->name('condicion_carreras.condicion_carrera.show')->where('id', '[0-9]+');
+    Route::get('/{condicionCarrera}/edit', [CondicionCarrerasController::class, 'edit'])
+        ->name('condicion_carreras.condicion_carrera.edit')->where('id', '[0-9]+');
     Route::post('/', [CondicionCarrerasController::class, 'store'])
-         ->name('condicion_carreras.condicion_carrera.store');
+        ->name('condicion_carreras.condicion_carrera.store');
     Route::put('condicion_carrera/{condicionCarrera}', [CondicionCarrerasController::class, 'update'])
-         ->name('condicion_carreras.condicion_carrera.update')->where('id', '[0-9]+');
-    Route::delete('/condicion_carrera/{condicionCarrera}',[CondicionCarrerasController::class, 'destroy'])
-         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
+        ->name('condicion_carreras.condicion_carrera.update')->where('id', '[0-9]+');
+    Route::delete('/condicion_carrera/{condicionCarrera}', [CondicionCarrerasController::class, 'destroy'])
+        ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
 });
 
 Route::group([
     'prefix' => 'condicion_materias',
 ], function () {
     Route::get('/', [CondicionMateriasController::class, 'index'])
-         ->name('condicion_materias.condicion_materia.index');
+        ->name('condicion_materias.condicion_materia.index');
     Route::get('/create', [CondicionMateriasController::class, 'create'])
-         ->name('condicion_materias.condicion_materia.create');
-    Route::get('/show/{condicionMateria}',[CondicionMateriasController::class, 'show'])
-         ->name('condicion_materias.condicion_materia.show');
-    Route::get('/{condicionMateria}/edit',[CondicionMateriasController::class, 'edit'])
-         ->name('condicion_materias.condicion_materia.edit');
+        ->name('condicion_materias.condicion_materia.create');
+    Route::get('/show/{condicionMateria}', [CondicionMateriasController::class, 'show'])
+        ->name('condicion_materias.condicion_materia.show');
+    Route::get('/{condicionMateria}/edit', [CondicionMateriasController::class, 'edit'])
+        ->name('condicion_materias.condicion_materia.edit');
     Route::post('/', [CondicionMateriasController::class, 'store'])
-         ->name('condicion_materias.condicion_materia.store');
+        ->name('condicion_materias.condicion_materia.store');
     Route::put('condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'update'])
-         ->name('condicion_materias.condicion_materia.update');
-    Route::delete('/condicion_materia/{condicionMateria}',[CondicionMateriasController::class, 'destroy'])
-         ->name('condicion_materias.condicion_materia.destroy');
+        ->name('condicion_materias.condicion_materia.update');
+    Route::delete('/condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'destroy'])
+        ->name('condicion_materias.condicion_materia.destroy');
 });
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
-     ->name('api-docs.condicion_materias.condicion_materia.index');
+    ->name('api-docs.condicion_materias.condicion_materia.index');
 
 Route::group([
     'prefix' => 'materias_correlativas_cursados',
 ], function () {
     Route::get('/', [MateriasCorrelativasCursadosController::class, 'index'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
     Route::get('/create', [MateriasCorrelativasCursadosController::class, 'create'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.create');
-    Route::get('/show/{materiasCorrelativasCursado}',[MateriasCorrelativasCursadosController::class, 'show'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.show');
-    Route::get('/{materiasCorrelativasCursado}/edit',[MateriasCorrelativasCursadosController::class, 'edit'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.edit');
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.create');
+    Route::get('/show/{materiasCorrelativasCursado}', [MateriasCorrelativasCursadosController::class, 'show'])
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.show');
+    Route::get('/{materiasCorrelativasCursado}/edit', [MateriasCorrelativasCursadosController::class, 'edit'])
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.edit');
     Route::post('/', [MateriasCorrelativasCursadosController::class, 'store'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.store');
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.store');
     Route::put('materias_correlativas_cursado/{materiasCorrelativasCursado}', [MateriasCorrelativasCursadosController::class, 'update'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.update');
-    Route::delete('/materias_correlativas_cursado/{materiasCorrelativasCursado}',[MateriasCorrelativasCursadosController::class, 'destroy'])
-         ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.update');
+    Route::delete('/materias_correlativas_cursado/{materiasCorrelativasCursado}', [MateriasCorrelativasCursadosController::class, 'destroy'])
+        ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
+});
+
+Route::group([
+    'prefix' => 'avisos',
+], function () {
+    Route::get('/', [AvisoController::class, 'index'])
+         ->name('aviso.aviso.index');
+    Route::get('/create', [AvisoController::class, 'create'])
+         ->name('aviso.aviso.create');
+    Route::get('/show/{aviso}',[AvisoController::class, 'show'])
+         ->name('aviso.aviso.show');
+    Route::get('/{aviso}/edit',[AvisoController::class, 'edit'])
+         ->name('aviso.aviso.edit');
+    Route::post('/', [AvisoController::class, 'store'])
+         ->name('aviso.aviso.store');
+    Route::put('aviso/{aviso}', [AvisoController::class, 'update'])
+         ->name('aviso.aviso.update');
+    Route::delete('/aviso/{aviso}',[AvisoController::class, 'destroy'])
+         ->name('aviso.aviso.destroy');
 });

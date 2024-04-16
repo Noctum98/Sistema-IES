@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('materia_id')->constrained('materias');
             $table->foreignId('previa_id')->constrained('materias');
-            $table->unsignedInteger('operador_id');
+            $table->unsignedBigInteger('operador_id');
             $table->foreign('operador_id')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();

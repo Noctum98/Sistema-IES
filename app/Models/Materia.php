@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Parameters\CicloLectivoEspecial;
 use App\Services\AsistenciaModularService;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\HigherOrderCollectionProxy;
 
 
 /**
@@ -37,6 +40,10 @@ use Illuminate\Database\Query\Builder;
  */
 class Materia extends BaseModel
 {
+
+    const PRI_SEM = "Cuatrimestral (1er)";
+    const SEC_SEM = "Cuatrimestral (2do)";
+    const ANUAL = "Anual";
 
     protected $fillable = [
         'carrera_id',
@@ -389,6 +396,33 @@ class Materia extends BaseModel
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $this->id)
             ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
+    }
+
+    /**
+     * @param int $ciclo_lectivo
+     * @return Carbon|HigherOrderCollectionProxy|mixed
+     */
+    public function getCierre(int $ciclo_lectivo)
+    {
+        $ciclo_lectivo = CicloLectivo::find($ciclo_lectivo);
+        $regimen = $this->regimen;
+
+        switch ($regimen) {
+            case self::ANUAL:
+                $cierre = $ciclo_lectivo->anual;
+                break;
+            case self::PRI_SEM:
+                $cierre = $ciclo_lectivo->fst_sem;
+                break;
+            case self::SEC_SEM:
+                $cierre = $ciclo_lectivo->snd_sem;
+                break;
+            default:
+                $cierre = now();
+        }
+
+        return $cierre;
+
     }
 
 
