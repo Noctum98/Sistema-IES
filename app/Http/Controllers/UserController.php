@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\MatriculacionUser;
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Cargo;
 use App\Models\User;
 use App\Models\Rol;
@@ -344,18 +345,20 @@ class UserController extends Controller
         );
     }
 
-    public function crear_usuario_alumno($alumno_id)
+    public function crear_usuario_alumno($id)
     {
-        $alumno = Alumno::find($alumno_id);
+        $inscripcion = AlumnoCarrera::find($id);
+        $alumno = $inscripcion->alumno;
 
-        if ($alumno->aprobado) {
+        if ($inscripcion->aprobado) {
             return redirect()->route('alumno.detalle', [
                 'id' => $alumno->id,
             ])->with([
                 'alert_warning' => 'El alumno, ya tiene esta aprobado',
             ]);
         }else{
-            $alumno->aprobado = true;
+            $inscripcion->aprobado = true;
+            $inscripcion->update();
         }
 
         if (!$alumno->user_id) {
@@ -399,7 +402,7 @@ class UserController extends Controller
         return redirect()->route('alumno.detalle', [
             'id' => $alumno->id,
         ])->with([
-            'mensaje_exitoso' => 'La matriculación del alumno ' . $alumno->nombres . ' ' . $alumno->apellidos . ' ha sido aprobada correctamente.',
+            'mensaje_exitoso' => 'La matriculación a ' . $inscripcion->carrera->nombre  . ' ha sido aprobada correctamente.',
         ]);
     }
 

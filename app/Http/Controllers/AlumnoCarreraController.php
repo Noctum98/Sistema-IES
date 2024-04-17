@@ -20,27 +20,20 @@ class AlumnoCarreraController extends Controller
         $this->alumnoService = $alumnoService;
     }
 
-    public function changeAño(Request $request,$alumno_id,$carrera_id)
+    public function changeAño(Request $request,$inscripcion_id)
     {
         $validate = $this->validate($request,[
             'year' => ['required','numeric']
         ]);
 
-
-        $alumnoCarrera = AlumnoCarrera::where([
-            'alumno_id' => $alumno_id,
-            'carrera_id' => $carrera_id
-        ])->latest()->first();
-
         $request['año'] = $request['year'];
+        $inscripcion = AlumnoCarrera::find($inscripcion_id);
+        $inscripcion->update($request->all());
 
-        $alumnoCarrera->update($request->all());
 
-        $alumno = Alumno::find($alumno_id);
+        $this->alumnoService->cambiarSituacion($inscripcion,$request['year'],$request['regularidad']);
 
-        $this->alumnoService->cambiarSituacion($alumno,$request['year']);
-
-        return redirect()->route('alumno.detalle',$alumno_id)->with('mensaje_exitoso','Año editado');
+        return redirect()->route('alumno.detalle',$inscripcion->alumno_id)->with('mensaje_exitoso','Datos modificados');
     }
 
     public function ver_datos_carrera($carrera, $alumno)

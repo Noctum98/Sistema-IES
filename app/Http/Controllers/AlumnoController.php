@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Alumno\EncuestaSocioeconomica;
+use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
 use App\Models\Preinscripcion;
 use App\Models\Sede;
@@ -147,14 +148,24 @@ class AlumnoController extends Controller
     public function vista_alumnos(Request $request, $carrera_id, $ciclo_lectivo = null)
     {
         $carrera = Carrera::find($carrera_id);
+        $inscripciones = AlumnoCarrera::select('alumno_carrera.*','alumnos.apellidos')
+        ->leftJoin('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
+        ->where([
+            'carrera_id' => $carrera_id,
+            'ciclo_lectivo' => $ciclo_lectivo
+        ])
+        ->orderBy('alumnos.apellidos', 'asc')
+        ->get();
+
+        //dd($inscripciones);
 
         $ciclo_lectivo = $ciclo_lectivo ?? date('Y');
-
 
         return view('alumno.alumnos', [
             'carrera' => $carrera,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'inscripciones' => $inscripciones
         ]);
     }
 
@@ -162,13 +173,22 @@ class AlumnoController extends Controller
     {
         $alumno = Alumno::find($id);
 
-        $carreras = $carreras = Carrera::select('carreras.*')
-            ->distinct()
-            ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
-            ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
-            ->where('alumnos.id', $alumno->id)
-            ->get();
+        $alumnosCarreras = AlumnoCarrera::where('alumno_id', $alumno->id)->get();
+        $inscripciones = [];
 
+        foreach ($alumnosCarreras as $inscripcion) {
+            $datoActual = AlumnoCarrera::where([
+                'carrera_id'=>$inscripcion->carrera_id,
+                'alumno_id' => $alumno->id
+                ])
+                ->orderBy('ciclo_lectivo', 'desc')
+                ->orderBy('created_at', 'desc') // En caso de empate, ordenar por fecha de creación
+                ->first();
+        
+            if (!in_array($datoActual, $inscripciones)) {
+                array_push($inscripciones, $datoActual);
+            }
+        }
         if (!$alumno) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'El alumno no existe',
@@ -187,7 +207,7 @@ class AlumnoController extends Controller
         if ($pase) {
             return view('alumno.detail', [
                 'alumno' => $alumno,
-                'carreras' => $carreras,
+                'inscripciones' => $inscripciones,
                 'ciclo_lectivo' => $ciclo_lectivo
             ]);
         }
@@ -379,7 +399,7 @@ class AlumnoController extends Controller
     public function descargar_ficha(int $id)
     {
         $alumno = Alumno::find($id);
-        $carreras = $carreras = $carreras = Carrera::select('carreras.*')
+        $inscripciones = $carreras = Carrera::select('carreras.*')
             ->distinct()
             ->join('alumno_carrera', 'carreras.id', '=', 'alumno_carrera.carrera_id')
             ->join('alumnos', 'alumno_carrera.alumno_id', '=', 'alumnos.id')
@@ -408,7 +428,7 @@ class AlumnoController extends Controller
      */
     public function updateCohorte(Request $request, $id): JsonResponse
     {
-        $alumno = Alumno::find($id);
+        $alumno = AlumnoCarrera::find($id);
         $alumno->cohorte = $request->get('cohorte');
         $alumno->save();
 

@@ -45,15 +45,25 @@ class MatriculacionController extends Controller
 
         $alumno = Alumno::where('user_id',$user_id)->first();
 
-        $carreras = Carrera::whereHas('alumnos', function ($query) use ($user_id) {
-            $query->where('alumnos.user_id', $user_id);
-        })
-            ->with(['alumnos' => function ($query) use ($user_id) {
-                $query->where('alumnos.user_id', $user_id);
-            }, 'sede'])->get();
+        $alumnosCarreras = AlumnoCarrera::where('alumno_id', $alumno->id)->get();
+        $inscripciones = [];
+
+        foreach ($alumnosCarreras as $inscripcion) {
+            $datoActual = AlumnoCarrera::where([
+                'carrera_id'=>$inscripcion->carrera_id,
+                'alumno_id' => $alumno->id
+                ])
+                ->orderBy('ciclo_lectivo', 'desc')
+                ->orderBy('created_at', 'desc') // En caso de empate, ordenar por fecha de creación
+                ->first();
+        
+            if (!in_array($datoActual, $inscripciones)) {
+                array_push($inscripciones, $datoActual);
+            }
+        }
 
 
-        return view('matriculacion.index', ['carreras' => $carreras,'alumno'=>$alumno]);
+        return view('matriculacion.index', ['inscripciones' => $inscripciones,'alumno'=>$alumno]);
     }
 
     public function create($carrera_id, $year, $timecheck = false)
@@ -95,8 +105,10 @@ class MatriculacionController extends Controller
                 return redirect()->back()->with(['alert_warning' => 'La carrera no tiene la matriculación habilitada.']);
             }
         }
+
+        $inscripcion = $alumno->lastProcesoCarrera($carrera->id);
         
-        if (!$alumno->aprobado || !Session::has('alumno')) {
+        if (!$inscripcion->aprobado || !Session::has('alumno')) {
             if (!$año) {
                 $alumno_carrera = AlumnoCarrera::where([
                     'alumno_id' => $alumno_id,
@@ -224,7 +236,9 @@ class MatriculacionController extends Controller
             'alumno_id' => $alumno->id,
             'carrera_id' => $carrera->id,
             'año'   => $año,
-            'ciclo_lectivo' => date('Y')
+            'ciclo_lectivo' => date('Y'),
+            'regularidad' => $request['regularidad'],
+            'año' => $año
         ];
 
         if (!$alumno_carrera) {
@@ -235,32 +249,29 @@ class MatriculacionController extends Controller
 
         if (isset($request['materias'])) {
             Proceso::where(['alumno_id' => $alumno->id, 'ciclo_lectivo' => date('Y')])->delete();
-            $this->procesoService->inscribir($alumno->id, $request['materias']);
+            $this->procesoService->inscribir($alumno->id, $request['materias'],$alumno_carrera);
         }
 
         $alumno->update($request->all());
 
-
-        if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+        if(!Session::has('coordinador') && !Session::has('regente') && !Session::has('admin') && !Session::has('seccionAlumnos'))
         {
-            return redirect()->route('encuesta_socioeconomica.showForm',[
-                'alumno_id'=>$alumno->id,
-                'carrera_id' => $carrera->id
-            ]);
-        }else{
-            /*
-            if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
-                Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
-            }*/
-            
-            return redirect()->route('matriculacion.edit', [
-                'alumno_id' => $alumno->id,
-                'carrera_id' => $carrera_id,
-                'year'      => $año
-            ])->with([
-                'mensaje_editado' => 'Datos editados correctamente'
-            ]);
-        } 
+            if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+            {
+                return redirect()->route('encuesta_socioeconomica.showForm',[
+                    'alumno_id'=>$alumno->id,
+                    'carrera_id' => $carrera->id
+                ]);
+            }
+        }
+
+        return redirect()->route('matriculacion.edit', [
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera_id,
+            'year'      => $año
+        ])->with([
+            'mensaje_editado' => 'Datos editados correctamente'
+        ]);
     }
 
     public function delete(Request $request, $id)

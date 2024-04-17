@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -64,10 +65,11 @@ class AlumnoCarrera extends Model
 
     }
 
-    public function carrera()
+    public function carrera(): BelongsTo
     {
-        return Carrera::find($this->carrera_id);
+        return $this->belongsTo(Carrera::class,'carrera_id');
     }
+
 
     /**
      * @return BelongsTo

@@ -89,21 +89,21 @@ class AlumnoService
 
         return $mensaje;
     }
-    public function cambiarSituacion($alumno, $año)
+    public function cambiarSituacion($inscrpcion, $año,$regularidad)
     {
         if ($año == 1) {
-            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_primero', $alumno->regularidad);
+            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_primero', $regularidad);
         }
 
         if ($año == 2) {
-            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_segundo', $alumno->regularidad);
+            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_segundo', $regularidad);
         }
 
         if ($año == 3) {
-            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_tercero', $alumno->regularidad);
+            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_tercero', $regularidad);
         }
 
-        $alumno->update(['regularidad' => $regularidad]);
+        $inscrpcion->update(['regularidad' => $regularidad]);
     }
 
     public function getMaterias($idAlumno)

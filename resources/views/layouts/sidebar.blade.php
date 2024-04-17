@@ -19,6 +19,10 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                     Usuarios
                 </a>
+                        <a class="nav-link" href="{{ route('aviso.aviso.index') }}">
+                    <div class="sb-nav-link-icon"><i class="far fa-comment-alt"></i></div>
+                    Avisos
+                </a>
                 @endif
                 @if(Session::has('actividad'))
                 <a class="nav-link" href="{{ route('registros.index') }}">

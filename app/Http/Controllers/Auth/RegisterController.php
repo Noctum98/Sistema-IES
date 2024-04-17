@@ -10,6 +10,7 @@ use App\Models\Carrera;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Rol;
+use App\Services\AlumnoCarreraService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -43,16 +44,18 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = "/login";
+    protected $alumnoCarreraService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AlumnoCarreraService $alumnoCarreraService)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin-coordinador-seccionAlumnos');
+        $this->alumnoCarreraService = $alumnoCarreraService;
     }
 
     /**
@@ -147,7 +150,9 @@ class RegisterController extends Controller
         }
         
         $request['alumno_id'] = $alumno->id;
-        $inscripcion = AlumnoCarrera::create($request->all());
+
+        $datos = $this->alumnoCarreraService->datosInscripcion($request);
+        $inscripcion = AlumnoCarrera::create($datos);
 
         return redirect()->route('alumno.carrera',['carrera_id'=>$inscripcion->carrera_id, 'ciclo_lectivo' => $inscripcion->ciclo_lectivo])
         ->with(['alert_success'=>'Alumno registrado correctamente.']);

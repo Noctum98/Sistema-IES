@@ -34,7 +34,7 @@ class Aviso extends Model
 
     protected $casts = [
         'disabled' => 'boolean',
-        'todos' => 'boolean'
+        'todos' => 'boolean',
     ];
 
     protected $dates = [
@@ -151,9 +151,9 @@ class Aviso extends Model
     {
 
         if (!$this->disabled) {
-            return '<i class="fa-solid fa-times text-danger"></i>';
+            return '<i class="fa-solid fa-times text-danger"></i> No';
         }
-        return '<i class="fa-solid fa-check text-danger"></i>';
+        return '<i class="fa-solid fa-check text-danger"></i> Si';
 
     }
 

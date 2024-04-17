@@ -47,13 +47,21 @@ class AlumnoProcesoController extends Controller
             ]);
         }
 
-        $procesos = Proceso::select('procesos.*')
+        $procesos = [];
+        $procesosGet = Proceso::select('procesos.*', 'alumno_carrera.cohorte')
+            ->join('alumno_carrera', 'procesos.inscripcion_id', 'alumno_carrera.id')
             ->join('materias', 'procesos.materia_id', 'materias.id')
             ->where('materias.carrera_id', $carrera->id)
             ->where('materias.año', $year)
             ->where('procesos.alumno_id', $id)
             ->orderBy('materias.nombre', 'ASC')
             ->get();
+        foreach ($procesosGet as $proceso) {
+            $created_at = date('Y', strtotime($proceso->created_at));
+            if ($created_at >= $proceso->cohorte) {
+                array_push($procesos, $proceso);
+            }
+        }
 
 
         return view('proceso.alumno', [
@@ -79,10 +87,11 @@ class AlumnoProcesoController extends Controller
             if (Auth::user()->id == $alumno->user->id) {
                 $pase = true;
             }
-
         }
-        if (Session::has('coordinador') || Session::has('admin') || Session::has('areaSocial')
-            || Session::has('regente') || Session::has('seccionAlumnos')) {
+        if (
+            Session::has('coordinador') || Session::has('admin') || Session::has('areaSocial')
+            || Session::has('regente') || Session::has('seccionAlumnos')
+        ) {
             $pase = true;
         }
 
@@ -130,5 +139,4 @@ class AlumnoProcesoController extends Controller
             'carrera' => $carrera
         ]);
     }
-
 }

@@ -7,10 +7,10 @@
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">Create New Aviso</h4>
+            <h4 class="m-0">Crear nuevo Aviso</h4>
             <div>
-                <a href="{{ route('aviso.aviso.index') }}" class="btn btn-primary" title="Show All Aviso">
-                    <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+                <a href="{{ route('aviso.aviso.index') }}" class="btn btn-primary" title="Ver todos los avisos">
+                    <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
                 </a>
             </div>
         </div>
@@ -36,7 +36,7 @@
                                           ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
-                    <input class="btn btn-primary" type="submit" value="Add">
+                    <input class="btn btn-primary" type="submit" value="Guardar">
                 </div>
 
             </form>

@@ -56,7 +56,8 @@ class Proceso extends Model
         'cargo_id',
         'ciclo_lectivo',
         'habilitado_campo',
-        'final_asistencia'
+        'final_asistencia',
+        'inscripcion_id'
     ];
 
     //Relations
@@ -79,6 +80,10 @@ class Proceso extends Model
         return $this->belongsTo(Estados::class, 'estado_id');
     }
 
+    public function inscripcionCarrera(): BelongsTo
+    {
+        return $this->belongsTo(AlumnoCarrera::class,'inscripcion_id');
+    }
 
     public function estadoRegularidad()
     {
