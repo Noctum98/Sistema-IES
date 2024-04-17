@@ -13,20 +13,20 @@
                 <input name="_method" value="DELETE" type="hidden">
                 {{ csrf_field() }}
 
-                <a href="{{ route('aviso.aviso.edit', $aviso->id ) }}" class="btn btn-primary" title="Edit Aviso">
-                    <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
+                <a href="{{ route('aviso.aviso.edit', $aviso->id ) }}" class="btn btn-primary" title="Editar Aviso">
+                    <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
                 </a>
 
-                <button type="submit" class="btn btn-danger" title="Delete Aviso" onclick="return confirm(&quot;Click Ok to delete Aviso.?&quot;)">
-                    <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
-                </button>
+{{--                <button type="submit" class="btn btn-danger" title="Borrar Aviso" onclick="return confirm(&quot;Click Ok para borrar el Aviso.?&quot;)">--}}
+{{--                    <span class="fa-regular fa-trash-can" aria-hidden="true"></span> Borrar--}}
+{{--                </button>--}}
 
-                <a href="{{ route('aviso.aviso.index') }}" class="btn btn-primary" title="Show All Aviso">
-                    <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+                <a href="{{ route('aviso.aviso.index') }}" class="btn btn-info" title="Ver listado avisos">
+                    <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
                 </a>
 
-                <a href="{{ route('aviso.aviso.create') }}" class="btn btn-secondary" title="Create New Aviso">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                <a href="{{ route('aviso.aviso.create') }}" class="btn btn-secondary" title="Crear nuevo Aviso">
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Nuevo
                 </a>
 
             </form>
@@ -43,12 +43,14 @@
             <dd class="col-lg-10 col-xl-9">{!! $aviso->mensaje !!}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Destinado a</dt>
             <dd class="col-lg-10 col-xl-9">{!!  $aviso->getRoles()  !!} {!! $aviso->getTodos() !!}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Updated At</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Actualizado el </dt>
             <dd class="col-lg-10 col-xl-9">{{ $aviso->updated_at }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Visible Desde</dt>
             <dd class="col-lg-10 col-xl-9">{{ $aviso->visible_desde }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Visible Hasta</dt>
             <dd class="col-lg-10 col-xl-9">{{ $aviso->visible_hasta }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Deshabilitado</dt>
+            <dd class="col-lg-10 col-xl-9">{!! $aviso->getActivo() !!}</dd>
 
         </dl>
 

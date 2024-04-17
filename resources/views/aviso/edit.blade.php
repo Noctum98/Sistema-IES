@@ -3,18 +3,18 @@
 <link href="{{ asset('css/font-awesome/6.5.2/css/v4-shims.min.css') }}" rel="stylesheet"/>
 <link href="{{ asset('css/font-awesome/6.5.2/css/v5-font-face.min.css') }}" rel="stylesheet"/>
 @section('content')
-
+    <link rel="stylesheet" type="text/css" href="{{asset('js/editor_web/styles/simditor.css')}}"/>
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">{{ !empty($title) ? $title : 'Aviso' }}</h4>
             <div>
-                <a href="{{ route('aviso.aviso.index') }}" class="btn btn-primary" title="Show All Aviso">
-                    <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+                <a href="{{ route('aviso.aviso.index') }}" class="btn btn-primary" title="Ver listado avisos">
+                    <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
                 </a>
 
-                <a href="{{ route('aviso.aviso.create') }}" class="btn btn-secondary" title="Create New Aviso">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                <a href="{{ route('aviso.aviso.create') }}" class="btn btn-secondary" title="crear nuevo Aviso">
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Crear
                 </a>
             </div>
         </div>
@@ -36,7 +36,7 @@
                   name="edit_aviso_form" accept-charset="UTF-8">
                 {{ csrf_field() }}
                 <input name="_method" type="hidden" value="PUT">
-                @include ('aviso.form', [
+                @include ('aviso.form_edit', [
                                             'aviso' => $aviso,
                                           ])
 
@@ -47,5 +47,11 @@
 
         </div>
     </div>
+
+@endsection
+@section('scripts')
+    <script src="{{asset('js/editor_web/scripts/module.js')}}"></script>
+    <script src="{{asset('js/editor_web/scripts/hotkeys.js')}}"></script>
+    <script src="{{asset('js/editor_web/scripts/simditor.js')}}"></script>
 
 @endsection
