@@ -76,15 +76,15 @@
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($carrera->obtenerAlumnosCicloLectivo($ciclo_lectivo) as $alumno)
-									@if($alumno->procesoCarrera($carrera->id,$alumno->alumno_id, $ciclo_lectivo)->año == 1)
+									@foreach($inscripciones as $inscripcion)
+									@if($inscripcion->año == 1)
 									<tr>
-										<td>{{$alumno->apellidos.' '.$alumno->nombres}}</td>
-										<td>{{ $alumno->dni }}</td>
+										<td>{{$inscripcion->alumno->apellidos.' '.$inscripcion->alumno->nombres}}</td>
+										<td>{{ $inscripcion->alumno->dni }}</td>
 										@if($ciclo_lectivo == date('Y'))
 
 										<td class="text-center">
-											@if($alumno->aprobado)
+											@if($inscripcion->aprobado)
 											<i class='fas fa-user-check' style='font-size:24px;color:green'></i>
 											@else
 											<i class='fas fa-user-times' style='font-size:24px;color:red'></i>
@@ -92,7 +92,7 @@
 										</td>
 										@endif
 										<td class="text-center">
-											<a href="{{ route('alumno.detalle',['id'=>$alumno->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary mr-1">
+											<a href="{{ route('alumno.detalle',['id'=>$inscripcion->alumno_id, 'ciclo_lectivo' => $ciclo_lectivo]) }}" class="btn btn-sm btn-secondary mr-1">
 												Ver datos
 											</a>
 										</td>

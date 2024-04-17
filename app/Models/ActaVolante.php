@@ -19,7 +19,8 @@ class ActaVolante extends Model
         'alumno_id',
         'materia_id',
         'mesa_alumno_id',
-        'libro_id'
+        'libro_id',
+        'inscripcion_id'
     ];
 
 
@@ -40,5 +41,10 @@ class ActaVolante extends Model
     public function materia(): BelongsTo
     {
         return $this->belongsTo(Materia::class,'materia_id');
+    }
+
+    public function inscripcionCarrera(): BelongsTo
+    {
+        return $this->belongsTo(AlumnoCarrera::class,'inscripcion_id');
     }
 }

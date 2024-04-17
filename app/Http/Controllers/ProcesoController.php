@@ -288,10 +288,14 @@ class ProcesoController extends Controller
     public function inscribir(Request $request, $alumno_id,$materia_id,$ciclo_lectivo)
     {
         $materia = Materia::find($materia_id);
+        $alumno = Alumno::find($alumno_id);
+        $materia = Materia::find($request['materia_id']);
+        $inscripcion = $alumno->lastProcesoCarrera($materia->carrera->id);        
         $proceso = Proceso::create([
             'alumno_id' => $alumno_id,
             'materia_id' => $materia_id,
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'inscripcion_id' => $inscripcion->id ?? null
         ]);
 
         return redirect()->route('proceso.admin', [

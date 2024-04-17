@@ -145,7 +145,7 @@ Route::prefix('encuesta_socioeconomica')->group(function () {
 });
 
 Route::prefix('alumno/carrera')->group(function () {
-    Route::post('/changeYear/{alumno_id}/{carrera_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
+    Route::post('/changeYear/{inscripcion_id}', [AlumnoCarreraController::class, 'changeAño'])->name(
         'alumnoCarrera.year'
     );
 });

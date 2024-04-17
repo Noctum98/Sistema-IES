@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActaVolante;
+use App\Models\Alumno;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaAlumno;
@@ -58,11 +59,20 @@ class ActaVolanteController extends Controller
             'nota_escrito' => ['required'],
             'nota_oral' => ['required'],
         ]);
+
+        $alumno = Alumno::find($request['alumno_id']);
+        $materia = Materia::find($request['materia_id']);
+        $inscripcion = $alumno->lastProcesoCarrera($materia->carrera->id);
         $request = $this->verificar_nota($request);
+        $request['inscripcion_id'] = $inscripcion->id;
+        //dd($request->all());
+
 
         if ($request['error']) {
             $alerta = ['alert_danger' => 'Error en los datos enviados'];
         } else {
+
+
             $acta_volante = ActaVolante::create($request->all());
 
             $alerta = ['alert_success' => 'Se han colocado correctamente las notas'];
