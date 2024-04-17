@@ -19,7 +19,7 @@
     @endif
     <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">
 
-        @if(isset($matriculacion))
+        @if(isset($matriculacion) && Session::has('alumno'))
             @include('matriculacion.campos.campos_procesos')
         @endif
         
