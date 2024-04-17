@@ -171,11 +171,11 @@
     <hr>
     <div class="d-inline col-md-12">
         @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
-        @if(isset($carrera) && $carrera)
-        <a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$inscripcion->carrera_id]) }}" class="col-md-2 ml-2 mr-2  btn btn-sm btn-warning">
+        
+        <a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$inscripciones[0]->carrera_id]) }}" class="col-md-2 ml-2 mr-2  btn btn-sm btn-warning">
             Corregir datos
         </a>
-        @endif
+        
         @endif
         @if((Session::has('admin') || Session::has('regente')) && $alumno->user)
         <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarAlumnoModal{{$alumno->id}}">Eliminar Alumno

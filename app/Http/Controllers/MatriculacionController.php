@@ -254,27 +254,24 @@ class MatriculacionController extends Controller
 
         $alumno->update($request->all());
 
-
-        if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+        if(!Session::has('coordinador') && !Session::has('regente') && !Session::has('admin') && !Session::has('seccionAlumnos'))
         {
-            return redirect()->route('encuesta_socioeconomica.showForm',[
-                'alumno_id'=>$alumno->id,
-                'carrera_id' => $carrera->id
-            ]);
-        }else{
-            /*
-            if (!Session::has('coordinador') && !Session::has('seccionAlumnos') && !Session::has('admin')) {
-                Mail::to($request['email'])->send(new MatriculacionSuccessEmail($alumno, $carrera));
-            }*/
-            
-            return redirect()->route('matriculacion.edit', [
-                'alumno_id' => $alumno->id,
-                'carrera_id' => $carrera_id,
-                'year'      => $año
-            ])->with([
-                'mensaje_editado' => 'Datos editados correctamente'
-            ]);
-        } 
+            if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
+            {
+                return redirect()->route('encuesta_socioeconomica.showForm',[
+                    'alumno_id'=>$alumno->id,
+                    'carrera_id' => $carrera->id
+                ]);
+            }
+        }
+
+        return redirect()->route('matriculacion.edit', [
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera_id,
+            'year'      => $año
+        ])->with([
+            'mensaje_editado' => 'Datos editados correctamente'
+        ]);
     }
 
     public function delete(Request $request, $id)

@@ -51,8 +51,7 @@
             @endif
             <a href="{{ route('proceso.admin',['alumno_id' => $alumno->id,'carrera_id' =>$inscripcion->carrera_id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-light col-md-2 mr-2">Ver materias</a>
 
-            <button class="btn btn-sm btn-primary col-md-2 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$inscripcion->carrera_id}}"> Editar datos
-            </button>
+            <button class="btn btn-sm btn-primary col-md-2 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$inscripcion->carrera_id}}"> Editar datos</button>
 
             @include('alumno.modals.carreras_year')
             @elseif(Session::has('areaSocial'))

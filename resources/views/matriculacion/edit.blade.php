@@ -51,6 +51,8 @@
         @include('matriculacion.campos.campos_domicilio')
         @include('matriculacion.campos.campos_personales')
         @include('matriculacion.campos.campos_discapacidad')
+
+        @if(!Session::has('coordinador') && !Session::has('regente') && !Session::has('admin') && !Session::has('seccionAlumnos'))
         @if($año == 1)
         @include('matriculacion.campos.campos_primero')
         @elseif($año == 2)
@@ -58,11 +60,20 @@
         @elseif($año == 3)
         @include('matriculacion.campos.campos_tercero')
         @endif
+        @endif
+
+        @if(Session::has('coordinador') || Session::has('regente') || Session::has('admin') || Session::has('seccionAlumnos'))
+        <input type="submit" value="Editar Matriculación" class="btn btn-primary mt-3 col-md-12">
+
+        @else
         @if(!$matriculacion->getEncuestaSocioeconomica() || ($matriculacion->getEncuestaSocioeconomica() && !$matriculacion->getEncuestaSocioeconomica()->completa))
         <input type="submit" value="Siguiente" class="btn btn-primary mt-3 col-md-12">
         @else
         <input type="submit" value="Editar Matriculación" class="btn btn-primary mt-3 col-md-12">
         @endif
+        @endif
+
+        
     </form>
 </div>
 @endsection
