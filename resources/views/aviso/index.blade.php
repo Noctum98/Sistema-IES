@@ -19,7 +19,7 @@
             <h4 class="m-0">Aviso</h4>
             <div>
                 <a href="{{ route('aviso.aviso.create') }}" class="btn btn-secondary" title="Crear nuevo Aviso">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Crear
                 </a>
             </div>
         </div>
@@ -40,7 +40,7 @@
                             <th>Fechas</th>
                             <th>Deshabilitado</th>
                             <th>Contenido</th>
-                            <th class="text-end pr-3"><i class="fa-solid fa-cogs"></i> </th>
+                            <th class="text-center "><i class="fa-solid fa-cogs"></i> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,18 +61,18 @@
                             <td>{!! Str::words("$aviso->mensaje", 3,' ...') !!}</td>
 
 
-                            <td class="text-end">
+                            <td class="text-center">
 
                                 <form method="POST" action="{!! route('aviso.aviso.destroy', $aviso->id) !!}" accept-charset="UTF-8">
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('aviso.aviso.show', $aviso->id ) }}" class="btn btn-info" title="Ver Aviso">
-                                            <span class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></span>
+                                    <div class="btn-group btn-group-sm " role="group">
+                                        <a href="{{ route('aviso.aviso.show', $aviso->id ) }}" class="btn btn-info mx-1" title="Ver Aviso">
+                                            <span class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></span> Ver
                                         </a>
-                                        <a href="{{ route('aviso.aviso.edit', $aviso->id ) }}" class="btn btn-primary" title="Editar Aviso">
-                                            <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
+                                        <a href="{{ route('aviso.aviso.edit', $aviso->id ) }}" class="btn btn-primary mx-1" title="Editar Aviso">
+                                            <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
                                         </a>
 
 {{--                                        <button type="submit" class="btn btn-danger" title="Delete Aviso" onclick="return confirm(&quot;Click Ok to delete Aviso.&quot;)">--}}
