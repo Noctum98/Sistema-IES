@@ -172,9 +172,11 @@
     <div class="d-inline col-md-12">
         @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
         
+        @if(count($inscripciones)>0)
         <a href="{{ route('matriculacion.edit',['alumno_id'=>$alumno->id,'carrera_id'=>$inscripciones[0]->carrera_id]) }}" class="col-md-2 ml-2 mr-2  btn btn-sm btn-warning">
             Corregir datos
         </a>
+        @endif
         
         @endif
         @if((Session::has('admin') || Session::has('regente')) && $alumno->user)
