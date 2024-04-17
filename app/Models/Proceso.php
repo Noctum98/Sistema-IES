@@ -56,7 +56,8 @@ class Proceso extends Model
         'cargo_id',
         'ciclo_lectivo',
         'habilitado_campo',
-        'final_asistencia'
+        'final_asistencia',
+        'inscripcion_id'
     ];
 
     //Relations

@@ -86,8 +86,9 @@
 
 
         <div class="card pl-5">
+
             <div class="row">
-                <ul class="datos-generales col-md-6">
+                <ul class="datos-generales col-md-4">
                     <li>
                         <h4 class="text-info"><u>Datos Generales</u></h4>
                     </li>
@@ -102,7 +103,7 @@
                         <strong>Nacionalidad: </strong> {{ ucwords($alumno->nacionalidad) ? : 'Sin Asignar' }}
                     </li>
                 </ul>
-                <ul class="datos-domicilio col-md-6">
+                <ul class="datos-domicilio col-md-4">
                     <li>
                         <h4 class="text-info"><u>Datos Domicilio</u></h4>
                     </li>
@@ -116,7 +117,7 @@
                 </ul>
 
 
-                <ul class="datos-domicilio col-md-6">
+                <ul class="datos-domicilio col-md-4">
                     <li>
                         <h4 class="text-info"><u>Datos Personales</u></h4>
                     </li>
@@ -148,18 +149,19 @@
 
             </div>
             @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
-                    
-                        <div class="alert alert-danger">
-                            <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL SIN COMPLETAR</strong>
-                        </div>
-                    
-                    @else
-                    
-                        <div class="alert alert-success">
-                            <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL COMPLETA</strong>
-                        </div>
-                    
-                    @endif
+
+            <div class="alert alert-danger">
+                <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL SIN COMPLETAR</strong>
+            </div>
+
+            @else
+
+            <div class="alert alert-success">
+                <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL COMPLETA</strong>
+            </div>
+
+            @endif
+            
         </div>
         @include('alumno.includes.datos_inscripcion')
 

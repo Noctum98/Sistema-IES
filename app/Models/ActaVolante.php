@@ -19,7 +19,8 @@ class ActaVolante extends Model
         'alumno_id',
         'materia_id',
         'mesa_alumno_id',
-        'libro_id'
+        'libro_id',
+        'inscripcion_id'
     ];
 
 

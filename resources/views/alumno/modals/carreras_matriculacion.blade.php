@@ -1,4 +1,4 @@
-<div class="modal fade" id="carrerasMatriculacionModal{{$carrera->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="carrerasMatriculacionModal{{$inscripcion->carrera->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,7 +11,7 @@
                 <form action="" method="POST">
                     <fieldset {{ Auth::user()->hasRole('alumno') ? 'disabled': '' }}>
                     @csrf
-                    @foreach($carrera->materias as $materia)
+                    @foreach($inscripcion->carrera->materias as $materia)
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="materias[]" id="materia-{{$materia->id}}" value="{{ $materia->id }}" {{ $alumno->hasProceso($materia->id) ? 'checked':null }}>
                         <label class="form-check-label" for="exampleRadios{{$materia->id}}" >

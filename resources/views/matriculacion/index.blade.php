@@ -8,7 +8,7 @@
     <hr>
     <h4>Elige la carrera:</h4>
     <div class="table-responsive">
-        @if($carreras->count() > 0)
+        @if(count($inscripciones) > 0)
         <table class="table mt-2">
             <thead class="thead-dark">
                 <tr>
@@ -20,26 +20,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($carreras as $carrera)
+                @foreach ($inscripciones as $inscripcion)
                 <tr style="cursor:pointer;">
-                    <td>{{ $carrera->id }}</td>
+                    <td>{{ $inscripcion->carrera->id }}</td>
 
 
 
-                    <td>{{ $carrera->nombre.' - '.strtoupper($carrera->turno) }}</td>
-                    <td>{{ $carrera->resolucion }}</td>
+                    <td>{{ $inscripcion->carrera->nombre.' - '.strtoupper($inscripcion->carrera->turno) }}</td>
+                    <td>{{ $inscripcion->carrera->resolucion }}</td>
 
-                    <td>{{ $carrera->sede->nombre}}</td>
+                    <td>{{ $inscripcion->carrera->sede->nombre}}</td>
 
                     <td>
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#carreraAño{{$carrera->id}}" {{ !$carrera->matriculacion_habilitada ? 'disabled' :'' }}>
+                        @if(!$inscripcion->aprobado)
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#carreraAño{{$inscripcion->carrera->id}}" {{ !$inscripcion->carrera->matriculacion_habilitada ? 'disabled' :'' }}>
                             <i class="fas fa-paste"></i>
                             Inscribirse
                         </button>
+                        @else
+                        <span class="text-success"><strong>APROBADA</strong></span>
+                        @endif
                         @include('matriculacion.modals.años')
                         @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
 
-                        <a href="{{ route('encuesta_socioeconomica.showForm',['alumno_id'=>$alumno->id,'carrera_id'=>$carrera->id]) }}" class="btn btn-sm btn-danger">
+                        <a href="{{ route('encuesta_socioeconomica.showForm',['alumno_id'=>$alumno->id,'carrera_id'=>$inscripcion->carrera->id]) }}" class="btn btn-sm btn-danger">
                             Completar Encuesta
                         </a>
                         @endif
@@ -54,15 +58,15 @@
     </div>
 
     @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
-        <div class="alert alert-danger">
-            No has completado tu <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL</strong>, solo debe realizarse una sola vez. 
-        </div>
+    <div class="alert alert-danger">
+        No has completado tu <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL</strong>, solo debe realizarse una sola vez.
+    </div>
     @endif
 
-    @if($alumno->aprobado && $alumno->getEncuestaSocioeconomica() && $alumno->getEncuestaSocioeconomica()->completa)
-        <div class="alert alert-success">
-            Tus inscripciones ya han sido verificadas y tienes la encuesta completa.
-        </div>
+    @if($alumno->getEncuestaSocioeconomica() && $alumno->getEncuestaSocioeconomica()->completa)
+    <div class="alert alert-success">
+        <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL COMPLETA.</strong> 
+    </div>
     @endif
 </div>
 @endsection

@@ -15,6 +15,7 @@
                     <th scope="col">Conidición</th>
                     <th scope="col">Legajo Completo</th>
                     <th scope="col">1er Acreditación:</th>
+                    <th scope="col">Última Acreditación:</th>
                     <th scope="col">Libreta</th>
 
                 </tr>
@@ -23,24 +24,14 @@
                 <tr>
                     <td>{{ $inscripcion->año.'°' }}</td>
                     <td>{{ $inscripcion->ciclo_lectivo }}</td>
-                    @if(Session::has('admin') || Session::has('regente') || Session::has('coordinador') || Session::has('seccionAlumnos'))
-                    <td>
-                        <form id="cohorte-form-{{ $inscripcion->id }}" class="row d-flex">
-                            <label>
-                                <input type="text" class="change-cohorte form-control" placeholder="Ingrese un valor aquí" name="cohorte" value="{{ $inscripcion->cohorte }}" data-alumno-id="{{ $inscripcion->id }}">
-                                <span class="d-none" id="success-{{ $inscripcion->id }}"><i class="fas fa-check text-success"></i></span>
-                            </label>
-                        </form>
-                    </td>
-                    @else
                     <td>{{ $inscripcion->cohorte ?? 'No indicada' }}</td>
-                    @endif
-
                     <td>
                         {{ $inscripcion->regularidad ? explode("_",ucwords($inscripcion->regularidad))[0].' '.explode("_",ucwords($inscripcion->regularidad))[1] : 'Sin asignar' }}
                     </td>
                     <td>{{ $inscripcion->legajo_completo ? 'SI' : 'NO' }}</td>
-                    <td>{{ $alumno->fecha_primera_acreditacion ?? 'No indicada'}}</td>
+                    <td>{{ $inscripcion->fecha_primera_acreditacion ?? 'No indicada'}}</td>
+                    <td>{{ $inscripcion->fecha_ultima_acreditacion ?? 'No indicada'}}</td>
+
                     <td>
                         <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $inscripcion->carrera_id])}}" class="btn btn-sm btn-info">
                             <i class="fa fa-eye"></i> Ver Libreta
@@ -60,7 +51,7 @@
             @endif
             <a href="{{ route('proceso.admin',['alumno_id' => $alumno->id,'carrera_id' =>$inscripcion->carrera_id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-light col-md-2 mr-2">Ver materias</a>
 
-            <button class="btn btn-sm btn-primary col-md-2 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$inscripcion->carrera_id}}">Cambiar año
+            <button class="btn btn-sm btn-primary col-md-2 mr-2" data-bs-toggle="modal" data-bs-target="#carrerasAñoModal{{$inscripcion->carrera_id}}"> Editar datos
             </button>
 
             @include('alumno.modals.carreras_year')

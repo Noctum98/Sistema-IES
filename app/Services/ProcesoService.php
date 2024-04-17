@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProcesoService
 {
-    public function inscribir($alumno_id, $materias)
+    public function inscribir($alumno_id, $materias,$inscripcion)
     {
         $data = [];
         $data['alumno_id'] = $alumno_id;
@@ -18,6 +18,7 @@ class ProcesoService
             $data['materia_id'] = $materia;
             $data['estado'] = 'en curso';
             $data['ciclo_lectivo'] = date('Y');
+            $data['inscripcion_id'] = $inscripcion->id;
             Proceso::create($data);
         }
     }
