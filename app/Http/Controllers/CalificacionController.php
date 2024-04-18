@@ -93,6 +93,7 @@ class CalificacionController extends Controller
 
         $calificaciones = $calificaciones->orderBy('tipo_id')->get();
 
+
         return view('calificacion.admin', [
             'materia' => $materia,
             'tiposCalificaciones' => $tiposCalificaciones,
