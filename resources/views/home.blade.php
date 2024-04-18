@@ -23,7 +23,13 @@
                         tu contraseña en la sección “Mi Perfil” del menú desplegable.
                     </div>
                     <div class="card bg-warning bg-opacity-25 pl-3">
-                      
+
+                        @forelse($avisos as $aviso)
+                            {!! $aviso->mensaje !!}
+                        @empty
+
+                        @endforelse
+
                     </div>
                     <div class="card bg-primary bg-opacity-25">
                         <div class="card-header">
