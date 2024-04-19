@@ -99,16 +99,14 @@ class ComisionController extends Controller
 
         $alumnos = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
             $query->where('carrera_id',$carrera_id)
-            ->where('año',$año)
-            ->where('ciclo_lectivo',date('Y'));
+            ->where('año',$año);
         })->orderBy('apellidos')->get();
 
         if($año == 2 || $año == 3)
         {
             $recursantes = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
                 $query->where('carrera_id',$carrera_id)
-                ->where('año',($año - 1))
-                ->where('ciclo_lectivo',date('Y'));
+                ->where('año',($año - 1));
             });
 
             if($año == 2 || $año == "2"){
