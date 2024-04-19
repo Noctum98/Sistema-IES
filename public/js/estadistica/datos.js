@@ -69,7 +69,8 @@ $(document).ready(function () {
       urlDescargar = '/excel/encuesta/'+carrera_id+'/'+año;
     }
 
-    console.log(url);
+    $("#btn-submit").val('Cargando datos..espere');
+    $("#btn-submit").attr('disabled',true);
 
 
     $('#btn-descargar').attr('href',urlDescargar);
@@ -78,6 +79,8 @@ $(document).ready(function () {
       $("#graficos").removeClass('d-none');
       $("#total").html(response.total);
       elementos = response.data;
+      $("#btn-submit").val('Buscar');
+      $("#btn-submit").attr('disabled',false);
       response.data.forEach(element => {
         renderizarGrafica(element)
       });
