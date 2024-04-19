@@ -36,7 +36,10 @@
                         @endif
                     </div>
                     @if($inscripcion->acta_volante)
-                    <p>Promedio: <span class="badge {{ $inscripcion->acta_volante->promedio > 4 ? 'bg-success' : 'bg-danger' }}">{{ $inscripcion->acta_volante->promedio > 0 ? $inscripcion->acta_volante->promedio : 'A'}}</span></p>
+                            <p>Promedio:
+
+                    @include('componentes.colorNotas', ['year' => $inscripcion->mesa->instancia->año, 'nota' => $inscripcion->acta_volante->promedio])
+                            </p>
                     @endif
             </div>
             <div>

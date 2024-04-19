@@ -47,4 +47,9 @@ class ActaVolante extends Model
     {
         return $this->belongsTo(AlumnoCarrera::class,'inscripcion_id');
     }
+
+    public function instancia(): BelongsTo
+    {
+        return $this->belongsTo(Instancia::class, 'instancia_id');
+    }
 }
