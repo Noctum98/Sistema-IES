@@ -88,7 +88,3 @@
     @else
     <p>Ninguna carrera.</p>
     @endif
-
-    @section('scripts')
-    <script src="{{ asset('js/alumnos/cohorte.js') }}"></script>
-    @endsection

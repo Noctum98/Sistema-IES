@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    console.log("Entrando");
     var carrera_id = $(".carreras").val();
     var materia_selected = $("#materia_selected").val();
 
@@ -62,14 +62,15 @@ $(document).ready(function () {
     $(".btn-password").click(function(e){
         let user_id = $(this).attr('id');
         $("#spinner-"+user_id).removeClass('d-none');
-        console.log($("#spinner-"+user_id));
         let ruta = '/usuarios/reestablecer_password/'+user_id;
-
         $.get(ruta, function (response, state) {
             if(response.status == 'success'){
+                let user = response.user;
                 $("#spinner-"+user_id).addClass('d-none');
                 $("#check-"+user_id).removeClass('d-none');
-                $("#password_rees").html("La contraseña se ha restablecido a: <b>12345678</b>");
+                $("#password_rees").removeClass('d-none');
+                $("#username_rees").html(user.username);
+                $("#pass_rees").html('12345678');
 
             }   
         });

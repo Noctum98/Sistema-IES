@@ -389,14 +389,18 @@ class EncuestaSocioeconomicaService
 
     public function getEncuestas($parameters)
     {
-        $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
-            $query->whereHas('carreras', function ($query) use ($parameters) {
-                $query->where('carreras.id', $parameters['carrera_id']);
-            })->whereHas('carreras', function ($query) use ($parameters) {
-                $query->where('año', $parameters['año']);
-            });
-        })->get();
-
+        if($parameters['general'])
+        {
+            $encuestas = EncuestaSocioeconomica::all();
+        }else{
+            $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
+                $query->whereHas('carreras', function ($query) use ($parameters) {
+                    $query->where('carreras.id', $parameters['carrera_id']);
+                })->whereHas('carreras', function ($query) use ($parameters) {
+                    $query->where('año', $parameters['año']);
+                });
+            })->get();
+        }
         return $encuestas;
     }
 

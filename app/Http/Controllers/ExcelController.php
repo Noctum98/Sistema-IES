@@ -34,15 +34,22 @@ class ExcelController extends Controller
         $this->encuestaSocioeconomicaService = $encuestaSocioeconomicaService;
     }
 
-    public function encuesta_socioeconomica(Request $request, $carrera_id,$year)
+    public function encuesta_socioeconomica(Request $request, $carrera_id,$year,$general = null)
     {
         $datos = [
             'carrera_id' => $carrera_id,
-            'año' => $year 
+            'año' => $year,
+            'general' => $general
         ];
 
-        $carrera = Carrera::find($carrera_id);
-        $nombreArchivo = $carrera->sede->nombre.' - '.$carrera->nombre.'('.$carrera->turno.') '.$year.'° año';
+        if($datos['general'])
+        {
+            $nombreArchivo = 'Encuestas socioeconomicas IES 9015';
+        }else{
+            $carrera = Carrera::find($carrera_id);
+            $nombreArchivo = $carrera->sede->nombre.' - '.$carrera->nombre.'('.$carrera->turno.') '.$year.'° año';
+        }
+        
 
         $encuestas = $this->encuestaSocioeconomicaService->getEncuestas($datos);
 

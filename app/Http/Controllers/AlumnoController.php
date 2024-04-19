@@ -225,12 +225,13 @@ class AlumnoController extends Controller
         return view('estadistica.datos', $data);
     }
 
-    public function obtenerGraficos(Request $request, $sede_id = null, $carrera_id = null, $año = null)
+    public function obtenerGraficos(Request $request, $sede_id = null, $carrera_id = null, $año = null,$general = null)
     {
         $parameters = [
             'año' => $año,
             'carrera_id' => $carrera_id,
-            'sede_id' => $sede_id
+            'sede_id' => $sede_id,
+            'general' => $general
         ];
 
         $encuestas = $this->encuestaSocioeconomicaService->getEncuestas($parameters);

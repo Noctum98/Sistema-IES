@@ -419,7 +419,7 @@ class UserController extends Controller
         }
         $user->update();
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'success','user'=>$user]);
     }
 
     public function getUsuarioByUsernameOrNull($busqueda)

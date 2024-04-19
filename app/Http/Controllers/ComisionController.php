@@ -28,7 +28,7 @@ class ComisionController extends Controller
     )
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente-coordinador');
+        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
         $this->userService = $userService;
     }
     /**

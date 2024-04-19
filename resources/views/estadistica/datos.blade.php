@@ -6,6 +6,16 @@
 	</h2>
 	<hr>
 	<form action="" id="datos-form">
+		@if(Session::has('admin')  || Session::has('regente'))
+		<div class="form-group">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" value="1" name="general" id="general">
+				<label class="form-check-label" for="general">
+					Datos Generales
+				</label>
+			</div>
+		</div>
+		@endif
 		<div class="form-group">
 			<label for="sede_id">Unidades Académicas</label>
 			<select name="sede_id" id="sede_id" class="form-select">

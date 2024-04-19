@@ -168,6 +168,14 @@
 
 
     </div>
+    <div class="d-none" id="password_rees">
+        <div class="alert alert-success">
+            <b>USUARIO REESTABLECIDO</b><br>
+            <b>Nombre de Usuario:</b> <span id="username_rees"></span><br>
+            <b>Contraseña:</b> <span id="pass_rees"></span>
+
+        </div>
+    </div>
     <hr>
     <div class="d-inline col-md-12">
         @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
@@ -196,7 +204,7 @@
             Activar Usuario
         </button>
 
-        <button class="ml-2  btn btn-sm btn-info btn-password" id="{{$alumno->user->id}}">
+        <button class="ml-2 btn btn-sm btn-info btn-password" id="{{$alumno->user->id}}">
             Restablecer Contraseña
         </button>
 
