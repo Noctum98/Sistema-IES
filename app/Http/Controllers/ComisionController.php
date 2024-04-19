@@ -7,6 +7,7 @@ use App\Models\Calificacion;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\User;
 use App\Request\ComisionesRequest;
 use App\Services\UserService;
@@ -98,14 +99,16 @@ class ComisionController extends Controller
 
         $alumnos = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
             $query->where('carrera_id',$carrera_id)
-            ->where('año',$año);
+            ->where('año',$año)
+            ->where('ciclo_lectivo',date('Y'));
         })->orderBy('apellidos')->get();
 
         if($año == 2 || $año == 3)
         {
             $recursantes = Alumno::select('nombres','apellidos','id','comision_id')->whereHas('carreras',function($query) use ($carrera_id,$año){
                 $query->where('carrera_id',$carrera_id)
-                ->where('año',($año - 1));
+                ->where('año',($año - 1))
+                ->where('ciclo_lectivo',date('Y'));
             });
 
             if($año == 2 || $año == "2"){
