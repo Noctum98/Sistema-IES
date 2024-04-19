@@ -75,7 +75,7 @@
             @include('alumno.modals.correo_eliminar')
             @elseif(Session::has('regente') || Session::has('coordinador'))
             @if(Auth::user()->hasCarrera($inscripcion->carrera_id))
-            <button class="btn btn-sm btn-secondary col-md-3" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$inscripcion->carrera_id}}">
+            <button class="btn btn-sm btn-secondary col-md-2" data-bs-toggle="modal" data-bs-target="#eliminarMatriculacionModal{{$inscripcion->carrera_id}}">
                 Eliminar Inscripción
             </button>
             @include('alumno.modals.correo_eliminar')

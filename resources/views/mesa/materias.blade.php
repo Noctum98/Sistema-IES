@@ -8,7 +8,7 @@
 	<hr>
 
 	<div class="row">
-		<div class="list-group col-md-8 border-right">
+		<div class="list-group col-md-12 mb-4">
 			@if(@session('error_mesa'))
 			<div class="alert alert-danger">
 				{{@session('error_mesa')}}
@@ -160,52 +160,18 @@
 			<h4 class="text-secondary">Ya no puedes inscribirte a ninguna materia.</h4>
 			@endif
 		</div>
-		<div class="col-md-4 mt-3">
-			<h4 class="text-secondary">Materias inscriptas</h4>
+		<div class="col-md-12 mt-2">
+			<h3 class="text-primary">Materias inscriptas</h3>
 			@if(@session('bajar_exitosa'))
 			<div class="alert alert-warning">
 				{{@session('bajar_exitosa')}}
 			</div>
 			@endif
 			@if(count($inscripciones)>0)
-			<ul class="list-group list-group-flush">
-				@foreach($inscripciones as $inscripcion)
-				<li class="list-group-item">
-						{{
-							$instancia->tipo != 0 ?
-							$inscripcion->materia->nombre :
-							$inscripcion['mesa']['materia']['nombre']
-						}}
-					-
-					@if($instancia->tipo == 1)
-						@if($inscripcion->estado_baja)
-						<span class="text-secondary">Dada de baja</span>
-						@else
 
-						<a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
-						@endif
-						@else
-						@if(!$inscripcion['segundo_llamado'])
-						<span class="font-weight-bold">1er llamado </span>
-						@else
-						<span class="font-weight-bold">2do llamado </span>
-						@endif
-
-						@if($inscripcion->estado_baja)
-						<span class="text-secondary">Dada de baja</span>
-
-						@elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo'])
-							- <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
-						@elseif(!$inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre'])
-						- <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="text-danger">Bajarme</a>
-
-						@endif
-					@endif
-				</li>
-				@endforeach
-			</ul>
+				@include('mesa.tablas.tabla_inscripciones_alumno')
 			@else
-			<p>No te encuentras inscripto en ninguna materia </p>
+				<p>No te encuentras inscripto en ninguna materia </p>
 			@endif
 		</div>
 	</div>
