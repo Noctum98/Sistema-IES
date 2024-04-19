@@ -133,7 +133,8 @@ class RegisterController extends Controller
             Mail::to($alumno->email)->send(new MatriculacionUser($alumno,$request['carrera_id']));
 
         }else{
-            $alumno = Alumno::where('user_id',$request['user_id'])->first();
+            $alumno = Alumno::where('user_id',$request['user_id'])
+            ->orWhere('dni',$request['username'])->first();
         }
         
         if(!$alumno)

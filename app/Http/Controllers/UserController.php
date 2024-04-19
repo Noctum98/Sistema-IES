@@ -265,7 +265,7 @@ class UserController extends Controller
 
         $new_password = Hash::make($request->input('password'));
         $user->password = $new_password;
-        
+
         $user->update();
 
         return redirect()->back()->with([
@@ -356,10 +356,20 @@ class UserController extends Controller
             ])->with([
                 'alert_warning' => 'El alumno, ya tiene esta aprobado',
             ]);
-        }else{
-            $inscripcion->aprobado = true;
-            $inscripcion->update();
         }
+
+        if (!$inscripcion->cohorte) {
+            return redirect()->route('alumno.detalle', [
+                'id' => $alumno->id,
+            ])->with([
+                'alert_warning' => 'Debe asignarle cohorte a la inscripción para poder confirmarlo',
+            ]);
+        }
+
+
+        $inscripcion->aprobado = true;
+        $inscripcion->update();
+
 
         if (!$alumno->user_id) {
             $data = [
@@ -373,18 +383,16 @@ class UserController extends Controller
 
             $user_exists = User::where('email', $alumno->email)
                 ->orWhere('username', $alumno->dni)->withTrashed()->first();
-            
-            if ($user_exists) {
-                if($user_exists->hasRole('profesor') && (!$user_exists->hasRole('coordinador') && !$user_exists->hasRole('seccionAlumnos')))
-                {
-                    $user = $user_exists;
-                }else{
-                    $alumno_verification = Alumno::where('user_id',$user_exists->id)->first();
 
-                    if($alumno_verification)
-                    {
+            if ($user_exists) {
+                if ($user_exists->hasRole('profesor') && (!$user_exists->hasRole('coordinador') && !$user_exists->hasRole('seccionAlumnos'))) {
+                    $user = $user_exists;
+                } else {
+                    $alumno_verification = Alumno::where('user_id', $user_exists->id)->first();
+
+                    if ($alumno_verification) {
                         return redirect()->back()->with(['alert_danger' => 'Ya existe un usuario con este email o nombre de usuario']);
-                    }else{
+                    } else {
                         $user = $user_exists;
                     }
                 }
@@ -410,20 +418,21 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $alumno = Alumno::where('user_id',$user->id)->first();
-        
+        $alumno = Alumno::where('user_id', $user->id)->first();
+
         $new_password = Hash::make('12345678');
         $user->password = $new_password;
-        if($alumno){
+        if ($alumno) {
             $user->username = $alumno->dni;
         }
         $user->update();
 
-        return response()->json(['status' => 'success','user'=>$user]);
+        return response()->json(['status' => 'success', 'user' => $user]);
     }
 
     public function getUsuarioByUsernameOrNull($busqueda)
     {
+        
         return response()->json($this->userService->buscadorUsuario($busqueda), 200);
     }
 }

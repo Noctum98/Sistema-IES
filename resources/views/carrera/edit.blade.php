@@ -134,11 +134,11 @@
                         <select class="form-select" name="tipo" id="tipo">
                             <option
                                 value="tradicional" {{$carrera->tipo == 'tradicional' ? 'selected="selected"':''}}>
-                                Tradicional
+                                Disciplinar
                             </option>
                             <option
                                 value="tradicional2" {{$carrera->tipo == 'tradicional2' ? 'selected="selected"':''}}>
-                                Tradicional 70/30
+                                Disciplinar 70/30
                             </option>
                             <option value="modular" {{$carrera->tipo == 'modular' ? 'selected="selected"':''}}>
                                 Modular

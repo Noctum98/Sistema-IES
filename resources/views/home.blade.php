@@ -22,6 +22,7 @@
                         Si has iniciado sesión con los datos por defecto, recomendamos cambiar
                         tu contraseña en la sección “Mi Perfil” del menú desplegable.
                     </div>
+                    {{--
                     <div class="card bg-warning bg-opacity-25 pl-3">
 
                         @forelse($avisos as $aviso)
@@ -31,6 +32,7 @@
                         @endforelse
 
                     </div>
+                    --}}
                     <div class="card bg-primary bg-opacity-25">
                         <div class="card-header">
                             <div class="card-title">

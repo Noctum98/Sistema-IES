@@ -102,7 +102,7 @@
                     @if($materias)
                         <button type="button" class="ml-2 btn btn-sm btn-info" data-bs-toggle="modal"
                                 data-bs-target="#materiasModal{{$user->id}}">
-                            Asignar Materias (Tradicional)
+                            Asignar Materias (Disciplinar)
                         </button>
                         @include('user.modals.admin_carreras_materias')
                     @endif
