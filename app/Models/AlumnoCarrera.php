@@ -46,7 +46,7 @@ class AlumnoCarrera extends Model
 
     public function alumno(): BelongsTo
     {
-        return $this->belongsTo(Alumno::class,'alumno_id');
+        return $this->belongsTo(Alumno::class,'alumno_id')->orderBy('apellidos');
     }
 
 }
