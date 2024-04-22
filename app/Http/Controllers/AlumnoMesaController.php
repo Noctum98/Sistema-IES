@@ -64,7 +64,7 @@ class AlumnoMesaController extends Controller
             'dni' => $alumno->dni,
         ])
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(10);
 
         return view('mesa.instancias', [
             'instancias' => $instancias,
