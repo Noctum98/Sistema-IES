@@ -77,7 +77,7 @@ class ExcelController extends Controller
 
         $carrera = Carrera::find($carrera_id);
 
-        return Excel::download(new AlumnosYearExport($alumnos, $generos,$ciclo_lectivo,$carrera), 'Planilla de Alumnos de ' . $carrera->nombre . ' - Año ' . $year . '.xlsx');
+        return Excel::download(new AlumnosYearExport($alumnos, $generos,$ciclo_lectivo,$carrera,$year), 'Planilla de Alumnos de ' . $carrera->nombre . ' - Año ' . $year . '.xlsx');
     }
 
     public function all_alumnos(Request $request)
