@@ -89,7 +89,7 @@ Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'a
 
 Route::get('/', function () {
     if (Auth::user()) {
-        return view('home');
+        return redirect('/home');
     } else {
         return view('auth.login');
     }
