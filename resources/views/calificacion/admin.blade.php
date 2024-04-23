@@ -111,7 +111,7 @@
                 <tbody>
                 @foreach ($calificaciones as $calificacion)
                     <tr style="cursor:pointer;">
-                        <td>{{ $calificacion->tipo->nombre }}</td>
+                        <td>{{ optional($calificacion->tipo)->nombre }}</td>
                         <td>{{ $calificacion->nombre }}</td>
                         <td>
                             {{ $calificacion->user->nombre.' '.$calificacion->user->apellido }}

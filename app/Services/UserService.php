@@ -39,7 +39,7 @@ class UserService
     public function buscadorUsuario($busqueda)
     {
 
-        return User::select('id', 'nombre', 'apellido')->where('username', $busqueda)->with('alumnoOne')->get();
+        return User::select('id', 'nombre', 'apellido')->withTrashed()->where('username', $busqueda)->with('alumnoOne')->get();
     }
 
     public function listadoRol($rol, $sede = false, $carrera = false, $paginate = false)

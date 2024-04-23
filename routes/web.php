@@ -88,7 +88,7 @@ Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'a
 
 Route::get('/', function () {
     if (Auth::user()) {
-        return view('home');
+        return redirect('/home');
     } else {
         return view('auth.login');
     }
@@ -695,7 +695,7 @@ Route::prefix('procesoCalificacion')->group(function () {
 
 Route::prefix('estadistica')->group(function () {
     Route::get('datos', [AlumnoController::class, 'vista_datos'])->name('estadistica.datos');
-    Route::get('obtenerGraficos/{sede_id?}/{carrera_id?}/{year?}', [AlumnoController::class, 'obtenerGraficos']);
+    Route::get('obtenerGraficos/{sede_id?}/{carrera_id?}/{year?}/{general?}', [AlumnoController::class, 'obtenerGraficos']);
 });
 
 Route::resource('etapa_campo', EtapaCampoController::class);

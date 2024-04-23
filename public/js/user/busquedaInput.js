@@ -24,7 +24,6 @@ $(document).ready(function () {
                     $("form :input").prop("disabled", false);
                     $(".aviso").append("<span class='ms-5 text-right alert alert-success py-2'>Registro posible. Usuario no existente <i class='fa fa-check'></i></span>");
                 } else {
-                    console.log(response);
                     // $("form :input").prop("disabled", true);
                     $("#user_id").prop("disabled",false);
                     $("#user_id").val(response[0].id);
@@ -36,12 +35,16 @@ $(document).ready(function () {
                     $(".aviso").append("<alert class='text-danger alert alert-danger py-2'> El Usuario ya existe. <i class='fa fa-times'></i> </alert>");
                     $(".spin").addClass("d-none")
 
-                    if($("#register_alumno").length)
+                    if(response[0].alumno_one)
                     {
-                        $(".aviso").append("<a class='ml-2' href='/alumnos/alumno/" + response[0].alumno_one.id + "'> <i class='fa fa-edit'></i>" + response[0].nombre + " " + response[0].apellido + "</a>")
-                    }else{
-                        $(".aviso").append("<a class='ml-2' href='usuarios/detalle/" + response[0].id + "'> <i class='fa fa-edit'></i>" + response[0].nombre + " " + response[0].apellido + "</a>")
+                        if($("#register_alumno").length)
+                        {
+                            $(".aviso").append("<a class='ml-2' href='/alumnos/alumno/" + response[0].alumno_one.id + "'> <i class='fa fa-edit'></i>" + response[0].nombre + " " + response[0].apellido + "</a>")
+                        }else{
+                            $(".aviso").append("<a class='ml-2' href='usuarios/detalle/" + response[0].id + "'> <i class='fa fa-edit'></i>" + response[0].nombre + " " + response[0].apellido + "</a>")
+                        }
                     }
+                    
                 }
             });
         }

@@ -110,11 +110,11 @@
                     <label for="tipo">Tipo:</label>
                     <select class="form-select" name="tipo" id="tipo">
                         <option
-                            value="tradicional">Tradicional
+                            value="tradicional">Disciplinar
                         </option>
                         <option
                             value="tradicional2">
-                            Tradicional 70/30
+                            Disciplinar 70/30
                         </option>
                         <option value="modular">
                             Modular

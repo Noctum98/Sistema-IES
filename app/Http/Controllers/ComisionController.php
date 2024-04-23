@@ -7,6 +7,7 @@ use App\Models\Calificacion;
 use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Materia;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\User;
 use App\Request\ComisionesRequest;
 use App\Services\AlumnoService;
@@ -35,7 +36,7 @@ class ComisionController extends Controller
         ComisionService $comisionService
     ) {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente-coordinador');
+        $this->middleware('app.roles:admin-regente-coordinador-seccionAlumnos');
         $this->userService = $userService;
         $this->cicloLectivoService = $cicloLectivoService;
         $this->alumnoService = $alumnoService;

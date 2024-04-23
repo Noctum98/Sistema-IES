@@ -1,6 +1,30 @@
 $(document).ready(function () {
   var elementos;
 
+  // Botón Datos Generales
+  $("#general").change(function(e){
+    let checked = $(this).is(':checked');
+
+    if(checked)
+    {
+      $("#sede_id").attr('disabled',true);
+      $("#carrera_id").attr('disabled',true);
+      $("#año").attr('disabled',true);
+      $("#btn-submit").attr('disabled',false);
+    }else{
+      $("#sede_id").attr('disabled',false);
+      $("#carrera_id").attr('disabled',false);
+      $("#año").attr('disabled',false);
+      $("#btn-submit").attr('disabled',true);
+      let val = $("#año").val();
+      if(val != '' && val != undefined && val > 0 && val < 4)
+    {
+      $("#btn-submit").attr('disabled',false);
+    }
+    }
+  });
+
+  // Cambiar de un gráfico a otro
   $(".btn-graph").click(function (param) { 
     var identificadorBoton = $(this).attr('id');
     var partes = identificadorBoton.split('-');
@@ -14,6 +38,7 @@ $(document).ready(function () {
     renderizarGrafica(elemento);
   });
 
+  // Deshabilitar botón de buscar
   $("#año").change(function(e){
     let val = $(this).val();
     console.log(val);
@@ -24,15 +49,29 @@ $(document).ready(function () {
     }
   });
 
+  // Procesar Formulario
   $("#datos-form").submit(function (e) {
     e.preventDefault();
     let sede_id = $("#sede_id").val() ? $("#sede_id").val() : 0;
     let carrera_id = $("#carrera_id").val() ? $("#carrera_id").val() : 0;
     let año = $("#año").val() ? $("#año").val() : 0;
+    var url = '';
+    var urlDescargar = '';
 
 
-    let url = '/estadistica/obtenerGraficos/' + sede_id + "/" + carrera_id + '/' + año;
-    let urlDescargar = '/excel/encuesta/'+carrera_id+'/'+año;
+    if($("#general").is(':checked'))
+    {
+      url = '/estadistica/obtenerGraficos/0/0/0/1';
+      urlDescargar = '/excel/encuesta/0/0';
+
+    }else{
+      url = '/estadistica/obtenerGraficos/' + sede_id + "/" + carrera_id + '/' + año;
+      urlDescargar = '/excel/encuesta/'+carrera_id+'/'+año;
+    }
+
+    $("#btn-submit").val('Cargando datos..espere');
+    $("#btn-submit").attr('disabled',true);
+
 
     $('#btn-descargar').attr('href',urlDescargar);
 
@@ -40,6 +79,8 @@ $(document).ready(function () {
       $("#graficos").removeClass('d-none');
       $("#total").html(response.total);
       elementos = response.data;
+      $("#btn-submit").val('Buscar');
+      $("#btn-submit").attr('disabled',false);
       response.data.forEach(element => {
         renderizarGrafica(element)
       });

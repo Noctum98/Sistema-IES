@@ -345,13 +345,16 @@ class CalificacionService
 
     public function getNotaByPorcentaje(int $porcentaje, $year = null)
     {
+
         if (!$year) {
             $year = date('Y');
         }
-        $nota = Nota::select('notas.*')
+
+
+        $nota = Nota::select('notas.valor')
             ->where('min', '<=', $porcentaje)
             ->where('max', '>=', $porcentaje)
-            ->where('year', '<', $year)
+            ->where('year', '<=', $year)
             ->orderBy('year', 'DESC')
             ->first();
 

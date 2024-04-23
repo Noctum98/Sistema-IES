@@ -91,17 +91,17 @@ class RegisterController extends Controller
             'telefono' => $data['telefono'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'rol' => $data['roles'][0] ? 'rol_'.$data['roles'][0] : '',
+            'rol' => $data['roles'][0] ? 'rol_' . $data['roles'][0] : '',
         ]);
 
-       $this->attachRoles($data,$user);
+        $this->attachRoles($data, $user);
 
         return $user;
     }
 
-    private function attachRoles($data,$user){
-        foreach($data['roles'] as $role)
-        {
+    private function attachRoles($data, $user)
+    {
+        foreach ($data['roles'] as $role) {
             $user->roles()->attach(Rol::where('nombre', $role)->first());
         }
     }
@@ -110,19 +110,18 @@ class RegisterController extends Controller
     {
         $user = $this->registerEvent($request);
 
-        return redirect()->route('usuarios.detalle',[
+        return redirect()->route('usuarios.detalle', [
             'id' => $user->id,
         ]);
     }
 
     public function registerAlumno(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'año' => 'required|integer|max:3|min:1'
         ]);
-        
-        if(!$request['user_id'])
-        {
+
+        if (!$request['user_id']) {
             $user = $this->registerEvent($request);
 
             $request['dni'] = $request['username'];
@@ -130,16 +129,25 @@ class RegisterController extends Controller
             $request['apellidos'] = $request['apellido'];
             $request['user_id'] = $user->id;
             $alumno = Alumno::create($request->all());
-            Mail::to($alumno->email)->send(new MatriculacionUser($alumno,$request['carrera_id']));
+            Mail::to($alumno->email)->send(new MatriculacionUser($alumno, $request['carrera_id']));
+        } else {
+            $user = User::withTrashed()->find($request['user_id']);
 
-        }else{
-            $alumno = Alumno::where('user_id',$request['user_id'])->first();
+            $alumno = Alumno::withTrashed()->where('user_id', $request['user_id'])
+                ->orWhere('dni', $request['username'])->first();
+
+            if ($user->deleted_at) {
+                $user->restore();
+            }
+
+            if ($alumno->deleted_at) {
+                $alumno->restore();
+            }
         }
-        
-        if(!$alumno)
-        {
+
+        if (!$alumno) {
             $user = User::find($request['user_id']);
-            $this->attachRoles($request,$user);
+            $this->attachRoles($request, $user);
             $request['dni'] = $user->username;
             $request['nombres'] = $user->nombre;
             $request['apellidos'] = $user->apellido;
@@ -148,14 +156,15 @@ class RegisterController extends Controller
             $request['user_id'] = $user->id;
             $alumno = Alumno::create($request->all());
         }
-        
+
+
         $request['alumno_id'] = $alumno->id;
 
         $datos = $this->alumnoCarreraService->datosInscripcion($request);
         $inscripcion = AlumnoCarrera::create($datos);
 
-        return redirect()->route('alumno.carrera',['carrera_id'=>$inscripcion->carrera_id, 'ciclo_lectivo' => $inscripcion->ciclo_lectivo])
-        ->with(['alert_success'=>'Alumno registrado correctamente.']);
+        return redirect()->route('alumno.carrera', ['carrera_id' => $inscripcion->carrera_id, 'ciclo_lectivo' => $inscripcion->ciclo_lectivo])
+            ->with(['alert_success' => 'Alumno registrado correctamente.']);
     }
 
     /**
@@ -166,20 +175,19 @@ class RegisterController extends Controller
         $auth = Auth::user();
         $roles = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
         if ($auth->hasAnyRole('coordinador')) {
-            $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->orWhere('nombre','planillas')->get();
+            $roles = Rol::select('nombre', 'id', 'descripcion')->where('nombre', 'profesor')->orWhere('nombre', 'planillas')->get();
         }
 
         return view('auth.register', compact('roles'));
     }
 
-    public function showRegistrationAlumnosForm(Request $request,$carrera_id)
+    public function showRegistrationAlumnosForm(Request $request, $carrera_id)
     {
         $user = Auth::user();
         $carreras = $user->carreras;
 
-        if(Session::has('admin') || Session::has('regente'))
-        {
-            $carreras = Carrera::orderBy('sede_id','asc')->get();
+        if (Session::has('admin') || Session::has('regente')) {
+            $carreras = Carrera::orderBy('sede_id', 'asc')->get();
         }
 
         $data = [
@@ -188,7 +196,7 @@ class RegisterController extends Controller
             'carreras' => $carreras
         ];
 
-        return view('auth.register-alumnos',$data);
+        return view('auth.register-alumnos', $data);
     }
 
     private function registerEvent($request)

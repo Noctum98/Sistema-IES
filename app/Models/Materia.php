@@ -254,8 +254,17 @@ class Materia extends BaseModel
         $actaVolante = ActaVolante::where([
             'alumno_id' => $alumno_id,
             'materia_id' => $this->id
-        ])->orderBy('updated_at', 'DESC')
+        ])->where('promedio','>=',4)->orderBy('created_at', 'DESC')
         ->first();
+        
+        if(!$actaVolante)
+        {
+            $actaVolante = ActaVolante::where([
+                'alumno_id' => $alumno_id,
+                'materia_id' => $this->id
+            ])->orderBy('created_at', 'DESC')
+            ->first();
+        }
     
 
         if($actaVolante)

@@ -4,6 +4,9 @@
 			<th>Carrera: {{ $carrera->nombre.' ('.$carrera->turno.') '.$carrera->sede->nombre }}</th>
 		</tr>
 		<tr>
+			<th>Año: {{ $year }}</th>
+		</tr>
+		<tr>
 			<th scope="col">Apellido y Nombre</th>
 			<th scope="col">D.N.I</th>
 			<th scope="col">Email</th>

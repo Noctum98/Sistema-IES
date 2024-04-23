@@ -17,16 +17,18 @@ class AlumnosYearExport implements FromView,WithEvents
     public $generos;
     public $ciclo_lectivo;
     public $carrera;
+    public $year;
 
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function __construct($alumnos,$generos,$ciclo_lectivo,$carrera)
+    public function __construct($alumnos,$generos,$ciclo_lectivo,$carrera,$year)
     {
         $this->alumnos = $alumnos;
         $this->generos = $generos;
         $this->ciclo_lectivo = $ciclo_lectivo;
         $this->carrera = $carrera;
+        $this->year = $year;
     }
 
     public function view(): View
@@ -35,7 +37,8 @@ class AlumnosYearExport implements FromView,WithEvents
             'alumnos' => $this->alumnos,
             'generos' => $this->generos,
             'ciclo_lectivo' => $this->ciclo_lectivo,
-            'carrera' => $this->carrera
+            'carrera' => $this->carrera,
+            'year' => $this->year
         ]);
     }
     public static function afterSheet(AfterSheet $event)
