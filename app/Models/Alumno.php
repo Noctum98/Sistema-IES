@@ -224,9 +224,10 @@ class Alumno extends Model
     public static function alumnosAño($year, $carrera_id, $ciclo_lectivo, $comision_id)
     {
         $alumnos = Alumno::whereHas('alumno_carrera', function ($query) use ($year, $carrera_id, $ciclo_lectivo) {
-            $query->where('año', $year)
-                ->where('carrera_id', $carrera_id)
-                ->where('ciclo_lectivo', $ciclo_lectivo);
+            $query->where('alumno_carrera.año', $year)
+                ->where('alumno_carrera.carrera_id', $carrera_id)
+                ->where('alumno_carrera.ciclo_lectivo', $ciclo_lectivo)
+                ->where('alumno_carrera.aprobado',true);
         });
 
         if ($comision_id) {
@@ -236,8 +237,7 @@ class Alumno extends Model
         }
 
 
-        $alumnos = $alumnos->where('aprobado', true)
-            ->orderBy('alumnos.apellidos', 'asc')
+        $alumnos = $alumnos->orderBy('alumnos.apellidos', 'asc')
             ->get();
 
         return $alumnos;
