@@ -42,12 +42,20 @@ class MesaService
                     if($mesa->comision_id)
                     {
                         $comisiones = true;
-                        $comisionAlumno = $inscripcion->alumno->comisiones->where('id',$mesa->comision_id)->first();
-                        if($comisionAlumno){
-                            $inscripcion->update(['mesa_id'=>$mesa->id,'segundo_llamado' => 0]);
+
+                        if($mesa->instancia->estado == 'activa')
+                        {
+                            $comisionAlumno = $inscripcion->alumno->comisiones->where('id',$mesa->comision_id)->first();
+                            if($comisionAlumno){
+                                $inscripcion->update(['mesa_id'=>$mesa->id,'segundo_llamado' => 0]);
+                            }
                         }
+                        
                     }else{
-                        $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
+                        if($mesa->instancia->estado == 'activa')
+                        {
+                            $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
+                        }
                     }
                 }
 
