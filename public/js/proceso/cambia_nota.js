@@ -8,6 +8,8 @@ $(document).ready(function () {
         event.preventDefault();
         let proceso_id = $(this).attr('id');
         let nota_final = $('#nota-' + proceso_id).val();
+        let ciclo_lectivo = $('#ciclo_lectivo').val();
+
 
         let url = '/proceso/cambia/nota_final';
         let data = {
@@ -41,13 +43,26 @@ $(document).ready(function () {
                     let notaElement = $('#nota-' + proceso_id);
                     notaElement.removeClass("text-danger");
                     notaElement.removeClass("text-success");
-                    if (response.nota >= 4) {
-                        notaElement.addClass("text-success");
-                    } else if (response.nota >= 0 && response.nota < 4) {
-                        notaElement.addClass("text-danger");
+                    if (ciclo_lectivo < 2024) {
+                        console.log(ciclo_lectivo)
+                        if (response.nota >= 4) {
+                            notaElement.addClass("text-success");
+                        } else if (response.nota >= 0 && response.nota < 4) {
+                            notaElement.addClass("text-danger");
+                        } else {
+                            notaElement.removeClass("text-danger");
+                            notaElement.removeClass("text-success");
+                        }
                     } else {
-                        notaElement.removeClass("text-danger");
-                        notaElement.removeClass("text-success");
+                        console.log(ciclo_lectivo)
+                        if (response.nota >= 6) {
+                            notaElement.addClass("text-success");
+                        } else if (response.nota >= 0 && response.nota < 6) {
+                            notaElement.addClass("text-danger");
+                        } else {
+                            notaElement.removeClass("text-danger");
+                            notaElement.removeClass("text-success");
+                        }
                     }
                     toggleElementDisplay(proceso_id, 'span', 'd-block', 'd-none');
                     toggleElementDisplay(proceso_id, 'spin', 'd-none', 'd-block');
@@ -61,6 +76,7 @@ $(document).ready(function () {
         event.preventDefault();
         let proceso_id = $(this).attr('id');
         let nota_global = $('#global-' + proceso_id).val();
+        let ciclo_lectivo = $('#ciclo_lectivo').val();
 
         console.log(proceso_id)
 
@@ -95,11 +111,27 @@ $(document).ready(function () {
                     let globalElement = $('#global-' + proceso_id);
                     globalElement.removeClass("text-danger");
                     globalElement.removeClass("text-success");
-                    if (response.nota >= 4) {
-                        globalElement.addClass("text-success");
+                    // if (response.nota >= 4) {
+                    //     globalElement.addClass("text-success");
+                    // } else {
+                    //     globalElement.addClass("text-danger");
+                    // }
+                    if (ciclo_lectivo < 2024) {
+                        console.log(ciclo_lectivo)
+                        if (response.nota >= 4) {
+                            globalElement.addClass("text-success");
+                        } else if (response.nota >= 0 && response.nota < 4) {
+                            globalElement.addClass("text-danger");
+                        }
                     } else {
-                        globalElement.addClass("text-danger");
+                        console.log(ciclo_lectivo)
+                        if (response.nota >= 6) {
+                            globalElement.addClass("text-success");
+                        } else if (response.nota >= 0 && response.nota < 6) {
+                            globalElement.addClass("text-danger");
+                        }
                     }
+
 
                     $('#select_' + proceso_id).val(response.estado).change();
 

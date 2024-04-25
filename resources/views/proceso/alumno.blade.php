@@ -13,6 +13,9 @@
             <div class="col-sm-6">
                 <h6 class="text-primary">
                     Notas de proceso <br/>
+                    @if(Session::has('admin'))
+                        <small>({{$carrera->id}})</small>
+                    @endif
                     {{$carrera->nombre}}  {{$year}} año
                     <br/>
                     <small>
@@ -59,6 +62,9 @@
                 @foreach($procesos as $proceso)
                     <tr>
                         <td>
+                            @if(Session::has('admin'))
+                                <small> ({{$proceso->materia->id}})</small>
+                            @endif
                             {{ $proceso->materia->nombre }}
                         </td>
                         <td class="text-center">
