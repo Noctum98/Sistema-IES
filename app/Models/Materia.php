@@ -300,8 +300,6 @@ class Materia extends BaseModel
 
 
         return $correlativas;
-
-
     }
 
     /**

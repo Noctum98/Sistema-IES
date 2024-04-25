@@ -50,6 +50,8 @@
                             <option value="condicional_primero" {{ isset($inscripcion) && $inscripcion->regularidad == 'condicional_primero' ? "selected='selected'":'' }}>CONDICIONAL</option>
                             <option value="recursante_primero" {{ isset($inscripcion) && $inscripcion->regularidad == 'recursante_primero' ? "selected='selected'":'' }}>RECURSANTE</option>
                             <option value="recursante_diferenciado_primero" {{ isset($inscripcion) && $inscripcion->regularidad == 'recursante_diferenciado_primero' ? "selected='selected'":'' }}>RECURSANTE CON TRAYECTORIA DIFERENCIADA</option>
+                            <option value="reinscripto_primero" {{ isset($inscripcion) && $inscripcion->regularidad == 'reinscripto_primero' ? "selected='selected'":'' }}>REINSCRIPTO</option>
+
                         </select>
                     </div>
                     @elseif($inscripcion->año == 2)
