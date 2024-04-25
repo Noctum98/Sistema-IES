@@ -35,6 +35,8 @@ class AlumnoProcesoController extends Controller
 
     /**
      * @param int $id
+     * @param Carrera $carrera
+     * @param int $year
      * @return Application|Factory|View|RedirectResponse
      */
     public function vista_procesos(int $id, Carrera $carrera, int $year)
@@ -56,13 +58,13 @@ class AlumnoProcesoController extends Controller
             ->where('procesos.alumno_id', $id)
             ->orderBy('materias.nombre', 'ASC')
             ->get();
+
         foreach ($procesosGet as $proceso) {
             $created_at = date('Y', strtotime($proceso->created_at));
             if ($created_at >= $proceso->cohorte) {
-                array_push($procesos, $proceso);
+                $procesos[] = $proceso;
             }
         }
-
 
         return view('proceso.alumno', [
             'alumno' => $alumno,
