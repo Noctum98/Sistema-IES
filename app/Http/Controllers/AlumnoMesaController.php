@@ -18,6 +18,7 @@ use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Services\Mesas\MesaAlumnoService;
 use App\Services\MesaService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -26,13 +27,16 @@ use Illuminate\Support\Facades\Mail;
 class AlumnoMesaController extends Controller
 {
     protected $mesaService;
+    protected $mesaAlumnoService;
 
     public function __construct(
-        MesaService $mesaService
+        MesaService $mesaService,
+        MesaAlumnoService $mesaAlumnoService
     )
     {
         $this->middleware('app.auth');
         $this->mesaService = $mesaService;
+        $this->mesaAlumnoService = $mesaAlumnoService;
     }
     // Vistas
     public function vista_home($id)
@@ -113,19 +117,8 @@ class AlumnoMesaController extends Controller
         $materia = Materia::find($materia_id);
         $mesa = null;
 
-        $inscripciones = MesaAlumno::where([
-            'instancia_id' => $instancia->id,
-            'materia_id' => $materia_id,
-            'estado_baja' => 0
-        ])->get();
-
-        //dd($inscripciones);
-
-        $inscripciones_baja = MesaAlumno::where([
-            'instancia_id' => $instancia->id,
-            'materia_id' => $materia_id,
-            'estado_baja' => 1
-        ])->get();
+        $inscripciones = $this->mesaAlumnoService->obtenerInscripciones($instancia->id,$materia_id,0);    
+        $inscripciones_baja = $this->mesaAlumnoService->obtenerInscripciones($instancia->id,$materia_id,1);
 
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')

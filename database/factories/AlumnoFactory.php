@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Alumno;
+use App\Models\CondicionCarrera;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -28,13 +29,7 @@ class AlumnoFactory extends Factory
             'genero' => $this->faker->word(),
             'regularidad' => $this->faker->word(),
             'nacionalidad' => $this->faker->word(),
-            'provincia' => $this->faker->word(),
-            'localidad' => $this->faker->word(),
-            'calle' => $this->faker->word(),
-            'n_calle' => $this->faker->word(),
-            'barrio' => $this->faker->word(),
-            'manzana' => $this->faker->word(),
-            'casa' => $this->faker->randomNumber(),
+            'domicilio' => $this->faker->word(),
             'codigo_postal' => $this->faker->postcode(),
             'estado_civil' => $this->faker->word(),
             'ocupacion' => $this->faker->word(),
@@ -45,8 +40,8 @@ class AlumnoFactory extends Factory
             'materias_s' => $this->faker->word(),
             'titulo_s' => $this->faker->randomNumber(),
             'articulo_septimo' => $this->faker->word(),
-            'privacidad' => $this->faker->randomNumber(),
-            'poblacion_indigena' => $this->faker->randomNumber(),
+            'privacidad' => $this->faker->boolean(),
+            'poblacion_indigena' => $this->faker->boolean(),
             'discapacidad_mental' => $this->faker->word(),
             'discapacidad_intelectual' => $this->faker->word(),
             'discapacidad_visual' => $this->faker->word(),
@@ -62,12 +57,18 @@ class AlumnoFactory extends Factory
             'updated_at' => Carbon::now(),
             'comision_id' => $this->faker->randomNumber(),
             'cohorte' => $this->faker->word(),
-            'active' => $this->faker->randomNumber(),
+            'active' => $this->faker->boolean(),
+            'fecha_primera_acreditacion' => $this->faker->word(),
+            'fecha_ultima_acreditacion' => $this->faker->word(),
             'aprobado' => $this->faker->word(),
             'operador_id' => $this->faker->randomNumber(),
-            'domicilio' => $this->faker->word(),
+            'legajo_completo' => $this->faker->word(),
+            'telefono_fijo' => $this->faker->word(),
+            'calle' => $this->faker->word(),
+            'localidad' => $this->faker->word(),
 
             'user_id' => User::factory(),
+            'condicion_carrera_id' => CondicionCarrera::factory(),
         ];
     }
 }
