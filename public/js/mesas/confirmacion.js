@@ -1,9 +1,20 @@
 $(document).ready(function () {
+    var inscripcion_id = 0;
+    var materia_id = 0;
 
     $('.inscripcion_id').click(function(e){
         e.preventDefault();
 
-        let inscripcion_id = $(this).attr('id');
+        inscripcion_id = $(this).data('inscripcion_id');
+        materia_id = $(this).data('materia_id');
+
+        
+
+
+        let url = 'mesas/verificarInscripcion/'+inscripcion_id+'/'+materia_id;
+
+        console.log(url);
+        /*
         let url = '/mesas/confirmar/'+inscripcion_id;
 
         console.log(inscripcion_id,url);
@@ -21,7 +32,7 @@ $(document).ready(function () {
                     $("#asignar-"+response.inscripcion.id).attr('disabled',false);
                 }
             }
-        });
+        });*/
     });
     
 });

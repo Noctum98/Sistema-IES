@@ -57,7 +57,7 @@ $contador_boton = 1;
                     </a>
                     @endif
 
-                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" id="{{$inscripcion->id}}">Confirmar
+                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" data-inscripcion_id="{{ $inscripcion->id }}" data-materia_id="{{ $materia->id }}" data-bs-toggle="modal" data-bs-target="#confirmar_alumno">Verificar Inscripción
                     </button>
                     <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled>Confirmado
                     </button>
@@ -67,3 +67,6 @@ $contador_boton = 1;
             @endforeach
         </tbody>
     </table>
+
+    @include('mesa.modals.confirmacion')
+
