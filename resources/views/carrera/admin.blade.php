@@ -50,7 +50,9 @@
                             </td>
                         @endif
                         <td>{{ $carrera->sede->nombre }}</td>
-                        <td>{{ ucfirst($carrera->tipo) }}</td>
+                        <td>
+                            @include('componentes.tipoCarrera.tradicionalToDisciplinar', ['tipo' => $carrera->tipo])
+                        </td>
                         {{--                         Para el nuevo ram--}}
                         @if(Session::has('admin'))
                             <td>{{ ucfirst(optional($carrera->condicionCarrera)->nombre) }}</td>
