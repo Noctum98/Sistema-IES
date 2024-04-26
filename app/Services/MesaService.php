@@ -2,32 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Parameters\Calendario;
+
 class MesaService
 {
     protected $feriados;
     const T_M = '14:00';
     const T_T = '23:59';
     const T_V = '23:59';
-    public function __construct()
-    {
-        $this->feriados = [
-            '19-02-2023',
-            '20-02-2023',
-            '21-02-2023',
-            '26-02-2023',
-            '27-02-2023',
-            '28-02-2023',
-            '09-07-2023',
-            '15-08-2023',
-            '25-08-2023',
-            '02-09-2023',
-            '07-10-2023',
-            '10-10-2023',
-            '20-11-2023',
-            '08-12-2023',
-            '09-12-2023',
-        ];
-    }
 
     public function verificarInscripcionesEspeciales($inscripciones, $materia, $instancia)
     {
@@ -70,19 +52,19 @@ class MesaService
         ];
     }
 
-    public function setCierreMesa($fecha, $materia)
+    public function setCierreMesa($fecha, $materia,$feriados)
     {
-        $inicio_fecha = date("d-m-Y", strtotime($fecha . '-1 day'));
+        $inicio_fecha = date("d-n-Y", strtotime($fecha . '-1 day'));
 
         $contador = 0;
         while ($contador < 2) {
 
-            if ($this->isHabil($inicio_fecha)) {
+            if ($this->isHabil($inicio_fecha,$feriados)) {
                 $contador++;
             }
 
             if ($contador != 2) {
-                $inicio_fecha = date("d-m-Y", strtotime($inicio_fecha . '-1 day'));
+                $inicio_fecha = date("d-n-Y", strtotime($inicio_fecha . '-1 day'));
             }
         }
 
@@ -91,11 +73,13 @@ class MesaService
         return $cierre;
     }
 
-    private function isHabil($fecha)
+    public function isHabil($fecha,$feriados)
     {
-        if (in_array($fecha, $this->feriados) || date('D', strtotime($fecha))  == 'Sat' || date('D', strtotime($fecha)) == 'Sun') {
+        if (in_array($fecha, $feriados) || date('D', strtotime($fecha))  == 'Sat' || date('D', strtotime($fecha)) == 'Sun') {
+
             return false;
         } else {
+
             return true;
         }
     }
@@ -117,5 +101,17 @@ class MesaService
         }
 
         return $fecha . 'T' . $hora;
+    }
+
+    public function limpiarFeriados($feriados,$instancia)
+    {
+        $feriadosLimpios = [];
+        foreach($feriados as $feriado)
+        {
+            $feriadoLimpio = $feriado->dia.'-'.$feriado->mes.'-'.$instancia->año;
+            array_push($feriadosLimpios,$feriadoLimpio);
+        }
+
+        return $feriadosLimpios;
     }
 }

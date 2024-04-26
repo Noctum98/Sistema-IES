@@ -67,7 +67,6 @@ class InstanciaController extends Controller
 
             }
         }
-
         return view('mesa.admin', [
             'instancias' => $instancia,
             'sedes' =>  $sedes,

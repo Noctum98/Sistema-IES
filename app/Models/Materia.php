@@ -291,6 +291,11 @@ class Materia extends BaseModel
         ]);
     }
 
+    public function materiasCorrelativas(): BelongsToMany
+    {
+        return $this->belongsToMany(Materia::class,'materias_correlativas','materia_id','correlativa_id');
+    }
+
     public function correlativasArray()
     {
         $correlativas = MateriasCorrelativa::select('correlativa_id')

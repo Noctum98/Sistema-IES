@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaAlumno;
+use App\Models\Parameters\Calendario;
 use App\Models\Proceso;
 use App\Services\MesaService;
 use Carbon\Carbon;
@@ -38,34 +39,6 @@ class MesaController extends Controller
     )
     {
         $this->mesaService = $mesaService;
-        /**
-         * Fuente https://www.argentina.gob.ar/interior/feriados-nacionales-2022
-         */
-
-        $this->feriados = [
-            '19-02-2022',
-            '20-02-2022',
-            '26-02-2022',
-            '27-02-2022',
-            '28-02-2022',
-            '01-03-2022',
-            '05-03-2022',
-            '06-03-2022',
-            '12-03-2022',
-            '13-03-2022',
-            '09-07-2022',
-            '15-08-2022',
-            '25-08-2022',
-            '02-09-2022',
-            '07-10-2022',
-            '10-10-2022',
-            '20-11-2022',
-            '21-11-2022',
-            '08-12-2022',
-            '09-12-2022',
-        ];
-
-
     }
 
     // Vistas
@@ -157,17 +130,19 @@ class MesaController extends Controller
 
         $materia = Materia::find($materia_id);
         $instancia = Instancia::find($instancia_id);
+        $feriados = Calendario::all();
+        $this->feriados = $this->mesaService->limpiarFeriados($feriados,$instancia);
 
-        $fecha_dia = date("d-m-Y", strtotime($request['fecha']));
-        $fecha_dia_segundo = date("d-m-Y", strtotime($request['fecha_segundo']));
+        $fecha_dia = date("d-n-Y", strtotime($request['fecha']));
+        $fecha_dia_segundo = date("d-n-Y", strtotime($request['fecha_segundo']));
 
-        $comp_primer_llamado = in_array($fecha_dia, $this->feriados);
-        $comp_segundo_llamado = in_array($fecha_dia_segundo, $this->feriados);
+        $comp_primer_llamado = $this->mesaService->isHabil($fecha_dia,$this->feriados);
+        $comp_segundo_llamado = $this->mesaService->isHabil($fecha_dia_segundo,$this->feriados);
 
-        if ($comp_primer_llamado || $comp_segundo_llamado) {
-            if ($comp_primer_llamado && $comp_segundo_llamado) {
+        if (!$comp_primer_llamado && !$comp_segundo_llamado) {
+            if (!$comp_primer_llamado && !$comp_segundo_llamado) {
                 $mensaje = "Las fechas ".$fecha_dia." y ".$fecha_dia_segundo." están bloqueadas introduce otra fecha.";
-            } elseif ($comp_primer_llamado && !$comp_segundo_llamado) {
+            } elseif (!$comp_primer_llamado && $comp_segundo_llamado) {
                 $mensaje = "La fecha ".$fecha_dia." está bloqueada, prueba con otra.";
             } else {
                 $mensaje = "La fecha ".$fecha_dia_segundo." está bloqueada, prueba con otra.";
@@ -192,9 +167,9 @@ class MesaController extends Controller
         $request['instancia_id'] = $instancia->id;
         $request['materia_id'] = $materia->id;
 
-        $request['cierre'] = $this->mesaService->setCierreMesa($request['fecha'],$materia);
+        $request['cierre'] = $this->mesaService->setCierreMesa($request['fecha'],$materia,$this->feriados);
         if ($request['fecha_segundo']) {
-            $request['cierre_segundo'] = $this->mesaService->setCierreMesa($request['fecha_segundo'],$materia);
+            $request['cierre_segundo'] = $this->mesaService->setCierreMesa($request['fecha_segundo'],$materia,$this->feriados);
         } else {
             $request['cierre_segundo'] = null;
         }

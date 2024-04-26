@@ -546,21 +546,15 @@ Route::prefix('mesas')->group(function () {
     Route::get('/inscripcion/{id}', [AlumnoMesaController::class, 'vista_home'])->name('mesa.welcome');
     Route::get('/instancias', [AlumnoMesaController::class, 'vista_instancias'])->name('mesa.instancias');
     Route::get('/administrar/{todos?}', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
-    Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name(
-        'mesa.carreras'
-    );
+    Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name('mesa.carreras');
     Route::get('/carrera/admin/{id}/{instancia_id}', [InstanciaController::class, 'vista_mesas'])->name('mesa.mesas');
     Route::get('/cronograma/{instancia_id}', [MesaController::class, 'vistaCronograma'])->name('mesa.cronograma');
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
-    Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones']
-    )->name(
-        'mesa.inscriptos'
-    );
-    Route::get('/inscriptos_especial/{id}/{instancia_id}/{comision_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name(
-        'mesa.especial.inscriptos'
-    );
-    Route::post('/asignar_mesa', [AlumnoMesaController::class, 'asignar_mesa'])->name('mesas.asignar');
+    Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones'])->name('mesa.inscriptos');
+    Route::get('/inscriptos_especial/{id}/{instancia_id}/{comision_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name('mesa.especial.inscriptos');
+    Route::get('verificarInscripcion/{mesa_alumno_id}/{materia_id}',[AlumnoMesaController::class,'verificarInscripcion']);
 
+    Route::post('/asignar_mesa', [AlumnoMesaController::class, 'asignar_mesa'])->name('mesas.asignar');
     Route::post('/seleccionar/{id}', [InstanciaController::class, 'seleccionar_sede'])->name('sele.sede');
     Route::post('/crear/{materia_id}/{instancia_id}', [MesaController::class, 'crear'])->name('crear_mesa');
     Route::post('/editar/{materia_id}/{instancia_id}', [MesaController::class, 'editar'])->name('editar_mesa');
