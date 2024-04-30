@@ -51,6 +51,13 @@
                         <label for="año">Año</label>
                         <input type="number" name="año" class="form-control" required />
                     </div>
+                    <div class="form-group">
+                        <label for="sedes">Tipo de Notas</label>
+                        <select name="year_nota" id="year_nota" class="form-select">
+                            <option value="2024" selected> 2024 </option>
+                            <option value="2021"> 2021 </option>
+                        </select>
+                    </div>
                     <input type="submit" class="btn btn-success" value="Crear">
                 </form>
             </div>

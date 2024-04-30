@@ -10,7 +10,7 @@ class Instancia extends Model
 {
     use HasFactory;
     protected $table = 'instancias';
-    protected $fillable = ['nombre', 'tipo', 'general', 'estado', 'cierre', 'limite', 'segundo_llamado','año'];
+    protected $fillable = ['nombre', 'tipo', 'general', 'estado', 'cierre', 'limite', 'segundo_llamado','año','year_nota'];
 
     public function sedes(): BelongsToMany
     {

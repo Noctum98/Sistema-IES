@@ -73,7 +73,7 @@ class MesaAlumno extends Model
     protected $fillable = [
         'mesa_id', 'alumno_id', 'materia_id', 'instancia_id', 'segundo_llamado',
         'nombres', 'apellidos', 'dni', 'correo', 'telefono', 'estado_baja', 'user_id',
-        'motivo_baja'
+        'motivo_baja','inscripcion_id'
     ];
 
     public function materia()

@@ -36,8 +36,8 @@
                     @if($inscripcion->estado_baja || $inscripcion->confirmado)
                     <button class="btn btn-sm btn-danger" disabled>Bajarme</button>
 
-                    @elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo']) - <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>
-                        @elseif(!$inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre']) - <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>
+                    @elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo']) <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>
+                        @elseif(!$inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre']) <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>
                             @endif
                             @endif
                 </td>

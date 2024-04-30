@@ -16,7 +16,9 @@ use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
 use App\Models\ActaVolante;
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Materia;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
 use App\Services\Mesas\MesaAlumnoService;
 use App\Services\MesaService;
@@ -69,7 +71,8 @@ class AlumnoMesaController extends Controller
         ])
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
-
+        
+        
         return view('mesa.instancias', [
             'instancias' => $instancias,
             'inscripciones' => $inscripciones
@@ -80,7 +83,14 @@ class AlumnoMesaController extends Controller
     {
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
-        $carreras = Auth::user() ? $alumno->carrerasDistinct : Carrera::where('sede_id', $alumno['sede'])->get();
+        $lastCicloLectivo = CicloLectivo::orderBy('created_at','desc')->first();
+        $alumnoCarreras = AlumnoCarrera::where(['alumno_id'=>$alumno->id,'ciclo_lectivo'=>$lastCicloLectivo->year])->get(); 
+        $carreras = [];
+        
+        foreach($alumnoCarreras as $inscripcionCarrera)
+        {
+            $carreras[] = $inscripcionCarrera->carrera;
+        }
 
         if ($instancia->cierre) {
             $carreras = null;
@@ -185,6 +195,15 @@ class AlumnoMesaController extends Controller
             unset($datos['_token']);
             foreach ($datos as $dato) {
 
+                if($instancia->tipo == 0){
+                    $mesa = Mesa::find($dato);
+                    $materia = $mesa->materia;
+                }else{
+                    $materia = Materia::find($dato);
+                }
+                $inscripcionCarrera = $alumno->lastProcesoCarrera($materia->carrera_id);
+
+
                 foreach ($mesas_alumnos as $inscripcion) {
                     if ($instancia->tipo == 1) {
 
@@ -205,8 +224,8 @@ class AlumnoMesaController extends Controller
                 $inscripcion->dni = $alumno['dni'];
                 $inscripcion->correo = $alumno['email'] ? $alumno['email'] : $alumno['correo'];
                 $inscripcion->telefono = $alumno['telefono'];
+                $inscripcion->inscripcion_id = $inscripcionCarrera->id;
                 if ($instancia->tipo == 0) {
-                    $mesa = Mesa::find($dato);
                     if (time() > strtotime($mesa->fecha) || isset($request['segundo-' . $mesa->id])) {
                         $inscripcion->segundo_llamado = true;
                     } else {
@@ -244,26 +263,38 @@ class AlumnoMesaController extends Controller
                 'mesa_id' => $request['mesa_id'],
                 'segundo_llamado' => $request['llamado']
             ])->first();
+            $materia = $mesa->materia;
         } else {
             $inscripcion = MesaAlumno::where([
                 'alumno_id' => $request['alumno_id'],
                 'instancia_id' => $request['instancia_id'],
                 'materia_id' => $request['materia_id']
             ])->first();
-        }
-        if (!$inscripcion) {
-            $request['nombres'] = $alumno->nombres;
-            $request['apellidos'] = $alumno->apellidos;
-            $request['dni'] = $alumno->dni;
-            $request['correo'] = $alumno->email;
-            $request['telefono'] = $alumno->telefono;
-            $request['segundo_llamado'] = $request['llamado'];
-            $inscripcion = MesaAlumno::create($request->all());
 
-            $mensaje = ['alert_success' => 'El alumno ha sido inscripto.'];
-        } else {
-            $mensaje = ['alert_danger' => 'El alumno ya esta inscripto a este llamado.'];
+            $materia = Materia::find($request['materia_id']);
         }
+        $inscripcion_id = $alumno->lastProcesoCarrera($materia->carrera_id);
+
+        if(!$inscripcion_id)
+        {
+            $mensaje = ['alert_danger' => 'El alumno no está inscripto a la carrera.'];
+        }else{
+            if (!$inscripcion) {
+                $request['nombres'] = $alumno->nombres;
+                $request['apellidos'] = $alumno->apellidos;
+                $request['dni'] = $alumno->dni;
+                $request['correo'] = $alumno->email;
+                $request['telefono'] = $alumno->telefono;
+                $request['segundo_llamado'] = $request['llamado'];
+                $request['inscripcion_id'] = $inscripcion_id->id;
+                $inscripcion = MesaAlumno::create($request->all());
+    
+                $mensaje = ['alert_success' => 'El alumno ha sido inscripto.'];
+            } else {
+                $mensaje = ['alert_danger' => 'El alumno ya esta inscripto a este llamado.'];
+            }
+        }
+        
 
         return redirect()->back()->with($mensaje);
     }
@@ -464,6 +495,13 @@ class AlumnoMesaController extends Controller
         $inscripcion->update();
 
         return redirect()->back()->with(['alert_success','Mesa asignada correctamente.']);
+    }
+
+    public function verificarInscripcion(Request $request,$mesa_alumno_id,$materia_id)
+    {
+        $datos = $this->mesaAlumnoService->condicionesRendir($mesa_alumno_id,$materia_id);
+
+        return response()->json($datos,200);
     }
 
     // Funciones privadas
