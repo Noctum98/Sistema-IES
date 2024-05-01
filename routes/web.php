@@ -745,7 +745,9 @@ Route::prefix('usuarios')->group(function () {
 
 
     // Funcionalidades
-    Route::post('editar_usaurio', [UserController::class, 'editar'])->name('editar_usuario');
+    Route::post('editar_usaurio', [UserController::class, 'editarMiPerfil'])->name('editar_usuario');
+    Route::get('editar_usuario_alumno/{alumno_id}', [UserController::class, 'editarUsuarioAlumno'])->name('editar_usuario_alumno');
+    Route::put('update_usuario_alumno/{alumno_id}', [UserController::class, 'updateUsuarioAlumno'])->name('update-usuario-alumno');
     Route::delete('/{id}', [UserController::class, 'delete'])->name('usuario.eliminar');
     Route::post('cambiar_contra', [UserController::class, 'cambiar_contra'])->name('cambiar_contra');
     Route::post('set_rol/{id}', [UserController::class, 'set_roles'])->name('set_roles');
