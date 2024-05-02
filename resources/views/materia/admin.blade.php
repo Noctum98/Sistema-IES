@@ -1,7 +1,7 @@
 @extends('layouts.app-prueba')
 @section('content')
     @include('layouts.cssCard')
-    <div class="container">
+    <div class="container-fluid">
         <div class="card">
             <div class="row p-1">
                 <div class="card-header border-radius">
@@ -67,7 +67,9 @@
                             @foreach($materias as $materia)
                                 @if($materia->año == 1)
                                     <tr style="cursor:pointer;">
-                                        <td>{{ $materia->nombre }}</td>
+                                        <td>
+                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                        </td>
                                         <td>
                                             @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
                                                 <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"

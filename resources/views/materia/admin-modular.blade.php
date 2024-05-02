@@ -1,9 +1,9 @@
 @extends('layouts.app-prueba')
 @section('content')
     @include('layouts.cssCard')
-    <div class="container">
+    <div class="container-fluid">
         <div class="card">
-            <div class="row p-1">
+            <div class="row p-0">
                 <div class="card-header border-radius">
                     <div class="row p-0">
                         <div class="col-sm-4">
@@ -63,7 +63,9 @@
                                 @foreach($materias as $materia)
                                     @if($materia->año == 1)
                                         <tr style="cursor:pointer;" class="m-0 p-0">
-                                            <td class="col-sm-4">{{ $materia->nombre }}</td>
+                                            <td class="col-sm-4">
+                                                {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            </td>
                                             <td class="d-flex justify-content-between w-100 m-0">
                                                 <span class="m-0 p-0 col-1">
                                                 @if(Auth::user()->hasRole('regente') ||
