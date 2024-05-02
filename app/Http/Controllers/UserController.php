@@ -6,6 +6,7 @@ use App\Mail\MatriculacionUser;
 use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Cargo;
+use App\Models\Proceso;
 use App\Models\User;
 use App\Models\Rol;
 use App\Models\RolUser;
@@ -35,7 +36,8 @@ class UserController extends Controller
 
     public function __construct(
         UserService $userService
-    ) {
+    )
+    {
         $this->middleware('app.roles:admin-usuarios-coordinador-seccionAlumnos-regente', ['only' => ['vista_admin', 'set_roles', 'cambiar_sedes', 'crear_usuario_alumno']]);
         $this->userService = $userService;
     }
@@ -80,7 +82,6 @@ class UserController extends Controller
             })->paginate(20);
         }
         $rolListado = Rol::where(['descripcion' => $rol])->first();
-
 
 
         return view('user.listado', [
@@ -197,6 +198,7 @@ class UserController extends Controller
 
     public function editar(Request $request): RedirectResponse
     {
+
         $user = Auth::user();
 
         $validate = $this->validate($request, [
@@ -212,6 +214,101 @@ class UserController extends Controller
             'user' => $user,
         ])->with([
             'datos_editados' => 'Los datos personales han sido actualizados',
+        ]);
+    }
+
+
+    public function editarMiPerfil(Request $request): RedirectResponse
+    {
+
+        $user = Auth::user();
+
+        $validate = $this->validate($request, [
+            'telefono' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+        ]);
+
+        $user->update($request->all());
+
+        return redirect()->route('usuarios.editar', [
+            'user' => $user,
+        ])->with([
+            'datos_editados' => 'Los datos personales han sido actualizados',
+        ]);
+    }
+
+    /**
+     * @param $alumno_id
+     * @return Application|Factory|View|\Illuminate\View\View
+     */
+    public function editarUsuarioAlumno($alumno_id)
+    {
+        $alumno = Alumno::find($alumno_id);
+        $user = null;
+        if (!$alumno->user_id) {
+            $user = User::where('email', $alumno->email)
+                ->orWhere('username', $alumno->dni)->withTrashed()->first();
+
+            if (!$user) {
+                $data = [
+                    'email' => $alumno->email,
+                    'username' => $alumno->dni,
+                    'nombre' => $alumno->nombres,
+                    'apellido' => $alumno->apellidos,
+                    'telefono' => $alumno->telefono,
+                    'password' => Hash::make($alumno->dni),
+                ];
+                $user = User::create($data);
+                $user->roles()->attach(Rol::where('nombre', 'alumno')->first());
+                $user->update();
+            }
+            $alumno->user_id = $user->id;
+            $alumno->update();
+        }
+
+
+        return view('alumno.editarUsuarioAlumno', [
+            'alumno' => $alumno,
+        ]);
+    }
+
+    public function updateUsuarioAlumno(Request $request, $alumno_id)
+    {
+
+
+        $validate = $this->validate($request, [
+            'email' => ['required', 'email'],
+            'nombres' => ['required'],
+            'apellidos' => ['required'],
+            'dni' => ['required'],
+            'telefono' => ['required', 'numeric'],
+        ]);
+        $alumno = Alumno::find($alumno_id);
+
+
+        $alumno->update($request->all());
+
+
+        $user = $alumno->user;
+
+
+        $data = [
+            'email' => $alumno->email,
+            'username' => $alumno->dni,
+            'nombre' => $alumno->nombres,
+            'apellido' => $alumno->apellidos,
+            'telefono' => $alumno->telefono,
+        ];
+
+
+        $user->update($data);
+
+
+
+        return redirect()->route('alumno.detalle', [
+            'id' => $alumno->id,
+        ])->with([
+            'mensaje_editado' => 'Datos editados correctamente'
         ]);
     }
 
@@ -410,7 +507,7 @@ class UserController extends Controller
         return redirect()->route('alumno.detalle', [
             'id' => $alumno->id,
         ])->with([
-            'mensaje_exitoso' => 'La matriculación a ' . $inscripcion->carrera->nombre  . ' ha sido aprobada correctamente.',
+            'mensaje_exitoso' => 'La matriculación a ' . $inscripcion->carrera->nombre . ' ha sido aprobada correctamente.',
         ]);
     }
 
@@ -432,7 +529,7 @@ class UserController extends Controller
 
     public function getUsuarioByUsernameOrNull($busqueda)
     {
-        
+
         return response()->json($this->userService->buscadorUsuario($busqueda), 200);
     }
 }
