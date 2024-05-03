@@ -130,7 +130,9 @@
                             @foreach($materias as $materia)
                                 @if($materia->año == 2)
                                     <tr style="cursor:pointer;" class="m-0 p-0">
-                                        <td class="col-sm-4">{{ $materia->nombre }}</td>
+                                        <td class="col-sm-4">
+                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                        </td>
                                         <td class="d-flex justify-content-between w-100 m-0">
                                                 <span class="m-0 p-0 col-1">
                                                 @if(Auth::user()->hasRole('regente') ||
@@ -194,7 +196,9 @@
                             @foreach($materias as $materia)
                                 @if($materia->año == 3)
                                     <tr style="cursor:pointer;" class="m-0 p-0">
-                                        <td class="col-sm-4">{{ $materia->nombre }}</td>
+                                        <td class="col-sm-4">
+                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                        </td>
                                         <td class="d-flex justify-content-between w-100 m-0">
                                                 <span class="m-0 p-0 col-1">
                                                 @if(Auth::user()->hasRole('regente') ||
