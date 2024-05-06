@@ -253,4 +253,5 @@
                     </a>
                 </div>
     @include('comision.modals.crear_comision')
+    @include('materia.modal.show')
 @endsection

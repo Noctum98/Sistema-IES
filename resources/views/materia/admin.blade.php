@@ -218,6 +218,7 @@
         </div>
     </div>
     @include('comision.modals.crear_comision')
+    @include('materia.modal.show')
     {{--    @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')--}}
 @endsection
 
