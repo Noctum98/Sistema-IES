@@ -83,8 +83,12 @@
 
 
                             <div class="form-group col-sm-4">
-                                <label for="regimen">Régimen:</label>
+                                <label for="regimen">Régimen: </label>
                                 <select class="form-control select2" id="regimen" name="regimen">
+                                    <option value="">
+                                        Seleccione régimen
+                                    </option>
+
                                     <option
                                         value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>
                                         Anual
