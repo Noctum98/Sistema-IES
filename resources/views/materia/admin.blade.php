@@ -19,8 +19,12 @@
                         <div class="col-sm-8">
                             <p class="ms-5">Plan de estudios</p>
                             <h4 class="text-dark">
-                                 {{ $carrera->nombre }}
-                                <br/> <small>{{ucwords($carrera->tipo)}} - <small> {{$carrera->sede->nombre}}</small></small>
+                                {{ $carrera->nombre }}
+                                <br/> <small>
+                                    @include('componentes.tipoCarrera.tradicionalToDisciplinar', ['tipo' => $carrera->tipo])
+                                    {{--                                    {{ucwords($carrera->tipo)}} --}}
+                                    -
+                                    <small> {{$carrera->sede->nombre}}</small></small>
                             </h4>
                         </div>
                     </div>
@@ -68,7 +72,11 @@
                                 @if($materia->año == 1)
                                     <tr style="cursor:pointer;">
                                         <td>
-                                            {{ $materia->nombre }}  (<small>{{$materia->regimen}}</small>)
+                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
+                                               data-url="{{ route('materia.show', $materia->id) }}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </a>
                                         </td>
                                         <td>
                                             @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
@@ -119,7 +127,11 @@
                                 @if($materia->año == 2)
                                     <tr style="cursor:pointer;">
                                         <td>
-                                            {{ $materia->nombre }}  (<small>{{$materia->regimen}}</small>)
+                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
+                                               data-url="{{ route('materia.show', $materia->id) }}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </a>
                                         </td>
                                         <td>
                                             @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
@@ -169,7 +181,11 @@
                                 @if($materia->año == 3)
                                     <tr style="cursor:pointer;">
                                         <td>
-                                            {{ $materia->nombre }}  (<small>{{$materia->regimen}}</small>)
+                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
+                                               data-url="{{ route('materia.show', $materia->id) }}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </a>
                                         </td>
                                         <td>
                                             @if(Auth::user()->hasRole('regente') || Auth::user()->hasRole('coordinador') || Auth::user()->hasRole('seccionAlumnos') || Auth::user()->hasRole('admin'))
@@ -215,9 +231,14 @@
                     </a>
                 </div>
             </div>
+            @include('comision.modals.crear_comision')
+            @include('materia.modal.show')
+
         </div>
+
     </div>
-    @include('comision.modals.crear_comision')
+
+
     {{--    @include('parameters.ciclo_lectivo.modal.form_modal_ciclo_lectivo')--}}
 @endsection
 
@@ -272,4 +293,5 @@
         //     })
         // });
     </script>
+    <script src="{{ asset('js/materias/materias.js') }}"></script>
 @endsection

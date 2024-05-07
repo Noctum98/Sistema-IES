@@ -20,7 +20,11 @@
                             <p class="ms-5">Plan de estudios</p>
                             <h4 class="text-dark">
                                 {{ $carrera->nombre }}
-                                <br/> <small>{{ucwords($carrera->tipo)}} - <small> {{$carrera->sede->nombre}}</small> </small>
+                                <br/> <small>
+                                    @include('componentes.tipoCarrera.tradicionalToDisciplinar', ['tipo' => $carrera->tipo])
+                                    - <small>
+                                        {{$carrera->sede->nombre}}</small>
+                                </small>
                             </h4>
                         </div>
                     </div>
@@ -65,6 +69,10 @@
                                         <tr style="cursor:pointer;" class="m-0 p-0">
                                             <td class="col-sm-4">
                                                 {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                                <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
+                                                   data-url="{{ route('materia.show', $materia->id) }}">
+                                                    <i class="fa fa-eye text-info"></i>
+                                                </a>
                                             </td>
                                             <td class="d-flex justify-content-between w-100 m-0">
                                                 <span class="m-0 p-0 col-1">
@@ -92,7 +100,8 @@
                                                 <span class="m-0 p-0 col-2">
 
                                                 <a href="{{ route('modulos.ver',['materia'=>$materia->id]) }}"
-                                                   class="btn btn-sm btn-secondary"><i class="fa fa-cogs"></i> Módulo</a>
+                                                   class="btn btn-sm btn-secondary"><i
+                                                        class="fa fa-cogs"></i> Módulo</a>
                                                 <!-----
                                     <a href="{{ route('descargar_planilla',$materia->id) }}"
                                        class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>-->
@@ -132,6 +141,10 @@
                                     <tr style="cursor:pointer;" class="m-0 p-0">
                                         <td class="col-sm-4">
                                             {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
+                                               data-url="{{ route('materia.show', $materia->id) }}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </a>
                                         </td>
                                         <td class="d-flex justify-content-between w-100 m-0">
                                                 <span class="m-0 p-0 col-1">
@@ -159,7 +172,8 @@
                                             <span class="m-0 p-0 col-2">
 
                                                 <a href="{{ route('modulos.ver',['materia'=>$materia->id]) }}"
-                                                   class="btn btn-sm btn-secondary"><i class="fa fa-cogs"></i> Módulo</a>
+                                                   class="btn btn-sm btn-secondary"><i
+                                                        class="fa fa-cogs"></i> Módulo</a>
                                                 <!-----
                                     <a href="{{ route('descargar_planilla',$materia->id) }}"
                                        class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>-->
@@ -198,6 +212,10 @@
                                     <tr style="cursor:pointer;" class="m-0 p-0">
                                         <td class="col-sm-4">
                                             {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
+                                               data-url="{{ route('materia.show', $materia->id) }}">
+                                                <i class="fa fa-eye text-info"></i>
+                                            </a>
                                         </td>
                                         <td class="d-flex justify-content-between w-100 m-0">
                                                 <span class="m-0 p-0 col-1">
@@ -225,7 +243,8 @@
                                             <span class="m-0 p-0 col-2">
 
                                                 <a href="{{ route('modulos.ver',['materia'=>$materia->id]) }}"
-                                                   class="btn btn-sm btn-secondary"><i class="fa fa-cogs"></i> Módulo</a>
+                                                   class="btn btn-sm btn-secondary"><i
+                                                        class="fa fa-cogs"></i> Módulo</a>
                                                 <!-----
                                     <a href="{{ route('descargar_planilla',$materia->id) }}"
                                        class="btn btn-sm btn-success"><i class="fas fa-download"></i> Descargar Alumnos</a>-->
@@ -252,5 +271,11 @@
                         <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
                     </a>
                 </div>
-    @include('comision.modals.crear_comision')
+            </div>
+                @include('comision.modals.crear_comision')
+                @include('materia.modal.show')
+        </div>
+                @endsection
+                @section('scripts')
+                    <script src="{{ asset('js/materias/materias.js') }}"></script>
 @endsection
