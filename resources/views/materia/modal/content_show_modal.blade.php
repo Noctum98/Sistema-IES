@@ -23,28 +23,28 @@
     <div class="row">
 
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label for="año">Año:</label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8 text-center">
             {{ $materia->año }} año
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label for="regimen">Régimen: </label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8 text-center">
             {{ $materia->regimen}}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label for="cierre_diferido">Diferenciada</label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8 text-center">
             @include('componentes.general.boolean', ['data' => $materia->cierre_diferido] )
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label for="etapa_campo">Etapa de Campo</label>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8 text-center">
             @include('componentes.general.boolean', ['data' => $materia->etapa_campo] )
         </div>
     </div>
@@ -78,8 +78,8 @@
     </div>
     <div class="form-group mt-2">
         @if($materia->cierre_diferido)
-        La materia tiene un cierre de ciclo lectivo distinto o un régimen distinto
-        para la sede
+            La materia tiene un cierre de ciclo lectivo distinto o un régimen distinto
+            para la sede
 
 
             <div class="col-sm-12 text-center">
@@ -123,6 +123,19 @@
 
 
     </div>
+    <span class="m-0 p-0 col-1">
+                                                @if(Auth::user()->hasRole('regente') ||
+                                                    Auth::user()->hasRole('coordinador') ||
+                                                    Auth::user()->hasRole('seccionAlumnos') ||
+                                                    Auth::user()->hasRole('admin'))
+            <a href="{{ route('materia.editar',['id'=>$materia->id]) }}"
+               class="btn btn-sm btn-warning">Editar</a>
+        @endif
+                                                </span>
+
+    <button type="button" class="close btn btn-sm" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fa fa-times"></i> Cerrar
+    </button>
 
 </div>
-</div>
+
