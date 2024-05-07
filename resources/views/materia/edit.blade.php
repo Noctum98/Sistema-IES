@@ -5,8 +5,11 @@
       href="{{ asset('css/select2-bootstrap-theme/select2-bootstrap.min.css')}}"
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @section('content')
+
     @include('layouts.cssCard')
     <div class="container-fluid">
+        <a href="{{ route('materia.admin',['carrera_id'=>$materia->carrera->id]) }}"
+           class="btn btn-sm btn-danger">Cancelar</a>
         <div class="card">
             <div class="row p-1">
                 <div>
@@ -17,7 +20,7 @@
                         <div class="col-sm-7 mx-auto">
 
                             <h5 class="card-title">
-                                <small>Edición de</small> {{ $materia->nombre }}
+                                <small>Edición de: </small> {{ $materia->nombre }}
                             </h5>
                         </div>
                         <div class="col-sm-5 mx-auto">
