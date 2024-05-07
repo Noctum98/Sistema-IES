@@ -265,6 +265,7 @@ Route::prefix('materia')->group(function () {
         'materia.cierre'
     );
     Route::get('/vista-materia/{instancia}', [MateriaController::class, 'vistaMateria'])->name('materia.vista_materia');
+    Route::get('/show/{materia}', [MateriaController::class, 'show'])->name('materia.show');
 });
 
 // Rutas de Módulos

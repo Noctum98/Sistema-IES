@@ -238,7 +238,7 @@ class Materia extends BaseModel
             'materia_id' => $this->id
         ])->where('promedio','>=',4)->orderBy('created_at', 'DESC')
         ->first();
-        
+
         if(!$actaVolante)
         {
             $actaVolante = ActaVolante::where([
@@ -247,7 +247,7 @@ class Materia extends BaseModel
             ])->orderBy('created_at', 'DESC')
             ->first();
         }
-    
+
 
         if($actaVolante)
         {
@@ -294,6 +294,7 @@ class Materia extends BaseModel
     public function materiasCorrelativas(): BelongsToMany
     {
         return $this->belongsToMany(Materia::class,'materias_correlativas','materia_id','correlativa_id');
+
     }
 
     public function correlativasArray()
@@ -301,20 +302,23 @@ class Materia extends BaseModel
         $correlativas = MateriasCorrelativa::select('correlativa_id')
             ->where('materia_id', $this->id)
             ->get()->toArray();
-        $correlativas = array_column($correlativas, 'correlativa_id');
-
-
-        return $correlativas;
+        return array_column($correlativas, 'correlativa_id');
     }
 
     /**
-     * @return MateriasCorrelativasCursado
+     *
      */
-    public function correlativasCursado(): MateriasCorrelativasCursado
+    public function correlativasCursado()
     {
         return MateriasCorrelativasCursado::where([
             'materia_id' => $this->id
         ]);
+    }
+
+    public function materiasCorrelativasCursado(): BelongsToMany
+    {
+        return $this->belongsToMany(Materia::class,'materias_correlativas_cursados','materia_id','previa_id')
+            ->whereNull('materias_correlativas_cursados.deleted_at');
     }
 
     /**
