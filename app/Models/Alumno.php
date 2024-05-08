@@ -7,6 +7,7 @@ use App\Models\Trianual\Trianual;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -553,4 +554,9 @@ class Alumno extends Model
         return $this->t_documento?$this->t_documento .": " : " " . $this->dni;
     }
 
+
+    public function getEdadAttribute(): int
+    {
+        return Carbon::parse($this->attributes['fecha'])->age;
+    }
 }
