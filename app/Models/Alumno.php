@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\Trianual\Trianual;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
@@ -361,5 +362,10 @@ class Alumno extends Model
     public function condicionCarrera(): BelongsTo
     {
         return $this->belongsTo(CondicionCarrera::class, 'condicion_carrera_id');
+    }
+
+    public function getEdadAttribute(): int
+    {
+        return Carbon::parse($this->attributes['fecha'])->age;
     }
 }
