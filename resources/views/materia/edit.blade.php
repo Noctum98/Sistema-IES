@@ -37,11 +37,11 @@
             </div>
             <div class="card-body">
                 <div class="col-md-12">
-                    @if(@session('message'))
-                        <div class="alert alert-success">
-                            {{ @session('message') }}
-                        </div>
-                    @endif
+{{--                    @if(@session('message'))--}}
+{{--                        <div class="alert alert-success">--}}
+{{--                            {{ @session('message') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
                 </div>
                 <div class="row">
                     <form method="POST" action="{{ route('editar_materia',['id'=>$materia->id]) }}">
@@ -242,6 +242,12 @@
                         <th>
                             Régimen
                         </th>
+                        @if(Session::has('admin') || Session::has('coordinador'))
+                            <th class="text-center">
+                                <i class="fa fa-cogs"></i>
+                            </th>
+                        @endif
+
                     </tr>
 
                     </thead>
@@ -258,6 +264,20 @@
                             <td>
                                 {{$cicloLectivo->regimen}}
                             </td>
+                            @if(Session::has('admin') || Session::has('coordinador'))
+                                <td>
+                                    <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="editarButton"
+                                       data-bs-target="#modalModal"
+                                       data-loader="{{$materia->id}}"
+                                       data-attr="{{ route('ciclo_lectivo_especial.edit', ['ciclo_lectivo_especial' => $cicloLectivo->id]) }}">
+                                        <i class="fas fa-edit text-gray-300"></i>
+                                        <i class="fa fa-spinner fa-spin" style="display: none"
+                                           id="loader{{$materia->id}}"></i>
+                                        Editar fecha diferenciada
+                                    </a>
+                                </td>
+                            @endif
+
                         </tr>
                     @endforeach
 
@@ -284,6 +304,44 @@
             });
         });
         $(document).on('click', '#agregarButton', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+            $("#modalModal").on("hidden.bs.modal", function () {
+                $("#modalBody").html("");
+            });
+
+            $.ajax({
+
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                    $("#modalBody").html("");
+                },
+// return the result
+                success: function (result) {
+
+
+                    $('#modalModal').modal("show");
+
+
+                    $('#modalBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+
+        $(document).on('click', '#editarButton', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');
 

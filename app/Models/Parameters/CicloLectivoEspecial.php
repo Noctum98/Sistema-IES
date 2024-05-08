@@ -2,8 +2,10 @@
 
 namespace App\Models\Parameters;
 
+use App\Models\Materia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CicloLectivoEspecial extends Model
 {
@@ -16,6 +18,11 @@ class CicloLectivoEspecial extends Model
         'sede_id',
         'regimen'
     ];
+
+    public function materia(): BelongsTo
+    {
+        return $this->belongsTo(Materia::class, 'materia_id', 'id');
+    }
 
 
 
