@@ -297,4 +297,17 @@ class MateriaController extends Controller
         return $ids;
 
     }
+
+    /**
+     * @param Materia $materia
+     * @return Application|Factory|View|\Illuminate\View\View
+     */
+    public function show(Materia $materia)
+    {
+        return view('materia.modal.content_show_modal')->with([
+            'materia' => $materia,
+        ]);
+    }
+
+
 }
