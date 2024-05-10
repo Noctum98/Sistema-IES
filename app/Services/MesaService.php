@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Parameters\Calendario;
+use Carbon\Carbon;
 
 class MesaService
 {
@@ -15,27 +16,22 @@ class MesaService
     {
         $comisiones = false;
         $mesa_selected = null;
-        if (count($materia->mesas_instancias($instancia->id)) >= 1 ) {
+        if (count($materia->mesas_instancias($instancia->id)) >= 1) {
 
-            foreach($materia->mesas_instancias($instancia->id) as $mesa)
-            {
+            foreach ($materia->mesas_instancias($instancia->id) as $mesa) {
                 foreach ($inscripciones as $inscripcion) {
 
-                    if($mesa->comision_id)
-                    {
+                    if ($mesa->comision_id) {
                         $comisiones = true;
 
-                        if($mesa->instancia->estado == 'activa')
-                        {
-                            $comisionAlumno = $inscripcion->alumno->comisiones->where('id',$mesa->comision_id)->first();
-                            if($comisionAlumno){
-                                $inscripcion->update(['mesa_id'=>$mesa->id,'segundo_llamado' => 0]);
+                        if ($mesa->instancia->estado == 'activa') {
+                            $comisionAlumno = $inscripcion->alumno->comisiones->where('id', $mesa->comision_id)->first();
+                            if ($comisionAlumno) {
+                                $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
                             }
                         }
-                        
-                    }else{
-                        if($mesa->instancia->estado == 'activa')
-                        {
+                    } else {
+                        if ($mesa->instancia->estado == 'activa') {
                             $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
                         }
                     }
@@ -45,21 +41,21 @@ class MesaService
             }
         }
 
-        
+
         return [
             'mesa' => $mesa_selected,
             'comisiones' => $comisiones
         ];
     }
 
-    public function setCierreMesa($fecha, $materia,$feriados)
+    public function setCierreMesa($fecha, $materia, $feriados)
     {
         $inicio_fecha = date("d-n-Y", strtotime($fecha . '-1 day'));
 
         $contador = 0;
         while ($contador < 2) {
 
-            if ($this->isHabil($inicio_fecha,$feriados)) {
+            if ($this->isHabil($inicio_fecha, $feriados)) {
                 $contador++;
             }
 
@@ -73,7 +69,7 @@ class MesaService
         return $cierre;
     }
 
-    public function isHabil($fecha,$feriados)
+    public function isHabil($fecha, $feriados)
     {
         if (in_array($fecha, $feriados) || date('D', strtotime($fecha))  == 'Sat' || date('D', strtotime($fecha)) == 'Sun') {
 
@@ -103,15 +99,46 @@ class MesaService
         return $fecha . 'T' . $hora;
     }
 
-    public function limpiarFeriados($feriados,$instancia)
+    public function limpiarFeriados($feriados, $instancia)
     {
         $feriadosLimpios = [];
-        foreach($feriados as $feriado)
-        {
-            $feriadoLimpio = $feriado->dia.'-'.$feriado->mes.'-'.$instancia->año;
-            array_push($feriadosLimpios,$feriadoLimpio);
+        foreach ($feriados as $feriado) {
+            $feriadoLimpio = $feriado->dia . '-' . $feriado->mes . '-' . $instancia->año;
+            array_push($feriadosLimpios, $feriadoLimpio);
         }
 
         return $feriadosLimpios;
+    }
+
+    public function fechaBloqueo($mesa)
+    {
+        $primer_llamado = $mesa->fecha;
+        $segundo_llamado = $mesa->fecha_segundo;
+        $fechaPrimerLlamado = Carbon::parse($primer_llamado);
+        $fechaSegundoLlamado = $segundo_llamado ? Carbon::parse($segundo_llamado) : null;
+
+        $primer_llamado_cierre = false;
+        $segundo_llamado_cierre = false;
+
+        // Verificar si la fecha recibida más 48 horas es mayor que la fecha actual
+        if ($fechaPrimerLlamado->addHours(48)->isPast()) {
+            
+            $primer_llamado_cierre = true;
+            $mesa->cierre_profesor = true;
+         }
+        
+        // Verificar si la fecha recibida más 48 horas es mayor que la fecha actual
+        if ($fechaSegundoLlamado && $fechaSegundoLlamado->addHours(48)->isPast()) {
+            
+            $segundo_llamado_cierre = true;
+            $mesa->cierre_profesor_segundo = true;
+
+        }
+        
+        $mesa->update();
+        return [
+            'cierre_primer_llamado' => $primer_llamado_cierre,
+            'cierre_segundo_llamado' => $segundo_llamado_cierre
+        ];
     }
 }

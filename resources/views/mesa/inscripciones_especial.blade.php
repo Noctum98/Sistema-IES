@@ -24,7 +24,6 @@
 
 
     <div class="row">
-
         @if(Session::has('coordinador') || Session::has('admin'))
         <button class="btn btn-sm btn-primary col-md-2 m-1" data-bs-toggle="modal" data-bs-target="#inscribirAlumno"><i class="fas fa-clipboard"></i> Inscribir alumno</button>
         @include('mesa.modals.inscribir_alumno')
@@ -39,11 +38,9 @@
         @endif
         --}}
     </div>
-
-
     @if($mesa && !$mesa->comision_id)
     <div class="row">
-        @if($mesa->cierre_profesor)
+        @if($mesa->cierre_profesor && !$cierre_primer_llamado || !Session::has('admin'))
         <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="col-md-1 mt-1">
             {{method_field('PUT')}}
             <input type="hidden" name="llamado" value="1" id="llamado">
@@ -111,15 +108,15 @@
                         @if(Session::has('admin') || Session::has('coordinador'))
 
                         <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
-                            <i class="fas fa-arrow-down"></i>
+                        <i class="fas fa-chevron-circle-down"></i>
                             Dar baja
                         </a>
 
                         @endif
 
-                        <button id="{{$inscripcion->id}}" class="btn btn-sm btn-info inscripcion_id {{$inscripcion->confirmado ? 'd-none' : ''}}"><i class="fas fa-check"></i> Confirmar</button>
-                        <button class="btn btn-sm btn-success d-none" id="confirmado-{{$inscripcion->id}}" disabled><i class="fas fa-check"></i>Confirmado </button>
-
+                        <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" data-inscripcion_id="{{ $inscripcion->id }}" data-materia_id="{{ $materia->id }}" data-bs-toggle="modal" data-bs-target="#confirmar_alumno">Verificar Inscripción
+                    </button>
+                   
                         @if($inscripcion->confirmado)
                         <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado</button>
                         @endif
@@ -130,6 +127,7 @@
 
                     </td>
                     @include('mesa.modals.dar_baja_mesa')
+                    @include('mesa.modals.confirmacion')
 
                 </tr>
                 @endforeach
@@ -141,7 +139,7 @@
     @foreach($materia->mesas_instancias($instancia->id) as $mesa)
     <h3 class="text-info">Mesa: {{ $mesa->comision->nombre }}</h3>
     @if(count($mesa->mesa_inscriptos()->get()) > 0)
-    @if($mesa->cierre_profesor)
+    @if($mesa->cierre_profesor && !$cierre_primer_llamado || !Session::has('admin'))
     <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="mt-2">
         {{method_field('PUT')}}
         <input type="hidden" name="llamado" value="1" id="llamado">
