@@ -136,7 +136,7 @@ class AlumnoMesaController extends Controller
 
         $verificacion = $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$materia,$instancia);
 
-        return view('mesa.inscripciones_especial', [
+        $data = [
             'inscripciones' => $inscripciones,
             'inscripciones_baja' => $inscripciones_baja,
             'materia' => $materia,
@@ -144,7 +144,14 @@ class AlumnoMesaController extends Controller
             'procesos' => $procesos,
             'mesa' => $verificacion['mesa'],
             'comisiones' => $verificacion['comisiones']
-        ]);
+        ];
+
+        if($verificacion['mesa'])
+        {
+            $cierres = $this->mesaService->fechaBloqueo($verificacion['mesa']);
+            $data = array_merge($cierres,$data);
+        }        
+        return view('mesa.inscripciones_especial',$data);
     }
 
     public function materias(Request $request)

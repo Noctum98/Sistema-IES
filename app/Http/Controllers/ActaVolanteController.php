@@ -48,9 +48,11 @@ class ActaVolanteController extends Controller
             $this->mesaService->verificarInscripcionesEspeciales($inscripciones, $mesa->materia, $mesa->instancia);
         }
 
-        return view('mesa.acta_volante.show', [
-            'mesa' => $mesa,
-        ]);
+        $cierres = $this->mesaService->fechaBloqueo($mesa);
+
+        $data = array_merge($cierres,['mesa' => $mesa]);
+
+        return view('mesa.acta_volante.show',$data );
     }
 
     public function store(Request $request)
