@@ -5,8 +5,11 @@
       href="{{ asset('css/select2-bootstrap-theme/select2-bootstrap.min.css')}}"
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @section('content')
+
     @include('layouts.cssCard')
     <div class="container-fluid">
+        <a href="{{ route('materia.admin',['carrera_id'=>$materia->carrera->id]) }}"
+           class="btn btn-sm btn-danger">Cancelar</a>
         <div class="card">
             <div class="row p-1">
                 <div>
@@ -17,7 +20,7 @@
                         <div class="col-sm-7 mx-auto">
 
                             <h5 class="card-title">
-                                <small>Edición de</small> {{ $materia->nombre }}
+                                <small>Edición de: </small> {{ $materia->nombre }}
                             </h5>
                         </div>
                         <div class="col-sm-5 mx-auto">
@@ -34,11 +37,11 @@
             </div>
             <div class="card-body">
                 <div class="col-md-12">
-                    @if(@session('message'))
-                        <div class="alert alert-success">
-                            {{ @session('message') }}
-                        </div>
-                    @endif
+{{--                    @if(@session('message'))--}}
+{{--                        <div class="alert alert-success">--}}
+{{--                            {{ @session('message') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
                 </div>
                 <div class="row">
                     <form method="POST" action="{{ route('editar_materia',['id'=>$materia->id]) }}">
@@ -83,8 +86,12 @@
 
 
                             <div class="form-group col-sm-4">
-                                <label for="regimen">Régimen:</label>
+                                <label for="regimen">Régimen: </label>
                                 <select class="form-control select2" id="regimen" name="regimen">
+                                    <option value="">
+                                        Seleccione régimen
+                                    </option>
+
                                     <option
                                         value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>
                                         Anual
@@ -235,6 +242,12 @@
                         <th>
                             Régimen
                         </th>
+                        @if(Session::has('admin') || Session::has('coordinador'))
+                            <th class="text-center">
+                                <i class="fa fa-cogs"></i>
+                            </th>
+                        @endif
+
                     </tr>
 
                     </thead>
@@ -251,6 +264,20 @@
                             <td>
                                 {{$cicloLectivo->regimen}}
                             </td>
+                            @if(Session::has('admin') || Session::has('coordinador'))
+                                <td>
+                                    <a class="btn btn-sm btn-info" data-bs-toggle="modal" id="editarButton"
+                                       data-bs-target="#modalModal"
+                                       data-loader="{{$materia->id}}"
+                                       data-attr="{{ route('ciclo_lectivo_especial.edit', ['ciclo_lectivo_especial' => $cicloLectivo->id]) }}">
+                                        <i class="fas fa-edit text-gray-300"></i>
+                                        <i class="fa fa-spinner fa-spin" style="display: none"
+                                           id="loader{{$materia->id}}"></i>
+                                        Editar fecha diferenciada
+                                    </a>
+                                </td>
+                            @endif
+
                         </tr>
                     @endforeach
 
@@ -277,6 +304,44 @@
             });
         });
         $(document).on('click', '#agregarButton', function (event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+
+            let referencia = $(this).attr('data-loader');
+            const $laoder = $('#loader' + referencia);
+            $("#modalModal").on("hidden.bs.modal", function () {
+                $("#modalBody").html("");
+            });
+
+            $.ajax({
+
+                url: href,
+                beforeSend: function () {
+                    $laoder.show();
+                    $("#modalBody").html("");
+                },
+// return the result
+                success: function (result) {
+
+
+                    $('#modalModal').modal("show");
+
+
+                    $('#modalBody').html(result).show();
+                },
+                complete: function () {
+                    $laoder.hide();
+                },
+                error: function (jqXHR, testStatus, error) {
+                    console.log(error);
+
+                    $laoder.hide();
+                },
+                timeout: 8000
+            })
+        });
+
+        $(document).on('click', '#editarButton', function (event) {
             event.preventDefault();
             let href = $(this).attr('data-attr');
 

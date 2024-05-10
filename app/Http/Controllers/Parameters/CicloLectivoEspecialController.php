@@ -77,24 +77,42 @@ class CicloLectivoEspecialController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CicloLectivoEspecial  $cicloLectivoEspecial
-     * @return \Illuminate\Http\Response
+     * @param  CicloLectivoEspecial $ciclo_lectivo_especial
+     * @return Application|Factory|\Illuminate\View\View|View
      */
-    public function edit(CicloLectivoEspecial $cicloLectivoEspecial)
+    public function edit(CicloLectivoEspecial $ciclo_lectivo_especial)
     {
-        //
+        $ciclosLectivos = CicloLectivo::all()->sortBy('year',1, true ,);
+
+        return view('materia.modal.form_editar_ciclo_lectivo_especial')->with([
+            'ciclos_lectivos' => $ciclosLectivos,
+            'materia' => $ciclo_lectivo_especial->materia()->first(),
+            'c_lectivo' => $ciclo_lectivo_especial,
+        ]);
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCicloLectivoEspecialRequest  $request
-     * @param  \App\Models\CicloLectivoEspecial  $cicloLectivoEspecial
-     * @return \Illuminate\Http\Response
+     * @param UpdateCicloLectivoEspecialRequest $request
+     * @param CicloLectivoEspecial $cicloLectivoEspecial
+     * @return RedirectResponse
      */
-    public function update(UpdateCicloLectivoEspecialRequest $request, CicloLectivoEspecial $cicloLectivoEspecial)
+    public function update(UpdateCicloLectivoEspecialRequest $request, CicloLectivoEspecial $cicloLectivoEspecial): RedirectResponse
     {
-        //
+        $validate = $this->validate($request, [
+            'ciclo_lectivo_id' => ['required'],
+            'regimen' => ['required'],
+            'sede_id' => ['required'],
+            'materia_id' => ['required'],
+            'cierre_ciclo' => ['required'],
+        ]);
+        $cicloLectivoEspecial->update($request->all());
+        $materia = $cicloLectivoEspecial->materia()->first()->id;
+        return redirect()->route('materia.editar', ['id' => $materia])->with([
+            'message' => 'Ciclo lectivo editado correctamente!',
+        ]);
     }
 
     /**
