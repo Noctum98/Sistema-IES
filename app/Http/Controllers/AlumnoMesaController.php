@@ -148,7 +148,7 @@ class AlumnoMesaController extends Controller
 
         if($verificacion['mesa'])
         {
-            $cierres = $this->mesaService->fechaBloqueo($verificacion['mesa']);
+            $cierres = $this->mesaService->fechaBloqueo($verificacion['mesa'],48);
             $data = array_merge($cierres,$data);
         }        
         return view('mesa.inscripciones_especial',$data);

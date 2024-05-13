@@ -48,7 +48,7 @@ class ActaVolanteController extends Controller
             $this->mesaService->verificarInscripcionesEspeciales($inscripciones, $mesa->materia, $mesa->instancia);
         }
 
-        $cierres = $this->mesaService->fechaBloqueo($mesa);
+        $cierres = $this->mesaService->fechaBloqueo($mesa,48);
 
         $data = array_merge($cierres,['mesa' => $mesa]);
 

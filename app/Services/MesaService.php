@@ -110,7 +110,7 @@ class MesaService
         return $feriadosLimpios;
     }
 
-    public function fechaBloqueo($mesa)
+    public function fechaBloqueo($mesa,$hours)
     {
         $primer_llamado = $mesa->fecha;
         $segundo_llamado = $mesa->fecha_segundo;
@@ -121,14 +121,14 @@ class MesaService
         $segundo_llamado_cierre = false;
 
         // Verificar si la fecha recibida más 48 horas es mayor que la fecha actual
-        if ($fechaPrimerLlamado->addHours(48)->isPast()) {
+        if ($fechaPrimerLlamado->addHours($hours)->isPast()) {
             
             $primer_llamado_cierre = true;
             $mesa->cierre_profesor = true;
          }
         
         // Verificar si la fecha recibida más 48 horas es mayor que la fecha actual
-        if ($fechaSegundoLlamado && $fechaSegundoLlamado->addHours(48)->isPast()) {
+        if ($fechaSegundoLlamado && $fechaSegundoLlamado->addHours($hours)->isPast()) {
             
             $segundo_llamado_cierre = true;
             $mesa->cierre_profesor_segundo = true;
