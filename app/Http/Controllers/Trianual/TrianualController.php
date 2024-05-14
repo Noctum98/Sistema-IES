@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Trianual;
 use App\Http\Requests\Trianual\StoreTrianualRequest;
 use App\Http\Requests\Trianual\UpdateTrianualRequest;
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
+use App\Models\Carrera;
 use App\Models\Estados;
 use App\Models\Proceso;
 use App\Models\Sede;
@@ -103,8 +105,15 @@ class TrianualController extends Controller
      */
     public function create(Request $request, int $alumno)
     {
+
+        // Tengo que agregar la opción de buscar por carrera antes de crear el trianual
         $alumno = Alumno::find($alumno);
         $sedes = Sede::all();
+        $ids = AlumnoCarrera::where('alumno_id', $alumno->id)->distinct()->get('carrera_id');
+
+        $carreras = Carrera::whereIn('id', $ids)->get();
+
+
 
         if (!$alumno) {
             return view('trianual.trianual.index', [
@@ -118,7 +127,7 @@ class TrianualController extends Controller
         $campos = self::CAMPOS_TRIANUAL;
         $datos = [];
 
-        $carrera = $alumno->alumno_carrera()->first()->carrera()->id;
+//        $carrera = $alumno->alumno_carrera()->first()->carrera()->id;
         if ($carrera) {
             unset($campos[0]);
             $datos['carrera'] = $alumno->alumno_carrera()->first()->carrera()->nombre;

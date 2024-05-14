@@ -80,12 +80,12 @@ class Alumno extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function carreras()
+    public function carreras(): BelongsToMany
     {
         return $this->belongsToMany(Carrera::class)->withTimestamps()->wherePivot('ciclo_lectivo', date('Y'));
     }
 
-    public function carrerasDistinct()
+    public function carrerasDistinct(): BelongsToMany
     {
         return $this->belongsToMany(Carrera::class)->distinct();
     }
@@ -133,6 +133,7 @@ class Alumno extends Model
     {
         return $this->hasMany(AlumnoCarrera::class, 'alumno_id');
     }
+
 
     public function encuesta_socioeconomica(): HasOne
     {
