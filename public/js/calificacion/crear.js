@@ -14,7 +14,8 @@ $(document).ready(function () {
         const theForm = $(this);
         const proceso_id = theForm.attr("id");
         const calificacion_id = $('#calificacion_id').val();
-        let ciclo_lectivo = $('#ciclo_lectivo').val();
+        const ciclo_lectivo = $('#ciclo_lectivo').val();
+
 
         if (theForm.hasClass('form-recuperatorio')) {
             porcentaje = $('#calificacion-procentaje-recuperatorio-' + proceso_id).val();
@@ -132,7 +133,8 @@ $(document).ready(function () {
                                 } else {
                                     $(".nota-" + proceso_id).html("<p class='text-danger font-weight-bold'></p>");
                                 }
-                            } else {
+                            }
+                            else {
                                 if (response.nota >= 6) {
                                     $(".nota-" + proceso_id).html("<p class='text-success font-weight-bold'>" + response.nota + "</p>");
                                     $("#calificacion-procentaje-recuperatorio-" + proceso_id).prop('disabled', true);
