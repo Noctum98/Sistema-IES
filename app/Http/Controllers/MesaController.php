@@ -326,11 +326,15 @@ class MesaController extends Controller
             )
             ->first();
         if($mesa)
-        {
+        { 
+            $cierres = $this->mesaService->fechaBloqueo($mesa,1);
+            
             $datos = [
                 'status'=>'success',
                 'mesa' => $mesa
             ];
+
+            $datos = array_merge($datos,$cierres);
         }else{
             $datos = [
                 'status'=>'error',

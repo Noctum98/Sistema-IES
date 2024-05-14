@@ -36,7 +36,7 @@
             <td>
                 @include('mesa.modals.nota_mesa')
                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#nota{{$inscripcion->id}}" {{ !$inscripcion->confirmado ? 'disabled':'' }}>
+                        data-bs-target="#nota{{$inscripcion->id}}" {{ !$inscripcion->confirmado || $cierre_global ? 'disabled':'' }}>
                     Nota
                 </button>
             </td>

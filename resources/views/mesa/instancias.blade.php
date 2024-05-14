@@ -61,7 +61,7 @@
                         @elseif($inscripcion->confirmado)
                         <span class="badge badge-success">Confirmada</span>
                         @else
-                        <span class="badge badge-primary">En revisión</span>
+                        <span class="badge badge-primary">Solicitada</span>
                         @endif
                     </td>
 

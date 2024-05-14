@@ -149,7 +149,7 @@
 										@endforeach
 									</tbody>
 								</table>
-								<input type="submit" value="Inscribirse" class="btn btn-primary" id="loading">
+								<input type="submit" value="Solicitar inscripción" class="btn btn-primary" id="loading">
 							</form>
 						</div>
 					</div>

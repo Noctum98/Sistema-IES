@@ -35,8 +35,8 @@ $contador_boton = 1;
         <tbody>
             @foreach ($inscripciones as $inscripcion)
             <tr style="cursor:pointer;">
-                <td>{{ $inscripcion->alumno ? $inscripcion->alumno->nombres : $inscripcion->nombres }}</td>
-                <td>{{ $inscripcion->alumno ? $inscripcion->alumno->apellidos : $inscripcion->apellidos }}</td>
+                <td>{{ $inscripcion->alumno ? ucwords($inscripcion->alumno->nombres) : ucwords($inscripcion->nombres) }}</td>
+                <td>{{ $inscripcion->alumno ? ucwords($inscripcion->alumno->apellidos) : ucwords($inscripcion->apellidos) }}</td>
                 <td>{{ $inscripcion->alumno ? $inscripcion->alumno->dni : $inscripcion->dni }}</td>
                 <td>{{ $inscripcion->alumno ? $inscripcion->alumno->telefono : $inscripcion->telefono }}</td>
                 @if(isset($instancia) && $instancia->tipo == 1)
@@ -57,9 +57,9 @@ $contador_boton = 1;
                     </a>
                     @endif
 
-                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" id="{{$inscripcion->id}}">Confirmar
+                    <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" data-inscripcion_id="{{ $inscripcion->id }}" data-materia_id="{{ $materia->id }}" data-bs-toggle="modal" data-bs-target="#confirmar_alumno">Verificar Inscripción
                     </button>
-                    <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled>Confirmado
+                    <button class="{{ !$inscripcion->confirmado ? 'd-none' : '' }} btn btn-sm btn-success" id="confirmado-{{$inscripcion->id}}" disabled><i class="fas fa-check"></i>Confirmado
                     </button>
                 </td>
 
@@ -67,3 +67,6 @@ $contador_boton = 1;
             @endforeach
         </tbody>
     </table>
+
+    @include('mesa.modals.confirmacion')
+
