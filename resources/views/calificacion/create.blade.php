@@ -41,10 +41,8 @@
                             <br/>
                             <h4> Comisión: {{$calificacion->comision->nombre}}</h4>
                         @endif
-                        <h6>Ciclo lectivo:
-                            <span id="ciclo_lectivo">
-                            {{$calificacion->ciclo_lectivo}}
-                            </span>
+                        <h6>
+                            Ciclo lectivo: {{$calificacion->ciclo_lectivo}}
                         </h6>
                     </div>
                     <div class="col-sm-8">
@@ -102,6 +100,8 @@
                                       id="{{ $proceso->id }}" method="POST">
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
+                                    <input type="hidden" name="ciclo_lectivo" id="ciclo_lectivo"
+                                           value="{{ $calificacion->ciclo_lectivo }}">
                                     <div class="input-group my-0">
                                         <input type="text" class="form-control datablur"
                                                id="calificacion-procentaje-{{ $proceso->id }}"
@@ -153,6 +153,8 @@
                                       method="POST">
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
+                                    <input type="hidden" name="ciclo_lectivo" id="ciclo_lectivo"
+                                           value="{{ $calificacion->ciclo_lectivo }}">
                                     <div class="input-group my-2">
                                         <input type="text" class="form-control datablur"
                                                id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}"
