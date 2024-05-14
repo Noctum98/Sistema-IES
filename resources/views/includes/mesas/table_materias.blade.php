@@ -43,7 +43,7 @@
 
     <td>
         @if($instancia->tipo == 0)
-            @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
+            @if(Session::has('admin') || Session::has('coordinador'))
 
             <a class="btn btn-sm btn-warning open_modal" data-bs-toggle="modal" data-bs-target="#exampleModal{{$materia->id}}" data-materia_id="{{$materia->id}}" data-instancia_id="{{$instancia->id}}" {{ !Session::get('admin') ? 'disabled':'' }}>Configurar mesa</a>
             @endif

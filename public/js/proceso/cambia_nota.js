@@ -44,7 +44,6 @@ $(document).ready(function () {
                     notaElement.removeClass("text-danger");
                     notaElement.removeClass("text-success");
                     if (ciclo_lectivo < 2024) {
-                        console.log(ciclo_lectivo)
                         if (response.nota >= 4) {
                             notaElement.addClass("text-success");
                         } else if (response.nota >= 0 && response.nota < 4) {
@@ -54,7 +53,6 @@ $(document).ready(function () {
                             notaElement.removeClass("text-success");
                         }
                     } else {
-                        console.log(ciclo_lectivo)
                         if (response.nota >= 6) {
                             notaElement.addClass("text-success");
                         } else if (response.nota >= 0 && response.nota < 6) {

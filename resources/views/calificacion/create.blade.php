@@ -41,7 +41,9 @@
                             <br/>
                             <h4> Comisión: {{$calificacion->comision->nombre}}</h4>
                         @endif
-                        <h6>Ciclo lectivo: {{$calificacion->ciclo_lectivo}}</h6>
+                        <h6>
+                            Ciclo lectivo: {{$calificacion->ciclo_lectivo}}
+                        </h6>
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-dark">
@@ -98,6 +100,8 @@
                                       id="{{ $proceso->id }}" method="POST">
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
+                                    <input type="hidden" name="ciclo_lectivo" id="ciclo_lectivo"
+                                           value="{{ $calificacion->ciclo_lectivo }}">
                                     <div class="input-group my-0">
                                         <input type="text" class="form-control datablur"
                                                id="calificacion-procentaje-{{ $proceso->id }}"
@@ -127,13 +131,14 @@
                         <td class="nota-{{ $proceso->id }}">
                             @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
                                 @if($proceso->procesoCalificacion($calificacion->id))
-                                    @if($proceso->procesoCalificacion($calificacion->id)->nota >= 4)
-                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }} </p>
-                                    @elseif($proceso->procesoCalificacion($calificacion->id)->nota < 4 && $proceso->procesoCalificacion($calificacion->id)->nota >= 0)
-                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }}</p>
-                                    @else
-                                        <p class='text-danger font-weight-bold'>A</p>
-                                    @endif
+{{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota >= 4)--}}
+{{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }} </p>--}}
+{{--                                    @elseif($proceso->procesoCalificacion($calificacion->id)->nota < 4 && $proceso->procesoCalificacion($calificacion->id)->nota >= 0)--}}
+{{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }}</p>--}}
+{{--                                    @else--}}
+{{--                                        <p class='text-danger font-weight-bold'>A</p>--}}
+{{--                                    @endif--}}
+                                    @include('componentes.colorNotas', ['nota' => $proceso->procesoCalificacion($calificacion->id)->nota, 'year' => $calificacion->ciclo_lectivo])
                                 @endif
                             @else
                                 {{--                                {{$proceso->alumno()->first()->getNotaEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}--}}
@@ -148,6 +153,8 @@
                                       method="POST">
                                     <input type="hidden" name="calificacion_id" id="calificacion_id"
                                            value="{{ $calificacion->id }}">
+                                    <input type="hidden" name="ciclo_lectivo" id="ciclo_lectivo"
+                                           value="{{ $calificacion->ciclo_lectivo }}">
                                     <div class="input-group">
                                         <input type="text" class="form-control datablur"
                                                id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}"
@@ -171,11 +178,12 @@
 
                             <td class="nota-recuperatorio-{{ $proceso->id }}">
                                 @if($proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio)
-                                    @if($proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio >= 4)
-                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }} </p>
-                                    @else
-                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }}</p>
-                                    @endif
+{{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio >= 4)--}}
+{{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }} </p>--}}
+{{--                                    @else--}}
+{{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }}</p>--}}
+{{--                                    @endif--}}
+                                    @include('componentes.colorNotas', ['nota' => $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio, 'year' => $calificacion->ciclo_lectivo])
                                 @endif
                             </td>
                         @endif

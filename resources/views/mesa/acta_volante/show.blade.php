@@ -6,13 +6,13 @@
     </h2>
     <hr>
 
-    @if(!$mesa->cierre_profesor)
+    @if(!$mesa->cierre_profesor && !$cierre_primer_llamado)
         <button class="llamado btn btn-sm btn-warning mb-3" id="1" data-bs-toggle="modal" data-bs-target="#cerrarActa{{$mesa->id}}">
             {{ $mesa->instancia->tipo == 0 ? 'Cerrar 1er llamado' : 'Cerrar Mesa' }}
         </button>
     @endif
 
-    @if(!$mesa->cierre_profesor_segundo && $mesa->fecha_segundo)
+    @if(!$mesa->cierre_profesor_segundo && $mesa->fecha_segundo && !cierre_segundo_llamado)
     <button class="llamado btn btn-sm btn-warning mb-3" id="2" data-bs-toggle="modal" data-bs-target="#cerrarActa{{$mesa->id}}">Cerrar 2do llamado</button>
     @endif
 
@@ -26,7 +26,7 @@
 
     
         @if(count($mesa->mesa_inscriptos_primero(1,true)) > 0)
-            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_primero(1,true),'cierre'=>$mesa->cierre_profesor])
+            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_primero(1,true),'cierre'=>$mesa->cierre_profesor,'cierre_global'=>$cierre_primer_llamado])
         @else
             <p>No existen inscripciones para este llamado.</p>
         @endif
@@ -38,7 +38,7 @@
 
         @if( count($mesa->mesa_inscriptos_segundo(1,true)) > 0)
             <h2 class="text-info">Segundo llamado</h2>
-            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_segundo(1,true),'cierre'=>$mesa->cierre_profesor_segundo])
+            @include('mesa.acta_volante.tabla_inscriptos',['inscripciones'=>$mesa->mesa_inscriptos_segundo(1,true),'cierre'=>$mesa->cierre_profesor_segundo,'cierre_global'=>$cierre_primer_llamado])
         @endif
 
         @if(count($mesa->bajas_segundo) > 0)
