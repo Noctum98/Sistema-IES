@@ -14,10 +14,11 @@ $(document).ready(function () {
         const theForm = $(this);
         const proceso_id = theForm.attr("id");
         const calificacion_id = $('#calificacion_id').val();
-        const ciclo_lectivo = $('#ciclo_lectivo').val();
+
 
 
         if (theForm.hasClass('form-recuperatorio')) {
+
             porcentaje = $('#calificacion-procentaje-recuperatorio-' + proceso_id).val();
             let url = "/procesoCalificacion/recuperatorio";
             let data = {
@@ -53,6 +54,7 @@ $(document).ready(function () {
                         }
                     }
                     else {
+                        let ciclo_lectivo = $('#ciclo_lectivo').val();{
                         if (ciclo_lectivo < 2024) {
                             if (response.nota_recuperatorio >= 4) {
                                 $(".nota-recuperatorio-" + proceso_id).html("<p class='text-success font-weight-bold'>" + response.nota_recuperatorio + "</p>");
@@ -82,7 +84,8 @@ $(document).ready(function () {
         })
         }
         else
-            {
+
+
                 porcentaje = $('#calificacion-procentaje-' + proceso_id).val();
                 let url = "/procesoCalificacion";
                 let data = {
@@ -116,8 +119,10 @@ $(document).ready(function () {
                                 }
                             }
                         } else {
+                            let ciclo_lectivo = $('#ciclo_lectivo').val();{
 
                             if (ciclo_lectivo < 2024) {
+                                console.log('Ciclo ' + ciclo_lectivo)
                                 if (response.nota >= 4) {
                                     $(".nota-" + proceso_id).html("<p class='text-success font-weight-bold'>" + response.nota + "</p>");
                                     $("#calificacion-procentaje-recuperatorio-" + proceso_id).prop('disabled', true);
@@ -135,6 +140,7 @@ $(document).ready(function () {
                                 }
                             }
                             else {
+                                console.log('Ciclo ' + ciclo_lectivo)
                                 if (response.nota >= 6) {
                                     $(".nota-" + proceso_id).html("<p class='text-success font-weight-bold'>" + response.nota + "</p>");
                                     $("#calificacion-procentaje-recuperatorio-" + proceso_id).prop('disabled', true);
