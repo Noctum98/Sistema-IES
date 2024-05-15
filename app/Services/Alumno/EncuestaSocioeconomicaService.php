@@ -396,9 +396,14 @@ class EncuestaSocioeconomicaService
             $encuestas = EncuestaSocioeconomica::whereHas('alumno', function ($query) use ($parameters) {
                 $query->whereHas('carreras', function ($query) use ($parameters) {
                     $query->where('carreras.id', $parameters['carrera_id']);
-                })->whereHas('carreras', function ($query) use ($parameters) {
-                    $query->where('año', $parameters['año']);
                 });
+
+                if($parameters['año'] != -1)
+                {
+                    $query->whereHas('carreras', function ($query) use ($parameters) {
+                        $query->where('año', $parameters['año']);
+                    });
+                }
             })->get();
         }
         return $encuestas;
