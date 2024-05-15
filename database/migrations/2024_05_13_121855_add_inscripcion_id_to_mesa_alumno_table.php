@@ -13,12 +13,12 @@ class AddInscripcionIdToMesaAlumnoTable extends Migration
      */
     public function up()
     {
-//        Schema::table('mesa_alumno', function (Blueprint $table) {
-//            $table->unsignedBigInteger('inscripcion_id')
-//                ->nullable();
-//            $table->foreign('inscripcion_id')
-//                ->references('id')->on('alumno_carrera');
-//        });
+        Schema::table('mesa_alumno', function (Blueprint $table) {
+            $table->unsignedBigInteger('inscripcion_id')
+                ->nullable();
+            $table->foreign('inscripcion_id')
+                ->references('id')->on('alumno_carrera');
+        });
     }
 
     /**
