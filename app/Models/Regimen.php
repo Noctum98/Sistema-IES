@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Faker\Provider\Uuid;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Ramsey\Uuid\Uuid;
 
 class Regimen extends Model
 {
@@ -26,7 +27,7 @@ class Regimen extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string) Uuid::uuid4();
+            $model->{$model->getKeyName()} = (string) Uuid::uuid4()->toString();
         });
     }
 

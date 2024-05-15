@@ -16,7 +16,7 @@
             <h4 class="m-0">Regimens</h4>
             <div>
                 <a href="{{ route('regimens.regimen.create') }}" class="btn btn-secondary" title="Crear Régimen">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Agregar
                 </a>
             </div>
         </div>
