@@ -28,10 +28,13 @@
                 </form>
             </div>
         </div>
-        <div class="col-8 mx-auto text-center">
-            <h1 class="text-dark">
-                <i>Trianual <span id="datos-trianual">{{ucfirst($busqueda)}}</span></i>
-            </h1>
+        <div class="col-8 mx-auto d-flex align-items-center ">
+            <h3 class="text-dark text-center align-self-center mr-2">
+                Lista de trianuales
+            </h3>
+            <h6 class="text-dark text-center align-self-center ml-2">
+            Alumnos encontrados por: <span id="datos-trianual">{{ucfirst($busqueda)}}</span>
+            </h6>
         </div>
 
         <hr>
@@ -48,7 +51,6 @@
                         <div class="col-6">
                             {{$alumno->getApellidosNombresAttribute()}}
                             <small class="ml-5">D.N.I.: {{$alumno->dni}}</small>
-                            <small class="ml-5">Cohorte: {{$alumno->cohorte}}</small>
                         </div>
                         <div class="col-6">
                             @if($alumno->getTrianual()->first())
@@ -73,12 +75,7 @@
                                     </a>
                                 @endif
                             @endif
-                            @if(!$alumno->cohorte)
-                                <a href="{{ route('alumno.admin',['busqueda' => $alumno->dni]) }}"
-                                   class="btn btn-sm btn-warning" title="Completar desde aquí">
-                                    <small>Por favor agregar cohorte</small>
-                                </a>
-                            @endif
+
                         </div>
                     </div>
                 @endforeach

@@ -13,5 +13,25 @@
         "model-name": "Aviso",
         "resource-file": "avisos.json",
         "table-name": "avisos"
+    },
+    {
+        "model-name": "tipo_carreras",
+        "resource-file": "tipo_carreras.json",
+        "table-name": "tipo_carreras"
+    },
+    {
+        "model-name": "regimens",
+        "resource-file": "regimens.json",
+        "table-name": "regimens"
+    },
+    {
+        "model-name": "resoluciones",
+        "resource-file": "resoluciones.json",
+        "table-name": "resoluciones"
+    },
+    {
+        "model-name": "master_materias",
+        "resource-file": "master_materias.json",
+        "table-name": "master_materias"
     }
 ]

@@ -98,6 +98,9 @@
                         <a class="nav-link" href="{{ route('alumno.equivalencias') }}">Equivalencias</a>
                         <a class="nav-link" href="{{ route('regularidad.index') }}">Regularidades</a>
                         @endif
+                        @if(Session::has('seccionAlumnos') or Session::has('regente') or Session::has('admin'))
+                        <a class="nav-link" href="{{ route('trianual.listar') }}">Trianual</a>
+                        @endif
 
                     </nav>
                 </div>

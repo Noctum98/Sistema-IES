@@ -10,6 +10,9 @@
     <title>DATA IESVU</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="{{asset('css/simple-datatables_style.css')}}" rel="stylesheet" />
+    <link href="{{asset('css/font-awesome/6.5.2/css/all.css')}}" rel="stylesheet" />
+    <link href="{{asset('css/font-awesome/6.5.2/css/v5-font-face.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('css/font-awesome/6.5.2/css/v4-shims.min.css')}}" rel="stylesheet" />
 
 
     <script src="{{ asset('js/main.js') }}" defer></script>
