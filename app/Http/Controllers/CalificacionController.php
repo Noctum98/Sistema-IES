@@ -131,6 +131,7 @@ class CalificacionController extends Controller
             return view('calificacion.create', [
                 'calificacion' => $calificacion,
                 'procesos' => $procesos,
+                'ciclo_lectivo' => $calificacion->ciclo_lectivo,
             ]);
         }
     }
