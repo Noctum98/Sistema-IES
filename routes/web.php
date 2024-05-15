@@ -20,7 +20,6 @@ use App\Http\Controllers\Trianual\DetalleTrianualController;
 use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
-use App\Models\Trianual\ObservacionesTrianual;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -52,16 +51,15 @@ use App\Http\Controllers\ProcesoCalificacionController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UserCarreraController;
 use App\Http\Controllers\UserMateriaController;
-use App\Models\ActaVolante;
-use App\Models\Alumno\EncuestaSocioeconomica;
-use Illuminate\Support\Facades\Artisan;
-use App\Models\Carrera;
-use App\Models\Sede;
 use App\Http\Controllers\CondicionCarrerasController;
 use App\Http\Controllers\CondicionMateriasController;
 use App\Http\Controllers\CondicionMateriaApiDocsApiDocsController;
 use App\Http\Controllers\MateriasCorrelativasCursadosController;
 use App\Http\Controllers\AvisoController;
+use App\Http\Controllers\TipoCarrerasController;
+use App\Http\Controllers\RegimensController;
+use App\Http\Controllers\ResolucionesController;
+use App\Http\Controllers\MasterMateriasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -553,7 +551,7 @@ Route::prefix('mesas')->group(function () {
     Route::get('/materias/{instancia_id?}', [AlumnoMesaController::class, 'vista_materias'])->name('mesa.mate');
     Route::get('/inscriptos/{instancia_id}/{materia_id}/{comision_id?}', [MesaController::class, 'vista_inscripciones'])->name('mesa.inscriptos');
     Route::get('/inscriptos_especial/{id}/{instancia_id}/{comision_id?}', [AlumnoMesaController::class, 'vista_inscriptos'])->name('mesa.especial.inscriptos');
-    Route::get('verificarInscripcion/{mesa_alumno_id}/{materia_id}',[AlumnoMesaController::class,'verificarInscripcion']);
+    Route::get('verificarInscripcion/{mesa_alumno_id}/{materia_id}', [AlumnoMesaController::class, 'verificarInscripcion']);
 
     Route::post('/asignar_mesa', [AlumnoMesaController::class, 'asignar_mesa'])->name('mesas.asignar');
     Route::post('/seleccionar/{id}', [InstanciaController::class, 'seleccionar_sede'])->name('sele.sede');
@@ -711,7 +709,7 @@ Route::prefix('excel')->group(function () {
     );
     Route::get('alumnosDatos/{carrera_id}/{ciclo_lectivo?}', [ExcelController::class, 'alumnos_datos'])->name('excel.alumnosDatos');
     Route::get('/descargarFiltro', [ExcelController::class, 'filtro_alumnos']);
-    Route::get('/encuesta/{carrera_id}/{year}',[ExcelController::class,'encuesta_socioeconomica']);
+    Route::get('/encuesta/{carrera_id}/{year}', [ExcelController::class, 'encuesta_socioeconomica']);
 });
 
 Route::resource('libros', LibrosController::class);
@@ -746,7 +744,7 @@ Route::prefix('usuarios')->group(function () {
 
 
     // Funcionalidades
-    Route::post('editar_usaurio', [UserController::class, 'editarMiPerfil'])->name('editar_usuario');
+    Route::post('editar_usuario', [UserController::class, 'editarMiPerfil'])->name('editar_usuario');
     Route::get('editar_usuario_alumno/{alumno_id}', [UserController::class, 'editarUsuarioAlumno'])->name('editar_usuario_alumno');
     Route::put('update_usuario_alumno/{alumno_id}', [UserController::class, 'updateUsuarioAlumno'])->name('update-usuario-alumno');
     Route::delete('/{id}', [UserController::class, 'delete'])->name('usuario.eliminar');
@@ -768,9 +766,29 @@ Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
 
 })->middleware('app.roles:admin');
 
-Route::group([
-    'prefix' => 'condicion_carreras',
-], function () {
+
+
+Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
+    ->name('api-docs.condicion_materias.condicion_materia.index');
+
+Route::group(['prefix' => 'avisos','middleware' => ['auth']], function () {
+    Route::get('/', [AvisoController::class, 'index'])
+        ->name('aviso.aviso.index');
+    Route::get('/create', [AvisoController::class, 'create'])
+        ->name('aviso.aviso.create');
+    Route::get('/show/{aviso}', [AvisoController::class, 'show'])
+        ->name('aviso.aviso.show');
+    Route::get('/{aviso}/edit', [AvisoController::class, 'edit'])
+        ->name('aviso.aviso.edit');
+    Route::post('/', [AvisoController::class, 'store'])
+        ->name('aviso.aviso.store');
+    Route::put('aviso/{aviso}', [AvisoController::class, 'update'])
+        ->name('aviso.aviso.update');
+    Route::delete('/aviso/{aviso}', [AvisoController::class, 'destroy'])
+        ->name('aviso.aviso.destroy');
+});
+
+Route::group(['prefix' => 'condicion_carreras','middleware' => ['auth']], function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
         ->name('condicion_carreras.condicion_carrera.index');
     Route::get('/create', [CondicionCarrerasController::class, 'create'])
@@ -787,9 +805,7 @@ Route::group([
         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
 });
 
-Route::group([
-    'prefix' => 'condicion_materias',
-], function () {
+Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth'] ], function () {
     Route::get('/', [CondicionMateriasController::class, 'index'])
         ->name('condicion_materias.condicion_materia.index');
     Route::get('/create', [CondicionMateriasController::class, 'create'])
@@ -805,12 +821,8 @@ Route::group([
     Route::delete('/condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'destroy'])
         ->name('condicion_materias.condicion_materia.destroy');
 });
-Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
-    ->name('api-docs.condicion_materias.condicion_materia.index');
 
-Route::group([
-    'prefix' => 'materias_correlativas_cursados',
-], function () {
+Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], function () {
     Route::get('/', [MateriasCorrelativasCursadosController::class, 'index'])
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
     Route::get('/create', [MateriasCorrelativasCursadosController::class, 'create'])
@@ -827,21 +839,74 @@ Route::group([
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
 });
 
-Route::group([
-    'prefix' => 'avisos',
-], function () {
-    Route::get('/', [AvisoController::class, 'index'])
-         ->name('aviso.aviso.index');
-    Route::get('/create', [AvisoController::class, 'create'])
-         ->name('aviso.aviso.create');
-    Route::get('/show/{aviso}',[AvisoController::class, 'show'])
-         ->name('aviso.aviso.show');
-    Route::get('/{aviso}/edit',[AvisoController::class, 'edit'])
-         ->name('aviso.aviso.edit');
-    Route::post('/', [AvisoController::class, 'store'])
-         ->name('aviso.aviso.store');
-    Route::put('aviso/{aviso}', [AvisoController::class, 'update'])
-         ->name('aviso.aviso.update');
-    Route::delete('/aviso/{aviso}',[AvisoController::class, 'destroy'])
-         ->name('aviso.aviso.destroy');
+Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function () {
+    Route::get('/', [MasterMateriasController::class, 'index'])
+        ->name('master_materias.master_materia.index');
+    Route::get('/create', [MasterMateriasController::class, 'create'])
+        ->name('master_materias.master_materia.create');
+    Route::get('/show/{masterMateria}', [MasterMateriasController::class, 'show'])
+        ->name('master_materias.master_materia.show');
+    Route::get('/{masterMateria}/edit', [MasterMateriasController::class, 'edit'])
+        ->name('master_materias.master_materia.edit');
+    Route::post('/', [MasterMateriasController::class, 'store'])
+        ->name('master_materias.master_materia.store');
+    Route::put('master_materia/{masterMateria}', [MasterMateriasController::class, 'update'])
+        ->name('master_materias.master_materia.update');
+    Route::delete('/master_materia/{masterMateria}', [MasterMateriasController::class, 'destroy'])
+        ->name('master_materias.master_materia.destroy');
 });
+
+Route::group(['prefix' => 'regimens','middleware' => ['auth']], function () {
+    Route::get('/', [RegimensController::class, 'index'])
+        ->name('regimens.regimen.index');
+    Route::get('/create', [RegimensController::class, 'create'])
+        ->name('regimens.regimen.create');
+    Route::get('/show/{regimen}', [RegimensController::class, 'show'])
+        ->name('regimens.regimen.show');
+    Route::get('/{regimen}/edit', [RegimensController::class, 'edit'])
+        ->name('regimens.regimen.edit');
+    Route::post('/', [RegimensController::class, 'store'])
+        ->name('regimens.regimen.store');
+    Route::put('regimen/{regimen}', [RegimensController::class, 'update'])
+        ->name('regimens.regimen.update');
+    Route::delete('/regimen/{regimen}', [RegimensController::class, 'destroy'])
+        ->name('regimens.regimen.destroy');
+});
+
+Route::group(['prefix' => 'resoluciones','middleware' => ['auth']], function () {
+    Route::get('/', [ResolucionesController::class, 'index'])
+        ->name('resoluciones.resoluciones.index');
+    Route::get('/create', [ResolucionesController::class, 'create'])
+        ->name('resoluciones.resoluciones.create');
+    Route::get('/show/{resoluciones}', [ResolucionesController::class, 'show'])
+        ->name('resoluciones.resoluciones.show');
+    Route::get('/{resoluciones}/edit', [ResolucionesController::class, 'edit'])
+        ->name('resoluciones.resoluciones.edit');
+    Route::post('/', [ResolucionesController::class, 'store'])
+        ->name('resoluciones.resoluciones.store');
+    Route::put('resoluciones/{resoluciones}', [ResolucionesController::class, 'update'])
+        ->name('resoluciones.resoluciones.update');
+    Route::delete('/resoluciones/{resoluciones}', [ResolucionesController::class, 'destroy'])
+        ->name('resoluciones.resoluciones.destroy');
+});
+
+Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function () {
+    Route::get('/', [TipoCarrerasController::class, 'index'])
+        ->name('tipo_carreras.tipo_carrera.index');
+    Route::get('/create', [TipoCarrerasController::class, 'create'])
+        ->name('tipo_carreras.tipo_carrera.create');
+    Route::get('/show/{tipoCarrera}', [TipoCarrerasController::class, 'show'])
+        ->name('tipo_carreras.tipo_carrera.show');
+    Route::get('/{tipoCarrera}/edit', [TipoCarrerasController::class, 'edit'])
+        ->name('tipo_carreras.tipo_carrera.edit');
+    Route::post('/', [TipoCarrerasController::class, 'store'])
+        ->name('tipo_carreras.tipo_carrera.store');
+    Route::put('tipo_carrera/{tipoCarrera}', [TipoCarrerasController::class, 'update'])
+        ->name('tipo_carreras.tipo_carrera.update');
+    Route::delete('/tipo_carrera/{tipoCarrera}', [TipoCarrerasController::class, 'destroy'])
+        ->name('tipo_carreras.tipo_carrera.destroy');
+});
+
+
+
+

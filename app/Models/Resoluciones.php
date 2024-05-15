@@ -16,6 +16,14 @@ class Resoluciones extends Model
 
     protected $keyType = 'string';
 
+    /**
+     * The database primary key value.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+
     protected static function boot()
     {
         parent::boot();

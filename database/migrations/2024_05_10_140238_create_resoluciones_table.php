@@ -14,13 +14,15 @@ return new class extends Migration {
             $table->unsignedInteger('duration');
             $table->string('resolution');
             $table->string('type');
-            $table->string('vaccines');
+            $table->string('vaccines')->nullable();
             $table->foreignUuid('tipo_carrera_id');
             $table->foreignId('estados_id');
 
             $table->foreign('tipo_carrera_id')
                 ->references('id')->
                 on('tipo_carreras');
+
+
 
             $table->softDeletes();
             $table->timestamps();

@@ -4,10 +4,10 @@
 
     <div class="card text-bg-theme">
 
-         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">Crear  Materias Correlativas Cursado</h4>
+        <div class="card-header d-flex justify-content-between align-items-center p-3">
+            <h4 class="m-0">Crear Régimen</h4>
             <div>
-                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.index') }}" class="btn btn-primary" title="Listar Materias Correlativas Cursado">
+                <a href="{{ route('regimens.regimen.index') }}" class="btn btn-primary" title="Listar Regímenes">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
             </div>
@@ -26,11 +26,12 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.store') }}" accept-charset="UTF-8" id="create_materias_correlativas_cursado_form" name="create_materias_correlativas_cursado_form" >
-            {{ csrf_field() }}
-            @include ('materias_correlativas_cursados.form', [
-                                        'materiasCorrelativasCursado' => null,
-                                      ])
+            <form method="POST" class="needs-validation" novalidate action="{{ route('regimens.regimen.store') }}"
+                  accept-charset="UTF-8" id="create_regimen_form" name="create_regimen_form">
+                {{ csrf_field() }}
+                @include ('regimens.form', [
+                                            'regimen' => null,
+                                          ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
                     <input class="btn btn-primary" type="submit" value="Grabar">

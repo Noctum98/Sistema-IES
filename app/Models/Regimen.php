@@ -7,13 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TipoCarrera extends Model
+class Regimen extends Model
 {
     use SoftDeletes, HasFactory;
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
 
     /**
      * The database primary key value.
@@ -21,13 +17,8 @@ class TipoCarrera extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-
-
-    protected $fillable = [
-        'name',
-        'description',
-        'identifier',
-    ];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
 
     protected static function boot()
@@ -39,4 +30,8 @@ class TipoCarrera extends Model
         });
     }
 
+    protected $fillable = [
+        'name',
+        'identifier',
+    ];
 }
