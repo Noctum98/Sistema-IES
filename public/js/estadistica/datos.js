@@ -43,7 +43,7 @@ $(document).ready(function () {
     let val = $(this).val();
     console.log(val);
     $("#btn-submit").attr('disabled',true);
-    if(val != '' && val != undefined && val > 0 && val < 4)
+    if(val != '' && val != undefined && val >= -1 && val < 4)
     {
       $("#btn-submit").attr('disabled',false);
     }
