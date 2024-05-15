@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipoCarrera;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Routing\Redirector;
 
 class TipoCarrerasController extends Controller
 {
@@ -29,27 +31,27 @@ class TipoCarrerasController extends Controller
      */
     public function create()
     {
-        
-        
+
+
         return view('tipo_carreras.create');
     }
 
     /**
      * Store a new tipo carrera in the storage.
      *
-     * @param Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        
+
         $data = $this->getData($request);
-        
+
         TipoCarrera::create($data);
 
         return redirect()->route('tipo_carreras.tipo_carrera.index')
-            ->with('success_message', 'Tipo Carrera was successfully added.');
+            ->with('success_message', 'Tipo Carrera fue agregado exitosamente.');
     }
 
     /**
@@ -76,7 +78,7 @@ class TipoCarrerasController extends Controller
     public function edit($id)
     {
         $tipoCarrera = TipoCarrera::findOrFail($id);
-        
+
 
         return view('tipo_carreras.edit', compact('tipoCarrera'));
     }
@@ -91,14 +93,14 @@ class TipoCarrerasController extends Controller
      */
     public function update($id, Request $request)
     {
-        
+
         $data = $this->getData($request);
-        
+
         $tipoCarrera = TipoCarrera::findOrFail($id);
         $tipoCarrera->update($data);
 
         return redirect()->route('tipo_carreras.tipo_carrera.index')
-            ->with('success_message', 'Tipo Carrera was successfully updated.');  
+            ->with('success_message', 'Tipo Carrera fue actualizado exitosamente.');
     }
 
     /**
@@ -123,11 +125,11 @@ class TipoCarrerasController extends Controller
         }
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Request $request
      * @return array
      */
     protected function getData(Request $request)
@@ -135,13 +137,10 @@ class TipoCarrerasController extends Controller
         $rules = [
                 'name' => 'required|string|min:1|max:191',
             'description' => 'required|string|min:1|max:191',
-            'identifier' => 'required|string|min:1|max:191', 
+            'identifier' => 'required|string|min:1|max:191',
         ];
-        
-        $data = $request->validate($rules);
 
-
-        return $data;
+        return $request->validate($rules);
     }
 
 }

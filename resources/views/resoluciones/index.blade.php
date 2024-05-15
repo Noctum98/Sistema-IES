@@ -13,18 +13,18 @@
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">Resoluciones</h4>
+            <h4 class="m-0">Resoluciones Carreras</h4>
             <div>
                 <a href="{{ route('resoluciones.resoluciones.create') }}" class="btn btn-secondary"
                    title="Crear Resolución">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Nueva
                 </a>
             </div>
         </div>
 
         @if(count($resolucionesObjects) == 0)
             <div class="card-body text-center">
-                <h4>No se encontraron Resoluciones Disponibles.</h4>
+                <h4>No se encontraron Resoluciones Carreras Disponibles.</h4>
             </div>
         @else
             <div class="card-body p-0">

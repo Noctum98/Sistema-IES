@@ -52,7 +52,7 @@ $Regimens = Regimen::pluck('name','id')->all();
         MasterMateria::create($data);
 
         return redirect()->route('master_materias.master_materia.index')
-            ->with('success_message', 'Master Materia was successfully added.');
+            ->with('success_message', 'Master Materia fue agregado exitosamente.');
     }
 
     /**
@@ -102,7 +102,7 @@ $Regimens = Regimen::pluck('name','id')->all();
         $masterMateria->update($data);
 
         return redirect()->route('master_materias.master_materia.index')
-            ->with('success_message', 'Master Materia was successfully updated.');
+            ->with('success_message', 'Master Materia fue actualizado exitosamente.');
     }
 
     /**

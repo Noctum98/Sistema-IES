@@ -9,7 +9,7 @@
             <div>
                 <a href="{{ route('tipo_carreras.tipo_carrera.index') }}" class="btn btn-primary"
                    title="Listar Tipo Carrera">
-                    <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+                    <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
                 </a>
             </div>
         </div>

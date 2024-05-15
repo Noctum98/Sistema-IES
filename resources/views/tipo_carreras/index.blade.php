@@ -16,7 +16,7 @@
             <div>
                 <a href="{{ route('tipo_carreras.tipo_carrera.create') }}" class="btn btn-secondary"
                    title="Crear Tipo Carrera">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Nueva
                 </a>
             </div>
         </div>

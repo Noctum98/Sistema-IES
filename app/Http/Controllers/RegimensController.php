@@ -29,8 +29,8 @@ class RegimensController extends Controller
      */
     public function create()
     {
-        
-        
+
+
         return view('regimens.create');
     }
 
@@ -43,13 +43,13 @@ class RegimensController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $data = $this->getData($request);
-        
+
         Regimen::create($data);
 
         return redirect()->route('regimens.regimen.index')
-            ->with('success_message', 'Regimen was successfully added.');
+            ->with('success_message', 'Régimen fue agregado exitosamente.');
     }
 
     /**
@@ -76,7 +76,7 @@ class RegimensController extends Controller
     public function edit($id)
     {
         $regimen = Regimen::findOrFail($id);
-        
+
 
         return view('regimens.edit', compact('regimen'));
     }
@@ -91,14 +91,14 @@ class RegimensController extends Controller
      */
     public function update($id, Request $request)
     {
-        
+
         $data = $this->getData($request);
-        
+
         $regimen = Regimen::findOrFail($id);
         $regimen->update($data);
 
         return redirect()->route('regimens.regimen.index')
-            ->with('success_message', 'Regimen was successfully updated.');  
+            ->with('success_message', 'Regimen fue actualizado exitosamente.');
     }
 
     /**
@@ -123,20 +123,20 @@ class RegimensController extends Controller
         }
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
     {
         $rules = [
                 'name' => 'required|string|min:1|max:191',
-            'identifier' => 'required|string|min:1|max:191', 
+            'identifier' => 'required|string|min:1|max:191',
         ];
-        
+
         $data = $request->validate($rules);
 
 
