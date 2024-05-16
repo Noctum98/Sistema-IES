@@ -40,11 +40,11 @@ class Resoluciones extends Model
         'resolution',
         'tipo_carrera_id',
         'vaccines',
-        'estados_resoluciones_id',
+        'estado_resoluciones_id',
         'modality'
     ];
 
-    public function estadosResoluciones(): BelongsTo
+    public function estadoResoluciones(): BelongsTo
     {
         return $this->belongsTo(EstadoResoluciones::class);
     }

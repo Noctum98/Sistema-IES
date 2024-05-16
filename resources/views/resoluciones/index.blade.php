@@ -37,10 +37,10 @@
                             <th>Título</th>
                             <th>Duración</th>
                             <th>Resolución nro.</th>
-                            <th>Tipo</th>
+                            <th>Modalidad</th>
                             <th>Vacunas</th>
                             <th>Tipo Carrera</th>
-                            <th>Estados</th>
+                            <th>Estado</th>
 
                             <th></th>
                         </tr>
@@ -52,10 +52,10 @@
                                 <td class="align-middle">{{ $resoluciones->title }}</td>
                                 <td class="align-middle">{{ $resoluciones->duration }}</td>
                                 <td class="align-middle">{{ $resoluciones->resolution }}</td>
-                                <td class="align-middle">{{ $resoluciones->type }}</td>
+                                <td class="align-middle">{{ $resoluciones->modality }}</td>
                                 <td class="align-middle">{{ $resoluciones->vaccines }}</td>
                                 <td class="align-middle">{{ optional($resoluciones->TipoCarrera)->name }}</td>
-                                <td class="align-middle">{{ optional($resoluciones->estado)->id }}</td>
+                                <td class="align-middle">{{ optional($resoluciones->EstadoResoluciones)->name }}</td>
 
                                 <td class="text-end">
 
