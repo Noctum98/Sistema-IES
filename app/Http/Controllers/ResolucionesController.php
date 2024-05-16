@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EstadoResoluciones;
 use App\Models\Estados;
 use App\Models\Resoluciones;
 use App\Models\TipoCarrera;
@@ -20,7 +21,7 @@ class ResolucionesController extends Controller
      */
     public function index()
     {
-        $resolucionesObjects = Resoluciones::with('tipocarrera', 'estado')->paginate(25);
+        $resolucionesObjects = Resoluciones::with('tipocarrera', 'estadoresoluciones')->paginate(25);
 
         return view('resoluciones.index', compact('resolucionesObjects'));
     }
@@ -33,7 +34,7 @@ class ResolucionesController extends Controller
     public function create()
     {
         $TipoCarreras = TipoCarrera::pluck('name', 'id')->all();
-        $estados = Estados::pluck('id', 'id')->all();
+        $estados = EstadoResoluciones::pluck('name', 'id')->all();
 
         return view('resoluciones.create', compact('TipoCarreras', 'estados'));
     }
@@ -65,7 +66,7 @@ class ResolucionesController extends Controller
      */
     public function show(string $id)
     {
-        $resoluciones = Resoluciones::with('tipocarrera', 'estado')->findOrFail($id);
+        $resoluciones = Resoluciones::with('tipocarrera', 'estadoresoluciones')->findOrFail($id);
 
         return view('resoluciones.show', compact('resoluciones'));
     }
@@ -81,7 +82,7 @@ class ResolucionesController extends Controller
     {
         $resoluciones = Resoluciones::findOrFail($id);
         $TipoCarreras = TipoCarrera::pluck('name', 'id')->all();
-        $estados = Estados::pluck('id', 'id')->all();
+        $estados = EstadoResoluciones::pluck('name', 'id')->all();
 
         return view('resoluciones.edit', compact('resoluciones', 'TipoCarreras', 'estados'));
     }
@@ -124,7 +125,7 @@ class ResolucionesController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+                ->withErrors(['unexpected_error' => 'Se produjo un error inesperado al intentar procesar su solicitud.']);
         }
     }
 
@@ -142,10 +143,10 @@ class ResolucionesController extends Controller
             'title' => 'required|string|min:1|max:191',
             'duration' => 'required|numeric|min:0|max:4294967295',
             'resolution' => 'required|string|min:1|max:191',
-            'type' => 'required|string|min:1|max:191',
+            'modality' => 'required|string|min:1|max:191',
             'vaccines' => 'required|string|min:1|max:191',
             'tipo_carrera_id' => 'required',
-            'estados_id' => 'required',
+            'estado_resoluciones_id' => 'required',
         ];
 
         return $request->validate($rules);

@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Models\AvisoRole;
+use App\Models\EstadoResoluciones;
 use App\Models\MasterMateria;
 use App\Models\MateriasCorrelativasCursado;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\TipoCarrera;
 use App\Policies\AvisoRolePolicy;
+use App\Policies\EstadoResolucionesPolicy;
 use App\Policies\MasterMateriaPolicy;
 use App\Policies\MateriasCorrelativasCursadoPolicy;
 use App\Policies\RegimenPolicy;
@@ -32,6 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         TipoCarrera::class => TipoCarreraPolicy::class,
         Regimen::class => RegimenPolicy::class,
         MasterMateria::class => MasterMateriaPolicy::class,
+        EstadoResoluciones::class => EstadoResolucionesPolicy::class,
     ];
 
     /**

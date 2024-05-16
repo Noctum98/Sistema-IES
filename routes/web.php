@@ -60,6 +60,7 @@ use App\Http\Controllers\TipoCarrerasController;
 use App\Http\Controllers\RegimensController;
 use App\Http\Controllers\ResolucionesController;
 use App\Http\Controllers\MasterMateriasController;
+use App\Http\Controllers\EstadoResolucionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -761,12 +762,6 @@ Route::prefix('usuarios')->group(function () {
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
 });
 
-Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
-
-
-})->middleware('app.roles:admin');
-
-
 
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
     ->name('api-docs.condicion_materias.condicion_materia.index');
@@ -820,6 +815,23 @@ Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth'] ], func
         ->name('condicion_materias.condicion_materia.update');
     Route::delete('/condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'destroy'])
         ->name('condicion_materias.condicion_materia.destroy');
+});
+
+Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], function () {
+    Route::get('/', [EstadoResolucionesController::class, 'index'])
+        ->name('estado_resoluciones.estado_resoluciones.index');
+    Route::get('/create', [EstadoResolucionesController::class, 'create'])
+        ->name('estado_resoluciones.estado_resoluciones.create');
+    Route::get('/show/{estadoResoluciones}',[EstadoResolucionesController::class, 'show'])
+        ->name('estado_resoluciones.estado_resoluciones.show');
+    Route::get('/{estadoResoluciones}/edit',[EstadoResolucionesController::class, 'edit'])
+        ->name('estado_resoluciones.estado_resoluciones.edit');
+    Route::post('/', [EstadoResolucionesController::class, 'store'])
+        ->name('estado_resoluciones.estado_resoluciones.store');
+    Route::put('estado_resoluciones/{estadoResoluciones}', [EstadoResolucionesController::class, 'update'])
+        ->name('estado_resoluciones.estado_resoluciones.update');
+    Route::delete('/estado_resoluciones/{estadoResoluciones}',[EstadoResolucionesController::class, 'destroy'])
+        ->name('estado_resoluciones.estado_resoluciones.destroy');
 });
 
 Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], function () {
@@ -890,6 +902,9 @@ Route::group(['prefix' => 'resoluciones','middleware' => ['auth']], function () 
         ->name('resoluciones.resoluciones.destroy');
 });
 
+Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
+})->middleware('app.roles:admin');
+
 Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function () {
     Route::get('/', [TipoCarrerasController::class, 'index'])
         ->name('tipo_carreras.tipo_carrera.index');
@@ -906,7 +921,4 @@ Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function ()
     Route::delete('/tipo_carrera/{tipoCarrera}', [TipoCarrerasController::class, 'destroy'])
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
-
-
-
 

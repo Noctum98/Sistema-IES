@@ -22,7 +22,7 @@
     <label for="duration" class="col-form-label text-lg-end col-lg-2 col-xl-3">Duración</label>
     <div class="col-lg-10 col-xl-9">
         <input class="form-control{{ $errors->has('duration') ? ' is-invalid' : '' }}" name="duration" type="number"
-               id="duration" value="{{ old('duration', optional($resoluciones)->duration) }}" min="0" max="6"
+               id="duration" value="{{ old('duration', optional($resoluciones)->duration) }}" min="1" max="6"
                required="required" placeholder="Ingrese duración aquí...">
         {!! $errors->first('duration', '<div class="invalid-feedback">:message</div>') !!}
     </div>
@@ -39,12 +39,12 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="type" class="col-form-label text-lg-end col-lg-2 col-xl-3">Type</label>
+    <label for="modality" class="col-form-label text-lg-end col-lg-2 col-xl-3">Modalidad</label>
     <div class="col-lg-10 col-xl-9">
-        <input class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" type="text" id="type"
-               value="{{ old('type', optional($resoluciones)->type) }}" minlength="1" maxlength="191" required="required"
-               placeholder="Ingrese tipo aquí...">
-        {!! $errors->first('type', '<div class="invalid-feedback">:message</div>') !!}
+        <input class="form-control{{ $errors->has('modality') ? ' is-invalid' : '' }}" name="modality" type="text" id="modality"
+               value="{{ old('modality', optional($resoluciones)->modality) }}" minlength="1" maxlength="191" required="required"
+               placeholder="Ingrese modalidad aquí...">
+        {!! $errors->first('modality', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
 
@@ -80,23 +80,23 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="estados_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Estados</label>
+    <label for="estado_resoluciones_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Estados</label>
     <div class="col-lg-10 col-xl-9">
-        <select class="form-select{{ $errors->has('estados_id') ? ' is-invalid' : '' }}" id="estados_id"
-                name="estados_id" required="required">
+        <select class="form-select{{ $errors->has('estado_resoluciones_id') ? ' is-invalid' : '' }}" id="estado_resoluciones_id"
+                name="estado_resoluciones_id" required="required">
             <option value="" style="display: none;"
-                    {{ old('estados_id', optional($resoluciones)->estados_id ?: '') == '' ? 'selected' : '' }} disabled
+                    {{ old('estado_resoluciones_id', optional($resoluciones)->estado_resoluciones_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione estados
             </option>
             @foreach ($estados as $key => $estado)
                 <option
-                    value="{{ $key }}" {{ old('estados_id', optional($resoluciones)->estados_id) == $key ? 'selected' : '' }}>
+                    value="{{ $key }}" {{ old('estado_resoluciones_id', optional($resoluciones)->estado_resoluciones_id) == $key ? 'selected' : '' }}>
                     {{ $estado }}
                 </option>
             @endforeach
         </select>
 
-        {!! $errors->first('estados_id', '<div class="invalid-feedback">:message</div>') !!}
+        {!! $errors->first('estado_resoluciones_id', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
 

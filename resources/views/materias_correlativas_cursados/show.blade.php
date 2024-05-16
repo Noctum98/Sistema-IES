@@ -39,7 +39,7 @@
             <dd class="col-lg-10 col-xl-9">{{ optional($materiasCorrelativasCursado->Materia)->correlativa }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Operador</dt>
             <dd class="col-lg-10 col-xl-9">{{ optional($materiasCorrelativasCursado->User)->username }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Deleted At</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Borrado</dt>
             <dd class="col-lg-10 col-xl-9">{{ $materiasCorrelativasCursado->deleted_at }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Created At</dt>
             <dd class="col-lg-10 col-xl-9">{{ $materiasCorrelativasCursado->created_at }}</dd>
