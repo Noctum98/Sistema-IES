@@ -279,6 +279,7 @@ class Alumno extends Model
         return $this->hasMany(AlumnoCarrera::class, 'alumno_id');
     }
 
+
     public function encuesta_socioeconomica(): HasOne
     {
         return $this->hasOne(EncuestaSocioeconomica::class);

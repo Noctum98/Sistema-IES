@@ -56,7 +56,7 @@ class MateriasCorrelativasCursadosController extends Controller
         MateriasCorrelativasCursado::create($data);
 
         return redirect()->route('materias_correlativas_cursados.materias_correlativas_cursado.index')
-            ->with('success_message', 'Materias Correlativas Cursado was successfully added.');
+            ->with('success_message', 'Materias Correlativas Cursado fue agregado exitosamente.');
     }
 
     /**
@@ -106,7 +106,7 @@ class MateriasCorrelativasCursadosController extends Controller
         $materiasCorrelativasCursado->update($data);
 
         return redirect()->route('materias_correlativas_cursados.materias_correlativas_cursado.index')
-            ->with('success_message', 'Materias Correlativas Cursado was successfully updated.');
+            ->with('success_message', 'Materias Correlativas Cursado fue actualizado exitosamente.');
     }
 
     /**
@@ -127,7 +127,7 @@ class MateriasCorrelativasCursadosController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+                ->withErrors(['unexpected_error' => 'Se produjo un error inesperado al intentar procesar su solicitud.']);
         }
     }
 

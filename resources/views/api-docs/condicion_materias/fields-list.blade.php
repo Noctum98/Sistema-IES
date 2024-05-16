@@ -4,17 +4,17 @@ $showValidation = (isset($withValidation) && $withValidation) ? true : false;
 <table class="table table-stripped">
     <thead>
         <tr>
-            <th>Parameter Name</th>
+            <th>Parameter Nombre</th>
             <th>Data Type</th>
             <th>Parameter Type</th>
-            <th>Description</th>
+            <th>Descripción</th>
             @if($showValidation)
                 <th>Validation</th>
             @endif
         </tr>
     </thead>
     <tbody>
-        
+
         @if(isset($withPathId) && $withPathId)
         <tr>
             <td>condicion materia</td>
@@ -37,7 +37,7 @@ $showValidation = (isset($withValidation) && $withValidation) ? true : false;
             <td>The id of the model.</td>
             @if($showValidation)
                 <td>
-                    
+
                     <span></span>
                 </td>
             @endif
@@ -76,7 +76,7 @@ $showValidation = (isset($withValidation) && $withValidation) ? true : false;
             <td>The habilitado of the model.</td>
             @if($showValidation)
                 <td>
-                    
+
                     <span>Boolean</span>
                 </td>
             @endif
@@ -96,13 +96,13 @@ $showValidation = (isset($withValidation) && $withValidation) ? true : false;
         </tr>
 
         <tr>
-            <td>deleted at</td>
+            <td>Borrado</td>
             <td>DateTime</td>
             <td><span class="label label-default" title="This parameter is part of the body">Body</span></td>
-            <td>The deleted at of the model.</td>
+            <td>The Borrado of the model.</td>
             @if($showValidation)
                 <td>
-                    
+
                     <span></span>
                 </td>
             @endif
@@ -115,20 +115,20 @@ $showValidation = (isset($withValidation) && $withValidation) ? true : false;
             <td>The created at of the model.</td>
             @if($showValidation)
                 <td>
-                    
+
                     <span></span>
                 </td>
             @endif
         </tr>
 
         <tr>
-            <td>updated at</td>
+            <td>Actualizado</td>
             <td>DateTime</td>
             <td><span class="label label-default" title="This parameter is part of the body">Body</span></td>
-            <td>The updated at of the model.</td>
+            <td>Actualización del modelo.</td>
             @if($showValidation)
                 <td>
-                    
+
                     <span></span>
                 </td>
             @endif
