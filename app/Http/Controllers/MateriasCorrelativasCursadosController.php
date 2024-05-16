@@ -127,7 +127,7 @@ class MateriasCorrelativasCursadosController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+                ->withErrors(['unexpected_error' => 'Se produjo un error inesperado al intentar procesar su solicitud.']);
         }
     }
 

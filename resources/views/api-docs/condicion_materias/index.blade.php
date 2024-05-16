@@ -409,9 +409,9 @@ Allows you to list, create, edit, show and delete condicion materias.
         </tr>
 
         <tr>
-            <td>deleted at</td>
+            <td>Borrado</td>
             <td>DateTime</td>
-            <td>The deleted at of the model.</td>
+            <td>The Borrado of the model.</td>
         </tr>
 
         <tr>

@@ -33,5 +33,10 @@
         "model-name": "master_materias",
         "resource-file": "master_materias.json",
         "table-name": "master_materias"
+    },
+    {
+        "model-name": "EstadoResoluciones",
+        "resource-file": "estado_resoluciones.json",
+        "table-name": "estados_resoluciones"
     }
 ]

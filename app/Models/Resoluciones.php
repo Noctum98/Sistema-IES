@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Faker\Provider\Uuid;
+use Ramsey\Uuid\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,12 +40,13 @@ class Resoluciones extends Model
         'resolution',
         'tipo_carrera_id',
         'vaccines',
-        'estados_id',
+        'estados_resoluciones_id',
+        'modality'
     ];
 
-    public function estados(): BelongsTo
+    public function estadosResoluciones(): BelongsTo
     {
-        return $this->belongsTo(Estados::class);
+        return $this->belongsTo(EstadoResoluciones::class);
     }
 
     public function tipoCarrera(): BelongsTo

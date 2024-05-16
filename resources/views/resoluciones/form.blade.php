@@ -39,12 +39,12 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="type" class="col-form-label text-lg-end col-lg-2 col-xl-3">Type</label>
+    <label for="modality" class="col-form-label text-lg-end col-lg-2 col-xl-3">Modalidad</label>
     <div class="col-lg-10 col-xl-9">
-        <input class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" type="text" id="type"
-               value="{{ old('type', optional($resoluciones)->type) }}" minlength="1" maxlength="191" required="required"
-               placeholder="Ingrese tipo aquí...">
-        {!! $errors->first('type', '<div class="invalid-feedback">:message</div>') !!}
+        <input class="form-control{{ $errors->has('modality') ? ' is-invalid' : '' }}" name="modality" type="text" id="modality"
+               value="{{ old('modality', optional($resoluciones)->modality) }}" minlength="1" maxlength="191" required="required"
+               placeholder="Ingrese modalidad aquí...">
+        {!! $errors->first('modality', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
 

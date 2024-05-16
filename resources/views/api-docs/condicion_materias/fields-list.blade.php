@@ -96,10 +96,10 @@ $showValidation = (isset($withValidation) && $withValidation) ? true : false;
         </tr>
 
         <tr>
-            <td>deleted at</td>
+            <td>Borrado</td>
             <td>DateTime</td>
             <td><span class="label label-default" title="This parameter is part of the body">Body</span></td>
-            <td>The deleted at of the model.</td>
+            <td>The Borrado of the model.</td>
             @if($showValidation)
                 <td>
 
