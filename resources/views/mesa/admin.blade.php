@@ -117,6 +117,8 @@
         let href = $(this).attr('data-attr');
         let referencia = $(this).attr('data-loader');
         const $laoder = $('#loader' + referencia);
+        console.log(href);
+
 
         $.ajax({
             url: href,
@@ -126,6 +128,7 @@
             // return the result
             success: function(result) {
                 $('#vistaSeleccionCarrera').modal("show");
+                console.log(result);
                 $('#vistaSeleccionCarreraBody').html(result).show();
             },
             complete: function() {
