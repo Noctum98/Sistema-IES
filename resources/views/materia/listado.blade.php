@@ -12,10 +12,6 @@
 	</a>
 	@endif
 
-
-
-
-
 	@if(@session('error_procesos'))
 	{{ @session('error_procesos') }}
 	@endif

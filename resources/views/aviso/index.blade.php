@@ -75,7 +75,7 @@
                                             <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
                                         </a>
 
-{{--                                        <button type="submit" class="btn btn-danger" title="Delete Aviso" onclick="return confirm(&quot;Click Ok to delete Aviso.&quot;)">--}}
+{{--                                        <button type="submit" class="btn btn-danger" title="Borrar Aviso" onclick="return confirm(&quot;Click Ok para borrar Aviso.&quot;)">--}}
 {{--                                            <span class="fa-regular fa-trash-can" aria-hidden="true"></span>--}}
 {{--                                        </button>--}}
                                     </div>

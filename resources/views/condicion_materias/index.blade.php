@@ -16,7 +16,7 @@
             <h4 class="m-0">Condición Materias</h4>
             <div>
                 <a href="{{ route('condicion_materias.condicion_materia.create') }}" class="btn btn-secondary"
-                   title="Create New Condición Materia">
+                   title="Crear  Condición Materia">
                     <span class="fa fa-plus" aria-hidden="true"></span> Crear
                 </a>
             </div>

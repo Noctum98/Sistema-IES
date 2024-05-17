@@ -7,11 +7,11 @@
          <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">{{ !empty($title) ? $title : 'Materias Correlativas Cursado' }}</h4>
             <div>
-                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.index') }}" class="btn btn-primary" title="Show All Materias Correlativas Cursado">
+                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.index') }}" class="btn btn-primary" title="Listar Materias Correlativas Cursado">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.create') }}" class="btn btn-secondary" title="Create New Materias Correlativas Cursado">
+                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.create') }}" class="btn btn-secondary" title="Crear  Materias Correlativas Cursado">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span>
                 </a>
             </div>
@@ -37,7 +37,7 @@
                                       ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
-                    <input class="btn btn-primary" type="submit" value="Update">
+                    <input class="btn btn-primary" type="submit" value="Guardar Cambios">
                 </div>
             </form>
 

@@ -15,15 +15,15 @@
                     <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
                 </a>
 
-                <button type="submit" class="btn btn-danger" title="Delete Materias Correlativas Cursado" onclick="return confirm(&quot;Click Ok to delete Materias Correlativas Cursado.?&quot;)">
+                <button type="submit" class="btn btn-danger" title="Borrar Materias Correlativas Cursado" onclick="return confirm(&quot;Click Ok para borrar Materias Correlativas Cursado.?&quot;)">
                     <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
                 </button>
 
-                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.index') }}" class="btn btn-primary" title="Show All Materias Correlativas Cursado">
+                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.index') }}" class="btn btn-primary" title="Listar Materias Correlativas Cursado">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.create') }}" class="btn btn-secondary" title="Create New Materias Correlativas Cursado">
+                <a href="{{ route('materias_correlativas_cursados.materias_correlativas_cursado.create') }}" class="btn btn-secondary" title="Crear  Materias Correlativas Cursado">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span>
                 </a>
 
@@ -39,11 +39,11 @@
             <dd class="col-lg-10 col-xl-9">{{ optional($materiasCorrelativasCursado->Materia)->correlativa }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Operador</dt>
             <dd class="col-lg-10 col-xl-9">{{ optional($materiasCorrelativasCursado->User)->username }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Deleted At</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Borrado</dt>
             <dd class="col-lg-10 col-xl-9">{{ $materiasCorrelativasCursado->deleted_at }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Created At</dt>
             <dd class="col-lg-10 col-xl-9">{{ $materiasCorrelativasCursado->created_at }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Updated At</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Actua</dt>
             <dd class="col-lg-10 col-xl-9">{{ $materiasCorrelativasCursado->updated_at }}</dd>
 
         </dl>

@@ -6,7 +6,7 @@
 Allows you to list, create, edit, show and delete condicion materias.
 <hr>
 
-<h2>Available Resources</h2>
+<h2>Disponible Resources</h2>
 <div class="card mb-3" id="index-documentation">
 
     <div class="card-header text-bg-primary d-flex justify-content-between align-items-center p-3">
@@ -65,7 +65,7 @@ Allows you to list, create, edit, show and delete condicion materias.
                                 <tr>
                                     <th class="col-md-2">Key</th>
                                     <th class="col-md-2">Data Type</th>
-                                    <th class="col-md-8">Description</th>
+                                    <th class="col-md-8">Descripción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,7 +108,7 @@ Allows you to list, create, edit, show and delete condicion materias.
                                 <tr>
                                     <th class="col-md-2">Key</th>
                                     <th class="col-md-2">Data Type</th>
-                                    <th class="col-md-8">Description</th>
+                                    <th class="col-md-8">Descripción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -151,7 +151,7 @@ Allows you to list, create, edit, show and delete condicion materias.
                                 <tr>
                                     <td>total</td>
                                     <td>Integer</td>
-                                    <td>The total of the available pages.</td>
+                                    <td>The total of the Disponible pages.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -174,7 +174,7 @@ Allows you to list, create, edit, show and delete condicion materias.
         <div>
             <span>POST</span>
 {{--             <span><strong>/{{ Route::getRoutes()->getByName('api.condicion_materias.condicion_materia.store')->uri() }}</strong></span>--}}
-            <p class="mb-0">Create new condicion materia.</p>
+            <p class="mb-0">Crear  condicion materia.</p>
         </div>
         <div>
             <button type="button" data-bs-toggle="collapse" data-bs-target="#store" aria-controls="store" class="btn btn-success btn-sm" aria-expanded="false">
@@ -211,7 +211,7 @@ Allows you to list, create, edit, show and delete condicion materias.
         <div>
             <span class="">POST</span>
 {{--            <span><strong>/{{ Route::getRoutes()->getByName('api.condicion_materias.condicion_materia.update')->uri() }}</strong></span>--}}
-            <p class="mb-0">Update existing condicion materia.</p>
+            <p class="mb-0">Actualiza una condicion materia.</p>
         </div>
         <div>
             <button type="button" data-bs-toggle="collapse" data-bs-target="#update" aria-controls="update" class="btn btn-warning btn-sm" aria-expanded="false">
@@ -268,10 +268,10 @@ Allows you to list, create, edit, show and delete condicion materias.
         <table class="table table-stripped">
             <thead>
                 <tr>
-                    <th class="col-md-2">Parameter Name</th>
-                    <th class="col-md-2">Data Type</th>
-                    <th class="col-md-2">Parameter Type</th>
-                    <th class="col-md-6">Description</th>
+                    <th class="col-md-2">Nombre parámetro</th>
+                    <th class="col-md-2">Tipo Dato</th>
+                    <th class="col-md-2">Tipo Parámetro</th>
+                    <th class="col-md-6">Descripción</th>
                 </tr>
             </thead>
             <tbody>
@@ -321,10 +321,10 @@ Allows you to list, create, edit, show and delete condicion materias.
         <table class="table table-stripped">
             <thead>
                 <tr>
-                    <th class="col-md-2">Parameter Name</th>
+                    <th class="col-md-2">Parameter Nombre</th>
                     <th class="col-md-2">Data Type</th>
                     <th class="col-md-2">Parameter Type</th>
-                    <th class="col-md-6">Description</th>
+                    <th class="col-md-6">Descripción</th>
                 </tr>
             </thead>
             <tbody>
@@ -372,9 +372,9 @@ Allows you to list, create, edit, show and delete condicion materias.
         <table class="table table-stripped">
             <thead>
                 <tr>
-                    <th>Field Name</th>
+                    <th>Field Nombre</th>
                     <th>Field Type</th>
-                    <th>Description</th>
+                    <th>Descripción</th>
                 </tr>
             </thead>
             <tbody>
@@ -409,9 +409,9 @@ Allows you to list, create, edit, show and delete condicion materias.
         </tr>
 
         <tr>
-            <td>deleted at</td>
+            <td>Borrado</td>
             <td>DateTime</td>
-            <td>The deleted at of the model.</td>
+            <td>The Borrado of the model.</td>
         </tr>
 
         <tr>
@@ -421,9 +421,9 @@ Allows you to list, create, edit, show and delete condicion materias.
         </tr>
 
         <tr>
-            <td>updated at</td>
+            <td>Actualizado</td>
             <td>DateTime</td>
-            <td>The updated at of the model.</td>
+            <td>Actualizado el modelo.</td>
         </tr>
 
             </tbody>
