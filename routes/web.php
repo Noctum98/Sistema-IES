@@ -61,6 +61,8 @@ use App\Http\Controllers\RegimensController;
 use App\Http\Controllers\ResolucionesController;
 use App\Http\Controllers\MasterMateriasController;
 use App\Http\Controllers\EstadoResolucionesController;
+use App\Http\Controllers\Ticket\EstadoTicketsController;
+use App\Http\Controllers\Ticket\TicketsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -922,3 +924,41 @@ Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function ()
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
 
+
+Route::group([
+    'prefix' => 'estado_tickets',
+], function () {
+    Route::get('/', [EstadoTicketsController::class, 'index'])
+         ->name('estado_tickets.estado_ticket.index');
+    Route::get('/create', [EstadoTicketsController::class, 'create'])
+         ->name('estado_tickets.estado_ticket.create');
+    Route::get('/show/{estadoTicket}',[EstadoTicketsController::class, 'show'])
+         ->name('estado_tickets.estado_ticket.show')->where('id', '[0-9]+');
+    Route::get('/{estadoTicket}/edit',[EstadoTicketsController::class, 'edit'])
+         ->name('estado_tickets.estado_ticket.edit')->where('id', '[0-9]+');
+    Route::post('/', [EstadoTicketsController::class, 'store'])
+         ->name('estado_tickets.estado_ticket.store');
+    Route::put('estado_ticket/{estadoTicket}', [EstadoTicketsController::class, 'update'])
+         ->name('estado_tickets.estado_ticket.update')->where('id', '[0-9]+');
+    Route::delete('/estado_ticket/{estadoTicket}',[EstadoTicketsController::class, 'destroy'])
+         ->name('estado_tickets.estado_ticket.destroy')->where('id', '[0-9]+');
+});
+
+Route::group([
+    'prefix' => 'tickets',
+], function () {
+    Route::get('/', [TicketsController::class, 'index'])
+         ->name('tickets.ticket.index');
+    Route::get('/create', [TicketsController::class, 'create'])
+         ->name('tickets.ticket.create');
+    Route::get('/show/{ticket}',[TicketsController::class, 'show'])
+         ->name('tickets.ticket.show')->where('id', '[0-9]+');
+    Route::get('/{ticket}/edit',[TicketsController::class, 'edit'])
+         ->name('tickets.ticket.edit')->where('id', '[0-9]+');
+    Route::post('/', [TicketsController::class, 'store'])
+         ->name('tickets.ticket.store');
+    Route::put('ticket/{ticket}', [TicketsController::class, 'update'])
+         ->name('tickets.ticket.update')->where('id', '[0-9]+');
+    Route::delete('/ticket/{ticket}',[TicketsController::class, 'destroy'])
+         ->name('tickets.ticket.destroy')->where('id', '[0-9]+');
+});

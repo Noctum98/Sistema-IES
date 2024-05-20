@@ -133,8 +133,6 @@
                 $laoder.hide();
             },
             error: function(jqXHR, testStatus, error) {
-                console.log(error);
-
                 $laoder.hide();
             },
             timeout: 16000

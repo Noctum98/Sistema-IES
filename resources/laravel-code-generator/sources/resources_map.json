@@ -38,5 +38,20 @@
         "model-name": "EstadoResoluciones",
         "resource-file": "estado_resoluciones.json",
         "table-name": "estados_resoluciones"
+    },
+    {
+        "model-name": "Ticket\\EstadoTicket",
+        "resource-file": "ticket\\_estado_tickets.json",
+        "table-name": "ticket\\_estado_tickets"
+    },
+    {
+        "model-name": "EstadoTicket",
+        "resource-file": "estado_tickets.json",
+        "table-name": "estado_tickets"
+    },
+    {
+        "model-name": "Ticket",
+        "resource-file": "tickets.json",
+        "table-name": "tickets"
     }
 ]
