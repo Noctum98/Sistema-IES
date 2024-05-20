@@ -61,6 +61,7 @@ use App\Http\Controllers\RegimensController;
 use App\Http\Controllers\ResolucionesController;
 use App\Http\Controllers\MasterMateriasController;
 use App\Http\Controllers\EstadoResolucionesController;
+use App\Http\Controllers\EstadoCarrerasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -133,6 +134,24 @@ Route::prefix('alumnos')->group(function () {
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
     Route::patch('/modifica/{id}/cohorte', [AlumnoController::class, 'updateCohorte'])->name('alumno.cohorte-update');
+});
+
+// Avisos del tipo avisador general
+Route::group(['prefix' => 'avisos','middleware' => ['auth']], function () {
+    Route::get('/', [AvisoController::class, 'index'])
+        ->name('aviso.aviso.index');
+    Route::get('/create', [AvisoController::class, 'create'])
+        ->name('aviso.aviso.create');
+    Route::get('/show/{aviso}', [AvisoController::class, 'show'])
+        ->name('aviso.aviso.show');
+    Route::get('/{aviso}/edit', [AvisoController::class, 'edit'])
+        ->name('aviso.aviso.edit');
+    Route::post('/', [AvisoController::class, 'store'])
+        ->name('aviso.aviso.store');
+    Route::put('aviso/{aviso}', [AvisoController::class, 'update'])
+        ->name('aviso.aviso.update');
+    Route::delete('/aviso/{aviso}', [AvisoController::class, 'destroy'])
+        ->name('aviso.aviso.destroy');
 });
 
 Route::prefix('encuesta_socioeconomica')->group(function () {
@@ -766,22 +785,7 @@ Route::prefix('usuarios')->group(function () {
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
     ->name('api-docs.condicion_materias.condicion_materia.index');
 
-Route::group(['prefix' => 'avisos','middleware' => ['auth']], function () {
-    Route::get('/', [AvisoController::class, 'index'])
-        ->name('aviso.aviso.index');
-    Route::get('/create', [AvisoController::class, 'create'])
-        ->name('aviso.aviso.create');
-    Route::get('/show/{aviso}', [AvisoController::class, 'show'])
-        ->name('aviso.aviso.show');
-    Route::get('/{aviso}/edit', [AvisoController::class, 'edit'])
-        ->name('aviso.aviso.edit');
-    Route::post('/', [AvisoController::class, 'store'])
-        ->name('aviso.aviso.store');
-    Route::put('aviso/{aviso}', [AvisoController::class, 'update'])
-        ->name('aviso.aviso.update');
-    Route::delete('/aviso/{aviso}', [AvisoController::class, 'destroy'])
-        ->name('aviso.aviso.destroy');
-});
+
 
 Route::group(['prefix' => 'condicion_carreras','middleware' => ['auth']], function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
@@ -815,6 +819,23 @@ Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth'] ], func
         ->name('condicion_materias.condicion_materia.update');
     Route::delete('/condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'destroy'])
         ->name('condicion_materias.condicion_materia.destroy');
+});
+
+Route::group(['prefix' => 'estado_carreras','middleware' => ['auth']], function () {
+    Route::get('/', [EstadoCarrerasController::class, 'index'])
+        ->name('estado_carreras.estado_carrera.index');
+    Route::get('/create', [EstadoCarrerasController::class, 'create'])
+        ->name('estado_carreras.estado_carrera.create');
+    Route::get('/show/{estadoCarrera}',[EstadoCarrerasController::class, 'show'])
+        ->name('estado_carreras.estado_carrera.show');
+    Route::get('/{estadoCarrera}/edit',[EstadoCarrerasController::class, 'edit'])
+        ->name('estado_carreras.estado_carrera.edit');
+    Route::post('/', [EstadoCarrerasController::class, 'store'])
+        ->name('estado_carreras.estado_carrera.store');
+    Route::put('estado_carrera/{estadoCarrera}', [EstadoCarrerasController::class, 'update'])
+        ->name('estado_carreras.estado_carrera.update');
+    Route::delete('/estado_carrera/{estadoCarrera}',[EstadoCarrerasController::class, 'destroy'])
+        ->name('estado_carreras.estado_carrera.destroy');
 });
 
 Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], function () {
@@ -921,4 +942,3 @@ Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function ()
     Route::delete('/tipo_carrera/{tipoCarrera}', [TipoCarrerasController::class, 'destroy'])
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
-
