@@ -79,6 +79,7 @@ class InstanciaController extends Controller
 
         $sede = Sede::find($sede_id);
         $instancia = Instancia::find($instancia_id);
+        $user_carreras =  Auth::user()->carreras;
 
         if($instancia->general)
         {
@@ -86,10 +87,26 @@ class InstanciaController extends Controller
             {
                 $carreras = $sede->carreras;
             }else{
-                $carreras = Auth::user()->carreras;
+                $carreras = $user_carreras;
             }
         }else{
-            $carreras = $instancia->carreras;
+
+            if(Session::has('admin')){
+                $carreras = $instancia->carreras;
+            }else{
+                $carreras = [];
+                foreach($instancia->carreras as $carrera)
+                {
+                    $carreraExistente = $user_carreras->contains('id', $carrera->id);
+    
+                    if($carreraExistente)
+                    {
+                        array_push($carreras,$carreraExistente);
+                    }
+    
+                }
+            }
+            
         }
         
 
