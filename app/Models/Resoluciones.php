@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -52,5 +53,13 @@ class Resoluciones extends Model
     public function tipoCarrera(): BelongsTo
     {
         return $this->belongsTo(TipoCarrera::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function carreras(): HasMany
+    {
+        return $this->hasMany(Carrera::class);
     }
 }

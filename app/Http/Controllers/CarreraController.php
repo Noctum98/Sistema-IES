@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CarrerasRequest;
 use App\Models\CondicionCarrera;
+use App\Models\Resoluciones;
 use Illuminate\Http\Request;
 use App\Models\Sede;
 use App\Models\Carrera;
@@ -36,9 +37,11 @@ class CarreraController extends Controller
     {
         $sedes = Sede::all();
         $condicionesCarrera = CondicionCarrera::all();
+        $resoluciones = Resoluciones::all();
         return view('carrera.create', [
             'sedes' => $sedes,
-            'condicionesCarrera' => $condicionesCarrera
+            'condicionesCarrera' => $condicionesCarrera,
+            'resoluciones' => $resoluciones
         ]);
     }
 
@@ -56,12 +59,14 @@ class CarreraController extends Controller
         $carrera = Carrera::find($id);
         $sedes = Sede::all();
         $condicionesCarrera = CondicionCarrera::all();
+        $resoluciones = Resoluciones::all();
 
 
         return view('carrera.edit', [
             'carrera' => $carrera,
             'sedes' => $sedes,
-            'condicionesCarrera' => $condicionesCarrera
+            'condicionesCarrera' => $condicionesCarrera,
+            'resoluciones' => $resoluciones
         ]);
     }
 
@@ -69,21 +74,37 @@ class CarreraController extends Controller
     public function crear(CarrerasRequest $request)
     {
 
-        $carrera = Carrera::create($request->all());
-
-        return redirect()->route('carrera.personal', [
-            'id' => $carrera->id
+        $request->validate([
+            'sede_id' => 'required',
+            'resolucion_id' => 'required'
         ]);
+
+        $data = $request->all();
+
+        $resoluciones = Resoluciones::find($data['resolucion_id']);
+
+        $data['resolucion'] = $resoluciones->resolution;
+
+
+        $carrera = Carrera::create($data);
+
+        return redirect()->route('carrera.admin');
     }
 
 
     public function editar(int $id, CarrerasRequest $request)
     {
 
-
         $carrera = Carrera::find($id);
         $carrera->condicionCarrera()->associate($request->condicion_id);
-        $carrera->update($request->all());
+
+        $resoluciones = Resoluciones::find($request->resolucion_id);
+
+        $data = $request->all();
+
+        $data['resolucion'] = $resoluciones->resolution;
+
+        $carrera->update($data);
 
 
         return redirect()->route('carrera.editar', ['id' => $carrera->id])->with([
