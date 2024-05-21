@@ -68,18 +68,18 @@
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                         <td>
-                                            {{$mesa->presidente_mesa ? $mesa->presidente_mesa->nombre.' '.$mesa->presidente_mesa->apellido : ''}}
+                                            {{$mesa->presidente_mesa ? ucwords($mesa->presidente_mesa->nombre).' '.ucwords($mesa->presidente_mesa->apellido) : ''}}
                                         </td>
-                                        <td>{{$mesa->primer_vocal_mesa ? $mesa->primer_vocal_mesa->nombre.' '.$mesa->primer_vocal_mesa->apellido : ''}}</td>
-                                        <td>{{$mesa->segundo_vocal_mesa ? $mesa->segundo_vocal_mesa->nombre.' '.$mesa->segundo_vocal_mesa->apellido : ''}}</td>
+                                        <td>{{$mesa->primer_vocal_mesa ? ucwords($mesa->primer_vocal_mesa->nombre).' '.ucwords($mesa->primer_vocal_mesa->apellido ): ''}}</td>
+                                        <td>{{$mesa->segundo_vocal_mesa ? ucwords($mesa->segundo_vocal_mesa->nombre).' '.ucwords($mesa->segundo_vocal_mesa->apellido) : ''}}</td>
                                     @else
                                         <td align="center">
                                             {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
-                                        <td>{{$mesa->presidente_segundo_mesa ? $mesa->presidente_segundo_mesa->nombre.' '.$mesa->presidente_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->primer_vocal_segundo_mesa ? $mesa->primer_vocal_segundo_mesa->nombre.' '.$mesa->primer_vocal_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? $mesa->segundo_vocal_segundo_mesa->nombre.' '.$mesa->segundo_vocal_segundo_mesa->apellido:''}}</td>
+                                        <td>{{$mesa->presidente_segundo_mesa ? ucwords($mesa->presidente_segundo_mesa->nombre).' '.ucwords($mesa->presidente_segundo_mesa->apellido):''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo_mesa ? ucwords($mesa->primer_vocal_segundo_mesa->nombre).' '.ucwords($mesa->primer_vocal_segundo_mesa->apellido):''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? ucwords($mesa->segundo_vocal_segundo_mesa->nombre).' '.ucwords($mesa->segundo_vocal_segundo_mesa->apellido):''}}</td>
                                     @endif
                                 </tr>
                             @endforeach
@@ -112,18 +112,18 @@
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                         <td>
-                                            {{$mesa->presidente_mesa ? $mesa->presidente_mesa->nombre.' '.$mesa->presidente_mesa->apellido : ''}}
+                                            {{$mesa->presidente_mesa ? ucwords($mesa->presidente_mesa->nombre).' '.ucwords($mesa->presidente_mesa->apellido) : ''}}
                                         </td>
-                                        <td>{{$mesa->primer_vocal_mesa ? $mesa->primer_vocal_mesa->nombre.' '.$mesa->primer_vocal_mesa->apellido : ''}}</td>
-                                        <td>{{$mesa->segundo_vocal_mesa ? $mesa->segundo_vocal_mesa->nombre.' '.$mesa->segundo_vocal_mesa->apellido : ''}}</td>
+                                        <td>{{$mesa->primer_vocal_mesa ? ucwords($mesa->primer_vocal_mesa->nombre).' '.ucwords($mesa->primer_vocal_mesa->apellido) : ''}}</td>
+                                        <td>{{$mesa->segundo_vocal_mesa ? ucwords($mesa->segundo_vocal_mesa->nombre).' '.ucwords($mesa->segundo_vocal_mesa->apellido) : ''}}</td>
                                     @else
                                         <td align="center">
                                             {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
-                                        <td>{{$mesa->presidente_segundo_mesa ? $mesa->presidente_segundo_mesa->nombre.' '.$mesa->presidente_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->primer_vocal_segundo_mesa ? $mesa->primer_vocal_segundo_mesa->nombre.' '.$mesa->primer_vocal_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? $mesa->segundo_vocal_segundo_mesa->nombre.' '.$mesa->segundo_vocal_segundo_mesa->apellido:''}}</td>
+                                        <td>{{$mesa->presidente_segundo_mesa ? ucwords($mesa->presidente_segundo_mesa->nombre).' '.ucwords($mesa->presidente_segundo_mesa->apellido):''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo_mesa ? ucwords($mesa->primer_vocal_segundo_mesa->nombre).' '.ucwords($mesa->primer_vocal_segundo_mesa->apellido):''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? ucwords($mesa->segundo_vocal_segundo_mesa->nombre).' '.ucwords($mesa->segundo_vocal_segundo_mesa->apellido):''}}</td>
                                     @endif
                                 </tr>
                             @endforeach
@@ -157,18 +157,18 @@
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                         <td>
-                                            {{$mesa->presidente_mesa ? $mesa->presidente_mesa->nombre.' '.$mesa->presidente_mesa->apellido : ''}}
+                                            {{$mesa->presidente_mesa ? ucwords($mesa->presidente_mesa->nombre).' '.ucwords($mesa->presidente_mesa->apellido) : ''}}
                                         </td>
-                                        <td>{{$mesa->primer_vocal_mesa ? $mesa->primer_vocal_mesa->nombre.' '.$mesa->primer_vocal_mesa->apellido : ''}}</td>
-                                        <td>{{$mesa->segundo_vocal_mesa ? $mesa->segundo_vocal_mesa->nombre.' '.$mesa->segundo_vocal_mesa->apellido : ''}}</td>
+                                        <td>{{$mesa->primer_vocal_mesa ? ucwords($mesa->primer_vocal_mesa->nombre).' '.ucwords($mesa->primer_vocal_mesa->apellido) : ''}}</td>
+                                        <td>{{$mesa->segundo_vocal_mesa ? ucwords($mesa->segundo_vocal_mesa->nombre).' '.ucwords($mesa->segundo_vocal_mesa->apellido) : ''}}</td>
                                     @else
                                         <td align="center">
                                             {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
-                                        <td>{{$mesa->presidente_segundo_mesa ? $mesa->presidente_segundo_mesa->nombre.' '.$mesa->presidente_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->primer_vocal_segundo_mesa ? $mesa->primer_vocal_segundo_mesa->nombre.' '.$mesa->primer_vocal_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? $mesa->segundo_vocal_segundo_mesa->nombre.' '.$mesa->segundo_vocal_segundo_mesa->apellido:''}}</td>
+                                        <td>{{$mesa->presidente_segundo_mesa ? ucwords($mesa->presidente_segundo_mesa->nombre).' '.ucwords($mesa->presidente_segundo_mesa->apellido):''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo_mesa ? ucwords($mesa->primer_vocal_segundo_mesa->nombre).' '.ucwords($mesa->primer_vocal_segundo_mesa->apellido):''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? ucwords($mesa->segundo_vocal_segundo_mesa->nombre).' '.ucwords($mesa->segundo_vocal_segundo_mesa->apellido):''}}</td>
                                     @endif
                                 </tr>
                             @endforeach
