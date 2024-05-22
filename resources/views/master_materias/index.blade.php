@@ -34,7 +34,7 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Años</th>
+                            <th>Año</th>
                             <th>Etapa Campo</th>
                             <th>Cierre Diferido</th>
                             <th>Resolución</th>
@@ -50,8 +50,8 @@
                                 <td class="align-middle">{{ $masterMateria->year }}</td>
                                 <td class="align-middle">{{ ($masterMateria->field_stage) ? 'Si' : 'No' }}</td>
                                 <td class="align-middle">{{ ($masterMateria->delayed_closing) ? 'Si' : 'No' }}</td>
-                                <td class="align-middle">{{ optional($masterMateria->Resolucione)->name }}</td>
-                                <td class="align-middle">{{ optional($masterMateria->Regimen)->name }}</td>
+                                <td class="align-middle">{{ optional($masterMateria->resoluciones)->name }}</td>
+                                <td class="align-middle">{{ optional($masterMateria->regimen)->name }}</td>
 
                                 <td class="text-end">
 

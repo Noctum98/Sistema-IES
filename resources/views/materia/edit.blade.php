@@ -47,7 +47,7 @@
                     <form method="POST" action="{{ route('editar_materia',['id'=>$materia->id]) }}">
                         @csrf
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 col-md-8">
                                 <div class="form-group">
 
                                     <label for="nombre">Nombre:</label>
@@ -59,6 +59,34 @@
                                         @endif
                                     />
                                     @error('nombre')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+
+                                    <label for="master_materia_id">Genérico:</label>
+                                    <select class="form-control select2" id="master_materia_id"
+                                            name="master_materia_id[]" >
+                                        <option value="">Seleccione MasterMateria </option>
+                                        @foreach($masterMaterias as $master)
+                                            @if($master->id == $materia->master_materia_id))
+                                                <option value="{{ $master->id }}" selected="selected">
+                                                    {{ $master->name }}
+                                                </option>
+                                            @else
+                                                <option value="{{ $master->id }}" >
+                                                    {{ $master->name }}
+                                                </option>
+
+                                            @endif
+
+                                        @endforeach
+                                    </select>
+                                    @error('master_materia_id')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

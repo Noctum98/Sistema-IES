@@ -60,6 +60,14 @@ class Resoluciones extends Model
      */
     public function carreras(): HasMany
     {
-        return $this->hasMany(Carrera::class);
+        return $this->hasMany(Carrera::class, 'resolucion_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function masterMaterias(): HasMany
+    {
+        return $this->hasMany(MasterMateria::class, 'resoluciones_id');
     }
 }
