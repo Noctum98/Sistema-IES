@@ -71,7 +71,7 @@
                 <input type="submit" value="Abrir 2do llamado" class="btn btn-sm btn-warning">
             </form>
             @endif
-            @include('mesa.tablas.tabla_inscripciones',['inscripciones'=>$segundo_llamado,'llamado'=>2,'folios'=>$folios_segundo])
+            @include('mesa.tablas.tabla_inscripciones',['inscripciones'=>$segundo_llamado,'llamado'=>2,'folios'=>$folios_segundo,'materia'=>$mesa->materia])
             @else
             <p>No existen inscripciones para este llamado.</p>
             @endif
