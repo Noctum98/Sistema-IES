@@ -1,20 +1,19 @@
 @extends('layouts.app-prueba')
+<link href="{{ asset('vendors/select2/css/select2.min.css') }}" rel="stylesheet">
 @section('content')
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
                 <div class="float-start">
-                    <h2 class="text-info">
-                        Crear carreras
-                    </h2>
+                    <h3 class="text-info">
+                        Crear carrera
+                    </h3>
                     <p>Agrega una carrera a tu institución</p>
                 </div>
                 <div class="float-end">
                     <a href="{{route('carrera.admin')}}" class="btn btn-info"> Ver listado carreras</a>
-
                 </div>
             </div>
-
         </div>
         <hr>
         <div class="col-md-12">
@@ -25,7 +24,6 @@
                     <input type="text" id="nombre" name="nombre"
                            class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}"
                            required/>
-
                     @error('nombre')
                     <span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
@@ -35,6 +33,7 @@
                 <div class="form-group col-sm-4">
                     <label for="sede">Sede:</label>
                     <select id="sede" name="sede_id" class="form-control">
+                        <option value="">Selecciona una sede</option>
                         @foreach($sedes as $sede)
                             <option value="{{ $sede->id }}">{{ $sede->nombre }}</option>
                         @endforeach
@@ -70,12 +69,15 @@
                     @enderror
                 </div>
                 <div class="form-group col-sm-5">
-                    <label for="resolucion">Resolución:</label>
-                    <input type="text" id="resolucion" name="resolucion"
-                           class="form-control @error('resolucion') is-invalid @enderror"
-                           value="{{ old('resolucion') }}">
+                    <label for="resolucion_id">Resolución:</label>
+                    <select id="resolucion_id" name="resolucion_id" class="form-control">
+                        <option value="">Selecciona una resolución</option>
+                        @foreach($resoluciones as $resolution)
+                            <option value="{{ $resolution->id }}">{{ $resolution->resolution }}</option>
+                        @endforeach
+                    </select>
 
-                    @error('resolucion')
+                    @error('resolucion_id')
                     <span class="invalid-feedback d-block" role="alert">
 			                <strong>{{ $message }}</strong>
 			            </span>
@@ -160,4 +162,25 @@
             </form>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('vendors/select2/js/select2.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#resolucion_id").select2({
+                'placeholder': 'Selecciona una resolución',
+                'theme': 'classic',
+                allowClear: true,
+                // dropdownParent: $('#agregarCargoModulo'),
+                width: "100%"
+            });
+            $("#sede").select2({
+                'placeholder': 'Selecciona una sede',
+                'theme': 'classic',
+                // dropdownParent: $('#agregarCargoModulo'),
+                width: "100%",
+                allowClear: true
+            });
+        });
+    </script>
 @endsection

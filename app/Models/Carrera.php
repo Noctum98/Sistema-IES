@@ -32,7 +32,8 @@ class Carrera extends Model
         'tipo',
         'link_inscripcion',
         'preinscripcion_habilitada',
-        'matriculacion_habilitada'
+        'matriculacion_habilitada',
+        'resolucion_id'
     ];
 
     /**
@@ -150,6 +151,14 @@ class Carrera extends Model
     public function condicionCarrera(): BelongsTo
     {
         return $this->belongsTo(CondicionCarrera::class, 'condicion_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function resoluciones(): BelongsTo
+    {
+        return $this->belongsTo(Resoluciones::class, 'resolucion_id');
     }
 
 

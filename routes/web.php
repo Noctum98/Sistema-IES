@@ -20,6 +20,10 @@ use App\Http\Controllers\Trianual\DetalleTrianualController;
 use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
+use App\Models\MasterMateria;
+use App\Models\Materia;
+use App\Models\Regimen;
+use App\Models\Resoluciones;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -137,7 +141,7 @@ Route::prefix('alumnos')->group(function () {
 });
 
 // Avisos del tipo avisador general
-Route::group(['prefix' => 'avisos','middleware' => ['auth']], function () {
+Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
     Route::get('/', [AvisoController::class, 'index'])
         ->name('aviso.aviso.index');
     Route::get('/create', [AvisoController::class, 'create'])
@@ -786,8 +790,7 @@ Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsControl
     ->name('api-docs.condicion_materias.condicion_materia.index');
 
 
-
-Route::group(['prefix' => 'condicion_carreras','middleware' => ['auth']], function () {
+Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
         ->name('condicion_carreras.condicion_carrera.index');
     Route::get('/create', [CondicionCarrerasController::class, 'create'])
@@ -804,7 +807,7 @@ Route::group(['prefix' => 'condicion_carreras','middleware' => ['auth']], functi
         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
 });
 
-Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth'] ], function () {
+Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], function () {
     Route::get('/', [CondicionMateriasController::class, 'index'])
         ->name('condicion_materias.condicion_materia.index');
     Route::get('/create', [CondicionMateriasController::class, 'create'])
@@ -821,20 +824,20 @@ Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth'] ], func
         ->name('condicion_materias.condicion_materia.destroy');
 });
 
-Route::group(['prefix' => 'estado_carreras','middleware' => ['auth']], function () {
+Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], function () {
     Route::get('/', [EstadoCarrerasController::class, 'index'])
         ->name('estado_carreras.estado_carrera.index');
     Route::get('/create', [EstadoCarrerasController::class, 'create'])
         ->name('estado_carreras.estado_carrera.create');
-    Route::get('/show/{estadoCarrera}',[EstadoCarrerasController::class, 'show'])
+    Route::get('/show/{estadoCarrera}', [EstadoCarrerasController::class, 'show'])
         ->name('estado_carreras.estado_carrera.show');
-    Route::get('/{estadoCarrera}/edit',[EstadoCarrerasController::class, 'edit'])
+    Route::get('/{estadoCarrera}/edit', [EstadoCarrerasController::class, 'edit'])
         ->name('estado_carreras.estado_carrera.edit');
     Route::post('/', [EstadoCarrerasController::class, 'store'])
         ->name('estado_carreras.estado_carrera.store');
     Route::put('estado_carrera/{estadoCarrera}', [EstadoCarrerasController::class, 'update'])
         ->name('estado_carreras.estado_carrera.update');
-    Route::delete('/estado_carrera/{estadoCarrera}',[EstadoCarrerasController::class, 'destroy'])
+    Route::delete('/estado_carrera/{estadoCarrera}', [EstadoCarrerasController::class, 'destroy'])
         ->name('estado_carreras.estado_carrera.destroy');
 });
 
@@ -843,15 +846,15 @@ Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], fun
         ->name('estado_resoluciones.estado_resoluciones.index');
     Route::get('/create', [EstadoResolucionesController::class, 'create'])
         ->name('estado_resoluciones.estado_resoluciones.create');
-    Route::get('/show/{estadoResoluciones}',[EstadoResolucionesController::class, 'show'])
+    Route::get('/show/{estadoResoluciones}', [EstadoResolucionesController::class, 'show'])
         ->name('estado_resoluciones.estado_resoluciones.show');
-    Route::get('/{estadoResoluciones}/edit',[EstadoResolucionesController::class, 'edit'])
+    Route::get('/{estadoResoluciones}/edit', [EstadoResolucionesController::class, 'edit'])
         ->name('estado_resoluciones.estado_resoluciones.edit');
     Route::post('/', [EstadoResolucionesController::class, 'store'])
         ->name('estado_resoluciones.estado_resoluciones.store');
     Route::put('estado_resoluciones/{estadoResoluciones}', [EstadoResolucionesController::class, 'update'])
         ->name('estado_resoluciones.estado_resoluciones.update');
-    Route::delete('/estado_resoluciones/{estadoResoluciones}',[EstadoResolucionesController::class, 'destroy'])
+    Route::delete('/estado_resoluciones/{estadoResoluciones}', [EstadoResolucionesController::class, 'destroy'])
         ->name('estado_resoluciones.estado_resoluciones.destroy');
 });
 
@@ -889,7 +892,7 @@ Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function
         ->name('master_materias.master_materia.destroy');
 });
 
-Route::group(['prefix' => 'regimens','middleware' => ['auth']], function () {
+Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], function () {
     Route::get('/', [RegimensController::class, 'index'])
         ->name('regimens.regimen.index');
     Route::get('/create', [RegimensController::class, 'create'])
@@ -906,7 +909,7 @@ Route::group(['prefix' => 'regimens','middleware' => ['auth']], function () {
         ->name('regimens.regimen.destroy');
 });
 
-Route::group(['prefix' => 'resoluciones','middleware' => ['auth']], function () {
+Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], function () {
     Route::get('/', [ResolucionesController::class, 'index'])
         ->name('resoluciones.resoluciones.index');
     Route::get('/create', [ResolucionesController::class, 'create'])
@@ -926,7 +929,7 @@ Route::group(['prefix' => 'resoluciones','middleware' => ['auth']], function () 
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
 })->middleware('app.roles:admin');
 
-Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function () {
+Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function () {
     Route::get('/', [TipoCarrerasController::class, 'index'])
         ->name('tipo_carreras.tipo_carrera.index');
     Route::get('/create', [TipoCarrerasController::class, 'create'])
@@ -942,3 +945,64 @@ Route::group(['prefix' => 'tipo_carreras','middleware' => ['auth']], function ()
     Route::delete('/tipo_carrera/{tipoCarrera}', [TipoCarrerasController::class, 'destroy'])
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
+
+Route::get('ztest/{id_resolucion}', function ( $id_resolucion) {
+
+    $resolucion = Resoluciones::with('carreras.materias')
+        ->where('id', $id_resolucion)
+        ->get();
+
+    foreach ($resolucion as $resoluciones) {
+        foreach ($resoluciones->carreras as $carreras) {
+            foreach ($carreras->materias as $materia) {
+                $data = [];
+
+                /** @var Materia $materia */
+                $data['name'] = $materia->nombre;
+                $data['year'] = $materia->año;
+                $data['field_stage'] = $materia->etapa_campo;
+                $data['delayed_closing'] = $materia->cierre_diferido;
+                $data['resoluciones_id'] = $resoluciones->id;
+                $data['regimen_id'] = getRegimen($materia->regimen);
+
+                $mm = MasterMateria::where('name', $data['name'])->first();
+
+                if (!$mm) {
+
+                    $mm = MasterMateria::create($data);
+
+                }
+
+                $materia->master_materia_id = $mm->id;
+                $materia->save();
+            }
+        }
+
+        return $resoluciones;
+
+
+    }
+
+
+});
+
+function getRegimen(string $regimen = null)
+{
+
+    switch ($regimen) {
+        case Materia::ANUAL:
+            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+            break;
+        case Materia::PRI_SEM:
+            $id = Regimen::where(['identifier' => 'sem_1'])->first()->id;
+            break;
+        case Materia::SEC_SEM:
+            $id = Regimen::where(['identifier' => 'sem_2'])->first()->id;
+            break;
+        default:
+            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+    }
+
+    return $id;
+
+}

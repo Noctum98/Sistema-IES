@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\AlumnosMateriaExport;
+use App\Models\MasterMateria;
 use App\Models\MateriasCorrelativa;
 use App\Models\MateriasCorrelativasCursado;
 use App\Models\User;
@@ -69,9 +70,18 @@ class MateriaController extends Controller
         $carrera = Carrera::find($carrera_id);
         $materias = Materia::where('carrera_id', $carrera_id)->get();
 
+
+        $resoluciones = $carrera->resoluciones()->first();
+
+        $masterMaterias = null;
+        if($resoluciones){
+            $masterMaterias = $resoluciones->masterMaterias;
+        }
+
         return view('materia.create', [
             'carrera' => $carrera,
             'materias' => $materias,
+            'masterMaterias' => $masterMaterias
         ]);
     }
 
@@ -80,9 +90,19 @@ class MateriaController extends Controller
         $materia = Materia::find($id);
         $materias = Materia::where('carrera_id', $materia->carrera_id)->get();
 
+        $carrera = Carrera::find($materia->carrera_id);
+        $resoluciones = $carrera->resoluciones()->first();
+
+        $masterMaterias = null;
+        if($resoluciones){
+            $masterMaterias = $resoluciones->masterMaterias->where('year', $materia->año);
+        }
+
+
         return view('materia.edit', [
             'materia' => $materia,
             'materias' => $materias,
+            'masterMaterias' => $masterMaterias
         ]);
     }
 
@@ -91,12 +111,24 @@ class MateriaController extends Controller
     public function crear(int $carrera_id, Request $request)
     {
         $validate = $this->validate($request, [
-            'nombre' => ['required'],
-            'año' => ['required', 'numeric', 'max:3'],
-            'personal' => ['numeric'],
+            'master_materia_id' => ['required'],
         ]);
 
         $request['carrera_id'] = $carrera_id;
+
+        $request['correlativa'] = $request['correlativa'] ?? null;
+        $request['correlativa_cursado'] = $request['correlativa_cursado'] ?? null;
+
+        $mm = MasterMateria::find($request['master_materia_id'][0]);
+
+
+        $request['nombre'] = $mm->name;
+        $request['regimen'] = $request['regimen']?? $mm->regimen->name;
+        $request['año'] = $mm->year;
+
+        $request['etapa_campo'] = $mm->field_stage;
+        $request['cierre_diferido'] = $mm->delayed_closing;
+        $request['master_materia_id'] = $mm->id;
 
         $materia = Materia::create($request->all());
 
