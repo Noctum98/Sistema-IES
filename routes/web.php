@@ -354,6 +354,7 @@ Route::prefix('sedes')->group(function () {
     Route::post('editar-sede/{id}', [SedeController::class, 'editar'])->name('editar_sede');
     Route::get('eliminar-sede/{id}', [SedeController::class, 'eliminar'])->name('eliminar_sede');
     Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
+    Route::get('/getSedes',[SedeController::class,'getSedes']);
 });
 
 Route::prefix('usuario_cargo')->group(function () {
@@ -545,6 +546,7 @@ Route::prefix('alumno/parci')->group(function () {
 Route::prefix('mesas')->group(function () {
     Route::get('/inscripcion/{id}', [AlumnoMesaController::class, 'vista_home'])->name('mesa.welcome');
     Route::get('/instancias', [AlumnoMesaController::class, 'vista_instancias'])->name('mesa.instancias');
+    Route::get('/instancia/{id}',[InstanciaController::class,'getInstancia']);
     Route::get('/administrar/{todos?}', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name('mesa.carreras');
     Route::get('/carrera/admin/{id}/{instancia_id}', [InstanciaController::class, 'vista_mesas'])->name('mesa.mesas');

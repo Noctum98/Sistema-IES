@@ -101,4 +101,11 @@ class SedeController extends Controller
 
         return response()->json($carreras);
     }
+
+    public function getSedes(): JsonResponse
+    {
+        $sedes = Sede::select('nombre','id')->get();
+
+        return response()->json($sedes);
+    }
 }
