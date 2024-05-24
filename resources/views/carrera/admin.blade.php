@@ -37,7 +37,7 @@
                     <tr style="cursor:pointer;">
                         <td><b>{{ $carrera->id }}</b></td>
                         <td>{{ $carrera->nombre }}</td>
-                        <td>{{ $carrera->resolucion }}</td>
+                        <td>{{ $carrera->getResolucion->resolution?? $carrera->resolucion }}</td>
                         @if(Auth::user()->hasRole('admin'))
                             <td>
                                 @if($carrera->estado == 1)

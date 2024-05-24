@@ -31,9 +31,9 @@ class MesaService
                             }
                         }
                     } else {
-                        if ($mesa->instancia->estado == 'activa') {
-                            $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
-                        }
+                        
+                        $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
+                        
                     }
                 }
 

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\MasterMateria;
 use App\Models\Regimen;
-use App\Models\Resolucione;
+use App\Models\Resoluciones;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\View\View;
 
 class MasterMateriasController extends Controller
 {
@@ -15,11 +16,11 @@ class MasterMateriasController extends Controller
     /**
      * Display a listing of the master materias.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
-        $masterMaterias = MasterMateria::with('resolucione','regimen')->paginate(25);
+        $masterMaterias = MasterMateria::with('resoluciones', 'regimen')->paginate(20);
 
         return view('master_materias.index', compact('masterMaterias'));
     }
@@ -27,22 +28,22 @@ class MasterMateriasController extends Controller
     /**
      * Show the form for creating a new master materia.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
-        $Resoluciones = Resolucione::pluck('name','id')->all();
-$Regimens = Regimen::pluck('name','id')->all();
+        $Resoluciones = Resoluciones::pluck('name', 'id')->all();
+        $Regimens = Regimen::pluck('name', 'id')->all();
 
-        return view('master_materias.create', compact('Resoluciones','Regimens'));
+        return view('master_materias.create', compact('Resoluciones', 'Regimens'));
     }
 
     /**
      * Store a new master materia in the storage.
      *
-     * @param Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -52,19 +53,19 @@ $Regimens = Regimen::pluck('name','id')->all();
         MasterMateria::create($data);
 
         return redirect()->route('master_materias.master_materia.index')
-            ->with('success_message', 'Master Materia fue agregado exitosamente.');
+            ->with('success_message', 'Materia fue agregado exitosamente al sistema.');
     }
 
     /**
      * Display the specified master materia.
      *
-     * @param int $id
+     * @param string $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $masterMateria = MasterMateria::with('resolucione','regimen')->findOrFail($id);
+        $masterMateria = MasterMateria::with('resoluciones', 'regimen')->findOrFail($id);
 
         return view('master_materias.show', compact('masterMateria'));
     }
@@ -72,28 +73,28 @@ $Regimens = Regimen::pluck('name','id')->all();
     /**
      * Show the form for editing the specified master materia.
      *
-     * @param int $id
+     * @param string $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function edit($id)
+    public function edit(string $id)
     {
         $masterMateria = MasterMateria::findOrFail($id);
-        $Resoluciones = Resolucione::pluck('name','id')->all();
-$Regimens = Regimen::pluck('name','id')->all();
+        $Resoluciones = Resoluciones::pluck('name', 'id')->all();
+        $Regimens = Regimen::pluck('name', 'id')->all();
 
-        return view('master_materias.edit', compact('masterMateria','Resoluciones','Regimens'));
+        return view('master_materias.edit', compact('masterMateria', 'Resoluciones', 'Regimens'));
     }
 
     /**
      * Update the specified master materia in the storage.
      *
-     * @param int $id
-     * @param Illuminate\Http\Request $request
+     * @param string $id
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
+     * @return RedirectResponse
      */
-    public function update($id, Request $request)
+    public function update(string $id, Request $request)
     {
 
         $data = $this->getData($request);
@@ -108,18 +109,18 @@ $Regimens = Regimen::pluck('name','id')->all();
     /**
      * Remove the specified master materia from the storage.
      *
-     * @param int $id
+     * @param string $id
      *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         try {
             $masterMateria = MasterMateria::findOrFail($id);
             $masterMateria->delete();
 
             return redirect()->route('master_materias.master_materia.index')
-                ->with('success_message', 'Master Materia was successfully deleted.');
+                ->with('success_message', 'Master Materia fue correctamente eliminada.');
         } catch (Exception $exception) {
 
             return back()->withInput()
@@ -131,14 +132,14 @@ $Regimens = Regimen::pluck('name','id')->all();
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request
+     * @param Request $request
      * @return array
      */
     protected function getData(Request $request)
     {
         $rules = [
-                'name' => 'required|string|min:1|max:191',
-            'year' => 'required|numeric|min:0|max:4294967295',
+            'name' => 'required|string|min:1|max:191',
+            'year' => 'required|numeric|min:1|max:6',
             'field_stage' => 'boolean|numeric',
             'delayed_closing' => 'boolean',
             'resoluciones_id' => 'required',

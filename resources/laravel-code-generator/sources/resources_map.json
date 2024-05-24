@@ -38,5 +38,10 @@
         "model-name": "EstadoResoluciones",
         "resource-file": "estado_resoluciones.json",
         "table-name": "estados_resoluciones"
+    },
+    {
+        "model-name": "estado_carreras",
+        "resource-file": "estado_carreras.json",
+        "table-name": "estado_carreras"
     }
 ]

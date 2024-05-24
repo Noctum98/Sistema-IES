@@ -205,6 +205,6 @@ class User extends Authenticatable
 
     public function getApellidoNombre(): string
     {
-        return $this->getAttribute('apellido'). ', '. $this->getAttribute('nombre');
+        return mb_strtoupper($this->getAttribute('apellido')). ', '. ucwords($this->getAttribute('nombre'));
     }
 }

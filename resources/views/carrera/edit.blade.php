@@ -18,11 +18,11 @@
         </div>
         <hr>
         <div class="col-md-12">
-            @if(@session('message'))
-                <div class="alert alert-success">
-                    {{ @session('message') }}
-                </div>
-            @endif
+{{--            @if(@session('message'))--}}
+{{--                <div class="alert alert-success">--}}
+{{--                    {{ @session('message') }}--}}
+{{--                </div>--}}
+{{--            @endif--}}
             <form method="POST" action="{{ route('editar_carrera',['id'=>$carrera->id]) }}" class="w-100">
                 @csrf
                 <div class="row">
@@ -74,8 +74,7 @@
                     </div>
                 </div>
                 <div class="row">
-
-                    <div class="col-sm-6 col-md-2">
+                    <div class="col-sm-4 col-md-2">
                         <label for="años">Años de duración:</label>
                         <input type="number" id="años" name="años"
                                class="form-control @error('años') is-invalid @enderror" value="{{ $carrera->años }}"
@@ -88,9 +87,9 @@
                         @enderror
                     </div>
 
-                    <div class="col-sm-6 col-md-5">
+                    <div class="col-sm-6 col-md-3">
                         <label for="resolucion">Resolución:</label>
-                        <input type="text" id="resolucion" name="resolucion"
+                        <input type="text" id="resolucion" name="resolucion" disabled
                                class="form-control @error('resolucion') is-invalid @enderror"
                                value="{{ $carrera->resolucion }}">
 
@@ -100,7 +99,29 @@
 						</span>
                         @enderror
                     </div>
-                    <div class="col-sm-6 col-md-5">
+
+                    <div class="col-sm-6 col-md-3">
+                        <label for="resolucion_id">Resolución: </label>
+                        <select id="resolucion_id" name="resolucion_id" class="form-control">
+                            <option value="">Selecciona una resolución</option>
+                            @foreach($resoluciones as $resolution)
+                                @if(optional($carrera->resoluciones)->id == $resolution->id)
+                                    <option value="{{ $resolution->id }}"
+                                            selected>{{ $resolution->resolution }}</option>
+                                @else
+                                    <option value="{{ $resolution->id }}">{{ $resolution->resolution }}</option>
+                                @endif
+
+                            @endforeach
+                        </select>
+
+                        @error('resolucion_id')
+                        <span class="invalid-feedback d-block" role="alert">
+							<strong>{{ $message }}</strong>
+						</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-md-4">
                         <label for="vacunas">Vacunas:</label>
                         <select class="form-control" name="vacunas" id="vacunas">
                             <option value="todas" {{$carrera->vacunas == 'todas' ? 'selected="selected"':''}}>
@@ -254,11 +275,32 @@
                     </div>
                 @endif
                 <div class="form-group mt-2">
-                    <input type="submit" value="Editar carrera" class="btn btn-success">
+                    <input type="submit" value="Guardar cambios" class="btn btn-success">
                 </div>
 
 
             </form>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="{{ asset('vendors/select2/js/select2.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#resolucion_id").select2({
+                'placeholder': 'Selecciona una resolución',
+                'theme': 'classic',
+                allowClear: true,
+                // dropdownParent: $('#agregarCargoModulo'),
+                width: "100%"
+            });
+            $("#sede").select2({
+                'placeholder': 'Selecciona una sede',
+                'theme': 'classic',
+                // dropdownParent: $('#agregarCargoModulo'),
+                width: "100%",
+                allowClear: true
+            });
+        });
+    </script>
 @endsection
