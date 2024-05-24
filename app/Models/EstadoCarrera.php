@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class MasterMateria extends Model
+class EstadoCarrera extends Model
 {
     use SoftDeletes, HasFactory;
+
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'master_materias';
+    protected $table = 'estado_carreras';
 
     /**
      * The database primary key value.
@@ -32,13 +31,18 @@ class MasterMateria extends Model
 
     protected $fillable = [
         'name',
-        'year',
-        'field_stage',
-        'delayed_closing',
-        'resoluciones_id',
-        'regimen_id',
+        'identifier',
+        'disabled',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->{$model->getKeyName()} = (string) Uuid::uuid4()->toString();
+        });
+    }
 
     /**
      * The attributes that should be mutated to dates.
@@ -53,24 +57,4 @@ class MasterMateria extends Model
      * @var array
      */
     protected $casts = [];
-
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string) Uuid::uuid4();
-        });
-    }
-
-    public function resoluciones(): BelongsTo
-    {
-        return $this->belongsTo(Resoluciones::class);
-    }
-
-    public function regimen(): BelongsTo
-    {
-        return $this->belongsTo(Regimen::class);
-    }
 }

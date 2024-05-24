@@ -20,6 +20,8 @@
     @endif
     <!-- Modal Crear-->
     @include('mesa.modals.crear_instancia')
+    <!--Modal Editar-->
+    @include('mesa.modals.editar_instancia')
 
     @if($todos)
     <br>
@@ -52,8 +54,8 @@
                             Ver Inscripciones
                         </button>
                         @if(Session::has('admin') || Session::has('regente'))
-                        <button type="button" class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit{{$instancia->id}}">
-                            Editar Mesa
+                        <button type="button" class="btn-sm btn-warning open_modal" data-instancia_id="{{ $instancia->id }}" data-bs-toggle="modal" data-bs-target="#edit">
+                            Editar Instancia
                         </button>
                         <a href="{{ route('mesas.resumen',$instancia->id) }}" class="btn btn-sm btn-light">Ver Informe</a>
                         @endif
@@ -90,8 +92,7 @@
                 </tr>
                 <!--Modal Ver-->
                 @include('mesa.modals.ver_inscripciones')
-                <!--Modal Editar-->
-                @include('mesa.modals.editar_instancia')
+
                 <!--Modal Borrar-->
                 @include('mesa.modals.borrar_instancia')
                 @endforeach

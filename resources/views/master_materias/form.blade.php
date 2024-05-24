@@ -9,11 +9,11 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="year" class="col-form-label text-lg-end col-lg-2 col-xl-3">Años</label>
+    <label for="year" class="col-form-label text-lg-end col-lg-2 col-xl-3">Año</label>
     <div class="col-lg-10 col-xl-9">
         <input class="form-control{{ $errors->has('year') ? ' is-invalid' : '' }}" name="year" type="number" id="year"
                value="{{ old('year', optional($masterMateria)->year) }}" min="0" max="6" required="required"
-               placeholder="Ingrese cantidad de años de cursado">
+               placeholder="Ingrese años en el que se dicta la carrera">
         {!! $errors->first('year', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
@@ -25,7 +25,7 @@
             <input id="field_stage_1" class="form-check-input" name="field_stage" type="checkbox"
                    value="1" {{ old('field_stage', optional($masterMateria)->field_stage) == '1' ? 'checked' : '' }}>
             <label class="form-check-label" for="field_stage_1">
-                Yes
+                Si
             </label>
         </div>
 
@@ -41,7 +41,7 @@
             <input id="delayed_closing_1" class="form-check-input" name="delayed_closing" type="checkbox"
                    value="1" {{ old('delayed_closing', optional($masterMateria)->delayed_closing) == '1' ? 'checked' : '' }}>
             <label class="form-check-label" for="delayed_closing_1">
-                Yes
+                Si
             </label>
         </div>
 
@@ -59,10 +59,10 @@
                     {{ old('resoluciones_id', optional($masterMateria)->resoluciones_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione resolución
             </option>
-            @foreach ($Resoluciones as $key => $Resolucione)
+            @foreach ($Resoluciones as $key => $resolution)
                 <option
                     value="{{ $key }}" {{ old('resoluciones_id', optional($masterMateria)->resoluciones_id) == $key ? 'selected' : '' }}>
-                    {{ $Resolucione }}
+                    {{ $resolution }}
                 </option>
             @endforeach
         </select>
@@ -75,15 +75,15 @@
     <label for="regimen_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Régimen</label>
     <div class="col-lg-10 col-xl-9">
         <select class="form-select{{ $errors->has('regimen_id') ? ' is-invalid' : '' }}" id="regimen_id"
-                name="regimen_id" required="true">
+                name="regimen_id" required="required">
             <option value="" style="display: none;"
                     {{ old('regimen_id', optional($masterMateria)->regimen_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione régimen
             </option>
-            @foreach ($Regimens as $key => $Regiman)
+            @foreach ($Regimens as $key => $regimen)
                 <option
                     value="{{ $key }}" {{ old('regimen_id', optional($masterMateria)->regimen_id) == $key ? 'selected' : '' }}>
-                    {{ $Regiman }}
+                    {{ $regimen }}
                 </option>
             @endforeach
         </select>

@@ -48,7 +48,7 @@ class InstanciaController extends Controller
                     });
                 })
                 ->orderBy('id','desc')->take(4)->get();
-            if(Session::has('admin'))
+            if(Session::has('admin') || Session::has('regente'))
             {
                 $instancia = Instancia::orderBy('id','desc')->take(4)->get();
             }
@@ -61,7 +61,7 @@ class InstanciaController extends Controller
                 })
                 ->orderBy('id','desc')->get();
 
-            if(Session::has('admin'))
+            if(Session::has('admin') || Session::has('regente'))
             {
                 $instancia = Instancia::orderBy('id','desc')->get();
 
@@ -182,6 +182,13 @@ class InstanciaController extends Controller
         return redirect()->route('mesa.admin')->with([
             'mensaje' => sprintf('Datos de %s fueron borrados correctamente', $id->nombre)
         ]);
+    }
+
+    public function getInstancia(Request $request,$id)
+    {
+        $instancia = Instancia::where('id',$id)->with('sedes','carreras')->first();
+
+        return response()->json($instancia,200);
     }
 
     public function cambiar_estado($estado, $id)

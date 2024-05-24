@@ -68,18 +68,18 @@
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                         <td>
-                                            {{$mesa->presidente_mesa ? $mesa->presidente_mesa->nombre.' '.$mesa->presidente_mesa->apellido : ''}}
+                                            {{$mesa->presidente_mesa ? mb_convert_case($mesa->presidente_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->presidente_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}
                                         </td>
-                                        <td>{{$mesa->primer_vocal_mesa ? $mesa->primer_vocal_mesa->nombre.' '.$mesa->primer_vocal_mesa->apellido : ''}}</td>
-                                        <td>{{$mesa->segundo_vocal_mesa ? $mesa->segundo_vocal_mesa->nombre.' '.$mesa->segundo_vocal_mesa->apellido : ''}}</td>
+                                        <td>{{$mesa->primer_vocal_mesa ? mb_convert_case($mesa->primer_vocal_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.ucwords($mesa->primer_vocal_mesa->apellido ): ''}}</td>
+                                        <td>{{$mesa->segundo_vocal_mesa ? mb_convert_case($mesa->segundo_vocal_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->segundo_vocal_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}</td>
                                     @else
                                         <td align="center">
                                             {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
-                                        <td>{{$mesa->presidente_segundo_mesa ? $mesa->presidente_segundo_mesa->nombre.' '.$mesa->presidente_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->primer_vocal_segundo_mesa ? $mesa->primer_vocal_segundo_mesa->nombre.' '.$mesa->primer_vocal_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? $mesa->segundo_vocal_segundo_mesa->nombre.' '.$mesa->segundo_vocal_segundo_mesa->apellido:''}}</td>
+                                        <td>{{$mesa->presidente_segundo_mesa ? mb_convert_case($mesa->presidente_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->presidente_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo_mesa ? mb_convert_case($mesa->primer_vocal_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->primer_vocal_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? mb_convert_case($mesa->segundo_vocal_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->segundo_vocal_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
                                     @endif
                                 </tr>
                             @endforeach
@@ -112,18 +112,18 @@
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                         <td>
-                                            {{$mesa->presidente_mesa ? $mesa->presidente_mesa->nombre.' '.$mesa->presidente_mesa->apellido : ''}}
+                                            {{$mesa->presidente_mesa ? mb_convert_case($mesa->presidente_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->presidente_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}
                                         </td>
-                                        <td>{{$mesa->primer_vocal_mesa ? $mesa->primer_vocal_mesa->nombre.' '.$mesa->primer_vocal_mesa->apellido : ''}}</td>
-                                        <td>{{$mesa->segundo_vocal_mesa ? $mesa->segundo_vocal_mesa->nombre.' '.$mesa->segundo_vocal_mesa->apellido : ''}}</td>
+                                        <td>{{$mesa->primer_vocal_mesa ? mb_convert_case($mesa->primer_vocal_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->primer_vocal_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}</td>
+                                        <td>{{$mesa->segundo_vocal_mesa ? mb_convert_case($mesa->segundo_vocal_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->segundo_vocal_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}</td>
                                     @else
                                         <td align="center">
                                             {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
-                                        <td>{{$mesa->presidente_segundo_mesa ? $mesa->presidente_segundo_mesa->nombre.' '.$mesa->presidente_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->primer_vocal_segundo_mesa ? $mesa->primer_vocal_segundo_mesa->nombre.' '.$mesa->primer_vocal_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? $mesa->segundo_vocal_segundo_mesa->nombre.' '.$mesa->segundo_vocal_segundo_mesa->apellido:''}}</td>
+                                        <td>{{$mesa->presidente_segundo_mesa ? mb_convert_case($mesa->presidente_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->presidente_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo_mesa ? mb_convert_case($mesa->primer_vocal_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->primer_vocal_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? mb_convert_case($mesa->segundo_vocal_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->segundo_vocal_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
                                     @endif
                                 </tr>
                             @endforeach
@@ -157,18 +157,18 @@
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha), 'H:i') }}</td>
                                         <td>
-                                            {{$mesa->presidente_mesa ? $mesa->presidente_mesa->nombre.' '.$mesa->presidente_mesa->apellido : ''}}
+                                            {{$mesa->presidente_mesa ? mb_convert_case($mesa->presidente_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->presidente_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}
                                         </td>
-                                        <td>{{$mesa->primer_vocal_mesa ? $mesa->primer_vocal_mesa->nombre.' '.$mesa->primer_vocal_mesa->apellido : ''}}</td>
-                                        <td>{{$mesa->segundo_vocal_mesa ? $mesa->segundo_vocal_mesa->nombre.' '.$mesa->segundo_vocal_mesa->apellido : ''}}</td>
+                                        <td>{{$mesa->primer_vocal_mesa ? mb_convert_case($mesa->primer_vocal_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->primer_vocal_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}</td>
+                                        <td>{{$mesa->segundo_vocal_mesa ? mb_convert_case($mesa->segundo_vocal_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->segundo_vocal_mesa->apellido,MB_CASE_TITLE, "UTF-8") : ''}}</td>
                                     @else
                                         <td align="center">
                                             {{ date_format(new DateTime($mesa->fecha_segundo), 'd-m-Y') }}
                                         </td>
                                         <td align="center">{{ date_format(new DateTime($mesa->fecha_segundo), 'H:i') }}</td>
-                                        <td>{{$mesa->presidente_segundo_mesa ? $mesa->presidente_segundo_mesa->nombre.' '.$mesa->presidente_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->primer_vocal_segundo_mesa ? $mesa->primer_vocal_segundo_mesa->nombre.' '.$mesa->primer_vocal_segundo_mesa->apellido:''}}</td>
-                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? $mesa->segundo_vocal_segundo_mesa->nombre.' '.$mesa->segundo_vocal_segundo_mesa->apellido:''}}</td>
+                                        <td>{{$mesa->presidente_segundo_mesa ? mb_convert_case($mesa->presidente_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->presidente_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
+                                        <td>{{$mesa->primer_vocal_segundo_mesa ? mb_convert_case($mesa->primer_vocal_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->primer_vocal_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
+                                        <td>{{$mesa->segundo_vocal_segundo_mesa ? mb_convert_case($mesa->segundo_vocal_segundo_mesa->nombre,MB_CASE_TITLE, "UTF-8").' '.mb_convert_case($mesa->segundo_vocal_segundo_mesa->apellido,MB_CASE_TITLE, "UTF-8"):''}}</td>
                                     @endif
                                 </tr>
                             @endforeach

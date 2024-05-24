@@ -53,5 +53,10 @@
         "model-name": "Ticket",
         "resource-file": "tickets.json",
         "table-name": "tickets"
+    },
+    {
+        "model-name": "estado_carreras",
+        "resource-file": "estado_carreras.json",
+        "table-name": "estado_carreras"
     }
 ]

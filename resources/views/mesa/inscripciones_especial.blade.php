@@ -105,7 +105,7 @@
                     <td>{{ $inscripcion->alumno->comisionPorAño($inscripcion->materia->carrera_id,$inscripcion->materia->año) ?? '-' }}</td>
                     <td>
 
-                        @if(Session::has('admin') || Session::has('coordinador'))
+                        @if(Session::has('admin') || Session::has('coordinador') || Session::has('seccionAlumnos'))
 
                         <a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#baja{{$inscripcion->id}}">
                         <i class="fas fa-chevron-circle-down"></i>

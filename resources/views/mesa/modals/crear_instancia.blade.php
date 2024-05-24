@@ -31,7 +31,7 @@
 
                     <div class="form-group">
                         <label for="sedes">Sedes</label>
-                        <select name="sedes[]" id="sedes" class="form-control select2" multiple="multiple">
+                        <select name="sedes[]" id="sedes" class="form-control select2-sedes" multiple="multiple">
                             @foreach($sedes as $sede)
                             <option value="{{ $sede->id }}"> {{ $sede->nombre }} </option>
                             @endforeach
@@ -40,7 +40,7 @@
 
                     <div class="form-group">
                         <label for="">Carreras</label>
-                        <select name="carreras[]" id="carreras" class="form-control" multiple="multiple">
+                        <select name="carreras[]" id="carreras" class="form-control select2-carreras" multiple="multiple">
                         </select>
                     </div>
                     <div class="form-group">
