@@ -946,7 +946,28 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
 
-Route::get('ztest/{id_resolucion}', function ( $id_resolucion) {
+function getRegimen(string $regimen = null)
+{
+
+    switch ($regimen) {
+        case Materia::ANUAL:
+            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+            break;
+        case Materia::PRI_SEM:
+            $id = Regimen::where(['identifier' => 'sem_1'])->first()->id;
+            break;
+        case Materia::SEC_SEM:
+            $id = Regimen::where(['identifier' => 'sem_2'])->first()->id;
+            break;
+        default:
+            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+    }
+
+    return $id;
+
+}
+
+Route::get('ztest/{id_resolucion}', function ($id_resolucion) {
 
     $resolucion = Resoluciones::with('carreras.materias')
         ->where('id', $id_resolucion)
@@ -978,31 +999,14 @@ Route::get('ztest/{id_resolucion}', function ( $id_resolucion) {
             }
         }
 
-        return $resoluciones;
+
 
 
     }
 
-
+    return $resolucion;
 });
 
-function getRegimen(string $regimen = null)
-{
 
-    switch ($regimen) {
-        case Materia::ANUAL:
-            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
-            break;
-        case Materia::PRI_SEM:
-            $id = Regimen::where(['identifier' => 'sem_1'])->first()->id;
-            break;
-        case Materia::SEC_SEM:
-            $id = Regimen::where(['identifier' => 'sem_2'])->first()->id;
-            break;
-        default:
-            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
-    }
 
-    return $id;
 
-}
