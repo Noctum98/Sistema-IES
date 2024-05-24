@@ -67,7 +67,7 @@ class MesaAlumnoService
                 {
                     foreach($actas_volantes as $acta_volante)
                     {
-                        if($acta_volante->inscripcion){
+                        if($acta_volante->inscripcion && $acta_volante->inscripcion->mesa && $acta_volante->inscripcion->mesa->instancia){
                             $nota_aprobado = $notas_aprobado->where('year', $acta_volante->inscripcion->mesa->instancia->year_nota)->first();
                             
                             if ($acta_volante->promedio >= $nota_aprobado->valor) {
