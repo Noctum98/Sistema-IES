@@ -20,6 +20,7 @@ use App\Http\Controllers\Trianual\DetalleTrianualController;
 use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
+use App\Http\Controllers\ZTestController;
 use App\Models\MasterMateria;
 use App\Models\Materia;
 use App\Models\Regimen;
@@ -946,66 +947,9 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
 
-function getRegimen(string $regimen = null)
-{
-
-    switch ($regimen) {
-        case Materia::ANUAL:
-            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
-            break;
-        case Materia::PRI_SEM:
-            $id = Regimen::where(['identifier' => 'sem_1'])->first()->id;
-            break;
-        case Materia::SEC_SEM:
-            $id = Regimen::where(['identifier' => 'sem_2'])->first()->id;
-            break;
-        default:
-            $id = Regimen::where(['identifier' => 'anual'])->first()->id;
-    }
-
-    return $id;
-
-}
-
-Route::get('ztest/{id_resolucion}', function ($id_resolucion) {
-
-    $resolucion = Resoluciones::with('carreras.materias')
-        ->where('id', $id_resolucion)
-        ->get();
-
-    foreach ($resolucion as $resoluciones) {
-        foreach ($resoluciones->carreras as $carreras) {
-            foreach ($carreras->materias as $materia) {
-                $data = [];
-
-                /** @var Materia $materia */
-                $data['name'] = $materia->nombre;
-                $data['year'] = $materia->año;
-                $data['field_stage'] = $materia->etapa_campo;
-                $data['delayed_closing'] = $materia->cierre_diferido;
-                $data['resoluciones_id'] = $resoluciones->id;
-                $data['regimen_id'] = getRegimen($materia->regimen);
-
-                $mm = MasterMateria::where('name', $data['name'])->first();
-
-                if (!$mm) {
-
-                    $mm = MasterMateria::create($data);
-
-                }
-
-                $materia->master_materia_id = $mm->id;
-                $materia->save();
-            }
-        }
 
 
-
-
-    }
-
-    return $resolucion;
-});
+Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
 
 
 
