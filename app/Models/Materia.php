@@ -23,6 +23,7 @@ use Illuminate\Support\HigherOrderCollectionProxy;
  * @property int $año
  * @property string $nombre
  * @property string $regimen
+ * @property string $master_materia_id
  * @property int $tipo_materia_id
  * @property float $asistencia_ponderada
  * @property float $proceso_ponderado
@@ -30,6 +31,7 @@ use Illuminate\Support\HigherOrderCollectionProxy;
  * @property string $cierre_diferido
  * @property-read Carrera $carrera
  * @property-read TipoMateria $tipoMateria
+ * @property-read MasterMateria $masterMateria
  * @property-read null|Collection|Cargo[] $cargos
  * @property-read Materia $correlativa
  * @property-read null|Collection|MesaAlumno[] $mesa_inscriptos
@@ -44,6 +46,10 @@ class Materia extends BaseModel
     const PRI_SEM = "Cuatrimestral (1er)";
     const SEC_SEM = "Cuatrimestral (2do)";
     const ANUAL = "Anual";
+    /**
+     * @var mixed|string
+     */
+
 
     protected $fillable = [
         'carrera_id',
@@ -54,7 +60,8 @@ class Materia extends BaseModel
         'asistencia_ponderada',
         'proceso_ponderado',
         'etapa_campo',
-        'cierre_diferido'
+        'cierre_diferido',
+        'master_materia_id'
     ];
 
     /**
@@ -443,6 +450,14 @@ class Materia extends BaseModel
 
         return $cierre;
 
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function masterMateria(): BelongsTo
+    {
+        return $this->belongsTo(MasterMateria::class, 'master_materia_id');
     }
 
 
