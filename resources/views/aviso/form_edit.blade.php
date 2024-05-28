@@ -27,11 +27,11 @@
             <div class="form-check col-sm-3">
                 <input class="form-check-input" type="checkbox"
 
-                           @if($aviso->todos )
-                               checked
+                       @if($aviso->todos )
+                           checked
                        @endif
 
-                        id="todos" value="todos"
+                       id="todos" value="todos"
                        name="role[]"
                 >
                 <label class="form-check-label" for="role{{ $aviso->todos }}">
@@ -88,11 +88,15 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="disabled" class="col-form-label text-lg-end col-lg-2 col-xl-3">Deshabilitar</label>
+    <label for="disabled" class="col-form-label text-lg-end col-lg-2 col-xl-3">Deshabilitar </label>
     <div class="col-lg-10 col-xl-9">
 
         <input class="custom-checkbox {{ $errors->has('disabled') ? ' is-invalid' : '' }}" name="disabled"
-               type="checkbox" id="disabled" value="{{ old('disabled')?? $aviso->disabled }}"
+               type="checkbox" id="disabled" value="1"
+               @if(old('disabled') == 1 || $aviso->disabled == 1)
+                   checked
+               @endif
+
                placeholder="Marque si desea deshabilitar el aviso">
         <div id="disabledHelpBlock" class="form-text">
             Marque si desea deshabilitar el aviso
