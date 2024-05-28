@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\AgrupadaMateria;
 use App\Models\AvisoRole;
+use App\Models\CorrelatividadAgrupada;
 use App\Models\EstadoCarrera;
 use App\Models\EstadoResoluciones;
 use App\Models\MasterMateria;
@@ -10,7 +12,9 @@ use App\Models\MateriasCorrelativasCursado;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\TipoCarrera;
+use App\Policies\AgrupadaMateriaPolicy;
 use App\Policies\AvisoRolePolicy;
+use App\Policies\CorrelatividadAgrupadaPolicy;
 use App\Policies\EstadoCarreraPolicy;
 use App\Policies\EstadoResolucionesPolicy;
 use App\Policies\MasterMateriaPolicy;
@@ -38,6 +42,8 @@ class AuthServiceProvider extends ServiceProvider
         MasterMateria::class => MasterMateriaPolicy::class,
         EstadoResoluciones::class => EstadoResolucionesPolicy::class,
         EstadoCarrera::class => EstadoCarreraPolicy::class,
+        CorrelatividadAgrupada::class => CorrelatividadAgrupadaPolicy::class,
+        AgrupadaMateria::class => AgrupadaMateriaPolicy::class,
     ];
 
     /**
