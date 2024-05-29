@@ -21,7 +21,7 @@ class AvisoController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente');
+        $this->middleware('app.roles:admin-regente-avisos');
     }
 
     /**
@@ -144,6 +144,10 @@ class AvisoController extends Controller
 
         $data['creador_id'] = Auth::user()->id;
 
+        $data['disabled'] = intval(isset($data['disabled']));
+
+
+
 
         $aviso->update($data);
 
@@ -224,7 +228,6 @@ class AvisoController extends Controller
     protected function getDataEdit(Request $request)
     {
 
-//        dd($request);
         $rules = [
             'mensaje' => 'required',
             'role' => 'required',
