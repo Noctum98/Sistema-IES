@@ -21,7 +21,7 @@ class AvisoController extends Controller
     public function __construct()
     {
         $this->middleware('app.auth');
-        $this->middleware('app.roles:admin-regente');
+        $this->middleware('app.roles:admin-regente-avisos');
     }
 
     /**
