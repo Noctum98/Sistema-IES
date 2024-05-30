@@ -68,5 +68,14 @@
         "model-name": "CategoriasTickets",
         "resource-file": "categorias_tickets.json",
         "table-name": "categorias_tickets"
+    },{
+        "model-name": "correlatividad_agrupadas",
+        "resource-file": "correlatividad_agrupadas.json",
+        "table-name": "correlatividad_agrupadas"
+    },
+    {
+        "model-name": "agrupada_materias",
+        "resource-file": "agrupada_materias.json",
+        "table-name": "agrupada_materias"
     }
 ]
