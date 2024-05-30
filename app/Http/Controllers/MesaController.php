@@ -23,6 +23,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class MesaController extends Controller
 {
@@ -328,9 +329,11 @@ class MesaController extends Controller
         if($mesa)
         { 
             $cierres = $this->mesaService->fechaBloqueo($mesa,1);
+            $admin = Session::has('admin') ? 1 : 0;
             
             $datos = [
                 'status'=>'success',
+                'admin' => $admin,
                 'mesa' => $mesa
             ];
 
