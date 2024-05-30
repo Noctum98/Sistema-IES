@@ -67,6 +67,8 @@ use App\Http\Controllers\ResolucionesController;
 use App\Http\Controllers\MasterMateriasController;
 use App\Http\Controllers\EstadoResolucionesController;
 use App\Http\Controllers\EstadoCarrerasController;
+use App\Http\Controllers\CorrelatividadAgrupadasController;
+use App\Http\Controllers\AgrupadaMateriasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -792,6 +794,23 @@ Route::prefix('usuarios')->group(function () {
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
     ->name('api-docs.condicion_materias.condicion_materia.index');
 
+Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], function () {
+    Route::get('/', [AgrupadaMateriasController::class, 'index'])
+        ->name('agrupada_materias.agrupada_materia.index');
+    Route::get('/create', [AgrupadaMateriasController::class, 'create'])
+        ->name('agrupada_materias.agrupada_materia.create');
+    Route::get('/show/{agrupadaMateria}',[AgrupadaMateriasController::class, 'show'])
+        ->name('agrupada_materias.agrupada_materia.show');
+    Route::get('/{agrupadaMateria}/edit',[AgrupadaMateriasController::class, 'edit'])
+        ->name('agrupada_materias.agrupada_materia.edit');
+    Route::post('/', [AgrupadaMateriasController::class, 'store'])
+        ->name('agrupada_materias.agrupada_materia.store');
+    Route::put('agrupada_materia/{agrupadaMateria}', [AgrupadaMateriasController::class, 'update'])
+        ->name('agrupada_materias.agrupada_materia.update');
+    Route::delete('/agrupada_materia/{agrupadaMateria}',[AgrupadaMateriasController::class, 'destroy'])
+        ->name('agrupada_materias.agrupada_materia.destroy');
+});
+
 
 Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
@@ -825,6 +844,23 @@ Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], funct
         ->name('condicion_materias.condicion_materia.update');
     Route::delete('/condicion_materia/{condicionMateria}', [CondicionMateriasController::class, 'destroy'])
         ->name('condicion_materias.condicion_materia.destroy');
+});
+
+Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']], function () {
+    Route::get('/', [CorrelatividadAgrupadasController::class, 'index'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.index');
+    Route::get('/create', [CorrelatividadAgrupadasController::class, 'create'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.create');
+    Route::get('/show/{correlatividadAgrupada}',[CorrelatividadAgrupadasController::class, 'show'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.show');
+    Route::get('/{correlatividadAgrupada}/edit',[CorrelatividadAgrupadasController::class, 'edit'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.edit');
+    Route::post('/', [CorrelatividadAgrupadasController::class, 'store'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.store');
+    Route::put('correlatividad_agrupada/{correlatividadAgrupada}', [CorrelatividadAgrupadasController::class, 'update'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.update');
+    Route::delete('/correlatividad_agrupada/{correlatividadAgrupada}',[CorrelatividadAgrupadasController::class, 'destroy'])
+        ->name('correlatividad_agrupadas.correlatividad_agrupada.destroy');
 });
 
 Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], function () {
@@ -952,7 +988,3 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
-
-
-
-
