@@ -69,6 +69,7 @@ use App\Http\Controllers\EstadoResolucionesController;
 use App\Http\Controllers\Ticket\EstadoTicketsController;
 use App\Http\Controllers\Ticket\TicketsController;
 use App\Http\Controllers\EstadoCarrerasController;
+use App\Http\Controllers\Ticket\CategoriasTicketsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -995,3 +996,22 @@ Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->na
 
 
 
+
+Route::group([
+    'prefix' => 'categorias_tickets',
+], function () {
+    Route::get('/', [CategoriasTicketsController::class, 'index'])
+         ->name('categorias_tickets.categorias_tickets.index');
+    Route::get('/create', [CategoriasTicketsController::class, 'create'])
+         ->name('categorias_tickets.categorias_tickets.create');
+    Route::get('/show/{categoriasTickets}',[CategoriasTicketsController::class, 'show'])
+         ->name('categorias_tickets.categorias_tickets.show')->where('id', '[0-9]+');
+    Route::get('/{categoriasTickets}/edit',[CategoriasTicketsController::class, 'edit'])
+         ->name('categorias_tickets.categorias_tickets.edit')->where('id', '[0-9]+');
+    Route::post('/', [CategoriasTicketsController::class, 'store'])
+         ->name('categorias_tickets.categorias_tickets.store');
+    Route::put('categorias_tickets/{categoriasTickets}', [CategoriasTicketsController::class, 'update'])
+         ->name('categorias_tickets.categorias_tickets.update')->where('id', '[0-9]+');
+    Route::delete('/categorias_tickets/{categoriasTickets}',[CategoriasTicketsController::class, 'destroy'])
+         ->name('categorias_tickets.categorias_tickets.destroy')->where('id', '[0-9]+');
+});

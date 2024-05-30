@@ -5,22 +5,22 @@ namespace App\Models\Ticket;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Nonstandard\Uuid;
 
-class EstadoTicket extends Model
+class CategoriaTicket extends Model
 {
-
+    
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'estado_tickets';
+    protected $table = 'categorias_tickets';
 
     /**
-     * The database primary key value.
-     *
-     * @var string
-     */
+    * The database primary key value.
+    *
+    * @var string
+    */
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
@@ -41,8 +41,9 @@ class EstadoTicket extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'identificador'
-    ];
+                  'nombre',
+                  'horas_de_espera'
+              ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -50,14 +51,14 @@ class EstadoTicket extends Model
      * @var array
      */
     protected $dates = [];
-
+    
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-
+    
 
 
     /**
@@ -81,4 +82,5 @@ class EstadoTicket extends Model
     {
         return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('j/n/Y g:i A');
     }
+
 }

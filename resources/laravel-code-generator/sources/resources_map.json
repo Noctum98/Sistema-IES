@@ -58,5 +58,15 @@
         "model-name": "estado_carreras",
         "resource-file": "estado_carreras.json",
         "table-name": "estado_carreras"
+    },
+    {
+        "model-name": "Categor\u00ediaTicket",
+        "resource-file": "categor\u00edia_tickets.json",
+        "table-name": "categor\u00edia_tickets"
+    },
+    {
+        "model-name": "CategoriasTickets",
+        "resource-file": "categorias_tickets.json",
+        "table-name": "categorias_tickets"
     }
 ]
