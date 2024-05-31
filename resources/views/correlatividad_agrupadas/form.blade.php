@@ -68,7 +68,7 @@
     <label for="cantidad_min" class="col-form-label text-lg-end col-lg-2 col-xl-3">Mínimo requerido</label>
     <div class="col-lg-10 col-xl-9">
         <input class="form-control{{ $errors->has('cantidad_min') ? ' is-invalid' : '' }}" name="cantidad_min" type="number" min="1" max="15" id="cantidad_min"
-               value="{{ old('cantidad_min', $correlatividadAgrupada->cantidad_min) }}"
+               value="{{ old('cantidad_min', optional($correlatividadAgrupada)->cantidad_min) }}"
                required="required" placeholder="Ingrese mínimo requerido aquí">
         {!! $errors->first('cantidad_min', '<div class="invalid-feedback">:message</div>') !!}
     </div>
