@@ -48,7 +48,10 @@ class ActaVolanteController extends Controller
             $this->mesaService->verificarInscripcionesEspeciales($inscripciones, $mesa->materia, $mesa->instancia);
         }
 
-        $cierres = $this->mesaService->fechaBloqueo($mesa,48);
+        $cierres = [
+            'cierre_primer_llamado' => false,
+            'cierre_segundo_llamado' => false
+        ];
 
         $data = array_merge($cierres,['mesa' => $mesa]);
 

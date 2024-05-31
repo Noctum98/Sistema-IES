@@ -120,22 +120,20 @@ class MesaService
         $primer_llamado_cierre = false;
         $segundo_llamado_cierre = false;
 
-        // Verificar si la fecha recibida más 48 horas es mayor que la fecha actual
+        
         if ($fechaPrimerLlamado->addHours($hours)->isPast()) {
             
             $primer_llamado_cierre = true;
             $mesa->cierre_profesor = true;
          }
         
-        // Verificar si la fecha recibida más 48 horas es mayor que la fecha actual
         if ($fechaSegundoLlamado && $fechaSegundoLlamado->addHours($hours)->isPast()) {
             
             $segundo_llamado_cierre = true;
             $mesa->cierre_profesor_segundo = true;
-
         }
-        
         $mesa->update();
+        
         return [
             'cierre_primer_llamado' => $primer_llamado_cierre,
             'cierre_segundo_llamado' => $segundo_llamado_cierre
