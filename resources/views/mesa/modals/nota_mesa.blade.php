@@ -10,7 +10,10 @@
             <div class="modal-body">
                 <p class="text-danger"><i>Si solo quiere poner una sola nota debe colocar un guión medio en el campo que no corresponde la nota.</i></p>
                 @if($cierre)
-                <p>Mesa cerrada, comunicarse con su coordinador ante cualquier situación.</p>
+                
+                <div class="alert alert-warning">
+                    Mesa cerrada, comunicarse con su coordinador ante cualquier situación.
+</div>
                 @endif
                 <form action="{{ !$inscripcion->acta_volante ? route('actas_volantes.store') :  route('actas_volantes.update',$inscripcion->acta_volante->id)}}" method="POST" >
                     @if($inscripcion->acta_volante)
