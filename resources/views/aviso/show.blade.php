@@ -1,7 +1,5 @@
 @extends('layouts.app-prueba')
-<link href="{{ asset('css/font-awesome/6.5.2/css/all.min.css') }}" rel="stylesheet"/>
-<link href="{{ asset('css/font-awesome/6.5.2/css/v4-shims.min.css') }}" rel="stylesheet"/>
-<link href="{{ asset('css/font-awesome/6.5.2/css/v5-font-face.min.css') }}" rel="stylesheet"/>
+<x-asset_fa_652/>
 @section('content')
 
 <div class="card text-bg-theme">

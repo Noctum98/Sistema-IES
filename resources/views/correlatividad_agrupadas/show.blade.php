@@ -1,5 +1,5 @@
 @extends('layouts.app-prueba')
-
+<x-asset_fa_652/>
 @section('content')
 
     <div class="card text-bg-theme">
@@ -52,11 +52,11 @@
                 <dt class="text-lg-end col-lg-2 col-xl-3">Nombre</dt>
                 <dd class="col-lg-10 col-xl-9">{{ $correlatividadAgrupada->Name }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Resolución N°: </dt>
-                <dd class="col-lg-10 col-xl-9">{{ optional($correlatividadAgrupada->Resolucione)->name }}</dd>
+                <dd class="col-lg-10 col-xl-9">{{ optional($correlatividadAgrupada->Resoluciones)->name }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Actualizada</dt>
                 <dd class="col-lg-10 col-xl-9">{{ $correlatividadAgrupada->updated_at }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Operador</dt>
-                <dd class="col-lg-10 col-xl-9">{{ optional($correlatividadAgrupada->user)->activo }}</dd>
+                <dd class="col-lg-10 col-xl-9">{{ optional($correlatividadAgrupada->user)->getApellidoNombre() }}</dd>
 
         </dl>
 

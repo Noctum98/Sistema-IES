@@ -17,12 +17,13 @@ class CorrelatividadAgrupada extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'Name',
-        'Description',
-        'Identifier',
+        'name',
+        'description',
+        'identifier',
         'resoluciones_id',
         'user_id',
-        'disabled'
+        'disabled',
+        'cantidad_min'
     ];
 
     protected static function boot()
