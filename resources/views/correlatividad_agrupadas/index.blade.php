@@ -48,8 +48,8 @@
                                 <td class="align-middle">{{ ($correlatividadAgrupada->Disabled) ? 'Si' : 'No' }}</td>
                                 <td class="align-middle">{{ $correlatividadAgrupada->Identifier }}</td>
                                 <td class="align-middle">{{ $correlatividadAgrupada->Name }}</td>
-                                <td class="align-middle">{{ optional($correlatividadAgrupada->Resolucione)->name }}</td>
-                                <td class="align-middle">{{ optional($correlatividadAgrupada->user)->activo }}</td>
+                                <td class="align-middle">{{ optional($correlatividadAgrupada->Resoluciones)->name }}</td>
+                                <td class="align-middle">{{ optional($correlatividadAgrupada->user)->getApellidoNombre() }}</td>
 
                                 <td class="text-end">
 

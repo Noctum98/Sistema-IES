@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class CorrelatividadAgrupadasController extends Controller
@@ -35,9 +36,9 @@ class CorrelatividadAgrupadasController extends Controller
     public function create()
     {
         $Resoluciones = Resoluciones::pluck('name', 'id')->all();
-        $users = User::pluck('activo', 'id')->all();
 
-        return view('correlatividad_agrupadas.create', compact('Resoluciones', 'users'));
+
+        return view('correlatividad_agrupadas.create', compact('Resoluciones'));
     }
 
     /**
@@ -51,6 +52,8 @@ class CorrelatividadAgrupadasController extends Controller
     {
 
         $data = $this->getData($request);
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
 
         CorrelatividadAgrupada::create($data);
 
@@ -140,12 +143,11 @@ class CorrelatividadAgrupadasController extends Controller
     protected function getData(Request $request): array
     {
         $rules = [
-            'Description' => 'required|string|min:1|max:191',
-            'Disabled' => 'boolean',
-            'Identifier' => 'required|string|min:1|max:191',
-            'Name' => 'required|string|min:1|max:191',
-            'resoluciones_id' => 'required',
-            'user_id' => 'required',
+            'description' => 'required|string|min:1|max:191',
+            'disabled' => 'boolean',
+            'identifier' => 'required|string|min:1|max:191',
+            'name' => 'required|string|min:1|max:191',
+            'resoluciones_id' => 'required'
         ];
 
         $data = $request->validate($rules);
