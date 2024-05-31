@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\CorrelatividadAgrupada;
 use App\Models\Resoluciones;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -86,9 +84,8 @@ class CorrelatividadAgrupadasController extends Controller
     {
         $correlatividadAgrupada = CorrelatividadAgrupada::findOrFail($id);
         $Resoluciones = Resoluciones::pluck('name', 'id')->all();
-        $users = User::pluck('activo', 'id')->all();
 
-        return view('correlatividad_agrupadas.edit', compact('correlatividadAgrupada', 'Resoluciones', 'users'));
+        return view('correlatividad_agrupadas.edit', compact('correlatividadAgrupada', 'Resoluciones'));
     }
 
     /**
@@ -103,6 +100,10 @@ class CorrelatividadAgrupadasController extends Controller
     {
 
         $data = $this->getData($request);
+
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
+
 
         $correlatividadAgrupada = CorrelatividadAgrupada::findOrFail($id);
         $correlatividadAgrupada->update($data);
@@ -147,12 +148,18 @@ class CorrelatividadAgrupadasController extends Controller
             'disabled' => 'boolean',
             'identifier' => 'required|string|min:1|max:191',
             'name' => 'required|string|min:1|max:191',
-            'resoluciones_id' => 'required'
+            'resoluciones_id' => 'required',
+            'cantidad_min' => 'required|integer|between:1,15',
         ];
 
         $data = $request->validate($rules);
 
-        $data['Disabled'] = $request->has('Disabled');
+        $data['identifier'] = strtolower($data['identifier']);
+        $data['identifier'] = str_replace(' ', '_', $data['identifier']);
+
+        if (!isset($data['disabled'])) {
+            $data['disabled'] = false;
+        }
 
         return $data;
     }

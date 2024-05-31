@@ -36,7 +36,8 @@
                             <th>Deshabilitada</th>
                             <th>Identificador</th>
                             <th>Nombre</th>
-                            <th>Resolución Nro: </th>
+                            <th>Resolución Nro.</th>
+                            <th>Mínimo requerido</th>
                             <th>Operador</th>
 
                             <th></th>
@@ -45,10 +46,11 @@
                         <tbody>
                         @foreach($correlatividadAgrupadas as $correlatividadAgrupada)
                             <tr>
-                                <td class="align-middle">{{ ($correlatividadAgrupada->Disabled) ? 'Si' : 'No' }}</td>
-                                <td class="align-middle">{{ $correlatividadAgrupada->Identifier }}</td>
-                                <td class="align-middle">{{ $correlatividadAgrupada->Name }}</td>
+                                <td class="align-middle">{{ ($correlatividadAgrupada->disabled) ? 'Si' : 'No' }}</td>
+                                <td class="align-middle">{{ $correlatividadAgrupada->identifier }}</td>
+                                <td class="align-middle">{{ $correlatividadAgrupada->name }}</td>
                                 <td class="align-middle">{{ optional($correlatividadAgrupada->Resoluciones)->name }}</td>
+                                <td class="align-middle">{{ $correlatividadAgrupada->cantidad_min }}</td>
                                 <td class="align-middle">{{ optional($correlatividadAgrupada->user)->getApellidoNombre() }}</td>
 
                                 <td class="text-end">

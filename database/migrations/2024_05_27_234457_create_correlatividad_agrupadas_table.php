@@ -10,11 +10,11 @@ return new class extends Migration {
         Schema::create('correlatividad_agrupadas', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('Name');
-            $table->string('Description');
-            $table->string('Identifier');
-            $table->unique('Identifier');
-            $table->boolean('Disabled')->default(false);
+            $table->string('name');
+            $table->string('description');
+            $table->string('identifier');
+            $table->unique('identifier');
+            $table->boolean('disabled')->default(false);
             $table->foreignUuid('resoluciones_id');
             $table->foreignId('user_id');
             $table->softDeletes();
