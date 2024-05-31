@@ -69,12 +69,9 @@ use App\Http\Controllers\EstadoResolucionesController;
 use App\Http\Controllers\Ticket\EstadoTicketsController;
 use App\Http\Controllers\Ticket\TicketsController;
 use App\Http\Controllers\EstadoCarrerasController;
-<<<<<<< HEAD
 use App\Http\Controllers\Ticket\CategoriasTicketsController;
-=======
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
->>>>>>> a9e3ccb28eedb58cb821c9d7cf524f01d3726809
 
 /*
 |--------------------------------------------------------------------------
@@ -1031,12 +1028,6 @@ Route::group([
 });
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
-<<<<<<< HEAD
-
-
-
-
-
 Route::group([
     'prefix' => 'categorias_tickets',
 ], function () {
@@ -1055,5 +1046,3 @@ Route::group([
     Route::delete('/categorias_tickets/{categoriasTickets}',[CategoriasTicketsController::class, 'destroy'])
          ->name('categorias_tickets.categorias_tickets.destroy')->where('id', '[0-9]+');
 });
-=======
->>>>>>> a9e3ccb28eedb58cb821c9d7cf524f01d3726809

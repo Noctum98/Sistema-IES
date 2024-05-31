@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Models\Estados;
+use App\Models\Ticket\CategoriaTicket;
 use App\Models\Ticket\Estado;
 use App\Models\Ticket\EstadoTicket;
 use App\Models\Ticket\Ticket;
@@ -44,8 +45,9 @@ class TicketsController extends Controller
     {
         $users = User::pluck('username', 'id')->all();
         $estados = EstadoTicket::select('id','nombre')->get();
-        $tickets = Ticket::pluck('id', 'id')->all();
-        return view('tickets.tickets.create', compact('users', 'estados', 'tickets'));
+        $categorias = CategoriaTicket::pluck('nombre','id')->all();
+
+        return view('tickets.tickets.create', compact('users', 'estados','categorias'));
     }
 
     /**
@@ -155,6 +157,7 @@ class TicketsController extends Controller
         $rules = [
             'user_id' => 'required',
             'estado_id' => 'required',
+            'categoria_id' => 'required',
             'asunto' => 'required|string|min:1|max:191',
             'descripcion' => 'required',
             'captura' => 'required|string|min:1|max:191',

@@ -32,11 +32,9 @@
                 <table class="table table-striped ">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th>Usuario</th>
                             <th>Estado</th>
-                            <th>Ticket</th>
                             <th>Asunto</th>
-
                             <th></th>
                         </tr>
                     </thead>
@@ -44,8 +42,7 @@
                     @foreach($tickets as $ticket)
                         <tr>
                             <td class="align-middle">{{ optional($ticket->user)->username }}</td>
-                            <td class="align-middle">{{ optional($ticket->estado)->id }}</td>
-                            <td class="align-middle">{{ optional($ticket->ticket)->id }}</td>
+                            <td class="align-middle">@include('componentes.tickets.colorEstado',['estado'=>$ticket->estado])</td>
                             <td class="align-middle">{{ $ticket->asunto }}</td>
 
                             <td class="text-end">
@@ -56,15 +53,18 @@
 
                                     <div class="btn-group btn-group-sm" role="group">
                                         <a href="{{ route('tickets.ticket.show', $ticket->id ) }}" class="btn btn-info" title="Show Ticket">
-                                            <span class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></span>
-                                        </a>
-                                        <a href="{{ route('tickets.ticket.edit', $ticket->id ) }}" class="btn btn-primary" title="Edit Ticket">
-                                            <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
+                                            <span class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></span> Ver
                                         </a>
 
+                                        @if(Session::has('admin'))
+                                        <a href="{{ route('tickets.ticket.edit', $ticket->id ) }}" class="btn btn-primary" title="Edit Ticket">
+                                            <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
+                                        </a>
+                                        
                                         <button type="submit" class="btn btn-danger" title="Delete Ticket" onclick="return confirm(&quot;Click Ok to delete Ticket.&quot;)">
-                                            <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
+                                            <span class="fa-regular fa-trash-can" aria-hidden="true"></span> Eliminar
                                         </button>
+                                        @endif
                                     </div>
 
                                 </form>
