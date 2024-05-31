@@ -53,7 +53,7 @@ $(document).ready(function () {
                 $("#form-config-" + materia_id).removeClass('d-none');
 
                 if (response.status == 'success') {
-                    setFormData(response.mesa, materia_id);
+                    setFormData(response.mesa, materia_id,response);
                 } else {
                     emptyFormData(materia_id);
                 }
@@ -74,7 +74,7 @@ $(document).ready(function () {
         $('#presidente-' + materia_id).attr('disabled', false);
         $('#primer_vocal-' + materia_id).attr('disabled', false);
         $('#segundo_vocal-' + materia_id).attr('disabled', false);
-        if (data.cierre_primer_llamado) {
+        if (data.cierre_primer_llamado && !data.admin) {
             $('#presidente-' + materia_id).attr('disabled', true);
             $('#primer_vocal-' + materia_id).attr('disabled', true);
             $('#segundo_vocal-' + materia_id).attr('disabled', true);
