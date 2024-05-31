@@ -9,6 +9,8 @@ class Acreditacion extends Model
 {
     use HasFactory;
 
+    protected $table = 'acreditaciones';
+
     protected $fillable = [
         'detalle_trianual_id',
         'operador_id',

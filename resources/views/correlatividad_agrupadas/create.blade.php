@@ -1,5 +1,5 @@
 @extends('layouts.app-prueba')
-
+<x-asset_fa_652/>
 @section('content')
 
     <div class="card text-bg-theme">
@@ -44,4 +44,16 @@
         </div>
     </div>
 
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#resoluciones_id').select2({
+                width: "100%",
+                theme: "classic",
+                clear: true,
+                placeholder: "Seleccione resolución"
+            });
+        });
+    </script>
 @endsection
