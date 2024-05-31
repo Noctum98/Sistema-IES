@@ -1019,6 +1019,8 @@ Route::group([
          ->name('tickets.ticket.show')->where('id', '[0-9]+');
     Route::get('/{ticket}/edit',[TicketsController::class, 'edit'])
          ->name('tickets.ticket.edit')->where('id', '[0-9]+');
+    Route::get('/{ticket_id}/captura',[TicketsController::class,'showCaptura'])
+          ->name('tickets.captura');
     Route::post('/', [TicketsController::class, 'store'])
          ->name('tickets.ticket.store');
     Route::put('ticket/{ticket}', [TicketsController::class, 'update'])

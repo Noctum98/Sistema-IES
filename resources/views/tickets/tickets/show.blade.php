@@ -41,16 +41,36 @@
             <dd class="col-lg-10 col-xl-9">{{ $ticket->asunto }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Descripcion:</dt>
             <dd class="col-lg-10 col-xl-9">{!! $ticket->descripcion !!}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Captura</dt>
-            <dd class="col-lg-10 col-xl-9">{{ $ticket->captura }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Url</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Captura:</dt>
+            <dd class="col-lg-10 col-xl-9">
+                <a class="btn btn-sm btn-primary" href="{{ route('tickets.captura',$ticket->id) }}" target="_blank">Ver captura</a>
+            </dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Url:</dt>
             <dd class="col-lg-10 col-xl-9"><a href="{{ $ticket->url }}" target="_blank" rel="noopener noreferrer">{{ $ticket->url }}</a></dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Creado</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Creado:</dt>
             <dd class="col-lg-10 col-xl-9">{{ $ticket->created_at }}</dd>
 
 
         </dl>
+        <div class="d-flex justify-content-end align-items-center p-3">
 
+            @if(!$ticket->responsable)
+            <div>
+                <button class="btn btn-primary">Tomar ticket</button>
+                <button class="btn btn-primary">Derivar ticket</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Cambiar Estado
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+            @endif
+        </div>
     </div>
 </div>
 

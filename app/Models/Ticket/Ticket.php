@@ -4,6 +4,8 @@ namespace App\Models\Ticket;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
@@ -86,14 +88,24 @@ class Ticket extends Model
         return $this->belongsTo(EstadoTicket::class,'estado_id');
     }
 
-    /**
-     * Get the ticket for this model.
-     *
-     * @return App\Models\Ticket
-     */
-    public function ticket()
+    public function derivaciones(): HasMany
     {
-        return $this->belongsTo(Ticket::class,'ticket_id');
+        return $this->hasMany(DerivacionTicket::class);
+    }
+
+    public function derivacion(): HasOne
+    {
+        return $this->hasOne(DerivacionTicket::class);
+    }
+
+    public function asignaciones(): HasMany
+    {
+        return $this->hasMany(AsignacionTicket::class);
+    }
+
+    public function responsable(): HasOne
+    {
+        return $this->hasOne(AsignacionTicket::class)->where('responsable', 1)->latest();
     }
 
 

@@ -13,6 +13,7 @@ use App\Services\FileService;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TicketsController extends Controller
 {
@@ -81,7 +82,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = Ticket::with('user', 'estado', 'ticket')->findOrFail($id);
+        $ticket = Ticket::with('user', 'estado')->findOrFail($id);
 
         return view('tickets.tickets.show', compact('ticket'));
     }
@@ -97,7 +98,7 @@ class TicketsController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
         $users = User::pluck('username', 'id')->all();
-        $estados = Estado::pluck('id', 'id')->all();
+        $estados = EstadoTicket::pluck('id', 'id')->all();
         $tickets = Ticket::pluck('id', 'id')->all();
 
         return view('tickets.tickets.edit', compact('ticket', 'users', 'estados', 'tickets'));
@@ -142,6 +143,26 @@ class TicketsController extends Controller
 
             return back()->withInput()
                 ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+        }
+    }
+
+    public function showCaptura(Request $request, $ticket_id)
+    {
+        $ticket = Ticket::select('captura')->where('id',$ticket_id)->first();
+        $rutaArchivo = 'tickets/' . $ticket->captura;
+
+        $rutaCompleta = storage_path("app/{$rutaArchivo}");
+
+        $mimeType = mime_content_type($rutaCompleta);
+
+        if (Storage::disk('local')->exists($rutaArchivo)) {
+            $headers = [
+                'Content-Type' => $mimeType,
+            ];
+
+            return response()->file($rutaCompleta, $headers);
+        } else {
+            abort(404, 'Archivo no encontrado');
         }
     }
 
