@@ -2,7 +2,7 @@
     <label for="mensaje" class="col-form-label text-lg-end col-lg-2 col-xl-3">Mensaje</label>
     <div class="col-lg-10 col-xl-9">
         <textarea class="form-control{{ $errors->has('mensaje') ? ' is-invalid' : '' }}" name="mensaje" id="mensaje"
-                  required="true"
+                  required="required"
                   placeholder="Ingrese aviso aquí...">{{ old('mensaje', optional($aviso)->mensaje) }}</textarea>
         {!! $errors->first('mensaje', '<div class="invalid-feedback">:message</div>') !!}
     </div>
@@ -11,7 +11,7 @@
 <div class="mb-3 row">
     <label for="role_destinatario" class="col-form-label text-lg-end col-lg-2 col-xl-3">Role Destinatario</label>
     <select class="form-select{{ $errors->has('role_destinatario') ? ' is-invalid' : '' }} col-6" multiple id="role_destinatario"
-            name="role_destinatario[]" required="true">
+            name="role_destinatario[]" required="required">
         <option value="0" style="display: none;" selected> Todos los destinatarios
         </option>
         @foreach ($roles as $rol)

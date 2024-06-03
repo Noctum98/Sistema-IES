@@ -12,7 +12,7 @@
         </button>
     @endif
 
-    @if(!$mesa->cierre_profesor_segundo && $mesa->fecha_segundo && !cierre_segundo_llamado)
+    @if(!$mesa->cierre_profesor_segundo && $mesa->fecha_segundo && !$cierre_segundo_llamado)
     <button class="llamado btn btn-sm btn-warning mb-3" id="2" data-bs-toggle="modal" data-bs-target="#cerrarActa{{$mesa->id}}">Cerrar 2do llamado</button>
     @endif
 

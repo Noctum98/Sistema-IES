@@ -4,6 +4,8 @@
     <h2 class="h1 text-info">
         Inscripciones en {{$materia->nombre}}
     </h2>
+    
+
     <hr>
     @if(@session('baja_exitosa'))
     <div class="alert alert-warning">
@@ -40,7 +42,7 @@
     </div>
     @if($mesa && !$mesa->comision_id)
     <div class="row">
-        @if($mesa->cierre_profesor && !$cierre_primer_llamado || !Session::has('admin'))
+        @if($mesa->cierre_profesor && !$cierre_primer_llamado)
         <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="col-md-1 mt-1">
             {{method_field('PUT')}}
             <input type="hidden" name="llamado" value="1" id="llamado">
@@ -139,7 +141,7 @@
     @foreach($materia->mesas_instancias($instancia->id) as $mesa)
     <h3 class="text-info">Mesa: {{ $mesa->comision->nombre }}</h3>
     @if(count($mesa->mesa_inscriptos()->get()) > 0)
-    @if($mesa->cierre_profesor && !$cierre_primer_llamado || !Session::has('admin'))
+    @if($mesa->cierre_profesor && !$cierre_primer_llamado)
     <form action="{{route('mesa.abrir_acta',['mesa_id'=>$mesa->id])}}" method="POST" class="mt-2">
         {{method_field('PUT')}}
         <input type="hidden" name="llamado" value="1" id="llamado">
