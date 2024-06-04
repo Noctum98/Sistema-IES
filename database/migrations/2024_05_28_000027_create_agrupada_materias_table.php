@@ -24,8 +24,6 @@ return new class extends Migration {
             $table->foreign('master_materia_id')
                 ->references('id')->
                 on('master_materias');
-
-
         });
     }
 

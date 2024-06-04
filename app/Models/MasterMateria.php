@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
@@ -72,5 +73,15 @@ class MasterMateria extends Model
     public function regimen(): BelongsTo
     {
         return $this->belongsTo(Regimen::class);
+    }
+
+    public function agrupadaMaterias(): HasMany
+    {
+        return $this->hasMany(AgrupadaMateria::class, 'master_materia_id');
+    }
+
+    public function materias(): HasMany
+    {
+        return $this->hasMany(Materia::class, 'master_materia_id');
     }
 }
