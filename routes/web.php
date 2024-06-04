@@ -800,12 +800,18 @@ Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], functi
         ->name('agrupada_materias.agrupada_materia.index');
     Route::get('/create', [AgrupadaMateriasController::class, 'create'])
         ->name('agrupada_materias.agrupada_materia.create');
+    Route::get('/create_group/{correlatividadAgrupada}', [AgrupadaMateriasController::class, 'createGroup'])
+        ->name('agrupada_materias.agrupada_materia.create_group');
     Route::get('/show/{agrupadaMateria}',[AgrupadaMateriasController::class, 'show'])
         ->name('agrupada_materias.agrupada_materia.show');
     Route::get('/{agrupadaMateria}/edit',[AgrupadaMateriasController::class, 'edit'])
         ->name('agrupada_materias.agrupada_materia.edit');
+    Route::get('/{correlatividadAgrupada}/edit_group',[AgrupadaMateriasController::class, 'editGroup'])
+        ->name('agrupada_materias.agrupada_materia.edit_group');
     Route::post('/', [AgrupadaMateriasController::class, 'store'])
         ->name('agrupada_materias.agrupada_materia.store');
+    Route::post('/store_group', [AgrupadaMateriasController::class, 'storeGroup'])
+        ->name('agrupada_materias.agrupada_materia.store_group');
     Route::put('agrupada_materia/{agrupadaMateria}', [AgrupadaMateriasController::class, 'update'])
         ->name('agrupada_materias.agrupada_materia.update');
     Route::delete('/agrupada_materia/{agrupadaMateria}',[AgrupadaMateriasController::class, 'destroy'])
