@@ -12,17 +12,25 @@
                 name="master_materia_id[]" required="required" multiple="multiple">
             <option value="" style="display: none;"
             @foreach ($MasterMaterias as $key => $masterMateria)
-                {{--                <option value="" style="display: none;"--}}
-                {{--                        {{ old('master_materia_id', optional($agrupadaMateria)->master_materia_id ?: '') == '' ? 'selected' : '' }} disabled--}}
-                {{--                        selected>Seleccione una materia--}}
-                {{--                </option>--}}
-                <option
-                    value="{{ $key }}" {{ old('master_materia_id', optional($agrupadaMateria)->master_materia_id) == $key ? 'selected' : '' }}>
-                    {{ $masterMateria }}
-                </option>
+                @if(in_array($key, $correlatividadAgrupada->agrupadaMaterias->pluck('master_materia_id')->toArray()))
+                    <option value="{{ $key }}" selected="selected">
+                        {{ $masterMateria }}
+                    </option>
+                @else
+
+                    <option value="{{ $key }}">
+                        {{ $masterMateria }}
+                    </option>
+
+                @endif
+
             @endforeach
         </select>
 
         {!! $errors->first('master_materia_id', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
+
+
+
+
