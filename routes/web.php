@@ -380,7 +380,7 @@ Route::prefix('sedes')->group(function () {
     Route::post('editar-sede/{id}', [SedeController::class, 'editar'])->name('editar_sede');
     Route::get('eliminar-sede/{id}', [SedeController::class, 'eliminar'])->name('eliminar_sede');
     Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
-    Route::get('/getSedes',[SedeController::class,'getSedes']);
+    Route::get('/getSedes', [SedeController::class, 'getSedes']);
 });
 
 Route::prefix('usuario_cargo')->group(function () {
@@ -572,7 +572,7 @@ Route::prefix('alumno/parci')->group(function () {
 Route::prefix('mesas')->group(function () {
     Route::get('/inscripcion/{id}', [AlumnoMesaController::class, 'vista_home'])->name('mesa.welcome');
     Route::get('/instancias', [AlumnoMesaController::class, 'vista_instancias'])->name('mesa.instancias');
-    Route::get('/instancia/{id}',[InstanciaController::class,'getInstancia']);
+    Route::get('/instancia/{id}', [InstanciaController::class, 'getInstancia']);
     Route::get('/administrar/{todos?}', [InstanciaController::class, 'vista_admin'])->name('mesa.admin');
     Route::get('/carreras/{sede_id}/{instancia_id}', [InstanciaController::class, 'vista_carreras'])->name('mesa.carreras');
     Route::get('/carrera/admin/{id}/{instancia_id}', [InstanciaController::class, 'vista_mesas'])->name('mesa.mesas');
@@ -801,11 +801,11 @@ Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], functi
         ->name('agrupada_materias.agrupada_materia.create');
     Route::get('/create_group/{correlatividadAgrupada}', [AgrupadaMateriasController::class, 'createGroup'])
         ->name('agrupada_materias.agrupada_materia.create_group');
-    Route::get('/show/{agrupadaMateria}',[AgrupadaMateriasController::class, 'show'])
+    Route::get('/show/{agrupadaMateria}', [AgrupadaMateriasController::class, 'show'])
         ->name('agrupada_materias.agrupada_materia.show');
-    Route::get('/{agrupadaMateria}/edit',[AgrupadaMateriasController::class, 'edit'])
+    Route::get('/{agrupadaMateria}/edit', [AgrupadaMateriasController::class, 'edit'])
         ->name('agrupada_materias.agrupada_materia.edit');
-    Route::get('/{correlatividadAgrupada}/edit_group',[AgrupadaMateriasController::class, 'editGroup'])
+    Route::get('/{correlatividadAgrupada}/edit_group', [AgrupadaMateriasController::class, 'editGroup'])
         ->name('agrupada_materias.agrupada_materia.edit_group');
     Route::post('/', [AgrupadaMateriasController::class, 'store'])
         ->name('agrupada_materias.agrupada_materia.store');
@@ -813,7 +813,9 @@ Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], functi
         ->name('agrupada_materias.agrupada_materia.store_group');
     Route::put('agrupada_materia/{agrupadaMateria}', [AgrupadaMateriasController::class, 'update'])
         ->name('agrupada_materias.agrupada_materia.update');
-    Route::delete('/agrupada_materia/{agrupadaMateria}',[AgrupadaMateriasController::class, 'destroy'])
+    Route::put('agrupada_materia/{correlatividadAgrupada}/update_group', [AgrupadaMateriasController::class, 'updateGroup'])
+        ->name('agrupada_materias.agrupada_materia.update_group');
+    Route::delete('/agrupada_materia/{agrupadaMateria}', [AgrupadaMateriasController::class, 'destroy'])
         ->name('agrupada_materias.agrupada_materia.destroy');
 });
 
@@ -857,15 +859,15 @@ Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']],
         ->name('correlatividad_agrupadas.correlatividad_agrupada.index');
     Route::get('/create', [CorrelatividadAgrupadasController::class, 'create'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.create');
-    Route::get('/show/{correlatividadAgrupada}',[CorrelatividadAgrupadasController::class, 'show'])
+    Route::get('/show/{correlatividadAgrupada}', [CorrelatividadAgrupadasController::class, 'show'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.show');
-    Route::get('/{correlatividadAgrupada}/edit',[CorrelatividadAgrupadasController::class, 'edit'])
+    Route::get('/{correlatividadAgrupada}/edit', [CorrelatividadAgrupadasController::class, 'edit'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.edit');
     Route::post('/', [CorrelatividadAgrupadasController::class, 'store'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.store');
     Route::put('correlatividad_agrupada/{correlatividadAgrupada}', [CorrelatividadAgrupadasController::class, 'update'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.update');
-    Route::delete('/correlatividad_agrupada/{correlatividadAgrupada}',[CorrelatividadAgrupadasController::class, 'destroy'])
+    Route::delete('/correlatividad_agrupada/{correlatividadAgrupada}', [CorrelatividadAgrupadasController::class, 'destroy'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.destroy');
 });
 
@@ -990,7 +992,6 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
     Route::delete('/tipo_carrera/{tipoCarrera}', [TipoCarrerasController::class, 'destroy'])
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
-
 
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');

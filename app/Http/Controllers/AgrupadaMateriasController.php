@@ -83,27 +83,9 @@ class AgrupadaMateriasController extends Controller
      */
     public function storeGroup(Request $request)
     {
-
         $data = $this->getDataGroup($request);
 
-        $user = Auth::user()->id;
-
-
-
-        $datos = [];
-
-        $datos['user_id'] = $user;
-        $datos['correlatividad_agrupada_id'] = $data['correlatividad_agrupada_id'];
-        $datos['disabled'] = false;
-
-        foreach ($data['master_materia_id'] as $master_materia_id) {
-            $datos['master_materia_id'] = $master_materia_id;
-            AgrupadaMateria::create($datos);
-        }
-
-
-
-
+        $this->addMateriasAgrupadas($data);
 
         return redirect()->route('agrupada_materias.agrupada_materia.index')
             ->with('success_message', 'Materia Agrupada correctamente agregada.');
@@ -148,12 +130,11 @@ class AgrupadaMateriasController extends Controller
      */
     public function editGroup(CorrelatividadAgrupada $correlatividadAgrupada)
     {
-//        $agrupadaMateria = AgrupadaMateria::findOrFail($id);
-//        $CorrelatividadAgrupadas = CorrelatividadAgrupada::pluck('Name', 'id')->all();
-        $MasterMaterias = MasterMateria::pluck('name', 'id')->all();
+
+        $MasterMaterias = MasterMateria::where('resoluciones_id', $correlatividadAgrupada->resoluciones_id)->get()->pluck('name', 'id')->all();
 
 
-        return view('agrupada_materias.edit', compact( 'correlatividadAgrupada', 'MasterMaterias'));
+        return view('agrupada_materias.edit_group', compact( 'correlatividadAgrupada', 'MasterMaterias'));
     }
 
     /**
@@ -174,6 +155,30 @@ class AgrupadaMateriasController extends Controller
 
         return redirect()->route('agrupada_materias.agrupada_materia.index')
             ->with('success_message', 'Materia agrupada correctamente actualizada.');
+    }
+
+    /**
+     * Update the specified agrupada materia in the storage.
+     *
+     * @param CorrelatividadAgrupada $correlatividadAgrupada
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function updateGroup(CorrelatividadAgrupada $correlatividadAgrupada, Request $request)
+    {
+
+        $data = $this->getDataGroup($request);
+        foreach ($correlatividadAgrupada->agrupadaMaterias()->get() as $agrupada) {
+            $agrupada->delete();
+        }
+
+
+        $this->addMateriasAgrupadas($data);
+
+
+        return redirect()->route('correlatividad_agrupadas.correlatividad_agrupada.index')
+            ->with('success_message', 'Materias Agrupadas correctamente agregadas.');
     }
 
     /**
@@ -235,6 +240,24 @@ class AgrupadaMateriasController extends Controller
         ];
 
         return $request->validate($rules);
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function addMateriasAgrupadas(array $data): void
+    {
+        $user = Auth::user()->id;
+        $datos = [];
+        $datos['user_id'] = $user;
+        $datos['correlatividad_agrupada_id'] = $data['correlatividad_agrupada_id'];
+        $datos['disabled'] = false;
+
+        foreach ($data['master_materia_id'] as $master_materia_id) {
+            $datos['master_materia_id'] = $master_materia_id;
+            AgrupadaMateria::create($datos);
+        }
     }
 
 }
