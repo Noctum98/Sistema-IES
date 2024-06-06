@@ -7,6 +7,7 @@ use App\Models\AvisoRole;
 use App\Models\CorrelatividadAgrupada;
 use App\Models\EstadoCarrera;
 use App\Models\EstadoResoluciones;
+use App\Models\Library;
 use App\Models\MasterMateria;
 use App\Models\MateriasCorrelativasCursado;
 use App\Models\Regimen;
@@ -17,13 +18,13 @@ use App\Policies\AvisoRolePolicy;
 use App\Policies\CorrelatividadAgrupadaPolicy;
 use App\Policies\EstadoCarreraPolicy;
 use App\Policies\EstadoResolucionesPolicy;
+use App\Policies\LibraryPolicy;
 use App\Policies\MasterMateriaPolicy;
 use App\Policies\MateriasCorrelativasCursadoPolicy;
 use App\Policies\RegimenPolicy;
 use App\Policies\resolucionesPolicy;
 use App\Policies\TipoCarreraPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,7 @@ class AuthServiceProvider extends ServiceProvider
         EstadoCarrera::class => EstadoCarreraPolicy::class,
         CorrelatividadAgrupada::class => CorrelatividadAgrupadaPolicy::class,
         AgrupadaMateria::class => AgrupadaMateriaPolicy::class,
+        Library::class => LibraryPolicy::class,
     ];
 
     /**

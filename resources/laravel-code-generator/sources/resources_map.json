@@ -53,5 +53,10 @@
         "model-name": "correlatividad_agrupadas",
         "resource-file": "correlatividad_agrupadas.json",
         "table-name": "correlatividad_agrupadas"
+    },
+    {
+        "model-name": "libraries",
+        "resource-file": "libraries.json",
+        "table-name": "libraries"
     }
 ]
