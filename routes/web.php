@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActaVolanteController;
+use App\Http\Controllers\Admin\LibrariesAdminController;
 use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
@@ -21,10 +22,6 @@ use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use App\Http\Controllers\ZTestController;
-use App\Models\MasterMateria;
-use App\Models\Materia;
-use App\Models\Regimen;
-use App\Models\Resoluciones;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -69,6 +66,7 @@ use App\Http\Controllers\EstadoResolucionesController;
 use App\Http\Controllers\EstadoCarrerasController;
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
+use App\Http\Controllers\LibrariesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -996,3 +994,27 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+
+Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrariesAdminController::class, 'index'])
+         ->name('admin-libraries.library.index');
+    Route::get('/create', [LibrariesAdminController::class, 'create'])
+         ->name('admin-libraries.library.create');
+    Route::get('/show/{library}',[LibrariesAdminController::class, 'show'])
+         ->name('admin-libraries.library.show');
+    Route::get('/{library}/edit',[LibrariesAdminController::class, 'edit'])
+         ->name('admin-libraries.library.edit');
+    Route::post('/', [LibrariesAdminController::class, 'store'])
+         ->name('admin-libraries.library.store');
+    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
+         ->name('admin-libraries.library.update');
+    Route::delete('/library/{library}',[LibrariesAdminController::class, 'destroy'])
+         ->name('admin-libraries.library.destroy');
+});
+
+Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrariesController::class, 'index'])
+         ->name('libraries.library.index');
+    Route::get('/show/{library}',[LibrariesController::class, 'show'])
+         ->name('libraries.library.show');
+});

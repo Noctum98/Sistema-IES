@@ -172,7 +172,7 @@
                     {{--                    </a>--}}
                     {{--                     ----->--}}
                 @endif
-                <a class="nav-link" href="https://drive.google.com/drive/folders/1crwsQzH8bVTu2c6oWFN5Qf4-ra7lVSzG"
+                <a class="nav-link" href="{{ route('libraries.library.index') }}"
                    target="__blank">
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca
