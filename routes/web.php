@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActaVolanteController;
+use App\Http\Controllers\Admin\AdminManagersController;
 use App\Http\Controllers\Admin\LibrariesAdminController;
 use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
 use App\Http\Controllers\AdminController;
@@ -68,6 +69,7 @@ use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -81,6 +83,9 @@ use App\Http\Controllers\LibrariesController;
 
 
 Auth::routes();
+
+
+
 Route::get('/register-alumno/{carrera_id}', [RegisterController::class, 'showRegistrationAlumnosForm'])->name('register.alumnos');
 Route::post('register-alumno', [RegisterController::class, 'registerAlumno'])->name('register.alumno.store');
 
@@ -114,6 +119,26 @@ Route::prefix('admin')->group(function () {
     Route::get('/calificaciones/{carrera_id}/carrera', [AdminController::class, 'vista_calificaciones_materias'])->name('admin.calificaciones.materias');
     Route::get('/calificaciones/{materia_id}/cargo', [AdminController::class, 'vista_calificaciones_cargos'])->name('admin.calificaciones.cargos');
 });
+
+Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function () {
+    Route::get('/', [AdminManagersController::class, 'index'])
+        ->name('admin_managers.admin_manager.index');
+    Route::get('/listado', [AdminManagersController::class, 'listado'])
+        ->name('admin_managers.admin_manager.listado');
+    Route::get('/create', [AdminManagersController::class, 'create'])
+        ->name('admin_managers.admin_manager.create');
+    Route::get('/show/{adminManager}',[AdminManagersController::class, 'show'])
+        ->name('admin_managers.admin_manager.show');
+    Route::get('/{adminManager}/edit',[AdminManagersController::class, 'edit'])
+        ->name('admin_managers.admin_manager.edit');
+    Route::post('/', [AdminManagersController::class, 'store'])
+        ->name('admin_managers.admin_manager.store');
+    Route::put('admin_manager/{adminManager}', [AdminManagersController::class, 'update'])
+        ->name('admin_managers.admin_manager.update');
+    Route::delete('/admin_manager/{adminManager}',[AdminManagersController::class, 'destroy'])
+        ->name('admin_managers.admin_manager.destroy');
+});
+
 
 // Rutas de Alumnos
 Route::prefix('alumnos')->group(function () {
@@ -1017,3 +1042,5 @@ Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
     Route::get('/show/{library}',[LibrariesController::class, 'show'])
          ->name('libraries.library.show');
 });
+
+

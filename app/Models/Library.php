@@ -68,11 +68,14 @@ class Library extends Model
     /**
      * Get deleted_at in array format
      *
-     * @param string $value
-     * @return string
+     * @param string|null $value
+     * @return string|null
      */
-    public function getDeletedAtAttribute(string $value): string
+    public function getDeletedAtAttribute(string $value = null): ?string
     {
+        if(!$value) {
+            return $value;
+        }
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
 

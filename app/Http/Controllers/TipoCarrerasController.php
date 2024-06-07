@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class TipoCarrerasController extends Controller
 {
@@ -15,7 +16,7 @@ class TipoCarrerasController extends Controller
     /**
      * Display a listing of the tipo carreras.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
@@ -27,7 +28,7 @@ class TipoCarrerasController extends Controller
     /**
      * Show the form for creating a new tipo carrera.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -59,7 +60,7 @@ class TipoCarrerasController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function show($id)
     {
@@ -73,7 +74,7 @@ class TipoCarrerasController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit($id)
     {
