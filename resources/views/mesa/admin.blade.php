@@ -58,8 +58,11 @@
                             Editar Instancia
                         </button>
                         <a href="{{ route('mesas.resumen',$instancia->id) }}" class="btn btn-sm btn-light">Ver Informe</a>
+                        @if(Session::has('admin'))
+                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $instancia->id }}">Eliminar Instancia</a>
                         @endif
-                        @if(Session::has('admin') or Session::has('coordinador') )
+                        @endif
+                        @if(Session::has('admin') || Session::has('coordinador') || Session::has('regente'))
                         <a class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#vistaSeleccionMateria" id="vistaMateria" data-loader="{{$instancia->id}}-materia" data-attr="{{ route('materia.vista_materia', ['instancia' => $instancia->id]) }}">
                             <i class="fa fa-spinner fa-spin" style="display: none" id="loader{{$instancia->id}}"></i>
                             Acta Volante
