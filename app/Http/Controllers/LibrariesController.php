@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Library;
-use Illuminate\Http\Request;
-use Exception;
 use Illuminate\View\View;
 
 class LibrariesController extends Controller
@@ -18,7 +15,7 @@ class LibrariesController extends Controller
      */
     public function index()
     {
-        $libraries = Library::paginate(25);
+        $libraries = Library::orderBy('orden')->paginate(25);
 
         return view('libraries.index', compact('libraries'));
     }

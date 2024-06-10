@@ -5,12 +5,12 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class Library extends Model
+class AdminManager extends Model
 {
+
     use SoftDeletes, HasFactory;
 
     /**
@@ -18,7 +18,7 @@ class Library extends Model
      *
      * @var string
      */
-    protected $table = 'libraries';
+    protected $table = 'admin_managers';
 
     /**
      * The database primary key value.
@@ -38,16 +38,18 @@ class Library extends Model
         });
     }
 
+
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',
+        'enabled',
+        'icon',
         'link',
-        'orden',
-        'user_id'
+        'model',
+        'name'
     ];
 
     /**
@@ -73,7 +75,7 @@ class Library extends Model
      */
     public function getDeletedAtAttribute(string $value = null): ?string
     {
-        if(!$value) {
+        if (!$value) {
             return $value;
         }
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
@@ -99,12 +101,6 @@ class Library extends Model
     public function getUpdatedAtAttribute(string $value): string
     {
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
-    }
-
-
-    public function operador(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 
 }

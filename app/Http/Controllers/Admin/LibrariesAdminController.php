@@ -97,7 +97,7 @@ class LibrariesAdminController extends Controller
     {
         $library = Library::findOrFail($id);
 
-        return view('libraries.show', compact('library'));
+        return view('admin.library.show', compact('library'));
     }
 
     /**
