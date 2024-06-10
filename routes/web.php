@@ -184,6 +184,15 @@ Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
         ->name('aviso.aviso.destroy');
 });
 
+// Bibliotecas
+
+Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrariesController::class, 'index'])
+        ->name('libraries.library.index');
+    Route::get('/show/{library}',[LibrariesController::class, 'show'])
+        ->name('libraries.library.show');
+});
+
 Route::prefix('encuesta_socioeconomica')->group(function () {
     Route::get('personal/{alumno_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm'])->name('encuesta_socioeconomica.showForm');
     Route::get('motivacional/{encuesta_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm2'])->name('encuesta_socioeconomica.showForm2');
@@ -1036,11 +1045,6 @@ Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function
          ->name('admin-libraries.library.destroy');
 });
 
-Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
-    Route::get('/', [LibrariesController::class, 'index'])
-         ->name('libraries.library.index');
-    Route::get('/show/{library}',[LibrariesController::class, 'show'])
-         ->name('libraries.library.show');
-});
+
 
 
