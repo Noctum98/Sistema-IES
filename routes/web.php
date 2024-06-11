@@ -68,6 +68,7 @@ use App\Http\Controllers\EstadoCarrerasController;
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
+use App\Http\Controllers\LibrosController;
 
 
 /*
@@ -1048,3 +1049,22 @@ Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function
 
 
 
+
+Route::group([
+    'prefix' => 'libros',
+], function () {
+    Route::get('/', [LibrosController::class, 'index'])
+         ->name('libros.libros.index');
+    Route::get('/create', [LibrosController::class, 'create'])
+         ->name('libros.libros.create');
+    Route::get('/show/{libros}',[LibrosController::class, 'show'])
+         ->name('libros.libros.show');
+    Route::get('/{libros}/edit',[LibrosController::class, 'edit'])
+         ->name('libros.libros.edit');
+    Route::post('/', [LibrosController::class, 'store'])
+         ->name('libros.libros.store');
+    Route::put('libros/{libros}', [LibrosController::class, 'update'])
+         ->name('libros.libros.update');
+    Route::delete('/libros/{libros}',[LibrosController::class, 'destroy'])
+         ->name('libros.libros.destroy');
+});

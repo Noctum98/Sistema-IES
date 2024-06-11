@@ -51,7 +51,7 @@ $(document).ready(function () {
                 $(".carreras").append("<option selected='selected' value=''> - Seleccione la carrera - </option>");
 
             for (let i = 0; i < response.length; i++) {
-                $(".carreras").append("<option value='" + response[i].id + "'> [" + response[i].id + "] " + response[i].nombre + "</option>");
+                $(".carreras").append("<option value='" + response[i].id + "'> [" + response[i].id + "] " + response[i].nombre + " (" + response[i].resolucion + ") " +  "</option>");
             }
         });
     });

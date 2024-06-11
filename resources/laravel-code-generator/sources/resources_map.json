@@ -63,5 +63,10 @@
         "model-name": "admin_managers",
         "resource-file": "admin_managers.json",
         "table-name": "admin_managers"
+    },
+    {
+        "model-name": "libros",
+        "resource-file": "libros.json",
+        "table-name": "libros"
     }
 ]
