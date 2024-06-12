@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActaVolanteController;
+use App\Http\Controllers\Admin\ActaVolanteAdminController;
 use App\Http\Controllers\Admin\AdminManagersController;
 use App\Http\Controllers\Admin\LibrariesAdminController;
 use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
@@ -68,8 +69,9 @@ use App\Http\Controllers\EstadoCarrerasController;
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
-use App\Http\Controllers\LibrosController;
-
+use App\Http\Controllers\Parameters\ParametrosController;
+use App\Http\Controllers\Parameters\ParametrosCicloLectivoController;
+use App\Http\Controllers\Parameters\ParametrosCicloLectivoEspecialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,6 +121,25 @@ Route::prefix('admin')->group(function () {
     Route::get('/calificaciones/{orden?}', [AdminController::class, 'vista_calificaciones'])->name('admin.calificaciones');
     Route::get('/calificaciones/{carrera_id}/carrera', [AdminController::class, 'vista_calificaciones_materias'])->name('admin.calificaciones.materias');
     Route::get('/calificaciones/{materia_id}/cargo', [AdminController::class, 'vista_calificaciones_cargos'])->name('admin.calificaciones.cargos');
+});
+
+Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], function () {
+    Route::get('/', [ActaVolanteAdminController::class, 'index'])
+        ->name('admin.actas_volantes.index');
+    Route::get('/listado', [ActaVolanteAdminController::class, 'listado'])
+        ->name('admin.actas_volantes.listado');
+    Route::get('/create', [ActaVolanteAdminController::class, 'create'])
+        ->name('admin.actas_volantes.create');
+    Route::get('/show/{adminManager}',[ActaVolanteAdminController::class, 'show'])
+        ->name('admin.actas_volantes.show');
+    Route::get('/{adminManager}/edit',[ActaVolanteAdminController::class, 'edit'])
+        ->name('admin.actas_volantes.edit');
+    Route::post('/', [ActaVolanteAdminController::class, 'store'])
+        ->name('admin.actas_volantes.store');
+    Route::put('admin_manager/{adminManager}', [ActaVolanteAdminController::class, 'update'])
+        ->name('admin.actas_volantes.update');
+    Route::delete('/admin_manager/{adminManager}',[ActaVolanteAdminController::class, 'destroy'])
+        ->name('admin.actas_volantes.destroy');
 });
 
 Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function () {
@@ -295,6 +316,7 @@ Route::prefix('detalleTrianual')->group(function () {
     Route::post('/', [DetalleTrianualController::class, 'store'])->name('detalleTrianual.guardar');
     Route::get('/crear/{trianual}', [DetalleTrianualController::class, 'create'])->name('detalleTrianual.crear');
     Route::get('/ver/{detalleTrianual}', [DetalleTrianualController::class, 'show'])->name('detalleTrianual.ver');
+    Route::get('/generar/{trianual}', [DetalleTrianualController::class, 'generarDetalle'])->name('detalleTrianual.generar');
 });
 
 // Rutas de estados
