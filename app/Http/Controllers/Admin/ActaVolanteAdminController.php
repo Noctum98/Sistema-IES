@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\Materia;
@@ -12,7 +13,7 @@ use App\Services\MesaService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
-class ActaVolanteController extends Controller
+class ActaVolanteAdminController extends Controller
 {
     protected $userService;
     protected $mesaService;
@@ -27,11 +28,9 @@ class ActaVolanteController extends Controller
 
     public function index(Request $request)
     {
-        $mesas = $this->userService->mesasPresidente();
+        $actas = ActaVolante::orderBy('name')->paginate(25);
 
-        return view('mesa.acta_volante.index', [
-            'mesas' => $mesas
-        ]);
+        return view('admin.acta_volante.index', compact('actas'));
     }
 
     public function show(Request $request, $mesa_id)
