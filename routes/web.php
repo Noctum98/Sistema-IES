@@ -4,6 +4,7 @@ use App\Http\Controllers\ActaVolanteController;
 use App\Http\Controllers\Admin\ActaVolanteAdminController;
 use App\Http\Controllers\Admin\AdminManagersController;
 use App\Http\Controllers\Admin\LibrariesAdminController;
+use App\Http\Controllers\Admin\TipoMateriasController;
 use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
@@ -72,6 +73,7 @@ use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\Parameters\ParametrosController;
 use App\Http\Controllers\Parameters\ParametrosCicloLectivoController;
 use App\Http\Controllers\Parameters\ParametrosCicloLectivoEspecialController;
+use App\Http\Controllers\OldLibrosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +161,23 @@ Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function 
         ->name('admin_managers.admin_manager.update');
     Route::delete('/admin_manager/{adminManager}',[AdminManagersController::class, 'destroy'])
         ->name('admin_managers.admin_manager.destroy');
+});
+
+Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], function () {
+    Route::get('/', [TipoMateriasController::class, 'index'])
+        ->name('tipo_materias.tipo_materia.index');
+    Route::get('/create', [TipoMateriasController::class, 'create'])
+        ->name('tipo_materias.tipo_materia.create');
+    Route::get('/show/{tipoMateria}',[TipoMateriasController::class, 'show'])
+        ->name('tipo_materias.tipo_materia.show');
+    Route::get('/{tipoMateria}/edit',[TipoMateriasController::class, 'edit'])
+        ->name('tipo_materias.tipo_materia.edit');
+    Route::post('/', [TipoMateriasController::class, 'store'])
+        ->name('tipo_materias.tipo_materia.store');
+    Route::put('tipo_materia/{tipoMateria}', [TipoMateriasController::class, 'update'])
+        ->name('tipo_materias.tipo_materia.update');
+    Route::delete('/tipo_materia/{tipoMateria}',[TipoMateriasController::class, 'destroy'])
+        ->name('tipo_materias.tipo_materia.destroy');
 });
 
 
@@ -1090,3 +1109,22 @@ Route::group([
     Route::delete('/libros/{libros}',[LibrosController::class, 'destroy'])
          ->name('libros.libros.destroy');
 });
+
+Route::group(['prefix' => 'old_libros', 'middleware' => ['auth']], function () {
+    Route::get('/', [OldLibrosController::class, 'index'])
+         ->name('old_libros.old_libros.index');
+    Route::get('/create', [OldLibrosController::class, 'create'])
+         ->name('old_libros.old_libros.create');
+    Route::get('/show/{oldLibros}',[OldLibrosController::class, 'show'])
+         ->name('old_libros.old_libros.show');
+    Route::get('/{oldLibros}/edit',[OldLibrosController::class, 'edit'])
+         ->name('old_libros.old_libros.edit');
+    Route::post('/', [OldLibrosController::class, 'store'])
+         ->name('old_libros.old_libros.store');
+    Route::put('old_libros/{oldLibros}', [OldLibrosController::class, 'update'])
+         ->name('old_libros.old_libros.update');
+    Route::delete('/old_libros/{oldLibros}',[OldLibrosController::class, 'destroy'])
+         ->name('old_libros.old_libros.destroy');
+});
+
+

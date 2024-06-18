@@ -68,5 +68,15 @@
         "model-name": "libros",
         "resource-file": "libros.json",
         "table-name": "libros"
+    },
+    {
+        "model-name": "old_libros",
+        "resource-file": "old_libros.json",
+        "table-name": "old_libros"
+    },
+    {
+        "model-name": "tipo_materias",
+        "resource-file": "tipo_materias.json",
+        "table-name": "tipo_materias"
     }
 ]
