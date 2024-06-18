@@ -50,7 +50,7 @@
                     <dd class="col-lg-10 col-xl-9">{{ $tipoMateria->updated_at }}</dd>
                 @endif
                 @if($tipoMateria->deleted_at)
-                    <dt class="text-lg-end col-lg-2 col-xl-3">Deleted At</dt>
+                    <dt class="text-lg-end col-lg-2 col-xl-3">Eliminado</dt>
                     <dd class="col-lg-10 col-xl-9">{{ $tipoMateria->deleted_at }}</dd>
                 @endif
             </dl>
