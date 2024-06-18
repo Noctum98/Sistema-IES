@@ -12,6 +12,7 @@ use App\Models\Proceso;
 use App\Models\Sede;
 use App\Models\Trianual\Trianual;
 use App\Models\User;
+use App\Repository\Alumno\AlumnoRepository;
 use App\Services\AlumnoService;
 use App\Services\CarreraService;
 use App\Services\Trianual\DetalleTrianualService;
@@ -20,10 +21,12 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
 
 class TrianualController extends Controller
 {
@@ -117,10 +120,9 @@ class TrianualController extends Controller
         // Tengo que agregar la opción de buscar por carrera antes de crear el trianual
         $alumno = Alumno::find($alumno);
         $sedes = Sede::all();
-        $ids = AlumnoCarrera::where('alumno_id', $alumno->id)->distinct()->get('carrera_id');
 
-        $carreras = Carrera::whereIn('id', $ids)->get();
-
+        $alumnoRepository = new AlumnoRepository();
+        $carreras = $alumnoRepository->getCarrerasByAlumno($alumno->id);
 
 
         if (!$alumno) {
@@ -135,14 +137,20 @@ class TrianualController extends Controller
         $campos = self::CAMPOS_TRIANUAL;
         $datos = [];
 
-//        $carrera = $alumno->alumno_carrera()->first()->carrera()->id;
-        if ($carrera) {
+
+        if (count($carreras) == 1) {
             unset($campos[0]);
-            $datos['carrera'] = $alumno->alumno_carrera()->first()->carrera()->nombre;
+            $datos['carrera'] = $alumno->alumno_carrera()->first()->carrera->nombre;
         }
+
+
         if ($alumno->cohorte) {
             unset($campos[1]);
             $datos['cohorte'] = $alumno->cohorte;
+        }
+
+        if (count($carreras) > 0) {
+            $sedes = $alumnoRepository->getSedesByAlumno($alumno->id);
         }
 
         $datos['alumno_id'] = $alumno->id;
@@ -213,7 +221,10 @@ class TrianualController extends Controller
             ]);
         }
 
-        $carrera = $alumno->alumno_carrera()->first()->carrera();
+//        $carrera = $alumno->alumno_carrera()->first()->carrera();
+
+
+        $carrera = $this->carreraService->getCarrera($request->get('carrera_id'));
         if (!$carrera) {
             $carrera = $this->carreraService->getCarrera($request->get('carrera'));
         }
@@ -240,8 +251,17 @@ class TrianualController extends Controller
         $trianual = Trianual::create($datos);
 
 
-        return redirect()->route('trianual.ver', [
+//        return redirect()->route('trianual.ver', [
+//            'trianual' => $trianual,
+//            'alumno' => $alumno,
+//
+//        ]);
+        $estados = Estados::all();
+        $detalles = $this->detalleTrianualService->detallesPorTrianual($trianual->id);
+        return view('trianual.trianual.show', [
             'trianual' => $trianual,
+            'estados' => $estados,
+            'detalles' => $detalles
         ]);
 
     }

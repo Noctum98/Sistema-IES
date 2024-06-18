@@ -560,4 +560,6 @@ class Alumno extends Model
     {
         return Carbon::parse($this->attributes['fecha'])->age;
     }
+
+
 }

@@ -97,7 +97,7 @@ class SedeController extends Controller
      */
     public function selectCarreraSede($id): JsonResponse
     {
-        $carreras = Carrera::select('nombre', 'id')->where('sede_id', $id)->get();
+        $carreras = Carrera::select('nombre', 'resolucion', 'id')->where('sede_id', $id)->get();
 
         return response()->json($carreras);
     }

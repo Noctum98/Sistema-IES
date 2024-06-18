@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Libro;
+use App\Models\MasterMateria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,14 @@ class LibrosController extends Controller
      */
     public function index()
     {
-        //
+        $librosObjects = Libro::orderBy('numero')
+            ->orderBy('folio')
+            ->orderBy('orden')
+            ->orderBy('llamado')
+            ->paginate(20);
+
+        return view('libros.index', compact('librosObjects'));
+
     }
 
     /**
@@ -57,11 +65,11 @@ class LibrosController extends Controller
                     'orden' => $request['orden']
                 ])->first();
 
-                
+
                 if($libro)
                 {
                    $libroExist = $libro->update($request->all());
-                    
+
                 }else{
                     $libro = Libro::create($request->all());
                 }

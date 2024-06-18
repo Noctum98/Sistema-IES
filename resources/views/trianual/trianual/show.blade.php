@@ -53,6 +53,9 @@
         </div>
 
         <div id="detail-trianual" class="row mt-3">
+            <a class="btn btn-primary col-sm-3"  href="{{route('detalleTrianual.generar', ['trianual' => $trianual->id])}}">
+                Generar
+            </a>
 
                 <button class="btn btn-primary button col-sm-3" type="button"
 {{--                        data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"--}}
