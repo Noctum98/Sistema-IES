@@ -31,7 +31,7 @@
                   action="{{ route('tipo_materias.tipo_materia.store') }}" accept-charset="UTF-8"
                   id="create_tipo_materia_form" name="create_tipo_materia_form">
                 {{ csrf_field() }}
-                @include ('tipo_materias.form', [
+                @include ('admin.tipo_materias.form', [
                                             'tipoMateria' => null,
                                           ])
 
