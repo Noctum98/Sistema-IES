@@ -103,17 +103,13 @@ class InstanciaController extends Controller
     
                     if($carreraExistente)
                     {
-                        array_push($carreras,$carreraExistente);
+                        array_push($carreras,$carrera);
                     }
     
                 }
             }
             
         }
-
-        Log::info('InstanciaController - vista_carreras');
-        Log::info($carreras);
-        Log::info($instancia);
 
         return view('mesa.carreras', [
             'sede'  =>  $sede,
