@@ -1,0 +1,36 @@
+@extends('layouts.app-prueba')
+
+@section('content')
+
+    <div class="card text-bg-theme">
+
+        <div class="card-header d-flex justify-content-between align-items-center p-3">
+            <h4 class="m-0">{{ isset($library->name) ? $library->name : 'Biblioteca' }}</h4>
+
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="text-lg-end col-lg-2 col-xl-3">Nombre</dt>
+                <dd class="col-lg-10 col-xl-9">{{ $library->name }}</dd>
+                <dt class="text-lg-end col-lg-2 col-xl-3">Link</dt>
+                <dd class="col-lg-10 col-xl-9">{{ $library->link }}</dd>
+                <dt class="text-lg-end col-lg-2 col-xl-3">Orden</dt>
+                <dd class="col-lg-10 col-xl-9">{{ $library->orden }}</dd>
+                @if($library->deleted_at)
+                    <dt class="text-lg-end col-lg-2 col-xl-3">Eliminada</dt>
+                    <dd class="col-lg-10 col-xl-9">{{ $library->deleted_at }}</dd>
+                @endif
+                <dt class="text-lg-end col-lg-2 col-xl-3">Agregada el</dt>
+                <dd class="col-lg-10 col-xl-9">{{ $library->created_at }}</dd>
+                @if($library->created_at !== $library->updated_at)
+                    <dt class="text-lg-end col-lg-2 col-xl-3">Actualizada el</dt>
+                    <dd class="col-lg-10 col-xl-9">{{ $library->updated_at }}</dd>
+                @endif
+                <dt class="text-lg-end col-lg-2 col-xl-3">Operador</dt>
+                <dd class="col-lg-10 col-xl-9">{{ $library->user_id }}</dd>
+            </dl>
+        </div>
+    </div>
+
+@endsection

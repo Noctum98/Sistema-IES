@@ -82,5 +82,30 @@
         "model-name": "correlatividad_agrupadas",
         "resource-file": "correlatividad_agrupadas.json",
         "table-name": "correlatividad_agrupadas"
+    },
+    {
+        "model-name": "libraries",
+        "resource-file": "libraries.json",
+        "table-name": "libraries"
+    },
+    {
+        "model-name": "admin_managers",
+        "resource-file": "admin_managers.json",
+        "table-name": "admin_managers"
+    },
+    {
+        "model-name": "libros",
+        "resource-file": "libros.json",
+        "table-name": "libros"
+    },
+    {
+        "model-name": "old_libros",
+        "resource-file": "old_libros.json",
+        "table-name": "old_libros"
+    },
+    {
+        "model-name": "tipo_materias",
+        "resource-file": "tipo_materias.json",
+        "table-name": "tipo_materias"
     }
 ]
