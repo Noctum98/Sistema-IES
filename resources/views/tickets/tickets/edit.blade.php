@@ -32,7 +32,7 @@
             <form method="POST" class="needs-validation" novalidate action="{{ route('tickets.ticket.update', $ticket->id) }}" id="edit_ticket_form" name="edit_ticket_form" accept-charset="UTF-8" >
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
-            @include ('tickets.form', [
+            @include ('tickets.tickets.form', [
                                         'ticket' => $ticket,
                                       ])
 

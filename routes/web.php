@@ -72,6 +72,9 @@ use App\Http\Controllers\EstadoCarrerasController;
 use App\Http\Controllers\Ticket\CategoriasTicketsController;
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
+use App\Http\Controllers\Ticket\AsignacionTicketController;
+use App\Http\Controllers\Ticket\DerivacionTicketController;
+use App\Http\Controllers\Ticket\RespuestaTicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -1025,6 +1028,7 @@ Route::group([
          ->name('tickets.ticket.store');
     Route::put('ticket/{ticket}', [TicketsController::class, 'update'])
          ->name('tickets.ticket.update')->where('id', '[0-9]+');
+    Route::put('changeEstado/{ticket_id}',[TicketsController::class,'changeEstado'])->name('tickets.changeEstado');
     Route::delete('/ticket/{ticket}',[TicketsController::class, 'destroy'])
          ->name('tickets.ticket.destroy')->where('id', '[0-9]+');
 });
@@ -1048,3 +1052,9 @@ Route::group([
     Route::delete('/categorias_tickets/{categoriasTickets}',[CategoriasTicketsController::class, 'destroy'])
          ->name('categorias_tickets.categorias_tickets.destroy')->where('id', '[0-9]+');
 });
+
+Route::resource('derivaciones_tickets',DerivacionTicketController::class);
+Route::resource('asignaciones_tickets',AsignacionTicketController::class);
+Route::resource('respuestas_tickets',RespuestaTicketController::class);
+
+

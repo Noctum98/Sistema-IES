@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Ramsey\Uuid\Nonstandard\Uuid;
 
-class AsignacionTicket extends Model
+class RespuestaTicket extends Model
 {
     use HasFactory;
-    protected $table = 'asignaciones_tickets';
-    protected $fillable = ['user_id','derivacion_id','ticket_id','responsable'];
+    protected $table = 'respuestas_tickets';
+    protected $fillable = ['user_id','ticket_id','contenido','imagen'];
 
     protected static function boot()
     {
@@ -23,18 +23,13 @@ class AsignacionTicket extends Model
         });
     }
 
-    public function ticket(): BelongsTo
-    {
-        return $this->belongsTo(Ticket::class,'ticket_id');
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');
     }
 
-    public function derivacion(): BelongsTo
+    public function ticket(): BelongsTo
     {
-        return $this->belongsTo(DerivacionTicket::class,'derivacion_id');
+        return $this->belongsTo(Ticket::class,'ticket_id');
     }
 }

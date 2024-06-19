@@ -105,41 +105,12 @@ class Ticket extends Model
 
     public function responsable(): HasOne
     {
-        return $this->hasOne(AsignacionTicket::class)->where('responsable', 1)->latest();
+        return $this->hasOne(AsignacionTicket::class)->where('responsable', true)->latest();
     }
 
-
-    /**
-     * Get deleted_at in array format
-     *
-     * @param  string  $value
-     * @return array
-     */
-    public function getDeletedAtAttribute($value)
+    public function respuestas(): HasMany
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('j/n/Y g:i A');
-    }
-
-    /**
-     * Get created_at in array format
-     *
-     * @param  string  $value
-     * @return array
-     */
-    public function getCreatedAtAttribute($value)
-    {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('j/n/Y g:i A');
-    }
-
-    /**
-     * Get updated_at in array format
-     *
-     * @param  string  $value
-     * @return array
-     */
-    public function getUpdatedAtAttribute($value)
-    {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('j/n/Y g:i A');
+        return $this->hasMany(RespuestaTicket::class,'ticket_id');
     }
 
 }

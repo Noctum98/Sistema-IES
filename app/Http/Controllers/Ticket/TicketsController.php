@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Models\Estados;
+use App\Models\Rol;
+use App\Models\Sede;
 use App\Models\Ticket\CategoriaTicket;
 use App\Models\Ticket\Estado;
 use App\Models\Ticket\EstadoTicket;
 use App\Models\Ticket\Ticket;
 use App\Models\User;
 use App\Services\FileService;
+use App\Services\Ticket\TicketService;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -18,11 +21,16 @@ use Illuminate\Support\Facades\Storage;
 class TicketsController extends Controller
 {
     protected $fileService;
+    protected $ticketService;
+
     public function __construct(
-        FileService $fileService
+        FileService $fileService,
+        TicketService $ticketService
     )
     {
         $this->fileService = $fileService;
+        $this->ticketService = $ticketService;
+        $this->middleware('auth');
     }
 
     /**
@@ -32,7 +40,7 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::with('user', 'estado', 'ticket')->paginate(25);
+        $tickets = Ticket::with('user', 'estado')->paginate(25);
 
         return view('tickets.tickets.index', compact('tickets'));
     }
@@ -83,8 +91,14 @@ class TicketsController extends Controller
     public function show($id)
     {
         $ticket = Ticket::with('user', 'estado')->findOrFail($id);
+        $estados = EstadoTicket::pluck('nombre', 'id')->all();
+        $roles = Rol::where('tipo',0)->pluck('descripcion','id')->all();
+        $sedes = Sede::pluck('nombre','id')->all();
+        $permisos = $this->ticketService->permisosTicket($ticket);
+        $admin = $permisos['admin'];
+        $respuesta = $permisos['respuesta'];
 
-        return view('tickets.tickets.show', compact('ticket'));
+        return view('tickets.tickets.show', compact('ticket','estados','roles','sedes','admin','respuesta'));
     }
 
     /**
@@ -97,11 +111,10 @@ class TicketsController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
-        $users = User::pluck('username', 'id')->all();
         $estados = EstadoTicket::pluck('id', 'id')->all();
-        $tickets = Ticket::pluck('id', 'id')->all();
+        $categorias = CategoriaTicket::pluck('nombre','id')->all();
 
-        return view('tickets.tickets.edit', compact('ticket', 'users', 'estados', 'tickets'));
+        return view('tickets.tickets.edit', compact('ticket',  'estados', 'categorias'));
     }
 
     /**
@@ -164,6 +177,15 @@ class TicketsController extends Controller
         } else {
             abort(404, 'Archivo no encontrado');
         }
+    }
+
+    public function changeEstado(Request $request,$ticket_id)
+    {
+        $ticket = Ticket::findOrFail($ticket_id);
+
+        $ticket->update($request->all());
+
+        return redirect()->back()->with(['alert_success'=>'Estado del ticket actualizado.']);
     }
 
 
