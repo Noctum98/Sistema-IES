@@ -11,6 +11,7 @@ use App\Models\EstadoResoluciones;
 use App\Models\Library;
 use App\Models\MasterMateria;
 use App\Models\MateriasCorrelativasCursado;
+use App\Models\OldLibro;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\TipoCarrera;
@@ -23,6 +24,7 @@ use App\Policies\EstadoResolucionesPolicy;
 use App\Policies\LibraryPolicy;
 use App\Policies\MasterMateriaPolicy;
 use App\Policies\MateriasCorrelativasCursadoPolicy;
+use App\Policies\OldLibroPolicy;
 use App\Policies\RegimenPolicy;
 use App\Policies\resolucionesPolicy;
 use App\Policies\TipoCarreraPolicy;
@@ -49,6 +51,7 @@ class AuthServiceProvider extends ServiceProvider
         AgrupadaMateria::class => AgrupadaMateriaPolicy::class,
         Library::class => LibraryPolicy::class,
         AdminManager::class => AdminManagerPolicy::class,
+        OldLibro::class => OldLibroPolicy::class,
     ];
 
     /**

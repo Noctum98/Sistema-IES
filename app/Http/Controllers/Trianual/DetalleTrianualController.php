@@ -238,9 +238,6 @@ class DetalleTrianualController extends Controller
 
         }
 
-
-
-
         $message = 'Detalles generados correctamente';
         session(['alert_success'=>$message]);
 
