@@ -15,16 +15,16 @@
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">Libros (Maestros)</h4>
             <div>
-                <a href="{{ route('old_libros.old_libros.create') }}" class="btn btn-secondary"
+                <a href="{{ route('libros_digitales.libros_digitales.create') }}" class="btn btn-secondary"
                    title="Agregar Libro (Maestro)">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span>
                 </a>
             </div>
         </div>
 
-        @if(count($oldLibrosObjects) == 0)
+        @if(count($librosDigitalesObjects) == 0)
             <div class="card-body text-center">
-                <h4>No se encontraron Libros (Maestros).</h4>
+                <h4>No se encontraron Libros Digitales.</h4>
             </div>
         @else
             <div class="card-body p-0">
@@ -38,30 +38,30 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($oldLibrosObjects as $oldLibros)
+                        @foreach($librosDigitalesObjects as $librosDigitales)
                             <tr>
 
                                 <td class="text-end">
 
                                     <form method="POST"
-                                          action="{!! route('old_libros.old_libros.destroy', $oldLibros->id) !!}"
+                                          action="{!! route('libros_digitales.libros_digitales.destroy', $librosDigitales->id) !!}"
                                           accept-charset="UTF-8">
                                         <input name="_method" value="DELETE" type="hidden">
                                         {{ csrf_field() }}
 
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('old_libros.old_libros.show', $oldLibros->id ) }}"
-                                               class="btn btn-info" title="Ver Libro (Maestro)">
+                                            <a href="{{ route('libros_digitales.libros_digitales.show', $librosDigitales->id ) }}"
+                                               class="btn btn-info" title="Ver Libro Digital">
                                                 <span class="fa-solid fa-arrow-up-right-from-square"
                                                       aria-hidden="true"></span>
                                             </a>
-                                            <a href="{{ route('old_libros.old_libros.edit', $oldLibros->id ) }}"
-                                               class="btn btn-primary" title="Editar Libro (Maestro)">
+                                            <a href="{{ route('libros_digitales.libros_digitales.edit', $librosDigitales->id ) }}"
+                                               class="btn btn-primary" title="Editar Libro Digital">
                                                 <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
                                             </a>
 
-                                            <button type="submit" class="btn btn-danger" title="Delete Old Libros"
-                                                    onclick="return confirm('Aceptar para eliminar Libro (Maestro)')">
+                                            <button type="submit" class="btn btn-danger" title="Eliminar Libro Digital"
+                                                    onclick="return confirm('Aceptar para eliminar Libro Digital')">
                                                 <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
                                             </button>
                                         </div>
@@ -76,7 +76,7 @@
 
                 </div>
 
-                {!! $oldLibrosObjects->links('pagination') !!}
+                {!! $librosDigitalesObjects->links('pagination') !!}
             </div>
 
         @endif

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('old_libros', function (Blueprint $table) {
+        Schema::create('libros_digitales', function (Blueprint $table) {
             $table->uuid('id');
             $table->text('acta_inicio')->nullable();
             $table->unsignedInteger('number');
@@ -33,6 +33,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('old_libros');
+        Schema::dropIfExists('libros_digitales');
     }
 };

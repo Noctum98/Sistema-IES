@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\OldLibro;
+use App\Models\LibroDigital;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class OldLibroFactory extends Factory
+class LibroDigitalFactory extends Factory
 {
-    protected $model = OldLibro::class;
+    protected $model = LibroDigital::class;
 
     public function definition(): array
     {

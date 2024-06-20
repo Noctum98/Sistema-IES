@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class OldLibro extends Model
+class LibroDigital extends Model
 {
     use SoftDeletes, HasFactory;
 
@@ -17,7 +17,7 @@ class OldLibro extends Model
      *
      * @var string
      */
-    protected $table = 'old_libros';
+    protected $table = 'libros_digitales';
 
     /**
      * The database primary key value.

@@ -2,35 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 
-use App\Models\OldLibro;
+use App\Models\LibroDigital;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
-use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
-class OldLibrosController extends Controller
+class LibrosDigitalesController extends Controller
 {
 
     /**
-     * Display a listing of the old libros.
+     * Display a listing of the libros digitales.
      *
      * @return View
      */
     public function index()
     {
-        $oldLibrosObjects = OldLibro::paginate(25);
+        $librosDigitalesObjects = LibroDigital::paginate(25);
 
-        return view('old_libros.index', compact('oldLibrosObjects'));
+        return view('libros_digitales.index', compact('librosDigitalesObjects'));
     }
 
     /**
-     * Show the form for creating a new old libros.
+     * Show the form for creating a new libros digitales.
      *
      * @return View
      */
@@ -40,11 +38,11 @@ class OldLibrosController extends Controller
         $Sedes = Sede::pluck('nombre', 'id')->all();
         $Users = User::pluck('username', 'id')->all();
 
-        return view('old_libros.create', compact('Resoluciones', 'Sedes', 'Users', 'Users'));
+        return view('libros_digitales.create', compact('Resoluciones', 'Sedes', 'Users', 'Users'));
     }
 
     /**
-     * Store a new old libros in the storage.
+     * Store a new libros digitales in the storage.
      *
      * @param Request $request
      *
@@ -55,14 +53,14 @@ class OldLibrosController extends Controller
 
         $data = $this->getData($request);
 
-        OldLibro::create($data);
+        LibroDigital::create($data);
 
-        return redirect()->route('old_libros.old_libros.index')
+        return redirect()->route('libros_digitales.libros_digitales.index')
             ->with('success_message', 'Libro (Maestro) agregado exitosamente.');
     }
 
     /**
-     * Display the specified old libros.
+     * Display the specified libros digitales.
      *
      * @param string $id
      *
@@ -70,13 +68,13 @@ class OldLibrosController extends Controller
      */
     public function show(string $id)
     {
-        $oldLibros = OldLibro::with('resoluciones', 'sede', 'user', 'user')->findOrFail($id);
+        $librosDigitales = LibroDigital::with('resoluciones', 'sede', 'user', 'user')->findOrFail($id);
 
-        return view('old_libros.show', compact('oldLibros'));
+        return view('libros_digitales.show', compact('librosDigitales'));
     }
 
     /**
-     * Show the form for editing the specified old libros.
+     * Show the form for editing the specified libros digitales.
      *
      * @param string $id
      *
@@ -84,16 +82,16 @@ class OldLibrosController extends Controller
      */
     public function edit(string $id)
     {
-        $oldLibros = OldLibro::findOrFail($id);
+        $librosDigitales = LibroDigital::findOrFail($id);
         $Resoluciones = Resoluciones::pluck('name', 'id')->all();
         $Sedes = Sede::pluck('nombre', 'id')->all();
         $Users = User::pluck('username', 'id')->all();
 
-        return view('old_libros.edit', compact('oldLibros', 'Resoluciones', 'Sedes', 'Users', 'Users'));
+        return view('libros_digitales.edit', compact('librosDigitales', 'Resoluciones', 'Sedes', 'Users', 'Users'));
     }
 
     /**
-     * Update the specified old libros in the storage.
+     * Update the specified libros digitales in the storage.
      *
      * @param string $id
      * @param Request $request
@@ -105,15 +103,15 @@ class OldLibrosController extends Controller
 
         $data = $this->getData($request);
 
-        $oldLibros = OldLibro::findOrFail($id);
-        $oldLibros->update($data);
+        $librosDigitales = LibroDigital::findOrFail($id);
+        $librosDigitales->update($data);
 
-        return redirect()->route('old_libros.old_libros.index')
+        return redirect()->route('libros_digitales.libros_digitales.index')
             ->with('success_message', 'Libro (Maestro) ha sido actualizado correctamente.');
     }
 
     /**
-     * Remove the specified old libros from the storage.
+     * Remove the specified libros digitales from the storage.
      *
      * @param string $id
      *
@@ -122,10 +120,10 @@ class OldLibrosController extends Controller
     public function destroy(string $id)
     {
         try {
-            $oldLibros = OldLibro::findOrFail($id);
-            $oldLibros->delete();
+            $librosDigitales = LibroDigital::findOrFail($id);
+            $librosDigitales->delete();
 
-            return redirect()->route('old_libros.old_libros.index')
+            return redirect()->route('libros_digitales.libros_digitales.index')
                 ->with('success_message', 'Libro (Maestro) ha sido correctamente eliminado.');
         } catch (Exception $exception) {
 

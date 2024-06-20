@@ -70,9 +70,9 @@
         "table-name": "libros"
     },
     {
-        "model-name": "old_libros",
-        "resource-file": "old_libros.json",
-        "table-name": "old_libros"
+        "model-name": "libros_digitales",
+        "resource-file": "libros_digitales.json",
+        "table-name": "libros_digitales"
     },
     {
         "model-name": "tipo_materias",

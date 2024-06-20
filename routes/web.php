@@ -73,7 +73,7 @@ use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\Parameters\ParametrosController;
 use App\Http\Controllers\Parameters\ParametrosCicloLectivoController;
 use App\Http\Controllers\Parameters\ParametrosCicloLectivoEspecialController;
-use App\Http\Controllers\OldLibrosController;
+use App\Http\Controllers\LibrosDigitalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -1110,21 +1110,21 @@ Route::group([
          ->name('libros.libros.destroy');
 });
 
-Route::group(['prefix' => 'old_libros', 'middleware' => ['auth']], function () {
-    Route::get('/', [OldLibrosController::class, 'index'])
-         ->name('old_libros.old_libros.index');
-    Route::get('/create', [OldLibrosController::class, 'create'])
-         ->name('old_libros.old_libros.create');
-    Route::get('/show/{oldLibros}',[OldLibrosController::class, 'show'])
-         ->name('old_libros.old_libros.show');
-    Route::get('/{oldLibros}/edit',[OldLibrosController::class, 'edit'])
-         ->name('old_libros.old_libros.edit');
-    Route::post('/', [OldLibrosController::class, 'store'])
-         ->name('old_libros.old_libros.store');
-    Route::put('old_libros/{oldLibros}', [OldLibrosController::class, 'update'])
-         ->name('old_libros.old_libros.update');
-    Route::delete('/old_libros/{oldLibros}',[OldLibrosController::class, 'destroy'])
-         ->name('old_libros.old_libros.destroy');
+Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrosDigitalesController::class, 'index'])
+         ->name('libros_digitales.libros_digitales.index');
+    Route::get('/create', [LibrosDigitalesController::class, 'create'])
+         ->name('libros_digitales.libros_digitales.create');
+    Route::get('/show/{libroDigital}',[LibrosDigitalesController::class, 'show'])
+         ->name('libros_digitales.libros_digitales.show');
+    Route::get('/{libroDigital}/edit',[LibrosDigitalesController::class, 'edit'])
+         ->name('libros_digitales.libros_digitales.edit');
+    Route::post('/', [LibrosDigitalesController::class, 'store'])
+         ->name('libros_digitales.libros_digitales.store');
+    Route::put('libros_digitales/{libroDigital}', [LibrosDigitalesController::class, 'update'])
+         ->name('libros_digitales.libros_digitales.update');
+    Route::delete('/libros_digitales/{libroDigital}',[LibrosDigitalesController::class, 'destroy'])
+         ->name('libros_digitales.libros_digitales.destroy');
 });
 
 

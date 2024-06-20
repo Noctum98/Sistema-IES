@@ -7,12 +7,12 @@
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">{{ !empty($title) ? $title : 'Libro (Maestro)' }}</h4>
             <div>
-                <a href="{{ route('old_libros.old_libros.index') }}" class="btn btn-primary"
+                <a href="{{ route('libros_digitales.libros_digitales.index') }}" class="btn btn-primary"
                    title="Listar Libros (Maestros)">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('old_libros.old_libros.create') }}" class="btn btn-secondary"
+                <a href="{{ route('libros_digitales.libros_digitales.create') }}" class="btn btn-secondary"
                    title="Agregar Libro (Maestro)">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span>
                 </a>
@@ -32,12 +32,12 @@
             @endif
 
             <form method="POST" class="needs-validation" novalidate
-                  action="{{ route('old_libros.old_libros.update', $oldLibros->id) }}" id="edit_old_libros_form"
-                  name="edit_old_libros_form" accept-charset="UTF-8">
+                  action="{{ route('libros_digitales.libros_digitales.update', $librosDigitales->id) }}" id="edit_libros_digitales_form"
+                  name="edit_libros_digitales_form" accept-charset="UTF-8">
                 {{ csrf_field() }}
                 <input name="_method" type="hidden" value="PUT">
-                @include ('old_libros.form', [
-                                            'oldLibros' => $oldLibros,
+                @include ('libros_digitales.form', [
+                                            'librosDigitales' => $librosDigitales,
                                           ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
