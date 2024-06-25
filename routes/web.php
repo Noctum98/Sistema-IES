@@ -13,6 +13,7 @@ use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\LibrosDigitalesController;
+use App\Http\Controllers\ManagerBookController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\Parameters\CicloLectivoController;
@@ -1026,6 +1027,11 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], functio
         ->name('libros_digitales.libro_digital.update');
     Route::delete('/libro_digital/{libroDigital}',[LibrosDigitalesController::class, 'destroy'])
         ->name('libros_digitales.libro_digital.destroy');
+});
+
+Route::group(['prefix' => 'manager_libros', 'middleware' => ['auth']], function () {
+    Route::get('/', [ManagerBookController::class, 'index'])
+        ->name('manager_libros.libros.index');
 });
 
 Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], function () {

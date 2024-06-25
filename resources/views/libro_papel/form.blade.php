@@ -4,7 +4,7 @@
         <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" type="text" id="name"
                value="{{ old('name', optional($libroPapel)->name) }}" minlength="1" maxlength="191" required="required"
                placeholder="Ingrese nombre aquí...">
-        <small class="text-muted">Ej. Libro V Gastronomía S. Central.</small>
+        <small class="text-muted">Ej. Libro V Gastronomía</small>
         {!! $errors->first('name', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
@@ -49,6 +49,7 @@
                type="text" id="operador_inicio"
                value="{{ old('operador_inicio', optional($libroPapel)->operador_inicio) }}" minlength="1"
                maxlength="191" required="required" placeholder="Ingrese operador inicio aquí...">
+        <small class="text-muted">Persona que firma el acta de inicio</small>
         {!! $errors->first('operador_inicio', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
@@ -57,9 +58,15 @@
     <label for="fecha_inicio" class="col-form-label text-lg-end col-lg-2 col-xl-3">Fecha Inicio</label>
     <div class="col-lg-10 col-xl-9">
         <input class="form-control{{ $errors->has('fecha_inicio') ? ' is-invalid' : '' }}" name="fecha_inicio"
-               type="datetime-local" id="fecha_inicio"
-               value="{{ old('fecha_inicio', optional($libroPapel)->fecha_inicio) }}"
+               type="date" id="fecha_inicio"
+               @if(optional($libroPapel)->fecha_inicio)
+                   value="{{ Carbon\Carbon::parse($libroPapel->fecha_inicio)->format('Y-m-d') }}"
+               @else
+                   value="{{ old('fecha_inicio')}}
+               @endif
+
                placeholder="Ingrese fecha inicio aquí...">
+        <small class="text-muted">Fecha del acta de inicio</small>
         {!! $errors->first('fecha_inicio', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>

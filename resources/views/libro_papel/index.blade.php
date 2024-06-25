@@ -49,11 +49,11 @@
                         @foreach($librosPapel as $libroPapel)
                             <tr>
                                 <td class="align-middle">{{ $libroPapel->name }}</td>
-                                <td class="align-middle">{{ $libroPapel->number }}</td>
-                                <td class="align-middle">{{ $libroPapel->roman }}</td>
+                                <td class="align-middle text-center">{{ $libroPapel->number }}</td>
+                                <td class="align-middle text-center">{{ $libroPapel->roman }}</td>
                                 <td class="align-middle">{!! Str::words("$libroPapel->acta_inicio", 5,' ...') !!}</td>
                                 <td class="align-middle">{{ $libroPapel->operador_inicio }}</td>
-                                <td class="align-middle">{{ $libroPapel->fecha_inicio }}</td>
+                                <td class="align-middle">{{ $libroPapel->fecha_inicio->format('d-m-Y') }}</td>
                                 <td class="align-middle">{{ optional($libroPapel->sede)->nombre }}</td>
                                 <td class="align-middle">{{ optional($libroPapel->user)->getApellidoNombre() }}</td>
 
