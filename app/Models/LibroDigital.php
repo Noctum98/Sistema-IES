@@ -41,11 +41,12 @@ class LibroDigital extends Model
     protected $fillable = [
         'acta_inicio',
         'number',
+        'romanos',
         'resoluciones_id',
         'fecha_inicio',
         'sede_id',
-        'resolucion_original',
-        'operador_id',
+        'libros_papeles_id',
+
         'observaciones',
         'user_id',
     ];
@@ -72,5 +73,10 @@ class LibroDigital extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function libroPapel(): BelongsTo
+    {
+        return $this->belongsTo(LibroPapel::class, 'libros_papeles_id');
     }
 }

@@ -80,7 +80,8 @@ class User extends Authenticatable
         return false;
     }
     //============================ SEDES ====================================//
-    public function sedes(){
+    public function sedes(): BelongsToMany
+    {
         return $this->belongsToMany(Sede::class)->withTimestamps();
     }
 

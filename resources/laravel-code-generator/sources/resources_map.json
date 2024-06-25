@@ -70,13 +70,18 @@
         "table-name": "libros"
     },
     {
-        "model-name": "libros_digitales",
-        "resource-file": "libros_digitales.json",
-        "table-name": "libros_digitales"
-    },
-    {
         "model-name": "tipo_materias",
         "resource-file": "tipo_materias.json",
         "table-name": "tipo_materias"
+    },
+    {
+        "model-name": "libros_papeles",
+        "resource-file": "libros_papeles.json",
+        "table-name": "libros_papeles"
+    },
+    {
+        "model-name": "libros_digitales",
+        "resource-file": "libros_digitales.json",
+        "table-name": "libros_digitales"
     }
 ]

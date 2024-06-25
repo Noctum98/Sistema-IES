@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 
 use App\Models\LibroDigital;
+use App\Models\LibroPapel;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
+use App\Repository\Sede\SedeRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
@@ -22,9 +24,16 @@ class LibrosDigitalesController extends Controller
      */
     public function index()
     {
-        $librosDigitalesObjects = LibroDigital::paginate(25);
+        $sedes = $this->getSedes();
 
-        return view('libros_digitales.index', compact('librosDigitalesObjects'));
+        $librosDigitales = LibroDigital::with(
+            'sede',
+            'user')
+            ->whereIn('sede_id', $sedes)
+            ->paginate(25);
+
+
+        return view('libros_digitales.index', compact('librosDigitales'));
     }
 
     /**
@@ -34,11 +43,14 @@ class LibrosDigitalesController extends Controller
      */
     public function create()
     {
-        $Resoluciones = Resoluciones::pluck('name', 'id')->all();
-        $Sedes = Sede::pluck('nombre', 'id')->all();
-        $Users = User::pluck('username', 'id')->all();
+        $Sedes = $this->getSedes(true);
+        $sedesId = $this->getSedes();
 
-        return view('libros_digitales.create', compact('Resoluciones', 'Sedes', 'Users', 'Users'));
+        $sedeRepository = new SedeRepository;
+        $Resoluciones = $sedeRepository->getResolucionesSedes($sedesId)->toArray();
+        $LibrosPapel = $sedeRepository->getLibrosPapelSedes($sedesId);
+
+        return view('libros_digitales.create', compact('Resoluciones', 'Sedes', 'LibrosPapel'));
     }
 
     /**
@@ -53,9 +65,12 @@ class LibrosDigitalesController extends Controller
 
         $data = $this->getData($request);
 
+        $user = auth()->user();
+        $data['user_id'] = $user->id;
+
         LibroDigital::create($data);
 
-        return redirect()->route('libros_digitales.libros_digitales.index')
+        return redirect()->route('libros_digitales.libro_digital.index')
             ->with('success_message', 'Libro (Maestro) agregado exitosamente.');
     }
 
@@ -82,12 +97,18 @@ class LibrosDigitalesController extends Controller
      */
     public function edit(string $id)
     {
-        $librosDigitales = LibroDigital::findOrFail($id);
-        $Resoluciones = Resoluciones::pluck('name', 'id')->all();
-        $Sedes = Sede::pluck('nombre', 'id')->all();
-        $Users = User::pluck('username', 'id')->all();
+        $libroDigital = LibroDigital::findOrFail($id);
 
-        return view('libros_digitales.edit', compact('librosDigitales', 'Resoluciones', 'Sedes', 'Users', 'Users'));
+        $sedesId = $this->getSedes();
+        $sedeRepository = new SedeRepository;
+        $Resoluciones = $sedeRepository->getResolucionesSedes($sedesId)->toArray();
+        $LibrosPapel = $sedeRepository->getLibrosPapelSedes($sedesId);
+
+
+        $Sedes = $this->getSedes(true);
+
+
+        return view('libros_digitales.edit', compact('libroDigital', 'Resoluciones', 'Sedes', 'LibrosPapel'));
     }
 
     /**
@@ -106,7 +127,7 @@ class LibrosDigitalesController extends Controller
         $librosDigitales = LibroDigital::findOrFail($id);
         $librosDigitales->update($data);
 
-        return redirect()->route('libros_digitales.libros_digitales.index')
+        return redirect()->route('libros_digitales.libro_digital.index')
             ->with('success_message', 'Libro (Maestro) ha sido actualizado correctamente.');
     }
 
@@ -142,16 +163,15 @@ class LibrosDigitalesController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-            'acta_inicio' => 'nullable',
+
             'number' => 'required|numeric|min:0|max:4294967295',
             'romanos' => 'required|string|min:1|max:191',
             'resoluciones_id' => 'required',
             'fecha_inicio' => 'nullable|string|min:0',
             'sede_id' => 'required',
-            'resolucion_original' => 'nullable|string|min:0|max:191',
+            'libro_papel_id' => 'nullable|exist:libro_papel,id',
             'operador_id' => 'nullable',
-            'observaciones' => 'required|string|min:1|max:191',
-            'user_id' => 'required',
+            'observaciones' => 'nullable|string|min:1|max:191',
         ];
 
         return $request->validate($rules);

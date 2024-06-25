@@ -13,18 +13,23 @@ return new class extends Migration {
             $table->unsignedInteger('number');
             $table->string('romanos');
             $table->foreignUuid('resoluciones_id');
+            $table->foreignUuid('libros_papeles_id')->nullable();
             $table->dateTime('fecha_inicio')->nullable();
             $table->unsignedInteger('sede_id');
+//            $table->foreignId('sede_id');
             $table->string('resolucion_original')->nullable();
             $table->unsignedInteger('operador_id')->nullable();
-            $table->string('observaciones');
+//            $table->foreignId('operador_id')->nullable();
+            $table->string('observaciones')->nullable();
             $table->unsignedInteger('user_id');
+//            $table->foreignId('user_id');
             $table->softDeletes();
             $table->timestamps();
 
             $table->primary('id');
 
             $table->foreign('resoluciones_id')->references('id')->on('resoluciones');
+            $table->foreign('libros_papeles_id')->references('id')->on('libros_papeles');
             $table->foreign('sede_id')->references('id')->on('sedes');
             $table->foreign('operador_id')->references('id')->on('users');
             $table->foreign('user_id')->references('id')->on('users');

@@ -9,6 +9,7 @@ use App\Models\CorrelatividadAgrupada;
 use App\Models\EstadoCarrera;
 use App\Models\EstadoResoluciones;
 use App\Models\Library;
+use App\Models\LibroPapel;
 use App\Models\MasterMateria;
 use App\Models\MateriasCorrelativasCursado;
 use App\Models\LibroDigital;
@@ -22,6 +23,7 @@ use App\Policies\CorrelatividadAgrupadaPolicy;
 use App\Policies\EstadoCarreraPolicy;
 use App\Policies\EstadoResolucionesPolicy;
 use App\Policies\LibraryPolicy;
+use App\Policies\LibroPapelPolicy;
 use App\Policies\MasterMateriaPolicy;
 use App\Policies\MateriasCorrelativasCursadoPolicy;
 use App\Policies\LibroDigitalPolicy;
@@ -52,6 +54,7 @@ class AuthServiceProvider extends ServiceProvider
         Library::class => LibraryPolicy::class,
         AdminManager::class => AdminManagerPolicy::class,
         LibroDigital::class => LibroDigitalPolicy::class,
+        LibroPapel::class => LibroPapelPolicy::class,
     ];
 
     /**

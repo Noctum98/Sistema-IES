@@ -1,19 +1,18 @@
 @extends('layouts.app')
-
+<x-asset_fa_652/>
 @section('content')
 
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">Agregar nuevo Libro (Maestro)</h4>
+            <h4 class="m-0">Agregar Libro Digital</h4>
             <div>
-                <a href="{{ route('libros_digitales.libros_digitales.index') }}" class="btn btn-primary"
-                   title="Listar Libros (Maestros)">
-                    <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+                <a href="{{ route('libros_digitales.libro_digital.index') }}" class="btn btn-primary"
+                   title="Listado Libros Digitales">
+                    <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
                 </a>
             </div>
         </div>
-
 
         <div class="card-body">
 
@@ -27,11 +26,12 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('libros_digitales.libros_digitales.store') }}"
-                  accept-charset="UTF-8" id="create_libros_digitales_form" name="create_libros_digitales_form">
+            <form method="POST" class="needs-validation" novalidate
+                  action="{{ route('libros_digitales.libro_digital.store') }}" accept-charset="UTF-8"
+                  id="create_libro_digital_form" name="create_libro_digital_form">
                 {{ csrf_field() }}
                 @include ('libros_digitales.form', [
-                                            'librosDigitales' => null,
+                                            'libroDigital' => null,
                                           ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
