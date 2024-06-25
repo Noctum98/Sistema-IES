@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\LibroDigital;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\OldLibro */
-class OldLibroResource extends JsonResource
+/** @mixin LibroDigital */
+class LibroDigitalResource extends JsonResource
 {
     public function toArray($request)
     {

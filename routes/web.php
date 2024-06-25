@@ -12,6 +12,8 @@ use App\Http\Controllers\CargoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
+use App\Http\Controllers\LibrosDigitalesController;
+use App\Http\Controllers\ManagerBookController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\Parameters\CicloLectivoController;
@@ -70,10 +72,7 @@ use App\Http\Controllers\EstadoCarrerasController;
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
-use App\Http\Controllers\Parameters\ParametrosController;
-use App\Http\Controllers\Parameters\ParametrosCicloLectivoController;
-use App\Http\Controllers\Parameters\ParametrosCicloLectivoEspecialController;
-use App\Http\Controllers\OldLibrosController;
+use App\Http\Controllers\LibroPapelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -979,6 +978,62 @@ Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], fun
         ->name('estado_resoluciones.estado_resoluciones.destroy');
 });
 
+Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibroPapelController::class, 'index'])
+        ->name('libro_papel.libro_papel.index');
+    Route::get('/create', [LibroPapelController::class, 'create'])
+        ->name('libro_papel.libro_papel.create');
+    Route::get('/show/{libroPapel}',[LibroPapelController::class, 'show'])
+        ->name('libro_papel.libro_papel.show');
+    Route::get('/{libroPapel}/edit',[LibroPapelController::class, 'edit'])
+        ->name('libro_papel.libro_papel.edit');
+    Route::post('/', [LibroPapelController::class, 'store'])
+        ->name('libro_papel.libro_papel.store');
+    Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
+        ->name('libro_papel.libro_papel.update');
+    Route::delete('/libro_papel/{libroPapel}',[LibroPapelController::class, 'destroy'])
+        ->name('libro_papel.libro_papel.destroy');
+});
+
+Route::group(['prefix' => 'libros', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrosController::class, 'index'])
+        ->name('libros.libros.index');
+    Route::get('/create', [LibrosController::class, 'create'])
+        ->name('libros.libros.create');
+    Route::get('/show/{libros}',[LibrosController::class, 'show'])
+        ->name('libros.libros.show');
+    Route::get('/{libros}/edit',[LibrosController::class, 'edit'])
+        ->name('libros.libros.edit');
+    Route::post('/', [LibrosController::class, 'store'])
+        ->name('libros.libros.store');
+    Route::put('libros/{libros}', [LibrosController::class, 'update'])
+        ->name('libros.libros.update');
+    Route::delete('/libros/{libros}',[LibrosController::class, 'destroy'])
+        ->name('libros.libros.destroy');
+});
+
+Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrosDigitalesController::class, 'index'])
+        ->name('libros_digitales.libro_digital.index');
+    Route::get('/create', [LibrosDigitalesController::class, 'create'])
+        ->name('libros_digitales.libro_digital.create');
+    Route::get('/show/{libroDigital}',[LibrosDigitalesController::class, 'show'])
+        ->name('libros_digitales.libro_digital.show');
+    Route::get('/{libroDigital}/edit',[LibrosDigitalesController::class, 'edit'])
+        ->name('libros_digitales.libro_digital.edit');
+    Route::post('/', [LibrosDigitalesController::class, 'store'])
+        ->name('libros_digitales.libro_digital.store');
+    Route::put('libro_digital/{libroDigital}', [LibrosDigitalesController::class, 'update'])
+        ->name('libros_digitales.libro_digital.update');
+    Route::delete('/libro_digital/{libroDigital}',[LibrosDigitalesController::class, 'destroy'])
+        ->name('libros_digitales.libro_digital.destroy');
+});
+
+Route::group(['prefix' => 'manager_libros', 'middleware' => ['auth']], function () {
+    Route::get('/', [ManagerBookController::class, 'index'])
+        ->name('manager_libros.libros.index');
+});
+
 Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], function () {
     Route::get('/', [MateriasCorrelativasCursadosController::class, 'index'])
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
@@ -1088,43 +1143,5 @@ Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function
 });
 
 
-
-
-
-Route::group([
-    'prefix' => 'libros',
-], function () {
-    Route::get('/', [LibrosController::class, 'index'])
-         ->name('libros.libros.index');
-    Route::get('/create', [LibrosController::class, 'create'])
-         ->name('libros.libros.create');
-    Route::get('/show/{libros}',[LibrosController::class, 'show'])
-         ->name('libros.libros.show');
-    Route::get('/{libros}/edit',[LibrosController::class, 'edit'])
-         ->name('libros.libros.edit');
-    Route::post('/', [LibrosController::class, 'store'])
-         ->name('libros.libros.store');
-    Route::put('libros/{libros}', [LibrosController::class, 'update'])
-         ->name('libros.libros.update');
-    Route::delete('/libros/{libros}',[LibrosController::class, 'destroy'])
-         ->name('libros.libros.destroy');
-});
-
-Route::group(['prefix' => 'old_libros', 'middleware' => ['auth']], function () {
-    Route::get('/', [OldLibrosController::class, 'index'])
-         ->name('old_libros.old_libros.index');
-    Route::get('/create', [OldLibrosController::class, 'create'])
-         ->name('old_libros.old_libros.create');
-    Route::get('/show/{oldLibros}',[OldLibrosController::class, 'show'])
-         ->name('old_libros.old_libros.show');
-    Route::get('/{oldLibros}/edit',[OldLibrosController::class, 'edit'])
-         ->name('old_libros.old_libros.edit');
-    Route::post('/', [OldLibrosController::class, 'store'])
-         ->name('old_libros.old_libros.store');
-    Route::put('old_libros/{oldLibros}', [OldLibrosController::class, 'update'])
-         ->name('old_libros.old_libros.update');
-    Route::delete('/old_libros/{oldLibros}',[OldLibrosController::class, 'destroy'])
-         ->name('old_libros.old_libros.destroy');
-});
 
 

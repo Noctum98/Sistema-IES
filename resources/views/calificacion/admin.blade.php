@@ -8,7 +8,7 @@
                 </h6>
                 <h4>
                     <small>Carrera:</small> <i>{{$materia->carrera->nombre}}, {{$materia->carrera->sede->nombre}}<br/>
-                    <small>Turno:</small> {{$materia->carrera->turno}}</i><br/>
+                        <small>Turno:</small> {{$materia->carrera->turno}}</i><br/>
                     <small>Materia:</small> <i>{{ $materia->nombre }}</i>
                 </h4>
             </div>
@@ -77,7 +77,8 @@
                         Ver Planilla de Calificaciones Módulo {{$materia->nombre}}
                     </a>
                 @else
-                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-info">
+                    <a href="{{ route('proceso.listado', ['materia_id'=> $materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}"
+                       class="btn btn-info">
                         Ver procesos
                     </a>
                 @endif

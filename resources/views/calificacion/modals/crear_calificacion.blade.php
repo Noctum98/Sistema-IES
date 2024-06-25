@@ -19,6 +19,7 @@
                     <div class="form-group">
                         <label for="tipo_id">Tipo de calificación</label>
                         <select name="tipo_id" id="tipo_id" class="form-select" required>
+                            <option value="" selected >-- Seleccione tipo --</option>
                             @foreach($tiposCalificaciones as $tipoCalificacion)
                                 <option value="{{ $tipoCalificacion->id }}">{{ $tipoCalificacion->nombre }}</option>
                             @endforeach
@@ -30,7 +31,7 @@
                         <input type="text" name="nombre" id="nombre" class="form-control" required>
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label for="fecha">Fecha</label>
                         <input type="date" name="fecha" id="fecha" class="form-control" required>
