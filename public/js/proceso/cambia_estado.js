@@ -4,6 +4,8 @@ $(document).ready(function () {
 
         const campo = $(this);
         const proceso_id = campo.attr('id');
+        const proceso = campo.data('estado');
+        console.log(proceso)
 
         const estado_id = campo.val();
         $('#span-' + proceso_id).removeClass('d-block')
@@ -13,7 +15,7 @@ $(document).ready(function () {
 
         let url = '/proceso/cambia/estado';
         let data = {
-            "proceso_id": proceso_id,
+            "proceso_id": proceso,
             "estado_id": estado_id
         };
 
