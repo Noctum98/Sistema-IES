@@ -222,8 +222,7 @@ class ProcesoModularService
         $procesos = $this->obtenerProcesosModularesByMateria($materia->id, $ciclo_lectivo);
 
         foreach ($procesos as $proceso) {
-
-            if ($proceso->procesoRelacionado()->first() && $proceso->procesoRelacionado()->first()->cierre == 0) {
+            if ($proceso->procesoRelacionado()->first()) {
 
 
                 $nota_final_p = 0;
