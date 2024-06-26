@@ -83,5 +83,10 @@
         "model-name": "libros_digitales",
         "resource-file": "libros_digitales.json",
         "table-name": "libros_digitales"
+    },
+    {
+        "model-name": "mesa_folios",
+        "resource-file": "mesa_folios.json",
+        "table-name": "mesa_folios"
     }
 ]

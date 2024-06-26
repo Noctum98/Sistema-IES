@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Aviso extends Model
 {
@@ -47,14 +49,13 @@ class Aviso extends Model
         return $this->belongsTo(User::class, 'creador_id');
     }
 
+
     /**
-     * Get the User for this model.
-     *
-     * @return App\Models\User
+     * @return BelongsTo
      */
-    public function User()
+    public function User(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User', 'creador_id', 'id');
+        return $this->belongsTo(User::class, 'creador_id', 'id');
     }
 
     /**
@@ -63,10 +64,10 @@ class Aviso extends Model
      * @param string $value
      * @return void
      */
-    public function setVisibleDesdeAttribute($value)
+    public function setVisibleDesdeAttribute(string $value)
     {
 
-        $this->attributes['visible_desde'] = !empty($value) ? \DateTime::createFromFormat('Y-m-d H:i:s', $value) : null;
+        $this->attributes['visible_desde'] = !empty($value) ? DateTime::createFromFormat('Y-m-d H:i:s', $value) : null;
     }
 
     /**
@@ -75,31 +76,31 @@ class Aviso extends Model
      * @param string $value
      * @return void
      */
-    public function setVisibleHastaAttribute($value)
+    public function setVisibleHastaAttribute(string $value)
     {
-        $this->attributes['visible_hasta'] = !empty($value) ? \DateTime::createFromFormat('Y-m-d H:i:s', $value) : null;
+        $this->attributes['visible_hasta'] = !empty($value) ? DateTime::createFromFormat('Y-m-d H:i:s', $value) : null;
     }
 
     /**
      * Get created_at in array format
      *
      * @param string $value
-     * @return array
+     * @return string
      */
-    public function getCreatedAtAttribute($value)
+    public function getCreatedAtAttribute(string $value): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('d-m-Y H:i');
+        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
 
     /**
      * Get updated_at in array format
      *
      * @param string $value
-     * @return array
+     * @return string
      */
-    public function getUpdatedAtAttribute($value)
+    public function getUpdatedAtAttribute(string $value): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('d-m-Y H:i');
+        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
 
 
@@ -109,7 +110,7 @@ class Aviso extends Model
     public function getVisibleDesdeAttribute(): string
     {
 
-        return \DateTime::createFromFormat($this->getDateFormat(), $this->attributes['visible_desde'])->format('d-m-Y H:i');
+        return DateTime::createFromFormat($this->getDateFormat(), $this->attributes['visible_desde'])->format('d-m-Y H:i');
     }
 
     /**
@@ -118,11 +119,14 @@ class Aviso extends Model
      */
     public function getVisibleHastaAttribute(): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $this->attributes['visible_hasta'])->format('d-m-Y H:i');
+        return DateTime::createFromFormat($this->getDateFormat(), $this->attributes['visible_hasta'])->format('d-m-Y H:i');
     }
 
 
-    public function roles()
+    /**
+     * @return HasMany
+     */
+    public function roles(): HasMany
     {
         return $this->hasMany(AvisoRole::class, 'aviso_id', 'id');
     }
@@ -160,7 +164,7 @@ class Aviso extends Model
     public function isVencido(): bool
     {
 
-        if($this->visible_hasta < Carbon::now()->format('d-m-Y H:i')){
+        if ($this->visible_hasta < Carbon::now()->format('d-m-Y H:i')) {
             return true;
         }
         return false;

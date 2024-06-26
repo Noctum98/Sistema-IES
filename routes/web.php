@@ -73,6 +73,7 @@ use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
+use App\Http\Controllers\MesaFoliosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -141,6 +142,23 @@ Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], fun
         ->name('admin.actas_volantes.update');
     Route::delete('/admin_manager/{adminManager}',[ActaVolanteAdminController::class, 'destroy'])
         ->name('admin.actas_volantes.destroy');
+});
+
+Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrariesAdminController::class, 'index'])
+        ->name('admin-libraries.library.index');
+    Route::get('/create', [LibrariesAdminController::class, 'create'])
+        ->name('admin-libraries.library.create');
+    Route::get('/show/{library}',[LibrariesAdminController::class, 'show'])
+        ->name('admin-libraries.library.show');
+    Route::get('/{library}/edit',[LibrariesAdminController::class, 'edit'])
+        ->name('admin-libraries.library.edit');
+    Route::post('/', [LibrariesAdminController::class, 'store'])
+        ->name('admin-libraries.library.store');
+    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
+        ->name('admin-libraries.library.update');
+    Route::delete('/library/{library}',[LibrariesAdminController::class, 'destroy'])
+        ->name('admin-libraries.library.destroy');
 });
 
 Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function () {
@@ -1068,6 +1086,23 @@ Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function
         ->name('master_materias.master_materia.destroy');
 });
 
+Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], function () {
+    Route::get('/', [MesaFoliosController::class, 'index'])
+        ->name('mesa_folios.mesa_folio.index');
+    Route::get('/create', [MesaFoliosController::class, 'create'])
+        ->name('mesa_folios.mesa_folio.create');
+    Route::get('/show/{mesaFolio}',[MesaFoliosController::class, 'show'])
+        ->name('mesa_folios.mesa_folio.show');
+    Route::get('/{mesaFolio}/edit',[MesaFoliosController::class, 'edit'])
+        ->name('mesa_folios.mesa_folio.edit');
+    Route::post('/', [MesaFoliosController::class, 'store'])
+        ->name('mesa_folios.mesa_folio.store');
+    Route::put('mesa_folio/{mesaFolio}', [MesaFoliosController::class, 'update'])
+        ->name('mesa_folios.mesa_folio.update');
+    Route::delete('/mesa_folio/{mesaFolio}',[MesaFoliosController::class, 'destroy'])
+        ->name('mesa_folios.mesa_folio.destroy');
+});
+
 Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], function () {
     Route::get('/', [RegimensController::class, 'index'])
         ->name('regimens.regimen.index');
@@ -1124,24 +1159,3 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
-
-Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
-    Route::get('/', [LibrariesAdminController::class, 'index'])
-         ->name('admin-libraries.library.index');
-    Route::get('/create', [LibrariesAdminController::class, 'create'])
-         ->name('admin-libraries.library.create');
-    Route::get('/show/{library}',[LibrariesAdminController::class, 'show'])
-         ->name('admin-libraries.library.show');
-    Route::get('/{library}/edit',[LibrariesAdminController::class, 'edit'])
-         ->name('admin-libraries.library.edit');
-    Route::post('/', [LibrariesAdminController::class, 'store'])
-         ->name('admin-libraries.library.store');
-    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
-         ->name('admin-libraries.library.update');
-    Route::delete('/library/{library}',[LibrariesAdminController::class, 'destroy'])
-         ->name('admin-libraries.library.destroy');
-});
-
-
-
-
