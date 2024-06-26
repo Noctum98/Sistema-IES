@@ -70,7 +70,7 @@
 
                                     <label for="master_materia_id">Genérico:</label>
                                     <select class="form-control select2" id="master_materia_id"
-                                            name="master_materia_id[]" >
+                                            name="master_materia_id" >
                                         <option value="">Seleccione MasterMateria </option>
                                         @foreach($masterMaterias as $master)
                                             @if($master->id == $materia->master_materia_id))
