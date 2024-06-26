@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
-class OldLibro extends Model
+class LibroDigital extends Model
 {
     use SoftDeletes, HasFactory;
 
@@ -17,7 +17,7 @@ class OldLibro extends Model
      *
      * @var string
      */
-    protected $table = 'old_libros';
+    protected $table = 'libros_digitales';
 
     /**
      * The database primary key value.
@@ -41,11 +41,12 @@ class OldLibro extends Model
     protected $fillable = [
         'acta_inicio',
         'number',
+        'romanos',
         'resoluciones_id',
         'fecha_inicio',
         'sede_id',
-        'resolucion_original',
-        'operador_id',
+        'libros_papeles_id',
+
         'observaciones',
         'user_id',
     ];
@@ -72,5 +73,10 @@ class OldLibro extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function libroPapel(): BelongsTo
+    {
+        return $this->belongsTo(LibroPapel::class, 'libros_papeles_id');
     }
 }

@@ -209,6 +209,62 @@
             "api-description": "The resoluciones of the model."
         },
         {
+            "name": "libros_papeles_id",
+            "labels": "Libros Papeles",
+            "html-type": "select",
+            "css-class": "",
+            "options": {},
+            "html-value": null,
+            "validation": "nullable",
+            "is-on-index": false,
+            "is-on-show": true,
+            "is-on-form": true,
+            "data-type": "char",
+            "data-type-params": [
+                36
+            ],
+            "data-value": null,
+            "is-index": true,
+            "is-unique": false,
+            "is-primary": false,
+            "comment": null,
+            "is-nullable": true,
+            "is-header": false,
+            "is-unsigned": true,
+            "is-auto-increment": false,
+            "is-inline-options": false,
+            "is-date": false,
+            "date-format": "",
+            "cast-as": "",
+            "placeholder": "Select libros papeles",
+            "delimiter": "; ",
+            "range": [],
+            "foreign-relation": {
+                "name": "LibrosPapele",
+                "type": "belongsTo",
+                "params": [
+                    "App\\Models\\LibrosPapele",
+                    "libros_papeles_id",
+                    "id"
+                ],
+                "field": "name"
+            },
+            "foreign-constraint": {
+                "field": "libros_papeles_id",
+                "references": "libros_papeles",
+                "on": "id",
+                "on-delete": "no action",
+                "on-update": "no action",
+                "references-model": "App\\Models\\LibrosPapele",
+                "is-self-reference": false
+            },
+            "on-store": null,
+            "on-update": null,
+            "api-key": "libros_papeles_id",
+            "is-api-visible": true,
+            "api-description": "The libros papeles of the model."
+        },
+        {
             "name": "fecha_inicio",
             "labels": "Fecha Inicio",
             "html-type": "text",
@@ -256,7 +312,7 @@
             "is-on-index": false,
             "is-on-show": true,
             "is-on-form": true,
-            "data-type": "int",
+            "data-type": "string",
             "data-type-params": [],
             "data-value": null,
             "is-index": true,
@@ -275,24 +331,15 @@
             "delimiter": "; ",
             "range": [],
             "foreign-relation": {
-                "name": "Sede",
+                "name": "sede",
                 "type": "belongsTo",
                 "params": [
                     "App\\Models\\Sede",
-                    "sede_id",
-                    "id"
+                    "sede_id"
                 ],
                 "field": "nombre"
             },
-            "foreign-constraint": {
-                "field": "sede_id",
-                "references": "sedes",
-                "on": "id",
-                "on-delete": "no action",
-                "on-update": "no action",
-                "references-model": "App\\Models\\Sede",
-                "is-self-reference": false
-            },
+            "foreign-constraint": null,
             "on-store": null,
             "on-update": null,
             "api-key": "sede_id",
@@ -349,7 +396,7 @@
             "is-on-index": false,
             "is-on-show": true,
             "is-on-form": true,
-            "data-type": "int",
+            "data-type": "string",
             "data-type-params": [],
             "data-value": null,
             "is-index": true,
@@ -368,24 +415,15 @@
             "delimiter": "; ",
             "range": [],
             "foreign-relation": {
-                "name": "User",
+                "name": "operador",
                 "type": "belongsTo",
                 "params": [
-                    "App\\Models\\User",
-                    "operador_id",
-                    "id"
+                    "App\\Models\\Operador",
+                    "operador_id"
                 ],
-                "field": "username"
+                "field": "id"
             },
-            "foreign-constraint": {
-                "field": "operador_id",
-                "references": "users",
-                "on": "id",
-                "on-delete": "no action",
-                "on-update": "no action",
-                "references-model": "App\\Models\\User",
-                "is-self-reference": false
-            },
+            "foreign-constraint": null,
             "on-store": null,
             "on-update": null,
             "api-key": "operador_id",
@@ -442,7 +480,7 @@
             "is-on-index": false,
             "is-on-show": true,
             "is-on-form": true,
-            "data-type": "int",
+            "data-type": "string",
             "data-type-params": [],
             "data-value": null,
             "is-index": true,
@@ -461,24 +499,15 @@
             "delimiter": "; ",
             "range": [],
             "foreign-relation": {
-                "name": "User",
+                "name": "user",
                 "type": "belongsTo",
                 "params": [
                     "App\\Models\\User",
-                    "user_id",
-                    "id"
+                    "user_id"
                 ],
                 "field": "username"
             },
-            "foreign-constraint": {
-                "field": "user_id",
-                "references": "users",
-                "on": "id",
-                "on-delete": "no action",
-                "on-update": "no action",
-                "references-model": "App\\Models\\User",
-                "is-self-reference": false
-            },
+            "foreign-constraint": null,
             "on-store": null,
             "on-update": null,
             "api-key": "user_id",
@@ -600,7 +629,7 @@
     "relations": [],
     "indexes": [],
     "auto-manage-created-and-updated-at": true,
-    "table-name": "old_libros",
+    "table-name": "libros_digitales",
     "protection": {
         "is-model-protected": false,
         "is-controller-protected": false,
@@ -618,37 +647,37 @@
     },
     "api-documentation": {
         "access_token_with_bearer": "The access token prefixed with the \"Bearer \" key word.",
-        "index_route_description": "Retrieve existing old libros.",
+        "index_route_description": "Retrieve existing libros digitales.",
         "index_route_response_description": "The API's response will be JSON based data. The JSON object will be structured as follow",
-        "the_key_is_the_model_property_and_the_value_is_the_model_value": "The array's key is the old libros property name where the value is the assigned value to the retrieved old libros.",
+        "the_key_is_the_model_property_and_the_value_is_the_model_value": "The array's key is the libros digitales property name where the value is the assigned value to the retrieved libros digitales.",
         "link_to_retrieve_first_page": "Link to retrieve first page.",
         "link_to_retrieve_last_page": "Link to retrieve last page.",
         "link_to_retrieve_previous_page": "Link to retrieve previous page.",
         "link_to_retrieve_next_page": "Link to retrieve next page.",
         "the_number_of_current_page": "The number of current page.",
-        "the_index_of_the_first_retrieved_item": "The index of first retrieved old libros.",
+        "the_index_of_the_first_retrieved_item": "The index of first retrieved libros digitales.",
         "the_number_of_the_last_page": "The number of the last page.",
         "the_base_link_to_the_resource": "The base link to the api resource.",
-        "the_number_of_models_per_page": "The number of old libros per page.",
-        "the_index_of_the_last_retrieved_item": "The index of last retrieved old libros.",
+        "the_number_of_models_per_page": "The number of libros digitales per page.",
+        "the_index_of_the_last_retrieved_item": "The index of last retrieved libros digitales.",
         "the_total_of_available_pages": "The total of the available pages.",
-        "store_route_description": "Create new old libros.",
+        "store_route_description": "Create new libros digitales.",
         "store_route_response_description": "The API's response will be JSON based data. The JSON object will be structured as follow",
-        "update_route_description": "Update existing old libros.",
+        "update_route_description": "Update existing libros digitales.",
         "update_route_response_description": "The API's response will be JSON based data. The JSON object will be structured as follow",
-        "show_route_description": "Retrieve existing old libros.",
+        "show_route_description": "Retrieve existing libros digitales.",
         "show_route_response_description": "The API's response will be JSON based data. The JSON object will be structured as follow",
-        "the_id_of_model_to_retrieve": "The unique id of the old libros to retrieve",
-        "destroy_route_description": "Delete existing old libros.",
+        "the_id_of_model_to_retrieve": "The unique id of the libros digitales to retrieve",
+        "destroy_route_description": "Delete existing libros digitales.",
         "destroy_route_response_description": "The API's response will be JSON based data. The JSON object will be structured as follow",
-        "the_id_of_model_to_delete": "The id of the old libros to delete.",
-        "general_description": "Allows you to list, create, edit, show and delete old libros.",
+        "the_id_of_model_to_delete": "The id of the libros digitales to delete.",
+        "general_description": "Allows you to list, create, edit, show and delete libros digitales.",
         "indicate_whether_the_request_was_successful_or_not": "Indicate whether the request was successful or not.",
-        "the_id_of_the_model": "The id of the old libros.",
+        "the_id_of_the_model": "The id of the libros digitales.",
         "this_parameter_must_be_present_in_the_request": "This parameter must be present in the request.",
         "the_request_failed_validation": "The request failed validation.",
         "list_of_the_invalid_errors": "List of the invalid errors.",
-        "the_requested_model_does_not_exists": "The requested old libros does not exists.",
+        "the_requested_model_does_not_exists": "The requested libros digitales does not exists.",
         "the_user_does_not_have_permission_to_access_the_requested_resource": "User does not have permission to access the requested resource."
     }
 }

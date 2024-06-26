@@ -7,9 +7,8 @@
                     Calificaciones
                 </h6>
                 <h4>
-                    <small>Carrera:</small> <i>{{ $materia->carrera->nombre }}, {{ $materia->carrera->sede->nombre }}
-                        <br/>
-                        <small>Turno:</small> {{ $materia->carrera->turno }}</i><br/>
+                    <small>Carrera:</small> <i>{{$materia->carrera->nombre}}, {{$materia->carrera->sede->nombre}}<br/>
+                        <small>Turno:</small> {{$materia->carrera->turno}}</i><br/>
                     <small>Materia:</small> <i>{{ $materia->nombre }}</i>
                 </h4>
             </div>
