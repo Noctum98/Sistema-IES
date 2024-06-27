@@ -74,6 +74,7 @@ use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
 use App\Http\Controllers\MesaFoliosController;
+use App\Http\Controllers\FolioNotasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -996,6 +997,23 @@ Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], fun
         ->name('estado_resoluciones.estado_resoluciones.destroy');
 });
 
+Route::group(['prefix' => 'folio_notas', 'middleware' => ['auth']], function () {
+    Route::get('/', [FolioNotasController::class, 'index'])
+        ->name('folio_notas.folio_nota.index');
+    Route::get('/create', [FolioNotasController::class, 'create'])
+        ->name('folio_notas.folio_nota.create');
+    Route::get('/show/{folioNota}',[FolioNotasController::class, 'show'])
+        ->name('folio_notas.folio_nota.show');
+    Route::get('/{folioNota}/edit',[FolioNotasController::class, 'edit'])
+        ->name('folio_notas.folio_nota.edit');
+    Route::post('/', [FolioNotasController::class, 'store'])
+        ->name('folio_notas.folio_nota.store');
+    Route::put('folio_nota/{folioNota}', [FolioNotasController::class, 'update'])
+        ->name('folio_notas.folio_nota.update');
+    Route::delete('/folio_nota/{folioNota}',[FolioNotasController::class, 'destroy'])
+        ->name('folio_notas.folio_nota.destroy');
+});
+
 Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], function () {
     Route::get('/', [LibroPapelController::class, 'index'])
         ->name('libro_papel.libro_papel.index');
@@ -1159,3 +1177,5 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+
+

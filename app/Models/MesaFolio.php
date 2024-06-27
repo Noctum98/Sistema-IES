@@ -121,6 +121,18 @@ class MesaFolio extends Model
     }
 
     /**
+     * Get fecha in array format
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getFechaAttribute(string $value): string
+    {
+        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
+    }
+
+
+    /**
      * Get created_at in array format
      *
      * @param string $value
@@ -145,16 +157,7 @@ class MesaFolio extends Model
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
 
-    /**
-     * Get fecha in array format
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getFechaAttribute(string $value): string
-    {
-        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
-    }
+
 
     /**
      * Get updated_at in array format
@@ -185,6 +188,11 @@ class MesaFolio extends Model
     public function coordinador(): BelongsTo
     {
         return $this->belongsTo(User::class, 'coordinador');
+    }
+
+    public function libro():string
+    {
+        return $this->LibroDigital()->first()->romanos;
     }
 
 }

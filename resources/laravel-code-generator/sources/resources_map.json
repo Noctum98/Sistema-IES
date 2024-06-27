@@ -88,5 +88,10 @@
         "model-name": "mesa_folios",
         "resource-file": "mesa_folios.json",
         "table-name": "mesa_folios"
+    },
+    {
+        "model-name": "folioNotas",
+        "resource-file": "folio_notas.json",
+        "table-name": "folio_notas"
     }
 ]
