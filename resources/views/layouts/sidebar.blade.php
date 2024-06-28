@@ -19,6 +19,10 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                         Usuarios
                     </a>
+                        <a class="nav-link" href="{{ route('admin_managers.admin_manager.listado') }}">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-bars-progress"></i></div>
+                        Managers
+                    </a>
 
                 @endif
                 @if(Session::has('admin')|| Session::has('regente')|| Session::has('avisos'))
@@ -168,8 +172,7 @@
                     {{--                    </a>--}}
                     {{--                     ----->--}}
                 @endif
-                <a class="nav-link" href="https://drive.google.com/drive/folders/1crwsQzH8bVTu2c6oWFN5Qf4-ra7lVSzG"
-                   target="__blank">
+                <a class="nav-link" href="{{ route('libraries.library.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca
                 </a>

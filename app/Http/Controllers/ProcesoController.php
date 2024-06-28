@@ -290,7 +290,7 @@ class ProcesoController extends Controller
         $materia = Materia::find($materia_id);
         $alumno = Alumno::find($alumno_id);
         $materia = Materia::find($request['materia_id']);
-        $inscripcion = $alumno->lastProcesoCarrera($materia->carrera->id);        
+        $inscripcion = $alumno->lastProcesoCarrera($materia->carrera->id);
         $proceso = Proceso::create([
             'alumno_id' => $alumno_id,
             'materia_id' => $materia_id,

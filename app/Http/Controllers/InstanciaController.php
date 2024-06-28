@@ -19,6 +19,8 @@ use App\Models\User;
 use App\Services\Mesas\InstanciaService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+
 
 class InstanciaController extends Controller
 {
@@ -108,7 +110,6 @@ class InstanciaController extends Controller
             }
             
         }
-        
 
         return view('mesa.carreras', [
             'sede'  =>  $sede,

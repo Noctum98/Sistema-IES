@@ -45,6 +45,10 @@ class Resoluciones extends Model
         'modality'
     ];
 
+    protected $casts = [
+        'id' => 'string'
+    ];
+
     public function estadoResoluciones(): BelongsTo
     {
         return $this->belongsTo(EstadoResoluciones::class);

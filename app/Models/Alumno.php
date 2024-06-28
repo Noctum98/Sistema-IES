@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Carrera;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -129,7 +130,7 @@ class Alumno extends Model
         return $this->hasMany('App\Models\AlumnoAsistencia');
     }
 
-    public function alumno_carrera()
+    public function alumno_carrera(): HasMany
     {
         return $this->hasMany(AlumnoCarrera::class, 'alumno_id');
     }
@@ -369,4 +370,6 @@ class Alumno extends Model
     {
         return Carbon::parse($this->attributes['fecha'])->age;
     }
+
+
 }

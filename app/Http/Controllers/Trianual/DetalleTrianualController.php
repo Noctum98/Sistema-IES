@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Trianual;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Trianual\StoreDetalleTrianualRequest;
 use App\Http\Requests\Trianual\UpdateDetalleTrianualRequest;
+use App\Models\Carrera;
 use App\Models\Estados;
+use App\Models\Materia;
 use App\Models\Trianual\DetalleTrianual;
 use App\Models\Trianual\Trianual;
 use App\Services\EquivalenciasService;
@@ -172,5 +174,68 @@ class DetalleTrianualController extends Controller
     public function destroy(DetalleTrianual $detalleTrianual)
     {
         //
+    }
+
+    public function generarDetalle(Trianual $trianual)
+    {
+
+        /** @var Carrera $carrera */
+        $carrera = $trianual->getCarrera();
+
+        $masterMaterias = $carrera->resoluciones()->first()->masterMaterias()->get();
+
+
+
+        $condicion = Estados::where('identificador', 1)->first();
+
+        $data= [];
+        $data['condicion_id'] = $condicion->id;
+
+        foreach ($masterMaterias as $mm) {
+
+            $materia = Materia::where([
+                'master_materia_id' => $mm->id,
+                'carrera_id' => $carrera->id
+            ])->first();
+            $detalleTrianual = true;
+            if($materia) {
+                $detalleTrianual = DetalleTrianual::where([
+                    'trianual_id' => $trianual->id,
+                    'materia_id' => $materia->id
+                ])->first();
+            }
+
+            if(!$detalleTrianual) {
+
+                $data['trianual_id'] = $trianual->id;
+
+                $data['materia_id'] = $materia->id;
+                $data['proceso_id'] = $proceso = $this->procesoService->procesoPorAlumnoMateria($trianual->alumno_id, $materia->id)->id ?? null;
+                $data['equivalencia_id'] = $this->equivalenciasService->equivalenciaPorAlumnoMateria($trianual->alumno_id, $materia->id)->id ?? null;
+
+                if (is_object($proceso) && $proceso->estado_id) {
+                    $data['condicion_id'] = $proceso->estado_id;
+                }
+                $data['operador_id'] = Auth::user()->id;
+
+                $detalleTrianual = DetalleTrianual::create($data);
+
+            }
+
+        }
+
+        $message = 'Detalles generados correctamente';
+        session(['alert_success'=>$message]);
+
+        $estados = Estados::all();
+        $detalles = $this->detalleTrianualService->detallesPorTrianual($trianual->id);
+        return view('trianual.trianual.show', [
+            'trianual' => $trianual,
+            'estados' => $estados,
+            'detalles' => $detalles
+        ]);
+
+
+
     }
 }

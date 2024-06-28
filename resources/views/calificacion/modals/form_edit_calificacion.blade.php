@@ -11,7 +11,9 @@
         <label for="tipo_id">Tipo de calificación</label>
         <select name="tipo_id" id="tipo_id" class="form-select" required>
             @foreach($tiposCalificaciones as $tipoCalificacion)
-                <option value="{{ $tipoCalificacion->id }}">{{ $tipoCalificacion->nombre }}</option>
+                <option value="{{ $tipoCalificacion->id }}"
+                        {{ $calificacion->tipo_id == $tipoCalificacion->id ? 'selected' : '' }}
+                >{{ $tipoCalificacion->nombre }}</option>
             @endforeach
         </select>
     </div>
@@ -45,5 +47,5 @@
         </div>
     @endif
 
-    <input type="submit" value="Editar" class="btn btn-primary">
+    <input type="submit" value="Guardar cambios" class="btn btn-primary">
 </form>

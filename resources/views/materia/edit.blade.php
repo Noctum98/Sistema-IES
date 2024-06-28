@@ -325,7 +325,7 @@
         $(document).ready(function () {
             $(".select2").select2({
 // dropdownParent: $('#agregaModal'),
-                theme: "classic",
+                theme: "bootstrap",
                 width: "100%",
                 placeholder: 'Seleccione una opción',
                 allowClear: true

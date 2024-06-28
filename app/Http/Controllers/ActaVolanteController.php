@@ -180,8 +180,8 @@ class ActaVolanteController extends Controller
 
         $result = $actas->map(function($acta){
             return [
-                'nota' => $acta->promedio == -1 ? 'A': $acta->promedio, // Change this to your actual field name for note.
-                'fecha' => $acta->mesaAlumno()->first()->fechaMesa(), // Change this to your actual field name for date.
+                'nota' => $acta->promedio == -1 ? 'A': $acta->promedio,
+                'fecha' => $acta->mesaAlumno()->first()->fechaMesa(),
             ];
         });
 
