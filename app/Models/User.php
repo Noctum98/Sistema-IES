@@ -124,7 +124,7 @@ class User extends Authenticatable
     //============================= ROLES ===================================//
     public function roles()
     {
-        return $this->belongsToMany(Rol::class)->withTimestamps();
+        return $this->belongsToMany(Rol::class)->where('activo',true)->withTimestamps();
     }
     public function authorizeRoles($roles)
     {

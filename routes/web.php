@@ -406,6 +406,7 @@ Route::prefix('usuario_materia')->group(function () {
 
 //Ruta de Roles
 Route::resource('roles', RolController::class);
+Route::get('cambiarEstado/{rol_id}',[RolController::class,'cambiarEstado'])->name('rol.cambiarEstado');
 
 // Rutas de carreras/materia
 Route::prefix('carreras/materias')->group(function () {

@@ -9,14 +9,14 @@
         Crear Rol
     </button>
     @if(@session('rol_creado'))
-        <div class="alert alert-success">
-            {{ @session('rol_creado') }}
-        </div>
+    <div class="alert alert-success">
+        {{ @session('rol_creado') }}
+    </div>
     @endif
     @if(@session('rol_eliminado'))
-        <div class="alert alert-success">
-            {{ @session('rol_eliminado') }}
-        </div>
+    <div class="alert alert-success">
+        {{ @session('rol_eliminado') }}
+    </div>
     @endif
     <h4 class="text-secondary">Roles Principales</h4>
 
@@ -26,6 +26,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripcion</th>
+                <th scope="col">Activo</th>
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
@@ -36,8 +37,18 @@
                 <td>{{ $rol->nombre }}</td>
                 <td>{{ $rol->descripcion }}</td>
                 <td>
-                    <button class="btn btn-sm btn-primary">Editar</button>
-                    <a href="{{ route('roles.destroy',$rol->id) }}" type="button" class="btn btn-sm btn-danger">Eliminar</a>
+                    @if($rol->activo)
+                    <i class='fas fa-check' style='font-size:14px;color:green'></i>
+                    @else
+                    <i class='fas fa-times' style='font-size:14px;color:red'></i>
+                    @endif
+                </td>
+                <td>
+                    @if($rol->activo)
+                    <a class="col-md-3 btn btn-sm btn-secondary" href="{{ route('rol.cambiarEstado',$rol->id) }}">Desactivar</a>
+                    @else
+                    <a class="col-md-3 btn btn-sm btn-success" href="{{ route('rol.cambiarEstado',$rol->id) }}">Activar</a>
+                    @endif <a href="{{ route('roles.destroy',$rol->id) }}" type="button" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>
             </tr>
             @endforeach
@@ -51,6 +62,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripción</th>
+                <th scope="col">Activo</th>
                 <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
             </tr>
         </thead>
@@ -60,8 +72,19 @@
                 <th scope="row">{{ $rol->id }}</th>
                 <td>{{ $rol->nombre }}</td>
                 <td>{{ $rol->descripcion }}</td>
+                <td>
+                    @if($rol->activo)
+                    <i class='fas fa-check' style='font-size:14px;color:green'></i>
+                    @else
+                    <i class='fas fa-times' style='font-size:14px;color:red'></i>
+                    @endif
+                </td>
                 <td class="row">
-                    <button class="col-md-2 btn btn-sm btn-primary">Editar</button>
+                    @if($rol->activo)
+                    <a class="col-md-3 btn btn-sm btn-secondary" href="{{ route('rol.cambiarEstado',$rol->id) }}">Desactivar</a>
+                    @else
+                    <a class="col-md-3 btn btn-sm btn-success" href="{{ route('rol.cambiarEstado',$rol->id) }}">Activar</a>
+                    @endif
                     <form action="{{ route('roles.destroy',$rol->id) }}" method="POST" class="col-md-2">
                         {{ method_field('DELETE') }}
                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>

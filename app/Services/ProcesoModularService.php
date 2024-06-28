@@ -504,7 +504,7 @@ class ProcesoModularService
     public function grabaEstadoPorProcesoModular(ProcesoModular $pm): ?int
     {
         $idEstado = $pm->procesoRelacionado()->first()->estado_id;
-        if ($pm->procesoRelacionado()->first()->cierre != 1) {
+        if ($pm->procesoRelacionado()->first()->cierre != 1 && $pm->procesoRelacionado()->first()->cierre_final != 1) {
             if ($this->regularityDirectAccreditation($pm)) {
                 $estado = Estados::where(
                     ['identificador' => 4]

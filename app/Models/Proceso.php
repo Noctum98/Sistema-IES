@@ -12,6 +12,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\HigherOrderCollectionProxy;
 
 /**
@@ -82,7 +83,7 @@ class Proceso extends Model
 
     public function inscripcionCarrera(): BelongsTo
     {
-        return $this->belongsTo(AlumnoCarrera::class,'inscripcion_id');
+        return $this->belongsTo(AlumnoCarrera::class, 'inscripcion_id');
     }
 
     public function estadoRegularidad()
@@ -111,6 +112,28 @@ class Proceso extends Model
 
 
     // Functions
+    public function habilitadoCierre()
+    {
+        $pase = false;
+
+        if ($this->cierre && !$this->cierre_final) {
+            if (Session::has('coordinador') || Session::has('admin')) {
+                $pase = true;
+            }
+        } elseif ($this->cierre_final && Session::has('admin') && Session::has('cierres')) {
+            $rolCierre = Rol::where('nombre','cierres')->first();
+
+            if($rolCierre->activo)
+            {
+                $pase = true;
+            }
+        }elseif(!$this->cierre && !$this->cierre_final)
+        {
+            $pase = true;
+        }
+
+        return $pase;
+    }
     public function asistencia()
     {
         return Asistencia::where('proceso_id', $this->id)->first();
@@ -227,6 +250,4 @@ class Proceso extends Model
     {
         return $this->belongsTo(CondicionMateria::class, 'condicion_materia_id');
     }
-
-
 }

@@ -277,6 +277,7 @@ class MateriaController extends Controller
             }
 
             $proceso->cierre = true;
+            $proceso->cierre_final = true;
             $proceso->update();
         }
 

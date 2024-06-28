@@ -469,6 +469,7 @@ class ProcesoController extends Controller
         } else {
             foreach ($procesos as $proceso) {
                 $proceso->cierre = 1;
+                $proceso->cierre_final = 1;
                 $proceso->operador_id = $user->id;
                 $proceso->update();
 

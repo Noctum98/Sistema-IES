@@ -101,7 +101,7 @@ class InstanciaController extends Controller
     
                     if($carreraExistente)
                     {
-                        array_push($carreras,$carreraExistente);
+                        array_push($carreras,$carrera);
                     }
     
                 }
