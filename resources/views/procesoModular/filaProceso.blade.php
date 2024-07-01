@@ -53,6 +53,10 @@
                checked
            @else
                unchecked
-        @endif
+            @endif
+
+            @if($proceso->procesoRelacionado->cierre && !Session::has('cierres'))
+                disabled
+            @endif
     />
 </td>

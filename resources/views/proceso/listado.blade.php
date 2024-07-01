@@ -47,12 +47,10 @@
     @endif
 
     @if(Session::has('coordinador') || Session::has('admin'))
-    @if(!$comision)
-    <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
-    @else
-    <a href="{{ route('materia.cierre',['materia_id'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo,'comision_id'=>$comision->id]) }}" class="btn btn-sm btn-warning"> Cerrar Planilla</a>
+    <button data-bs-toggle="modal" data-bs-target="#cerrarPlanilla" class="btn btn-sm btn-warning"> Cerrar Planilla</button>
     @endif
-    @endif
+
+
 
     <div class="table-responsive tableFixHead">
 
@@ -169,8 +167,7 @@
 
                         <input type="hidden" name="checkcoordinador" id="coordinador" value="{{ Session::has('coordinador') ? 1 : 0 }}">
 
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ $proceso->cierre && (!Session::has('coordinador')
-                            && !Session::has('admin')) ? 'disabled' : '' }}>
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ !$proceso->habilitadoCierre() ? 'disabled' : '' }}>
                     </td>
 
                 </tr>
@@ -183,6 +180,8 @@
             @include('proceso.modals.cargar_etapa_campo')
 
     </div>
+    @include('proceso.modals.cerrar_planilla')
+
     @endsection
     @section('scripts')
     <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>

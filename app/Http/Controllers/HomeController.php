@@ -43,11 +43,6 @@ class HomeController extends Controller
 
         $avisos = $this->avisosService->getAvisos();
 
-
-
-
-
-
         return view('home', compact('avisos'));
     }
 
