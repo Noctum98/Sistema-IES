@@ -8,6 +8,13 @@ use App\Models\RolUser;
 
 class RolController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('app.auth');
+        $this->middleware('app.roles:admin');
+    }
+
     public function index()
     {
         $roles_primarios = Rol::where('tipo',0)->get();
@@ -39,5 +46,24 @@ class RolController extends Controller
 
         return redirect()->route('roles.index')
         ->with('rol_eliminado','El rol se ha eliminado correctamente.');
+    }
+
+    public function cambiarEstado(Request $request,$rol_id)
+    {
+        $rol = Rol::find($rol_id);
+        $message = '';
+
+        if($rol->activo)
+        {
+            $rol->activo = false;
+            $message = 'Rol desactivado correctamente';
+        }else{
+            $rol->activo = true;
+            $message = 'Rol activado correctamente';
+        }
+
+        $rol->update();
+
+        return redirect()->back()->with(['alert_success'=>$message]);
     }
 }

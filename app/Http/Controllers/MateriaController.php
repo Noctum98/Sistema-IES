@@ -15,13 +15,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Estados;
-use App\Models\Personal;
 use App\Models\Materia;
 use App\Models\Proceso;
 use App\Services\CicloLectivoService;
+use App\Models\TipoMateria;
 use App\Services\ProcesoService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MateriaController extends Controller
@@ -37,6 +36,7 @@ class MateriaController extends Controller
     /**
      * @param MateriaService $materiaService
      * @param ProcesoService $procesoService
+     * @param CicloLectivoService $cicloLectivoService
      */
     function __construct(MateriaService $materiaService, ProcesoService $procesoService, CicloLectivoService $cicloLectivoService)
     {
@@ -99,17 +99,18 @@ class MateriaController extends Controller
 
         $carrera = Carrera::find($materia->carrera_id);
         $resoluciones = $carrera->resoluciones()->first();
+        $tipo_materias = TipoMateria::all();
 
         $masterMaterias = null;
         if($resoluciones){
             $masterMaterias = $resoluciones->masterMaterias->where('year', $materia->año);
         }
 
-
         return view('materia.edit', [
             'materia' => $materia,
             'materias' => $materias,
-            'masterMaterias' => $masterMaterias
+            'masterMaterias' => $masterMaterias,
+            'tipo_materias' => $tipo_materias
         ]);
     }
 
@@ -154,6 +155,7 @@ class MateriaController extends Controller
         ]);
 
         $materia = Materia::find($id);
+        $masterMateria = $materia->masterMateria;
 
         $materia->update($request->all());
 
@@ -191,6 +193,13 @@ class MateriaController extends Controller
                     'operador_id' => Auth::user()->id
                 ]);
             }
+        }
+
+        if($request['tipo_unidad_curricular'] != $masterMateria->tipo_unidad_curricular_id)
+        {
+
+            $masterMateria->tipo_unidad_curricular_id = $request['tipo_unidad_curricular'];
+            $masterMateria->update();
         }
 
 
@@ -284,6 +293,7 @@ class MateriaController extends Controller
             }
 
             $proceso->cierre = true;
+            $proceso->cierre_final = true;
             $proceso->update();
         }
 

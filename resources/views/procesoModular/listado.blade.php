@@ -174,6 +174,7 @@
                     class="fas fa-download"></i> Descargar
                 planilla</a>
         @endif
+
         {{--
             @if($puede_procesar)
                 <a href="{{ route('proceso.cambiaCierreGeneral', ['materia_id'=> $materia->id, 'cargo_id' => $cargo_id,'comision_id' => 0 ,'cierre_coordinador' => true]) }}"
@@ -183,6 +184,8 @@
             @endif
 
         @endif --}}
+
+
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}
@@ -324,6 +327,10 @@
                                                            checked
                                                        @else
                                                            unchecked
+                                                    @endif
+
+                                                    @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))
+                                                        disabled
                                                     @endif
                                                 />
                                             </td>
