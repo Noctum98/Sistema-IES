@@ -227,6 +227,25 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-sm-6">
+                            <label for="tipo_unidad_curricular">Tipo unidad curricular: </label>
+                                <select class="form-control select2" id="tipo_unidad_curricular"
+                                        name="tipo_unidad_curricular">
+                                    <option value="">No tiene tipo</option>
+                                    @foreach($tipo_materias as $tipo)
+                                        @if($tipo->id == $materia->masterMateria->tipo_unidad_curricular_id)
+                                            <option value="{{ $tipo->id }}" selected="selected">
+                                                {{ $tipo->nombre }}
+                                            </option>
+                                        @else
+                                        <option value="{{ $tipo->id }}">
+                                                    {{ $tipo->nombre }}
+                                                </option>
+                                        @endif
+
+                                    @endforeach
+                                </select>
+                            </div>
 
                         </div>
                         <div class="form-group mt-2">
