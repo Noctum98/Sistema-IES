@@ -5,7 +5,7 @@
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">Agregar nueva Nota a Folio</h4>
+            <h4 class="m-0">Agregar nueva Nota a un folio</h4>
             <div>
                 <a href="{{ route('folio_notas.folio_nota.index') }}" class="btn btn-primary"
                    title="Ver Notas de los folios">

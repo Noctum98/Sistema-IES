@@ -46,7 +46,6 @@ class LibroDigital extends Model
         'fecha_inicio',
         'sede_id',
         'libros_papeles_id',
-
         'observaciones',
         'user_id',
     ];

@@ -1109,6 +1109,8 @@ Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], function () 
         ->name('mesa_folios.mesa_folio.index');
     Route::get('/create', [MesaFoliosController::class, 'create'])
         ->name('mesa_folios.mesa_folio.create');
+    Route::get('/create/{libroDigital}', [MesaFoliosController::class, 'createByLibro'])
+        ->name('mesa_folios.mesa_folio.create_by_libro');
     Route::get('/show/{mesaFolio}',[MesaFoliosController::class, 'show'])
         ->name('mesa_folios.mesa_folio.show');
     Route::get('/{mesaFolio}/edit',[MesaFoliosController::class, 'edit'])

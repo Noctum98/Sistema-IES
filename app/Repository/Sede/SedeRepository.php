@@ -2,9 +2,11 @@
 
 namespace App\Repository\Sede;
 
+use App\Models\LibroDigital;
 use App\Models\LibroPapel;
 use App\Models\Resoluciones;
 use App\Models\Sede;
+use App\Models\User;
 
 class SedeRepository
 {
@@ -24,6 +26,24 @@ class SedeRepository
             ->join('sedes', 'libros_papeles.sede_id', '=', 'sedes.id')
             ->whereIn('sedes.id', $sede)
             ->groupBy('libros_papeles.id')
+            ->get();
+    }
+
+    public function getLibrosDigitalesSedes(array $sede)
+    {
+        return LibroDigital::select( 'libros_digitales.*', )
+            ->join('sedes', 'libros_digitales.sede_id', '=', 'sedes.id')
+            ->whereIn('sedes.id', $sede)
+            ->groupBy('libros_digitales.id')
+            ->get();
+    }
+
+    public function getUsersSedes($sede = [])
+    {
+        return User::join('sede_user', 'sede_user.user_id', '=', 'users.id')
+            ->whereIn('sede_user.sede_id', $sede)
+            ->distinct()
+//            ->groupBy('users.id')
             ->get();
     }
 }

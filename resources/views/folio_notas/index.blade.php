@@ -9,22 +9,47 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+    @if(Session::has('error_message'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {!! session('error_message') !!}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">Notas en folio</h4>
             <div>
-                <a href="{{ route('folio_notas.folio_nota.create') }}" class="btn btn-secondary"
+                <a href="{{ route('folio_notas.folio_nota.create') }}" class="btn btn-primary"
                    title="Agregar Nota">
-                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Agregar
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Agregar Nota
+                </a>
+            </div>
+            <div>
+                <a href="{{ route('mesa_folios.mesa_folio.index') }}" class="btn btn-success"
+                   title="Ver Folios">
+                    <i class="fa-solid fa-sheet-plastic" aria-hidden="true"></i> Ver Folios
+                </a>
+            </div>
+            <div>
+                <a href="{{ route('libros_digitales.libro_digital.index') }}" class="btn btn-info"
+                   title="Ver Libros digitales">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i> Ver Libros
+                </a>
+            </div>
+            <div>
+                <a href="{{ route('libro_papel.libro_papel.index') }}" class="btn btn-secondary"
+                   title="Ver Libros digitales">
+                    <i class="fa-solid fa-book" aria-hidden="true"></i> Ver Libros Papel
                 </a>
             </div>
         </div>
 
         @if(count($folioNotas) == 0)
             <div class="card-body text-center">
-                <h4>No se encontraron nota s de folio disponibles.</h4>
+                <h4>No se encontraron notas de folio disponibles.</h4>
             </div>
         @else
             <div class="card-body p-0">

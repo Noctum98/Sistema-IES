@@ -62,7 +62,7 @@
                                 <td class="align-middle">{{ $libroDigital->updated_at }}</td>
                                 <td class="text-center align-middle">
                                     @if($libroDigital->deleted_at)
-                                      <i class="text-danger"> Si </i>
+                                        <i class="text-danger"> Si </i>
                                     @else
                                         <i class="text-success"> No </i>
                                     @endif
@@ -93,6 +93,12 @@
                                                 <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
                                                 Eliminar
                                             </button>
+
+                                            <a href="{{ route('mesa_folios.mesa_folio.create_by_libro', $libroDigital->id ) }}"
+                                               class="btn btn-primary" title="Editar Libro Digital">
+                                                <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
+                                                Agregar folio
+                                            </a>
                                         </div>
 
                                     </form>

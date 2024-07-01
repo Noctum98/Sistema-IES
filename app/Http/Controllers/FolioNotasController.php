@@ -8,6 +8,8 @@ use App\Models\Alumno;
 use App\Models\FolioNota;
 use App\Models\MesaFolio;
 use App\Models\User;
+use App\Repository\FolioRepository;
+use App\Repository\Sede\SedeRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
@@ -24,7 +26,10 @@ class FolioNotasController extends Controller
      */
     public function index()
     {
-        $folioNotas = FolioNota::with('actaVolante', 'alumno', 'mesaFolio', 'user')->paginate(25);
+        $sedes = $this->getSedes();
+
+        $folioNotas = FolioNota::with('actaVolante', 'alumno', 'mesaFolio', 'user')
+            ->paginate(25);
 
         return view('folio_notas.index', compact('folioNotas'));
     }
@@ -36,11 +41,77 @@ class FolioNotasController extends Controller
      */
     public function create()
     {
+
+        $sedesId = $this->getSedes();
+
+        $sedeRepository = new SedeRepository;
+
+        $librosDigitales = $sedeRepository->getLibrosDigitalesSedes($sedesId);
+
+        if(!count($librosDigitales)) {
+            return $this->returnIndex('No existen libros digitales en sus sedes', 'error_message');
+        }
+
+        $folioRepository = new FolioRepository;
+
+        $MesaFolios = $folioRepository->getFoliosByLibrosDigitales($librosDigitales->pluck('id')->toArray());
+
+
+//        dd($mesaFolios);
+
+//        $MesaFolios = MesaFolio::pluck('numero', 'id')->all();
+
+
+
+
+
         $ActasVolantes = ActaVolante::pluck('id', 'id')->all();
         $Alumnos = Alumno::pluck('apellidos', 'id')->all();
-        $MesaFolios = MesaFolio::pluck('numero', 'id')->all();
 
-        return view('folio_notas.create', compact('ActasVolantes', 'Alumnos', 'MesaFolios'));
+
+        return view(
+            'folio_notas.create', compact('ActasVolantes', 'Alumnos', 'MesaFolios', 'librosDigitales'));
+    }
+
+
+
+    /**
+     * Show the form for creating a new folio nota.
+     *
+     * @return View
+     */
+    public function createByFolio(MesaFolio $id)
+    {
+
+        $sedesId = $this->getSedes();
+
+        $sedeRepository = new SedeRepository;
+
+        $librosDigitales = $sedeRepository->getLibrosDigitalesSedes($sedesId);
+
+        if(!count($librosDigitales)) {
+            return $this->returnIndex('No existen libros digitales en sus sedes', 'error_message');
+        }
+
+        $folioRepository = new FolioRepository;
+
+        $mesaFolios = $folioRepository->getFoliosByLibrosDigitales($librosDigitales->pluck('id')->toArray());
+
+
+        dd($mesaFolios);
+
+//        $MesaFolios = MesaFolio::pluck('numero', 'id')->all();
+
+
+
+
+
+        $ActasVolantes = ActaVolante::pluck('id', 'id')->all();
+        $Alumnos = Alumno::pluck('apellidos', 'id')->all();
+
+
+        return view(
+            'folio_notas.create', compact('ActasVolantes', 'Alumnos', 'MesaFolios', 'librosDigitales'));
     }
 
     /**
@@ -155,6 +226,16 @@ class FolioNotasController extends Controller
         ];
 
         return $request->validate($rules);
+    }
+
+    public function returnIndex(string $message = null, string $type = 'success_message')
+    {
+
+        return redirect()->route('folio_notas.folio_nota.index')->with(
+            $type,
+            $message
+        );
+
     }
 
 }

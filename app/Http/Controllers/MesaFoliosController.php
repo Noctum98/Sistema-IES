@@ -8,6 +8,7 @@ use App\Models\MasterMateria;
 use App\Models\Mesa;
 use App\Models\MesaFolio;
 use App\Models\User;
+use App\Repository\Sede\SedeRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
@@ -37,9 +38,34 @@ class MesaFoliosController extends Controller
     public function create()
     {
         $Users = User::pluck('activo', 'id')->all();
-        $LibrosDigitales = LibroDigital::pluck('acta_inicio', 'id')->all();
+        $LibrosDigitales = LibroDigital::pluck('romanos', 'id')->all();
         $MasterMaterias = MasterMateria::pluck('name', 'id')->all();
         $Mesas = Mesa::pluck('cierre', 'id')->all();
+
+        return view('mesa_folios.create', compact('Users', 'LibrosDigitales', 'MasterMaterias', 'Mesas', 'Users'));
+    }
+
+
+    /**
+     * Show the form for creating a new mesa folio.
+     *
+     * @return View
+     */
+    public function createByLibro(LibroDigital $libroDigital)
+    {
+
+        $LibrosDigitales = [$libroDigital];
+        $MasterMaterias = MasterMateria::pluck('name', 'id')->all();
+        $Mesas = Mesa::pluck('cierre', 'id')->all();
+
+        $sede = $this->getSedes();
+
+        $sedeRepository = new SedeRepository();
+
+//        $Users = $sedeRepository->getUsersSehpdes($sede);
+        $Users = User::all();
+//        dd($Users);
+
 
         return view('mesa_folios.create', compact('Users', 'LibrosDigitales', 'MasterMaterias', 'Mesas', 'Users'));
     }

@@ -36,9 +36,10 @@
                     {{ old('libro_digital_id', optional($mesaFolio)->libro_digital_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione libro digital
             </option>
-            @foreach ($LibrosDigitales as $key => $LibrosDigitale)
-                <option value="{{ $key }}" {{ old('libro_digital_id', optional($mesaFolio)->libro_digital_id) == $key ? 'selected' : '' }}>
-                    {{ $LibrosDigitale }}
+            @foreach ($LibrosDigitales as  $LibrosDigital)
+                <option value="{{ $LibrosDigital->id }}"
+                    {{ old('libro_digital_id', optional($mesaFolio)->libro_digital_id) == $LibrosDigital->id ? 'selected' : '' }}>
+                    {{ $LibrosDigital->romanos }} - {{ $LibrosDigital->sede->nombre }}
                 </option>
             @endforeach
         </select>
@@ -86,9 +87,9 @@
                     {{ old('presidente_id', optional($mesaFolio)->presidente_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione presidente
             </option>
-            @foreach ($Users as $key => $User)
-                <option value="{{ $key }}" {{ old('presidente_id', optional($mesaFolio)->presidente_id) == $key ? 'selected' : '' }}>
-                    {{ $User }}
+            @foreach ($Users as $User)
+                <option value="{{ $User->id }}" {{ old('presidente_id', optional($mesaFolio)->presidente_id) == $Users->id ? 'selected' : '' }}>
+                    {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
         </select>
@@ -196,3 +197,52 @@
         {!! $errors->first('coordinador_id', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#mesa_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione mesa",
+            allowClear: true
+        });
+        $('#libro_digital_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione libro",
+            allowClear: true
+        });
+        $('#master_materia_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione materia",
+            allowClear: true
+        });
+        $('#presidente_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione profesor",
+            allowClear: true
+        });
+        $('#vocal_1_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione profesor",
+            allowClear: true
+        });
+        $('#vocal_2_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione profesor",
+            allowClear: true
+        });
+        $('#coordinador_id').select2({
+            width: "100%",
+            theme: "classic",
+            placeholder: "Seleccione profesor",
+            allowClear: true
+        });
+
+    });
+</script>
