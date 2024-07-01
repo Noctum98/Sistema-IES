@@ -14,7 +14,7 @@ class AddTipoUnidadCurricularIdToMasterMateriasTable extends Migration
     public function up()
     {
         Schema::table('master_materias', function (Blueprint $table) {
-            $table->foreignUuid('tipo_unidad_curricular_id')->nullable();
+            $table->unsignedBigInteger('tipo_unidad_curricular_id')->nullable();
             $table->foreign('tipo_unidad_curricular_id')
                 ->references('id')->
                 on('tipo_materias');
