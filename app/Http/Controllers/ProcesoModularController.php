@@ -15,10 +15,12 @@ use App\Services\CalificacionService;
 use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesoModularService;
+use App\Services\ProcesosCargosService;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -430,6 +432,53 @@ class ProcesoModularController extends Controller
             ->orderBy('tipo_id')->get();
 
         return $calificaciones;
+    }
+
+    /**
+     * Cerramos el proceso completo
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function cambiaCierreModular(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $proceso = Proceso::find($request['proceso_id']);
+        $cargo = Cargo::find($request['cargo']);
+        $cierre_modulo = $request['cierre'];
+
+        $cargoProceso = CargoProceso::where([
+            'proceso_id' => $proceso->id,
+            'cargo_id' => $cargo->id
+        ])->first();
+
+
+        if ($cargoProceso) {
+            $procesoCargo = $cargoProceso->getProcesoCargo();
+
+            if($procesoCargo->cierre){
+                $procesoCargo->cierre = null;
+            }else{
+                $procesoCargo->cierre = now();
+            }
+
+
+
+            $user = Auth::user();
+            $procesoCargo->operador_id = $user->id;
+            $procesoCargo->save();
+        }
+
+
+        if ($proceso->cierre && $proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+            foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                $procesoService = new ProcesosCargosService();
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, $cierre_modulo);
+            }
+        }
+
+
+        return response()->json($proceso, 200);
     }
 
 
