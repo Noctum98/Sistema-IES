@@ -4,6 +4,7 @@ namespace App\Repository\Sede;
 
 use App\Models\LibroDigital;
 use App\Models\LibroPapel;
+use App\Models\Materia;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
@@ -44,6 +45,16 @@ class SedeRepository
             ->whereIn('sede_user.sede_id', $sede)
             ->distinct()
 //            ->groupBy('users.id')
+            ->get();
+    }
+
+    public function getMateriasSedes(array $sede)
+    {
+        return Materia::select( 'materias.*', )
+            ->join('carreras', 'materias.carrera_id', '=', 'carreras.id')
+            ->join('sedes', 'carreras.sede_id', '=', 'sedes.id')
+            ->whereIn('sedes.id', $sede)
+            ->groupBy('materias.id')
             ->get();
     }
 }

@@ -104,9 +104,9 @@ class Materia extends BaseModel
         return $this->hasMany('App\Models\MesaAlumno');
     }
 
-    public function mesas()
+    public function mesas(): HasMany
     {
-        return $this->hasMany('App\Models\Mesa');
+        return $this->hasMany(Mesa::class);
     }
 
     public function comisiones()

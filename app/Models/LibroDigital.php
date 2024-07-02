@@ -47,7 +47,7 @@ class LibroDigital extends Model
         'sede_id',
         'libros_papeles_id',
         'observaciones',
-        'user_id',
+        'operador_id',
     ];
 
     protected $casts = [

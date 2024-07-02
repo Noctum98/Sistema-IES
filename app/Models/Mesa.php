@@ -39,9 +39,9 @@ class Mesa extends Model
         'folio_segundo'
     ];
 
-    public function materia()
+    public function materia(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Materia', 'materia_id');
+        return $this->belongsTo(Materia::class, 'materia_id');
     }
 
     public function mesa_inscriptos_total()
