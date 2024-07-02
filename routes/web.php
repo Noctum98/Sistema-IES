@@ -89,7 +89,6 @@ use App\Http\Controllers\LibroPapelController;
 Auth::routes();
 
 
-
 Route::get('/register-alumno/{carrera_id}', [RegisterController::class, 'showRegistrationAlumnosForm'])->name('register.alumnos');
 Route::post('register-alumno', [RegisterController::class, 'registerAlumno'])->name('register.alumno.store');
 
@@ -131,15 +130,15 @@ Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], fun
         ->name('admin.actas_volantes.listado');
     Route::get('/create', [ActaVolanteAdminController::class, 'create'])
         ->name('admin.actas_volantes.create');
-    Route::get('/show/{adminManager}',[ActaVolanteAdminController::class, 'show'])
+    Route::get('/show/{adminManager}', [ActaVolanteAdminController::class, 'show'])
         ->name('admin.actas_volantes.show');
-    Route::get('/{adminManager}/edit',[ActaVolanteAdminController::class, 'edit'])
+    Route::get('/{adminManager}/edit', [ActaVolanteAdminController::class, 'edit'])
         ->name('admin.actas_volantes.edit');
     Route::post('/', [ActaVolanteAdminController::class, 'store'])
         ->name('admin.actas_volantes.store');
     Route::put('admin_manager/{adminManager}', [ActaVolanteAdminController::class, 'update'])
         ->name('admin.actas_volantes.update');
-    Route::delete('/admin_manager/{adminManager}',[ActaVolanteAdminController::class, 'destroy'])
+    Route::delete('/admin_manager/{adminManager}', [ActaVolanteAdminController::class, 'destroy'])
         ->name('admin.actas_volantes.destroy');
 });
 
@@ -150,15 +149,15 @@ Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function 
         ->name('admin_managers.admin_manager.listado');
     Route::get('/create', [AdminManagersController::class, 'create'])
         ->name('admin_managers.admin_manager.create');
-    Route::get('/show/{adminManager}',[AdminManagersController::class, 'show'])
+    Route::get('/show/{adminManager}', [AdminManagersController::class, 'show'])
         ->name('admin_managers.admin_manager.show');
-    Route::get('/{adminManager}/edit',[AdminManagersController::class, 'edit'])
+    Route::get('/{adminManager}/edit', [AdminManagersController::class, 'edit'])
         ->name('admin_managers.admin_manager.edit');
     Route::post('/', [AdminManagersController::class, 'store'])
         ->name('admin_managers.admin_manager.store');
     Route::put('admin_manager/{adminManager}', [AdminManagersController::class, 'update'])
         ->name('admin_managers.admin_manager.update');
-    Route::delete('/admin_manager/{adminManager}',[AdminManagersController::class, 'destroy'])
+    Route::delete('/admin_manager/{adminManager}', [AdminManagersController::class, 'destroy'])
         ->name('admin_managers.admin_manager.destroy');
 });
 
@@ -167,15 +166,15 @@ Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], func
         ->name('tipo_materias.tipo_materia.index');
     Route::get('/create', [TipoMateriasController::class, 'create'])
         ->name('tipo_materias.tipo_materia.create');
-    Route::get('/show/{tipoMateria}',[TipoMateriasController::class, 'show'])
+    Route::get('/show/{tipoMateria}', [TipoMateriasController::class, 'show'])
         ->name('tipo_materias.tipo_materia.show');
-    Route::get('/{tipoMateria}/edit',[TipoMateriasController::class, 'edit'])
+    Route::get('/{tipoMateria}/edit', [TipoMateriasController::class, 'edit'])
         ->name('tipo_materias.tipo_materia.edit');
     Route::post('/', [TipoMateriasController::class, 'store'])
         ->name('tipo_materias.tipo_materia.store');
     Route::put('tipo_materia/{tipoMateria}', [TipoMateriasController::class, 'update'])
         ->name('tipo_materias.tipo_materia.update');
-    Route::delete('/tipo_materia/{tipoMateria}',[TipoMateriasController::class, 'destroy'])
+    Route::delete('/tipo_materia/{tipoMateria}', [TipoMateriasController::class, 'destroy'])
         ->name('tipo_materias.tipo_materia.destroy');
 });
 
@@ -229,7 +228,7 @@ Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
 Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
     Route::get('/', [LibrariesController::class, 'index'])
         ->name('libraries.library.index');
-    Route::get('/show/{library}',[LibrariesController::class, 'show'])
+    Route::get('/show/{library}', [LibrariesController::class, 'show'])
         ->name('libraries.library.show');
 });
 
@@ -425,6 +424,7 @@ Route::prefix('proceso-modular')->group(function () {
     Route::get('/procesaNotaModularProcesp/{materia}/{proceso_id}/proceso/{cargo_id?}',
         [ProcesoModularController::class, 'procesaNotaModularProceso']
     )->name('proceso_modular.procesa_notas_modular_proceso');
+    Route::post('cambia/cierre_modular', [ProcesoModularController::class, 'cambiaCierreModular'])->name('proceso.cambiaCierreModular');
 });
 
 /**
@@ -479,7 +479,7 @@ Route::prefix('usuario_materia')->group(function () {
 
 //Ruta de Roles
 Route::resource('roles', RolController::class);
-Route::get('cambiarEstado/{rol_id}',[RolController::class,'cambiarEstado'])->name('rol.cambiarEstado');
+Route::get('cambiarEstado/{rol_id}', [RolController::class, 'cambiarEstado'])->name('rol.cambiarEstado');
 
 // Rutas de carreras/materia
 Route::prefix('carreras/materias')->group(function () {
@@ -984,15 +984,15 @@ Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], function () 
         ->name('libro_papel.libro_papel.index');
     Route::get('/create', [LibroPapelController::class, 'create'])
         ->name('libro_papel.libro_papel.create');
-    Route::get('/show/{libroPapel}',[LibroPapelController::class, 'show'])
+    Route::get('/show/{libroPapel}', [LibroPapelController::class, 'show'])
         ->name('libro_papel.libro_papel.show');
-    Route::get('/{libroPapel}/edit',[LibroPapelController::class, 'edit'])
+    Route::get('/{libroPapel}/edit', [LibroPapelController::class, 'edit'])
         ->name('libro_papel.libro_papel.edit');
     Route::post('/', [LibroPapelController::class, 'store'])
         ->name('libro_papel.libro_papel.store');
     Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
         ->name('libro_papel.libro_papel.update');
-    Route::delete('/libro_papel/{libroPapel}',[LibroPapelController::class, 'destroy'])
+    Route::delete('/libro_papel/{libroPapel}', [LibroPapelController::class, 'destroy'])
         ->name('libro_papel.libro_papel.destroy');
 });
 
@@ -1001,15 +1001,15 @@ Route::group(['prefix' => 'libros', 'middleware' => ['auth']], function () {
         ->name('libros.libros.index');
     Route::get('/create', [LibrosController::class, 'create'])
         ->name('libros.libros.create');
-    Route::get('/show/{libros}',[LibrosController::class, 'show'])
+    Route::get('/show/{libros}', [LibrosController::class, 'show'])
         ->name('libros.libros.show');
-    Route::get('/{libros}/edit',[LibrosController::class, 'edit'])
+    Route::get('/{libros}/edit', [LibrosController::class, 'edit'])
         ->name('libros.libros.edit');
     Route::post('/', [LibrosController::class, 'store'])
         ->name('libros.libros.store');
     Route::put('libros/{libros}', [LibrosController::class, 'update'])
         ->name('libros.libros.update');
-    Route::delete('/libros/{libros}',[LibrosController::class, 'destroy'])
+    Route::delete('/libros/{libros}', [LibrosController::class, 'destroy'])
         ->name('libros.libros.destroy');
 });
 
@@ -1018,15 +1018,15 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], functio
         ->name('libros_digitales.libro_digital.index');
     Route::get('/create', [LibrosDigitalesController::class, 'create'])
         ->name('libros_digitales.libro_digital.create');
-    Route::get('/show/{libroDigital}',[LibrosDigitalesController::class, 'show'])
+    Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
         ->name('libros_digitales.libro_digital.show');
-    Route::get('/{libroDigital}/edit',[LibrosDigitalesController::class, 'edit'])
+    Route::get('/{libroDigital}/edit', [LibrosDigitalesController::class, 'edit'])
         ->name('libros_digitales.libro_digital.edit');
     Route::post('/', [LibrosDigitalesController::class, 'store'])
         ->name('libros_digitales.libro_digital.store');
     Route::put('libro_digital/{libroDigital}', [LibrosDigitalesController::class, 'update'])
         ->name('libros_digitales.libro_digital.update');
-    Route::delete('/libro_digital/{libroDigital}',[LibrosDigitalesController::class, 'destroy'])
+    Route::delete('/libro_digital/{libroDigital}', [LibrosDigitalesController::class, 'destroy'])
         ->name('libros_digitales.libro_digital.destroy');
 });
 
@@ -1128,19 +1128,19 @@ Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->na
 
 Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
     Route::get('/', [LibrariesAdminController::class, 'index'])
-         ->name('admin-libraries.library.index');
+        ->name('admin-libraries.library.index');
     Route::get('/create', [LibrariesAdminController::class, 'create'])
-         ->name('admin-libraries.library.create');
-    Route::get('/show/{library}',[LibrariesAdminController::class, 'show'])
-         ->name('admin-libraries.library.show');
-    Route::get('/{library}/edit',[LibrariesAdminController::class, 'edit'])
-         ->name('admin-libraries.library.edit');
+        ->name('admin-libraries.library.create');
+    Route::get('/show/{library}', [LibrariesAdminController::class, 'show'])
+        ->name('admin-libraries.library.show');
+    Route::get('/{library}/edit', [LibrariesAdminController::class, 'edit'])
+        ->name('admin-libraries.library.edit');
     Route::post('/', [LibrariesAdminController::class, 'store'])
-         ->name('admin-libraries.library.store');
+        ->name('admin-libraries.library.store');
     Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
-         ->name('admin-libraries.library.update');
-    Route::delete('/library/{library}',[LibrariesAdminController::class, 'destroy'])
-         ->name('admin-libraries.library.destroy');
+        ->name('admin-libraries.library.update');
+    Route::delete('/library/{library}', [LibrariesAdminController::class, 'destroy'])
+        ->name('admin-libraries.library.destroy');
 });
 
 

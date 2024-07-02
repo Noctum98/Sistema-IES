@@ -16,6 +16,7 @@ class ProcesosCargos extends Model
         'cargo_id',
         'cierre',
         'operador_id',
+        'cargo_proceso_id',
     ];
 
     protected $dates = [
