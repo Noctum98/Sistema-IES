@@ -81,9 +81,9 @@ class ZTestController extends Controller
 
     }
 
-    public function cargaLibros()
+    public function cargaLibros(Sede $sede)
     {
-        $libros = Libro::all();
+
         $user = auth()->user();
 
         $data = [];
