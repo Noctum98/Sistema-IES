@@ -173,13 +173,11 @@ class ProcesoController extends Controller
         $cantCargosProcesos = count($cargosProcesos->getCargosProcesosByProcesos(
             $cargo_id, $procesos->pluck('id')->toArray()));
 
-//        $vincular = false;
         if ($cantCargosProcesos < count($procesos)) {
 
             $this->cargoProcesoService->allStore(
                 $materia_id, $cargo_id, $ciclo_lectivo, $user->id, $comision_id);
 
-//            $vincular = true;
         }
 
 
@@ -192,7 +190,6 @@ class ProcesoController extends Controller
             'cargo' => $cargo,
             'ciclo_lectivo' => $ciclo_lectivo,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
-//            'vincular' => $vincular
         ]);
     }
 
