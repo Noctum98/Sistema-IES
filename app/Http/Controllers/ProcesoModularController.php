@@ -69,9 +69,6 @@ class ProcesoModularController extends Controller
     public function listado(Materia $materia, int $ciclo_lectivo = null, int $cargo_id = null)
     {
 
-//        $materia = Materia::find($materia);
-
-
         if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
@@ -96,8 +93,14 @@ class ProcesoModularController extends Controller
 
         $proc = $serviceModular->obtenerProcesosByMateria($materia->id, $ciclo_lectivo);
 
-        $arrayProcesos = $proc->pluck('id')->toArray();
+//        Sugerencias para arreglar
+//        if (count($proc) == 0) {
+//            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+//            $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
+//            $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
+//        }
 
+        $arrayProcesos = $proc->pluck('id')->toArray();
 
         $procesosModulares = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
