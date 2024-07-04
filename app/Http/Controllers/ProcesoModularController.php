@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asistencia;
-use App\Models\AsistenciaModular;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
 use App\Models\Estados;
@@ -11,16 +9,17 @@ use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
-use App\Services\CalificacionService;
 use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesoModularService;
-use http\Exception\InvalidArgumentException;
+use App\Services\ProcesosCargosService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Util\Exception;
@@ -37,11 +36,11 @@ class ProcesoModularController extends Controller
     /**
      * @var CicloLectivoService
      */
-    private $cicloLectivoService;
+    private CicloLectivoService $cicloLectivoService;
     /**
      * @var CargoProcesoService
      */
-    private $cargoProcesoService;
+    private CargoProcesoService $cargoProcesoService;
 
     /**
      * @param CicloLectivoService $cicloLectivoService
@@ -67,9 +66,6 @@ class ProcesoModularController extends Controller
     public function listado(Materia $materia, int $ciclo_lectivo = null, int $cargo_id = null)
     {
 
-//        $materia = Materia::find($materia);
-
-
         if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
@@ -94,8 +90,14 @@ class ProcesoModularController extends Controller
 
         $proc = $serviceModular->obtenerProcesosByMateria($materia->id, $ciclo_lectivo);
 
-        $arrayProcesos = $proc->pluck('id')->toArray();
+//        Sugerencias para arreglar
+//        if (count($proc) == 0) {
+//            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+//            $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
+//            $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
+//        }
 
+        $arrayProcesos = $proc->pluck('id')->toArray();
 
         $procesosModulares = $serviceModular->obtenerProcesosModularesByIdProcesos($arrayProcesos);
 
@@ -104,7 +106,7 @@ class ProcesoModularController extends Controller
 
         if (count($cantidad_procesos_no_vinculados) > 0) {
 
-            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+            $acciones[] = "Creando procesos modulares para $materia->nombre";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
 
@@ -127,13 +129,13 @@ class ProcesoModularController extends Controller
                 }
             }
 
-            $acciones[] = "Procesando % modulares para {$materia->nombre}";
+            $acciones[] = "Procesando % modulares para $materia->nombre";
             $asistenciaModular = new AsistenciaModularService();
 
             $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia, $ciclo_lectivo);
 
             if ($asistencias > 0) {
-                $acciones[] = "Procesando % asistencia para {$materia->nombre}";
+                $acciones[] = "Procesando % asistencia para $materia->nombre";
             }
         }
 
@@ -157,7 +159,7 @@ class ProcesoModularController extends Controller
         $acciones = [];
         $serviceModular = new ProcesoModularService();
         if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
-            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
+            $acciones[] = "Creando procesos modulares para $materia->nombre";
             $serviceModular->crearProcesoModular($materia->id);
             $serviceModular->cargarPonderacionEnProcesoModular($materia);
         }
@@ -307,7 +309,7 @@ class ProcesoModularController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -317,8 +319,8 @@ class ProcesoModularController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -328,8 +330,8 @@ class ProcesoModularController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function show(ProcesoModular $procesoModular)
     {
@@ -339,8 +341,8 @@ class ProcesoModularController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function edit(ProcesoModular $procesoModular)
     {
@@ -350,9 +352,9 @@ class ProcesoModularController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function update(Request $request, ProcesoModular $procesoModular)
     {
@@ -362,8 +364,8 @@ class ProcesoModularController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function destroy(ProcesoModular $procesoModular)
     {
@@ -424,12 +426,57 @@ class ProcesoModularController extends Controller
         // Obtener las calificaciones de la relación entre el cargo y la materia
         // Asume que las relaciones están definidas en tus modelos
         // Ordena las calificaciones por el campo 'tipo_id'.
-        $calificaciones = $cargo->calificacionesCargo()
+        return $cargo->calificacionesCargo()
             ->where('materia_id', $materia_id)
             ->where('ciclo_lectivo', $ciclo_lectivo)
             ->orderBy('tipo_id')->get();
+    }
 
-        return $calificaciones;
+    /**
+     * Cerramos el proceso completo
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function cambiaCierreModular(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $proceso = Proceso::find($request['proceso_id']);
+        $cargo = Cargo::find($request['cargo']);
+        $cierre_modulo = $request['cierre'];
+
+        $cargoProceso = CargoProceso::where([
+            'proceso_id' => $proceso->id,
+            'cargo_id' => $cargo->id
+        ])->first();
+
+
+        if ($cargoProceso) {
+            $procesoCargo = $cargoProceso->getProcesoCargo();
+
+            if($procesoCargo->cierre){
+                $procesoCargo->cierre = null;
+            }else{
+                $procesoCargo->cierre = now();
+            }
+
+
+
+            $user = Auth::user();
+            $procesoCargo->operador_id = $user->id;
+            $procesoCargo->save();
+        }
+
+
+        if ($proceso->cierre && $proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+            foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                $procesoService = new ProcesosCargosService();
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, $cierre_modulo);
+            }
+        }
+
+
+        return response()->json($proceso);
     }
 
 

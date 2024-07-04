@@ -6,28 +6,28 @@
                 Alumno
             </th>
             @if(count($calificaciones) > 0)
-                @foreach($calificaciones as $calificacion)
-                    @if($calificacion->tipo()->first()->descripcion == 2)
+                @foreach($calificaciones as $califica)
+                    @if($califica->tipo()->first()->descripcion == 2)
                         <th class="text-center">
                         <span
-                            class="text-white" title="{{$calificacion->description}}"
+                            class="text-white" title="{{$califica->description}}"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                         >
-                            {{$calificacion->nombre}}
+                            {{$califica->nombre}}
                         </span>
                         </th>
                     @endif
                 @endforeach
-                @foreach($calificaciones as $calificacion)
-                    @if($calificacion->tipo()->first()->descripcion == 1)
+                @foreach($calificaciones as $califica)
+                    @if($califica->tipo()->first()->descripcion == 1)
                         <th class="text-center">
                         <span
-                            class="text-white" title="{{$calificacion->description}}"
+                            class="text-white" title="{{$califica->description}}"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                         >
-                            {{$calificacion->nombre}}
+                            {{$califica->nombre}}
                         </span>
                         </th>
                     @endif
@@ -48,15 +48,15 @@
                     (Ponderación {{$ponderacion}}%)
                 </small>
             </th>
-            @foreach($calificaciones as $calificacion)
-                @if($calificacion->tipo()->first()->descripcion == 3)
+            @foreach($calificaciones as $califica)
+                @if($califica->tipo()->first()->descripcion == 3)
                     <th class="text-center">
                         <span
-                            class="text-white" title="{{$calificacion->description}}"
+                            class="text-white" title="{{$califica->description}}"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                         >
-                            {{$calificacion->nombre}}
+                            {{$califica->nombre}}
                         </span>
                     </th>
                 @endif
@@ -83,16 +83,20 @@
                         @if($cc->tipo()->first()->descripcion == 2)
                             <td class="text-center">
                                 @if($cc->getProcesosCalificacionByProceso($proceso->id))
-                                    <span
-                                        class="text-center @classAprobado(
-                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)
-                                            ">
-                                            <b>
-                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1
-                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota
-                                            : 'A'}}
-                                            </b>
-                                    </span>
+{{--                                    <span--}}
+{{--                                        class="text-center @classAprobado(--}}
+{{--                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)--}}
+{{--                                            ">--}}
+{{--                                            <b>--}}
+{{--                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1--}}
+{{--                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota--}}
+{{--                                            : 'A'}}--}}
+{{--                                            </b>--}}
+{{--                                    </span>--}}
+                                    @include('componentes.colorNotas',
+                                            ['year' => $proceso->ciclo_lectivo,
+                                            'nota' => $cc->getProcesosCalificacionByProceso($proceso->id)->nota])
+
                                 @else
                                     -
                                 @endif

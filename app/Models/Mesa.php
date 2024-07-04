@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,18 +45,31 @@ class Mesa extends Model
         return $this->belongsTo(Materia::class, 'materia_id');
     }
 
-    public function mesa_inscriptos_total()
+    /**
+     * @return HasMany
+     */
+    public function mesa_inscriptos_total(): HasMany
     {
         return $this->hasMany('App\Models\MesaAlumno');
     }
 
-    public function mesa_inscriptos()
+    /**
+     * @return HasMany
+     */
+    public function mesa_inscriptos(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where('estado_baja', false)->orderBy('apellidos', 'ASC');
+        return $this->hasMany('App\Models\MesaAlumno')
+            ->where('estado_baja', false)
+            ->orderBy('apellidos', 'ASC');
     }
 
 
-    public function mesa_inscriptos_primero($orden = 1, $all = false)
+    /**
+     * @param int $orden
+     * @param bool $all
+     * @return Collection
+     */
+    public function mesa_inscriptos_primero(int $orden = 1, bool $all = false): Collection
     {
         $take = 26;
         $skip = $take * ($orden - 1);
@@ -70,7 +84,12 @@ class Mesa extends Model
         return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
-    public function mesa_inscriptos_segundo($orden = 1, $all = false)
+    /**
+     * @param int $orden
+     * @param bool $all
+     * @return Collection
+     */
+    public function mesa_inscriptos_segundo(int $orden = 1, bool $all = false): Collection
     {
         $take = 26;
         $skip = $take * ($orden - 1);
@@ -79,27 +98,39 @@ class Mesa extends Model
             ->where(['estado_baja' => false, 'segundo_llamado' => true]);
         if (!$all) {
             $inscriptos = $inscriptos->skip($skip)
-            ->take($take);
+                ->take($take);
         }
 
         return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
-    public function bajas_primero()
+    /**
+     * @return HasMany
+     */
+    public function bajas_primero(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);
+        return $this->hasMany(MesaAlumno::class)->where(['estado_baja' => true, 'segundo_llamado' => false]);
     }
 
-    public function bajas_segundo()
+    /**
+     * @return HasMany
+     */
+    public function bajas_segundo(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => true]);
+        return $this->hasMany(MesaAlumno::class)->where(['estado_baja' => true, 'segundo_llamado' => true]);
     }
 
-    public function instancia()
+    /**
+     * @return BelongsTo
+     */
+    public function instancia(): BelongsTo
     {
         return $this->belongsTo(Instancia::class, 'instancia_id');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function comision(): BelongsTo
     {
         return $this->belongsTo(Comision::class, 'comision_id');
@@ -140,9 +171,19 @@ class Mesa extends Model
         return $this->hasMany(Libro::class, 'mesa_id');
     }
 
-    public function libro($llamado, $orden = 1)
+    /**
+     * @param $llamado
+     * @param int $orden
+     * @return Libro
+     */
+    public function libro($llamado, int $orden = 1): Libro
     {
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
+    }
+
+    public function getSede()
+    {
+        return $this->materia->carrera->sede;
     }
 
     public function folios()
@@ -197,7 +238,7 @@ class Mesa extends Model
             ->where('mesas.instancia_id', $instancia)
             ->where('carrera_user.user_id', $user->id)
             ->groupBy('carreras.id', 'carreras.nombre', 'carreras.resolucion', 'sedes.nombre')
-            ->orderBy('sedes.nombre', 'asc')
+            ->orderBy('sedes.nombre')
             //            ->orderBy('materias.nombre','asc')
             //            ->getQuery()->dd();
             ->get();

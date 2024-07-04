@@ -3,17 +3,27 @@
 </td>
 <td class="text-center">
                                                 <span id="pfn-{{$proceso->id}}" class="m-0 p-0">
-                                                @colorAprobado($proceso->promedio_final_nota)
+{{--                                                @colorAprobado($proceso->promedio_final_nota)--}}
+                                                    @include('componentes.colorNotas',
+                                                              ['year' => $proceso->ciclo_lectivo,
+                                                              'nota' => $proceso->promedio_final_nota])
                                                 </span>
 </td>
 <td class="text-center">
     {{$proceso->asistencia_final_porcentaje}} %
 </td>
 <td class="text-center">
-    @colorAprobado($proceso->trabajo_final_nota)
+    {{--    @colorAprobado($proceso->trabajo_final_nota)--}}
+    @include('componentes.colorNotas',
+                     ['year' => $proceso->ciclo_lectivo,
+                     'nota' => $proceso->trabajo_final_nota])
+
 </td>
 <td class="text-center">
-    @colorAprobado($proceso->nota_final_nota)
+    {{--    @colorAprobado($proceso->nota_final_nota)--}}
+    @include('componentes.colorNotas',
+                     ['year' => $proceso->ciclo_lectivo,
+                     'nota' => $proceso->nota_final_nota])
 </td>
 <td class="row">
     <form action="" id="{{ $proceso->procesoRelacionado->id }}"
@@ -21,7 +31,10 @@
         <div class="input-group">
             <input type="text"
                    class="form-control btn-sm nota_global
-                                                   @classAprobado($proceso->procesoRelacionado->nota_global)"
+{{--                                                   @classAprobado($proceso->procesoRelacionado->nota_global)"--}}
+                   @include('componentes.classNota',
+                                                             ['year' => $proceso->procesoRelacionado->ciclo_lectivo,
+                                                             'nota' => $proceso->procesoRelacionado->nota_global])"
                    id="global-{{ $proceso->procesoRelacionado->id }}"
                    value="{{ $proceso->procesoRelacionado->nota_global != -1 ?
                                                             $proceso->procesoRelacionado->nota_global : 'A' }}"
@@ -53,10 +66,10 @@
                checked
            @else
                unchecked
-            @endif
+           @endif
 
-            @if($proceso->procesoRelacionado->cierre && !Session::has('cierres'))
-                disabled
-            @endif
+           @if($proceso->procesoRelacionado->cierre && !Session::has('cierres'))
+               disabled
+        @endif
     />
 </td>

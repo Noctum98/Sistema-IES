@@ -15,7 +15,7 @@ $(document).ready(function () {
 
         let url = '/proceso/cambia/estado';
         let data = {
-            "proceso_id": proceso,
+            "proceso_id": proceso_id,
             "estado_id": estado_id
         };
 
