@@ -17,7 +17,7 @@ $(document).ready(function () {
                 if(response.final_trabajos)
                 {
 
-                    if(response.final_trabajos >= 4){
+                    if(response.final_trabajos >= 6){
                         var color = 'badge badge-success';
                     }else{
                         var color = 'badge badge-danger';

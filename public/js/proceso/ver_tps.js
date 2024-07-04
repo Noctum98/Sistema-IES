@@ -21,7 +21,7 @@ $(document).ready(function () {
                     response.forEach(trabajo => {
                         var porcentaje = '%';
 
-                        if(trabajo.nota >= 4)
+                        if(trabajo.nota >= 6)
                         {
                             var color = "badge-success";
                         }else{

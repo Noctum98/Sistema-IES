@@ -145,6 +145,11 @@ class Mesa extends Model
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
 
+    public function getSede()
+    {
+        return $this->materia->carrera->sede;
+    }
+
     public function folios()
     {
         $folios = 1;
