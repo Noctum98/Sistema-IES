@@ -57,7 +57,9 @@
             <div class="card w-75 mx-auto">
                 <div class="card-header text-center text-primary">
                     <div class="card-title">
-                        {{ $cargo->nombre }} @if($comision)
+                        Cargo: <small>(#{{$cargo->id}})</small>
+                        {{ $cargo->nombre }}
+                        @if($comision)
                             <br/><small>{{$comision->nombre}}</small>
                         @endif
                     </div>
@@ -134,13 +136,15 @@
                             @endforeach
                         @else
                             <th class="text-center">
-                                -
+                                Aún no se han agregado calificaciones al cargo
                             </th>
                         @endif
                         <th class="text-center">
                             <a href="{{ route('asis.admin',
-['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
-                               class="text-white"> Asistencia % </a>
+                                    ['id'=> $materia->id,'ciclo_lectivo' => $ciclo_lectivo ,'cargo_id' => $cargo->id])}}"
+                               class="text-white">
+                                Asistencia %
+                            </a>
                         </th>
                         <th class="text-center">N. Final /<br/>
                             <small style="font-size: 0.8em">
@@ -172,11 +176,16 @@
                                 @foreach($calificaciones as $cc)
                                     <td class="text-center">
                                         @if($proceso->procesoCalificacion($cc->id))
-                                            <span
-                                                    class="text-center {{ $proceso->procesoCalificacion(
-    $cc->id)->porcentaje >= 60 ? 'text-success' : 'text-danger' }}">
-                                                <b>{{$proceso->procesoCalificacion(
-    $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}</b>
+                                            <span class="text-center
+                                            @include('componentes.classNota',
+                                                        ['year' => $proceso->ciclo_lectivo,
+                                                        'nota' => $proceso->procesoCalificacion($cc->id)->nota ])"
+                                            >
+
+                                                <b>
+                                                    {{$proceso->procesoCalificacion(
+    $cc->id)->nota != -1 ? $proceso->procesoCalificacion($cc->id)->nota : 'A'}}
+                                                </b>
                                                 <small class="text-center">
                                                     <br/>
                                                     ({{$proceso->procesoCalificacion(
@@ -190,7 +199,7 @@
 
                                             @if($proceso->procesoCalificacion($cc->id)->porcentaje_recuperatorio)
                                                 <span
-                                                        class="text-center {{ $proceso->procesoCalificacion(
+                                                    class="text-center {{ $proceso->procesoCalificacion(
     $cc->id)->porcentaje_recuperatorio >= 60 ? 'text-success' : 'text-danger' }}">
                                                     R: <b>{{$proceso->procesoCalificacion(
     $cc->id)->nota_recuperatorio}}</b>
@@ -226,7 +235,7 @@
                                 @if($proceso->getCargosProcesos($cargo->id))
                                     {{$proceso->getCargosProcesos($cargo->id)->nota_cargo}}<br/>
                                     <small
-                                            style="font-size: 0.8em">
+                                        style="font-size: 0.8em">
                                         ({{$proceso->getCargosProcesos($cargo->id)->nota_ponderada}})
                                     </small>
                                 @else
@@ -281,7 +290,7 @@
             @endsection
             @section('scripts')
                 {{--                <script src="{{ asset('js/proceso/cambia_estado.js') }}"></script>--}}
-                <script src="{{ asset('js/proceso/cambia_cierre_modular.js') }}"></script>
+                <script src="{{ asset('js/proceso/cambia_cierre_cargo.js') }}"></script>
                 <script src="{{ asset('js/proceso/cambia_nota.js') }}"></script>
                 <script>
                 </script>

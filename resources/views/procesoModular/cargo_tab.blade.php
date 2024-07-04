@@ -83,16 +83,20 @@
                         @if($cc->tipo()->first()->descripcion == 2)
                             <td class="text-center">
                                 @if($cc->getProcesosCalificacionByProceso($proceso->id))
-                                    <span
-                                        class="text-center @classAprobado(
-                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)
-                                            ">
-                                            <b>
-                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1
-                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota
-                                            : 'A'}}
-                                            </b>
-                                    </span>
+{{--                                    <span--}}
+{{--                                        class="text-center @classAprobado(--}}
+{{--                                        $cc->getProcesosCalificacionByProceso($proceso->id)->nota)--}}
+{{--                                            ">--}}
+{{--                                            <b>--}}
+{{--                                                {{$cc->getProcesosCalificacionByProceso($proceso->id)->nota != -1--}}
+{{--                                            ? $cc->getProcesosCalificacionByProceso($proceso->id)->nota--}}
+{{--                                            : 'A'}}--}}
+{{--                                            </b>--}}
+{{--                                    </span>--}}
+                                    @include('componentes.colorNotas',
+                                            ['year' => $proceso->ciclo_lectivo,
+                                            'nota' => $cc->getProcesosCalificacionByProceso($proceso->id)->nota])
+
                                 @else
                                     -
                                 @endif
