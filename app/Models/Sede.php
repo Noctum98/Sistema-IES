@@ -25,5 +25,20 @@ class Sede extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
+    public function getMesas($instancia_id = null)
+    {
+        $mesas = Mesa::whereHas('materia',function($query) use ($instancia_id){
+            if($instancia_id)
+            {
+                $query->where('instancia_id',$instancia_id);
+            }
+            $query->whereHas('carrera',function($query){
+                $query->where('sede_id',$this->id);
+            });
+        })->get();
+
+        return $mesas;
+    }
+
 
 }
