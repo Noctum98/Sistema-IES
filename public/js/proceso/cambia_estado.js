@@ -37,7 +37,7 @@ $(document).ready(function () {
                 } else {
                     $("#alerts").html("");
                     if (response.estado && $("#regularidad-" + proceso_id)) {
-                        $("#regularidad-"+proceso_id).html(response.estado.nombre);
+                        $("#regularidad-"+proceso_id).html(response.estado.regularidad);
                     }
                 }
 
