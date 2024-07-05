@@ -3,9 +3,8 @@ $(document).ready(function () {
     $('.select-estado').on('change', function () {
 
         const campo = $(this);
-        const proceso_id = campo.attr('id');
+        const proceso_id = campo.data('proceso_id');
         const proceso = campo.data('estado');
-        console.log(proceso)
 
         const estado_id = campo.val();
         $('#span-' + proceso_id).removeClass('d-block')
