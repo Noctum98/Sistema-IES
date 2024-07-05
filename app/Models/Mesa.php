@@ -243,4 +243,11 @@ class Mesa extends Model
             //            ->getQuery()->dd();
             ->get();
     }
+
+    public function mesaFolios(): HasMany
+    {
+        return $this->hasMany(MesaFolio::class, 'mesa_id');
+    }
+
+
 }

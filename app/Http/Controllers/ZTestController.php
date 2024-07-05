@@ -6,11 +6,14 @@ use App\Models\Libro;
 use App\Models\LibroDigital;
 use App\Models\MasterMateria;
 use App\Models\Materia;
+use App\Models\Mesa;
+use App\Models\MesaFolio;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Services\AlumnoService;
 use App\Services\CicloLectivoService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ZTestController extends Controller
@@ -86,49 +89,97 @@ class ZTestController extends Controller
 
         $user = auth()->user();
 
+        $mesas = $sede->getMesas();
+
         $data = [];
         $data['user_id'] = $user->id;
+        $data['sede_id'] = $sede->id;
 
-        /**
-         * 'number' => 'required|numeric|min:0|max:4294967295',
-         * 'romanos' => 'required|string|min:1|max:191',
-         * 'resoluciones_id' => 'required',
-         * 'fecha_inicio' => 'nullable|string|min:0',
-         * 'sede_id' => 'required',
-         * 'libro_papel_id' => 'nullable|exist:libro_papel,id',
-         * 'operador_id' => 'nullable',
-         * 'observaciones' => 'nullable|string|min:1|max:191',
-         */
+        foreach ($mesas as $mesa) {
 
+            /** @var Mesa $mesa */
+            $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
+            $masterMateria = $mesa->materia->master_materia_id;
+            $data['resoluciones_id'] = $resolucion_id;
+            if ($mesa->libros()->count() > 0) {
+                foreach ($mesa->libros()->get() as $libro) {
 
-        foreach ($libros as $libro) {
-            /** @var Libro $libro */
-            $resolucion_id = $libro->mesa->materia->masterMateria->resoluciones->id;
-            $numero = $libro->numero;
-            $folio = $libro->folio;
+                    /** @var Libro $libro */
+                    $numero = $libro->numero;
 
-            $libroDigital = LibroDigital::where(
-                [
-                    'resoluciones_id' => $resolucion_id,
-                    'number' => $numero,
+                    $folio = $libro->folio;
+                    $romano = $mesa->libro;
+                    $fecha = $mesa->fecha;
+                    $presidente = $mesa->presidente_id;
+                    $vocal_1 = $mesa->primer_vocal_id;
+                    $vocal_2 = $mesa->segundo_vocal_id;
 
-                ]
-            )->first();
+                    if ($libro->llamado > 2) {
+                        $romano = $mesa->libro_segundo;
+                        $folio = $mesa->folio_segundo;
+                        $fecha = $mesa->fecha_segundo;
+                        $presidente = $mesa->presidente_segundo_id;
+                        $vocal_1 = $mesa->primer_vocal_segundo_id;
+                        $vocal_2 = $mesa->segundo_vocal_segundo_id;
+                    }
 
-            if (!$libroDigital)
+                    if ($numero && $romano) {
 
-                $libroDigital = LibroDigital::create([
+                        $fecha = date('Y-m-d', strtotime($fecha));
 
-                ]);
+                        $data['number'] = $numero;
+                        $data['romanos'] = $romano;
+                        $data['resoluciones_id'] = $resolucion_id;
 
+                        $libroDigital = LibroDigital::where(
+                            [
+                                'resoluciones_id' => $resolucion_id,
+                                'number' => $numero,
+                                'sede_id' => $sede->id,
+                            ]
+                        )->first();
 
+                        if (!$libroDigital) {
+                            $libroDigital = LibroDigital::create(
+                                $data
+                            );
+                        }
+
+                        $mesaFolio = $libroDigital->mesaFolios()->where('numero', $folio)->first();
+
+                        if (!$mesaFolio) {
+                            $mesaFolio = MesaFolio::create(
+                                [
+                                    'fecha' => $fecha,
+                                    'libro_digital_id' => $libroDigital->id,
+                                    'master_materia_id' => $masterMateria,
+                                    'mesa_id' => $mesa->id,
+                                    'numero' => $folio,
+                                    'operador_id' => $user->id,
+                                    'presidente_id' => $presidente,
+                                    'vocal_1_id' => $vocal_1,
+                                    'vocal_2_id' => $vocal_2,
+                                ]
+                            );
+
+                        }
+                    }
+
+                }
+            }
         }
 
+        return response()->json([
+            'sede' => $sede->nombre,
+            'mesas' => $mesas->count()
+        ]);
 
     }
 
-
 }
+
+
+
 
 
 

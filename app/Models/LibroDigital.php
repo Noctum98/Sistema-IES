@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
@@ -33,7 +34,7 @@ class LibroDigital extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->{$model->getKeyName()} =  Uuid::uuid4()->toString();
+            $model->{$model->getKeyName()} = Uuid::uuid4()->toString();
         });
     }
 
@@ -48,6 +49,7 @@ class LibroDigital extends Model
         'libros_papeles_id',
         'observaciones',
         'operador_id',
+        'user_id'
     ];
 
     protected $casts = [
@@ -77,5 +79,10 @@ class LibroDigital extends Model
     public function libroPapel(): BelongsTo
     {
         return $this->belongsTo(LibroPapel::class, 'libros_papeles_id');
+    }
+
+    public function mesaFolios(): HasMany
+    {
+        return $this->hasMany(MesaFolio::class, 'libro_digital_id');
     }
 }

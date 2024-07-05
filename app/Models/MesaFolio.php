@@ -117,7 +117,7 @@ class MesaFolio extends Model
      */
     public function setFechaAttribute(string $value)
     {
-        $this->attributes['fecha'] = !empty($value) ? DateTime::createFromFormat('d/m/Y H:i:s', $value) : null;
+        $this->attributes['fecha'] = !empty($value) ? DateTime::createFromFormat('Y-m-d', $value) : null;
     }
 
     /**
@@ -128,7 +128,7 @@ class MesaFolio extends Model
      */
     public function getFechaAttribute(string $value): string
     {
-        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
+        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y');
     }
 
 
