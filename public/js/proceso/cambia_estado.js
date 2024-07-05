@@ -36,7 +36,7 @@ $(document).ready(function () {
                     }
                 } else {
                     $("#alerts").html("");
-                    if (response.estado && $("#regularidad-" + proceso_id)) {
+                    if (response.estado && $("#regularidad-" + proceso_id).length) {
                         $("#regularidad-"+proceso_id).html(response.estado.regularidad);
                     }
                 }
