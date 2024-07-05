@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\HigherOrderCollectionProxy;
@@ -42,7 +43,7 @@ use Illuminate\Support\HigherOrderCollectionProxy;
  */
 class Materia extends BaseModel
 {
-
+    use SoftDeletes;
     const PRI_SEM = "Cuatrimestral (1er)";
     const SEC_SEM = "Cuatrimestral (2do)";
     const ANUAL = "Anual";
