@@ -46,7 +46,6 @@ $(document).ready(function () {
 
 
                         $('#' + proceso_id).attr('disabled', true);
-                        $('#select_' + proceso_id).attr('disabled', true);
 
                         $('#global-' + proceso_id).attr('disabled', true);
                             $('#btn-global-' + proceso_id).attr('disabled', true);
@@ -60,8 +59,6 @@ $(document).ready(function () {
                             $('#btn-global-' + proceso_id).attr('disabled', true);
                         }
                         $('#' + proceso_id).attr('disabled', false);
-                        $('#select_' + proceso_id).attr('disabled', false);
-
                     }
 
                     
