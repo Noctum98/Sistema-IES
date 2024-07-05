@@ -361,7 +361,7 @@
                                                         <select name="estado"
                                                                 class="custom-select custom-select-sm select-estado"
                                                                 id="select_{{$proceso->procesoRelacionado->id}}"
-                                                                data-proceso_id="{{ $proceso->id }}"
+                                                                data-proceso_id="{{ $proceso->procesoRelacionado->id }}"
                                                                 @if(!$puede_procesar || $proceso->procesoRelacionado->cierre == 1) disabled=disabled
                                                                 @endif
                                                                 data-estado="{{$proceso->procesoRelacionado->id}}">
