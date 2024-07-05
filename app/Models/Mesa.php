@@ -249,5 +249,10 @@ class Mesa extends Model
         return $this->hasMany(MesaFolio::class, 'mesa_id');
     }
 
+    public function foliosByMesa()
+    {
+        return MesaFolio::where('mesa_id', $this->id)->get();
+    }
+
 
 }

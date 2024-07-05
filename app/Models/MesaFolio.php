@@ -128,7 +128,10 @@ class MesaFolio extends Model
      */
     public function getFechaAttribute(string $value): string
     {
-        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y');
+
+            return $value;
+
+//        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y');
     }
 
 
@@ -172,17 +175,17 @@ class MesaFolio extends Model
 
     public function presidente(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'presidente');
+        return $this->belongsTo(User::class, 'presidente_id');
     }
 
     public function vocal1(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'vocal_1');
+        return $this->belongsTo(User::class, 'vocal_1_id');
     }
 
     public function vocal2(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'vocal_2');
+        return $this->belongsTo(User::class, 'vocal_2_id');
     }
 
     public function coordinador(): BelongsTo

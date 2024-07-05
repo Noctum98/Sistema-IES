@@ -55,7 +55,7 @@
                         @foreach($mesaFolios as $mesaFolio)
                             <tr>
                                 <td class="align-middle">{{ $mesaFolio->fecha }}</td>
-                                <td class="align-middle">{{ optional($mesaFolio->LibrosDigitale)->acta_inicio }}</td>
+                                <td class="align-middle">{{ $mesaFolio->LibroDigital->romanos }}</td>
                                 <td class="align-middle">{{ optional($mesaFolio->MasterMateria)->name }}</td>
                                 <td class="align-middle">{{ optional($mesaFolio->Mesa)->fecha }}</td>
                                 <td class="align-middle">{{ $mesaFolio->turno }}</td>
@@ -66,7 +66,7 @@
                                 <td class="align-middle">{{ $mesaFolio->aprobados }}</td>
                                 <td class="align-middle">{{ $mesaFolio->desaprobados }}</td>
                                 <td class="align-middle">{{ $mesaFolio->ausentes }}</td>
-                                <td class="align-middle">{{ optional($mesaFolio->coordinador())->getApellidoNombre() }}</td>
+                                <td class="align-middle">{{ optional($mesaFolio->coordinador_id)->getApellidoNombre() }}</td>
 
                                 <td class="text-end">
                                     <form method="POST"
