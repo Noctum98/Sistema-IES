@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ActaVolante;
 use App\Models\Parameters\Calendario;
 use Carbon\Carbon;
 
@@ -138,5 +139,20 @@ class MesaService
             'cierre_primer_llamado' => $primer_llamado_cierre,
             'cierre_segundo_llamado' => $segundo_llamado_cierre
         ];
+    }
+
+    public function getActasVolantes($mesa)
+    {
+        $actas_volantes = ActaVolante::whereHas('inscripcion',function($query) use ($mesa){
+            return $query->where('mesa_id',$mesa->id);
+        })->get();
+
+        return $actas_volantes;
+    }
+
+
+    public function getSede($mesa)
+    {
+        return $mesa->materia->carrera->sede;
     }
 }
