@@ -339,6 +339,7 @@
                                             <td>
                                                 <small>
                                                     <small>Condición:
+                                                        <span id="regularidad-{{ $proceso->procesoRelacionado->id }}">
                                                         @if($proceso->procesoRelacionado->estado)
                                                             @if($proceso->procesoRelacionado->estado->regularidad)
                                                                 {{$proceso->procesoRelacionado->estado->regularidad}}
@@ -348,6 +349,7 @@
                                                         @else
                                                             No indicada
                                                         @endif
+                                                        </span>
                                                     </small>
                                                 </small>
                                             </td>
