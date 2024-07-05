@@ -120,7 +120,7 @@ class Proceso extends Model
             if (Session::has('coordinador') || Session::has('admin')) {
                 $pase = true;
             }
-        } elseif ($this->cierre_final && Session::has('admin') && Session::has('cierres')) {
+        } elseif ($this->cierre_final && Session::has('admin') || Session::has('cierres')) {
             $rolCierre = Rol::where('nombre','cierres')->first();
 
             if($rolCierre->activo)
