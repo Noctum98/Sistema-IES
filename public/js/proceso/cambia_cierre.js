@@ -39,12 +39,7 @@ $(document).ready(function () {
                     
                     let coordinador = $("#coordinador").val();
                     if (response.cierre) {
-                        if(coordinador == 0 || coordinador == "0")
-                        {
-                            campo.attr('disabled',true);
-                        }
-
-
+                        
                         $('#' + proceso_id).attr('disabled', true);
 
                         $('#global-' + proceso_id).attr('disabled', true);
