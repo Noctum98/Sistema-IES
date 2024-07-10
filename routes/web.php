@@ -73,8 +73,6 @@ use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
-use App\Models\Mesa;
-use App\Models\Sede;
 
 /*
 |--------------------------------------------------------------------------

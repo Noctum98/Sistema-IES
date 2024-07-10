@@ -392,7 +392,6 @@ class ProcesoController extends Controller
             }
         }
 
-
         return response()->json($proceso, 200);
     }
 
