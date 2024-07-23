@@ -3,9 +3,8 @@ $(document).ready(function () {
     $('.select-estado').on('change', function () {
 
         const campo = $(this);
-        const proceso_id = campo.attr('id');
+        const proceso_id = campo.data('proceso_id');
         const proceso = campo.data('estado');
-        console.log(proceso)
 
         const estado_id = campo.val();
         $('#span-' + proceso_id).removeClass('d-block')
@@ -37,17 +36,20 @@ $(document).ready(function () {
                     }
                 } else {
                     $("#alerts").html("");
+                    if (response.estado && $("#regularidad-" + proceso_id).length) {
+                        $("#regularidad-"+proceso_id).html(response.estado.regularidad);
+                    }
                 }
 
                 if (response.estado && (response.estado.identificador == 5 || response.estado.identificador == 7)) {
                     $("#global-" + proceso_id).attr('disabled', false);
-                    $("#observacion-"+proceso_id).removeClass('d-none');
+                    $("#observacion-" + proceso_id).removeClass('d-none');
                 } else {
                     $("#global-" + proceso_id).attr('disabled', true);
                     $("#global-" + proceso_id).val('');
 
-                    if(!$("#observacion-"+proceso_id).hasClass('d-none')){
-                        $("#observacion-"+proceso_id).addClass('d-none');
+                    if (!$("#observacion-" + proceso_id).hasClass('d-none')) {
+                        $("#observacion-" + proceso_id).addClass('d-none');
                     }
                 }
             }

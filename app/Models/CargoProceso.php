@@ -81,6 +81,13 @@ class CargoProceso extends Model
                 'cargo_id' => $this->cargo_id
             ])->first();
 
+            if(!$procesoCargo){
+                $procesoCargo = new ProcesosCargos();
+                $procesoCargo->proceso_id = $this->proceso_id;
+                $procesoCargo->cargo_id = $this->cargo_id;
+
+            }
+
             $procesoCargo->cargo_proceso_id = $this->id;
             $user = Auth::user();
             $procesoCargo->operador_id = $user->id;

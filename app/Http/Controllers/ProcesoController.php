@@ -16,6 +16,7 @@ use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesosCargosService;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -297,7 +298,7 @@ class ProcesoController extends Controller
         return redirect()->route('proceso.admin', [
             'alumno_id' => $alumno_id,'carrera_id'=>$materia->carrera_id,'ciclo_lectivo'=>$ciclo_lectivo
         ])->with([
-            'alert_success' => 'Inscripción generada correctamente.',
+            'alert_success' => 'Incripción generada correctamente.',
         ]);
     }
 
