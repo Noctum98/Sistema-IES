@@ -31,6 +31,7 @@
 			@endif
 
 			@if(isset($carreras))
+			@if(count($carreras) > 0)
 			@foreach($carreras as $carrera)
 			<a type="button" href="#" class="list-group-item list-group-item-action mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal{{$carrera->id}}">
 				{{ $carrera->sede->nombre }} - {{$carrera->nombre.' - Res: '.$carrera->resolucion}} {{ $carrera->nombre == 'Enfermería Profesional' ? '('.ucwords($carrera->turno).')': '' }}
@@ -156,6 +157,9 @@
 				</div>
 			</div>
 			@endforeach
+			@else
+				<h4 class="text-secondary">No estas inscripto a ninguna carrera.</h4>
+			@endif
 			@else
 			<h4 class="text-secondary">Ya no puedes inscribirte a ninguna materia.</h4>
 			@endif
