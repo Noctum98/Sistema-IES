@@ -1142,7 +1142,3 @@ Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function
     Route::delete('/library/{library}', [LibrariesAdminController::class, 'destroy'])
         ->name('admin-libraries.library.destroy');
 });
-
-
-
-

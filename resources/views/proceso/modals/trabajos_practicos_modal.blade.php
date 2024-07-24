@@ -23,14 +23,13 @@
                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
-                                2, '.', ',') )
-
-
+                                @include('componentes.colorNotas',[
+    'year' => $ciclo_lectivo,
+    'nota' => number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota, 2, '.', ',')
+])
                             @endif
                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                 A
-
                             @endif
                         @else
                             -
@@ -38,7 +37,7 @@
                     </h6>
                 </td>
             @endforeach
-            </tbody>
-        </table>
-    </div>
+          </tbody>
+      </table>
+  </div>
 </div>

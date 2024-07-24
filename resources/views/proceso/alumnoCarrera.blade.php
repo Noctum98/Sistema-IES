@@ -142,7 +142,10 @@
                                         </span>
                                         @if($materia->getActaVolante($alumno->id))
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
-                                            @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                            @include('componentes.colorNotas',[
+                                            'year'=> $ciclo_lectivo,
+                                            'nota' => $materia->getActaVolante($alumno->id)->promedio
+                                        ])
                                             <small style="font-size: 0.8em">
                                                 <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                                                 {{$materia->getActaVolante($alumno->id)
@@ -208,9 +211,9 @@
                                 </div>
                                 <div class="col-sm-3 px-3 border-right">
                                     <p class="card-text">
-                                        <span class="d-sm-none mr-5">
-                                            Régimen
-                                        </span>
+  <span class="d-sm-none mr-5">
+      Régimen
+  </span>
                                         @if($materia->regimen)
                                             <i> {{$materia->regimen}}</i>
                                         @else
@@ -220,20 +223,24 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
-                                        <span class="d-sm-none mr-5">
-                                            Regularidad
-                                        </span>
+  <span class="d-sm-none mr-5">
+      Regularidad
+  </span>
                                         {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
                                     <p class="card-text text-left pl-1">
-                                        <span class="d-sm-none mr-5">
-                                            Nota final
-                                        </span>
+  <span class="d-sm-none mr-5">
+      Nota final
+  </span>
                                         @if($materia->getActaVolante($alumno->id))
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
-                                            @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+
+                                            @include('componentes.colorNotas',[
+                                            'year'=> $ciclo_lectivo,
+                                            'nota' => $materia->getActaVolante($alumno->id)->promedio
+                                        ])
                                             <small style="font-size: 0.8em">
                                                 <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                                                 {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
@@ -298,9 +305,9 @@
                                 </div>
                                 <div class="col-sm-3 px-3 border-right">
                                     <p class="card-text">
-                                        <span class="d-sm-none mr-5">
-                                            Régimen:
-                                        </span>
+<span class="d-sm-none mr-5">
+Régimen:
+</span>
                                         @if($materia->regimen)
                                             <i> {{$materia->regimen}}</i>
                                         @else
@@ -310,20 +317,24 @@
                                 </div>
                                 <div class="col-sm-3 border-right">
                                     <p class="card-text text-left pl-1">
-                                        <span class="d-sm-none mr-5">
-                                            Regularidad
-                                        </span>
+<span class="d-sm-none mr-5">
+Regularidad
+</span>
                                         {!! mb_strtoupper($materia->getEstadoAlumnoPorMateria($alumno->id)) !!}
                                     </p>
                                 </div>
                                 <div class="col-sm-2">
                                     <p class="card-text text-left pl-1">
-                                         <span class="d-sm-none mr-5">
-                                             Nota final
-                                        </span>
+<span class="d-sm-none mr-5">
+Nota final
+</span>
                                         @if($materia->getActaVolante($alumno->id) && !$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->estado_baja)
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
-                                            @colorAprobado($materia->getActaVolante($alumno->id)->promedio)
+                                            @include('componentes.colorNotas',[
+                                            'year'=> $ciclo_lectivo,
+                                            'nota' => $materia->getActaVolante($alumno->id)->promedio
+                                        ])
+
                                             <small style="font-size: 0.8em">
                                                 <i class="fa fa-calendar-alt text-primary" style="font-size: 0.7em"></i>
                                                 {{$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->fechaMesa()}}
