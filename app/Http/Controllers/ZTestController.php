@@ -87,6 +87,10 @@ class ZTestController extends Controller
     public function cargaLibros(Sede $sede)
     {
 
+        /**
+         * Ahora tenemos que ir por las notas de los folios
+         */
+
         $user = auth()->user();
 
         $mesas = $sede->getMesas();
@@ -94,84 +98,95 @@ class ZTestController extends Controller
         $data = [];
         $data['user_id'] = $user->id;
         $data['sede_id'] = $sede->id;
-
+        $error = [];
         foreach ($mesas as $mesa) {
 
-            /** @var Mesa $mesa */
-            $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
-            $masterMateria = $mesa->materia->master_materia_id;
-            $data['resoluciones_id'] = $resolucion_id;
-            if ($mesa->libros()->count() > 0) {
-                foreach ($mesa->libros()->get() as $libro) {
 
-                    /** @var Libro $libro */
-                    $numero = $libro->numero;
+            if($mesa->materia->masterMateria) {
+                /** @var Mesa $mesa */
+                $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
+                $masterMateria = $mesa->materia->master_materia_id;
+                $data['resoluciones_id'] = $resolucion_id;
+                if ($mesa->libros()->count() > 0) {
+                    foreach ($mesa->libros()->get() as $libro) {
 
-                    $folio = $libro->folio;
-                    $romano = $mesa->libro;
-                    $fecha = $mesa->fecha;
-                    $presidente = $mesa->presidente_id;
-                    $vocal_1 = $mesa->primer_vocal_id;
-                    $vocal_2 = $mesa->segundo_vocal_id;
+                        /** @var Libro $libro */
+                        $numero = $libro->numero;
 
-                    if ($libro->llamado > 2) {
-                        $romano = $mesa->libro_segundo;
-                        $folio = $mesa->folio_segundo;
-                        $fecha = $mesa->fecha_segundo;
-                        $presidente = $mesa->presidente_segundo_id;
-                        $vocal_1 = $mesa->primer_vocal_segundo_id;
-                        $vocal_2 = $mesa->segundo_vocal_segundo_id;
-                    }
+                        $folio = $libro->folio;
+                        $romano = $mesa->libro;
+                        $fecha = $mesa->fecha;
+                        $presidente = $mesa->presidente_id;
+                        $vocal_1 = $mesa->primer_vocal_id;
+                        $vocal_2 = $mesa->segundo_vocal_id;
 
-                    if ($numero && $romano) {
-
-                        $fecha = date('Y-m-d', strtotime($fecha));
-
-                        $data['number'] = $numero;
-                        $data['romanos'] = $romano;
-                        $data['resoluciones_id'] = $resolucion_id;
-
-                        $libroDigital = LibroDigital::where(
-                            [
-                                'resoluciones_id' => $resolucion_id,
-                                'number' => $numero,
-                                'sede_id' => $sede->id,
-                            ]
-                        )->first();
-
-                        if (!$libroDigital) {
-                            $libroDigital = LibroDigital::create(
-                                $data
-                            );
+                        if ($libro->llamado > 2) {
+                            $romano = $mesa->libro_segundo;
+                            $folio = $mesa->folio_segundo;
+                            $fecha = $mesa->fecha_segundo;
+                            $presidente = $mesa->presidente_segundo_id;
+                            $vocal_1 = $mesa->primer_vocal_segundo_id;
+                            $vocal_2 = $mesa->segundo_vocal_segundo_id;
                         }
 
-                        $mesaFolio = $libroDigital->mesaFolios()->where('numero', $folio)->first();
+                        if ($numero && $romano) {
 
-                        if (!$mesaFolio) {
-                            $mesaFolio = MesaFolio::create(
+                            $fecha = date('Y-m-d', strtotime($fecha));
+
+                            $data['number'] = $numero;
+                            $data['romanos'] = $romano;
+                            $data['resoluciones_id'] = $resolucion_id;
+
+                            $libroDigital = LibroDigital::where(
                                 [
-                                    'fecha' => $fecha,
-                                    'libro_digital_id' => $libroDigital->id,
-                                    'master_materia_id' => $masterMateria,
-                                    'mesa_id' => $mesa->id,
-                                    'numero' => $folio,
-                                    'operador_id' => $user->id,
-                                    'presidente_id' => $presidente,
-                                    'vocal_1_id' => $vocal_1,
-                                    'vocal_2_id' => $vocal_2,
+                                    'resoluciones_id' => $resolucion_id,
+                                    'number' => $numero,
+                                    'sede_id' => $sede->id,
                                 ]
-                            );
+                            )->first();
+
+                            if (!$libroDigital) {
+                                $libroDigital = LibroDigital::create(
+                                    $data
+                                );
+                            }
+
+                            $mesaFolio = $libroDigital->mesaFolios()->where('numero', $folio)->first();
+
+                            if (!$mesaFolio) {
+                                $mesaFolio = MesaFolio::create(
+                                    [
+                                        'fecha' => $fecha,
+                                        'libro_digital_id' => $libroDigital->id,
+                                        'master_materia_id' => $masterMateria,
+                                        'mesa_id' => $mesa->id,
+                                        'numero' => $folio,
+                                        'operador_id' => $user->id,
+                                        'presidente_id' => $presidente,
+                                        'vocal_1_id' => $vocal_1,
+                                        'vocal_2_id' => $vocal_2,
+                                    ]
+                                );
+
+                            }
+
 
                         }
-                    }
 
+                    }
                 }
+            }else{
+                $error[] = [
+                    'Procesar resoluciones' => $mesa->materia->carrera->resolucion_id,
+                    'Materia' => $mesa->materia->id
+                ];
             }
         }
 
         return response()->json([
             'sede' => $sede->nombre,
-            'mesas' => $mesas->count()
+            'mesas' => $mesas->count(),
+            'error' => $error
         ]);
 
     }
