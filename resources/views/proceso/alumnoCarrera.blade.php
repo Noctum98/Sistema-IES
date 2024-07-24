@@ -143,7 +143,7 @@
                                         @if($materia->getActaVolante($alumno->id))
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                                             @include('componentes.colorNotas',[
-                                            'year'=> $ciclo_lectivo,
+                                            'year'=> $materia->getActaVolante($alumno->id)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota,
                                             'nota' => $materia->getActaVolante($alumno->id)->promedio
                                         ])
                                             <small style="font-size: 0.8em">
@@ -238,7 +238,7 @@
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
 
                                             @include('componentes.colorNotas',[
-                                            'year'=> $ciclo_lectivo,
+                                            'year'=> $materia->getActaVolante($alumno->id)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota,
                                             'nota' => $materia->getActaVolante($alumno->id)->promedio
                                         ])
                                             <small style="font-size: 0.8em">
@@ -331,7 +331,7 @@ Nota final
                                         @if($materia->getActaVolante($alumno->id) && !$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->estado_baja)
                                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                                             @include('componentes.colorNotas',[
-                                            'year'=> $ciclo_lectivo,
+                                            'year'=> $materia->getActaVolante($alumno->id)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota,
                                             'nota' => $materia->getActaVolante($alumno->id)->promedio
                                         ])
 
