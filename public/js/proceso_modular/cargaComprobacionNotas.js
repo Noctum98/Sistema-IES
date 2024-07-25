@@ -21,6 +21,26 @@ $(document).ready(function () {
 
                 spin.removeClass('d-block')
                 spin.addClass('d-none')
+
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        // Aquí actualizas el <tr> con la respuesta del servidor
+                        // Se necesita tener un identificador único para seleccionar el correcto <tr>
+                        // Por ejemplo: $('#unique-tr-id').html(response);
+                        console.log('39')
+                        $('#' + trOneProceso).html(response);
+                        spin.removeClass('d-block')
+                        spin.addClass('d-none')
+                    },
+                    error: function(xhr, status, error) {
+                        // este bloque de código se ejecutará cuando ocurra un error
+                        spin.removeClass('d-block')
+                        spin.addClass('d-none')
+                    }
+
+                });
             },
             error: function(xhr, status, error) {
                 // este bloque de código se ejecutará cuando ocurra un error
@@ -29,25 +49,7 @@ $(document).ready(function () {
             }
 
         });
-        $.ajax({
-            url: url,
-            type: "GET",
-            success: function (response) {
-                // Aquí actualizas el <tr> con la respuesta del servidor
-                // Se necesita tener un identificador único para seleccionar el correcto <tr>
-                // Por ejemplo: $('#unique-tr-id').html(response);
-                console.log('39')
-                $('#' + trOneProceso).html(response);
-                spin.removeClass('d-block')
-                spin.addClass('d-none')
-            },
-            error: function(xhr, status, error) {
-                // este bloque de código se ejecutará cuando ocurra un error
-                spin.removeClass('d-block')
-                spin.addClass('d-none')
-            }
 
-        });
 
     });
 });
