@@ -585,6 +585,7 @@ Route::prefix('proceso')->group(function () {
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
+    Route::post('cambia/simular_cierre', [ProcesoController::class, 'simularCierre'])->name('proceso.simularCierre');
     Route::get(
         'cambia/cierre-general/{materia_id}/{cargo_id?}/{comision_id?}/{cierre_coordinador?}',
         [ProcesoController::class, 'cambiaCierreGeneral']

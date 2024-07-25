@@ -327,10 +327,10 @@
                                                            checked
                                                        @else
                                                            unchecked
-                                                    @endif
+                                                       @endif
 
-                                                    @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))
-                                                        disabled
+                                                       @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))
+                                                           disabled
                                                     @endif
                                                 />
                                             </td>
@@ -341,14 +341,14 @@
                                                     <small>Condición:
                                                         <span id="regularidad-{{ $proceso->procesoRelacionado->id }}">
                                                         @if($proceso->procesoRelacionado->estado)
-                                                            @if($proceso->procesoRelacionado->estado->regularidad)
-                                                                {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                                @if($proceso->procesoRelacionado->estado->regularidad)
+                                                                    {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                                @else
+                                                                    {{$proceso->procesoRelacionado->estado->nombre}}
+                                                                @endif
                                                             @else
-                                                                {{$proceso->procesoRelacionado->estado->nombre}}
+                                                                No indicada
                                                             @endif
-                                                        @else
-                                                            No indicada
-                                                        @endif
                                                         </span>
                                                     </small>
                                                 </small>
@@ -382,14 +382,6 @@
                                                 @endif
                                             </td>
                                             <td class="text-center" colspan="2">
-                                                {{--                                                <a href="{{route('proceso_modular.procesa_notas_modular',--}}
-                                                {{--                                                    ['materia' => $materia->id,--}}
-                                                {{--                                                    'proceso_id' => $proceso->procesoRelacionado->id,--}}
-                                                {{--                                                    'cargo' => $cargo_id ])}}"--}}
-                                                {{--                                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">--}}
-                                                {{--                                                    Comprobar notas--}}
-                                                {{--                                                </a>--}}
-
                                                 <a href="#"
                                                    data-url="{{route('proceso_modular.procesa_notas_modular_proceso',
                                                     ['materia' => $materia->id,
@@ -422,17 +414,16 @@
                                         <tr>
                                             <td colspan="9" class="border-top-0 border-info">
                                                 <div id="cargo-{{$proceso->id}}" class="collapse p-0 m-0">
-                                                    @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
+                                                    @include('proceso.listado-cargos-modulo',
+                                                        ['alumno' => $proceso->procesoRelacionado->alumno,
+                                                        'cargos' => $materia->cargos ])
                                                 </div>
                                             </td>
                                         </tr>
                                     @endif
                                 @endforeach
                                 </tbody>
-                                {{--                    @include('proceso.modals.tps-mostrar')--}}
-
                             </table>
-
                         </div>
                     </div>
 

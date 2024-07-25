@@ -395,6 +395,22 @@ class ProcesoController extends Controller
         return response()->json($proceso, 200);
     }
 
+    public function simularCierre(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $proceso = Proceso::find($request['proceso_id']);
+
+        if ($proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+            foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                $procesoService = new ProcesosCargosService();
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, false, false);
+            }
+        }
+
+        return response()->json($proceso, 200);
+    }
+
     public function cambiaCierreModulo(Request $request): JsonResponse
     {
         $user = Auth::user();
