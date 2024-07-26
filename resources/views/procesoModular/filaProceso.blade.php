@@ -1,10 +1,14 @@
 <td>
     - {{optional($proceso->procesoRelacionado->alumno)->apellidos_nombres}}
+    @if(Session::has('admin'))
+        <small><br/>(Proceso: {{$proceso->procesoRelacionado->id}}
+            )</small>
+    @endif
 </td>
 <td class="text-center">
                                                 <span id="pfn-{{$proceso->id}}" class="m-0 p-0">
                                                     @include('componentes.colorNotas',
-                                                              ['year' => $proceso->ciclo_lectivo,
+                                                              ['year' => $ciclo_lectivo,
                                                               'nota' => $proceso->promedio_final_nota])
                                                 </span>
 </td>
@@ -12,15 +16,14 @@
     {{$proceso->asistencia_final_porcentaje}} %
 </td>
 <td class="text-center">
-    {{--    @colorAprobado($proceso->trabajo_final_nota)--}}
     @include('componentes.colorNotas',
-                     ['year' => $proceso->ciclo_lectivo,
+                     ['year' => $ciclo_lectivo,
                      'nota' => $proceso->trabajo_final_nota])
 
 </td>
 <td class="text-center">
     @include('componentes.colorNotas',
-                     ['year' => $proceso->ciclo_lectivo,
+                     ['year' => $ciclo_lectivo,
                      'nota' => $proceso->nota_final_nota])
 </td>
 <td class="row">
@@ -31,7 +34,7 @@
                    class="form-control btn-sm nota_global
 {{--                                                   @classAprobado($proceso->procesoRelacionado->nota_global)"--}}
                    @include('componentes.classNota',
-                                                             ['year' => $proceso->procesoRelacionado->ciclo_lectivo,
+                                                             ['year' => $ciclo_lectivo,
                                                              'nota' => $proceso->procesoRelacionado->nota_global])"
                    id="global-{{ $proceso->procesoRelacionado->id }}"
                    value="{{ $proceso->procesoRelacionado->nota_global != -1 ?

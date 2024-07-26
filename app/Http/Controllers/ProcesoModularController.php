@@ -303,10 +303,16 @@ class ProcesoModularController extends Controller
 
         $asistenciaModular->calculateFinalAsistenciaModularPercentage($materia, $procesoModular);
 
+        $ciclo_lectivo = $procesoModular->ciclo_lectivo;
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = $proceso->ciclo_lectivo;
+        }
+
         return view('procesoModular.filaProceso',
             [
                 'proceso' => $procesoModular,
                 'puede_procesar' => $puedeProcesar,
+                'ciclo_lectivo' => $ciclo_lectivo
             ]);
     }
 
