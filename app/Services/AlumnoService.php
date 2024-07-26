@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
 use App\Models\Materia;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -59,7 +60,7 @@ class AlumnoService
         return $procesos;
     }
 
-    public function buscarAlumno($busqueda, $carrera_id = null)
+    public function buscarAlumno($busqueda, $carrera_id = null,$ciclo_lectivo=null)
     {
         $alumno = Alumno::where([
             'dni' => $busqueda
@@ -67,8 +68,15 @@ class AlumnoService
 
         $alumnoCarrera = AlumnoCarrera::where([
             'alumno_id'=>$alumno->id,
-            'carrera_id' => $carrera_id
-        ])->first();
+            'carrera_id' => $carrera_id,
+            'aprobado' => true
+        ]);
+
+        if($ciclo_lectivo){
+            $alumnoCarrera = $alumnoCarrera->where('ciclo_lectivo',$ciclo_lectivo->year);
+        }
+
+        $alumnoCarrera = $alumnoCarrera->first();
 
         if ($alumno && $alumnoCarrera) {
             return $alumno;
