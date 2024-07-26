@@ -3,7 +3,6 @@
 </td>
 <td class="text-center">
                                                 <span id="pfn-{{$proceso->id}}" class="m-0 p-0">
-{{--                                                @colorAprobado($proceso->promedio_final_nota)--}}
                                                     @include('componentes.colorNotas',
                                                               ['year' => $proceso->ciclo_lectivo,
                                                               'nota' => $proceso->promedio_final_nota])
@@ -20,7 +19,6 @@
 
 </td>
 <td class="text-center">
-    {{--    @colorAprobado($proceso->nota_final_nota)--}}
     @include('componentes.colorNotas',
                      ['year' => $proceso->ciclo_lectivo,
                      'nota' => $proceso->nota_final_nota])

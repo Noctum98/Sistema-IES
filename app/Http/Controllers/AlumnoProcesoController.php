@@ -130,15 +130,20 @@ class AlumnoProcesoController extends Controller
             'carrera_id' => $carrera->id,
         ])->first();
 
+
+
         if (!$alumnoCarrera) {
             return redirect()->route('alumno.admin')->with([
                 'alumno_notIsset' => 'No se encontró la carrera solicitada para el alumno indicado'
             ]);
         }
 
+        $ciclo_lectivo = $alumnoCarrera->ciclo_lectivo;
+
         return view('proceso.alumnoCarrera', [
             'alumno' => $alumno,
-            'carrera' => $carrera
+            'carrera' => $carrera,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
     }
 }
