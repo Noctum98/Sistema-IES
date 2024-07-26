@@ -6,11 +6,11 @@
     @endif
 </td>
 <td class="text-center">
-                                                <span id="pfn-{{$proceso->id}}" class="m-0 p-0">
-                                                    @include('componentes.colorNotas',
-                                                              ['year' => $ciclo_lectivo,
-                                                              'nota' => $proceso->promedio_final_nota])
-                                                </span>
+    <span id="pfn-{{$proceso->id}}" class="m-0 p-0">
+        @include('componentes.colorNotas',
+                    ['year' => $ciclo_lectivo,
+                     'nota' => $proceso->promedio_final_nota])
+    </span>
 </td>
 <td class="text-center">
     {{$proceso->asistencia_final_porcentaje}} %
@@ -32,13 +32,12 @@
         <div class="input-group">
             <input type="text"
                    class="form-control btn-sm nota_global
-{{--                                                   @classAprobado($proceso->procesoRelacionado->nota_global)"--}}
                    @include('componentes.classNota',
-                                                             ['year' => $ciclo_lectivo,
-                                                             'nota' => $proceso->procesoRelacionado->nota_global])"
+                                 ['year' => $ciclo_lectivo,
+                                 'nota' => $proceso->procesoRelacionado->nota_global])"
                    id="global-{{ $proceso->procesoRelacionado->id }}"
                    value="{{ $proceso->procesoRelacionado->nota_global != -1 ?
-                                                            $proceso->procesoRelacionado->nota_global : 'A' }}"
+                                $proceso->procesoRelacionado->nota_global : 'A' }}"
                    @if(($proceso->procesoRelacionado->estado
                         && ($proceso->procesoRelacionado->estado->identificador != 5
                         || $proceso->procesoRelacionado->estado->identificador != 7))
