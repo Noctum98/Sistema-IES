@@ -35,16 +35,18 @@ class ProcesosCargosService
      * @param int $proceso <i>id</i> de proceso
      * @param int $cargo <i>id</i> de cargo
      * @param int $user <i>id</i> de usuario
+     * @param bool $cierre_modulo
+     * @param bool $cierre
      * @return void
      */
-    public function actualizar(int $proceso, int $cargo, int $user, $cierre_modulo = true): void
+    public function actualizar(int $proceso, int $cargo, int $user, bool $cierre_modulo = true, bool $cierre = true): void
     {
         $pc = $this->getProcesoCargo($proceso, $cargo);
 
         if (!$pc) {
             $this->crear($proceso, $cargo, $user);
         }
-        $this->cierraProcesoCargo($cargo, $proceso, $user, true, $cierre_modulo);
+        $this->cierraProcesoCargo($cargo, $proceso, $user, $cierre, $cierre_modulo);
     }
 
     /**
@@ -90,6 +92,7 @@ class ProcesosCargosService
 
         $pc->operador_id = $user;
         $pc->update();
+
     }
 
     /**

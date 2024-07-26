@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Preinscripcion;
 use App\Models\Sede;
 use App\Services\Alumno\EncuestaSocioeconomicaService;
@@ -314,7 +315,8 @@ class AlumnoController extends Controller
 
     public function buscar(Request $request, $id)
     {
-        $alumno = $this->alumnoService->buscarAlumno($request['busqueda'], $id);
+        $ciclo_lectivo = CicloLectivo::latest()->first();
+        $alumno = $this->alumnoService->buscarAlumno($request['busqueda'], $id,$ciclo_lectivo);
 
         if ($alumno) {
             $response = [
