@@ -297,13 +297,6 @@
                                                                id="global-{{ $proceso->procesoRelacionado->id }}"
                                                                value="{{ $proceso->procesoRelacionado->nota_global != -1 ?
                                                             $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                               {{--                                                               @if(($proceso->procesoRelacionado->estado--}}
-                                                               {{--                                                                    && ($proceso->procesoRelacionado->estado->identificador != 5--}}
-                                                               {{--                                                                    || $proceso->procesoRelacionado->estado->identificador != 7))--}}
-                                                               {{--                                                                    || !$puede_procesar--}}
-                                                               {{--                                                                    || $proceso->procesoRelacionado->cierre)--}}
-                                                               {{--                                                                   disabled--}}
-                                                               {{--                                                            @endif>--}}
                                                                @if(!$puede_procesar || $proceso->procesoRelacionado->cierre)
                                                                    disabled
                                                             @endif>
@@ -383,6 +376,7 @@
                                             </td>
                                             <td class="text-center" colspan="2">
                                                 <a href="#"
+                                                   id="btn_comprobar_{{$proceso->procesoRelacionado->id}}"
                                                    data-url="{{route('proceso_modular.procesa_notas_modular_proceso',
                                                     ['materia' => $materia->id,
                                                      'proceso_id' => $proceso->procesoRelacionado->id,

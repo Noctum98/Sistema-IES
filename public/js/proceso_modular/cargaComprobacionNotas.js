@@ -3,6 +3,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         let url = $(this).data('url'); // URL desde el data attribute
+        console.log(url)
         let trOneProceso = $(this).data('trone'); // URL desde el data attribute
         let proceso = $(this).data('proceso');
         let spin = $('#spin-' + proceso);
