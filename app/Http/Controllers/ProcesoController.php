@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
@@ -81,7 +82,12 @@ class ProcesoController extends Controller
 
         ];
 
-        return view('alumno.materias',$datos);
+        return view('proceso.materias',$datos);
+    }
+
+    public function vista_admin_alumnos(Request $request,$carrera_id,$ciclo_lectivo)
+    {
+        
     }
 
     public function vista_detalle(int $id)

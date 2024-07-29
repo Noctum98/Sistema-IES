@@ -9,6 +9,8 @@
             </div>
             <div class="modal-body">
                 <p class="text-danger"><i>Si solo quiere poner una sola nota debe colocar un guión medio en el campo que no corresponde la nota.</i></p>
+                <p class="text-danger"><i>Recuerde que la nota debe ser del 1 al 10 no porcentaje.</i></p>
+
                 @if($cierre)
                 
                 <div class="alert alert-warning">
