@@ -36,20 +36,12 @@
 
             </div>
             <div class="card-body">
-                <div class="col-md-12">
-{{--                    @if(@session('message'))--}}
-{{--                        <div class="alert alert-success">--}}
-{{--                            {{ @session('message') }}--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-                </div>
                 <div class="row">
                     <form method="POST" action="{{ route('editar_materia',['id'=>$materia->id]) }}">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12 col-md-8">
                                 <div class="form-group">
-
                                     <label for="nombre">Nombre:</label>
                                     <input type="text" id="nombre" name="nombre"
                                            class="form-control @error('nombre') is-invalid @enderror"
@@ -67,18 +59,21 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-
                                     <label for="master_materia_id">Genérico:</label>
                                     <select class="form-control select2" id="master_materia_id"
-                                            name="master_materia_id" >
-                                        <option value="">Seleccione MasterMateria </option>
+                                            @if(!Session::has('admin'))
+                                                disabled
+                                            @endif
+                                            name="master_materia_id">
+                                        <option value="">Seleccione MasterMateria</option>
                                         @foreach($masterMaterias as $master)
-                                            @if($master->id == $materia->master_materia_id))
+                                            @if($master->id == $materia->master_materia_id)
+                                                )
                                                 <option value="{{ $master->id }}" selected="selected">
                                                     {{ $master->name }}
                                                 </option>
                                             @else
-                                                <option value="{{ $master->id }}" >
+                                                <option value="{{ $master->id }}">
                                                     {{ $master->name }}
                                                 </option>
 
@@ -95,7 +90,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="form-group col-sm-2">
                                 <label for="año">Año:</label>
                                 <input type="number" id="año" name="año"
@@ -111,11 +105,13 @@
                                         </span>
                                 @enderror
                             </div>
-
-
                             <div class="form-group col-sm-4">
                                 <label for="regimen">Régimen: </label>
-                                <select class="form-control select2" id="regimen" name="regimen">
+                                <select class="form-control select2" id="regimen" name="regimen"
+                                        @if(!Session::has('admin'))
+                                            disabled
+                                    @endif
+                                >
                                     <option value="">
                                         Seleccione régimen
                                     </option>
@@ -135,10 +131,13 @@
                                 </select>
                             </div>
 
-
                             <div class="form-group col-sm-3">
                                 <label for="cierre_diferido">Diferenciada <sup>*</sup>: </label>
-                                <select class="form-control select2" id="cierre_diferido" name="cierre_diferido">
+                                <select class="form-control select2" id="cierre_diferido" name="cierre_diferido"
+                                        @if(!Session::has('admin'))
+                                            disabled
+                                    @endif
+                                >
                                     <option
                                         value="1"
                                         @if($materia->cierre_diferido)
@@ -184,7 +183,11 @@
 
                                 <label for="correlativa_cursado">Correlatividades para cursar: </label>
                                 <select class="form-control select2" id="correlativa_cursado"
-                                        name="correlativa_cursado[]" multiple="multiple">
+                                        name="correlativa_cursado[]" multiple="multiple"
+                                        @if(!Session::has('admin'))
+                                            disabled
+                                    @endif
+                                >
                                     <option value="">No tiene correlativa cursado</option>
                                     @foreach($materias as $mater)
                                         @if(in_array($mater->id, $materia->correlativasCursadoArray()))
@@ -208,7 +211,11 @@
 
                                 <label for="correlativa">Correlatividades para rendir: </label>
                                 <select class="form-control select2" id="correlativa"
-                                        name="correlativa[]" multiple="multiple">
+                                        name="correlativa[]" multiple="multiple"
+                                        @if(!Session::has('admin'))
+                                            disabled
+                                    @endif
+                                >
                                     <option value="">No tiene correlativa</option>
                                     @foreach($materias as $mater)
                                         @if(in_array($mater->id, $materia->correlativasArray()))
@@ -228,9 +235,13 @@
                                 </select>
                             </div>
                             <div class="col-sm-6">
-                            <label for="tipo_unidad_curricular">Tipo unidad curricular: </label>
+                                <label for="tipo_unidad_curricular">Tipo unidad curricular: </label>
                                 <select class="form-control select2" id="tipo_unidad_curricular"
-                                        name="tipo_unidad_curricular">
+                                        name="tipo_unidad_curricular"
+                                        @if(!Session::has('admin'))
+                                            disabled
+                                    @endif
+                                >
                                     <option value="">No tiene tipo</option>
                                     @foreach($tipo_materias as $tipo)
                                         @if($tipo->id == $materia->masterMateria->tipo_unidad_curricular_id)
@@ -238,9 +249,9 @@
                                                 {{ $tipo->nombre }}
                                             </option>
                                         @else
-                                        <option value="{{ $tipo->id }}">
-                                                    {{ $tipo->nombre }}
-                                                </option>
+                                            <option value="{{ $tipo->id }}">
+                                                {{ $tipo->nombre }}
+                                            </option>
                                         @endif
 
                                     @endforeach
