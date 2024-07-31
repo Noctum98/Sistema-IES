@@ -22,19 +22,19 @@ class ProcesoModularService
     /**
      * Mirando👆 Módulos sería Acreditación Directa si
      *  [X] Asistencia Módulo > 75%,
-     *  [X] Proceso >60%, nota >= 4
+     *  [X] Proceso >60%, nota >= 4 , nota >= 6
      *  [X] Promedio >78%, nota >= 7
      *  [X] TFI >78%, nota >= 7
      * Regular si
      *  [X] Asistencia Módulo >= 60
      *  [X] PP 100%,
-     *  [X] Promedio Proceso >= 60, nota > 4
+     *  [X] Promedio Proceso >= 60, nota > 4, nota >= 6
      *  [X] Asistencia por cargo >= 40
-     *  [X] TFI >= 60, nota >=4
+     *  [X] TFI >= 60, nota >=4, nota >= 6
      */
     const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
     const PROCESO_ACCREDITATION_DIRECTA = 60;
-    const NOTA_PROCESO_ACCREDITATION_DIRECTA = 4;
+
     const PROMEDIO_ACCREDITATION_DIRECTA = 78;
     const NOTA_PROMEDIO_ACCREDITATION_DIRECTA = 7;
     const TFI_ACCREDITATION_DIRECTA = 78;
@@ -67,7 +67,15 @@ class ProcesoModularService
      * @var ProcesoCalificacionService
      */
     private $procesoCalificacionService;
+    private NotasService $notasService;
 
+
+    public function __construct()
+    {
+        $this->calificacionService = new CalificacionService();
+        $this->procesoCalificacionService = new ProcesoCalificacionService();
+        $this->notasService = new NotasService();
+    }
 
 //    /**
 //     * @param CalificacionService $calificacionService
@@ -312,7 +320,7 @@ class ProcesoModularService
     /**
      * @param $materia_id <b>Módulo</b> a procesar
      * @param $ciclo_lectivo
-     * @return string[] <i>200</i> si generó todos los estados
+     * @return string[] <i>200</i> sí generó todos los estados
      */
     public function grabaEstadoCursoEnModulo($materia_id, $ciclo_lectivo): array
     {
@@ -346,7 +354,7 @@ class ProcesoModularService
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
             and
-            $this->getCalificacionModularBoolean(self::NOTA_PROCESO_ACCREDITATION_DIRECTA, $proceso)
+            $this->getCalificacionModularBoolean($this->getNotaProcesoAccreditationDirecta($pm->id), $proceso)
             and
             $this->getPromedioModularBoolean(self::NOTA_PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_nota)
             and
@@ -362,7 +370,7 @@ class ProcesoModularService
      */
     public function regularityRegular(ProcesoModular $pm): bool
     {
-
+dd($pm);
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
 
@@ -505,20 +513,23 @@ class ProcesoModularService
     {
         $idEstado = $pm->procesoRelacionado()->first()->estado_id;
         if ($pm->procesoRelacionado()->first()->cierre != 1 && $pm->procesoRelacionado()->first()->cierre_final != 1) {
+
             if ($this->regularityDirectAccreditation($pm)) {
                 $estado = Estados::where(
                     ['identificador' => 4]
                 )->first();
+                print_r('directo');
             } else {
-
                 if ($this->regularityRegular($pm)) {
                     $estado = Estados::where(
                         ['identificador' => 1]
                     )->first();
+                    print_r('regular');
                 } else {
                     $estado = Estados::where(
                         ['identificador' => 5]
                     )->first();
+                    print_r('No regular - Global');
                 }
 
             }
@@ -527,6 +538,8 @@ class ProcesoModularService
             $proceso->estado_id = $estado->id;
             $proceso->update();
             $idEstado = $estado->id;
+            dd($proceso);
+
         }
 
         return $idEstado;
@@ -1003,6 +1016,17 @@ class ProcesoModularService
     protected function getServiceCalificacion(): CalificacionService
     {
         return new CalificacionService();
+
+
+    }
+
+    private function getNotaProcesoAccreditationDirecta(int $procesoModular): int
+    {
+        // const NOTA_PROCESO_ACCREDITATION_DIRECTA = 4;
+
+        $proceso = ProcesoModular::find($procesoModular);
+
+        return $this->notasService->getNotaSesenta($proceso->getCicloLectivo());
 
 
     }

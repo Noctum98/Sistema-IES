@@ -171,8 +171,7 @@
 
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}"
                class="btn btn-sm btn-success"><i
-                    class="fas fa-download"></i> Descargar
-                planilla</a>
+                    class="fas fa-download"></i> Descargar planilla</a>
         @endif
 
         {{--

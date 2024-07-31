@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\ProcesoModularService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -36,7 +37,7 @@ class ProcesoModular extends Model
         'ciclo_lectivo'
     ];
 
-    public function procesoRelacionado()
+    public function procesoRelacionado(): BelongsTo
     {
         return $this->belongsTo(Proceso::class, 'proceso_id');
     }
@@ -66,7 +67,7 @@ class ProcesoModular extends Model
     {
         $service = new ProcesoModularService();
 
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -77,6 +78,18 @@ class ProcesoModular extends Model
             $ciclo_lectivo
         );
 
+    }
+
+    public function getCicloLectivo()
+    {
+
+        $cicloLectivo = $this->ciclo_lectivo;
+        if (!$cicloLectivo) {
+
+            $cicloLectivo = $this->procesoRelacionado()->first()->ciclo_lectivo;
+        }
+
+        return $cicloLectivo;
     }
 
 
