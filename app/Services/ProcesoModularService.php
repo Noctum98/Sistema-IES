@@ -132,12 +132,12 @@ class ProcesoModularService
     public function obtenerProcesosModularesNoVinculadosByProcesos(array $procesos, $materia_id, $ciclo_lectivo)
     {
         return Proceso::select('procesos.id')
-            ->where('materia_id',  $materia_id)
+            ->where('materia_id', $materia_id)
             ->where('ciclo_lectivo', $ciclo_lectivo)
             ->whereNotIn(
                 'procesos.id',
                 ProcesoModular::select('proceso_modular.proceso_id')
-                ->whereIn('proceso_modular.proceso_id', $procesos)
+                    ->whereIn('proceso_modular.proceso_id', $procesos)
             )
             ->get();
     }
@@ -241,11 +241,13 @@ class ProcesoModularService
                         'cargo_id' => $cargo->id,
                         'materia_id' => $materia->id,
                     ])->first();
+
                     $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
                         $cargo,
                         $materia->id,
                         $proceso->procesoRelacionado()->first()->id
                     ) ?? 0;
+
                     if ($porcentaje_cargo < -1) {
                         $porcentaje_cargo = 0;
                     }
@@ -266,11 +268,14 @@ class ProcesoModularService
                         }
                     }
 
+
                 }
+
+
+
                 $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
 
                 $proceso->promedio_final_nota = round(max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0));
-
 
 
                 $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
@@ -370,9 +375,10 @@ class ProcesoModularService
      */
     public function regularityRegular(ProcesoModular $pm): bool
     {
-dd($pm);
+
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
+
 
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
@@ -538,7 +544,7 @@ dd($pm);
             $proceso->estado_id = $estado->id;
             $proceso->update();
             $idEstado = $estado->id;
-            dd($proceso);
+
 
         }
 
@@ -763,7 +769,7 @@ dd($pm);
 
             if ($asistenciaPorcentaje) {
                 $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje->porcentaje_asistencia;
-            }else{
+            } else {
                 Session::flash('message', 'No se han agregado las notas de modulo en la planilla de notas cargo ');
             }
 
