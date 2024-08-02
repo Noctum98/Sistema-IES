@@ -80,6 +80,36 @@ class ProcesoModular extends Model
 
     }
 
+    public function obtenerPorcentajeActividadesAprobadasPorMateriaCargoSelf(): array
+    {
+        $service = new ProcesoModularService();
+
+        $porcentaje = [];
+
+        $materia_id = $this->procesoRelacionado()->first()->materia_id;
+        $cargos = $this->getIdCargos();
+        $ciclo_lectivo = $this->procesoRelacionado()->first()->ciclo_lectivo;
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = date('Y');
+        }
+
+        foreach ($cargos as $cargo) {
+
+            $porcentaje[$cargo] = $service->obtenerPorcentajeProcesoAprobado(
+                $this->procesoRelacionado()->first()->id,
+                $materia_id,
+                $cargo,
+                $ciclo_lectivo
+            );
+        }
+
+
+        return $porcentaje;
+
+
+
+    }
+
     public function getCicloLectivo()
     {
 
@@ -90,6 +120,11 @@ class ProcesoModular extends Model
         }
 
         return $cicloLectivo;
+    }
+
+    public function getIdCargos(): array
+    {
+        return ProcesosCargos::where('proceso_id', $this->proceso_id)->get()->pluck('cargo_id')->toArray();
     }
 
 

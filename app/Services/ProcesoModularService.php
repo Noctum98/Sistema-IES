@@ -47,7 +47,7 @@ class ProcesoModularService
 
 
     const PROMEDIO_MIN_REGULAR = 60;
-    const NOTA_PROMEDIO_MIN_REGULAR = 4;
+
     const PROMEDIO_MAX_REGULAR = 78;
     const NOTA_PROMEDIO_MAX_REGULAR = 7;
     const TFI_MIN_REGULAR = 60;
@@ -365,7 +365,8 @@ class ProcesoModularService
             and
             $this->getTFIModularBoolean(self::NOTA_TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_nota)
             and
-            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI,
+                $pm->obtenerPorcentajeActividadesAprobadasPorMateriaCargoSelf())
         );
     }
 
@@ -383,11 +384,12 @@ class ProcesoModularService
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
             and
-            $this->getCalificacionModularBoolean(self::NOTA_PROMEDIO_MIN_REGULAR, $proceso)
+            $this->getCalificacionModularBoolean($this->getNotaProcesoAccreditationDirecta($pm->id), $proceso)
             and
             $this->getTFIModularBoolean(self::NOTA_TFI_MIN_REGULAR, $pm->promedio_final_nota)
             and
-            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI,
+                $pm->obtenerPorcentajeActividadesAprobadasPorMateriaCargoSelf())
         );
 
     }
@@ -502,13 +504,20 @@ class ProcesoModularService
      * @param float|null $nota_obtenida
      * @return bool
      */
-    public function getActividadesAprobadosBool(int $nota_para_aprobar, float $nota_obtenida = null): bool
+    public function getActividadesAprobadosBool(int $nota_para_aprobar, array $nota_obtenida = null): bool
     {
+
         if (!$nota_obtenida) {
             return false;
         }
 
-        return $nota_para_aprobar >= $nota_obtenida;
+        foreach ($nota_obtenida as $nota) {
+                if($nota_para_aprobar > $nota){
+                    return false;
+                }
+        }
+
+        return true;
     }
 
     /**
@@ -1029,6 +1038,17 @@ class ProcesoModularService
     private function getNotaProcesoAccreditationDirecta(int $procesoModular): int
     {
         // const NOTA_PROCESO_ACCREDITATION_DIRECTA = 4;
+
+        $proceso = ProcesoModular::find($procesoModular);
+
+        return $this->notasService->getNotaSesenta($proceso->getCicloLectivo());
+
+
+    }
+
+    private function getNotaProcesoRegular(int $procesoModular): int
+    {
+        // const NOTA_PROMEDIO_MIN_REGULAR = 4;
 
         $proceso = ProcesoModular::find($procesoModular);
 
