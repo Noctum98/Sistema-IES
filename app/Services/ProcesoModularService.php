@@ -22,19 +22,19 @@ class ProcesoModularService
     /**
      * Mirando👆 Módulos sería Acreditación Directa si
      *  [X] Asistencia Módulo > 75%,
-     *  [X] Proceso >60%, nota >= 4
+     *  [X] Proceso >60%, nota >= 4 , nota >= 6
      *  [X] Promedio >78%, nota >= 7
      *  [X] TFI >78%, nota >= 7
      * Regular si
      *  [X] Asistencia Módulo >= 60
      *  [X] PP 100%,
-     *  [X] Promedio Proceso >= 60, nota > 4
+     *  [X] Promedio Proceso >= 60, nota > 4, nota >= 6
      *  [X] Asistencia por cargo >= 40
-     *  [X] TFI >= 60, nota >=4
+     *  [X] TFI >= 60, nota >=4, nota >= 6
      */
     const ASISTENCIA_ACCREDITATION_DIRECTA = 75;
     const PROCESO_ACCREDITATION_DIRECTA = 60;
-    const NOTA_PROCESO_ACCREDITATION_DIRECTA = 4;
+
     const PROMEDIO_ACCREDITATION_DIRECTA = 78;
     const NOTA_PROMEDIO_ACCREDITATION_DIRECTA = 7;
     const TFI_ACCREDITATION_DIRECTA = 78;
@@ -47,7 +47,7 @@ class ProcesoModularService
 
 
     const PROMEDIO_MIN_REGULAR = 60;
-    const NOTA_PROMEDIO_MIN_REGULAR = 4;
+
     const PROMEDIO_MAX_REGULAR = 78;
     const NOTA_PROMEDIO_MAX_REGULAR = 7;
     const TFI_MIN_REGULAR = 60;
@@ -67,7 +67,15 @@ class ProcesoModularService
      * @var ProcesoCalificacionService
      */
     private $procesoCalificacionService;
+    private NotasService $notasService;
 
+
+    public function __construct()
+    {
+        $this->calificacionService = new CalificacionService();
+        $this->procesoCalificacionService = new ProcesoCalificacionService();
+        $this->notasService = new NotasService();
+    }
 
 //    /**
 //     * @param CalificacionService $calificacionService
@@ -124,12 +132,12 @@ class ProcesoModularService
     public function obtenerProcesosModularesNoVinculadosByProcesos(array $procesos, $materia_id, $ciclo_lectivo)
     {
         return Proceso::select('procesos.id')
-            ->where('materia_id',  $materia_id)
+            ->where('materia_id', $materia_id)
             ->where('ciclo_lectivo', $ciclo_lectivo)
             ->whereNotIn(
                 'procesos.id',
                 ProcesoModular::select('proceso_modular.proceso_id')
-                ->whereIn('proceso_modular.proceso_id', $procesos)
+                    ->whereIn('proceso_modular.proceso_id', $procesos)
             )
             ->get();
     }
@@ -233,11 +241,13 @@ class ProcesoModularService
                         'cargo_id' => $cargo->id,
                         'materia_id' => $materia->id,
                     ])->first();
+
                     $porcentaje_cargo = $serviceCargo->calculoPorcentajeCalificacionPorCargoAndProceso(
                         $cargo,
                         $materia->id,
                         $proceso->procesoRelacionado()->first()->id
                     ) ?? 0;
+
                     if ($porcentaje_cargo < -1) {
                         $porcentaje_cargo = 0;
                     }
@@ -258,11 +268,14 @@ class ProcesoModularService
                         }
                     }
 
+
                 }
+
+
+
                 $proceso->promedio_final_porcentaje = max($promedio_final_p, 0);
 
                 $proceso->promedio_final_nota = round(max($this->revisaNotasProceso($materia, $proceso->procesoRelacionado()->first()), 0));
-
 
 
                 $proceso->nota_final_porcentaje = $proceso->trabajo_final_porcentaje * 0.2 + $proceso->promedio_final_porcentaje * 0.8;
@@ -312,7 +325,7 @@ class ProcesoModularService
     /**
      * @param $materia_id <b>Módulo</b> a procesar
      * @param $ciclo_lectivo
-     * @return string[] <i>200</i> si generó todos los estados
+     * @return string[] <i>200</i> sí generó todos los estados
      */
     public function grabaEstadoCursoEnModulo($materia_id, $ciclo_lectivo): array
     {
@@ -346,13 +359,14 @@ class ProcesoModularService
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_ACCREDITATION_DIRECTA, $proceso)
             and
-            $this->getCalificacionModularBoolean(self::NOTA_PROCESO_ACCREDITATION_DIRECTA, $proceso)
+            $this->getCalificacionModularBoolean($this->getNotaProcesoAccreditationDirecta($pm->id), $proceso)
             and
             $this->getPromedioModularBoolean(self::NOTA_PROMEDIO_ACCREDITATION_DIRECTA, $pm->promedio_final_nota)
             and
             $this->getTFIModularBoolean(self::NOTA_TFI_ACCREDITATION_DIRECTA, $pm->trabajo_final_nota)
             and
-            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI,
+                $pm->obtenerPorcentajeActividadesAprobadasPorMateriaCargoSelf())
         );
     }
 
@@ -366,14 +380,16 @@ class ProcesoModularService
         /** @var Proceso $proceso */
         $proceso = $pm->procesoRelacionado()->first();
 
+
         return (
             $this->getAsistenciaModularBoolean(self::ASISTENCIA_MAX_REGULAR, $proceso, self::ASISTENCIA_MIN_REGULAR)
             and
-            $this->getCalificacionModularBoolean(self::NOTA_PROMEDIO_MIN_REGULAR, $proceso)
+            $this->getCalificacionModularBoolean($this->getNotaProcesoAccreditationDirecta($pm->id), $proceso)
             and
             $this->getTFIModularBoolean(self::NOTA_TFI_MIN_REGULAR, $pm->promedio_final_nota)
             and
-            $this->getActividadesAprobadosBool(self::PERCENT_RAI, $pm->porcentaje_actividades_aprobado)
+            $this->getActividadesAprobadosBool(self::PERCENT_RAI,
+                $pm->obtenerPorcentajeActividadesAprobadasPorMateriaCargoSelf())
         );
 
     }
@@ -488,13 +504,20 @@ class ProcesoModularService
      * @param float|null $nota_obtenida
      * @return bool
      */
-    public function getActividadesAprobadosBool(int $nota_para_aprobar, float $nota_obtenida = null): bool
+    public function getActividadesAprobadosBool(int $nota_para_aprobar, array $nota_obtenida = null): bool
     {
+
         if (!$nota_obtenida) {
             return false;
         }
 
-        return $nota_para_aprobar >= $nota_obtenida;
+        foreach ($nota_obtenida as $nota) {
+                if($nota_para_aprobar > $nota){
+                    return false;
+                }
+        }
+
+        return true;
     }
 
     /**
@@ -505,20 +528,23 @@ class ProcesoModularService
     {
         $idEstado = $pm->procesoRelacionado()->first()->estado_id;
         if ($pm->procesoRelacionado()->first()->cierre != 1 && $pm->procesoRelacionado()->first()->cierre_final != 1) {
+
             if ($this->regularityDirectAccreditation($pm)) {
                 $estado = Estados::where(
                     ['identificador' => 4]
                 )->first();
+                print_r('directo');
             } else {
-
                 if ($this->regularityRegular($pm)) {
                     $estado = Estados::where(
                         ['identificador' => 1]
                     )->first();
+                    print_r('regular');
                 } else {
                     $estado = Estados::where(
                         ['identificador' => 5]
                     )->first();
+                    print_r('No regular - Global');
                 }
 
             }
@@ -527,6 +553,8 @@ class ProcesoModularService
             $proceso->estado_id = $estado->id;
             $proceso->update();
             $idEstado = $estado->id;
+
+
         }
 
         return $idEstado;
@@ -757,7 +785,7 @@ class ProcesoModularService
 
             if ($asistenciaPorcentaje) {
                 $total_modulo += $asistenciaPonderada * $asistenciaPorcentaje->porcentaje_asistencia;
-            }else{
+            } else {
                 Session::flash('message', 'No se han agregado las notas de modulo en la planilla de notas cargo ');
             }
 
@@ -1016,6 +1044,28 @@ class ProcesoModularService
     protected function getServiceCalificacion(): CalificacionService
     {
         return new CalificacionService();
+
+
+    }
+
+    private function getNotaProcesoAccreditationDirecta(int $procesoModular): int
+    {
+        // const NOTA_PROCESO_ACCREDITATION_DIRECTA = 4;
+
+        $proceso = ProcesoModular::find($procesoModular);
+
+        return $this->notasService->getNotaSesenta($proceso->getCicloLectivo());
+
+
+    }
+
+    private function getNotaProcesoRegular(int $procesoModular): int
+    {
+        // const NOTA_PROMEDIO_MIN_REGULAR = 4;
+
+        $proceso = ProcesoModular::find($procesoModular);
+
+        return $this->notasService->getNotaSesenta($proceso->getCicloLectivo());
 
 
     }
