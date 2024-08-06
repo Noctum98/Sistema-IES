@@ -171,8 +171,7 @@
 
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}"
                class="btn btn-sm btn-success"><i
-                    class="fas fa-download"></i> Descargar
-                planilla</a>
+                    class="fas fa-download"></i> Descargar planilla</a>
         @endif
 
         {{--
@@ -189,7 +188,7 @@
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}
-            @if($puede_procesar)
+            @if($puede_procesar || Session::has('coordinador') || Session::has('admmin') )
                 <a href="{{route('proceso_modular.procesa_estados_modular',['materia'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo, 'cargo_id' => $cargo_id])}}"
                    class="btn btn-sm btn-info">Calcula Regularidad</a>
             @endif
@@ -297,13 +296,6 @@
                                                                id="global-{{ $proceso->procesoRelacionado->id }}"
                                                                value="{{ $proceso->procesoRelacionado->nota_global != -1 ?
                                                             $proceso->procesoRelacionado->nota_global : 'A' }}"
-                                                               {{--                                                               @if(($proceso->procesoRelacionado->estado--}}
-                                                               {{--                                                                    && ($proceso->procesoRelacionado->estado->identificador != 5--}}
-                                                               {{--                                                                    || $proceso->procesoRelacionado->estado->identificador != 7))--}}
-                                                               {{--                                                                    || !$puede_procesar--}}
-                                                               {{--                                                                    || $proceso->procesoRelacionado->cierre)--}}
-                                                               {{--                                                                   disabled--}}
-                                                               {{--                                                            @endif>--}}
                                                                @if(!$puede_procesar || $proceso->procesoRelacionado->cierre)
                                                                    disabled
                                                             @endif>
@@ -327,10 +319,10 @@
                                                            checked
                                                        @else
                                                            unchecked
-                                                    @endif
+                                                       @endif
 
-                                                    @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))
-                                                        disabled
+                                                       @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))
+                                                           disabled
                                                     @endif
                                                 />
                                             </td>
@@ -341,14 +333,14 @@
                                                     <small>Condición:
                                                         <span id="regularidad-{{ $proceso->procesoRelacionado->id }}">
                                                         @if($proceso->procesoRelacionado->estado)
-                                                            @if($proceso->procesoRelacionado->estado->regularidad)
-                                                                {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                                @if($proceso->procesoRelacionado->estado->regularidad)
+                                                                    {{$proceso->procesoRelacionado->estado->regularidad}}
+                                                                @else
+                                                                    {{$proceso->procesoRelacionado->estado->nombre}}
+                                                                @endif
                                                             @else
-                                                                {{$proceso->procesoRelacionado->estado->nombre}}
+                                                                No indicada
                                                             @endif
-                                                        @else
-                                                            No indicada
-                                                        @endif
                                                         </span>
                                                     </small>
                                                 </small>
@@ -382,15 +374,8 @@
                                                 @endif
                                             </td>
                                             <td class="text-center" colspan="2">
-                                                {{--                                                <a href="{{route('proceso_modular.procesa_notas_modular',--}}
-                                                {{--                                                    ['materia' => $materia->id,--}}
-                                                {{--                                                    'proceso_id' => $proceso->procesoRelacionado->id,--}}
-                                                {{--                                                    'cargo' => $cargo_id ])}}"--}}
-                                                {{--                                                   class="btn btn-sm btn-primary text-white" style="font-size: 0.8em">--}}
-                                                {{--                                                    Comprobar notas--}}
-                                                {{--                                                </a>--}}
-
                                                 <a href="#"
+                                                   id="btn_comprobar_{{$proceso->procesoRelacionado->id}}"
                                                    data-url="{{route('proceso_modular.procesa_notas_modular_proceso',
                                                     ['materia' => $materia->id,
                                                      'proceso_id' => $proceso->procesoRelacionado->id,
@@ -422,17 +407,16 @@
                                         <tr>
                                             <td colspan="9" class="border-top-0 border-info">
                                                 <div id="cargo-{{$proceso->id}}" class="collapse p-0 m-0">
-                                                    @include('proceso.listado-cargos-modulo', ['alumno' => $proceso->procesoRelacionado->alumno, 'cargos' => $materia->cargos ])
+                                                    @include('proceso.listado-cargos-modulo',
+                                                        ['alumno' => $proceso->procesoRelacionado->alumno,
+                                                        'cargos' => $materia->cargos ])
                                                 </div>
                                             </td>
                                         </tr>
                                     @endif
                                 @endforeach
                                 </tbody>
-                                {{--                    @include('proceso.modals.tps-mostrar')--}}
-
                             </table>
-
                         </div>
                     </div>
 

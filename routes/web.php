@@ -605,6 +605,7 @@ Route::prefix('proceso')->group(function () {
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
+    Route::post('cambia/simular_cierre', [ProcesoController::class, 'simularCierre'])->name('proceso.simularCierre');
     Route::get(
         'cambia/cierre-general/{materia_id}/{cargo_id?}/{comision_id?}/{cierre_coordinador?}',
         [ProcesoController::class, 'cambiaCierreGeneral']
@@ -1186,3 +1187,22 @@ Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::cla
     ->middleware('app.roles:admin');
 
 
+
+Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+
+Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
+    Route::get('/', [LibrariesAdminController::class, 'index'])
+        ->name('admin-libraries.library.index');
+    Route::get('/create', [LibrariesAdminController::class, 'create'])
+        ->name('admin-libraries.library.create');
+    Route::get('/show/{library}', [LibrariesAdminController::class, 'show'])
+        ->name('admin-libraries.library.show');
+    Route::get('/{library}/edit', [LibrariesAdminController::class, 'edit'])
+        ->name('admin-libraries.library.edit');
+    Route::post('/', [LibrariesAdminController::class, 'store'])
+        ->name('admin-libraries.library.store');
+    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
+        ->name('admin-libraries.library.update');
+    Route::delete('/library/{library}', [LibrariesAdminController::class, 'destroy'])
+        ->name('admin-libraries.library.destroy');
+});

@@ -58,7 +58,7 @@
             <tr>
                 {{-- Columna cargo --}}
                 <td>
-                <small style="font-size: 0.8em">(#{{$cargo->id}})</small>
+                    <small style="font-size: 0.8em">(#{{$cargo->id}})</small>
                     {{$cargo->nombre}} (x̄ = {{$cargo->ponderacion($materia->id)}} %)
                 </td>
                 {{-- Columna Porcentaje de Actividades Aprobadas --}}
@@ -87,7 +87,7 @@
                                         <div class="row">
 
                                             <table
-                                                class="table-responsive-sm table-striped table-bordered border-secondary table-success ms-auto text-center">
+                                                    class="table-responsive-sm table-striped table-bordered border-secondary table-success ms-auto text-center">
                                                 <colgroup>
                                                     @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                                                         <col class="p-2">
@@ -104,17 +104,19 @@
                                                 @foreach($cargo->calificacionesTPByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                                                     <td class="p-2">
                                                         <h6>
-                                                            {{--                                                            {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)}}--}}
+
                                                             @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                                                    @colorAprobado(number_format((float)$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
-                                                                    2, '.', ',') )
+                                                                    @include('componentes.colorNotas',[
+    'year' => $ciclo_lectivo,
+    'nota' => number_format((float)$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
+                                                                    2, '.', ',')
+])
 
                                                                 @endif
                                                                 @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                                                     A
-
                                                                 @endif
                                                             @else
                                                                 -
@@ -134,8 +136,13 @@
                 {{-- Columna Nota Promedio Trabajos Prácticos --}}
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
-                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp
-                        , 2, '.', ','))
+
+                        @include('componentes.colorNotas',[
+                        'year' => $ciclo_lectivo,
+                        'nota' => number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_tp
+                      , 2, '.', ',')
+                    ])
+
                     @else
                         No asignado
                     @endif
@@ -159,7 +166,7 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <table
-                                            class="table-responsive-sm table-striped table-bordered border-secondary table-success ms-auto text-center">
+                                                class="table-responsive-sm table-striped table-bordered border-secondary table-success ms-auto text-center">
                                             <colgroup>
                                                 @foreach($cargo->calificacionesParcialByCargoByMateria($materia->id, $ciclo_lectivo) as $calificacion)
                                                     <col class="p-2">
@@ -179,8 +186,12 @@
                                                         @if(count($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)) > 0)
 
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota >= 0)
-                                                                @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
-                                                                2, '.', ',') )
+                                                                @include('componentes.colorNotas',[
+    'year' => $ciclo_lectivo,
+    'nota' => number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota,
+                                                              2, '.', ',')
+])
+
                                                             @endif
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota == -1)
                                                                 A
@@ -196,8 +207,11 @@
                                                             @if($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio >= 0)
                                                                 @if(is_numeric($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio))
 
-                                                                    @colorAprobado(number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio,
-                                                                    2, '.', ',') )
+                                                                    @include('componentes.colorNotas',[
+    'year' => $ciclo_lectivo,
+    'nota' => number_format($calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio,
+                                                                  2, '.', ',')
+])
                                                                 @else
                                                                     {{$calificacion->procesosCalificacionByProceso($proceso->procesoRelacionado()->first()->id)[0]->nota_recuperatorio}}
 
@@ -224,8 +238,12 @@
                 {{-- Nota Promedio Parciales --}}
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
-                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps
-                        , 2, '.', ','))
+                        @include('componentes.colorNotas',[
+                            'year' => $ciclo_lectivo,
+                            'nota' => number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ps
+                      , 2, '.', ',')
+                    ])
+
                     @else
                         No asignado
                     @endif
@@ -234,13 +252,13 @@
                 {{-- Columna Nota Final --}}
                 <td>
                     @if($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id))
-                        @colorAprobado(number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo,
-                        2, '.', ','))
+                        @include('componentes.colorNotas',[
+                            'year' => $ciclo_lectivo,
+                            'nota' => number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_cargo, 2, '.', ',')
+                    ])
                         <br/>
                         <small>
-
                             {{number_format($cargo->getCargoProceso($proceso->procesoRelacionado()->first()->id)->nota_ponderada, 2, '.', ',')}}
-
                         </small>
                     @else
                         No asignado

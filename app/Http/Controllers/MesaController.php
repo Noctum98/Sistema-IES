@@ -16,6 +16,7 @@ use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaAlumno;
 use App\Models\Parameters\Calendario;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
 use App\Services\MesaService;
 use Carbon\Carbon;
@@ -50,9 +51,14 @@ class MesaController extends Controller
         $segundo_llamado = [];
         $segundo_llamado_bajas = [];
 
-        $procesos = $procesos = Proceso::select('procesos.*')
+        $ciclo_lectivo = CicloLectivo::latest()->first();
+
+        $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+            ->join('alumno_carrera','alumno_carrera.id','procesos.inscripcion_id')
+            ->where('procesos.materia_id', $materia_id)
+            ->where('alumno_carrera.aprobado',1)
+            ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo->year)->orderBy('alumnos.apellidos')->get();
 
         $dataQuery = [
             'instancia_id' => $instancia_id,

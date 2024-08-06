@@ -44,6 +44,7 @@ use Illuminate\Support\HigherOrderCollectionProxy;
 class Materia extends BaseModel
 {
     use SoftDeletes;
+
     const PRI_SEM = "Cuatrimestral (1er)";
     const SEC_SEM = "Cuatrimestral (2do)";
     const ANUAL = "Anual";
@@ -95,6 +96,7 @@ class Materia extends BaseModel
     {
         return $this->belongsTo('App\Models\Materia', 'correlativa');
     }
+
     public function correlativaCursado(): HasMany
     {
         return $this->HasMany(Materia::class, 'correlativaCursado');
@@ -244,23 +246,21 @@ class Materia extends BaseModel
         $actaVolante = ActaVolante::where([
             'alumno_id' => $alumno_id,
             'materia_id' => $this->id
-        ])->where('promedio','>=',4)->orderBy('created_at', 'DESC')
-        ->first();
+        ])->where('promedio', '>=', 4)->orderBy('created_at', 'DESC')
+            ->first();
 
-        if(!$actaVolante)
-        {
+        if (!$actaVolante) {
             $actaVolante = ActaVolante::where([
                 'alumno_id' => $alumno_id,
                 'materia_id' => $this->id
             ])->orderBy('created_at', 'DESC')
-            ->first();
+                ->first();
         }
 
 
-        if($actaVolante)
-        {
+        if ($actaVolante) {
             $created_at = date('Y', strtotime($actaVolante->created_at));
-            if($created_at >= $actaVolante->inscripcionCarrera->cohorte){
+            if ($created_at >= $actaVolante->inscripcionCarrera->cohorte) {
                 return $actaVolante;
             }
         }
@@ -301,7 +301,7 @@ class Materia extends BaseModel
 
     public function materiasCorrelativas(): BelongsToMany
     {
-        return $this->belongsToMany(Materia::class,'materias_correlativas','materia_id','correlativa_id');
+        return $this->belongsToMany(Materia::class, 'materias_correlativas', 'materia_id', 'correlativa_id');
 
     }
 
@@ -325,7 +325,7 @@ class Materia extends BaseModel
 
     public function materiasCorrelativasCursado(): BelongsToMany
     {
-        return $this->belongsToMany(Materia::class,'materias_correlativas_cursados','materia_id','previa_id')
+        return $this->belongsToMany(Materia::class, 'materias_correlativas_cursados', 'materia_id', 'previa_id')
             ->whereNull('materias_correlativas_cursados.deleted_at');
     }
 
@@ -347,7 +347,7 @@ class Materia extends BaseModel
         return CicloLectivoEspecial::where([
             'materia_id' => $this->id,
             'sede_id' => $this->sede()->id
-        ])
+        ])->orderBy('ciclo_lectivo_id', 'desc')
             ->get();
 
     }

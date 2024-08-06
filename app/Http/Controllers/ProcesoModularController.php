@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asistencia;
+use App\Models\AsistenciaModular;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
 use App\Models\Estados;
@@ -9,10 +11,12 @@ use App\Models\Materia;
 use App\Models\Proceso;
 use App\Models\ProcesoModular;
 use App\Services\AsistenciaModularService;
+use App\Services\CalificacionService;
 use App\Services\CargoProcesoService;
 use App\Services\CicloLectivoService;
 use App\Services\ProcesoModularService;
 use App\Services\ProcesosCargosService;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -20,6 +24,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PHPUnit\Util\Exception;
@@ -106,7 +111,7 @@ class ProcesoModularController extends Controller
 
         if (count($cantidad_procesos_no_vinculados) > 0) {
 
-            $acciones[] = "Creando procesos modulares para $materia->nombre";
+            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id, $ciclo_lectivo);
             $serviceModular->cargarPonderacionEnProcesoModular($materia, $ciclo_lectivo);
 
@@ -129,13 +134,13 @@ class ProcesoModularController extends Controller
                 }
             }
 
-            $acciones[] = "Procesando % modulares para $materia->nombre";
+            $acciones[] = "Procesando % modulares para {$materia->nombre}";
             $asistenciaModular = new AsistenciaModularService();
 
             $asistencias = $asistenciaModular->cargarPonderacionEnAsistenciaModular($materia, $ciclo_lectivo);
 
             if ($asistencias > 0) {
-                $acciones[] = "Procesando % asistencia para $materia->nombre";
+                $acciones[] = "Procesando % asistencia para {$materia->nombre}";
             }
         }
 
@@ -159,7 +164,7 @@ class ProcesoModularController extends Controller
         $acciones = [];
         $serviceModular = new ProcesoModularService();
         if (count($serviceModular->obtenerProcesosModularesNoVinculados($materia->id)) > 0) {
-            $acciones[] = "Creando procesos modulares para $materia->nombre";
+            $acciones[] = "Creando procesos modulares para {$materia->nombre}";
             $serviceModular->crearProcesoModular($materia->id);
             $serviceModular->cargarPonderacionEnProcesoModular($materia);
         }
@@ -299,10 +304,16 @@ class ProcesoModularController extends Controller
 
         $asistenciaModular->calculateFinalAsistenciaModularPercentage($materia, $procesoModular);
 
+        $ciclo_lectivo = $procesoModular->ciclo_lectivo;
+        if(!$ciclo_lectivo){
+            $ciclo_lectivo = $proceso->ciclo_lectivo;
+        }
+
         return view('procesoModular.filaProceso',
             [
                 'proceso' => $procesoModular,
                 'puede_procesar' => $puedeProcesar,
+                'ciclo_lectivo' => $ciclo_lectivo
             ]);
     }
 
@@ -477,6 +488,21 @@ class ProcesoModularController extends Controller
 
 
         return response()->json($proceso);
+    }
+
+    /**
+     * @param Collection $cargos
+     * @param ProcesosCargosService $pCService
+     * @param Proceso $proceso
+     * @param $user
+     *
+     */
+    public function calculaCargos(Collection $cargos, ProcesosCargosService $pCService, Proceso $proceso, $user)
+    {
+        foreach ($cargos as $cargo) {
+            $pCService->cierraProcesoCargo($cargo, $proceso->id, $user->id, false, false);
+        }
+
     }
 
 

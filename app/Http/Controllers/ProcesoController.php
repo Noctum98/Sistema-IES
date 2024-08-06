@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\AlumnoCarrera;
 use App\Models\Calificacion;
 use App\Models\Cargo;
 use App\Models\CargoProceso;
@@ -81,7 +82,12 @@ class ProcesoController extends Controller
 
         ];
 
-        return view('alumno.materias',$datos);
+        return view('proceso.materias',$datos);
+    }
+
+    public function vista_admin_alumnos(Request $request,$carrera_id,$ciclo_lectivo)
+    {
+        
     }
 
     public function vista_detalle(int $id)
@@ -394,6 +400,22 @@ class ProcesoController extends Controller
 
 
         return response()->json($proceso);
+    }
+
+    public function simularCierre(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $proceso = Proceso::find($request['proceso_id']);
+
+        if ($proceso->materia()->first() && $proceso->materia()->first()->cargos()->get()) {
+            foreach ($proceso->materia()->first()->cargos()->get() as $cargo) {
+                $procesoService = new ProcesosCargosService();
+                $procesoService->actualizar($proceso->id, $cargo->id, $user->id, false, false);
+            }
+        }
+
+        return response()->json($proceso, 200);
     }
 
     public function cambiaCierreModulo(Request $request): JsonResponse

@@ -155,7 +155,7 @@ class Alumno extends Model
         return false;
     }
 
-    public function procesoCarrera($carrera_id, $alumno_id, $ciclo_lectivo = null)
+    public function procesoCarrera($carrera_id, $alumno_id = null, $ciclo_lectivo = null)
     {
 
         return AlumnoCarrera::where([

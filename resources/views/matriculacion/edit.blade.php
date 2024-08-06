@@ -20,9 +20,9 @@
     <form action="{{ route('matriculacion.update',['id'=>$matriculacion->id,'carrera_id'=>$carrera->id,'year'=>$año]) }}" method="POST">
 
         @if(isset($matriculacion) && Session::has('alumno'))
-            @include('matriculacion.campos.campos_procesos')
+        @include('matriculacion.campos.campos_procesos')
         @endif
-        
+
         <div class="form-group">
             <div class="form-group col-md-6">
                 <label for="active">Activo: </label>
@@ -60,6 +60,7 @@
         @elseif($año == 3)
         @include('matriculacion.campos.campos_tercero')
         @endif
+
         @endif
 
         @if(Session::has('coordinador') || Session::has('regente') || Session::has('admin') || Session::has('seccionAlumnos'))
@@ -73,7 +74,7 @@
         @endif
         @endif
 
-        
+
     </form>
 </div>
 @endsection
