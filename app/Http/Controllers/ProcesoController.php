@@ -87,7 +87,7 @@ class ProcesoController extends Controller
 
     public function vista_admin_alumnos(Request $request,$carrera_id,$ciclo_lectivo)
     {
-        
+
     }
 
     public function vista_detalle(int $id)
@@ -186,6 +186,9 @@ class ProcesoController extends Controller
 
         }
 
+        $fecha_perentoria = $this->cicloLectivoService->getCierreDate($materia_id, $ciclo_lectivo);
+        $modulo_cerrado = $this->cicloLectivoService->getCierreBoolean($materia_id, $ciclo_lectivo, now());
+
 
         return view('proceso.listado-modular', [
             'procesos' => $procesos,
@@ -196,6 +199,8 @@ class ProcesoController extends Controller
             'cargo' => $cargo,
             'ciclo_lectivo' => $ciclo_lectivo,
             'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+            'fecha_perentoria' => $fecha_perentoria,
+            'modulo_cerrado' => $modulo_cerrado,
         ]);
     }
 
