@@ -414,6 +414,16 @@ class Materia extends BaseModel
      */
     public function getCierre(int $ciclo_lectivo)
     {
+
+       if($this->cierre_diferido){
+           return $this->getCierreDiferenciado($ciclo_lectivo);
+       }
+       return $this->getCierreRegular($ciclo_lectivo);
+
+    }
+
+    public function getCierreRegular(int $ciclo_lectivo)
+    {
         $ciclo_lectivo = CicloLectivo::find($ciclo_lectivo);
         $regimen = $this->regimen;
 
@@ -432,7 +442,11 @@ class Materia extends BaseModel
         }
 
         return $cierre;
+    }
 
+    public function getCierreDiferenciado(int $ciclo_lectivo)
+    {
+        return $this->ciclosLectivosDiferenciados()->where('ciclo_lectivo_id', $ciclo_lectivo)->first()->cierre_ciclo;
     }
 
     /**
