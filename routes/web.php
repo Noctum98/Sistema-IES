@@ -73,6 +73,7 @@ use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
+use App\Models\Proceso;
 
 /*
 |--------------------------------------------------------------------------
@@ -453,7 +454,7 @@ Route::prefix('sedes')->group(function () {
     Route::post('editar-sede/{id}', [SedeController::class, 'editar'])->name('editar_sede');
     Route::get('eliminar-sede/{id}', [SedeController::class, 'eliminar'])->name('eliminar_sede');
     Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
-    Route::get('/getSedes', [SedeController::class, 'getSedes']);
+    Route::get('/getSedes', [SedeController::class, 'getAllSedes']);
 });
 
 Route::prefix('usuario_cargo')->group(function () {
@@ -547,6 +548,8 @@ Route::prefix('preinscripcion')->group(function () {
 Route::prefix('proceso')->group(function () {
     // Vistas
     Route::get('/admin/{alumno_id}/{carrera_id}/{ciclo_lectivo}', [ProcesoController::class, 'vista_admin'])->name('proceso.admin');
+    Route::get('/admin-alumno/{carrera_id}/{year}', [ProcesoController::class, 'vista_admin_alumnos'])->name('proceso.admin_alumno');
+
     Route::get('inscribir/{id}', [ProcesoController::class, 'vista_inscribir'])->name('proceso.inscribir');
 
     Route::get('detalle/{id}', [ProcesoController::class, 'vista_detalle'])->name('proceso.detalle');
@@ -559,12 +562,13 @@ Route::prefix('proceso')->group(function () {
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
         'inscribir_proceso'
     );
-    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
+    Route::post('inscribir', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
     Route::get('delete/{proceso_id}', [ProcesoController::class, 'eliminar']);
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
     Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
         'proceso.listado'
     );
+    Route::get('libres/{materia_id}',[ProcesoController::class,'vista_libres'])->name('proceso.libres');
     Route::get('/{id}', [ProcesoController::class, 'getProceso']);
 
     Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',

@@ -11,6 +11,7 @@ use App\Models\Carrera;
 use App\Models\Comision;
 use App\Models\Estados;
 use App\Models\Materia;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
 
 use App\Services\CargoProcesoService;
@@ -85,9 +86,22 @@ class ProcesoController extends Controller
         return view('proceso.materias',$datos);
     }
 
-    public function vista_admin_alumnos(Request $request,$carrera_id,$ciclo_lectivo)
+    public function vista_admin_alumnos(Request $request,$carrera_id,$año)
     {
-        
+        $alumno = Auth::user()->alumno();
+        $ciclo_lectivo = CicloLectivo::latest()->first();
+        $inscripcion = AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'ciclo_lectivo' => $ciclo_lectivo->year,
+            'alumno_id' => $alumno->id
+        ])->first();
+
+        if(!$inscripcion)
+        {
+            return redirect()->back()->with(['alert_danger'=>'No estás inscripto al actual ciclo_lectivo.']);
+        }
+
+        return view('proceso.materias_alumno',compact('inscripcion','ciclo_lectivo','año'));
     }
 
     public function vista_detalle(int $id)
@@ -99,12 +113,29 @@ class ProcesoController extends Controller
         ]);
     }
 
+    public function vista_libres($materia_id)
+    {
+        $materia = Materia::find($materia_id);
+        $procesos = Proceso::where('materia_id',$materia_id)
+        ->whereHas('condicionMateria', function ($query) {
+            $query->where('identificador', 'libre');
+        })->get();
+
+        return view('proceso.listado_libres',compact('procesos','materia'));
+    }
+
     public function vista_listado($materia_id, $ciclo_lectivo, $comision_id = null)
     {
         $procesos = Proceso::select('procesos.*')
-            ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id)
-            ->where('procesos.ciclo_lectivo', $ciclo_lectivo);
+        ->join('alumnos', 'alumnos.id', '=', 'procesos.alumno_id')
+        ->where('procesos.materia_id', $materia_id)
+        ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
+        ->where(function ($query) {
+            $query->whereNull('procesos.condicion_materia_id')
+                  ->orWhereDoesntHave('condicionMateria', function ($query) {
+                      $query->where('identificador', 'libre');
+                  });
+        });
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -113,13 +144,15 @@ class ProcesoController extends Controller
                 });
             });
         }
+
+        $procesos = $procesos->orderBy('alumnos.apellidos', 'asc')->get();
+
+
         $materia = Materia::find($materia_id);
         $comision = null;
         if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
-        $procesos->orderBy('alumnos.apellidos', 'asc');
-        $procesos = $procesos->get();
 
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
@@ -288,22 +321,15 @@ class ProcesoController extends Controller
         ]);
     }
 
-    public function inscribir(Request $request, $alumno_id,$materia_id,$ciclo_lectivo)
+    public function inscribir(Request $request)
     {
-        $materia = Materia::find($materia_id);
-        $alumno = Alumno::find($alumno_id);
         $materia = Materia::find($request['materia_id']);
+        $alumno = Alumno::find($request['alumno_id']);
         $inscripcion = $alumno->lastProcesoCarrera($materia->carrera->id);
-        $proceso = Proceso::create([
-            'alumno_id' => $alumno_id,
-            'materia_id' => $materia_id,
-            'ciclo_lectivo' => $ciclo_lectivo,
-            'inscripcion_id' => $inscripcion->id ?? null
-        ]);
+        $request['inscripcion_id'] = $inscripcion->id ?? null;
+        $proceso = Proceso::create($request->all());
 
-        return redirect()->route('proceso.admin', [
-            'alumno_id' => $alumno_id,'carrera_id'=>$materia->carrera_id,'ciclo_lectivo'=>$ciclo_lectivo
-        ])->with([
+        return redirect()->back()->with([
             'alert_success' => 'Incripción generada correctamente.',
         ]);
     }

@@ -119,19 +119,12 @@
                                     <option value="">
                                         Seleccione régimen
                                     </option>
-
+                                    @foreach($regimenes as $regimen)
                                     <option
-                                        value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>
-                                        Anual
+                                        value="{{ $regimen->id }}" {{ $materia->masterMateria->regimen_id == $regimen->id ? 'selected="selected"' :'' }}>
+                                        {{ $regimen->name }}
                                     </option>
-                                    <option
-                                        value="Cuatrimestral (1er)" {{ $materia->regimen == 'Cuatrimestral (1er)' ?  'selected="selected"' :'' }}>
-                                        Cuatrimestral (1er)
-                                    </option>
-                                    <option
-                                        value="Cuatrimestral (2do)" {{ $materia->regimen == 'Cuatrimestral (2do)' ?  'selected="selected"' :'' }}>
-                                        Cuatrimestral (2do)
-                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
 

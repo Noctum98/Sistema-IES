@@ -167,7 +167,6 @@ class Materia extends BaseModel
 
         foreach ($cargos_modulo as $cm) {
             $total_modulo = $cm->ponderacion + $total_modulo;
-
         }
 
         return $total_modulo;
@@ -178,7 +177,6 @@ class Materia extends BaseModel
         $servicioAsistencia = new AsistenciaModularService();
 
         return $servicioAsistencia->ponderarAsistencias($this);
-
     }
 
     public function proceso($alumno_id)
@@ -186,7 +184,8 @@ class Materia extends BaseModel
         return Proceso::where([
             'materia_id' => $this->id,
             'alumno_id', $alumno_id,
-            'ciclo_lectivo' => date('Y')])->first();
+            'ciclo_lectivo' => date('Y')
+        ])->first();
     }
 
     /**
@@ -195,7 +194,8 @@ class Materia extends BaseModel
      */
     public function getProcesoCarrera($alumno_id)
     {
-        $proceso = Proceso::where([
+        $proceso = Proceso::where(
+            [
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
@@ -216,7 +216,8 @@ class Materia extends BaseModel
     {
         $estado = '-';
 
-        $proceso = Proceso::where([
+        $proceso = Proceso::where(
+            [
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
@@ -236,7 +237,6 @@ class Materia extends BaseModel
         }
 
         return $proceso->estadoRegularidad() ?? '-';
-
     }
 
     public function getActaVolante($alumno_id)
@@ -244,23 +244,21 @@ class Materia extends BaseModel
         $actaVolante = ActaVolante::where([
             'alumno_id' => $alumno_id,
             'materia_id' => $this->id
-        ])->where('promedio','>=',4)->orderBy('created_at', 'DESC')
-        ->first();
+        ])->where('promedio', '>=', 4)->orderBy('created_at', 'DESC')
+            ->first();
 
-        if(!$actaVolante)
-        {
+        if (!$actaVolante) {
             $actaVolante = ActaVolante::where([
                 'alumno_id' => $alumno_id,
                 'materia_id' => $this->id
             ])->orderBy('created_at', 'DESC')
-            ->first();
+                ->first();
         }
 
 
-        if($actaVolante)
-        {
+        if ($actaVolante) {
             $created_at = date('Y', strtotime($actaVolante->created_at));
-            if($created_at >= $actaVolante->inscripcionCarrera->cohorte){
+            if ($created_at >= $actaVolante->inscripcionCarrera->cohorte) {
                 return $actaVolante;
             }
         }
@@ -301,8 +299,7 @@ class Materia extends BaseModel
 
     public function materiasCorrelativas(): BelongsToMany
     {
-        return $this->belongsToMany(Materia::class,'materias_correlativas','materia_id','correlativa_id');
-
+        return $this->belongsToMany(Materia::class, 'materias_correlativas', 'materia_id', 'correlativa_id');
     }
 
     public function correlativasArray()
@@ -325,7 +322,7 @@ class Materia extends BaseModel
 
     public function materiasCorrelativasCursado(): BelongsToMany
     {
-        return $this->belongsToMany(Materia::class,'materias_correlativas_cursados','materia_id','previa_id')
+        return $this->belongsToMany(Materia::class, 'materias_correlativas_cursados', 'materia_id', 'previa_id')
             ->whereNull('materias_correlativas_cursados.deleted_at');
     }
 
@@ -338,7 +335,6 @@ class Materia extends BaseModel
             ->where('materia_id', $this->id)
             ->get()->toArray();
         return array_column($correlativasCursado, 'previa_id');
-
     }
 
     public function ciclosLectivosDiferenciados()
@@ -349,7 +345,6 @@ class Materia extends BaseModel
             'sede_id' => $this->sede()->id
         ])
             ->get();
-
     }
 
     public function sede()
@@ -432,7 +427,30 @@ class Materia extends BaseModel
         }
 
         return $cierre;
+    }
 
+    public function getCondicionesMateria()
+    {
+        $condiciones = [];
+        if ($this->carrera->tipo == 'modular' || $this->carrera->tipo == 'modular2') {
+            $condiciones = CondicionMateria::where('identificador', '!=', 'libre')
+                ->where('habilitado', true)
+                ->get();
+        } else {
+            if($this->masterMateria->tipo_unidad_curricular_id)
+            {
+                if ($this->masterMateria->tipo_unidad_curricular->identificador == 2 || $this->masterMateria->tipo_unidad_curricular->identificador == 5) {
+                    $condiciones = CondicionMateria::where('habilitado',true)->get();
+                } else {
+                    $condiciones = CondicionMateria::where('identificador', '!=', 'libre')
+                        ->where('habilitado', true)
+                        ->get();
+                }
+            }
+           
+        }
+
+        return $condiciones;
     }
 
     /**
@@ -442,6 +460,4 @@ class Materia extends BaseModel
     {
         return $this->belongsTo(MasterMateria::class, 'master_materia_id');
     }
-
-
 }

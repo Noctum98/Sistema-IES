@@ -58,7 +58,8 @@ class Proceso extends Model
         'ciclo_lectivo',
         'habilitado_campo',
         'final_asistencia',
-        'inscripcion_id'
+        'inscripcion_id',
+        'condicion_materia_id'
     ];
 
     //Relations
