@@ -134,7 +134,7 @@ class AlumnoMesaController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->join('alumno_carrera','alumno_carrera.id','procesos.inscripcion_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('alumno_carrera.apronado',1)->orderBy('alumnos.apellidos')->get();
+            ->where('alumno_carrera.aprobado',1)->orderBy('alumnos.apellidos')->get();
 
         $verificacion = $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$materia,$instancia);
 
