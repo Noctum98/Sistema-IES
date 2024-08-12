@@ -44,6 +44,7 @@ use Illuminate\Support\HigherOrderCollectionProxy;
 class Materia extends BaseModel
 {
     use SoftDeletes;
+
     const PRI_SEM = "Cuatrimestral (1er)";
     const SEC_SEM = "Cuatrimestral (2do)";
     const ANUAL = "Anual";
@@ -95,6 +96,7 @@ class Materia extends BaseModel
     {
         return $this->belongsTo('App\Models\Materia', 'correlativa');
     }
+
     public function correlativaCursado(): HasMany
     {
         return $this->HasMany(Materia::class, 'correlativaCursado');
@@ -300,6 +302,7 @@ class Materia extends BaseModel
     public function materiasCorrelativas(): BelongsToMany
     {
         return $this->belongsToMany(Materia::class, 'materias_correlativas', 'materia_id', 'correlativa_id');
+
     }
 
     public function correlativasArray()
@@ -343,7 +346,7 @@ class Materia extends BaseModel
         return CicloLectivoEspecial::where([
             'materia_id' => $this->id,
             'sede_id' => $this->sede()->id
-        ])
+        ])->orderBy('ciclo_lectivo_id', 'desc')
             ->get();
     }
 
@@ -409,6 +412,16 @@ class Materia extends BaseModel
      */
     public function getCierre(int $ciclo_lectivo)
     {
+
+       if($this->cierre_diferido){
+           return $this->getCierreDiferenciado($ciclo_lectivo);
+       }
+       return $this->getCierreRegular($ciclo_lectivo);
+
+    }
+
+    public function getCierreRegular(int $ciclo_lectivo)
+    {
         $ciclo_lectivo = CicloLectivo::find($ciclo_lectivo);
         $regimen = $this->regimen;
 
@@ -451,6 +464,11 @@ class Materia extends BaseModel
         }
 
         return $condiciones;
+    }
+
+    public function getCierreDiferenciado(int $ciclo_lectivo)
+    {
+        return $this->ciclosLectivosDiferenciados()->where('ciclo_lectivo_id', $ciclo_lectivo)->first()->cierre_ciclo;
     }
 
     /**

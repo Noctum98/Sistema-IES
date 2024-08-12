@@ -68,6 +68,12 @@
                         @endfor
                     </ul>
                 </div>
+                <div>
+                    <p class="bg-warning p-1 text-dark">Cierre Perentorio: {{$fecha_perentoria->format('d/m/Y')}}</p>
+                    @if($modulo_cerrado)
+                    <p>El módulo no puede modificarse</p>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -171,8 +177,7 @@
 
             <a href="{{route('excel.procesosModular',['materia_id'=>$materia->id,'ciclo_lectivo' => $ciclo_lectivo])}}"
                class="btn btn-sm btn-success"><i
-                    class="fas fa-download"></i> Descargar
-                planilla</a>
+                    class="fas fa-download"></i> Descargar planilla</a>
         @endif
 
         {{--
@@ -189,7 +194,7 @@
         @if($cargo_id)
             @inject('cargoService', 'App\Services\CargoService')
             {{--            @if($cargoService->getResponsableTFI($cargo_id, $materia->id) == 1)--}}
-            @if($puede_procesar)
+            @if($puede_procesar || Session::has('coordinador') || Session::has('admmin') )
                 <a href="{{route('proceso_modular.procesa_estados_modular',['materia'=>$materia->id,'ciclo_lectivo'=>$ciclo_lectivo, 'cargo_id' => $cargo_id])}}"
                    class="btn btn-sm btn-info">Calcula Regularidad</a>
             @endif

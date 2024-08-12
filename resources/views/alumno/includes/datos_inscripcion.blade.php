@@ -12,7 +12,7 @@
 
                     <th scope="col">Cohorte</th>
 
-                    <th scope="col">Conidición</th>
+                    <th scope="col">Condición</th>
                     <th scope="col">Legajo Completo</th>
                     <th scope="col">1er Acreditación:</th>
                     <th scope="col">Última Acreditación:</th>
