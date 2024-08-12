@@ -62,7 +62,7 @@ class ZTestController extends Controller
             }
         }
 
-        return 'Master materias actualizadas'
+        return 'Master materias actualizadas';
 
     }
 
