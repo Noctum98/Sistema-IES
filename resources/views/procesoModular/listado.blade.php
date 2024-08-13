@@ -68,6 +68,13 @@
                         @endfor
                     </ul>
                 </div>
+                <div>
+                    <p class="bg-warning p-2 mb-0 text-dark">
+                        Cierre Perentorio: {{$fecha_perentoria->format('d/m/Y')}}</p>
+                    @if($modulo_cerrado)
+                    <p class="bg-danger p-2">El módulo no puede modificarse</p>
+                    @endif
+                </div>
             </div>
         </div>
 

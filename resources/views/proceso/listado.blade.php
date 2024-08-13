@@ -38,6 +38,7 @@
     <p class="text-primary"><i>Al posar el mouse sobre el nombre de la calificación, muestra el nombre completo.</i></p>
     <p class="text-primary"><i>Al hacer clic sobre la nota de Promedio TP se podrán ver todos los Trabajos Prácticos.</i></p>
 
+    <a href="{{ route('proceso.libres',$materia->id) }}" class="btn btn-sm btn-primary">Ver Libres</a>
 
     @if(count($procesos) > 0)
     @if($comision)
@@ -179,7 +180,7 @@
             </tbody>
             @include('proceso.modals.tps-mostrar')
             @else
-            'No se encontraron procesos'
+            <p> No se encontraron procesos </p>
             @endif
             @include('proceso.modals.cargar_etapa_campo')
 

@@ -83,4 +83,9 @@ class MasterMateria extends Model
     {
         return $this->hasMany(Materia::class, 'master_materia_id');
     }
+
+    public function tipo_unidad_curricular(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_unidad_curricular_id');
+    }
 }

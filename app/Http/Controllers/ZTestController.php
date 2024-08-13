@@ -11,15 +11,13 @@ use App\Models\MesaFolio;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\Sede;
-use App\Services\AlumnoService;
-use App\Services\CicloLectivoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ZTestController extends Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin');
@@ -51,7 +49,6 @@ class ZTestController extends Controller
                     if (!$mm) {
 
                         $mm = MasterMateria::create($data);
-
                     }
 
                     $materia->master_materia_id = $mm->id;
@@ -62,6 +59,28 @@ class ZTestController extends Controller
 
         return $resolucion;
     }
+
+    public function updateRegimenes(Request $request): string
+    {
+        $resoluciones = Resoluciones::all();
+
+        foreach($resoluciones as $resolucion)
+        {
+            foreach($resolucion->carreras as $carrera)
+            {
+                foreach($carrera->materias as $materia)
+                {
+                    $masterMateria = $materia->masterMateria;
+                    $masterMateria->regimen_id = $this->getRegimen($materia->regimen);
+                    $masterMateria->update();
+                }
+            }
+        }
+
+        return 'Master materias actualizadas';
+
+    }
+
 
     public function getRegimen(string $regimen = null)
     {
@@ -84,7 +103,7 @@ class ZTestController extends Controller
 
     }
 
-    public function cargaLibros(Sede $sede)
+    public function cargaLibros(Sede $sede): JsonResponse
     {
 
         /**
@@ -191,10 +210,5 @@ class ZTestController extends Controller
 
     }
 
+
 }
-
-
-
-
-
-

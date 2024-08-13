@@ -41,7 +41,7 @@
     <h2 class="h1 text-info">Materias de {{ $alumno->nombres.' '.$alumno->apellidos }} {{ $ciclo_lectivo }}</h2>
     <hr>
     @for($i = 1; $i <= $carrera->años; $i++)
-        @include('alumno.includes.tabla_materias',['año'=>$i,'carrera'=>$carrera,'alumno'=>$alumno,'ciclo_lectivo'=>$ciclo_lectivo])
+        @include('alumno.includes.tabla_materias',['año'=>$i,'materias'=>$carrera->materias,'alumno'=>$alumno,'ciclo_lectivo'=>$ciclo_lectivo])
     @endfor
     @include('alumno.modals.eliminar_proceso')
 </div>

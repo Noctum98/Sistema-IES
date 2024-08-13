@@ -169,7 +169,6 @@ class Materia extends BaseModel
 
         foreach ($cargos_modulo as $cm) {
             $total_modulo = $cm->ponderacion + $total_modulo;
-
         }
 
         return $total_modulo;
@@ -180,7 +179,6 @@ class Materia extends BaseModel
         $servicioAsistencia = new AsistenciaModularService();
 
         return $servicioAsistencia->ponderarAsistencias($this);
-
     }
 
     public function proceso($alumno_id)
@@ -188,7 +186,8 @@ class Materia extends BaseModel
         return Proceso::where([
             'materia_id' => $this->id,
             'alumno_id', $alumno_id,
-            'ciclo_lectivo' => date('Y')])->first();
+            'ciclo_lectivo' => date('Y')
+        ])->first();
     }
 
     /**
@@ -197,7 +196,8 @@ class Materia extends BaseModel
      */
     public function getProcesoCarrera($alumno_id)
     {
-        $proceso = Proceso::where([
+        $proceso = Proceso::where(
+            [
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
@@ -218,7 +218,8 @@ class Materia extends BaseModel
     {
         $estado = '-';
 
-        $proceso = Proceso::where([
+        $proceso = Proceso::where(
+            [
                 'materia_id' => $this->id,
                 'alumno_id' => $alumno_id
             ]
@@ -238,7 +239,6 @@ class Materia extends BaseModel
         }
 
         return $proceso->estadoRegularidad() ?? '-';
-
     }
 
     public function getActaVolante($alumno_id)
@@ -338,7 +338,6 @@ class Materia extends BaseModel
             ->where('materia_id', $this->id)
             ->get()->toArray();
         return array_column($correlativasCursado, 'previa_id');
-
     }
 
     public function ciclosLectivosDiferenciados()
@@ -349,7 +348,6 @@ class Materia extends BaseModel
             'sede_id' => $this->sede()->id
         ])->orderBy('ciclo_lectivo_id', 'desc')
             ->get();
-
     }
 
     public function sede()
@@ -414,6 +412,16 @@ class Materia extends BaseModel
      */
     public function getCierre(int $ciclo_lectivo)
     {
+
+       if($this->cierre_diferido){
+           return $this->getCierreDiferenciado($ciclo_lectivo);
+       }
+       return $this->getCierreRegular($ciclo_lectivo);
+
+    }
+
+    public function getCierreRegular(int $ciclo_lectivo)
+    {
         $ciclo_lectivo = CicloLectivo::find($ciclo_lectivo);
         $regimen = $this->regimen;
 
@@ -432,7 +440,35 @@ class Materia extends BaseModel
         }
 
         return $cierre;
+    }
 
+    public function getCondicionesMateria()
+    {
+        $condiciones = [];
+        if ($this->carrera->tipo == 'modular' || $this->carrera->tipo == 'modular2') {
+            $condiciones = CondicionMateria::where('identificador', '!=', 'libre')
+                ->where('habilitado', true)
+                ->get();
+        } else {
+            if($this->masterMateria->tipo_unidad_curricular_id)
+            {
+                if ($this->masterMateria->tipo_unidad_curricular->identificador == 2 || $this->masterMateria->tipo_unidad_curricular->identificador == 5) {
+                    $condiciones = CondicionMateria::where('habilitado',true)->get();
+                } else {
+                    $condiciones = CondicionMateria::where('identificador', '!=', 'libre')
+                        ->where('habilitado', true)
+                        ->get();
+                }
+            }
+           
+        }
+
+        return $condiciones;
+    }
+
+    public function getCierreDiferenciado(int $ciclo_lectivo)
+    {
+        return $this->ciclosLectivosDiferenciados()->where('ciclo_lectivo_id', $ciclo_lectivo)->first()->cierre_ciclo;
     }
 
     /**
@@ -442,6 +478,4 @@ class Materia extends BaseModel
     {
         return $this->belongsTo(MasterMateria::class, 'master_materia_id');
     }
-
-
 }

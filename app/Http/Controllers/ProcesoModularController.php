@@ -145,6 +145,8 @@ class ProcesoModularController extends Controller
         }
 
         $estados = Estados::all();
+        $fecha_perentoria = $this->cicloLectivoService->getCierreDate($materia, $ciclo_lectivo);
+        $modulo_cerrado = $this->cicloLectivoService->getCierreBoolean($materia, $ciclo_lectivo, now());
 
         return view('procesoModular.listado', [
                 'materia' => $materia,
@@ -155,6 +157,8 @@ class ProcesoModularController extends Controller
                 'estados' => $estados,
                 'ciclo_lectivo' => $ciclo_lectivo,
                 'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
+                'fecha_perentoria' => $fecha_perentoria,
+                'modulo_cerrado' => $modulo_cerrado
             ]
         );
     }
