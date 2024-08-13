@@ -319,19 +319,25 @@
                                                     </div>
                                                 </form>
                                             </td>
-                                            <td>
-                                                <input type="checkbox" class="check-cierre"
-                                                       id="{{$proceso->procesoRelacionado->id}}"
-                                                       @if($proceso->procesoRelacionado->cierre == 1)
-                                                           checked
-                                                       @else
-                                                           unchecked
-                                                       @endif
+                                            <td class="text-center">
+                                                @if(($modulo_cerrado || $proceso->procesoRelacionado->cierre_final) && !Session::has('cierres') && !Session::has('admin'))
 
-                                                       @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))
-                                                           disabled
-                                                    @endif
-                                                />
+                                                    <i class="fa fa-check-circle  text-success bg-white"></i>
+                                                @else
+                                                    <input type="checkbox" class="check-cierre"
+                                                           id="{{$proceso->procesoRelacionado->id}}"
+                                                           @if($proceso->procesoRelacionado->cierre == 1)
+                                                               checked
+                                                           @else
+                                                               unchecked
+                                                           @endif
+
+{{--                                                           @if($proceso->procesoRelacionado->cierre_final && !Session::has('cierres'))--}}
+{{--                                                               disabled--}}
+{{--                                                        @endif--}}
+                                                    />
+                                                @endif
+
                                             </td>
                                         </tr>
                                         <tr class="bg-secondary text-white font-weight-bold">
