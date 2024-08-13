@@ -34,7 +34,6 @@ class ZTestController extends Controller
                     if (!$mm) {
 
                         $mm = MasterMateria::create($data);
-
                     }
 
                     $materia->master_materia_id = $mm->id;
@@ -46,29 +45,44 @@ class ZTestController extends Controller
         return $resolucion;
     }
 
-        public function getRegimen(string $regimen = null)
+    public function updateRegimenes(Request $request): string
+    {
+        $resoluciones = Resoluciones::all();
+
+        foreach($resoluciones as $resolucion)
         {
-
-            switch ($regimen) {
-                case Materia::ANUAL:
-                    $id = Regimen::where(['identifier' => 'anual'])->first()->id;
-                    break;
-                case Materia::PRI_SEM:
-                    $id = Regimen::where(['identifier' => 'sem_1'])->first()->id;
-                    break;
-                case Materia::SEC_SEM:
-                    $id = Regimen::where(['identifier' => 'sem_2'])->first()->id;
-                    break;
-                default:
-                    $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+            foreach($resolucion->carreras as $carrera)
+            {
+                foreach($carrera->materias as $materia)
+                {
+                    $masterMateria = $materia->masterMateria;
+                    $masterMateria->regimen_id = $this->getRegimen($materia->regimen);
+                    $masterMateria->update();
+                }
             }
-
-            return $id;
-
         }
 
+        return 'Master materias actualizadas';
 
+    }
+
+    public function getRegimen(string $regimen = null)
+    {
+
+        switch ($regimen) {
+            case Materia::ANUAL:
+                $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+                break;
+            case Materia::PRI_SEM:
+                $id = Regimen::where(['identifier' => 'sem_1'])->first()->id;
+                break;
+            case Materia::SEC_SEM:
+                $id = Regimen::where(['identifier' => 'sem_2'])->first()->id;
+                break;
+            default:
+                $id = Regimen::where(['identifier' => 'anual'])->first()->id;
+        }
+
+        return $id;
+    }
 }
-
-
-

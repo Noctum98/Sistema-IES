@@ -33,6 +33,7 @@ class Carrera extends Model
         'link_inscripcion',
         'preinscripcion_habilitada',
         'matriculacion_habilitada',
+        'inscripcion_habilitada',
         'resolucion_id'
     ];
 
@@ -50,6 +51,17 @@ class Carrera extends Model
     public function materias(): HasMany
     {
         return $this->hasMany(Materia::class)->orderBy('año', 'ASC')->orderBy('materias.nombre', 'ASC');
+    }
+
+    public function materias_segundo_cuatrimestre()
+    {
+        $materias = $this->materias()
+        ->whereHas('masterMateria.regimen', function ($query) {
+            $query->where('identifier', 'sem_2');
+        })
+        ->get();
+
+    return $materias;
     }
 
     public function alumnos()

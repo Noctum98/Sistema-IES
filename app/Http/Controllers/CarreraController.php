@@ -94,7 +94,6 @@ class CarreraController extends Controller
 
     public function editar(int $id, CarrerasRequest $request)
     {
-
         $carrera = Carrera::find($id);
         $carrera->condicionCarrera()->associate($request->condicion_id);
 
@@ -104,6 +103,11 @@ class CarreraController extends Controller
 
         $data['resolucion'] = $resoluciones->resolution;
 
+        if(isset($request['todas']) && $request['todas'] == 1)
+        {
+            $carrerasUpdate = Carrera::where('resolucion_id',$carrera->resolucion_id)->update(['inscripcion_habilitada'=>$request['inscripcion_habilitada']]);
+        }
+        
         $carrera->update($data);
 
 

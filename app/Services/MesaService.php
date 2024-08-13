@@ -133,7 +133,7 @@ class MesaService
             $segundo_llamado_cierre = true;
             $mesa->cierre_profesor_segundo = true;
         }
-        $mesa->update();
+        // $mesa->update();
         
         return [
             'cierre_primer_llamado' => $primer_llamado_cierre,
