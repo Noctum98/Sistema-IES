@@ -114,7 +114,13 @@ class CalificacionController extends Controller
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $calificacion->materia_id)
-            ->where('procesos.ciclo_lectivo', $calificacion->ciclo_lectivo);
+            ->where('procesos.ciclo_lectivo', $calificacion->ciclo_lectivo)
+            ->where(function ($query) {
+                $query->whereNull('procesos.condicion_materia_id')
+                      ->orWhereDoesntHave('condicionMateria', function ($query) {
+                          $query->where('identificador', 'libre');
+                      });
+            });
 
         if ($calificacion->comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($calificacion) {

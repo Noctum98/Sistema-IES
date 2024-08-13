@@ -33,19 +33,25 @@
 
                     <td>
                         @if(!$inscripcion->aprobado)
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#carreraAño{{$inscripcion->carrera->id}}" {{ !$inscripcion->carrera->matriculacion_habilitada ? 'disabled' :'' }}>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#inscripcionAño-{{$inscripcion->carrera->id}}" {{ !$inscripcion->carrera->matriculacion_habilitada ? 'disabled' :'' }}>
                             <i class="fas fa-paste"></i>
                             Inscribirse
                         </button>
+                        @include('matriculacion.modals.años',['param'=>'inscripcionAño','class_link'=>'link_matriculacion'])
                         @else
                         <span class="text-success"><strong>APROBADA</strong></span>
                         @endif
-                        @include('matriculacion.modals.años')
                         @if(!$alumno->getEncuestaSocioeconomica() || ($alumno->getEncuestaSocioeconomica() && !$alumno->getEncuestaSocioeconomica()->completa))
 
                         <a href="{{ route('encuesta_socioeconomica.showForm',['alumno_id'=>$alumno->id,'carrera_id'=>$inscripcion->carrera->id]) }}" class="btn btn-sm btn-danger">
                             Completar Encuesta
                         </a>
+                        @endif
+                        @if($inscripcion->carrera->inscripcion_habilitada)
+                        <button data-bs-toggle="modal" data-bs-target="#inscripcionMateriasAño-{{$inscripcion->carrera->id}}" class="btn btn-sm btn-primary">
+                            Insc. Materias
+                        </button>
+                        @include('matriculacion.modals.años',['param'=>'inscripcionMateriasAño','class_link'=>'link_materias'])
                         @endif
                     </td>
                 </tr>
@@ -65,7 +71,7 @@
 
     @if($alumno->getEncuestaSocioeconomica() && $alumno->getEncuestaSocioeconomica()->completa)
     <div class="alert alert-success">
-        <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL COMPLETA.</strong> 
+        <strong>ENCUESTA SOCIOECONOMICA Y MOTIVACIONAL COMPLETA.</strong>
     </div>
     @endif
 </div>

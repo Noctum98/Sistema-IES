@@ -15,12 +15,15 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Carrera;
 use App\Models\Estados;
+use App\Models\Personal;
 use App\Models\Materia;
 use App\Models\Proceso;
+use App\Models\Regimen;
 use App\Services\CicloLectivoService;
 use App\Models\TipoMateria;
 use App\Services\ProcesoService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MateriaController extends Controller
@@ -100,6 +103,7 @@ class MateriaController extends Controller
         $carrera = Carrera::find($materia->carrera_id);
         $resoluciones = $carrera->resoluciones()->first();
         $tipo_materias = TipoMateria::all();
+        $regimenes = Regimen::all();
 
         $masterMaterias = null;
         if($resoluciones){
@@ -110,7 +114,8 @@ class MateriaController extends Controller
             'materia' => $materia,
             'materias' => $materias,
             'masterMaterias' => $masterMaterias,
-            'tipo_materias' => $tipo_materias
+            'tipo_materias' => $tipo_materias,
+            'regimenes' => $regimenes
         ]);
     }
 
@@ -199,9 +204,14 @@ class MateriaController extends Controller
         {
 
             $masterMateria->tipo_unidad_curricular_id = $request['tipo_unidad_curricular'];
-            $masterMateria->update();
         }
 
+        if($request['regimen'])
+        {
+            $masterMateria->regimen_id = $request['regimen'];
+        }
+
+        $masterMateria->update();
 
         return redirect()->route('materia.editar', ['id' => $id])->with([
             'message' => 'Materia editada correctamente!',
