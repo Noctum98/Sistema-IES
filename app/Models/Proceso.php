@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso\EtapaCampo;
+use App\Services\CicloLectivoService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -250,5 +252,27 @@ class Proceso extends Model
     public function condicionMateria(): BelongsTo
     {
         return $this->belongsTo(CondicionMateria::class, 'condicion_materia_id');
+    }
+
+
+    public function getCicloLectivo()
+    {
+        return CicloLectivo::find($this->ciclo_lectivo);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCloseFinal(): bool
+    {
+     if($this->cierre_final)
+     {
+         return true;
+     }
+
+     $cicloLectivoService = new CicloLectivoService();
+
+     return $cicloLectivoService->getCierreBoolean($this->materia()->first(), $this->ciclo_lectivo, now());
+
     }
 }
