@@ -52,4 +52,9 @@ class ActaVolante extends Model
     {
         return $this->belongsTo(Instancia::class, 'instancia_id');
     }
+
+    public function getLibro(): BelongsTo
+    {
+        return $this->belongsTo(Libro::class, 'libro_id');
+    }
 }

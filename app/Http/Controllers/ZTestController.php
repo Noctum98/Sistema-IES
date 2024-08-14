@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActaVolante;
+use App\Models\FolioNota;
 use App\Models\Libro;
 use App\Models\LibroDigital;
 use App\Models\MasterMateria;
@@ -186,8 +188,47 @@ class ZTestController extends Controller
                                         'vocal_2_id' => $vocal_2,
                                     ]
                                 );
+                            }
+
+                            $orden = 0;
+                            foreach ($mesa->actasVolantes()->get() as $acta) {
+                                $orden++;
+                                /** @var ActaVolante $acta */
+
+                                if(!is_int((int)$acta->nota_escrito)) {
+                                    $escrito = null;
+                                }else{
+                                    $escrito = (int)$acta->nota_escrito;
+                                }
+                                if(!is_int((int)$acta->nota_oral)) {
+                                    $oral = null;
+                                }else{
+                                    $oral = (int)$acta->nota_oral;
+                                }
+                                if(!is_int((int)$acta->promedio)) {
+                                    $definitiva = null;
+                                }else{
+                                    $definitiva = (int)$acta->promedio;
+                                }
+
+                                FolioNota::updateOrCreate([
+                                    'orden' => $orden,
+                                    'permiso' => null,
+                                    'escrito' => $escrito,
+                                    'oral' => $oral,
+                                    'definitiva' => $definitiva,
+                                    'operador_id' => $user->id,
+                                    'alumno_id' => $acta->alumno_id,
+                                    'acta_volante_id' => $acta->id,
+                                    'mesa_folio_id' => $mesaFolio->id
+
+                                ]);
 
                             }
+
+
+
+
 
 
                         }

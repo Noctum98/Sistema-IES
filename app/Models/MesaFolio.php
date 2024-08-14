@@ -7,6 +7,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MesaFolio extends Model
@@ -193,9 +194,20 @@ class MesaFolio extends Model
         return $this->belongsTo(User::class, 'coordinador');
     }
 
-    public function libro():string
+    public function libroRomanos():string
     {
         return $this->LibroDigital()->first()->romanos;
+    }
+
+    public function libroNumber():string
+    {
+        return $this->LibroDigital()->first()->number;
+    }
+
+
+    public function folioNotas(): HasMany
+    {
+        return $this->hasMany(FolioNota::class, 'mesa_folio_id');
     }
 
 }

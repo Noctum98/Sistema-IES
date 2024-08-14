@@ -50,7 +50,7 @@ class Mesa extends Model
      */
     public function mesa_inscriptos_total(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno');
+        return $this->hasMany(MesaAlumno::class);
     }
 
     /**
@@ -58,7 +58,7 @@ class Mesa extends Model
      */
     public function mesa_inscriptos(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')
+        return $this->hasMany(MesaAlumno::class)
             ->where('estado_baja', false)
             ->orderBy('apellidos', 'ASC');
     }
@@ -253,6 +253,54 @@ class Mesa extends Model
     {
         return MesaFolio::where('mesa_id', $this->id)->get();
     }
+
+
+    public function inscripciones(): HasMany
+    {
+        return $this->hasMany(MesaAlumno::class, 'mesa_id');
+    }
+
+
+    public function inscripcionesByMesa()
+    {
+        return MesaAlumno::where('mesa_id', $this->id)->get();
+    }
+
+
+    public function inscripcionesByMesaByAlumno($alumno_id): MesaAlumno
+    {
+        return MesaAlumno::where('mesa_id', $this->id)->where('alumno_id', $alumno_id)->first();
+    }
+
+    public function inscripcionesByMesaByAlumnoByCarreraByMateria($alumno_id, $carrera_id, $materia_id): MesaAlumno
+    {
+        return MesaAlumno::where('mesa_id', $this->id)
+            ->where('alumno_id', $alumno_id)->where('carrera_id', $carrera_id)
+            ->where('materia_id', $materia_id)->first();
+    }
+
+    public function inscripcionesByMesaByAlumnoByCarrera($alumno_id, $carrera_id): MesaAlumno
+    {
+        return MesaAlumno::where('mesa_id', $this->id)
+            ->where('alumno_id', $alumno_id)->where('carrera_id', $carrera_id)->first();
+    }
+
+
+    public function actasVolantesByMesaByAlumno($alumno_id): Collection
+    {
+        return MesaAlumno::where('mesa_id', $this->id)
+            ->where('alumno_id', $alumno_id)->with('actas_volantes')->first()->actasVolantes;
+    }
+
+    public function actasVolantes(): HasMany
+    {
+        return $this->hasMany(ActaVolante::class, 'mesa_id')
+            ->join('alumnos', 'actas_volantes.alumno_id', 'alumnos.id')
+            ->orderBy('alumnos.apellidos', 'ASC')
+            ->orderBy('alumnos.nombres', 'ASC');
+    }
+
+
 
 
 }
