@@ -66,12 +66,9 @@ class ZTestController extends Controller
     {
         $resoluciones = Resoluciones::all();
 
-        foreach($resoluciones as $resolucion)
-        {
-            foreach($resolucion->carreras as $carrera)
-            {
-                foreach($carrera->materias as $materia)
-                {
+        foreach ($resoluciones as $resolucion) {
+            foreach ($resolucion->carreras as $carrera) {
+                foreach ($carrera->materias as $materia) {
                     $masterMateria = $materia->masterMateria;
                     $masterMateria->regimen_id = $this->getRegimen($materia->regimen);
                     $masterMateria->update();
@@ -107,33 +104,30 @@ class ZTestController extends Controller
 
     public function cargaLibros(Sede $sede): JsonResponse
     {
-
-        /**
-         * Ahora tenemos que ir por las notas de los folios
-         */
-
         $user = auth()->user();
-
         $mesas = $sede->getMesas();
 
         $data = [];
         $data['user_id'] = $user->id;
         $data['sede_id'] = $sede->id;
+
         $error = [];
+
         foreach ($mesas as $mesa) {
 
+            if ((count($mesa->libros()->get()) > 0) && (count($mesa->actasVolantes()->get()) > 0)) {
 
-            if($mesa->materia->masterMateria) {
-                /** @var Mesa $mesa */
-                $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
-                $masterMateria = $mesa->materia->master_materia_id;
-                $data['resoluciones_id'] = $resolucion_id;
-                if ($mesa->libros()->count() > 0) {
+                if ($mesa->materia->masterMateria) {
+
+                    /** @var Mesa $mesa */
+                    $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
+                    $masterMateria = $mesa->materia->master_materia_id;
+                    $data['resoluciones_id'] = $resolucion_id;
+
                     foreach ($mesa->libros()->get() as $libro) {
 
                         /** @var Libro $libro */
                         $numero = $libro->numero;
-
                         $folio = $libro->folio;
                         $romano = $mesa->libro;
                         $fecha = $mesa->fecha;
@@ -153,10 +147,10 @@ class ZTestController extends Controller
                         if ($numero && $romano) {
 
                             $fecha = date('Y-m-d', strtotime($fecha));
-
                             $data['number'] = $numero;
                             $data['romanos'] = $romano;
                             $data['resoluciones_id'] = $resolucion_id;
+                            $data['libro_id'] = $libro->id;
 
                             $libroDigital = LibroDigital::where(
                                 [
@@ -172,7 +166,11 @@ class ZTestController extends Controller
                                 );
                             }
 
-                            $mesaFolio = $libroDigital->mesaFolios()->where('numero', $folio)->first();
+                            $mesaFolio = $libroDigital->mesaFolios()->where(
+                                ['numero'=> $folio,
+                                    'libro_digital_id' => $libroDigital->id
+                                    ]
+                            )->first();
 
                             if (!$mesaFolio) {
                                 $mesaFolio = MesaFolio::create(
@@ -190,42 +188,6 @@ class ZTestController extends Controller
                                 );
                             }
 
-                            $orden = 0;
-                            foreach ($mesa->actasVolantes()->get() as $acta) {
-                                $orden++;
-                                /** @var ActaVolante $acta */
-
-                                if(!is_int((int)$acta->nota_escrito)) {
-                                    $escrito = null;
-                                }else{
-                                    $escrito = (int)$acta->nota_escrito;
-                                }
-                                if(!is_int((int)$acta->nota_oral)) {
-                                    $oral = null;
-                                }else{
-                                    $oral = (int)$acta->nota_oral;
-                                }
-                                if(!is_int((int)$acta->promedio)) {
-                                    $definitiva = null;
-                                }else{
-                                    $definitiva = (int)$acta->promedio;
-                                }
-
-                                FolioNota::updateOrCreate([
-                                    'orden' => $orden,
-                                    'permiso' => null,
-                                    'escrito' => $escrito,
-                                    'oral' => $oral,
-                                    'definitiva' => $definitiva,
-                                    'operador_id' => $user->id,
-                                    'alumno_id' => $acta->alumno_id,
-                                    'acta_volante_id' => $acta->id,
-                                    'mesa_folio_id' => $mesaFolio->id
-
-                                ]);
-
-                            }
-
 
 
 
@@ -234,11 +196,62 @@ class ZTestController extends Controller
                         }
 
                     }
+                    $orden = 0;
+                    foreach ($mesa->actasVolantes()->get() as $acta) {
+                        $orden++;
+                        /** @var ActaVolante $acta */
+
+                        if (!is_int((int)$acta->nota_escrito)) {
+                            $escrito = null;
+                        } else {
+                            $escrito = (int)$acta->nota_escrito;
+                        }
+                        if (!is_int((int)$acta->nota_oral)) {
+                            $oral = null;
+                        } else {
+                            $oral = (int)$acta->nota_oral;
+                        }
+                        if (!is_int((int)$acta->promedio)) {
+                            $definitiva = null;
+                        } else {
+                            $definitiva = (int)$acta->promedio;
+                        }
+
+                        $folioNota = FolioNota::where(
+                            ['alumno_id' => $acta->alumno_id],
+                            ['acta_volante_id' => $acta->id]
+                        )->first();
+
+                        if (!$folioNota) {
+
+
+                            $folioNota = FolioNota::create([
+                                'orden' => $orden,
+                                'permiso' => null,
+                                'escrito' => $escrito,
+                                'oral' => $oral,
+                                'definitiva' => $definitiva,
+                                'operador_id' => $user->id,
+                                'alumno_id' => $acta->alumno_id,
+                                'acta_volante_id' => $acta->id,
+                                'mesa_folio_id' => $mesaFolio->id
+
+                            ]);
+                        }
+
+
+                    }
+
+                } else {
+                    $error[] = [
+                        'Procesar resoluciones' => $mesa->materia->carrera->resolucion_id,
+                        'Materia' => $mesa->materia->id
+                    ];
                 }
-            }else{
+            } else {
                 $error[] = [
-                    'Procesar resoluciones' => $mesa->materia->carrera->resolucion_id,
-                    'Materia' => $mesa->materia->id
+                    'Mesa' => $mesa->id,
+                    'Caso' => 'Mesa sin libro ni actas volantes'
                 ];
             }
         }

@@ -49,7 +49,8 @@ class LibroDigital extends Model
         'libros_papeles_id',
         'observaciones',
         'operador_id',
-        'user_id'
+        'user_id',
+        'libro_id'
     ];
 
     protected $casts = [
@@ -84,5 +85,10 @@ class LibroDigital extends Model
     public function mesaFolios(): HasMany
     {
         return $this->hasMany(MesaFolio::class, 'libro_digital_id');
+    }
+
+    public function libro():BelongsTo
+    {
+        return $this->belongsTo(Libro::class, 'libro_id');
     }
 }

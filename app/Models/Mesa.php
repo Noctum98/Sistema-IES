@@ -295,6 +295,7 @@ class Mesa extends Model
     public function actasVolantes(): HasMany
     {
         return $this->hasMany(ActaVolante::class, 'mesa_id')
+            ->select('actas_volantes.*')
             ->join('alumnos', 'actas_volantes.alumno_id', 'alumnos.id')
             ->orderBy('alumnos.apellidos', 'ASC')
             ->orderBy('alumnos.nombres', 'ASC');
