@@ -41,6 +41,7 @@ class CicloLectivoService
         }
         $cierre = null;
 
+        //dd($ciclo_lectivo);
 
         if ($materia->getCierre($ciclo_lectivo)) {
             $cierre = Carbon::createFromFormat('Y-m-d', $materia->getCierre($ciclo_lectivo));
@@ -62,7 +63,7 @@ class CicloLectivoService
      * @param int|null $daysTop
      * @return bool
      */
-    public function getCierreBoolean(Materia $materia, $ciclo_lectivo, Carbon $dates, int $daysTop = null): bool
+    public function getCierreBoolean($materia, $ciclo_lectivo, Carbon $dates, int $daysTop = null): bool
     {
 
         if (!$daysTop) {

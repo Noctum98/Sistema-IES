@@ -362,7 +362,7 @@
 		<br>
 		<h4 class="text-secondary">Artículo 7mo</h4>
 		<div class="alert alert-warning">
-			Estás realizando tu preinscripción por Artículo 7, cuyos requisitos son:
+			Estás realizando tu preinscripción por Artículo 7mo, cuyos requisitos son:
 			ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
 			trabajado en un empleo relacionado con la carrera elegida.
 		</div>

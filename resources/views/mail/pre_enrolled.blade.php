@@ -55,6 +55,13 @@
 	<hr>
 	<div class="row">
 		<div class="detalle-pre">
+			<p><b>
+			Estás realizando tu preinscripción por Artículo 7mo, cuyos requisitos son:
+			ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
+			trabajado en un empleo relacionado con la carrera elegida. Es requisito obligatorio presentar la 
+			documentación Título de Nivel Primario, Certificado de Trabajo con firma y sello de quien lo emite,
+			Currículum Vitae, Nota al Rector, caso contrario no podrá ingresar a la carrera. La fecha limite es el 30 de septiembre.
+		</b></p>
 			<ul>
 				<li><b>Carrera:</b> {{ $preinscripcion->carrera->nombre }}</li>
 				<li><b>Turno:</b> {{ ucwords($preinscripcion->carrera->turno) }}</li>
@@ -84,6 +91,8 @@
 					</span>
 				</li>
 			</ul>
+
+
 			<a href="{{route('pre.editar',['timecheck'=>$preinscripcion->timecheck,'id'=>$preinscripcion->id])}}" class="btn">Editar mis datos</a>
 		</div>
 	</div>		
