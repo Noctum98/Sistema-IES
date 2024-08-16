@@ -88,4 +88,11 @@ class Libros extends Model
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
 
+    public function getLibrosBySede(int $sede_id)
+    {
+        return Libro::whereHas('mesa.materia.carrera.sede', function ($query) {
+            $query->where('id', 7);
+        })->get();
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Handler\GenericHandler;
 use App\Models\ActaVolante;
 use App\Models\FolioNota;
 use App\Models\Libro;
@@ -19,12 +20,18 @@ use Illuminate\Http\Request;
 class ZTestController extends Controller
 {
 
-    public function __construct()
+    private GenericHandler $handler;
+
+    /**
+     * @param GenericHandler $handler
+     */
+    public function __construct(GenericHandler $handler)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin');
 
 
+        $this->handler = $handler;
     }
 
     public function getActions(string $name)
@@ -102,17 +109,110 @@ class ZTestController extends Controller
 
     }
 
+    /**
+     * @param Sede $sede
+     * @return JsonResponse
+     * @ruta /z_test/carga_libros/{sedes_id}
+     */
     public function cargaLibros(Sede $sede): JsonResponse
     {
         $user = auth()->user();
         $mesas = $sede->getMesas();
+        $libros = Libro::whereHas('mesa.materia.carrera.sede', function ($query) use ($sede) {
+            $query->where('id', $sede->id);
+        })->get();
 
         $data = [];
         $data['user_id'] = $user->id;
         $data['sede_id'] = $sede->id;
+        $data['acta_inicio'] = null;
+        $data['fecha_inicio'] = null;
+        $data['libros_papeles_id'] = null;
+        $data['observaciones'] = null;
+        $data['operador_id'] = null;
 
         $error = [];
 
+        foreach ($libros as $libro) {
+            /** @var Libro $libro */
+            $mesa = $libro->mesa()->first();
+            /** @var Mesa $mesa */
+            if ($mesa && $mesa->materia && $mesa->materia->masterMateria) {
+                $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
+                $masterMateria = $mesa->materia->master_materia_id;
+                $data['resoluciones_id'] = $resolucion_id;
+                $numero = $libro->numero;
+                $folio = $libro->folio;
+                $romano = $mesa->libro ?? $this->handler->convertirNumberToRoman($numero);
+                $fecha = $mesa->fecha;
+                $presidente = $mesa->presidente_id;
+                $vocal_1 = $mesa->primer_vocal_id;
+                $vocal_2 = $mesa->segundo_vocal_id;
+
+                if ($libro->llamado > 2) {
+                    $romano = $mesa->libro_segundo;
+                    $folio = $mesa->folio_segundo;
+                    $fecha = $mesa->fecha_segundo;
+                    $presidente = $mesa->presidente_segundo_id;
+                    $vocal_1 = $mesa->primer_vocal_segundo_id;
+                    $vocal_2 = $mesa->segundo_vocal_segundo_id;
+                }
+
+                $fecha = date('Y-m-d', strtotime($fecha));
+                $data['number'] = $numero;
+                $data['romanos'] = $romano;
+                $data['resoluciones_id'] = $resolucion_id;
+
+
+                $libroDigital = LibroDigital::where(
+                    [
+                        'resoluciones_id' => $resolucion_id,
+                        'number' => $numero,
+                        'sede_id' => $sede->id,
+                    ]
+                )->first();
+
+
+                if (!$libroDigital) {
+                    $libroDigital = LibroDigital::create(
+                        $data
+                    );
+                }
+                /**
+                 * MesaFolio
+                 * 'aprobados',
+                 * 'ausentes',
+                 * 'coordinador_id',
+                 * 'desaprobados',
+                 * 'fecha',
+                 * 'libro_digital_id',
+                 * 'master_materia_id',
+                 * 'mesa_id',
+                 * 'numero',
+                 * 'operador_id',
+                 * 'presidente_id',
+                 * 'turno',
+                 * 'vocal_1_id',
+                 * 'vocal_2_id',
+                 */
+
+
+
+
+
+
+
+
+            } else {
+                $error[] = [
+                    'Libro' => $libro->id,
+                    'Caso' => 'No tiene mesa asociada'
+                ];
+            }
+        }
+
+
+        dd(count($libros), '192', $error);
         foreach ($mesas as $mesa) {
 
             if ((count($mesa->libros()->get()) > 0) && (count($mesa->actasVolantes()->get()) > 0)) {
@@ -167,9 +267,9 @@ class ZTestController extends Controller
                             }
 
                             $mesaFolio = $libroDigital->mesaFolios()->where(
-                                ['numero'=> $folio,
+                                ['numero' => $folio,
                                     'libro_digital_id' => $libroDigital->id
-                                    ]
+                                ]
                             )->first();
 
                             if (!$mesaFolio) {
@@ -187,10 +287,6 @@ class ZTestController extends Controller
                                     ]
                                 );
                             }
-
-
-
-
 
 
                         }
