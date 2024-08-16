@@ -45,7 +45,7 @@ class ZTestController extends Controller
         return $resolucion;
     }
 
-    public function updateRegimenes(Request $request)
+    public function updateRegimenes(Request $request): string
     {
         $resoluciones = Resoluciones::all();
 

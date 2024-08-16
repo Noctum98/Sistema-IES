@@ -30,4 +30,18 @@ class CicloLectivo extends Model
             'anual' => $anual,
         ]);
     }
+
+    public function obtenerCicloLectivo(int $cicloLectivo)
+    {
+        return CicloLectivo::where('id', $cicloLectivo)->first();
+    }
+
+    public function obtenerCiclosLectivos()
+    {
+        return CicloLectivo::all();
+    }
+
+
+
+
 }
