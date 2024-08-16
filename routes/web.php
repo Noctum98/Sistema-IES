@@ -1130,7 +1130,7 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
-Route::get('test/updateRegimenes', [ZTestController::class, 'getActions'])->name('z_test.updateRegimenes');
+Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
 
 
 Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
