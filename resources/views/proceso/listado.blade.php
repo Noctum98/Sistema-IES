@@ -20,9 +20,40 @@
 </div>
 @endif
 <div class="container" id="container-scroll">
-    <a href="{{url()->previous()}}">
-        <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
-    </a>
+<div class="row m-0">
+            <div class="col-sm-6 text-left">
+                <a href="{{url()->previous()}}">
+                    <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
+                </a>
+            </div>
+
+            <div class="col-sm-6 text-right">
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
+                            data-bs-toggle="dropdown">
+                        Ciclo lectivo <span id="ciclo_lectivo">{{$ciclo_lectivo}}</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @for ($i = $changeCicloLectivo[1]; $i >= $changeCicloLectivo[0]; $i--)
+                            <li>
+                                <a class="dropdown-item @if($i == $ciclo_lectivo) active @endif "
+                                   href="{{ route('proceso.listado',
+                                    ['materia_id'=> $materia->id,'ciclo_lectivo' => $i, 'comision_id'=> $comision ? $comision->id : '']) }}">
+                                    {{$i}}
+                                </a>
+                            </li>
+                        @endfor
+                    </ul>
+                </div>
+                <div>
+                    <p class="bg-warning p-1 text-dark">Cierre Perentorio: {{$fecha_perentoria->format('d/m/Y')}}</p>
+                    @if($materia_cerrada)
+                    <p>La planilla no puede modificarse</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
     <h2 class="h1 text-info">
         Notas de Proceso de {{ $materia->nombre.' ('.$ciclo_lectivo.')' }} @if($comision)
         <br /><small>{{$comision->nombre}}</small>
@@ -135,7 +166,7 @@
                     @endif
                     <td class="col-md-3">
 
-                        <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" data-proceso_id="{{ $proceso->id }}" @if(!$proceso->habilitadoCierre()) disabled @endif >
+                        <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}" id="{{$proceso->id}}" data-proceso_id="{{ $proceso->id }}" @if(!$proceso->habilitadoCierre($materia_cerrada)) disabled @endif >
                             <option value="">Seleccione condición</option>
                             @foreach($estados as $estado)
                             @if($estado->id == $proceso->estado_id)
@@ -172,7 +203,7 @@
 
                         <input type="hidden" name="checkcoordinador" id="coordinador" value="{{ Session::has('coordinador') ? 1 : 0 }}">
 
-                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ !$proceso->habilitadoCierre() ? 'disabled' : '' }}>
+                        <input type="checkbox" class="check-cierre" id="{{$proceso->id}}" {{$proceso->cierre == false ? 'unchecked':'checked'}} {{ !$proceso->habilitadoCierre($materia_cerrada) ? 'disabled' : '' }}>
                     </td>
 
                 </tr>

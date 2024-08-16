@@ -115,24 +115,29 @@ class Proceso extends Model
 
 
     // Functions
-    public function habilitadoCierre()
+    public function habilitadoCierre($materia_cierre = false)
     {
         $pase = false;
 
-        if ($this->cierre && !$this->cierre_final) {
-            if (Session::has('coordinador') || Session::has('admin')) {
+        if ($materia_cierre) {
+            if (Session::has('admin')) {
                 $pase = true;
             }
-        } elseif ($this->cierre_final && (Session::has('admin') || Session::has('cierres'))) {
-            $rolCierre = Rol::where('nombre','cierres')->first();
 
-            if($rolCierre->activo)
+            if(!$this->cierre)
             {
+                $this->cierre = true;
+                $this->update();
+            }
+            
+        } else {
+            if ($this->cierre) {
+                if (Session::has('admin') || Session::has('coordinador')) {
+                    $pase = true;
+                }
+            } else if (!$this->cierre) {
                 $pase = true;
             }
-        }elseif(!$this->cierre && !$this->cierre_final)
-        {
-            $pase = true;
         }
 
         return $pase;
