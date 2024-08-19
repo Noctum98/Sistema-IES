@@ -1020,23 +1020,6 @@ Route::group(['prefix' => 'folio_notas', 'middleware' => ['auth']], static funct
         ->name('folio_notas.folio_nota.destroy');
 });
 
-Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], static function () {
-    Route::get('/', [LibroPapelController::class, 'index'])
-        ->name('libro_papel.libro_papel.index');
-    Route::get('/create', [LibroPapelController::class, 'create'])
-        ->name('libro_papel.libro_papel.create');
-    Route::get('/show/{libroPapel}', [LibroPapelController::class, 'show'])
-        ->name('libro_papel.libro_papel.show');
-    Route::get('/{libroPapel}/edit', [LibroPapelController::class, 'edit'])
-        ->name('libro_papel.libro_papel.edit');
-    Route::post('/', [LibroPapelController::class, 'store'])
-        ->name('libro_papel.libro_papel.store');
-    Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
-        ->name('libro_papel.libro_papel.update');
-    Route::delete('/libro_papel/{libroPapel}', [LibroPapelController::class, 'destroy'])
-        ->name('libro_papel.libro_papel.destroy');
-});
-
 Route::group(['prefix' => 'libros', 'middleware' => ['auth']], static function () {
     Route::get('/', [LibrosController::class, 'index'])
         ->name('libros.libros.index');
@@ -1069,6 +1052,23 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static 
         ->name('libros_digitales.libro_digital.update');
     Route::delete('/libro_digital/{libroDigital}', [LibrosDigitalesController::class, 'destroy'])
         ->name('libros_digitales.libro_digital.destroy');
+});
+
+Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibroPapelController::class, 'index'])
+        ->name('libro_papel.libro_papel.index');
+    Route::get('/create', [LibroPapelController::class, 'create'])
+        ->name('libro_papel.libro_papel.create');
+    Route::get('/show/{libroPapel}', [LibroPapelController::class, 'show'])
+        ->name('libro_papel.libro_papel.show');
+    Route::get('/{libroPapel}/edit', [LibroPapelController::class, 'edit'])
+        ->name('libro_papel.libro_papel.edit');
+    Route::post('/', [LibroPapelController::class, 'store'])
+        ->name('libro_papel.libro_papel.store');
+    Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
+        ->name('libro_papel.libro_papel.update');
+    Route::delete('/libro_papel/{libroPapel}', [LibroPapelController::class, 'destroy'])
+        ->name('libro_papel.libro_papel.destroy');
 });
 
 Route::group(['prefix' => 'manager_libros', 'middleware' => ['auth']], static function () {
@@ -1189,3 +1189,7 @@ Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros']
 Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
     ->middleware('app.roles:admin');
 Route::get('z_test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+
+
