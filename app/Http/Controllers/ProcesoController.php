@@ -167,6 +167,9 @@ class ProcesoController extends Controller
         }
         $calificaciones = $calificacion->orderBy('tipo_id', 'DESC')->get();
 
+        $fecha_perentoria = $this->cicloLectivoService->getCierreDate($materia, $ciclo_lectivo);
+        $materia_cerrada = $this->cicloLectivoService->getCierreBoolean($materia, $ciclo_lectivo, now());
+
         $estados = Estados::all();
 
         return view('proceso.listado', [
@@ -175,7 +178,10 @@ class ProcesoController extends Controller
             'comision' => $comision,
             'calificaciones' => $calificaciones,
             'estados' => $estados,
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'fecha_perentoria' => $fecha_perentoria,
+            'materia_cerrada' => $materia_cerrada,
+            'changeCicloLectivo' => $this->cicloLectivoService->getCicloInicialYActual(),
         ]);
     }
 

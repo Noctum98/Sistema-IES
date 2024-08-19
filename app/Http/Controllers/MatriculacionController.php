@@ -241,8 +241,13 @@ class MatriculacionController extends Controller
             'año'   => $año,
             'ciclo_lectivo' => date('Y'),
             'regularidad' => $request['regularidad'],
-            'año' => $año
+            'año' => $año,
         ];
+
+        if($request['regularidad'] == 'reinscripto_primero')
+        {
+            $datos['cohorte'] = $datos['ciclo_lectivo']; 
+        }
 
         if (!$alumno_carrera) {
             $alumno_carrera = AlumnoCarrera::create($datos);
