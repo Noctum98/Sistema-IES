@@ -11,6 +11,7 @@ use App\Models\MasterMateria;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaFolio;
+use App\Models\Nota;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\Sede;
@@ -135,9 +136,17 @@ class ZTestController extends Controller
 
         foreach ($libros as $libro) {
             /** @var Libro $libro */
+
+
+
             $mesa = $libro->mesa()->first();
             /** @var Mesa $mesa */
             if ($mesa && $mesa->materia && $mesa->materia->masterMateria) {
+
+                if($libro->actasVolantes && $libro->actasVolantes->count() > 0 && $mesa->id == 4097) {
+                    dd($libro->id, $mesa->id, $libro->actasVolantes->count());
+                }
+
                 $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
                 $masterMateria = $mesa->materia->master_materia_id;
                 $data['resoluciones_id'] = $resolucion_id;
@@ -188,18 +197,45 @@ class ZTestController extends Controller
                  * 'libro_digital_id',
                  * 'master_materia_id',
                  * 'mesa_id',
-                 * 'numero',
+                 * 'folio',
                  * 'operador_id',
                  * 'presidente_id',
                  * 'turno',
                  * 'vocal_1_id',
                  * 'vocal_2_id',
                  */
+                /**
+                 * Ver el tema de las actas volantes con libros
+                 * es decir
+                 * libros->getActasVolantes()
+                 */
+
+                $desglose = $mesa->getResultadosMesa();
 
 
-
-
-
+                $mesaFolio = MesaFolio::where([
+                    'libro_digital_id' => $libroDigital->id,
+                    'mesa_id' => $mesa->id,
+                    'folio' => $libro->folio,
+                ]);
+                if (!$mesaFolio->exists()) {
+                    $mesaFolio = MesaFolio::create([
+                        'aprobados' => $desglose['aprobados'],
+                        'ausentes' => $desglose['ausentes'],
+                        'desaprobados' => $desglose['desaprobados'],
+                        'coordinador_id' => null,
+                        'fecha' => $fecha,
+                        'libro_digital_id' => $libroDigital->id,
+                        'master_materia_id' => $mesa->materia->master_materia_id,
+                        'mesa_id' => $mesa->id,
+                        'folio' => $folio,
+                        'operador_id' => $user->id,
+                        'presidente_id' => $presidente,
+                        'turno' => null,
+                        'vocal_1_id' => $vocal_1,
+                        'vocal_2_id' => $vocal_2
+                    ]);
+                }
 
 
 

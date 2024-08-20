@@ -38,7 +38,7 @@
                             <th>Master Materia</th>
                             <th>Mesa</th>
                             <th>Turno</th>
-                            <th>Número</th>
+                            <th>Folio</th>
                             <th>Presidente</th>
                             <th>Vocal 1</th>
                             <th>Vocal 2</th>
@@ -59,7 +59,7 @@
                                 <td class="align-middle">{{ optional($mesaFolio->MasterMateria)->name }}</td>
                                 <td class="align-middle">{{ optional($mesaFolio->Mesa)->fecha }}</td>
                                 <td class="align-middle">{{ $mesaFolio->turno }}</td>
-                                <td class="align-middle">{{ $mesaFolio->numero }}</td>
+                                <td class="align-middle">{{ $mesaFolio->folio }}</td>
                                 <td class="align-middle">{{ optional($mesaFolio->presidente)->getApellidoNombre() }}</td>
                                 <td class="align-middle">{{ optional($mesaFolio->vocal1)->getApellidoNombre() }}</td>
                                 <td class="align-middle">{{ optional($mesaFolio->vocal2)->getApellidoNombre() }}</td>

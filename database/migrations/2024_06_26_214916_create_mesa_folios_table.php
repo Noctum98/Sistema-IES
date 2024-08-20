@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('mesa_folios', function (Blueprint $table) {
             $table->uuid('id');
-            $table->integer('numero');
+            $table->integer('folio');
             $table->string('turno')->nullable();
             $table->date('fecha');
             $table->integer('aprobados')->nullable();

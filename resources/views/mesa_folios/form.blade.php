@@ -69,12 +69,12 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="numero" class="col-form-label text-lg-end col-lg-2 col-xl-3">Número</label>
+    <label for="folio" class="col-form-label text-lg-end col-lg-2 col-xl-3">Folio</label>
     <div class="col-lg-10 col-xl-9">
-        <input class="form-control{{ $errors->has('numero') ? ' is-invalid' : '' }}" name="numero" type="number"
-               id="numero" value="{{ old('numero', optional($mesaFolio)->numero) }}" min="1" max="2147483647"
-               required="required" placeholder="Ingrese número aquí...">
-        {!! $errors->first('numero', '<div class="invalid-feedback">:message</div>') !!}
+        <input class="form-control{{ $errors->has('folio') ? ' is-invalid' : '' }}" name="folio" type="number"
+               id="folio" value="{{ old('folio', optional($mesaFolio)->folio) }}" min="1" max="2147483647"
+               required="required" placeholder="Ingrese folio aquí...">
+        {!! $errors->first('folio', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
 

@@ -9,7 +9,7 @@ class MesaFolioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'numero' => ['required', 'integer'],
+            'folio' => ['required', 'integer'],
             'turno' => ['nullable'],
             'fecha' => ['required', 'date'],
             'aprobados' => ['nullable', 'integer'],

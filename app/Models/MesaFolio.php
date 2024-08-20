@@ -46,7 +46,7 @@ class MesaFolio extends Model
         'libro_digital_id',
         'master_materia_id',
         'mesa_id',
-        'numero',
+        'folio',
         'operador_id',
         'presidente_id',
         'turno',

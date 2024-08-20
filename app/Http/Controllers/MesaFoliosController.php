@@ -180,7 +180,7 @@ class MesaFoliosController extends Controller
             'libro_digital_id' => 'required',
             'master_materia_id' => 'required',
             'mesa_id' => 'nullable',
-            'numero' => 'required|numeric|min:-2147483648|max:2147483647',
+            'folio' => 'required|numeric|min:0|max:2147483647',
             'operador_id' => 'nullable',
             'presidente_id' => 'nullable',
             'turno' => 'nullable|string|min:0|max:191',

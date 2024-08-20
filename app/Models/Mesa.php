@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\MesaService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -299,6 +300,24 @@ class Mesa extends Model
             ->join('alumnos', 'actas_volantes.alumno_id', 'alumnos.id')
             ->orderBy('alumnos.apellidos', 'ASC')
             ->orderBy('alumnos.nombres', 'ASC');
+    }
+
+    /**
+     * Recupera los resultados de una mesa.
+     *
+     *  Esta función toma una instancia de Mesa como parámetro y devuelve una matriz
+     *  que contiene los resultados de la mesa.
+     *
+     *  Esto se hace creando una nueva instancia de la clase MesaService y llamando
+     *  su método getDesgloseAprobados, pasando la instancia de Mesa como argumento.
+     *  El método getDesgloseAprobados se encarga de calcular y organizar
+     *  los resultados de la mesa.
+     *
+     * @return array Un Array qye contiene los resultados de la mesa.
+     */
+    public function getResultadosMesa(): array
+    {
+        return (new MesaService())->getDesgloseAprobados($this);
     }
 
 

@@ -47,8 +47,8 @@
                 <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->Mesa)->cierre }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Turno</dt>
                 <dd class="col-lg-10 col-xl-9">{{ $mesaFolio->turno }}</dd>
-                <dt class="text-lg-end col-lg-2 col-xl-3">Numero</dt>
-                <dd class="col-lg-10 col-xl-9">{{ $mesaFolio->numero }}</dd>
+                <dt class="text-lg-end col-lg-2 col-xl-3">Folio</dt>
+                <dd class="col-lg-10 col-xl-9">{{ $mesaFolio->folio }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Presidente</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->presidente)->getApellidoNombre() }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Vocal 1</dt>
