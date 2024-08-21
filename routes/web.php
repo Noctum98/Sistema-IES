@@ -511,7 +511,8 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('/form/terminado/{carrera_id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
         'pre.inscripto'
     );
-
+    Route::get('files/{id}/{timecheck}',[PreinscripcionController::class,'vista_edit_files'])->name('pre.files');
+    Route::post('uploadFiles/{id}/{timecheck}',[PreinscripcionController::class,'subir_articulo7mo'])->name('pre.filesUpload');
     Route::get('/form/editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/admin/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
