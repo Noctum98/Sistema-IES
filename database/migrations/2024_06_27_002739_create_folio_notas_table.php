@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->integer('escrito')->nullable();
             $table->integer('oral')->nullable();
             $table->integer('definitiva')->nullable();
-            $table->unsignedInteger('operador_id');
+            $table->unsignedBigInteger('operador_id');
             $table->foreignId('acta_volante_id')->nullable();
             $table->foreignUuid('mesa_folio_id');
             $table->foreignId('alumno_id')->nullable();

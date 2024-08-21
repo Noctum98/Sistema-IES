@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\LibroService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,17 @@ class Libro extends Model
     public function actasVolantes(): HasMany
     {
         return $this->hasMany(ActaVolante::class,'libro_id');
+    }
+
+
+    /**
+     * Devuelve un array con los resultados de las actas volantes.
+     * Array asociativo con claves 'aprobados', 'desaprobados', 'ausentes'
+     * @return array
+     */
+    public function getResultadosActasVolantes(): array
+    {
+        return (new LibroService())->getDesgloseAprobados($this);
     }
 
 }

@@ -47,6 +47,7 @@ class MesaFolio extends Model
         'master_materia_id',
         'mesa_id',
         'folio',
+        'llamado',
         'operador_id',
         'presidente_id',
         'turno',

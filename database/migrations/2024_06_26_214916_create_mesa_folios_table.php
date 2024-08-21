@@ -15,14 +15,15 @@ return new class extends Migration {
             $table->integer('aprobados')->nullable();
             $table->integer('desaprobados')->nullable();
             $table->integer('ausentes')->nullable();
+            $table->integer('llamado')->nullable();
             $table->foreignUuid('libro_digital_id');
             $table->unsignedBigInteger('mesa_id')->nullable();
             $table->foreignUuid('master_materia_id');
-            $table->unsignedInteger('presidente_id')->nullable();
-            $table->unsignedInteger('vocal_1_id')->nullable();
-            $table->unsignedInteger('vocal_2_id')->nullable();
-            $table->unsignedInteger('coordinador_id')->nullable();
-            $table->unsignedInteger('operador_id')->nullable();
+            $table->unsignedBigInteger('presidente_id')->nullable();
+            $table->unsignedBigInteger('vocal_1_id')->nullable();
+            $table->unsignedBigInteger('vocal_2_id')->nullable();
+            $table->unsignedBigInteger('coordinador_id')->nullable();
+            $table->unsignedBigInteger('operador_id')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
