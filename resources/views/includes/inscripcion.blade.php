@@ -372,57 +372,6 @@
 				Confirmo mi preinscripción por Artículo 7
 			</label>
 		</div>
-		<hr>
-		<div class="d-none" id="archivos_articulo_septimo">
-			<div class="form-group">
-				<label for="primario_file">
-					Título de Nivel Primario:
-				</label>
-				<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
-
-				@error('primario_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-			<div class="form-group">
-				<label for="ctrabajo_file">
-					Certificado de Trabajo con firma y sello de quien lo emite
-				</label>
-				<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
-
-				@error('ctrabajo_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-			<div class="form-group">
-				<label for="curriculum_file">
-					Currículum Vitae (en formato PDF)
-				</label>
-				<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
-
-				@error('curriculum_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-			<div class="form-group">
-				<label for="nota_file">
-					Nota al Rector (en PDF)
-				</label>
-				<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
-
-				@error('nota_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-		</div>
 	</div>
 
 	<div class="form-group">

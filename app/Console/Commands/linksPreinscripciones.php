@@ -38,8 +38,7 @@ class linksPreinscripciones extends Command
      */
     public function handle()
     {
-        $carreras = Carrera::where('estado',null)
-        ->orWhere('estado',2)->orderBy('sede_id')->get();
+        $carreras = Carrera::where('estado',0)->orderBy('sede_id')->get();
 
         foreach($carreras as $carrera)
         {
