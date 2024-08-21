@@ -98,6 +98,11 @@ class PreinscripcionService
             $data['timecheck'] = time();
             $preinscripcion = Preinscripcion::create($data);
             Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+
+            if($preinscripcion->articulo_septimo)
+            {
+                Mail::to('articulo7@iesvu.edu.ar')->send(new PreEnrolledFormReceived($preinscripcion));
+            }
         }
 
         return $data;
