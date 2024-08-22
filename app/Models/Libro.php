@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\LibroService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,14 @@ class Libro extends Model
     public function actasVolantes(): HasMany
     {
         return $this->hasMany(ActaVolante::class,'libro_id');
+    }
+
+    public function getActasVolantes(): Collection
+    {
+        return $this->actasVolantes()->get()->sortBy(function ($acta, $key) {
+            return $acta->alumno->apellidos . ' ' . $acta->alumno->nombre;
+        });
+
     }
 
 

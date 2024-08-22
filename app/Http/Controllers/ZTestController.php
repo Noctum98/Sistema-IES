@@ -123,7 +123,6 @@ class ZTestController extends Controller
             $query->where('id', $sede->id);
         })->get();
 
-
         $error = [];
 
         foreach ($libros as $libro) {
@@ -211,201 +210,37 @@ class ZTestController extends Controller
                 }
 
 
+                $actas = $libro->getActasVolantes();
 
+                $orden = 0;
+                foreach ($actas as $acta) {
+                    /** @var ActaVolante $acta  */
+                    $orden++;
+                    $folioNota = FolioNota::where(
+                        ['alumno_id' => $acta->alumno_id],
+                        ['acta_volante_id' => $acta->id],
+                        ['mesa_folio_id' => $mesaFolio->id],
+                    )->first();
+                    if(!$folioNota){
+                        $escrito = $this->findNumber($acta->nota_escrito);
+                        $oral = $this->findNumber($acta->nota_oral);
+                        $definitiva = $this->findNumber($acta->promedio);
 
-//
-//
-//
-//                $masterMateria = $mesa->materia->master_materia_id;
-//                $data['resoluciones_id'] = $resolucion_id;
-//
-//                $folio = $libro->folio;
-//
-//                $fecha = $mesa->fecha;
-//                $presidente = $mesa->presidente_id;
-//                $vocal_1 = $mesa->primer_vocal_id;
-//                $vocal_2 = $mesa->segundo_vocal_id;
-//
-//                if ($libro->llamado > 2) {
-//                    $romano = $mesa->libro_segundo;
-//                    $folio = $mesa->folio_segundo;
-//                    $fecha = $mesa->fecha_segundo;
-//                    $presidente = $mesa->presidente_segundo_id;
-//                    $vocal_1 = $mesa->primer_vocal_segundo_id;
-//                    $vocal_2 = $mesa->segundo_vocal_segundo_id;
-//                }
-//
-//                $fecha = date('Y-m-d', strtotime($fecha));
-//                $data['number'] = $numero;
-//                $data['romanos'] = $romano;
-//                $data['resoluciones_id'] = $resolucion_id;
+                        $folioNota = FolioNota::create([
+                            'orden' => $orden,
+                            'permiso' => null,
+                            'escrito' => $escrito,
+                            'oral' => $oral,
+                            'definitiva' => $definitiva,
+                            'operador_id' => $user->id,
+                            'acta_volante_id' => $acta->id,
+                            'mesa_folio_id' => $mesaFolio->id,
+                            'alumno_id' => $acta->alumno_id,
+                        ]);
+                    }
 
+                }
 
-//                $desglose = $mesa->getResultadosMesa();
-//
-//
-
-//                if (!$mesaFolio->exists()) {
-//                    $mesaFolio = MesaFolio::create([
-//                        'aprobados' => $desglose['aprobados'],
-//                        'ausentes' => $desglose['ausentes'],
-//                        'desaprobados' => $desglose['desaprobados'],
-//                        'coordinador_id' => null,
-//                        'fecha' => $fecha,
-//                        'libro_digital_id' => $libroDigital->id,
-//                        'master_materia_id' => $mesa->materia->master_materia_id,
-//                        'mesa_id' => $mesa->id,
-//                        'folio' => $folio,
-//                        'operador_id' => $user->id,
-//                        'presidente_id' => $presidente,
-//                        'turno' => null,
-//                        'vocal_1_id' => $vocal_1,
-//                        'vocal_2_id' => $vocal_2
-//                    ]);
-//                }
-//
-//
-//            } else {
-//                $error[] = [
-//                    'Libro' => $libro->id,
-//                    'Caso' => 'No tiene mesa asociada'
-//                ];
-//            }
-//        }
-//
-//
-//        dd(count($libros), '192', $error);
-//        foreach ($mesas as $mesa) {
-//
-//            if ((count($mesa->libros()->get()) > 0) && (count($mesa->actasVolantes()->get()) > 0)) {
-//
-//                if ($mesa->materia->masterMateria) {
-//
-//                    /** @var Mesa $mesa */
-//                    $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
-//                    $masterMateria = $mesa->materia->master_materia_id;
-//                    $data['resoluciones_id'] = $resolucion_id;
-//
-//                    foreach ($mesa->libros()->get() as $libro) {
-//
-//                        /** @var Libro $libro */
-//                        $numero = $libro->numero;
-//                        $folio = $libro->folio;
-//                        $romano = $mesa->libro;
-//                        $fecha = $mesa->fecha;
-//                        $presidente = $mesa->presidente_id;
-//                        $vocal_1 = $mesa->primer_vocal_id;
-//                        $vocal_2 = $mesa->segundo_vocal_id;
-//
-//                        if ($libro->llamado > 2) {
-//                            $romano = $mesa->libro_segundo;
-//                            $folio = $mesa->folio_segundo;
-//                            $fecha = $mesa->fecha_segundo;
-//                            $presidente = $mesa->presidente_segundo_id;
-//                            $vocal_1 = $mesa->primer_vocal_segundo_id;
-//                            $vocal_2 = $mesa->segundo_vocal_segundo_id;
-//                        }
-//
-//                        if ($numero && $romano) {
-//
-//                            $fecha = date('Y-m-d', strtotime($fecha));
-//                            $data['number'] = $numero;
-//                            $data['romanos'] = $romano;
-//                            $data['resoluciones_id'] = $resolucion_id;
-//                            $data['libro_id'] = $libro->id;
-//
-//                            $libroDigital = LibroDigital::where(
-//                                [
-//                                    'resoluciones_id' => $resolucion_id,
-//                                    'number' => $numero,
-//                                    'sede_id' => $sede->id,
-//                                ]
-//                            )->first();
-//
-//                            if (!$libroDigital) {
-//                                $libroDigital = LibroDigital::create(
-//                                    $data
-//                                );
-//                            }
-//
-//                            $mesaFolio = $libroDigital->mesaFolios()->where(
-//                                ['numero' => $folio,
-//                                    'libro_digital_id' => $libroDigital->id
-//                                ]
-//                            )->first();
-//
-//                            if (!$mesaFolio) {
-//                                $mesaFolio = MesaFolio::create(
-//                                    [
-//                                        'fecha' => $fecha,
-//                                        'libro_digital_id' => $libroDigital->id,
-//                                        'master_materia_id' => $masterMateria,
-//                                        'mesa_id' => $mesa->id,
-//                                        'numero' => $folio,
-//                                        'operador_id' => $user->id,
-//                                        'presidente_id' => $presidente,
-//                                        'vocal_1_id' => $vocal_1,
-//                                        'vocal_2_id' => $vocal_2,
-//                                    ]
-//                                );
-//                            }
-//
-//
-//                        }
-//
-//                    }
-//                    $orden = 0;
-//                    foreach ($mesa->actasVolantes()->get() as $acta) {
-//                        $orden++;
-//                        /** @var ActaVolante $acta */
-//
-//                        if (!is_int((int)$acta->nota_escrito)) {
-//                            $escrito = null;
-//                        } else {
-//                            $escrito = (int)$acta->nota_escrito;
-//                        }
-//                        if (!is_int((int)$acta->nota_oral)) {
-//                            $oral = null;
-//                        } else {
-//                            $oral = (int)$acta->nota_oral;
-//                        }
-//                        if (!is_int((int)$acta->promedio)) {
-//                            $definitiva = null;
-//                        } else {
-//                            $definitiva = (int)$acta->promedio;
-//                        }
-//
-//                        $folioNota = FolioNota::where(
-//                            ['alumno_id' => $acta->alumno_id],
-//                            ['acta_volante_id' => $acta->id]
-//                        )->first();
-//
-//                        if (!$folioNota) {
-//
-//
-//                            $folioNota = FolioNota::create([
-//                                'orden' => $orden,
-//                                'permiso' => null,
-//                                'escrito' => $escrito,
-//                                'oral' => $oral,
-//                                'definitiva' => $definitiva,
-//                                'operador_id' => $user->id,
-//                                'alumno_id' => $acta->alumno_id,
-//                                'acta_volante_id' => $acta->id,
-//                                'mesa_folio_id' => $mesaFolio->id
-//
-//                            ]);
-//                        }
-//
-//
-//                    }
-//
-//                } else {
-//                    $error[] = [
-//                        'Procesar resoluciones' => $mesa->materia->carrera->resolucion_id,
-//                        'Materia' => $mesa->materia->id
-//                    ];
-//                }
             } else {
                 $error[] = [
                     'Mesa' => $mesa->id,
@@ -423,5 +258,17 @@ class ZTestController extends Controller
 
     }
 
+    /**
+     * @param $str
+     * @return string|null
+     */
+    private function findNumber($str)
+    {
+        if($str === '-'){
+            return null;
+        }
+        preg_match('/\d+/', $str, $matches);
+        return $matches[0] ?? null;
+    }
 
 }

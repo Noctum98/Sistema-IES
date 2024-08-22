@@ -68,4 +68,9 @@ class ActaVolante extends Model
             $query->where('id', $sede_id);
         })->get();
     }
+
+    public function alumno(): BelongsTo
+    {
+        return $this->belongsTo(Alumno::class, 'alumno_id');
+    }
 }
