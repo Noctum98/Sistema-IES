@@ -29,14 +29,22 @@
                     <tr>
                         <td>
                             {{ strtoupper($proceso->alumno->apellidos)}}, {{ucwords($proceso->alumno->nombres)}}
-
                         </td>
                         <td>{{ $proceso->ciclo_lectivo }}</td>
                         <td>
-                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$proceso->alumno_id, 'idCarrera' => $proceso->materia->carrera_id])}}"
+
+                        @if($proceso->inscripcion->cohorte)
+                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$proceso->alumno_id, 'idCarrera' => $proceso->materia->carrera_id,'cohorte'=>$proceso->inscripcion->cohorte])}}"
                            class="btn btn-sm btn-info">
                             <i class="fa fa-eye"></i> Ver Libreta
                         </a>
+                        @else
+                        <a href="#"
+                           class="btn btn-sm btn-info" disabled>
+                            <i class="fa fa-eye"></i> Ver Libreta
+                        </a>
+                        @endif
+                        
                         </td>
 
                     </tr>
