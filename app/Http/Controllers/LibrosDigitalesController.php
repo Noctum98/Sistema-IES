@@ -54,7 +54,6 @@ class LibrosDigitalesController extends Controller
             ->orderBy('number')
             ->paginate(25);
 
-
         return view('libros_digitales.index_sede', compact('librosDigitales', 'sedes'));
     }
 
