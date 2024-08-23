@@ -1041,6 +1041,8 @@ Route::group(['prefix' => 'libros', 'middleware' => ['auth']], static function (
 Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static function () {
     Route::get('/', [LibrosDigitalesController::class, 'index'])
         ->name('libros_digitales.libro_digital.index');
+    Route::get('/libro/sede', [LibrosDigitalesController::class, 'indexSede'])
+        ->name('libros_digitales.libro_digital.index_sede');
     Route::get('/create', [LibrosDigitalesController::class, 'create'])
         ->name('libros_digitales.libro_digital.create');
     Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
@@ -1187,10 +1189,14 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], static fun
 
 Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
     ->middleware('app.roles:admin');
+
 Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
     ->middleware('app.roles:admin');
+
 Route::get('z_test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
-Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
-Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+
+//Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+
+//Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
 
 

@@ -15,6 +15,7 @@ use App\Models\Nota;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\Sede;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -187,6 +188,14 @@ class ZTestController extends Controller
                         $presidente = $mesa->presidente_segundo_id;
                         $vocal_1 = $mesa->primer_vocal_segundo_id;
                         $vocal_2 = $mesa->segundo_vocal_segundo_id;
+                    }
+
+                    $existPresidente = User::where('id', $presidente)->first();
+                    $exist1 = User::where('id', $vocal_1)->first();
+                    $exist2 = User::where('id', $vocal_2)->first();
+
+                    if(!$existPresidente || !$exist1 || !$exist2) {
+                        dd($mesa, $presidente, $vocal_1, $vocal_2);
                     }
 
 

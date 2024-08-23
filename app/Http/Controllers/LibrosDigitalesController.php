@@ -37,6 +37,28 @@ class LibrosDigitalesController extends Controller
     }
 
     /**
+     * Display a listing of the libros digitales.
+     *
+     * @return View
+     */
+    public function indexSede(): View
+    {
+        $sedes= $this->getSedes();
+
+        $librosDigitales = LibroDigital::with(
+            'sede',
+            )
+            ->whereIn('sede_id', $sedes)
+            ->orderBy('sede_id')
+            ->orderBy('resoluciones_id')
+            ->orderBy('number')
+            ->paginate(25);
+
+
+        return view('libros_digitales.index_sede', compact('librosDigitales', 'sedes'));
+    }
+
+    /**
      * Show the form for creating a new libros digitales.
      *
      * @return View
