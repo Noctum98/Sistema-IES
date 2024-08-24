@@ -41,20 +41,30 @@ class LibrosDigitalesController extends Controller
      *
      * @return View
      */
-    public function indexSede(): View
+    public function indexSede(Request $request): View
     {
-        $sedes= $this->getSedes();
+        $sedes= $this->getSedes(true);
 
-        $librosDigitales = LibroDigital::with(
-            'sede',
+        $librosDigitales = [];
+        $sede_id = null;
+
+        if($request->has('sede_id')) {
+            $sede_id = $request->sede_id;
+            $sede = Sede::where('nombre', $request->sede_id)->get()->pluck('id')->toArray();
+
+            $librosDigitales = LibroDigital::with(
+                'sede',
             )
-            ->whereIn('sede_id', $sedes)
-            ->orderBy('sede_id')
-            ->orderBy('resoluciones_id')
-            ->orderBy('number')
-            ->paginate(25);
+                ->whereIn('sede_id', $sede)
+                ->orderBy('sede_id')
+                ->orderBy('resoluciones_id')
+                ->orderBy('number')
+                ->paginate(25);
+        }
 
-        return view('libros_digitales.index_sede', compact('librosDigitales', 'sedes'));
+
+
+        return view('libros_digitales.index_sede', compact('librosDigitales', 'sedes', 'sede_id'));
     }
 
     /**

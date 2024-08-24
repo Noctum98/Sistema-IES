@@ -70,6 +70,19 @@
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">Libros Digitales</h4>
         </div>
+        <div class="d-flex col-sm-12 justify-content-center align-items-center p-3">
+            <nav aria-label="navigation text-center">
+                <ul class="pagination">
+                    @foreach($sedes as $sede)
+                        <li class="page-item rounded {{ $sede === $sede_id ? 'active' : '' }} px-2">
+                            <a class="page-link" href="{{ route('libros_digitales.libro_digital.index_sede', ['sede_id' => $sede]) }}">
+                                {{ $sede }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </nav>
+        </div>
 
         @if(count($librosDigitales) === 0)
             <div class="card-body text-center">
