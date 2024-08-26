@@ -54,6 +54,11 @@
             color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
+        .page-item {
+            padding-left: 15px;
+            padding-right: 15px;
+            box-sizing: border-box;
+        }
 
     </style>
 
@@ -75,7 +80,8 @@
                 <ul class="pagination">
                     @foreach($sedes as $sede)
                         <li class="page-item rounded {{ $sede === $sede_id ? 'active' : '' }} px-2">
-                            <a class="page-link" href="{{ route('libros_digitales.libro_digital.index_sede', ['sede_id' => $sede]) }}">
+                            <a class="page-link"
+                               href="{{ route('libros_digitales.libro_digital.index_sede', ['sede_id' => $sede]) }}">
                                 {{ $sede }}
                             </a>
                         </li>
@@ -141,13 +147,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                            @if($anteriorResolucion !== $libroDigital->resoluciones->name)
-
-
-
-                            @endif
                             @php
                                 $anteriorResolucion = $libroDigital->resoluciones->id;
                             @endphp
@@ -158,6 +157,10 @@
                         </div>
 
                     @endif
+                <hr />
+                    <div class="d-flex justify-content-center gutter mt-3" style="font-size: 0.8em">
+                        {{ $librosDigitales->withQueryString()->links() }}
+                    </div>
 
             </div>
 @endsection
