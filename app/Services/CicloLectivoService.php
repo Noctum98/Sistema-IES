@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Materia;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\HigherOrderCollectionProxy;
 
 class CicloLectivoService
@@ -45,14 +46,16 @@ class CicloLectivoService
 
         if ($materia->getCierre($ciclo_lectivo)) {
             $cierre = Carbon::createFromFormat('Y-m-d', $materia->getCierre($ciclo_lectivo));
+            $cierre = $cierre->addDays($days);
         }
 
         if (!$cierre) {
-            $cierre = now();
+            $now = Carbon::now();
+            $cierre = $now->subMinutes(10);
+            Session::flash('alert_danger', 'Planilla bloqueada: Cargar la fecha de cierre del ciclo lectivo (Diferido).');
         }
 
-        return $cierre->addDays($days);
-
+        return $cierre;
     }
 
 
@@ -73,9 +76,5 @@ class CicloLectivoService
 
 
         return $dates->gte($fechaFin);
-
-
     }
-
-
 }
