@@ -107,6 +107,11 @@
                                                id="calificacion-procentaje-{{ $proceso->id }}"
                                                value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                                placeholder="%"
+
+                                               @if(!Auth::user()->hasMateria($proceso->materia_id))
+                                                disabled
+                                               @endif
+
                                                @if(!Session::has('profesor') or $proceso->cierre == 1)
                                                    disabled
                                             @endif
@@ -160,6 +165,11 @@
                                                id="calificacion-procentaje-recuperatorio-{{ $proceso->id }}"
                                                value="{{ $proceso->procesoCalificacion($calificacion->id)&& $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio ? $proceso->procesoCalificacion($calificacion->id)->porcentaje_recuperatorio : '' }}"
                                                placeholder="%"
+
+                                               @if(!Auth::user()->hasMateria($proceso->materia_id))
+                                                disabled
+                                               @endif
+
                                                @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id) || $proceso->cierre) disabled @endif
                                         >
 

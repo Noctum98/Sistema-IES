@@ -33,10 +33,17 @@
                     <td>{{ $inscripcion->fecha_ultima_acreditacion ?? 'No indicada'}}</td>
 
                     <td>
-                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $inscripcion->carrera_id])}}"
+                        @if($inscripcion->cohorte)
+                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $inscripcion->carrera_id,'cohorte'=>$inscripcion->cohorte])}}"
                            class="btn btn-sm btn-info">
                             <i class="fa fa-eye"></i> Ver Libreta
                         </a>
+                        @else
+                        <a href="#"
+                           class="btn btn-sm btn-info" disabled>
+                            <i class="fa fa-eye"></i> Ver Libreta
+                        </a>
+                        @endif
                     </td>
 
 

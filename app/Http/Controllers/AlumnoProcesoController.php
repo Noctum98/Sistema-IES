@@ -79,11 +79,12 @@ class AlumnoProcesoController extends Controller
      * @param int $idCarrera
      * @return Application|Factory|View|RedirectResponse
      */
-    public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera)
+    public function vistaProcesosPorCarrera(int $idAlumno, int $idCarrera, int $cohorte)
     {
 
         $pase = false;
         $alumno = Alumno::find($idAlumno);
+        
         if (Session::has('alumno')) {
 
             if (Auth::user()->id == $alumno->user->id) {
@@ -128,8 +129,13 @@ class AlumnoProcesoController extends Controller
         $alumnoCarrera = AlumnoCarrera::where([
             'alumno_id' => $alumno->id,
             'carrera_id' => $carrera->id,
-        ])->first();
+            'cohorte' => $cohorte
+        ])->latest()->first();
 
+        $cohortes = AlumnoCarrera::where([
+            'alumno_id' => $alumno->id,
+            'carrera_id' => $carrera->id,
+        ])->distinct('cohorte')->pluck('cohorte');
 
 
         if (!$alumnoCarrera) {
@@ -143,7 +149,8 @@ class AlumnoProcesoController extends Controller
         return view('proceso.alumnoCarrera', [
             'alumno' => $alumno,
             'carrera' => $carrera,
-            'ciclo_lectivo' => $ciclo_lectivo
+            'ciclo_lectivo' => $ciclo_lectivo,
+            'cohortes'=> $cohortes
         ]);
     }
 }

@@ -468,7 +468,14 @@ class Materia extends BaseModel
 
     public function getCierreDiferenciado(int $ciclo_lectivo)
     {
-        return $this->ciclosLectivosDiferenciados()->where('ciclo_lectivo_id', $ciclo_lectivo)->first()->cierre_ciclo;
+        $cierre = $this->ciclosLectivosDiferenciados()->where('ciclo_lectivo_id', $ciclo_lectivo)->first();
+
+        if($cierre && $cierre->cierre_ciclo)
+        {
+            return $cierre->cierre_ciclo;
+        }
+
+        return null;
     }
 
     /**

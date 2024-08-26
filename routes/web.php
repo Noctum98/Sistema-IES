@@ -576,7 +576,7 @@ Route::prefix('proceso')->group(function () {
 
     // Vista Alumno
     Route::get('/mis_procesos/{id}/{carrera}/{year}', [AlumnoProcesoController::class, 'vista_procesos'])->name('proceso.alumno');
-    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])->name('proceso.alumnoCarrera');
+    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}/{cohorte}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])->name('proceso.alumnoCarrera');
 
     // Acciones
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
