@@ -73,6 +73,8 @@ use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
+use App\Models\ActaVolante;
+use App\Models\AlumnoCarrera;
 use App\Models\Proceso;
 
 /*
@@ -716,7 +718,7 @@ Route::prefix('mesas')->group(function () {
 
 Route::resource('actasVolantes', ActaVolanteController::class);
 Route::prefix('actasVolantes')->group(function () {
-    Route::get('/anteriores/{materia_id}/{alumno_id}/', [ActaVolanteController::class, 'notasAnteriores'])->name(
+    Route::get('/anteriores/{materia_id}/{alumno_id}/{cohorte?}', [ActaVolanteController::class, 'notasAnteriores'])->name(
         'acta-volante.anteriores-notas'
     );
 });
@@ -1132,6 +1134,20 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
 Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+Route::get('test/updateActasVolantes',function(){
+    $actasVolantes = ActaVolante::where('inscripcion_id',null)->get();
+
+    foreach($actasVolantes as $actaVolante)
+    {
+        $inscripcion = AlumnoCarrera::where('alumno_id',$actaVolante->alumno_id)->latest()->first();
+
+        if($actaVolante->created_at->format('Y') < $inscripcion->cohorte)
+        {
+            $actaVolante->inscripcion_id = $inscripcion->id;
+            $actaVolante->update();
+        }
+    }
+});
 
 
 Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
