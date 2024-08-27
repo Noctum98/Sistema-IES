@@ -346,10 +346,10 @@
                             <span class="d-sm-none mr-5">
                                 Nota final
                             </span>
-                            @if($materia->getActaVolante($alumno->id,$alumnoCarrera) && !$materia->getActaVolante($alumno->id)->mesaAlumno()->first()->estado_baja)
+                            @if($materia->getActaVolante($alumno->id,$alumnoCarrera) && !$materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->estado_baja)
                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                             @include('componentes.colorNotas',[
-                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera->id)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota,
+                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota,
                             'nota' => $materia->getActaVolante($alumno->id,$alumnoCarrera)->promedio
                             ])
 
