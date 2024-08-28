@@ -1173,6 +1173,23 @@ Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], static func
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
 })->middleware('app.roles:admin');
 
+Route::get('test/updateActasVolantes', static function(){
+    $actasVolantes = ActaVolante::where('inscripcion_id',null)->get();
+
+    foreach($actasVolantes as $actaVolante)
+    {
+        $inscripcion = AlumnoCarrera::where('alumno_id',$actaVolante->alumno_id)->latest()->first();
+
+        if($actaVolante->created_at->format('Y') < $inscripcion->cohorte)
+        {
+            $actaVolante->inscripcion_id = $inscripcion->id;
+            $actaVolante->update();
+        }
+    }
+});
+
+Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+
 Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [TipoCarrerasController::class, 'index'])
         ->name('tipo_carreras.tipo_carrera.index');
@@ -1197,19 +1214,6 @@ Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros']
 Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
     ->middleware('app.roles:admin');
 
-Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
 
-Route::get('test/updateActasVolantes', static function(){
-    $actasVolantes = ActaVolante::where('inscripcion_id',null)->get();
 
-    foreach($actasVolantes as $actaVolante)
-    {
-        $inscripcion = AlumnoCarrera::where('alumno_id',$actaVolante->alumno_id)->latest()->first();
 
-        if($actaVolante->created_at->format('Y') < $inscripcion->cohorte)
-        {
-            $actaVolante->inscripcion_id = $inscripcion->id;
-            $actaVolante->update();
-        }
-    }
-});
