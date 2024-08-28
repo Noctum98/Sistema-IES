@@ -1197,8 +1197,6 @@ Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros']
 Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
     ->middleware('app.roles:admin');
 
-Route::get('z_test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
-
 Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
 
 Route::get('test/updateActasVolantes', static function(){
@@ -1215,7 +1213,3 @@ Route::get('test/updateActasVolantes', static function(){
         }
     }
 });
-
-//Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
-
-
