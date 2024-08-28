@@ -150,7 +150,9 @@ class AlumnoProcesoController extends Controller
             'alumno' => $alumno,
             'carrera' => $carrera,
             'ciclo_lectivo' => $ciclo_lectivo,
-            'cohortes'=> $cohortes
+            'cohortes'=> $cohortes,
+            'cohorte' => $cohorte,
+            'alumnoCarrera' => $alumnoCarrera
         ]);
     }
 }

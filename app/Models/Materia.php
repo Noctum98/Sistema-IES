@@ -197,7 +197,8 @@ class Materia extends BaseModel
     {
         return Proceso::where([
             'materia_id' => $this->id,
-            'alumno_id', $alumno_id,
+            'alumno_id',
+            $alumno_id,
             'ciclo_lectivo' => date('Y')
         ])->first();
     }
@@ -233,16 +234,18 @@ class Materia extends BaseModel
      * @param $alumno_id
      * @return mixed
      */
-    public function getEstadoAlumnoPorMateria($alumno_id): string
+    public function getEstadoAlumnoPorMateria($alumno_id, $inscripcion): string
     {
         $estado = '-';
 
         $proceso = Proceso::where(
             [
                 'materia_id' => $this->id,
-                'alumno_id' => $alumno_id
+                'alumno_id' => $alumno_id,
             ]
-        )->latest('created_at')->first();
+        )->whereHas('inscripcionCarrera',function($query) use ($inscripcion){
+            $query->where('cohorte',$inscripcion->cohorte);
+        })->latest('created_at')->first();
 
         if (!$proceso) {
             return $estado;
@@ -260,28 +263,34 @@ class Materia extends BaseModel
         return $proceso->estadoRegularidad() ?? '-';
     }
 
-    public function getActaVolante($alumno_id)
+    public function getActaVolante($alumno_id,$inscripcion)
     {
         $actaVolante = ActaVolante::where([
             'alumno_id' => $alumno_id,
-            'materia_id' => $this->id
-        ])->where('promedio', '>=', 4)->orderBy('created_at', 'DESC')
+            'materia_id' => $this->id,
+        ])->whereHas('inscripcionCarrera',function($query) use ($inscripcion){
+            $query->where('cohorte',$inscripcion->cohorte);
+        })->where('promedio', '>=', 4)->orderBy('created_at', 'DESC')
             ->first();
+
+        if($this->id == 94)
+        {
+            dd($actaVolante);
+        }
 
         if (!$actaVolante) {
             $actaVolante = ActaVolante::where([
                 'alumno_id' => $alumno_id,
-                'materia_id' => $this->id
-            ])->orderBy('created_at', 'DESC')
+                'materia_id' => $this->id,
+            ])->whereHas('inscripcionCarrera',function($query) use ($inscripcion){
+                $query->where('cohorte',$inscripcion->cohorte);
+            })->orderBy('created_at', 'DESC')
                 ->first();
         }
 
 
         if ($actaVolante) {
-            $created_at = date('Y', strtotime($actaVolante->created_at));
-            if ($created_at >= $actaVolante->inscripcionCarrera->cohorte) {
-                return $actaVolante;
-            }
+            return $actaVolante;
         }
 
         return null;
@@ -295,12 +304,14 @@ class Materia extends BaseModel
      * @return ActaVolante[]|Collection|null Devuelve una colección de ActaVolantes para el alumno especificado,
      *  o null si no se encuentran ActaVolantes.
      */
-    public function getActasVolantesConLibro($alumno_id)
+    public function getActasVolantesConLibro($alumno_id,$cohorte = null)
     {
         $actaVolantes = ActaVolante::where([
             'alumno_id' => $alumno_id,
-            'materia_id' => $this->id
-        ])
+            'materia_id' => $this->id,
+        ])->whereHas('inscripcionCarrera',function($query) use ($cohorte){
+            return $query->where('cohorte',$cohorte);
+        })
             ->whereNotNull('libro_id')
             ->orderBy('updated_at', 'DESC')
             ->get();
@@ -321,7 +332,6 @@ class Materia extends BaseModel
     public function materiasCorrelativas(): BelongsToMany
     {
         return $this->belongsToMany(Materia::class, 'materias_correlativas', 'materia_id', 'correlativa_id');
-
     }
 
     public function correlativasArray()
@@ -432,11 +442,10 @@ class Materia extends BaseModel
     public function getCierre(int $ciclo_lectivo)
     {
 
-       if($this->cierre_diferido){
-           return $this->getCierreDiferenciado($ciclo_lectivo);
-       }
-       return $this->getCierreRegular($ciclo_lectivo);
-
+        if ($this->cierre_diferido) {
+            return $this->getCierreDiferenciado($ciclo_lectivo);
+        }
+        return $this->getCierreRegular($ciclo_lectivo);
     }
 
     public function getCierreRegular(int $ciclo_lectivo)
@@ -469,17 +478,15 @@ class Materia extends BaseModel
                 ->where('habilitado', true)
                 ->get();
         } else {
-            if($this->masterMateria->tipo_unidad_curricular_id)
-            {
+            if ($this->masterMateria->tipo_unidad_curricular_id) {
                 if ($this->masterMateria->tipo_unidad_curricular->identificador == 2 || $this->masterMateria->tipo_unidad_curricular->identificador == 5) {
-                    $condiciones = CondicionMateria::where('habilitado',true)->get();
+                    $condiciones = CondicionMateria::where('habilitado', true)->get();
                 } else {
                     $condiciones = CondicionMateria::where('identificador', '!=', 'libre')
                         ->where('habilitado', true)
                         ->get();
                 }
             }
-           
         }
 
         return $condiciones;
@@ -489,8 +496,7 @@ class Materia extends BaseModel
     {
         $cierre = $this->ciclosLectivosDiferenciados()->where('ciclo_lectivo_id', $ciclo_lectivo)->first();
 
-        if($cierre && $cierre->cierre_ciclo)
-        {
+        if ($cierre && $cierre->cierre_ciclo) {
             return $cierre->cierre_ciclo;
         }
 

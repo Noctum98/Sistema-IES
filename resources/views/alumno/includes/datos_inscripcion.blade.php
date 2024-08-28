@@ -40,9 +40,10 @@
                         </a>
                         @else
                         <a href="#"
-                           class="btn btn-sm btn-info" disabled>
+                           class="btn btn-sm btn-info disabled" disabled>
                             <i class="fa fa-eye"></i> Ver Libreta
                         </a>
+                        <span class="text-danger d-block">Cohorte no indicada</span>
                         @endif
                     </td>
 

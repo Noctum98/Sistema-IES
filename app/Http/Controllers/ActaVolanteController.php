@@ -174,12 +174,12 @@ class ActaVolanteController extends Controller
         ]);
     }
 
-    public function notasAnteriores(Request $request, $materia_id, $alumno_id)
+    public function notasAnteriores(Request $request, $materia_id, $alumno_id,$cohorte = null)
     {
 
         $materia = Materia::find($materia_id);
 
-        $actas = $materia->getActasVolantesConLibro($alumno_id);
+        $actas = $materia->getActasVolantesConLibro($alumno_id,$cohorte);
 
         $actas = $actas->sortByDesc('created_at');
 
