@@ -1,66 +1,7 @@
 @extends('layouts.app-prueba')
 
 @section('content')
-    <style>
-
-        .card {
-            /*margin-top: 2em;*/
-            padding: 0.5em;
-            border-radius: 2em;
-            /*text-align: center;*/
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .card .card-header {
-
-            padding: 0.5em;
-            border-top-left-radius: 2em;
-            border-top-right-radius: 2em;
-            /*text-align: center;*/
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-
-
-        .card li {
-            list-style: none;
-        }
-
-        .card_img {
-            /*width: 65%;*/
-            /*border-radius: 50%;*/
-            border-radius: 2em;
-            margin: 0 auto 0 -50px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            background: #1a1e21;
-            color: white;
-            font-size: 6em;
-            font-weight: bold;
-        }
-
-        .card .card-title {
-            font-weight: 700;
-            font-size: 1.5em;
-        }
-
-        /*.card .btn {*/
-        /*    border-radius: 2em;*/
-        /*    background-color: teal;*/
-        /*    color: #ffffff;*/
-        /*    padding: 0.5em 1.5em;*/
-        /*}*/
-
-        .card .btn:hover {
-            background-color: rgba(0, 128, 128, 0.7);
-            color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-        .page-item {
-            padding-left: 15px;
-            padding-right: 15px;
-            box-sizing: border-box;
-        }
-
-    </style>
+    <x-style_libro_digital/>
 
     @if(Session::has('success_message'))
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -139,7 +80,7 @@
                                         </h5>
                                         <p class="card-text">
 
-                                            <a href="{{ route('libros_digitales.libro_digital.show', ['libroDigital' => $libroDigital->id]) }}"
+                                            <a href="{{ route('libros_digitales.libro_digital.showFolios', ['libroDigital' => $libroDigital->id]) }}"
                                                class="btn btn-primary">
                                                 <i class="fas fa-eye me-2"></i> Ver folios
                                             </a>

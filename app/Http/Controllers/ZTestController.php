@@ -11,13 +11,11 @@ use App\Models\MasterMateria;
 use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaFolio;
-use App\Models\Nota;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ZTestController extends Controller
 {
@@ -71,7 +69,7 @@ class ZTestController extends Controller
         return $resolucion;
     }
 
-    public function updateRegimenes(Request $request): string
+    public function updateRegimenes(): string
     {
         $resoluciones = Resoluciones::all();
 
@@ -120,7 +118,7 @@ class ZTestController extends Controller
     {
         $user = auth()->user();
         $mesas = $sede->getMesas();
-        $libros = Libro::whereHas('mesa.materia.carrera.sede', function ($query) use ($sede) {
+        $libros = Libro::whereHas('mesa.materia.carrera.sede', static function ($query) use ($sede) {
             $query->where('id', $sede->id);
         })->get();
 
@@ -134,10 +132,6 @@ class ZTestController extends Controller
 
             if ($mesa && $mesa->materia && $mesa->materia->masterMateria && $libro->actasVolantes && $libro->actasVolantes->count() > 0) {
 
-                /**
-                 * Primero buscamos y creamos el libro digital
-                 */
-
 
                 $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
                 $numero = $libro->numero;
@@ -148,6 +142,7 @@ class ZTestController extends Controller
                         'sede_id' => $sede->id,
                     ]
                 )->first();
+
 
                 if (!$libroDigital) {
                     $romano = $mesa->libro ?? $this->handler->convertirNumberToRoman($numero);
@@ -166,10 +161,9 @@ class ZTestController extends Controller
                     );
                 }
 
-
                 $mesaFolio = MesaFolio::where([
                     'libro_digital_id' => $libroDigital->id,
-                    'mesa_id' => $mesa->id,
+                    'mesa_id' => $libro->mesa_id,
                     'folio' => $libro->folio,
                 ])->first();
 
@@ -194,7 +188,7 @@ class ZTestController extends Controller
                     $exist1 = User::where('id', $vocal_1)->first();
                     $exist2 = User::where('id', $vocal_2)->first();
 
-                    if(!$existPresidente || !$exist1 || !$exist2) {
+                    if (!$existPresidente || !$exist1 || !$exist2) {
                         dd($mesa, $presidente, $vocal_1, $vocal_2);
                     }
 
@@ -204,7 +198,7 @@ class ZTestController extends Controller
                         'ausentes' => $desglose['ausentes'],
                         'desaprobados' => $desglose['desaprobados'],
                         'coordinador_id' => null,
-                        'fecha' =>  date('Y-m-d', strtotime($fecha)),
+                        'fecha' => date('Y-m-d', strtotime($fecha)),
                         'libro_digital_id' => $libroDigital->id,
                         'master_materia_id' => $mesa->materia->master_materia_id,
                         'mesa_id' => $mesa->id,
@@ -218,19 +212,21 @@ class ZTestController extends Controller
                     ]);
                 }
 
-
                 $actas = $libro->getActasVolantes();
 
                 $orden = 0;
                 foreach ($actas as $acta) {
-                    /** @var ActaVolante $acta  */
+                    /** @var ActaVolante $acta */
                     $orden++;
-                    $folioNota = FolioNota::where(
-                        ['alumno_id' => $acta->alumno_id],
-                        ['acta_volante_id' => $acta->id],
-                        ['mesa_folio_id' => $mesaFolio->id],
+
+                    $folioNota = FolioNota::where([
+                            'alumno_id' => $acta->alumno_id,
+                            'acta_volante_id' => $acta->id,
+                            'mesa_folio_id' => $mesaFolio->id
+                        ]
                     )->first();
-                    if(!$folioNota){
+
+                    if (!$folioNota) {
                         $escrito = $this->findNumber($acta->nota_escrito);
                         $oral = $this->findNumber($acta->nota_oral);
                         $definitiva = $this->findNumber($acta->promedio);
@@ -256,6 +252,7 @@ class ZTestController extends Controller
                     'Caso' => 'Mesa sin libro ni actas volantes'
                 ];
             }
+
         }
 
         return response()->json([
@@ -271,9 +268,9 @@ class ZTestController extends Controller
      * @param $str
      * @return string|null
      */
-    private function findNumber($str)
+    private function findNumber($str): ?string
     {
-        if($str === '-'){
+        if ($str === '-') {
             return null;
         }
         preg_match('/\d+/', $str, $matches);

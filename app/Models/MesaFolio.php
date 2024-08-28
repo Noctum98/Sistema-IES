@@ -192,7 +192,7 @@ class MesaFolio extends Model
 
     public function coordinador(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'coordinador');
+        return $this->belongsTo(User::class, 'coordinador_id');
     }
 
     public function libroRomanos():string
@@ -208,7 +208,7 @@ class MesaFolio extends Model
 
     public function folioNotas(): HasMany
     {
-        return $this->hasMany(FolioNota::class, 'mesa_folio_id');
+        return $this->hasMany(FolioNota::class, 'mesa_folio_id')->orderBy('orden');
     }
 
 }
