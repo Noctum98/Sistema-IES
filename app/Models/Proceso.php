@@ -95,7 +95,7 @@ class Proceso extends Model
         if (!$estado) {
             return 'No registrado';
         }
-        return $estado->regularidad;
+        return $estado->nombre;
     }
 
     public function etapaCampo(): HasOne

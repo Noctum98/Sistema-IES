@@ -4,6 +4,7 @@ $(document).ready(function () {
 
         var alumnoId = $(this).attr('data-alumno-id');
         var materiaId = $(this).attr('data-materia-id');
+        var cohorte = $("#cohorte").val();
 
         // Inicializar popover aquí
         var popover = new bootstrap.Popover(this, {
@@ -19,7 +20,7 @@ $(document).ready(function () {
         //Vinculamos el popover a nuestro elemento
         $(this).popover('show');
         let result = '';
-        fetch(`/actasVolantes/anteriores/${materiaId}/${alumnoId}`)
+        fetch(`/actasVolantes/anteriores/${materiaId}/${alumnoId}/${cohorte}`)
             .then(response => response.json())
             .then(data => {
 

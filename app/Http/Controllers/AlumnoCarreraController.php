@@ -26,6 +26,7 @@ class AlumnoCarreraController extends Controller
             'year' => ['required','numeric']
         ]);
 
+        $request['año'] = $request['year'];
         $inscripcion = AlumnoCarrera::find($inscripcion_id);
 
         if($request['cohorte'] > $inscripcion->ciclo_lectivo)
