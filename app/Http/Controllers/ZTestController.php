@@ -184,9 +184,21 @@ class ZTestController extends Controller
                         $vocal_2 = $mesa->segundo_vocal_segundo_id;
                     }
 
-                    $existPresidente = User::where('id', $presidente)->first();
-                    $exist1 = User::where('id', $vocal_1)->first();
-                    $exist2 = User::where('id', $vocal_2)->first();
+                    $existPresidente = true;
+                    $exist1 = true;
+                    $exist2 = true;
+                    if($presidente !== null){
+                        $existPresidente = User::where('id', $presidente)->first();
+                    }
+                    if($vocal_1 !== null){
+                        $exist1 = User::where('id', $vocal_1)->first();
+                    }
+                    if($vocal_2 !== null){
+                        $exist2 = User::where('id', $vocal_2)->first();
+                    }
+
+
+
 
                     if (!$existPresidente || !$exist1 || !$exist2) {
                         dd($mesa, $presidente, $vocal_1, $vocal_2);
