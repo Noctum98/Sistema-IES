@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\MesaService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,23 +41,36 @@ class Mesa extends Model
         'folio_segundo'
     ];
 
-    public function materia()
+    public function materia(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Materia', 'materia_id');
+        return $this->belongsTo(Materia::class, 'materia_id');
     }
 
-    public function mesa_inscriptos_total()
+    /**
+     * @return HasMany
+     */
+    public function mesa_inscriptos_total(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno');
+        return $this->hasMany(MesaAlumno::class);
     }
 
-    public function mesa_inscriptos()
+    /**
+     * @return HasMany
+     */
+    public function mesa_inscriptos(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where('estado_baja', false)->orderBy('apellidos', 'ASC');
+        return $this->hasMany(MesaAlumno::class)
+            ->where('estado_baja', false)
+            ->orderBy('apellidos', 'ASC');
     }
 
 
-    public function mesa_inscriptos_primero($orden = 1, $all = false)
+    /**
+     * @param int $orden
+     * @param bool $all
+     * @return Collection
+     */
+    public function mesa_inscriptos_primero(int $orden = 1, bool $all = false): Collection
     {
         $take = 26;
         $skip = $take * ($orden - 1);
@@ -70,7 +85,12 @@ class Mesa extends Model
         return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
-    public function mesa_inscriptos_segundo($orden = 1, $all = false)
+    /**
+     * @param int $orden
+     * @param bool $all
+     * @return Collection
+     */
+    public function mesa_inscriptos_segundo(int $orden = 1, bool $all = false): Collection
     {
         $take = 26;
         $skip = $take * ($orden - 1);
@@ -79,27 +99,39 @@ class Mesa extends Model
             ->where(['estado_baja' => false, 'segundo_llamado' => true]);
         if (!$all) {
             $inscriptos = $inscriptos->skip($skip)
-            ->take($take);
+                ->take($take);
         }
 
         return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
-    public function bajas_primero()
+    /**
+     * @return HasMany
+     */
+    public function bajas_primero(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => false]);
+        return $this->hasMany(MesaAlumno::class)->where(['estado_baja' => true, 'segundo_llamado' => false]);
     }
 
-    public function bajas_segundo()
+    /**
+     * @return HasMany
+     */
+    public function bajas_segundo(): HasMany
     {
-        return $this->hasMany('App\Models\MesaAlumno')->where(['estado_baja' => true, 'segundo_llamado' => true]);
+        return $this->hasMany(MesaAlumno::class)->where(['estado_baja' => true, 'segundo_llamado' => true]);
     }
 
-    public function instancia()
+    /**
+     * @return BelongsTo
+     */
+    public function instancia(): BelongsTo
     {
         return $this->belongsTo(Instancia::class, 'instancia_id');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function comision(): BelongsTo
     {
         return $this->belongsTo(Comision::class, 'comision_id');
@@ -140,7 +172,12 @@ class Mesa extends Model
         return $this->hasMany(Libro::class, 'mesa_id');
     }
 
-    public function libro($llamado, $orden = 1)
+    /**
+     * @param $llamado
+     * @param int $orden
+     * @return Libro
+     */
+    public function libro($llamado, int $orden = 1): Libro
     {
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
@@ -202,9 +239,88 @@ class Mesa extends Model
             ->where('mesas.instancia_id', $instancia)
             ->where('carrera_user.user_id', $user->id)
             ->groupBy('carreras.id', 'carreras.nombre', 'carreras.resolucion', 'sedes.nombre')
-            ->orderBy('sedes.nombre', 'asc')
+            ->orderBy('sedes.nombre')
             //            ->orderBy('materias.nombre','asc')
             //            ->getQuery()->dd();
             ->get();
     }
+
+    public function mesaFolios(): HasMany
+    {
+        return $this->hasMany(MesaFolio::class, 'mesa_id');
+    }
+
+    public function foliosByMesa()
+    {
+        return MesaFolio::where('mesa_id', $this->id)->get();
+    }
+
+
+    public function inscripciones(): HasMany
+    {
+        return $this->hasMany(MesaAlumno::class, 'mesa_id');
+    }
+
+
+    public function inscripcionesByMesa()
+    {
+        return MesaAlumno::where('mesa_id', $this->id)->get();
+    }
+
+
+    public function inscripcionesByMesaByAlumno($alumno_id): MesaAlumno
+    {
+        return MesaAlumno::where('mesa_id', $this->id)->where('alumno_id', $alumno_id)->first();
+    }
+
+    public function inscripcionesByMesaByAlumnoByCarreraByMateria($alumno_id, $carrera_id, $materia_id): MesaAlumno
+    {
+        return MesaAlumno::where('mesa_id', $this->id)
+            ->where('alumno_id', $alumno_id)->where('carrera_id', $carrera_id)
+            ->where('materia_id', $materia_id)->first();
+    }
+
+    public function inscripcionesByMesaByAlumnoByCarrera($alumno_id, $carrera_id): MesaAlumno
+    {
+        return MesaAlumno::where('mesa_id', $this->id)
+            ->where('alumno_id', $alumno_id)->where('carrera_id', $carrera_id)->first();
+    }
+
+
+    public function actasVolantesByMesaByAlumno($alumno_id): Collection
+    {
+        return MesaAlumno::where('mesa_id', $this->id)
+            ->where('alumno_id', $alumno_id)->with('actas_volantes')->first()->actasVolantes;
+    }
+
+    public function actasVolantes(): HasMany
+    {
+        return $this->hasMany(ActaVolante::class, 'mesa_id')
+            ->select('actas_volantes.*')
+            ->join('alumnos', 'actas_volantes.alumno_id', 'alumnos.id')
+            ->orderBy('alumnos.apellidos', 'ASC')
+            ->orderBy('alumnos.nombres', 'ASC');
+    }
+
+    /**
+     * Recupera los resultados de una mesa.
+     *
+     *  Esta función toma una instancia de Mesa como parámetro y devuelve una matriz
+     *  que contiene los resultados de la mesa.
+     *
+     *  Esto se hace creando una nueva instancia de la clase MesaService y llamando
+     *  su método getDesgloseAprobados, pasando la instancia de Mesa como argumento.
+     *  El método getDesgloseAprobados se encarga de calcular y organizar
+     *  los resultados de la mesa.
+     *
+     * @return array Un Array qye contiene los resultados de la mesa.
+     */
+    public function getResultadosMesa(): array
+    {
+        return (new MesaService())->getDesgloseAprobados($this);
+    }
+
+
+
+
 }

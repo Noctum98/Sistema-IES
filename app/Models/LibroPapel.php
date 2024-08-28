@@ -19,6 +19,11 @@ class LibroPapel extends Model
      */
     protected $table = 'libros_papeles';
 
+    /**
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;

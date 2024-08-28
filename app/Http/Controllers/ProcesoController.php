@@ -32,7 +32,7 @@ class ProcesoController extends Controller
     /**
      * @var CicloLectivoService
      */
-    private $cicloLectivoService;
+    private CicloLectivoService $cicloLectivoService;
     private CargoProcesoService $cargoProcesoService;
 
     /**
@@ -154,6 +154,8 @@ class ProcesoController extends Controller
         if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
+        $procesos->orderBy('alumnos.apellidos');
+        $procesos = $procesos->get();
 
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
@@ -262,7 +264,7 @@ class ProcesoController extends Controller
         if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
-        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos->orderBy('alumnos.apellidos');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
@@ -304,7 +306,7 @@ class ProcesoController extends Controller
         if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
-        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos->orderBy('alumnos.apellidos');
         $procesos = $procesos->get();
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
@@ -357,7 +359,7 @@ class ProcesoController extends Controller
         return redirect()->route('proceso.admin', [
             'alumno_id' => $alumno->id,'carrera_id'=>$carrera->id,'ciclo_lectivo'=>$ciclo_lectivo
         ])->with([
-            'alert_warning' => 'Incripción eliminada correctamente.',
+            'alert_warning' => 'Inscripción eliminada correctamente.',
         ]);
     }
 
@@ -384,7 +386,7 @@ class ProcesoController extends Controller
             ];
         }
 
-        return response()->json($data, 200);
+        return response()->json($data);
     }
 
     public function cambiaEstado(Request $request): JsonResponse
@@ -403,7 +405,7 @@ class ProcesoController extends Controller
             'estado' => $proceso->estado,
         ];
 
-        return response()->json($data, 200);
+        return response()->json($data);
     }
 
     /**
@@ -494,7 +496,7 @@ class ProcesoController extends Controller
         }
 
 
-        return response()->json($proceso, 200);
+        return response()->json($proceso);
     }
 
     /**
@@ -638,7 +640,7 @@ class ProcesoController extends Controller
     {
         $proceso = Proceso::find($id);
 
-        return response()->json($proceso,200);
+        return response()->json($proceso);
     }
 
     /**
@@ -662,7 +664,7 @@ class ProcesoController extends Controller
             });
         }
 
-        $procesos->orderBy('alumnos.apellidos', 'asc');
+        $procesos->orderBy('alumnos.apellidos');
 
         return $procesos->get();
     }

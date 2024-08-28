@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LibroDigital;
 use App\Models\LibroPapel;
+use App\Models\MesaFolio;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
@@ -37,11 +38,38 @@ class LibrosDigitalesController extends Controller
     }
 
     /**
+     * Display a listing of the libros digitales.
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function indexSede(Request $request): View
+    {
+        $sedes = $this->getSedes(true);
+
+        $sede_id = $request->has('sede_id') ?$request->get('sede_id'): reset($sedes);
+
+        $sede = Sede::where('nombre', $sede_id)->get()->pluck('id')->toArray();
+
+        $librosDigitales = LibroDigital::with(
+            'sede',
+        )
+            ->whereIn('sede_id', $sede)
+            ->orderBy('sede_id')
+            ->orderBy('resoluciones_id')
+            ->orderBy('number')
+            ->paginate(25);
+
+
+        return view('libros_digitales.index_sede', compact('librosDigitales', 'sedes', 'sede_id'));
+    }
+
+    /**
      * Show the form for creating a new libros digitales.
      *
      * @return View
      */
-    public function create()
+    public function create(): View
     {
         $Sedes = $this->getSedes(true);
         $sedesId = $this->getSedes();
@@ -60,7 +88,7 @@ class LibrosDigitalesController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 
         $data = $this->getData($request);
@@ -81,11 +109,34 @@ class LibrosDigitalesController extends Controller
      *
      * @return View
      */
-    public function show(string $id)
+    public function show(string $id): View
     {
         $librosDigitales = LibroDigital::with('resoluciones', 'sede', 'user', 'user')->findOrFail($id);
 
         return view('libros_digitales.show', compact('librosDigitales'));
+    }
+
+    /**
+     * Display the specified libros digitales.
+     *
+     * @param string $id
+     *
+     * @return View
+     */
+    public function showFolios(string $id): View
+    {
+        $libroDigital = LibroDigital::with('resoluciones', 'sede', 'user', 'user')->findOrFail($id);
+
+
+        $folios = MesaFolio::with(
+            'user', 'libroDigital', 'masterMateria', 'mesa'
+        )
+            ->where('libro_digital_id', $id)
+            ->orderBy('folio')
+            ->paginate(1);
+
+
+        return view('libros_digitales.showFolios', compact('libroDigital', 'folios'));
     }
 
     /**
