@@ -23,6 +23,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -40,11 +41,11 @@ class ProcesoModularController extends Controller
     /**
      * @var CicloLectivoService
      */
-    private $cicloLectivoService;
+    private CicloLectivoService $cicloLectivoService;
     /**
      * @var CargoProcesoService
      */
-    private $cargoProcesoService;
+    private CargoProcesoService $cargoProcesoService;
 
     /**
      * @param CicloLectivoService $cicloLectivoService
@@ -323,7 +324,7 @@ class ProcesoModularController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -333,8 +334,8 @@ class ProcesoModularController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -344,8 +345,8 @@ class ProcesoModularController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function show(ProcesoModular $procesoModular)
     {
@@ -355,8 +356,8 @@ class ProcesoModularController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function edit(ProcesoModular $procesoModular)
     {
@@ -366,9 +367,9 @@ class ProcesoModularController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function update(Request $request, ProcesoModular $procesoModular)
     {
@@ -378,8 +379,8 @@ class ProcesoModularController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\ProcesoModular $procesoModular
-     * @return \Illuminate\Http\Response
+     * @param ProcesoModular $procesoModular
+     * @return Response
      */
     public function destroy(ProcesoModular $procesoModular)
     {
@@ -440,12 +441,10 @@ class ProcesoModularController extends Controller
         // Obtener las calificaciones de la relación entre el cargo y la materia
         // Asume que las relaciones están definidas en tus modelos
         // Ordena las calificaciones por el campo 'tipo_id'.
-        $calificaciones = $cargo->calificacionesCargo()
+        return $cargo->calificacionesCargo()
             ->where('materia_id', $materia_id)
             ->where('ciclo_lectivo', $ciclo_lectivo)
             ->orderBy('tipo_id')->get();
-
-        return $calificaciones;
     }
 
     /**
@@ -492,7 +491,7 @@ class ProcesoModularController extends Controller
         }
 
 
-        return response()->json($proceso, 200);
+        return response()->json($proceso);
     }
 
     /**

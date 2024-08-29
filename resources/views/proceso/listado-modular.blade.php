@@ -126,13 +126,13 @@
                             Alumno
                         </th>
                         @if(count($calificaciones) > 0)
-                            @foreach($calificaciones as $calificacion)
+                            @foreach($calificaciones as $califica)
                                 <th class="text-center">
-                                    <a href="{{ route('calificacion.create',$calificacion->id) }}"
-                                       class="text-white" title="{{$calificacion->description}}"
+                                    <a href="{{ route('calificacion.create',$califica->id) }}"
+                                       class="text-white" title="{{$califica->description}}"
                                        data-bs-toggle="tooltip"
                                        data-bs-placement="top"
-                                    >{{$calificacion->nombre}}</a></th>
+                                    >{{$califica->nombre}}</a></th>
                             @endforeach
                         @else
                             <th class="text-center">

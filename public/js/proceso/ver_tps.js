@@ -3,8 +3,8 @@ $(document).ready(function () {
         $(".modals").on("click", function (e) {
             e.preventDefault();
             $(".modal-body").html("");
-            var id = $(this).attr('id').split('-');
-            var proceso_id = id[2];
+            const id = $(this).attr('id').split('-');
+            const proceso_id = id[2];
 
             let url = "/proceso/procesosCalificaciones/"+proceso_id;
 
@@ -19,13 +19,14 @@ $(document).ready(function () {
                     $("#modalh-spin-"+proceso_id).addClass("d-none");
 
                     response.forEach(trabajo => {
-                        var porcentaje = '%';
+                        let color;
+                        let porcentaje = '%';
 
                         if(trabajo.nota >= 6)
                         {
-                            var color = "badge-success";
+                            color = "badge-success";
                         }else{
-                            var color = "badge-danger";
+                            color = "badge-danger";
                         }
 
                         if(trabajo.porcentaje == -1)

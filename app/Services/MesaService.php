@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\ActaVolante;
+use App\Models\Mesa;
+use App\Models\Nota;
 use App\Models\Parameters\Calendario;
 use Carbon\Carbon;
 
@@ -32,9 +34,9 @@ class MesaService
                             }
                         }
                     } else {
-                        
+
                         $inscripcion->update(['mesa_id' => $mesa->id, 'segundo_llamado' => 0]);
-                        
+
                     }
                 }
 
@@ -121,20 +123,20 @@ class MesaService
         $primer_llamado_cierre = false;
         $segundo_llamado_cierre = false;
 
-        
+
         if ($fechaPrimerLlamado->addHours($hours)->isPast()) {
-            
+
             $primer_llamado_cierre = true;
             $mesa->cierre_profesor = true;
          }
-        
+
         if ($fechaSegundoLlamado && $fechaSegundoLlamado->addHours($hours)->isPast()) {
-            
+
             $segundo_llamado_cierre = true;
             $mesa->cierre_profesor_segundo = true;
         }
         // $mesa->update();
-        
+
         return [
             'cierre_primer_llamado' => $primer_llamado_cierre,
             'cierre_segundo_llamado' => $segundo_llamado_cierre
@@ -155,4 +157,41 @@ class MesaService
     {
         return $mesa->materia->carrera->sede;
     }
+
+    /**
+     * Get the desglose of aprobados, desaprobados and ausentes for a mesa
+     *
+     * @param Mesa $mesa
+     * @return array
+     */
+    public function getDesgloseAprobados(Mesa $mesa): array
+    {
+        $desgloseAprobados = [];
+
+        // Get the nota aprobado for the nota year
+        $notaAprobado = Nota::where('year', $mesa->instancia->year_nota)
+            ->where('min' , '60')->first();
+
+        // Get all the actas volantes for the current mesa
+        $actasVolantes = $this->getActasVolantes($mesa);
+
+
+        // Count the actas volantes with promedio >= nota aprobado
+        // and add it to the desglose
+        $desgloseAprobados['aprobados'] = $actasVolantes->where('promedio', '>=', $notaAprobado->valor)->count();
+
+
+        // Count the actas volantes with promedio between 0 and nota aprobado
+        // and add it to the desglose
+        $desgloseAprobados['desaprobados'] = $actasVolantes->whereBetween('promedio', [0, $notaAprobado->valor])
+            ->count();
+
+
+        // Count the actas volantes with promedio = -1 (ausentes)
+        // and add it to the desglose
+        $desgloseAprobados['ausentes'] = $actasVolantes->where('promedio', '=', -1)->count();
+
+        return $desgloseAprobados;
+    }
+
 }
