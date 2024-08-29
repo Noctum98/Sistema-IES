@@ -27,6 +27,9 @@ class Libro extends Model
     public function getActasVolantes(): Collection
     {
         return $this->actasVolantes()->get()->sortBy(function ($acta, $key) {
+            if(!$acta->alumno){
+                dd($acta);
+            }
             return $acta->alumno->apellidos . ' ' . $acta->alumno->nombre;
         });
 
