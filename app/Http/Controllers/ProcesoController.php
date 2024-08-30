@@ -228,7 +228,7 @@ class ProcesoController extends Controller
         }
 
         $fecha_perentoria = $this->cicloLectivoService->getCierreDate($materia, $ciclo_lectivo);
-        $modulo_cerrado = $this->cicloLectivoService->getCierreBoolean($materia_id, $ciclo_lectivo, now());
+        $modulo_cerrado = $this->cicloLectivoService->getCierreBoolean($materia, $ciclo_lectivo, now());
 
 
         return view('proceso.listado-modular', [
