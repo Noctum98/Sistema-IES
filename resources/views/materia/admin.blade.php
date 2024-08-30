@@ -127,7 +127,7 @@
                                 @if($materia->año == 2)
                                     <tr style="cursor:pointer;">
                                         <td>
-                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            {{ $materia->nombre }} (<small>{{$materia->masterMateria ? $materia->masterMateria->regimen->name : $materia->regimen}}</small>)
                                             <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
                                                data-url="{{ route('materia.show', $materia->id) }}">
                                                 <i class="fa fa-eye text-info"></i>
