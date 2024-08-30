@@ -52,4 +52,25 @@ class ActaVolante extends Model
     {
         return $this->belongsTo(Instancia::class, 'instancia_id');
     }
+
+    public function getLibro(): BelongsTo
+    {
+        return $this->belongsTo(Libro::class, 'libro_id');
+    }
+
+    /**
+     * @param int $sede_id
+     * @return ActaVolante[]
+     */
+    public function getActasVolantesBySede(int $sede_id): array
+    {
+        return  self::whereHas('mesa.materia.carrera.sede', static function ($query) use($sede_id) {
+            $query->where('id', $sede_id);
+        })->get();
+    }
+
+    public function alumno(): BelongsTo
+    {
+        return $this->belongsTo(Alumno::class, 'alumno_id');
+    }
 }

@@ -45,9 +45,14 @@ class CargoProceso extends Model
         return $mesas->get();
     }
 
-    public function getCargosProcesosByCicloLectivo(int $cargo_id, int $ciclo_lectivo)
+    /**
+     * @param int $cargo_id
+     * @param int $ciclo_lectivo
+     * @return CargoProceso
+     */
+    public function getCargosProcesosByCicloLectivo(int $cargo_id, int $ciclo_lectivo): CargoProceso
     {
-        $mesas = CargoProceso::select('cargo_procesos.*')
+        return CargoProceso::select('cargo_procesos.*')
             ->where('cargo_id', $cargo_id)
             ->where('ciclo_lectivo', $ciclo_lectivo);
 

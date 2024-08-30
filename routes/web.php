@@ -73,9 +73,10 @@ use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
+use App\Http\Controllers\MesaFoliosController;
+use App\Http\Controllers\FolioNotasController;
 use App\Models\ActaVolante;
 use App\Models\AlumnoCarrera;
-use App\Models\Proceso;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,12 +104,12 @@ Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'a
     'home.ayuda.visual'
 );
 
-Route::get('/', function () {
+Route::get('/', static function () {
     if (Auth::user()) {
         return redirect('/home');
-    } else {
-        return view('auth.login');
     }
+
+    return view('auth.login');
 });
 
 // Rutas acreditaciones
@@ -126,7 +127,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/calificaciones/{materia_id}/cargo', [AdminController::class, 'vista_calificaciones_cargos'])->name('admin.calificaciones.cargos');
 });
 
-Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], static function () {
     Route::get('/', [ActaVolanteAdminController::class, 'index'])
         ->name('admin.actas_volantes.index');
     Route::get('/listado', [ActaVolanteAdminController::class, 'listado'])
@@ -145,7 +146,25 @@ Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], fun
         ->name('admin.actas_volantes.destroy');
 });
 
-Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibrariesAdminController::class, 'index'])
+        ->name('admin-libraries.library.index');
+    Route::get('/create', [LibrariesAdminController::class, 'create'])
+        ->name('admin-libraries.library.create');
+    Route::get('/show/{library}', [LibrariesAdminController::class, 'show'])
+        ->name('admin-libraries.library.show');
+    Route::get('/{library}/edit', [LibrariesAdminController::class, 'edit'])
+        ->name('admin-libraries.library.edit');
+    Route::post('/', [LibrariesAdminController::class, 'store'])
+        ->name('admin-libraries.library.store');
+    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
+        ->name('admin-libraries.library.update');
+    Route::delete('/library/{library}', [LibrariesAdminController::class, 'destroy'])
+        ->name('admin-libraries.library.destroy');
+});
+
+
+Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], static function () {
     Route::get('/', [AdminManagersController::class, 'index'])
         ->name('admin_managers.admin_manager.index');
     Route::get('/listado', [AdminManagersController::class, 'listado'])
@@ -164,7 +183,7 @@ Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function 
         ->name('admin_managers.admin_manager.destroy');
 });
 
-Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [TipoMateriasController::class, 'index'])
         ->name('tipo_materias.tipo_materia.index');
     Route::get('/create', [TipoMateriasController::class, 'create'])
@@ -209,7 +228,7 @@ Route::prefix('alumnos')->group(function () {
 });
 
 // Avisos del tipo avisador general
-Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], static function () {
     Route::get('/', [AvisoController::class, 'index'])
         ->name('aviso.aviso.index');
     Route::get('/create', [AvisoController::class, 'create'])
@@ -228,7 +247,7 @@ Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
 
 // Bibliotecas
 
-Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], static function () {
     Route::get('/', [LibrariesController::class, 'index'])
         ->name('libraries.library.index');
     Route::get('/show/{library}', [LibrariesController::class, 'show'])
@@ -741,7 +760,7 @@ Route::prefix('matriculacion')->group(function () {
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
         'matriculacion.checked'
     );
-    Route::get('finalizada', function () {
+    Route::get('finalizada', static function () {
         return view('matriculacion.card_email_check');
     });
     Route::post('/carrera/{id}/{year}', [MatriculacionController::class, 'store'])->name('matriculacion.store');
@@ -876,7 +895,7 @@ Route::prefix('usuarios')->group(function () {
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
     ->name('api-docs.condicion_materias.condicion_materia.index');
 
-Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [AgrupadaMateriasController::class, 'index'])
         ->name('agrupada_materias.agrupada_materia.index');
     Route::get('/create', [AgrupadaMateriasController::class, 'create'])
@@ -902,7 +921,7 @@ Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], functi
 });
 
 
-Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
         ->name('condicion_carreras.condicion_carrera.index');
     Route::get('/create', [CondicionCarrerasController::class, 'create'])
@@ -919,7 +938,7 @@ Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], funct
         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
 });
 
-Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [CondicionMateriasController::class, 'index'])
         ->name('condicion_materias.condicion_materia.index');
     Route::get('/create', [CondicionMateriasController::class, 'create'])
@@ -936,7 +955,7 @@ Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], funct
         ->name('condicion_materias.condicion_materia.destroy');
 });
 
-Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']], static function () {
     Route::get('/', [CorrelatividadAgrupadasController::class, 'index'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.index');
     Route::get('/create', [CorrelatividadAgrupadasController::class, 'create'])
@@ -953,7 +972,7 @@ Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']],
         ->name('correlatividad_agrupadas.correlatividad_agrupada.destroy');
 });
 
-Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [EstadoCarrerasController::class, 'index'])
         ->name('estado_carreras.estado_carrera.index');
     Route::get('/create', [EstadoCarrerasController::class, 'create'])
@@ -970,7 +989,7 @@ Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], function
         ->name('estado_carreras.estado_carrera.destroy');
 });
 
-Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], function () {
+Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], static function () {
     Route::get('/', [EstadoResolucionesController::class, 'index'])
         ->name('estado_resoluciones.estado_resoluciones.index');
     Route::get('/create', [EstadoResolucionesController::class, 'create'])
@@ -987,24 +1006,24 @@ Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], fun
         ->name('estado_resoluciones.estado_resoluciones.destroy');
 });
 
-Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], function () {
-    Route::get('/', [LibroPapelController::class, 'index'])
-        ->name('libro_papel.libro_papel.index');
-    Route::get('/create', [LibroPapelController::class, 'create'])
-        ->name('libro_papel.libro_papel.create');
-    Route::get('/show/{libroPapel}', [LibroPapelController::class, 'show'])
-        ->name('libro_papel.libro_papel.show');
-    Route::get('/{libroPapel}/edit', [LibroPapelController::class, 'edit'])
-        ->name('libro_papel.libro_papel.edit');
-    Route::post('/', [LibroPapelController::class, 'store'])
-        ->name('libro_papel.libro_papel.store');
-    Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
-        ->name('libro_papel.libro_papel.update');
-    Route::delete('/libro_papel/{libroPapel}', [LibroPapelController::class, 'destroy'])
-        ->name('libro_papel.libro_papel.destroy');
+Route::group(['prefix' => 'folio_notas', 'middleware' => ['auth']], static function () {
+    Route::get('/', [FolioNotasController::class, 'index'])
+        ->name('folio_notas.folio_nota.index');
+    Route::get('/create', [FolioNotasController::class, 'create'])
+        ->name('folio_notas.folio_nota.create');
+    Route::get('/show/{folioNota}',[FolioNotasController::class, 'show'])
+        ->name('folio_notas.folio_nota.show');
+    Route::get('/{folioNota}/edit',[FolioNotasController::class, 'edit'])
+        ->name('folio_notas.folio_nota.edit');
+    Route::post('/', [FolioNotasController::class, 'store'])
+        ->name('folio_notas.folio_nota.store');
+    Route::put('folio_nota/{folioNota}', [FolioNotasController::class, 'update'])
+        ->name('folio_notas.folio_nota.update');
+    Route::delete('/folio_nota/{folioNota}',[FolioNotasController::class, 'destroy'])
+        ->name('folio_notas.folio_nota.destroy');
 });
 
-Route::group(['prefix' => 'libros', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'libros', 'middleware' => ['auth']], static function () {
     Route::get('/', [LibrosController::class, 'index'])
         ->name('libros.libros.index');
     Route::get('/create', [LibrosController::class, 'create'])
@@ -1021,13 +1040,19 @@ Route::group(['prefix' => 'libros', 'middleware' => ['auth']], function () {
         ->name('libros.libros.destroy');
 });
 
-Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static function () {
     Route::get('/', [LibrosDigitalesController::class, 'index'])
         ->name('libros_digitales.libro_digital.index');
+    Route::get('/libro/sede', [LibrosDigitalesController::class, 'indexSede'])
+        ->name('libros_digitales.libro_digital.index_sede');
+    Route::get('/libro/carrera', [LibrosDigitalesController::class, 'indexCarrera'])
+        ->name('libros_digitales.libro_digital.index_carrera');
     Route::get('/create', [LibrosDigitalesController::class, 'create'])
         ->name('libros_digitales.libro_digital.create');
     Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
         ->name('libros_digitales.libro_digital.show');
+    Route::get('/showFolios/{libroDigital}', [LibrosDigitalesController::class, 'showFolios'])
+        ->name('libros_digitales.libro_digital.showFolios');
     Route::get('/{libroDigital}/edit', [LibrosDigitalesController::class, 'edit'])
         ->name('libros_digitales.libro_digital.edit');
     Route::post('/', [LibrosDigitalesController::class, 'store'])
@@ -1038,12 +1063,29 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], functio
         ->name('libros_digitales.libro_digital.destroy');
 });
 
-Route::group(['prefix' => 'manager_libros', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibroPapelController::class, 'index'])
+        ->name('libro_papel.libro_papel.index');
+    Route::get('/create', [LibroPapelController::class, 'create'])
+        ->name('libro_papel.libro_papel.create');
+    Route::get('/show/{libroPapel}', [LibroPapelController::class, 'show'])
+        ->name('libro_papel.libro_papel.show');
+    Route::get('/{libroPapel}/edit', [LibroPapelController::class, 'edit'])
+        ->name('libro_papel.libro_papel.edit');
+    Route::post('/', [LibroPapelController::class, 'store'])
+        ->name('libro_papel.libro_papel.store');
+    Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
+        ->name('libro_papel.libro_papel.update');
+    Route::delete('/libro_papel/{libroPapel}', [LibroPapelController::class, 'destroy'])
+        ->name('libro_papel.libro_papel.destroy');
+});
+
+Route::group(['prefix' => 'manager_libros', 'middleware' => ['auth']], static function () {
     Route::get('/', [ManagerBookController::class, 'index'])
         ->name('manager_libros.libros.index');
 });
 
-Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], static function () {
     Route::get('/', [MateriasCorrelativasCursadosController::class, 'index'])
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
     Route::get('/create', [MateriasCorrelativasCursadosController::class, 'create'])
@@ -1060,7 +1102,7 @@ Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['au
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
 });
 
-Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [MasterMateriasController::class, 'index'])
         ->name('master_materias.master_materia.index');
     Route::get('/create', [MasterMateriasController::class, 'create'])
@@ -1077,7 +1119,26 @@ Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function
         ->name('master_materias.master_materia.destroy');
 });
 
-Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], static function () {
+    Route::get('/', [MesaFoliosController::class, 'index'])
+        ->name('mesa_folios.mesa_folio.index');
+    Route::get('/create', [MesaFoliosController::class, 'create'])
+        ->name('mesa_folios.mesa_folio.create');
+    Route::get('/create/{libroDigital}', [MesaFoliosController::class, 'createByLibro'])
+        ->name('mesa_folios.mesa_folio.create_by_libro');
+    Route::get('/show/{mesaFolio}',[MesaFoliosController::class, 'show'])
+        ->name('mesa_folios.mesa_folio.show');
+    Route::get('/{mesaFolio}/edit',[MesaFoliosController::class, 'edit'])
+        ->name('mesa_folios.mesa_folio.edit');
+    Route::post('/', [MesaFoliosController::class, 'store'])
+        ->name('mesa_folios.mesa_folio.store');
+    Route::put('mesa_folio/{mesaFolio}', [MesaFoliosController::class, 'update'])
+        ->name('mesa_folios.mesa_folio.update');
+    Route::delete('/mesa_folio/{mesaFolio}',[MesaFoliosController::class, 'destroy'])
+        ->name('mesa_folios.mesa_folio.destroy');
+});
+
+Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], static function () {
     Route::get('/', [RegimensController::class, 'index'])
         ->name('regimens.regimen.index');
     Route::get('/create', [RegimensController::class, 'create'])
@@ -1094,7 +1155,7 @@ Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], function () {
         ->name('regimens.regimen.destroy');
 });
 
-Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], static function () {
     Route::get('/', [ResolucionesController::class, 'index'])
         ->name('resoluciones.resoluciones.index');
     Route::get('/create', [ResolucionesController::class, 'create'])
@@ -1114,7 +1175,24 @@ Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], function ()
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
 })->middleware('app.roles:admin');
 
-Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function () {
+Route::get('test/updateActasVolantes', static function(){
+    $actasVolantes = ActaVolante::where('inscripcion_id',null)->get();
+
+    foreach($actasVolantes as $actaVolante)
+    {
+        $inscripcion = AlumnoCarrera::where('alumno_id',$actaVolante->alumno_id)->latest()->first();
+
+        if($actaVolante->created_at->format('Y') < $inscripcion->cohorte)
+        {
+            $actaVolante->inscripcion_id = $inscripcion->id;
+            $actaVolante->update();
+        }
+    }
+});
+
+Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+
+Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [TipoCarrerasController::class, 'index'])
         ->name('tipo_carreras.tipo_carrera.index');
     Route::get('/create', [TipoCarrerasController::class, 'create'])
@@ -1132,37 +1210,12 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function (
 });
 
 
-Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
-Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
-Route::get('test/updateActasVolantes',function(){
-    $actasVolantes = ActaVolante::where('inscripcion_id',null)->get();
+Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
+    ->middleware('app.roles:admin');
 
-    foreach($actasVolantes as $actaVolante)
-    {
-        $inscripcion = AlumnoCarrera::where('alumno_id',$actaVolante->alumno_id)->latest()->first();
-
-        if($actaVolante->created_at->format('Y') < $inscripcion->cohorte)
-        {
-            $actaVolante->inscripcion_id = $inscripcion->id;
-            $actaVolante->update();
-        }
-    }
-});
+Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
+    ->middleware('app.roles:admin');
 
 
-Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
-    Route::get('/', [LibrariesAdminController::class, 'index'])
-        ->name('admin-libraries.library.index');
-    Route::get('/create', [LibrariesAdminController::class, 'create'])
-        ->name('admin-libraries.library.create');
-    Route::get('/show/{library}', [LibrariesAdminController::class, 'show'])
-        ->name('admin-libraries.library.show');
-    Route::get('/{library}/edit', [LibrariesAdminController::class, 'edit'])
-        ->name('admin-libraries.library.edit');
-    Route::post('/', [LibrariesAdminController::class, 'store'])
-        ->name('admin-libraries.library.store');
-    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
-        ->name('admin-libraries.library.update');
-    Route::delete('/library/{library}', [LibrariesAdminController::class, 'destroy'])
-        ->name('admin-libraries.library.destroy');
-});
+
+
