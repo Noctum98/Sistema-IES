@@ -175,9 +175,9 @@ class Mesa extends Model
     /**
      * @param $llamado
      * @param int $orden
-     * @return Libro
+     * @return Libro|null
      */
-    public function libro($llamado, int $orden = 1): Libro
+    public function libro($llamado, int $orden = 1): ?Libro
     {
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
