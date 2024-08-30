@@ -1045,6 +1045,8 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static 
         ->name('libros_digitales.libro_digital.index');
     Route::get('/libro/sede', [LibrosDigitalesController::class, 'indexSede'])
         ->name('libros_digitales.libro_digital.index_sede');
+    Route::get('/libro/carrera', [LibrosDigitalesController::class, 'indexCarrera'])
+        ->name('libros_digitales.libro_digital.index_carrera');
     Route::get('/create', [LibrosDigitalesController::class, 'create'])
         ->name('libros_digitales.libro_digital.create');
     Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
