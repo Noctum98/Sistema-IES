@@ -93,8 +93,7 @@
                                                 <a href="{{ route('proceso_modular.list',
                                                     ['materia'=> $materia->id, 'cargo_id'=> $cargo]) }}"
                                                    class="btn btn-info btn-sm">
-                                                    <small>Ver Planilla de Calificaciones
-                                                        Módulo {{$materia->nombre}}</small>
+                                                    <small>Ver Planilla de Calificaciones</small>
                                                 </a>
                                                 </span>
                                                 <span class="m-0 p-0 col-2">
@@ -165,8 +164,7 @@
                                                 <a href="{{ route('proceso_modular.list',
                                                     ['materia'=> $materia->id, 'cargo_id'=> $cargo]) }}"
                                                    class="btn btn-info btn-sm">
-                                                    <small>Ver Planilla de Calificaciones
-                                                        Módulo {{$materia->nombre}}</small>
+                                                    <small>Ver Planilla de Calificaciones</small>
                                                 </a>
                                                 </span>
                                             <span class="m-0 p-0 col-2">
@@ -236,8 +234,7 @@
                                                 <a href="{{ route('proceso_modular.list',
                                                     ['materia'=> $materia->id, 'cargo_id'=> $cargo]) }}"
                                                    class="btn btn-info btn-sm">
-                                                    <small>Ver Planilla de Calificaciones
-                                                        Módulo {{$materia->nombre}}</small>
+                                                    <small>Ver Planilla de Calificaciones</small>
                                                 </a>
                                                 </span>
                                             <span class="m-0 p-0 col-2">
