@@ -154,8 +154,7 @@ class ProcesoController extends Controller
         if ($comision_id) {
             $comision = Comision::find($comision_id);
         }
-        $procesos->orderBy('alumnos.apellidos');
-        $procesos = $procesos->get();
+
 
         $calificacion = Calificacion::where([
             'materia_id' => $materia_id,
