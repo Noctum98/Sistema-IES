@@ -31,7 +31,6 @@
                         Avisos
                     </a>
                 @endif
-
                 @if(Session::has('actividad'))
                     <a class="nav-link" href="{{ route('registros.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-paste"></i></div>
@@ -147,8 +146,14 @@
                         Mesas de Exámenes
                     </a>
                 @endif
-
-
+                @if(Session::has('admin')|| Session::has('regente')
+                    || Session::has('mesas')||Session::has('admin_alumnos')||Session::has('coordinador'))
+                        <div class="sb-sidenav-menu-heading">Lbros</div>
+                        <a class="nav-link" href="{{ route('libros_digitales.libro_digital.index_sede') }}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+                            Libro de Actas de Exámenes
+                        </a>
+                    @endif
                 @if(Session::has('alumno'))
                 <div class="sb-sidenav-menu-heading">Alumno</div>
                 <a class="nav-link" href="{{ route('alumno.detalle',Auth::user()->alumno()) }}">
@@ -176,6 +181,8 @@
                     {{--                    </a>--}}
                     {{--                     ----->--}}
                 @endif
+
+
                 <a class="nav-link" href="{{ route('libraries.library.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                     Biblioteca

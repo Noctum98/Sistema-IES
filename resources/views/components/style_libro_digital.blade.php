@@ -75,4 +75,19 @@
         opacity: 1;
     }
 
+    .pagination-responsive {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pagination-responsive li {
+        margin-bottom: 10px;
+    }
+
+    @media (min-width: 768px) {
+        .pagination-responsive li {
+            margin-bottom: 0;
+        }
+    }
+
 </style>

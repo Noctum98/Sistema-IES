@@ -68,7 +68,7 @@
                                     @if($materia->año == 1)
                                         <tr style="cursor:pointer;" class="m-0 p-0">
                                             <td class="col-sm-4">
-                                                {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                                {{ $materia->nombre }} (<small>{{$materia->masterMateria ? $materia->masterMateria->regimen->name : $materia->regimen}}</small>)
                                                 <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
                                                    data-url="{{ route('materia.show', $materia->id) }}">
                                                     <i class="fa fa-eye text-info"></i>
@@ -140,7 +140,7 @@
                                 @if($materia->año == 2)
                                     <tr style="cursor:pointer;" class="m-0 p-0">
                                         <td class="col-sm-4">
-                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            {{ $materia->nombre }} (<small>{{$materia->masterMateria ? $materia->masterMateria->regimen->name : $materia->regimen}}</small>)
                                             <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
                                                data-url="{{ route('materia.show', $materia->id) }}">
                                                 <i class="fa fa-eye text-info"></i>
@@ -211,7 +211,7 @@
                                 @if($materia->año == 3)
                                     <tr style="cursor:pointer;" class="m-0 p-0">
                                         <td class="col-sm-4">
-                                            {{ $materia->nombre }} (<small>{{$materia->regimen}}</small>)
+                                            {{ $materia->nombre }} (<small>{{$materia->masterMateria ? $materia->masterMateria->regimen->name : $materia->regimen}}</small>)
                                             <a href="{{ route('materia.show', $materia->id) }}" class=" ver_modal"
                                                data-url="{{ route('materia.show', $materia->id) }}">
                                                 <i class="fa fa-eye text-info"></i>

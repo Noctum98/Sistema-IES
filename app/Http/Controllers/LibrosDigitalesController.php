@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Carrera;
 use App\Models\LibroDigital;
 use App\Models\LibroPapel;
 use App\Models\MesaFolio;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
+use App\Repository\Carrera\CarreraRepository;
+use App\Repository\LibroDigital\LibroDigitalRepository;
 use App\Repository\Sede\SedeRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class LibrosDigitalesController extends Controller
@@ -47,7 +51,7 @@ class LibrosDigitalesController extends Controller
     {
         $sedes = $this->getSedes(true);
 
-        $sede_id = $request->has('sede_id') ?$request->get('sede_id'): reset($sedes);
+        $sede_id = $request->has('sede_id') ? $request->get('sede_id') : reset($sedes);
 
         $sede = Sede::where('nombre', $sede_id)->get()->pluck('id')->toArray();
 
@@ -62,6 +66,33 @@ class LibrosDigitalesController extends Controller
 
 
         return view('libros_digitales.index_sede', compact('librosDigitales', 'sedes', 'sede_id'));
+    }
+
+    /**
+     * Display a listing of the libros digitales for carrera.
+     *
+     * @param Request $request
+     */
+    public function indexCarrera(Request $request)
+    {
+        $sedes = $this->getSedes();
+        $sede = $request->get('sede');
+
+        if (!in_array((int)$sede, $sedes, true)) {
+            return redirect()->route('libros_digitales.libro_digital.index_sede')
+                ->with('alert_danger', 'No tiene la sede asignada.');
+        }
+
+        $resolution_id = $request->get('resolution');
+
+        $carreraRepository = new CarreraRepository();
+        $resolutions = $carreraRepository->getResolucionesBySede($sede);
+
+        $librosRepository = new LibroDigitalRepository();
+        $librosDigitales = $librosRepository->getLibrosBySedeResolution($sede, $resolution_id);
+
+        return view('libros_digitales.index_carrera',
+            compact('librosDigitales', 'sedes', 'resolutions', 'sede', 'resolution_id'));
     }
 
     /**
