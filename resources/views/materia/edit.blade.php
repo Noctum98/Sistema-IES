@@ -107,20 +107,23 @@
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="regimen">Régimen: </label>
-                                <select class="form-control select2" id="regimen" name="regimen"
-                                        @if(!Session::has('admin'))
-                                            disabled
-                                    @endif
-                                >
+                                <select class="form-control select2" id="regimen" name="regimen">
                                     <option value="">
                                         Seleccione régimen
                                     </option>
-                                    @foreach($regimenes as $regimen)
+
                                     <option
-                                        value="{{ $regimen->id }}" {{ $materia->masterMateria->regimen_id == $regimen->id ? 'selected="selected"' :'' }}>
-                                        {{ $regimen->name }}
+                                        value="Anual" {{ $materia->regimen == 'Anual' ? 'selected="selected"' :'' }}>
+                                        Anual
                                     </option>
-                                    @endforeach
+                                    <option
+                                        value="Cuatrimestral (1er)" {{ $materia->regimen == 'Cuatrimestral (1er)' ?  'selected="selected"' :'' }}>
+                                        Cuatrimestral (1er)
+                                    </option>
+                                    <option
+                                        value="Cuatrimestral (2do)" {{ $materia->regimen == 'Cuatrimestral (2do)' ?  'selected="selected"' :'' }}>
+                                        Cuatrimestral (2do)
+                                    </option>
                                 </select>
                             </div>
 
