@@ -109,7 +109,7 @@
                                                placeholder="%"
 
                                                @if(!Auth::user()->hasMateria($proceso->materia_id)
-                                                    && !Auth::user()->hasCargo($calificacion->modelCargo()->first()->id)
+                                                    && !Auth::user()->hasCargo(optional($calificacion->modelCargo())->first()->id)
                                                     )
                                                    disabled
                                                @endif
