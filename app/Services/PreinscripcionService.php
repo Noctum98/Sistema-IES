@@ -115,6 +115,9 @@ class PreinscripcionService
         $curriculum = $request->file('curriculum_file');
         $ctrabajo = $request->file('ctrabajo_file');
         $nota = $request->file('nota_file');
+        $partida = $request->file('partida_file');
+        $cuil = $request->file('cuil_file');
+
 
         if ($primario) {
             $primario_nombre = uniqid() . $primario->getClientOriginalName();
@@ -143,6 +146,22 @@ class PreinscripcionService
             Storage::disk('temp')->put($nota_nombre, file_get_contents($nota));
             $data['nota_path'] = storage_path('app/temp/' . $nota_nombre);
             $data['nota'] = $nota_nombre;
+        }
+
+        if ($partida) {
+            $partida_nombre = uniqid() . $partida->getClientOriginalName();
+
+            Storage::disk('temp')->put($partida_nombre, file_get_contents($partida));
+            $data['partida_path'] = storage_path('app/temp/' . $partida_nombre);
+            $data['partida_archivo'] = $partida_nombre;
+        }
+
+        if ($cuil) {
+            $cuil_nombre = uniqid() . $cuil->getClientOriginalName();
+
+            Storage::disk('temp')->put($cuil_nombre, file_get_contents($cuil));
+            $data['cuil_path'] = storage_path('app/temp/' . $cuil_nombre);
+            $data['cuil_archivo'] = $cuil_nombre;
         }
 
         $preinscripcion->update($data);

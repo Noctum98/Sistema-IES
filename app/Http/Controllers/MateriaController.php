@@ -206,11 +206,12 @@ class MateriaController extends Controller
             $masterMateria->tipo_unidad_curricular_id = $request['tipo_unidad_curricular'];
         }
 
+        /*
         if($request['regimen'])
         {
             $masterMateria->regimen_id = $request['regimen'];
         }
-
+        */
         $masterMateria->update();
 
         return redirect()->route('materia.editar', ['id' => $id])->with([

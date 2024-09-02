@@ -336,7 +336,7 @@
 	<hr>
 	<div class="form-group">
 		<label for="certificado_archivo_file">
-			Certificación de Nivel Secundario Frente (Si aún no has finalizado el Nivel Medio debes adjuntar constancia. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes)
+			Certificación de Nivel Secundario Frente (De no contar con certificado analítico de Educación Secundaria completo, deberá presentar certificado en el que se manifiesten los espacios aprobados y los adeudados. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes)
 		</label>
 		<input type="file" id="certificado_archivo_file" name="certificado_archivo_file" class=" @error('certificado_archivo_file') is-invalid @enderror" value="{{ old('certificado_archivo_file') }}">
 

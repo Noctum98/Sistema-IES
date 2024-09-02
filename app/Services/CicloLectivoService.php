@@ -66,7 +66,7 @@ class CicloLectivoService
      * @param int|null $daysTop
      * @return bool
      */
-    public function getCierreBoolean($materia, $ciclo_lectivo, Carbon $dates, int $daysTop = null): bool
+    public function getCierreBoolean(Materia $materia, $ciclo_lectivo, Carbon $dates, int $daysTop = null): bool
     {
 
         if (!$daysTop) {
