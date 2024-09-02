@@ -64,17 +64,25 @@
 		<div class="row">
 			<div class="detalle-pre">
 				@if($preinscripcion->articulo_septimo)
-				<p><b>
-						Estás realizando tu preinscripción por Artículo 7mo, cuyos requisitos son:
-						ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
-						trabajado en un empleo relacionado con la carrera elegida. Es requisito obligatorio presentar la
-						documentación Título de Nivel Primario, Certificado de Trabajo con firma y sello de quien lo emite,
-						Currículum Vitae, Nota al Rector, caso contrario no podrá ingresar a la carrera. La fecha limite es el 30 de septiembre.
-					</b></p>
+				<p>Estás realizando la inscripción por artículo 7, cuyos requisitos son:</p>
+				<ul>
+					<li>Tener 25 de años cumplidos al momento de su inscripción como postulante.</li>
+					<li>Poseer estudios primarios completos.</li>
+					<li>Tener experiencia laboral acorde con la carrera elegida.</li>
+					<li>Poseer preparación acorde con la carrera seleccionada.</li>
+				</ul>
+				<p>Deberás presentar la siguiente documentación:</p>
+				<ul>
+					<li>Fotocopia del CUIL</li>
+					<li>Fotocopia de la partida de nacimiento</li>
+					<li>Carta de intención dirigida al rector de la institución, en la que manifieste la carrera en la que desea ingresar</li>
+					<li>Fotocopia autenticada del certificado que demuestre la acreditación de la Educación Primaria</li>
+					<li>Curriculum Vitae</li>
+				</ul>
 
-					<a href="{{ route('pre.files',['id'=>$preinscripcion->id,'timecheck'=>$preinscripcion->timecheck]) }}" class="btn">
-						Subir archivos de Artículo Séptimo aquí
-					</a>
+				<a href="{{ route('pre.files',['id'=>$preinscripcion->id,'timecheck'=>$preinscripcion->timecheck]) }}" class="btn">
+					Subir archivos de Artículo Séptimo aquí
+				</a>
 
 				@endif
 				<br><br>

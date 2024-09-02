@@ -430,10 +430,12 @@ class PreinscripcionController extends Controller
     public function subir_articulo7mo(Request $request,$id,$timecheck)
     {
         $this->validate($request,[
-            'primario_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'ctrabajo_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'curriculum_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'nota_file' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'primario_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'ctrabajo_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'curriculum_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'nota_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'partida_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'cuil_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000']
         ]);
 
         $preinscripcion = Preinscripcion::where([

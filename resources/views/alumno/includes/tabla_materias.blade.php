@@ -17,7 +17,7 @@
                 @if($materia->año == $año)
                 <tr>
                     <td>{{ ucwords($materia->nombre) }}</td>
-                    <td>{{ $materia->masterMateria->regimen->name ?? 'No indicado' }}</td>
+                    <td>{{ $materia->regimen ?? 'No indicado' }}</td>
                     <td>
                         @if($alumno->hasProceso($materia->id,$ciclo_lectivo))
                         <span class="text-success">Inscripto</span>

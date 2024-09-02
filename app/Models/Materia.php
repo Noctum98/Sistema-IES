@@ -45,9 +45,10 @@ class Materia extends BaseModel
 {
     use SoftDeletes;
 
-    const PRI_SEM = "sem_1";
-    const SEC_SEM = "sem_2";
-    const ANUAL = "anual";
+    const PRI_SEM = "Cuatrimestral (1er)";
+    const SEC_SEM = "Cuatrimestral (2do)";
+    const ANUAL = "Anual";
+    
     /**
      * @var mixed|string
      */
@@ -432,7 +433,7 @@ class Materia extends BaseModel
     public function getCierreRegular(int $ciclo_lectivo)
     {
         $ciclo_lectivo = CicloLectivo::find($ciclo_lectivo);
-        $regimen = $this->masterMateria->regimen->identifier;
+        $regimen = $this->regimen;
 
         switch ($regimen) {
             case self::ANUAL:
