@@ -42,7 +42,9 @@ class Preinscripcion extends Model
        'ctrabajo',
        'nota',
        'articulo_septimo',
-       'gdrive_storage'
+       'gdrive_storage',
+       'cuil_archivo',
+       'partida_archivo'
     ];
 
     public function carrera(){

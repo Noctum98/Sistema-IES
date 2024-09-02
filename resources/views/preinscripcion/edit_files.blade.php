@@ -20,68 +20,101 @@
                 <hr>
                 <div id="archivos_articulo_septimo">
                     <form action="{{ route('pre.filesUpload',['id'=>$preinscripcion->id,'timecheck'=>$preinscripcion->timecheck]) }}" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="primario_file">
-                            Título de Nivel Primario:
-                            @if($preinscripcion->primario)
-                            <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-                            @endif
-                        </label><br>
-                        <input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
 
-                        @error('primario_file')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="ctrabajo_file">
-                            Certificado de Trabajo con firma y sello de quien lo emite
-                            @if($preinscripcion->ctrabajo)
-                            <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-                            @endif
-                        </label><br>
-                        <input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
+                        <div class="form-group">
+                            <label for="cuil_file">
+                                Fotocopia del CUIL:
+                                @if($preinscripcion->cuil_archivo)
+                                <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+                                @endif
+                            </label><br>
+                            <input type="file" id="cuil_file" name="cuil_file" class="@error('cuil_file') is-invalid @enderror" value="{{ old('cuil_file') }}">
 
-                        @error('ctrabajo_file')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="curriculum_file">
-                            Currículum Vitae (en formato PDF)
-                            @if($preinscripcion->curriculum)
-                            <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-                            @endif
-                        </label><br>
-                        <input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
+                            @error('cuil_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
 
-                        @error('curriculum_file')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="nota_file">
-                            Nota a la Rectora (en PDF)
-                            @if($preinscripcion->nota)
-                            <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
-                            @endif
-                        </label><br>
-                        <input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
+                        <div class="form-group">
+                            <label for="partida_file">
+                                Fotocopia de la partida de nacimiento:
+                                @if($preinscripcion->partida_archivo)
+                                <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+                                @endif
+                            </label><br>
+                            <input type="file" id="partida_file" name="partida_file" class="@error('partida_file') is-invalid @enderror" value="{{ old('partida_file') }}">
 
-                        @error('nota_file')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+                            @error('partida_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
 
-                    <input type="submit" value="Enviar archivos" class="btn btn-success">
+                        <div class="form-group">
+                            <label for="primario_file">
+                                Fotocopia autenticada del certificado que demuestre la acreditación de la Educación Primaria:
+                                @if($preinscripcion->primario)
+                                <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+                                @endif
+                            </label><br>
+                            <input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
+
+                            @error('primario_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="ctrabajo_file">
+                                Certificado de Trabajo con firma y sello de quien lo emite
+                                @if($preinscripcion->ctrabajo)
+                                <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+                                @endif
+                            </label><br>
+                            <input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
+
+                            @error('ctrabajo_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="curriculum_file">
+                                Currículum Vitae (en formato PDF)
+                                @if($preinscripcion->curriculum)
+                                <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+                                @endif
+                            </label><br>
+                            <input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
+
+                            @error('curriculum_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="nota_file">
+                                Carta de intención dirigida al rector de la institución, en la que manifieste la carrera en la que desea ingresar (en PDF)
+                                @if($preinscripcion->nota)
+                                <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
+                                @endif
+                            </label><br>
+                            <input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
+
+                            @error('nota_file')
+                            <span class="invalid-feedback d-block" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <input type="submit" value="Enviar archivos" class="btn btn-success">
                     </form>
                 </div>
             </div>

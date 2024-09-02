@@ -90,6 +90,34 @@
 							No hay un archivo subido
 						@endif
 					</li>
+
+					@if($alumno->cuil_archivo)
+					<li>
+						<strong>Cuil:</strong>
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->cuil_archivo,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
+								Ver archivo
+						</a>
+					</li>
+					@endif
+
+					@if($alumno->partida_archivo)
+					<li>
+						<strong>Partida de Nacimiento:</strong>
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->partida_archivo,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
+								Ver archivo
+						</a>
+					</li>
+					@endif
+
+					@if($alumno->primario)
+					<li>
+						<strong>Título Primario:</strong>
+						<a href="{{ route('descargar_archivo',['nombre'=>$alumno->primario,'dni'=>$alumno->dni,'id'=>$alumno->id]) }}" target="_blank">
+								Ver archivo
+						</a>
+					</li>
+					@endif
+
 					@if($alumno->primario)
 					<li>
 						<strong>Título Primario:</strong>
