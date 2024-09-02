@@ -7,16 +7,16 @@
                     <button class="btn btn-outline-info mb-2"><i class="fas fa-angle-left"></i> Volver</button>
                 </a>
                 @if($calificacion->cargo_id)
-                <br/>
-                <a href="{{route('proceso.listadoCargo', [
+                    <br/>
+                    <a href="{{route('proceso.listadoCargo', [
                         'materia_id' => $calificacion->materia->id,
                         'cargo_id' => $calificacion->cargo_id
                     ])}}">
-                    <button class="btn btn-outline-success">
-                        <i class="fas fa-angle-left"></i>
-                        Ver planilla cargo
-                    </button>
-                </a>
+                        <button class="btn btn-outline-success">
+                            <i class="fas fa-angle-left"></i>
+                            Ver planilla cargo
+                        </button>
+                    </a>
                 @endif
 
             </div>
@@ -84,11 +84,11 @@
                 <tbody>
                 @foreach($procesos as $proceso)
                     <tr
-                        @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
-                            class="text-muted"
-                        data-bs-toggle="tooltip" data-bs-placement="top"
-                        data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}"
-                        @endif
+                            @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
+                                class="text-muted"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}"
+                            @endif
                     >
                         <td class="py-auto">
                             {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
@@ -108,13 +108,15 @@
                                                value="{{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje != -1  ? $proceso->procesoCalificacion($calificacion->id)->porcentaje : '' }} {{ $proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->porcentaje == -1  ? 'A' : '' }}"
                                                placeholder="%"
 
-                                               @if(!Auth::user()->hasMateria($proceso->materia_id))
-                                                disabled
+                                               @if(!Auth::user()->hasMateria($proceso->materia_id)
+                                                    && !Auth::user()->hasCargo(optional($calificacion->modelCargo()->first())->id)
+                                                    )
+                                                   disabled
                                                @endif
 
-                                               @if(!Session::has('profesor') or $proceso->cierre == 1)
+                                               @if(!Session::has('profesor') || $proceso->cierre == 1)
                                                    disabled
-                                            @endif
+                                                @endif
                                         >
                                         <div class="input-group-append">
                                             <button type="submit"
@@ -136,13 +138,13 @@
                         <td class="nota-{{ $proceso->id }}">
                             @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
                                 @if($proceso->procesoCalificacion($calificacion->id))
-{{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota >= 4)--}}
-{{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }} </p>--}}
-{{--                                    @elseif($proceso->procesoCalificacion($calificacion->id)->nota < 4 && $proceso->procesoCalificacion($calificacion->id)->nota >= 0)--}}
-{{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }}</p>--}}
-{{--                                    @else--}}
-{{--                                        <p class='text-danger font-weight-bold'>A</p>--}}
-{{--                                    @endif--}}
+                                    {{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota >= 4)--}}
+                                    {{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }} </p>--}}
+                                    {{--                                    @elseif($proceso->procesoCalificacion($calificacion->id)->nota < 4 && $proceso->procesoCalificacion($calificacion->id)->nota >= 0)--}}
+                                    {{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }}</p>--}}
+                                    {{--                                    @else--}}
+                                    {{--                                        <p class='text-danger font-weight-bold'>A</p>--}}
+                                    {{--                                    @endif--}}
                                     @include('componentes.colorNotas', ['nota' => $proceso->procesoCalificacion($calificacion->id)->nota, 'year' => $calificacion->ciclo_lectivo])
                                 @endif
                             @else
@@ -167,7 +169,7 @@
                                                placeholder="%"
 
                                                @if(!Auth::user()->hasMateria($proceso->materia_id))
-                                                disabled
+                                                   disabled
                                                @endif
 
                                                @if(!Session::has('profesor') || !$proceso->procesoCalificacion($calificacion->id) || $proceso->cierre) disabled @endif
@@ -188,11 +190,11 @@
 
                             <td class="nota-recuperatorio-{{ $proceso->id }}">
                                 @if($proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio)
-{{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio >= 4)--}}
-{{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }} </p>--}}
-{{--                                    @else--}}
-{{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }}</p>--}}
-{{--                                    @endif--}}
+                                    {{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio >= 4)--}}
+                                    {{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }} </p>--}}
+                                    {{--                                    @else--}}
+                                    {{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }}</p>--}}
+                                    {{--                                    @endif--}}
                                     @include('componentes.colorNotas', ['nota' => $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio, 'year' => $calificacion->ciclo_lectivo])
                                 @endif
                             </td>
