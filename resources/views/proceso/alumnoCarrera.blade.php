@@ -138,8 +138,8 @@
                             <span class="d-sm-none mr-5">
                                 Régimen
                             </span>
-                            @if($materia->masterMateria)
-                            <i> {{$materia->masterMateria->regimen->name}}</i>
+                            @if($materia->regimen)
+                            <i> {{$materia->regimen}}</i>
                             @else
                             <small><i>No indicado</i></small>
                             @endif
