@@ -276,6 +276,49 @@ class ZTestController extends Controller
 
     }
 
+
+    /**
+     * @param Sede $sede
+     * @return JsonResponse
+     * @ruta /z_test/corrige_negativos/{sedes_id}
+     */
+    public function corrigeNegativos(Sede $sede): JsonResponse
+    {
+        $inicio = microtime(true);
+
+        $resultados = LibroDigital::where('sede_id', $sede->id)
+            ->with(['mesaFolios.folioNotas.actaVolante' => function ($query) {
+                $query->where('nota_escrito', -1)
+                    ->orWhere('nota_oral', -1)
+                    ->orWhere('promedio', -1);
+            }])
+            ->get();
+        foreach($resultados as $libroDigital) {
+            foreach($libroDigital->mesaFolios as $mesaFolio) {
+                foreach($mesaFolio->folioNotas as $folioNota) {
+                    $actaVolante = $folioNota->actaVolante;
+                    if($actaVolante) {
+                        $folioNota->update([
+                            'escrito' => $this->findNumber($actaVolante->nota_escrito),
+                            'oral' => $this->findNumber($actaVolante->nota_oral),
+                            'definitiva' => $this->findNumber($actaVolante->promedio),
+                        ]);
+                    }
+                }
+            }
+        }
+
+        $fin = microtime(true);
+
+        $tiempo = $fin - $inicio;
+
+        return response()->json([
+            'sede' => $sede->nombre,
+            'tiempo'=>$tiempo
+        ]);
+
+    }
+
     /**
      * @param $str
      * @return string|null
@@ -285,7 +328,7 @@ class ZTestController extends Controller
         if ($str === '-') {
             return null;
         }
-        preg_match('/\d+/', $str, $matches);
+        preg_match('/(^-?\d+)|(\d+)/', $str, $matches);
         return $matches[0] ?? null;
     }
 
