@@ -86,13 +86,13 @@
                                 {{$folioNota->alumno->getApellidosNombresAttribute()}}
                             </span>
                                 <span class="col-sm-2">
-                                Escrito: {{$folioNota->escrito??'-'}}
+                                Escrito: {{$folioNota->escrito === -1 ? 'A' :  $folioNota->escrito??'-'}}
                             </span>
                                 <span class="col-sm-2">
-                                Oral: {{$folioNota->oral??'-'}}
+                                Oral: {{ $folioNota->oral === -1 ? 'A' : ($folioNota->oral ?? '-') }}
                             </span>
                                 <span class="col-sm-2">
-                                Definitiva: {{$folioNota->definitiva}}
+                                Definitiva: {{$folioNota->definitiva === -1 ? 'A' : ($folioNota->definitiva ?? '-') }}
                             </span>
                             </div>
 
