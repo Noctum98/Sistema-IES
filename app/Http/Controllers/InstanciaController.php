@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
 use App\Http\Requests\InstanciaRequest;
+use App\Models\TipoInstancia;
 use App\Models\User;
 use App\Services\Mesas\InstanciaService;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,7 @@ class InstanciaController extends Controller
     {
         $sedes = Auth::user()->sedes;
         $carreras = Auth::user()->carreras->pluck('id');
+        $tipo_instancias = TipoInstancia::all();
 
         //dd($carreras->toArray());
         if(!$todos)
@@ -72,6 +74,7 @@ class InstanciaController extends Controller
         return view('mesa.admin', [
             'instancias' => $instancia,
             'sedes' =>  $sedes,
+            'tipo_instancias' => $tipo_instancias,
             'todos' => $todos
         ]);
     }

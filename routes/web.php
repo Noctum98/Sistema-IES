@@ -77,6 +77,7 @@ use App\Http\Controllers\MesaFoliosController;
 use App\Http\Controllers\FolioNotasController;
 use App\Models\ActaVolante;
 use App\Models\AlumnoCarrera;
+use App\Http\Controllers\TipoInstanciasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -1219,3 +1220,22 @@ Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::cla
 
 
 
+
+Route::group([
+    'prefix' => 'tipo_instancias',
+], function () {
+    Route::get('/', [TipoInstanciasController::class, 'index'])
+         ->name('tipo_instancias.tipo_instancia.index');
+    Route::get('/create', [TipoInstanciasController::class, 'create'])
+         ->name('tipo_instancias.tipo_instancia.create');
+    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
+         ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
+    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
+         ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
+    Route::post('/', [TipoInstanciasController::class, 'store'])
+         ->name('tipo_instancias.tipo_instancia.store');
+    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
+         ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
+    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
+         ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
+});
