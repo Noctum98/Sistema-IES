@@ -43,7 +43,11 @@
                             <i class="fas fa-calendar-alt ms-5"></i> {{ date_format(new DateTime($folio->fecha ), 'd-m-Y') }}
                             <i class="far fa-bookmark ms-5"></i> {{ $folio->masterMateria->name }}
                             <i class="fas fa-user-clock ms-5"></i> {{ $folio->llamado }}
-
+                                                        <a href="{{route('mostrar_pdf_acta_volante',
+['mesa' => $folio->mesa_id, 'llamado'=>$folio->llamado, 'folio' => $folio->folio])}}"
+                                                           target="_blank" class="btn btn-sm btn-primary">
+                            <i class="fas fa-file-pdf"></i> Ver acta volante
+                                                        </a>
                         </h5>
                     </div>
                     <div class="card-body row">
@@ -62,23 +66,23 @@
 
                         <h6 class="card-text col-sm-5 ml-5">
                             Coordinador: <i
-                                    class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
+                                class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
                             Operador: <i
-                                    class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
+                                class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
                             <br>
                             Presidente: <i
-                                    class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
+                                class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
                             <br>
                             Vocal 1: <i
-                                    class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
+                                class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
                             Vocal 2: <i
-                                    class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
+                                class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
                         </h6>
                     </div>
                     <div class="card-footer text-left container">
                         @foreach($folio->folioNotas()->get() as $folioNota)
                             <div
-                                    class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
+                                class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
                             <span class="col-sm-1">
                                 {{$folioNota->orden}}
                             </span>

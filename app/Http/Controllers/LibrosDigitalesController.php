@@ -170,6 +170,8 @@ class LibrosDigitalesController extends Controller
             ->paginate(1);
 
 
+
+
         return view('libros_digitales.showFolios', compact('libroDigital', 'folios'));
     }
 
