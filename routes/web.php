@@ -739,6 +739,13 @@ Route::prefix('mesas')->group(function () {
     )->name(
         'generar_pdf_acta_volante'
     );
+
+    Route::get(
+        'mostrar-pdf-acta-volante/{mesa}/{llamado}/{folio}',
+        [MesaController::class, 'mostrar_pdf_acta_volante']
+    )->name(
+        'mostrar_pdf_acta_volante'
+    );
     Route::get('/resumen/{instancia_id}', [ActaVolanteController::class, 'resumenInstancia'])->name('mesas.resumen');
 
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');

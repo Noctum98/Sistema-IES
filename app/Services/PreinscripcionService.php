@@ -42,11 +42,13 @@ class PreinscripcionService
             'materias_s'     => $request['materias_s'],
             'conexion'      =>  $request['conexion'],
             'articulo_septimo' => $request['articulo_septimo'] ?? 0,
-            'carrera_id' => $request['carrera_id'],
+            'carrera_id' => $request['carrera_id']
         ];
+
 
         if ($preinscripcion) {
             $request['gdrive_storage'] = $preinscripcion->gdrive_storage;
+            unset($data['carrera_id']);
         } else {
             $request['gdrive_storage'] = false;
         }

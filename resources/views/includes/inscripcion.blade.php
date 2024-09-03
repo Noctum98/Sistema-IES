@@ -321,7 +321,7 @@
 	</div>
 	<div class="form-group">
 		<label for="comprobante_file">
-			Comprobante de pago:
+			Comprobante de pago: (Si aún no has realizado el pago, tienes toda la información en el siguiente <a href="https://iesvu.edu.ar/ingreso/como-realizo-mi-aporte-de-cooperadora/" target="__blank">enlace</a>) 
 		</label>
 		<input type="file" id="comprobante_file" name="comprobante_file" class=" @error('comprobante_file') is-invalid @enderror" value="{{ old('comprobante_file') }}">
 
