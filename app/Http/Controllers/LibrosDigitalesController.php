@@ -3,20 +3,17 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Carrera;
 use App\Models\LibroDigital;
-use App\Models\LibroPapel;
 use App\Models\MesaFolio;
-use App\Models\Resoluciones;
 use App\Models\Sede;
-use App\Models\User;
 use App\Repository\Carrera\CarreraRepository;
 use App\Repository\LibroDigital\LibroDigitalRepository;
 use App\Repository\Sede\SedeRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class LibrosDigitalesController extends Controller
@@ -27,7 +24,7 @@ class LibrosDigitalesController extends Controller
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $sedes = $this->getSedes();
 
@@ -72,6 +69,7 @@ class LibrosDigitalesController extends Controller
      * Display a listing of the libros digitales for carrera.
      *
      * @param Request $request
+     * @return Application|Factory|\Illuminate\Contracts\View\View|RedirectResponse|View
      */
     public function indexCarrera(Request $request)
     {
@@ -89,7 +87,12 @@ class LibrosDigitalesController extends Controller
         $resolutions = $carreraRepository->getResolucionesBySede($sede);
 
         $librosRepository = new LibroDigitalRepository();
+
         $librosDigitales = $librosRepository->getLibrosBySedeResolution($sede, $resolution_id);
+
+
+
+
 
         return view('libros_digitales.index_carrera',
             compact('librosDigitales', 'sedes', 'resolutions', 'sede', 'resolution_id'));
@@ -167,6 +170,8 @@ class LibrosDigitalesController extends Controller
             ->paginate(1);
 
 
+
+
         return view('libros_digitales.showFolios', compact('libroDigital', 'folios'));
     }
 
@@ -177,7 +182,7 @@ class LibrosDigitalesController extends Controller
      *
      * @return View
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
         $libroDigital = LibroDigital::findOrFail($id);
 
@@ -201,7 +206,7 @@ class LibrosDigitalesController extends Controller
      *
      * @return RedirectResponse
      */
-    public function update(string $id, Request $request)
+    public function update(string $id, Request $request): RedirectResponse
     {
 
         $data = $this->getData($request);
@@ -220,7 +225,7 @@ class LibrosDigitalesController extends Controller
      *
      * @return RedirectResponse
      */
-    public function destroy(string $id)
+    public function destroy(string $id): ?RedirectResponse
     {
         try {
             $librosDigitales = LibroDigital::findOrFail($id);
@@ -242,7 +247,7 @@ class LibrosDigitalesController extends Controller
      * @param Request $request
      * @return array
      */
-    protected function getData(Request $request)
+    protected function getData(Request $request): array
     {
         $rules = [
 
