@@ -29,7 +29,7 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $(this).val();
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trabajo_relacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -43,7 +43,7 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $("#edad").val();
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trabajo_relacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -58,7 +58,7 @@ $(document).ready(function () {
         let edad = $("#edad").val();
         let trabajo_relacionado = $(this).is('checked');
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trabajo_relacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
         }else{
             if(!$("#7mo").hasClass('d.none'))
