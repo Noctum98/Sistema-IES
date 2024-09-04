@@ -59,6 +59,11 @@ $(document).ready(function () {
         trelacionado = true;
         if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo')) {
             $("#7mo").removeClass('d-none');
+        }else{
+            if(!$("#7mo").hasClass('d.none'))
+            {
+                $("#7mo").addClass('d-none');
+            }
         }
     });
 
