@@ -26,7 +26,7 @@ $(document).ready(function () {
     
     $("#edad").change(function (e) {
         let secundario = $("#condicion_s").val();
-        let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
+        let trabajo_relacionado = $("#trabajo_relacionado1").is(':checked');
         let edad = $(this).val();
 
         console.log(secundario,trabajo_relacionado,edad);
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     $("#condicion_s").change(function (e) {
         let secundario = $(this).val();
-        let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
+        let trabajo_relacionado = $("#trabajo_relacionado1").is(':checked');
         let edad = $("#edad").val();
 
         console.log(secundario,trabajo_relacionado,edad);
@@ -60,7 +60,7 @@ $(document).ready(function () {
     $("#trabajo_relacionado1").change(function (e) {
         let secundario = $("#condicion_s").val();
         let edad = $("#edad").val();
-        let trabajo_relacionado = $(this).is('checked');
+        let trabajo_relacionado = $(this).is(':checked');
 
         console.log(secundario,trabajo_relacionado,edad);
 
