@@ -29,6 +29,8 @@ $(document).ready(function () {
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $(this).val();
 
+        console.log(secundario,trabajo_relacionado,edad);
+
         if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
         } else {
@@ -42,6 +44,8 @@ $(document).ready(function () {
         let secundario = $(this).val();
         let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
         let edad = $("#edad").val();
+
+        console.log(secundario,trabajo_relacionado,edad);
 
         if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
@@ -57,6 +61,8 @@ $(document).ready(function () {
         let secundario = $("#condicion_s").val();
         let edad = $("#edad").val();
         let trabajo_relacionado = $(this).is('checked');
+
+        console.log(secundario,trabajo_relacionado,edad);
 
         if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
