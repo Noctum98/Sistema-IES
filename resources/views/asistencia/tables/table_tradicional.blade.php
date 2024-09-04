@@ -6,12 +6,19 @@
     </thead>
     <tbody>
     @foreach($procesos as $proceso)
-        <tr>
+        <tr
+            @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($materia->id,$ciclo_lectivo))
+                class="text-muted"
+            data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($materia->id,$ciclo_lectivo)}}"
+            @endif
+        >
             <td>
                 {{ mb_strtoupper($proceso->alumno->apellidos).' '.$proceso->alumno->nombres }}
             </td>
-            <td>
-                <form action="" class="col-md-3 m0 p-0 asis-alumnos form-tradicional" id="{{ $proceso->id }}"
+            <td colspan="3">
+                @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($materia->id,$ciclo_lectivo))
+                <form action="" class="col-md-10 m-0 p-0 asis-alumnos form-tradicional" id="{{ $proceso->id }}"
                       method="POST">
                     <div class="input-group mb-1">
                         <input type="number" class="form-control" id="asis-procentaje-{{ $proceso->id }}"
@@ -24,6 +31,7 @@
                     </div>
 
                 </form>
+                @endif
             </td>
             <td class="porcentaje-{{ $proceso->id }}">
                 @if($proceso->asistencia($proceso->id))

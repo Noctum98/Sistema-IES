@@ -182,6 +182,11 @@ class Mesa extends Model
         return Libro::where(['llamado' => $llamado, 'orden' => $orden, 'mesa_id' => $this->id])->first();
     }
 
+    public function getLibroPorFolio($llamado, int $folio): ?Libro
+    {
+        return Libro::where(['llamado' => $llamado, 'folio' => $folio, 'mesa_id' => $this->id])->first();
+    }
+
     public function getSede()
     {
         return $this->materia->carrera->sede;

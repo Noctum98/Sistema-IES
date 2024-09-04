@@ -321,7 +321,7 @@
 	</div>
 	<div class="form-group">
 		<label for="comprobante_file">
-			Comprobante de pago:
+			Comprobante de pago: (Si aún no has realizado el pago, tienes toda la información en el siguiente <a href="https://iesvu.edu.ar/ingreso/como-realizo-mi-aporte-de-cooperadora/" target="__blank">enlace</a>) 
 		</label>
 		<input type="file" id="comprobante_file" name="comprobante_file" class=" @error('comprobante_file') is-invalid @enderror" value="{{ old('comprobante_file') }}">
 
@@ -336,7 +336,7 @@
 	<hr>
 	<div class="form-group">
 		<label for="certificado_archivo_file">
-			Certificación de Nivel Secundario Frente (Si aún no has finalizado el Nivel Medio debes adjuntar constancia. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes)
+			Certificación de Nivel Secundario Frente (De no contar con certificado analítico de Educación Secundaria completo, deberá presentar certificado en el que se manifiesten los espacios aprobados y los adeudados. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes)
 		</label>
 		<input type="file" id="certificado_archivo_file" name="certificado_archivo_file" class=" @error('certificado_archivo_file') is-invalid @enderror" value="{{ old('certificado_archivo_file') }}">
 

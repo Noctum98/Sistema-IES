@@ -26,10 +26,10 @@ $(document).ready(function () {
     
     $("#edad").change(function (e) {
         let secundario = $("#condicion_s").val();
-        let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
+        let trabajo_relacionado = $("#trabajo_relacionado1").is(':checked');
         let edad = $(this).val();
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trelacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -40,10 +40,10 @@ $(document).ready(function () {
 
     $("#condicion_s").change(function (e) {
         let secundario = $(this).val();
-        let trabajo_relacionado = $("#trabajo_relacionado1").is('checked');
+        let trabajo_relacionado = $("#trabajo_relacionado1").is(':checked');
         let edad = $("#edad").val();
 
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo') && trelacionado) {
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
         } else {
             if (!$("#7mo").hasClass('d-none')) {
@@ -56,9 +56,15 @@ $(document).ready(function () {
     $("#trabajo_relacionado1").change(function (e) {
         let secundario = $("#condicion_s").val();
         let edad = $("#edad").val();
-        trelacionado = true;
-        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || 'primario completo')) {
+        let trabajo_relacionado = $(this).is(':checked');
+
+        if (edad >= 25 && (secundario == 'secundario incompleto' || secundario == 'primario incompleto' || secundario == 'primario completo') && trabajo_relacionado) {
             $("#7mo").removeClass('d-none');
+        }else{
+            if(!$("#7mo").hasClass('d.none'))
+            {
+                $("#7mo").addClass('d-none');
+            }
         }
     });
 
