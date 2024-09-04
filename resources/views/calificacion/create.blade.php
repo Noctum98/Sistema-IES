@@ -84,11 +84,11 @@
                 <tbody>
                 @foreach($procesos as $proceso)
                     <tr
-                            @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
-                                class="text-muted"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}"
-                            @endif
+                        @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
+                            class="text-muted"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}"
+                        @endif
                     >
                         <td class="py-auto">
                             {{ mb_strtoupper($proceso->alumno->apellidos).' '.ucwords($proceso->alumno->nombres) }}
@@ -116,7 +116,7 @@
 
                                                @if(!Session::has('profesor') || $proceso->cierre == 1)
                                                    disabled
-                                                @endif
+                                            @endif
                                         >
                                         <div class="input-group-append">
                                             <button type="submit"
@@ -138,23 +138,16 @@
                         <td class="nota-{{ $proceso->id }}">
                             @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
                                 @if($proceso->procesoCalificacion($calificacion->id))
-                                    {{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota >= 4)--}}
-                                    {{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }} </p>--}}
-                                    {{--                                    @elseif($proceso->procesoCalificacion($calificacion->id)->nota < 4 && $proceso->procesoCalificacion($calificacion->id)->nota >= 0)--}}
-                                    {{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota }}</p>--}}
-                                    {{--                                    @else--}}
-                                    {{--                                        <p class='text-danger font-weight-bold'>A</p>--}}
-                                    {{--                                    @endif--}}
                                     @include('componentes.colorNotas', ['nota' => $proceso->procesoCalificacion($calificacion->id)->nota, 'year' => $calificacion->ciclo_lectivo])
                                 @endif
                             @else
-                                {{--                                {{$proceso->alumno()->first()->getNotaEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}--}}
                             @endif
 
                         </td>
                         @if($calificacion->tipo->descripcion == 1)
-
                             <td>
+
+                                @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
                                 <form action="" class="col-md-6 m-0 p-0 calificacion-alumnos form-recuperatorio"
                                       id="{{ $proceso->id }}"
                                       method="POST">
@@ -185,26 +178,16 @@
                                     <div id="spinner-recuperatorio-{{$proceso->id}}">
                                     </div>
                                 </form>
+                                @endif
                             </td>
 
 
                             <td class="nota-recuperatorio-{{ $proceso->id }}">
                                 @if($proceso->procesoCalificacion($calificacion->id) && $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio)
-                                    {{--                                    @if($proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio >= 4)--}}
-                                    {{--                                        <p class='text-success font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }} </p>--}}
-                                    {{--                                    @else--}}
-                                    {{--                                        <p class='text-danger font-weight-bold'>{{ $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio }}</p>--}}
-                                    {{--                                    @endif--}}
                                     @include('componentes.colorNotas', ['nota' => $proceso->procesoCalificacion($calificacion->id)->nota_recuperatorio, 'year' => $calificacion->ciclo_lectivo])
                                 @endif
                             </td>
                         @endif
-                        {{--                        <td>--}}
-                        {{--                        <input type="checkbox" class="check-cierre" id="check-{{$proceso->id}}" {{$proceso->procesoCalificacion($calificacion->id)->cierre == false ? 'unchecked':'checked'}}--}}
-                        {{--                                {{ $proceso->cierre && (!Session::has('coordinador') or !Session::has('profesor') ) ? 'disabled' : '' }}--}}
-                        {{--                        />--}}
-                        {{--                        </td>--}}
-
                     </tr>
                 @endforeach
                 </tbody>
