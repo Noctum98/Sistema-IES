@@ -255,11 +255,6 @@ class Materia extends BaseModel
         })->where('promedio', '>=', 4)->orderBy('created_at', 'DESC')
             ->first();
 
-        if($this->id == 94)
-        {
-            dd($actaVolante);
-        }
-
         if (!$actaVolante) {
             $actaVolante = ActaVolante::where([
                 'alumno_id' => $alumno_id,
