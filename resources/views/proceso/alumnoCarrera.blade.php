@@ -161,7 +161,7 @@
                             @if($materia->getActaVolante($alumno->id,$alumnoCarrera))
                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                             @include('componentes.colorNotas',[
-                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first() ? $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota : 2021,
+                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first() ? $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota : 2021,
                             'nota' => $materia->getActaVolante($alumno->id,$alumnoCarrera)->promedio
                             ])
                             <small style="font-size: 0.8em">
@@ -256,7 +256,7 @@
                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
 
                             @include('componentes.colorNotas',[
-                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first() ? $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota : 2021,
+                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first() ? $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota : 2021,
                             'nota' => $materia->getActaVolante($alumno->id,$alumnoCarrera)->promedio
                             ])
                             <small style="font-size: 0.8em">
@@ -349,7 +349,7 @@
                             @if($materia->getActaVolante($alumno->id,$alumnoCarrera) && !$materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->estado_baja)
                             <i class="fa fa-edit text-primary" style="font-size: 0.5em"></i>
                             @include('componentes.colorNotas',[
-                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first() ? $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota : 2021,
+                            'year'=> $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first() ? $materia->getActaVolante($alumno->id,$alumnoCarrera)->mesaAlumno()->first()->mesa()->first()->instancia()->first()->year_nota : 2021,
                             'nota' => $materia->getActaVolante($alumno->id,$alumnoCarrera)->promedio
                             ])
 
