@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Handler\GenericHandler;
 use App\Models\LibroDigital;
 use App\Models\MesaFolio;
 use App\Models\Sede;
@@ -18,6 +19,16 @@ use Illuminate\View\View;
 
 class LibrosDigitalesController extends Controller
 {
+
+    private GenericHandler $handler;
+
+    /**
+     * @param GenericHandler $handler
+     */
+    public function __construct(GenericHandler $handler)
+    {
+        $this->handler = $handler;
+    }
 
     /**
      * Display a listing of the libros digitales.
@@ -116,6 +127,24 @@ class LibrosDigitalesController extends Controller
     }
 
     /**
+     * Show the form for creating a new libros digitales.
+     *
+     * @param Sede $sede_id
+     * @return View
+     */
+    public function createBySede(Sede $sede_id): View
+    {
+
+        $Sede = $sede_id;
+
+        $sedeRepository = new SedeRepository;
+        $Resoluciones = $sedeRepository->getResolucionesSedes([$Sede->id])->toArray();
+        $LibrosPapel = $sedeRepository->getLibrosPapelSedes([$Sede->id]);
+
+        return view('libros_digitales.create_sede', compact('Resoluciones', 'Sede', 'LibrosPapel'));
+    }
+
+    /**
      * Store a new libros digitales in the storage.
      *
      * @param Request $request
@@ -126,13 +155,26 @@ class LibrosDigitalesController extends Controller
     {
 
         $data = $this->getData($request);
+        $data['romanos'] = $this->handler->convertirNumberToRoman($data['number']);
 
         $user = auth()->user();
         $data['user_id'] = $user->id;
 
+        $librosDigital = LibroDigital::where([
+           'sede_id' => $data['sede_id'],
+           'resoluciones_id' => $data['resoluciones_id'],
+            'number' => $data['number']
+        ]);
+
+        if($librosDigital->exists()){
+            return redirect()->back()
+                ->with('alert_danger', 'Libro Digital ya existe.');
+        }
+
+
         LibroDigital::create($data);
 
-        return redirect()->route('libros_digitales.libro_digital.index')
+        return redirect()->route('libros_digitales.libro_digital.index_sede')
             ->with('success_message', 'Libro (Maestro) agregado exitosamente.');
     }
 
@@ -252,7 +294,6 @@ class LibrosDigitalesController extends Controller
         $rules = [
 
             'number' => 'required|numeric|min:0|max:4294967295',
-            'romanos' => 'required|string|min:1|max:191',
             'resoluciones_id' => 'required',
             'fecha_inicio' => 'nullable|string|min:0',
             'sede_id' => 'required',

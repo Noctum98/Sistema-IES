@@ -140,10 +140,10 @@
                     <tbody>
                     @foreach($procesos as $proceso)
                         <tr
-                            @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
+                            @if($proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($proceso->materia->id,$proceso->ciclo_lectivo))
                                 class="text-muted"
                             data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo)}}"
+                            data-bs-title="{{$proceso->alumno()->first()->infoEquivalenciaMateriaCicloLectivo($proceso->materia->id,$proceso->ciclo_lectivo)}}"
                             @endif
                         >
                             <td>
@@ -199,7 +199,7 @@
                             <td class="col-md-3">
                                 <select class="custom-select select-estado col-md-12" name="estado-{{$proceso->id}}"
                                         id="{{$proceso->id}}" data-proceso_id="{{ $proceso->id }}"
-                                        @if(!$proceso->habilitadoCierre($materia_cerrada) || $proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
+                                        @if(!$proceso->habilitadoCierre($materia_cerrada) || $proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($proceso->materia->id,$proceso->ciclo_lectivo))
                                             disabled
                                     @endif
                                 >
@@ -214,7 +214,7 @@
                                 </select>
                             </td>
                             <td>
-                                @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($calificacion->materia->id,$calificacion->ciclo_lectivo))
+                                @if(!$proceso->alumno()->first()->hasEquivalenciaMateriaCicloLectivo($proceso->materia->id,$proceso->ciclo_lectivo))
                                     <form action="" id="{{ $proceso->id }}" class="input-group form_nota_global">
                                         @if($proceso->nota_global)
                                             <input type="text" class="form-control nota_global custom-input @include('componentes.classNota',
