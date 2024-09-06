@@ -89,5 +89,22 @@
             margin-bottom: 0;
         }
     }
+    .tooltip-inner {
+        background-color: #2f4fff;
+        box-shadow: 0 0 4px black;
+        opacity: 1 !important;
+    }
+    .tooltip.bs-tooltip-right .tooltip-arrow::before {
+        border-right-color: #2f4fff !important;
+    }
+    .tooltip.bs-tooltip-left .tooltip-arrow::before {
+        border-left-color: #2f4fff !important;
+    }
+    .tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+        border-bottom-color: #2f4fff !important;
+    }
+    .tooltip.bs-tooltip-top .tooltip-arrow::before {
+        border-top-color: #2f4fff !important;
+    }
 
 </style>
