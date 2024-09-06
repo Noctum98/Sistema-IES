@@ -51,10 +51,15 @@ class MesaFoliosController extends Controller
      *
      * @return View
      */
-    public function createByLibro(LibroDigital $libroDigital)
+    public function createByLibro(LibroDigital $libroDigital): View
     {
 
         $LibrosDigitales = [$libroDigital];
+
+        $sede = $libroDigital->sede()->first();
+//        $sede->;
+
+
         $MasterMaterias = MasterMateria::pluck('name', 'id')->all();
         $Mesas = Mesa::pluck('cierre', 'id')->all();
 
@@ -64,6 +69,7 @@ class MesaFoliosController extends Controller
 
 //        $Users = $sedeRepository->getUsersSehpdes($sede);
         $Users = User::all();
+        dd($Users);
 //        dd($Users);
 
 

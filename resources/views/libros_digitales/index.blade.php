@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        @if(count($librosDigitales) == 0)
+        @if(count($librosDigitales) === 0)
             <div class="card-body text-center">
                 <h4>No se encontraron libros digitales.</h4>
             </div>

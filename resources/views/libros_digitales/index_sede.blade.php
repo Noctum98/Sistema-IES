@@ -44,12 +44,15 @@
 
                 @foreach($librosDigitales as $libroDigital)
                     @if($anteriorSede !== $libroDigital->sede->id)
-
                         <div class="col-sm-12">
                             <div class="card-header d-flex justify-content-between align-items-center mx-0 my-2">
-                                {{--                                <div class="col-sm-12">--}}
                                 <h4 class="card-title">Sede: {{$libroDigital->sede->nombre}}</h4>
-                                {{--                                </div>--}}
+                                <span class="ms-4 mr-5">
+                                    <a href="{{ route('libros_digitales.libro_digital.create_sede', ['sede_id'=> $libroDigital->sede_id]) }}" class="btn btn-secondary"
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar Libro Digital">
+                    <span class="fa-solid fa-plus" aria-hidden="true"></span> Agregar
+                </a>
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -98,7 +101,7 @@
                         </div>
 
                     @endif
-                <hr />
+                    <hr/>
                     <div class="d-flex justify-content-center gutter mt-3" style="font-size: 0.8em">
                         {{ $librosDigitales->withQueryString()->links() }}
                     </div>
