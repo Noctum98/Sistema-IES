@@ -5,7 +5,7 @@
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">{{ isset($title) ? $title : 'Libro Digital' }}</h4>
+            <h4 class="m-0">{{ $title ?? 'Libro Digital' }}</h4>
             <div>
                 <form method="POST" action="{!! route('libros_digitales.libro_digital.destroy', $libroDigital->id) !!}"
                       accept-charset="UTF-8">
