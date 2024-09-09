@@ -34,8 +34,8 @@
 
 		</div>
 		<div class="form-group">
-			<label for="localidad">Año</label>
-			<input type="number" class="form-control" id="año" name="año" value="{{ isset($año) ? $año : '' }}">
+			<label for="localidad">Año de cursado (1 al 3)</label>
+			<input type="number" class="form-control" id="año" name="año" value="{{ isset($año) ? $año : '' }}" placeholder="1">
 		</div>
 
 		<input type="submit" value="Buscar" id="btn-submit" class="btn btn-primary" disabled>
