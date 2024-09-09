@@ -208,14 +208,11 @@ class InstanciaController extends Controller
     }
 
 
-    public function cambiar_cierre($cierre,$id){
+    public function cambiar_cierre(Request $request,$id){
         $instancia = Instancia::find($id);
-        $instancia->cierre = $cierre;
-        $instancia->update();
+        $instancia->update($request->all());
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return redirect()->back()->with(['alert_success'=>'Cronograma de cierres actualizado']);
     }
 
     public function descargar_excel($id,$instancia_id,$llamado=null)

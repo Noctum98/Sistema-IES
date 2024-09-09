@@ -38,8 +38,7 @@
                     <th scope="col">Año</th>
                     <th scope="col"><i class="fa fa-cog" style="font-size:20px;"></i></th>
                     @if(Session::has('admin') || Session::has('regente'))
-                    <th scope="col">Inhabilitar/Habilitar Mesa</th>
-                    <th scope="col">Inhabilitar/Habilitar Bajas</th>
+                    <th scope="col">Cierres</th>
                     @endif
                 </tr>
             </thead>
@@ -74,20 +73,9 @@
                     </td>
                     @if(Session::has('admin'))
                     <td>
-
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input switchinsta" value="{{$instancia->estado}}" id="{{$instancia->id}}" {{$instancia->estado == 'activa' ? 'checked':''}}>
-                            <label class="custom-control-label" for="{{$instancia->id}}"></label>
-                        </div>
-                    </td>
-
-                    <td>
-
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input switchinstacierre" value="{{$instancia->cierre}}" id="cierre-{{$instancia->id}}" data-instancia_id="{{$instancia->id}}" {{$instancia->cierre ? 'checked':''}}>
-                            <label class="custom-control-label" for="cierre-{{$instancia->id}}"></label>
-                        </div>
-                    </td>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cierreCronograma{{$instancia->id}}">Calendario de cierres</button>
+                    @include('mesa.modals.cronograma_cierres')    
+                </td>
                     @endif
                 </tr>
                 <!--Modal Ver-->

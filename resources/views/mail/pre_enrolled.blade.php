@@ -78,6 +78,7 @@
 					<li>Carta de intención dirigida al rector de la institución, en la que manifieste la carrera en la que desea ingresar</li>
 					<li>Fotocopia autenticada del certificado que demuestre la acreditación de la Educación Primaria</li>
 					<li>Curriculum Vitae</li>
+					<li>Certificado de Trabajo o Capacitación vinculado a la carreras que desea estudiar, con firma y sello de quien lo emite</li>
 				</ul>
 
 				<a href="{{ route('pre.files',['id'=>$preinscripcion->id,'timecheck'=>$preinscripcion->timecheck]) }}" class="btn">
