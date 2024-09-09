@@ -17,7 +17,8 @@ class SedeRepository
             ->join('carreras', 'resoluciones.id', '=', 'carreras.resolucion_id')
             ->join('sedes', 'carreras.sede_id', '=', 'sedes.id')
             ->whereIn('sedes.id', $sede)
-            ->groupBy('resoluciones.id')
+            ->distinct()
+            ->orderBy('resoluciones.name')
             ->get();
     }
 
