@@ -910,6 +910,7 @@ Route::prefix('usuarios')->group(function () {
     );
     Route::get('reestablecer_password/{id}', [UserController::class, 'regenerar_contra']);
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
+    Route::get('buscar_usuario', [UserController::class, 'buscarUsuario'])->name('user.buscar-usuario');
 });
 
 
@@ -1149,6 +1150,8 @@ Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], static funct
         ->name('mesa_folios.mesa_folio.create');
     Route::get('/create/{libroDigital}', [MesaFoliosController::class, 'createByLibro'])
         ->name('mesa_folios.mesa_folio.create_by_libro');
+    Route::get('/create/{libroDigital}/from_libro', [MesaFoliosController::class, 'createByLibroFromLibro'])
+        ->name('mesa_folios.mesa_folio.create_by_libro_from_libro');
     Route::get('/show/{mesaFolio}', [MesaFoliosController::class, 'show'])
         ->name('mesa_folios.mesa_folio.show');
     Route::get('/{mesaFolio}/edit', [MesaFoliosController::class, 'edit'])
