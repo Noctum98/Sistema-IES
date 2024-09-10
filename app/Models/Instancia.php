@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Instancia extends Model
 {
     use HasFactory;
     protected $table = 'instancias';
-    protected $fillable = ['nombre', 'tipo', 'general', 'estado', 'cierre', 'limite', 'segundo_llamado','año','year_nota'];
+    protected $fillable = ['nombre', 'tipo', 'general', 'estado', 'cierre', 'limite', 'segundo_llamado','año','year_nota','tipo_instancia_id','fecha_habilitiacion','fecha_cierre','fecha_bajas','fecha_cierre_bajas'];
 
     public function sedes(): BelongsToMany
     {
@@ -20,6 +21,11 @@ class Instancia extends Model
     public function carreras(): BelongsToMany
     {
         return $this->belongsToMany(Carrera::class, 'instancia_carrera', 'instancia_id', 'carrera_id')->withTimestamps();
+    }
+
+    public function tipo_instancia():BelongsTo
+    {
+        return $this->belongsTo(TipoInstancia::class,'tipo_instancia_id');
     }
 
 

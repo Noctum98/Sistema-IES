@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => 'America/Argentina/Mendoza',
+    'timezone' => 'America/Argentina/Buenos_Aires',
 
     /*
     |--------------------------------------------------------------------------

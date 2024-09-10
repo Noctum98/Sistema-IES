@@ -17,7 +17,8 @@ class SedeRepository
             ->join('carreras', 'resoluciones.id', '=', 'carreras.resolucion_id')
             ->join('sedes', 'carreras.sede_id', '=', 'sedes.id')
             ->whereIn('sedes.id', $sede)
-            ->groupBy('resoluciones.id')
+            ->distinct()
+            ->orderBy('resoluciones.name')
             ->get();
     }
 
@@ -26,7 +27,7 @@ class SedeRepository
         return LibroPapel::select( 'libros_papeles.*', )
             ->join('sedes', 'libros_papeles.sede_id', '=', 'sedes.id')
             ->whereIn('sedes.id', $sede)
-            ->groupBy('libros_papeles.id')
+            ->distinct()
             ->get();
     }
 
@@ -35,7 +36,7 @@ class SedeRepository
         return LibroDigital::select( 'libros_digitales.*', )
             ->join('sedes', 'libros_digitales.sede_id', '=', 'sedes.id')
             ->whereIn('sedes.id', $sede)
-            ->groupBy('libros_digitales.id')
+            ->distinct()
             ->get();
     }
 

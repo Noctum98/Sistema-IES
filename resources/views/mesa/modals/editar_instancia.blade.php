@@ -21,6 +21,16 @@
                             <option value="1">Especial</option>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Tipo Instancia</label>
+                        <select name="tipo_instancia_id" id="tipo_instancia-edit" class="form-select">
+                        @foreach($tipo_instancias as $tipo_instancia)
+                            <option value="{{ $tipo_instancia->id }}">{{ $tipo_instancia->name }}</option>
+                        @endforeach
+                        </select>
+
+                    </div>
                     <div class="form-check">
                         <input class="form-check-input" name="general" type="checkbox" value="1" id="mesaGeneralEdit">
                         <label class="form-check-label" for="flexCheckChecked">

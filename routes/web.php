@@ -77,6 +77,7 @@ use App\Http\Controllers\MesaFoliosController;
 use App\Http\Controllers\FolioNotasController;
 use App\Models\ActaVolante;
 use App\Models\AlumnoCarrera;
+use App\Http\Controllers\TipoInstanciasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -590,7 +591,8 @@ Route::prefix('proceso')->group(function () {
 
     // Vista Alumno
     Route::get('/mis_procesos/{id}/{carrera}/{year}', [AlumnoProcesoController::class, 'vista_procesos'])->name('proceso.alumno');
-    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}/{cohorte}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])->name('proceso.alumnoCarrera');
+    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}/{cohorte}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])
+        ->name('proceso.alumnoCarrera');
 
     // Acciones
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
@@ -702,7 +704,7 @@ Route::prefix('mesas')->group(function () {
     Route::post('/crear_instancia', [InstanciaController::class, 'crear'])->name('crear_instancia');
     Route::post('/editar_instancia/{id}', [InstanciaController::class, 'editar'])->name('editar_instancia');
     Route::get('/estado/{estado}/{id}', [InstanciaController::class, 'cambiar_estado']);
-    Route::get('/cierre/{cierre}/{id}', [InstanciaController::class, 'cambiar_cierre']);
+    Route::post('/cierre/{id}', [InstanciaController::class, 'cambiar_cierre'])->name('instancia.cierres');
     Route::post('/alumno/crear', [AlumnoMesaController::class, 'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
@@ -1241,3 +1243,22 @@ Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeN
 
 
 
+
+Route::group([
+    'prefix' => 'tipo_instancias',
+], function () {
+    Route::get('/', [TipoInstanciasController::class, 'index'])
+         ->name('tipo_instancias.tipo_instancia.index');
+    Route::get('/create', [TipoInstanciasController::class, 'create'])
+         ->name('tipo_instancias.tipo_instancia.create');
+    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
+         ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
+    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
+         ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
+    Route::post('/', [TipoInstanciasController::class, 'store'])
+         ->name('tipo_instancias.tipo_instancia.store');
+    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
+         ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
+    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
+         ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
+});
