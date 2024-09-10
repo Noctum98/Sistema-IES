@@ -93,5 +93,9 @@
         "model-name": "folioNotas",
         "resource-file": "folio_notas.json",
         "table-name": "folio_notas"
+    },
+    {
+        "model-name": "TipoInstancia",
+        "resource-file": "tipo_instancias.json"
     }
 ]
