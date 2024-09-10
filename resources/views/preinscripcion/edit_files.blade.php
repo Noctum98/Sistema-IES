@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group">
                             <label for="ctrabajo_file">
-                                Certificado de Trabajo con firma y sello de quien lo emite
+                                Certificado de Trabajo o Capacitación vinculado a la carreras que desea estudiar, con firma y sello de quien lo emite
                                 @if($preinscripcion->ctrabajo)
                                 <b class="text-primary">(Ya hay un archivo subido, si sube otro, el anterior se eliminará)</b>
                                 @endif

@@ -4,23 +4,22 @@ namespace App\Services\Mesas;
 
 use App\Models\Carrera;
 use App\Models\Sede;
+use Carbon\Carbon;
 
 class InstanciaService
 {
-    public function agregarSedes($request,$instancia)
+    public function agregarSedes($request, $instancia)
     {
         $instancia->sedes()->detach();
-        foreach($request['sedes'] as $sede_id)
-        {
+        foreach ($request['sedes'] as $sede_id) {
             $instancia->sedes()->attach(Sede::find($sede_id));
         }
     }
 
-    public function agregarCarreras($request,$instancia)
-    {   
+    public function agregarCarreras($request, $instancia)
+    {
         $instancia->carreras()->detach();
-        foreach($request['carreras'] as $carrera_id)
-        {
+        foreach ($request['carreras'] as $carrera_id) {
             $instancia->carreras()->attach(Carrera::find($carrera_id));
         }
     }

@@ -16,6 +16,7 @@ $(document).ready(function () {
         $(".select2-edit-carreras").empty();
         $("#editInstanciaForm").attr('action', '');
         $("#nombre-edit").val('');
+
         $("#mesaGeneralEdit").attr('checked', false);
         $("#sedes-edit").prop('disabled', false);
         $("#carreras-edit").prop('disabled', false);
@@ -146,6 +147,14 @@ $(document).ready(function () {
             $('#tipo-edit option').each(function () {
                 // Comparamos el valor de la opción con el valor de la respuesta
                 if ($(this).val() == response.tipo) {
+                    // Marcamos como seleccionada la opción correspondiente
+                    $(this).prop('selected', true);
+                }
+            });
+
+            $('#tipo_instancia-edit option').each(function () {
+                // Comparamos el valor de la opción con el valor de la respuesta
+                if ($(this).val() == response.tipo_instancia_id) {
                     // Marcamos como seleccionada la opción correspondiente
                     $(this).prop('selected', true);
                 }

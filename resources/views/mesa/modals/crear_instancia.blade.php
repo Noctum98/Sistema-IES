@@ -16,10 +16,21 @@
                     </div>
                     <div class="form-group">
                         <label for="nombre">Tipo</label>
-                        <select name="tipo" class="form-control">
+                        <select name="tipo" class="form-select">
                             <option value="0">Común</option>
                             <option value="1">Especial</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Tipo Instancia</label>
+                        <select name="tipo_instancia_id" class="form-select">
+                        @foreach($tipo_instancias as $tipo_instancia)
+                            <option value="{{ $tipo_instancia->id }}">{{ $tipo_instancia->name }}</option>
+
+                        @endforeach
+                        </select>
+
                     </div>
 
                     <div class="form-check">

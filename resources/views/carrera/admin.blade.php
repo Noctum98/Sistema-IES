@@ -10,8 +10,6 @@
                 Crear carrera
             </a>
         @endif
-
-
         <div class="table-responsive">
             <table class="table mt-4">
                 <thead class="thead-dark">
