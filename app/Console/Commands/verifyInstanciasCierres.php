@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Instancia;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class verifyInstanciasCierres extends Command
 {
@@ -46,7 +47,7 @@ class verifyInstanciasCierres extends Command
             $this->verifyCierres($instancia);
         }
 
-        $this->info('Instancias Actualizadas');
+        Log::info('Instancias Actualizadas');
     }
 
     public function verifyCierres($instancia)
