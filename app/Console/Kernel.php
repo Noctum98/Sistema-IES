@@ -15,8 +15,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\CustomScheduleListCommand::class,
     ];
+    
 
     /**
      * Define the application's command schedule.
