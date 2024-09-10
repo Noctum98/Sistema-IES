@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //$schedule->command(EliminarPreinscripcionesRepetidas::class)->hourly('00:00');
-        $schedule->command(verifyInstanciasCierres::class)->daily();
+        $schedule->command(verifyInstanciasCierres::class)->daily()->timezone('America/Argentina/Buenos_Aires');
     }
 
     /**
