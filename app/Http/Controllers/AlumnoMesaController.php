@@ -20,6 +20,7 @@ use App\Models\AlumnoCarrera;
 use App\Models\Materia;
 use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
+use App\Services\Mesas\InstanciaService;
 use App\Services\Mesas\MesaAlumnoService;
 use App\Services\MesaService;
 use Illuminate\Support\Facades\Auth;
@@ -30,15 +31,18 @@ class AlumnoMesaController extends Controller
 {
     protected $mesaService;
     protected $mesaAlumnoService;
+    protected $instanciaService;
 
     public function __construct(
         MesaService $mesaService,
-        MesaAlumnoService $mesaAlumnoService
+        MesaAlumnoService $mesaAlumnoService,
+        InstanciaService $instanciaService
     )
     {
         $this->middleware('app.auth');
         $this->mesaService = $mesaService;
         $this->mesaAlumnoService = $mesaAlumnoService;
+        $this->instanciaService = $instanciaService;
     }
     // Vistas
     public function vista_home($id)

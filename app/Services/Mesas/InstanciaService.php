@@ -8,29 +8,6 @@ use Carbon\Carbon;
 
 class InstanciaService
 {
-
-    public function verifyCierres($instancia)
-    {
-        $fechaActual = Carbon::now(); // Obtiene la fecha y hora actual
-        $data = [
-            'estado' => 'inactiva',
-            'cierre' => false
-        ];
-
-        // Verificar si está activo
-        if (Carbon::parse($instancia->fecha_habilitiacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
-            $data['estado'] = 'activa';
-        }
-
-        // Verificar si está en bajas
-        if (Carbon::parse($instancia->fecha_bajas)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre_bajas)->gte($fechaActual)) {
-            $data['cierre'] = true;
-        }
-
-        $instancia->update($data);
-
-        return $instancia;
-    }
     public function agregarSedes($request, $instancia)
     {
         $instancia->sedes()->detach();
