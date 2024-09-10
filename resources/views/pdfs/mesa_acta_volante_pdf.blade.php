@@ -42,7 +42,7 @@
         border-collapse: collapse !important; margin: 0; padding: 0"
                 colspan="4"
             >
-                <h5 style="margin: 0; padding: 0; text-align: center" >ACTA VOLANTE: {{ $mesa->instancia->tipo_instancia ? $mesa->instancia->tipo_instancia->name : $mesa->instancia->nombre}}</h5>
+                <h5 style="margin: 0; padding: 0; text-align: center" >ACTA VOLANTE {{ $mesa->instancia->tipo_instancia ? mb_strtoupper($mesa->instancia->tipo_instancia->name) : 'DE EXAMENES'}}</h5>
             </td>
 
         </tr>
