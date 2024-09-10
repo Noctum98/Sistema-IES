@@ -6,6 +6,7 @@ use Cron\CronExpression;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Carbon;
+use DateTimeZone;
 
 class CustomScheduleListCommand extends Command
 {
@@ -36,11 +37,16 @@ class CustomScheduleListCommand extends Command
 
         foreach ($schedule->events() as $event) {
             $timezone = $event->timezone ?? $defaultTimezone;
-
-            // Validar que el timezone sea un objeto DateTimeZone
             $timezoneOption = $this->option('timezone');
+
+            // Validar que el timezone sea una cadena válida
             if ($timezoneOption && !empty($timezoneOption)) {
-                $timezone = $timezoneOption;
+                if (in_array($timezoneOption, \DateTimeZone::listIdentifiers())) {
+                    $timezone = $timezoneOption;
+                } else {
+                    $this->error("Timezone '{$timezoneOption}' is not valid.");
+                    continue; // Salta a la siguiente iteración si el timezone no es válido
+                }
             }
 
             try {
