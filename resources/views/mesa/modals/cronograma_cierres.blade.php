@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-secondary" id="exampleModalLabel">Cronograma de cierres</h5>
+                <h5 class="modal-title text-secondary" id="exampleModalLabel">Calendario de cierres</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

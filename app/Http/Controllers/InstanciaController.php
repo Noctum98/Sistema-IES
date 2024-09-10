@@ -212,7 +212,7 @@ class InstanciaController extends Controller
         $instancia = Instancia::find($id);
         $instancia->update($request->all());
 
-        return redirect()->back()->with(['alert_success'=>'Cronograma de cierres actualizado']);
+        return redirect()->back()->with(['alert_success'=>'Calendario de cierres actualizado']);
     }
 
     public function descargar_excel($id,$instancia_id,$llamado=null)

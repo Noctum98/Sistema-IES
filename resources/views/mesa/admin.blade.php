@@ -73,7 +73,7 @@
                     </td>
                     @if(Session::has('admin'))
                     <td>
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cierreCronograma{{$instancia->id}}">Cronograma</button>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cierreCronograma{{$instancia->id}}">Calendario</button>
                     @include('mesa.modals.cronograma_cierres')    
                 </td>
                     @endif
