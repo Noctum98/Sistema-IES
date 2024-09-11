@@ -2,6 +2,20 @@
 
 @section('content')
     <x-style_libro_digital/>
+    <style>
+
+        .select2 .select2-selection {
+            padding: 6px 12px; /* Ajusta estos valores como sea necesario */
+            height: 38px; /* Asegúrate de que esto coincide con la altura de tus otros campos de entrada */
+        }
+    </style>
+    @if(Session::has('success_message'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {!! session('success_message') !!}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="card text-bg-theme">
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0 alert alert-info mx-auto">
@@ -61,7 +75,7 @@
                 </span>
                     </div>
                     <div class="card-body row">
-                        <h5 class="card-text col-sm-3 ml-5 pl-5">
+                        <h5 class="card-text col-sm-2 ml-5 pl-5">
                             Aprobados: <br/>
                             Desaprobados: <br/>
                             Ausentes: <br/>
@@ -74,25 +88,30 @@
                             {{ $folio->turno??'-' }}
                         </h5>
 
-                        <h6 class="card-text col-sm-5 ml-5">
+                        <h6 class="card-text col-sm-4 ml-5">
                             Coordinador: <i
-                                    class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
+                                class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
                             Operador: <i
-                                    class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
+                                class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
                             <br>
                             Presidente: <i
-                                    class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
+                                class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
                             <br>
                             Vocal 1: <i
-                                    class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
+                                class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
                             Vocal 2: <i
-                                    class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
+                                class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
+                        </h6>
+                        <h6 class="card-text col-sm-2 ml-5">
+                            <button id="showAddFolioNota" type="button" class="btn btn-primary">
+                                Agregar Alumno
+                            </button>
                         </h6>
                     </div>
                     <div class="card-footer text-left container">
                         @foreach($folio->folioNotas()->get() as $folioNota)
                             <div
-                                    class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
+                                class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
                             <span class="col-sm-1">
                                 {{$folioNota->orden}}
                             </span>
@@ -135,4 +154,95 @@
         </div>
     </div>
 
+    <!-- Modal para agregar folioNota -->
+    <div id="addFolioNotaForm" style="display: none;" class="row">
+        <form method="POST" class="col-sm-12 mb-3">
+            @csrf
+            <div class="form-row">
+                <div class="form-group col-sm-2">
+                    <label for="orden">Orden:</label>
+                    <input type="number" class="form-control" id="orden" name="orden" required>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="alumno">Alumno:</label><br/>
+                    <select class="form-control select2" id="alumno" name="alumno" required>
+                        <!-- Aquí puedes iterar sobre un conjunto de alumnos -->
+                        <!-- <option value="id_del_alumno">Nombre del alumno</option> -->
+                    </select>
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="escrito">Escrito:</label>
+                    <input type="number" class="form-control" id="escrito" name="escrito" required>
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="oral">Oral:</label>
+                    <input type="number" class="form-control" id="oral" name="oral" required>
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="definitiva">Definitiva:</label>
+                    <input type="number" class="form-control" id="definitiva" name="definitiva" required>
+                </div>
+            </div>
+            <input type="hidden" id="folioId" name="folioId" value="{{ $folio->id }}">
+            <button id="submitFolioNota" type="button" class="btn btn-primary mt-3">Guardar</button>
+        </form>
+    </div>
+
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%',
+                theme: "classic",
+                minimumInputLength: 4,  // Se realizará una búsqueda AJAX después de que el usuario haya escrito 4 caracteres
+                ajax: {
+                    data: function (params) {
+                        return {
+                            q: params.term, // Valor ingresado en el campo de selección
+                            libroId: '{{ $libroDigital->id }}'
+                        };
+                    },
+                    url: '/alumnos/searchAlumnos/documento',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        };
+                    },
+                    cache: false
+                }
+
+            });
+
+            $('#showAddFolioNota').click(function () {
+                $('#addFolioNotaForm').show();  // Muestra el formulario
+            });
+
+            $('#submitFolioNota').click(function (e) {
+                e.preventDefault();
+                console.log('click');
+
+                // Recuperar datos del formulario
+                var data = {
+                    // Asegúrate de cambiar esto para que coincida con tus campos de formulario
+                    // Ejemplo: 'campo': $('#id_del_campo').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/folio_notas',  // Asegúrate de cambiar esto a tu ruta de Laravel
+                    data: data,
+                    success: function (response) {
+                        // Manejar respuesta aquí. Puedes actualizar la vista sin recargar la página.
+                        $('#addFolioNotaForm').hide();  // Oculta el formulario
+                    },
+                    error: function (error) {
+                        // Manejar error aquí. Podría ser útil mostrar un mensaje de error.
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

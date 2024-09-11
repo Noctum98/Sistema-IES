@@ -86,14 +86,9 @@ class MesaFoliosController extends Controller
             ->get()
             ->pluck('name', 'id');
 
-
         $sedeRepository = new SedeRepository();
 
         $Users = $sedeRepository->getProfesoresSede([$libroDigital->sede_id]);
-
-//        $Users = User::all();
-//        dd($Users);
-
 
         return view('mesa_folios.create_from_libro', compact('Users', 'libroDigital', 'MasterMaterias', 'Users'));
     }
@@ -105,7 +100,7 @@ class MesaFoliosController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 
 
@@ -127,7 +122,9 @@ class MesaFoliosController extends Controller
         $mesaFolio =MesaFolio::create($data);
 
         return redirect()->route('libros_digitales.libro_digital.showFolios', [
-            'libroDigital' => $mesaFolio->libro_digital_id])
+            'libroDigital' => $mesaFolio->libro_digital_id,
+            'page' => $mesaFolio->folio
+            ])
             ->with('success_message', 'Folio ha sido guardado correctamente.');
     }
 

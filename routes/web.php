@@ -225,6 +225,7 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+    Route::get('searchAlumnos/documento', [AlumnoController::class, 'searchAlumnos'])->name('alumno.alumnos-search');
     Route::patch('/modifica/{id}/cohorte', [AlumnoController::class, 'updateCohorte'])->name('alumno.cohorte-update');
 });
 
