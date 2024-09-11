@@ -17,14 +17,14 @@ class InstanciaService
             'cierre' => true
         ];
 
-        if ($instancia->fecha_habilitiacion) {
+        if ($instancia->fecha_habilitacion) {
 
             if ($instancia->tipo == 0) {
-                if (Carbon::parse($instancia->fecha_habilitiacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
+                if (Carbon::parse($instancia->fecha_habilitacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
                     $data['estado'] = 'activa';
                 }
             } else {
-                if (Carbon::parse($instancia->fecha_habilitiacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
+                if (Carbon::parse($instancia->fecha_habilitacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
                     $data['estado'] = 'activa';
                 }
 

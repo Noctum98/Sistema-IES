@@ -76,7 +76,7 @@
                 {{ $proceso->nota_global ? $proceso->nota_global : '-' }}
             </td>
             <td>
-                {{ $proceso->cierre ? mb_strtoupper($proceso->estado->nombre) : '-' }}
+                {{ $proceso->estado ? mb_strtoupper($proceso->estado->nombre) : '-' }}
             </td>
             <td>{{ $proceso->cierre ? 'CERRADO' : 'ABIERTO' }}</td>
         </tr>
