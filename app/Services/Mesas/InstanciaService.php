@@ -26,6 +26,7 @@ class InstanciaService
             } else {
                 if (Carbon::parse($instancia->fecha_habilitacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
                     $data['estado'] = 'activa';
+                    $data['cierre'] = false;
                 }
 
                 // Verificar si está en bajas
@@ -44,7 +45,6 @@ class InstanciaService
                 $instancia->update($data);
             }
         }
-
 
         return $instancia;
     }
