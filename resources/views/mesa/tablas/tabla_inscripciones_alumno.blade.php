@@ -30,7 +30,7 @@
                 @endif
                 <td>
                     @if($instancia->tipo == 1)
-                    @if($inscripcion->estado_baja || $instancia->cierre)
+                    @if($inscripcion->estado_baja)
                     <a href="#" class="btn btn-sm btn-secondary disabled">Bajarme</a>
 
                     @else
@@ -39,7 +39,7 @@
                     @endif
                     @else
 
-                    @if($inscripcion->estado_baja || $inscripcion->confirmado)
+                    @if($inscripcion->estado_baja)
                     <button class="btn btn-sm btn-danger">Bajarme</button>
 
                     @elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo']) <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>

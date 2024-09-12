@@ -11,8 +11,8 @@
                 <form method="POST" action="{{route('instancia.cierres',$instancia->id)}}">
                     @csrf
                     <div class="form-group">
-                        <label for="fecha_habilitiacion">Fecha de habilitación</label>
-                        <input type="date" name="fecha_habilitiacion" value="{{ $instancia->fecha_habilitiacion ?? '' }}" class="form-control" required />
+                        <label for="fecha_habilitacion">Fecha de habilitación</label>
+                        <input type="date" name="fecha_habilitacion" value="{{ $instancia->fecha_habilitacion ?? '' }}" class="form-control" required />
                     </div>
 
                     <div class="form-group">
