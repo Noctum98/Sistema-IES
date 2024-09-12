@@ -14,7 +14,6 @@ class AddTipoInstanciaIdToInstanciasTable extends Migration
     public function up()
     {
         Schema::table('instancias', function (Blueprint $table) {
-
             $table->unsignedBigInteger('tipo_instancia_id')->nullable();
             $table->string('fecha_habilitacion')->nullable();
             $table->string('fecha_cierre')->nullable();
