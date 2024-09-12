@@ -58,9 +58,9 @@ class verifyInstanciasCierres extends Command
             'cierre' => true
         ];
 
-        if ($instancia->fecha_habilitiacion) {
+        if ($instancia->fecha_habilitacion) {
             // Verificar si está activo
-            if (Carbon::parse($instancia->fecha_habilitiacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
+            if (Carbon::parse($instancia->fecha_habilitacion)->lte($fechaActual) && Carbon::parse($instancia->fecha_cierre)->gte($fechaActual)) {
                 $data['estado'] = 'activa';
             }
 

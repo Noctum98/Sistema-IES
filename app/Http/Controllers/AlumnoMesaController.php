@@ -74,8 +74,8 @@ class AlumnoMesaController extends Controller
 
 
         // Ajustamos la consulta
-        $instanciasV = Instancia::whereDate('fecha_habilitiacion', '<=', $fechaActual) // Fecha habilitación <= actual
-            ->whereDate('fecha_habilitiacion', '>=', $dosMesesAntes) // Fecha habilitación >= hace 2 meses
+        $instanciasV = Instancia::whereDate('fecha_habilitacion', '<=', $fechaActual) // Fecha habilitación <= actual
+            ->whereDate('fecha_habilitacion', '>=', $dosMesesAntes) // Fecha habilitación >= hace 2 meses
             ->get();
         foreach ($instanciasV as $instancia) {
             $this->instanciaService->verifyCierres($instancia);
