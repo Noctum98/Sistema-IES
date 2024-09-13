@@ -14,17 +14,14 @@ use Illuminate\Support\Facades\Storage;
 
 class PreinscripcionService
 {
-    public function guardarArchivosTemporales(Request $request,$preinscripcion = null)
+    public function guardarArchivosTemporales(Request $request, $preinscripcion = null)
     {
         $dni_archivo = $request->file('dni_archivo_file');
         $dni_archivo2 = $request->file('dni_archivo_2_file');
         $comprobante = $request->file('comprobante_file');
         $certificado_archivo = $request->file('certificado_archivo_file');
         $certificado_archivo2 = $request->file('certificado_archivo_2_file');
-        $primario = $request->file('primario_file');
-        $curriculum = $request->file('curriculum_file');
-        $ctrabajo = $request->file('ctrabajo_file');
-        $nota = $request->file('nota_file');
+
 
         $data = [
             'nombres'       =>  $request['nombres'],
@@ -45,13 +42,14 @@ class PreinscripcionService
             'materias_s'     => $request['materias_s'],
             'conexion'      =>  $request['conexion'],
             'articulo_septimo' => $request['articulo_septimo'] ?? 0,
-            'carrera_id' => $request['carrera_id'],
+            'carrera_id' => $request['carrera_id']
         ];
 
-        if($preinscripcion)
-        {
+
+        if ($preinscripcion) {
             $request['gdrive_storage'] = $preinscripcion->gdrive_storage;
-        }else{
+            unset($data['carrera_id']);
+        } else {
             $request['gdrive_storage'] = false;
         }
 
@@ -92,6 +90,37 @@ class PreinscripcionService
             $data['certificado2_path'] = storage_path('app/temp/' . $certificado_nombre2);
             $data['certificado_archivo_2'] = $certificado_nombre2;
         }
+
+
+        $data['estado'] = 'sin verificar';
+
+        if ($preinscripcion) {
+            $preinscripcion->update($data);
+        } else {
+            $data['timecheck'] = time();
+            $preinscripcion = Preinscripcion::create($data);
+            Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+
+            if($preinscripcion->articulo_septimo)
+            {
+                Mail::to('articulo7@iesvu.edu.ar')->send(new PreEnrolledFormReceived($preinscripcion));
+            }
+        }
+
+        return $data;
+    }
+
+
+    public function guardarArchivos7mo(Request $request, $preinscripcion)
+    {
+        $primario = $request->file('primario_file');
+        $curriculum = $request->file('curriculum_file');
+        $ctrabajo = $request->file('ctrabajo_file');
+        $nota = $request->file('nota_file');
+        $partida = $request->file('partida_file');
+        $cuil = $request->file('cuil_file');
+
+
         if ($primario) {
             $primario_nombre = uniqid() . $primario->getClientOriginalName();
 
@@ -121,17 +150,50 @@ class PreinscripcionService
             $data['nota'] = $nota_nombre;
         }
 
-        $data['estado'] = 'sin verificar';
+        if ($partida) {
+            $partida_nombre = uniqid() . $partida->getClientOriginalName();
 
-        if($preinscripcion)
-        {
-            $preinscripcion->update($data);
-        }else{
-            $data['timecheck'] = time();
-            $preinscripcion = Preinscripcion::create($data);
-            Mail::to($preinscripcion->email)->send(new PreEnrolledFormReceived($preinscripcion));
+            Storage::disk('temp')->put($partida_nombre, file_get_contents($partida));
+            $data['partida_path'] = storage_path('app/temp/' . $partida_nombre);
+            $data['partida_archivo'] = $partida_nombre;
         }
 
+        if ($cuil) {
+            $cuil_nombre = uniqid() . $cuil->getClientOriginalName();
+
+            Storage::disk('temp')->put($cuil_nombre, file_get_contents($cuil));
+            $data['cuil_path'] = storage_path('app/temp/' . $cuil_nombre);
+            $data['cuil_archivo'] = $cuil_nombre;
+        }
+
+        $preinscripcion->update($data);
+
         return $data;
+    }
+
+    public function eliminarPreinscripcion($preinscripcion)
+    {
+
+        $files = [
+            $preinscripcion->dni_archivo,
+            $preinscripcion->dni_archivo_2,
+            $preinscripcion->comprobante,
+            $preinscripcion->certificado_archivo,
+            $preinscripcion->certificado_archivo_2,
+            $preinscripcion->primario,
+            $preinscripcion->curriculum,
+            $preinscripcion->ctrabajo,
+            $preinscripcion->nota,
+        ];
+
+        $disk = 'temp'; // Asegúrate de que este es el nombre del disco configurado en config/filesystems.php
+
+        foreach ($files as $file) {
+            if ($file && Storage::disk($disk)->exists($file)) {
+                Storage::disk($disk)->delete($file);
+            } elseif ($file) {
+                echo "El archivo $file no existe.<br>";
+            }
+        }
     }
 }

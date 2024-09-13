@@ -15,10 +15,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\mesaAlumnosExport;
 use App\Exports\totalInscripcionesExport;
 use App\Http\Requests\InstanciaRequest;
+use App\Models\TipoInstancia;
 use App\Models\User;
 use App\Services\Mesas\InstanciaService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+
 
 class InstanciaController extends Controller
 {
@@ -37,6 +40,7 @@ class InstanciaController extends Controller
     {
         $sedes = Auth::user()->sedes;
         $carreras = Auth::user()->carreras->pluck('id');
+        $tipo_instancias = TipoInstancia::all();
 
         //dd($carreras->toArray());
         if(!$todos)
@@ -70,6 +74,7 @@ class InstanciaController extends Controller
         return view('mesa.admin', [
             'instancias' => $instancia,
             'sedes' =>  $sedes,
+            'tipo_instancias' => $tipo_instancias,
             'todos' => $todos
         ]);
     }
@@ -101,14 +106,13 @@ class InstanciaController extends Controller
     
                     if($carreraExistente)
                     {
-                        array_push($carreras,$carreraExistente);
+                        array_push($carreras,$carrera);
                     }
     
                 }
             }
             
         }
-        
 
         return view('mesa.carreras', [
             'sede'  =>  $sede,
@@ -204,14 +208,11 @@ class InstanciaController extends Controller
     }
 
 
-    public function cambiar_cierre($cierre,$id){
+    public function cambiar_cierre(Request $request,$id){
         $instancia = Instancia::find($id);
-        $instancia->cierre = $cierre;
-        $instancia->update();
+        $instancia->update($request->all());
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        return redirect()->back()->with(['alert_success'=>'Calendario de cierres actualizado']);
     }
 
     public function descargar_excel($id,$instancia_id,$llamado=null)

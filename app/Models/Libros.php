@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Libros extends Model
 {
-    
+
 
     /**
      * The database table used by the model.
@@ -16,10 +18,10 @@ class Libros extends Model
     protected $table = 'libros';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
@@ -31,12 +33,12 @@ class Libros extends Model
      * @var array
      */
     protected $fillable = [
-                  'folio',
-                  'llamado',
-                  'mesa_id',
-                  'numero',
-                  'orden'
-              ];
+        'folio',
+        'llamado',
+        'mesa_id',
+        'numero',
+        'orden'
+    ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -44,45 +46,53 @@ class Libros extends Model
      * @var array
      */
     protected $dates = [];
-    
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
+
+
     /**
-     * Get the mesa for this model.
+     * Get the mesa that owns the Libros
      *
-     * @return App\Models\Mesa
+     * @return BelongsTo
      */
-    public function mesa()
+    public function mesa(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Mesa','mesa_id');
+        return $this->belongsTo(Mesa::class, 'mesa_id');
     }
 
 
     /**
      * Get created_at in array format
      *
-     * @param  string  $value
-     * @return array
+     * @param string $value
+     * @return string
      */
-    public function getCreatedAtAttribute($value)
+    public function getCreatedAtAttribute(string $value): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('j/n/Y g:i A');
+        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
 
     /**
      * Get updated_at in array format
      *
-     * @param  string  $value
-     * @return array
+     * @param string $value
+     * @return string
      */
-    public function getUpdatedAtAttribute($value)
+    public function getUpdatedAtAttribute(string $value): string
     {
-        return \DateTime::createFromFormat($this->getDateFormat(), $value)->format('j/n/Y g:i A');
+        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
+    }
+
+    public function getLibrosBySede(int $sede_id)
+    {
+        return Libro::whereHas('mesa.materia.carrera.sede', function ($query) {
+            $query->where('id', 7);
+        })->get();
     }
 
 }

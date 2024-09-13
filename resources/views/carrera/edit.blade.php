@@ -248,6 +248,20 @@
                             </option>
                         </select>
                     </div>
+                    <div class="col-sm">
+                        <label for="inscripcion_habilitada">Inscripción Materias:</label>
+                        <select class="form-select" name="inscripcion_habilitada"
+                                id="inscripcion_habilitada">
+                            <option value="1" {{$carrera->inscripcion_habilitada ? 'selected="selected"':''}}>
+                                Habilitada
+                            </option>
+                            <option
+                                value="0" {{!$carrera->inscripcion_habilitada ? 'selected="selected"':''}}>
+                                Deshabilitada
+                            </option>
+                        </select>
+                        <input type="checkbox" name="todas" value="1"> Aplicar a toda la resolución
+                    </div>
                 </div>
                 {{--Para el nuevo ram--}}
                 @if(Session::has('admin'))

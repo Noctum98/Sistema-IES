@@ -10,14 +10,13 @@
                 Crear carrera
             </a>
         @endif
-
-
         <div class="table-responsive">
             <table class="table mt-4">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Turno</th>
                     <th>Resolución</th>
                     @if(Session::has('admin'))
                         <th scope="col">Estado</th>
@@ -37,6 +36,7 @@
                     <tr style="cursor:pointer;">
                         <td><b>{{ $carrera->id }}</b></td>
                         <td>{{ $carrera->nombre }}</td>
+                        <td>{{ ucwords($carrera->turno) }}</td>
                         <td>{{ $carrera->getResolucion->resolution?? $carrera->resolucion }}</td>
                         @if(Auth::user()->hasRole('admin'))
                             <td>

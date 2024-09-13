@@ -8,10 +8,13 @@ use App\Models\AvisoRole;
 use App\Models\CorrelatividadAgrupada;
 use App\Models\EstadoCarrera;
 use App\Models\EstadoResoluciones;
+use App\Models\FolioNota;
 use App\Models\Library;
+use App\Models\LibroPapel;
 use App\Models\MasterMateria;
 use App\Models\MateriasCorrelativasCursado;
-use App\Models\OldLibro;
+use App\Models\LibroDigital;
+use App\Models\MesaFolio;
 use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\TipoCarrera;
@@ -21,10 +24,13 @@ use App\Policies\AvisoRolePolicy;
 use App\Policies\CorrelatividadAgrupadaPolicy;
 use App\Policies\EstadoCarreraPolicy;
 use App\Policies\EstadoResolucionesPolicy;
+use App\Policies\FolioNotaPolicy;
 use App\Policies\LibraryPolicy;
+use App\Policies\LibroPapelPolicy;
 use App\Policies\MasterMateriaPolicy;
 use App\Policies\MateriasCorrelativasCursadoPolicy;
-use App\Policies\OldLibroPolicy;
+use App\Policies\LibroDigitalPolicy;
+use App\Policies\MesaFolioPolicy;
 use App\Policies\RegimenPolicy;
 use App\Policies\resolucionesPolicy;
 use App\Policies\TipoCarreraPolicy;
@@ -51,7 +57,10 @@ class AuthServiceProvider extends ServiceProvider
         AgrupadaMateria::class => AgrupadaMateriaPolicy::class,
         Library::class => LibraryPolicy::class,
         AdminManager::class => AdminManagerPolicy::class,
-        OldLibro::class => OldLibroPolicy::class,
+        LibroDigital::class => LibroDigitalPolicy::class,
+        LibroPapel::class => LibroPapelPolicy::class,
+        MesaFolio::class => MesaFolioPolicy::class,
+        FolioNota::class => FolioNotaPolicy::class,
     ];
 
     /**

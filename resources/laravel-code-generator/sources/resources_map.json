@@ -99,13 +99,32 @@
         "table-name": "libros"
     },
     {
-        "model-name": "old_libros",
-        "resource-file": "old_libros.json",
-        "table-name": "old_libros"
-    },
-    {
         "model-name": "tipo_materias",
         "resource-file": "tipo_materias.json",
         "table-name": "tipo_materias"
+    },
+    {
+        "model-name": "libros_papeles",
+        "resource-file": "libros_papeles.json",
+        "table-name": "libros_papeles"
+    },
+    {
+        "model-name": "libros_digitales",
+        "resource-file": "libros_digitales.json",
+        "table-name": "libros_digitales"
+    },
+    {
+        "model-name": "mesa_folios",
+        "resource-file": "mesa_folios.json",
+        "table-name": "mesa_folios"
+    },
+    {
+        "model-name": "folioNotas",
+        "resource-file": "folio_notas.json",
+        "table-name": "folio_notas"
+    },
+    {
+        "model-name": "TipoInstancia",
+        "resource-file": "tipo_instancias.json"
     }
 ]

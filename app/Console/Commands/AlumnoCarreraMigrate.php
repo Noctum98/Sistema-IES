@@ -41,36 +41,20 @@ class AlumnoCarreraMigrate extends Command
      */
     public function handle()
     {
-        $alumnos = Alumno::all();
-        $progressBar = $this->output->createProgressBar($alumnos->count());
+        $inscripciones = AlumnoCarrera::where('cohorte',null)->get();
+        $progressBar = $this->output->createProgressBar($inscripciones->count());
 
-        foreach ($alumnos as $alumno) {
-            $alumnoCarreras = AlumnoCarrera::where([
-                'alumno_id' => $alumno->id,
-            ])->orderBy('created_at', 'desc')->get();
-
-            foreach ($alumnoCarreras as $alumnoCarrera) {
-                $alumnoCarrera->update([
-                    'fecha_primera_acreditacion' => $alumno->fecha_primera_acreditacion,
-                    'fecha_ultima_acreditacion' => $alumno->fecha_ultima_acreditacion,
-                    'cohorte' => $alumno->cohorte,
-                    'legajo_completo' => $alumno->legajo_completo,
-                    'aprobado' => $alumno->aprobado,
-                    'regularidad' => $alumno->regularidad
-                ]);
-
-                $procesos = Proceso::where([
-                    'alumno_id' => $alumno->id,
-                    'ciclo_lectivo' => $alumnoCarrera->ciclo_lectivo
-                ])->whereHas('materia',function($query)  use ($alumnoCarrera){
-                    return $query->where('materias.carrera_id',$alumnoCarrera->carrera_id);
-                })->update(['inscripcion_id'=>$alumnoCarrera->id]);
-
-                $actas_volantes = ActaVolante::where([
-                    'alumno_id' => $alumno->id
-                ])->whereHas('materia',function($query)  use ($alumnoCarrera){
-                    return $query->where('materias.carrera_id',$alumnoCarrera->carrera_id);
-                })->update(['inscripcion_id'=>$alumnoCarrera->id]);
+        foreach ($inscripciones as $inscripcion) {
+            
+            $inscrpicionO = AlumnoCarrera::where([
+                'alumno_id' => $inscripcion->alumno_id,
+                'carrera_id' => $inscripcion->carrera_id
+            ])->where('cohorte','!=',null)->first();
+    
+            if($inscrpicionO)
+            {
+                $inscripcion->cohorte = $inscrpicionO->cohorte;
+                $inscripcion->update();
             }
 
             $progressBar->advance();

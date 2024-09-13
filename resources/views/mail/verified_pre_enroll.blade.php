@@ -53,12 +53,22 @@
 				{{$pie}}
 			</p>
 			<p>{{$subtitulo}}</p>
-			<p>Ciclo de Actualización de Saberes Previos inicia en octubre de 2023 para las siguientes carreras:</p>
+			<p>Ciclo de Actualización de Saberes Previos inicia el 18 de octubre de para las siguientes carreras:</p>
 			<li>Enfermería Profesional</li>
 			<li>Tec. Sup. en Laboratorio de Análisis Clínicos </li>
 			<li>Tec. Sup. en Enología e Industrias de los Alimentos</li>
 			<li>Tec. Sup. en Gastronomía</li>
-			<p>Las demás carreras inicia en febrero de 2024.</p>
+			<li>Tec. Sup. en Estadistica Social</li>
+			<li>Tec. Sup. en Viticultura y Enología</li>
+			<li>Tec. Sup. en Administración Pública</li>
+			<li>Tec. Sup. en Gestión Integral de Recursos Hídricos</li>
+
+			<p>Las demás carreras inicia en febrero de 2025.</p>
+			<!--  articulo7@iesvu.edu.ar 
+			
+			
+			
+			-->
 			<br>
 		</div>
 	</div>		

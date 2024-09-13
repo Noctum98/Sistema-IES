@@ -6,6 +6,12 @@ $(document).ready(function () {
         const proceso_tipo = campo.attr('data-tipo');
         const proceso_cargo = campo.attr('data-cargo');
         const cierre = $(this).prop('checked');
+        const btn_comprueba = $('#btn_comprobar_'+proceso_id);
+        let urlComprueba = btn_comprueba.attr('data-url'); // URL desde el data attribute
+        let trOneProceso = btn_comprueba.data('trone');
+
+
+        console.log(trOneProceso)
 
         $('#span-' + proceso_id).removeClass('d-block')
         $('#span-' + proceso_id).addClass('d-none')
@@ -45,7 +51,7 @@ $(document).ready(function () {
                         }
 
 
-                        $('#' + proceso_id).attr('disabled', true);
+                        $('#select_' + proceso_id).attr('disabled', true);
                         $('#global-' + proceso_id).attr('disabled', true);
                             $('#btn-global-' + proceso_id).attr('disabled', true);
 
@@ -57,21 +63,39 @@ $(document).ready(function () {
                             $('#global-' + proceso_id).attr('disabled', true);
                             $('#btn-global-' + proceso_id).attr('disabled', true);
                         }
-                        $('#' + proceso_id).attr('disabled', false);
+                        $('#select_' + proceso_id).attr('disabled', false);
                     }
 
 
                 }
-                $('#span-' + proceso_id).removeClass('d-none')
-                $('#span-' + proceso_id).addClass('d-block')
-                $('#spin-' + proceso_id).removeClass('d-block')
-                $('#spin-' + proceso_id).addClass('d-none')
+
 
                 if ($('#nota-' + proceso_id).attr('disabled')) {
                     $('#nota-' + proceso_id).attr('disabled', false);
                 } else {
                     $('#nota-' + proceso_id).attr('disabled', true);
                 }
+                $.ajax({
+                    url: urlComprueba,
+                    type: "GET",
+                    success: function (response) {
+                        // Aquí actualizas el <tr> con la respuesta del servidor
+                        // Se necesita tener un identificador único para seleccionar el correcto <tr>
+                        // Por ejemplo: $('#unique-tr-id').html(response);
+                        console.log('39')
+                        $('#' + trOneProceso).html(response);
+
+                    },
+                    error: function(xhr, status, error) {
+
+                    }
+
+                });
+
+                $('#span-' + proceso_id).removeClass('d-none')
+                $('#span-' + proceso_id).addClass('d-block')
+                $('#spin-' + proceso_id).removeClass('d-block')
+                $('#spin-' + proceso_id).addClass('d-none')
 
                 console.log($('#span-' + proceso_id))
 

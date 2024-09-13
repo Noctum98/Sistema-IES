@@ -24,17 +24,23 @@
                 </td>
                 <td>{{ $inscripcion->estado_baja ? $inscripcion->motivo_baja : '-' }}</td>
                 @if($inscripcion->acta_volante && !$inscripcion->estado_baja)
-                    <td>@colorAprobado($inscripcion->acta_volante->promedio)</td>
+                <td>@colorAprobado($inscripcion->acta_volante->promedio)</td>
                 @else
-                    <td><span class="text-secondary">-</span></td>
+                <td><span class="text-secondary">-</span></td>
                 @endif
                 <td>
                     @if($instancia->tipo == 1)
-                    <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger" {{ $inscripcion->estado_baja ? 'disabled' : '' }}>Bajarme</a>
+                    @if($inscripcion->estado_baja)
+                    <a href="#" class="btn btn-sm btn-secondary disabled">Bajarme</a>
+
+                    @else
+                    <a href="{{route('mesa.baja',['id'=>$inscripcion->id,'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>
+
+                    @endif
                     @else
 
-                    @if($inscripcion->estado_baja || $inscripcion->confirmado)
-                    <button class="btn btn-sm btn-danger" disabled>Bajarme</button>
+                    @if($inscripcion->estado_baja)
+                    <button class="btn btn-sm btn-danger">Bajarme</button>
 
                     @elseif($inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre_segundo']) <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>
                         @elseif(!$inscripcion['segundo_llamado'] && time() < $inscripcion['mesa']['cierre']) <a href="{{route('mesa.baja',['id'=>$inscripcion['id'],'instancia_id'=>$instancia->id])}}" class="btn btn-sm btn-danger">Bajarme</a>

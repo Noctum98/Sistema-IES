@@ -45,7 +45,8 @@ $(document).ready(function () {
                         }
 
 
-                        $('#' + proceso_id).attr('disabled', true);
+                        $('#' + proceso_id).prop('disabled', true);
+
                         $('#global-' + proceso_id).attr('disabled', true);
                             $('#btn-global-' + proceso_id).attr('disabled', true);
                         
@@ -57,7 +58,8 @@ $(document).ready(function () {
                             $('#global-' + proceso_id).attr('disabled', true);
                             $('#btn-global-' + proceso_id).attr('disabled', true);
                         }
-                        $('#' + proceso_id).attr('disabled', false);
+                        console.log(proceso_id);
+                        $('#' + proceso_id).prop('disabled', false);
                     }
 
                     
@@ -72,9 +74,6 @@ $(document).ready(function () {
                 } else {
                     $('#nota-' + proceso_id).attr('disabled', true);
                 }
-
-                console.log($('#span-' + proceso_id))
-
 
             }
         });

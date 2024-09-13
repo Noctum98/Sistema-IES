@@ -12,6 +12,8 @@ use App\Http\Controllers\CargoProcesoController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\EquivalenciasController;
 use App\Http\Controllers\EstadosController;
+use App\Http\Controllers\LibrosDigitalesController;
+use App\Http\Controllers\ManagerBookController;
 use App\Http\Controllers\ModuloProfesorController;
 use App\Http\Controllers\ModulosController;
 use App\Http\Controllers\Parameters\CicloLectivoController;
@@ -76,10 +78,12 @@ use App\Http\Controllers\Ticket\AsignacionTicketController;
 use App\Http\Controllers\Ticket\DerivacionTicketController;
 use App\Http\Controllers\Ticket\RespuestaTicketController;
 use App\Http\Controllers\LibrariesController;
-use App\Http\Controllers\Parameters\ParametrosController;
-use App\Http\Controllers\Parameters\ParametrosCicloLectivoController;
-use App\Http\Controllers\Parameters\ParametrosCicloLectivoEspecialController;
-use App\Http\Controllers\OldLibrosController;
+use App\Http\Controllers\LibroPapelController;
+use App\Http\Controllers\MesaFoliosController;
+use App\Http\Controllers\FolioNotasController;
+use App\Models\ActaVolante;
+use App\Models\AlumnoCarrera;
+use App\Http\Controllers\TipoInstanciasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,7 +100,6 @@ use App\Http\Controllers\OldLibrosController;
 Auth::routes();
 
 
-
 Route::get('/register-alumno/{carrera_id}', [RegisterController::class, 'showRegistrationAlumnosForm'])->name('register.alumnos');
 Route::post('register-alumno', [RegisterController::class, 'registerAlumno'])->name('register.alumno.store');
 
@@ -108,12 +111,12 @@ Route::get('/home/ayuda/visual', [App\Http\Controllers\HomeController::class, 'a
     'home.ayuda.visual'
 );
 
-Route::get('/', function () {
+Route::get('/', static function () {
     if (Auth::user()) {
         return redirect('/home');
-    } else {
-        return view('auth.login');
     }
+
+    return view('auth.login');
 });
 
 // Rutas acreditaciones
@@ -131,58 +134,76 @@ Route::prefix('admin')->group(function () {
     Route::get('/calificaciones/{materia_id}/cargo', [AdminController::class, 'vista_calificaciones_cargos'])->name('admin.calificaciones.cargos');
 });
 
-Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin/actas_volantes', 'middleware' => ['auth']], static function () {
     Route::get('/', [ActaVolanteAdminController::class, 'index'])
         ->name('admin.actas_volantes.index');
     Route::get('/listado', [ActaVolanteAdminController::class, 'listado'])
         ->name('admin.actas_volantes.listado');
     Route::get('/create', [ActaVolanteAdminController::class, 'create'])
         ->name('admin.actas_volantes.create');
-    Route::get('/show/{adminManager}',[ActaVolanteAdminController::class, 'show'])
+    Route::get('/show/{adminManager}', [ActaVolanteAdminController::class, 'show'])
         ->name('admin.actas_volantes.show');
-    Route::get('/{adminManager}/edit',[ActaVolanteAdminController::class, 'edit'])
+    Route::get('/{adminManager}/edit', [ActaVolanteAdminController::class, 'edit'])
         ->name('admin.actas_volantes.edit');
     Route::post('/', [ActaVolanteAdminController::class, 'store'])
         ->name('admin.actas_volantes.store');
     Route::put('admin_manager/{adminManager}', [ActaVolanteAdminController::class, 'update'])
         ->name('admin.actas_volantes.update');
-    Route::delete('/admin_manager/{adminManager}',[ActaVolanteAdminController::class, 'destroy'])
+    Route::delete('/admin_manager/{adminManager}', [ActaVolanteAdminController::class, 'destroy'])
         ->name('admin.actas_volantes.destroy');
 });
 
-Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibrariesAdminController::class, 'index'])
+        ->name('admin-libraries.library.index');
+    Route::get('/create', [LibrariesAdminController::class, 'create'])
+        ->name('admin-libraries.library.create');
+    Route::get('/show/{library}', [LibrariesAdminController::class, 'show'])
+        ->name('admin-libraries.library.show');
+    Route::get('/{library}/edit', [LibrariesAdminController::class, 'edit'])
+        ->name('admin-libraries.library.edit');
+    Route::post('/', [LibrariesAdminController::class, 'store'])
+        ->name('admin-libraries.library.store');
+    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
+        ->name('admin-libraries.library.update');
+    Route::delete('/library/{library}', [LibrariesAdminController::class, 'destroy'])
+        ->name('admin-libraries.library.destroy');
+});
+
+
+Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], static function () {
     Route::get('/', [AdminManagersController::class, 'index'])
         ->name('admin_managers.admin_manager.index');
     Route::get('/listado', [AdminManagersController::class, 'listado'])
         ->name('admin_managers.admin_manager.listado');
     Route::get('/create', [AdminManagersController::class, 'create'])
         ->name('admin_managers.admin_manager.create');
-    Route::get('/show/{adminManager}',[AdminManagersController::class, 'show'])
+    Route::get('/show/{adminManager}', [AdminManagersController::class, 'show'])
         ->name('admin_managers.admin_manager.show');
-    Route::get('/{adminManager}/edit',[AdminManagersController::class, 'edit'])
+    Route::get('/{adminManager}/edit', [AdminManagersController::class, 'edit'])
         ->name('admin_managers.admin_manager.edit');
     Route::post('/', [AdminManagersController::class, 'store'])
         ->name('admin_managers.admin_manager.store');
     Route::put('admin_manager/{adminManager}', [AdminManagersController::class, 'update'])
         ->name('admin_managers.admin_manager.update');
-    Route::delete('/admin_manager/{adminManager}',[AdminManagersController::class, 'destroy'])
+    Route::delete('/admin_manager/{adminManager}', [AdminManagersController::class, 'destroy'])
         ->name('admin_managers.admin_manager.destroy');
 });
 
-Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [TipoMateriasController::class, 'index'])
         ->name('tipo_materias.tipo_materia.index');
     Route::get('/create', [TipoMateriasController::class, 'create'])
         ->name('tipo_materias.tipo_materia.create');
-    Route::get('/show/{tipoMateria}',[TipoMateriasController::class, 'show'])
+    Route::get('/show/{tipoMateria}', [TipoMateriasController::class, 'show'])
         ->name('tipo_materias.tipo_materia.show');
-    Route::get('/{tipoMateria}/edit',[TipoMateriasController::class, 'edit'])
+    Route::get('/{tipoMateria}/edit', [TipoMateriasController::class, 'edit'])
         ->name('tipo_materias.tipo_materia.edit');
     Route::post('/', [TipoMateriasController::class, 'store'])
         ->name('tipo_materias.tipo_materia.store');
     Route::put('tipo_materia/{tipoMateria}', [TipoMateriasController::class, 'update'])
         ->name('tipo_materias.tipo_materia.update');
-    Route::delete('/tipo_materia/{tipoMateria}',[TipoMateriasController::class, 'destroy'])
+    Route::delete('/tipo_materia/{tipoMateria}', [TipoMateriasController::class, 'destroy'])
         ->name('tipo_materias.tipo_materia.destroy');
 });
 
@@ -214,7 +235,7 @@ Route::prefix('alumnos')->group(function () {
 });
 
 // Avisos del tipo avisador general
-Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], static function () {
     Route::get('/', [AvisoController::class, 'index'])
         ->name('aviso.aviso.index');
     Route::get('/create', [AvisoController::class, 'create'])
@@ -233,10 +254,10 @@ Route::group(['prefix' => 'avisos', 'middleware' => ['auth']], function () {
 
 // Bibliotecas
 
-Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'biblioteca', 'middleware' => ['auth']], static function () {
     Route::get('/', [LibrariesController::class, 'index'])
         ->name('libraries.library.index');
-    Route::get('/show/{library}',[LibrariesController::class, 'show'])
+    Route::get('/show/{library}', [LibrariesController::class, 'show'])
         ->name('libraries.library.show');
 });
 
@@ -245,7 +266,6 @@ Route::prefix('encuesta_socioeconomica')->group(function () {
     Route::get('motivacional/{encuesta_id}/{carrera_id}', [EncuestaSocioeconomicaController::class, 'showForm2'])->name('encuesta_socioeconomica.showForm2');
     Route::post('/store', [EncuestaSocioeconomicaController::class, 'store'])->name('encuesta_socioeconomica.store');
     Route::post('/store2', [EncuestaSocioeconomicaController::class, 'store2'])->name('encuesta_socioeconomica.store2');
-
 });
 
 Route::prefix('alumno/carrera')->group(function () {
@@ -267,11 +287,15 @@ Route::prefix('cargo')->group(function () {
 
 Route::prefix('cargo_proceso')->group(function () {
     Route::get('/{proceso_id}/{cargo_id}', [CargoProcesoController::class, 'store'])->name('cargo_proceso.store');
-    Route::get('/{cargo_proceso}/actualizar/planilla-modular',
-        [CargoProcesoController::class, 'update'])
+    Route::get(
+        '/{cargo_proceso}/actualizar/planilla-modular',
+        [CargoProcesoController::class, 'update']
+    )
         ->name('cargo_proceso.actualizar');
-    Route::get('/{cargo_id}/{materia_id}/{ciclo_lectivo}/cargar/procesos/{comision_id?}',
-        [CargoProcesoController::class, 'all_store'])
+    Route::get(
+        '/{cargo_id}/{materia_id}/{ciclo_lectivo}/cargar/procesos/{comision_id?}',
+        [CargoProcesoController::class, 'all_store']
+    )
         ->name('cargo_proceso.all_store');
 });
 
@@ -387,7 +411,9 @@ Route::prefix('moduloProfesor')->group(function () {
     Route::post('/agregarCargoModulo', [ModuloProfesorController::class, 'agregarCargoModulo'])->name(
         'modulo_profesor.vincular_cargo_modulo'
     );
-    Route::get('formAgregarCargoModulo/{cargo}/{usuario}', [ModuloProfesorController::class, 'formAgregarCargoModulo']
+    Route::get(
+        'formAgregarCargoModulo/{cargo}/{usuario}',
+        [ModuloProfesorController::class, 'formAgregarCargoModulo']
     )->name('modulo_profesor.form_agregar_cargo_modulo');
     Route::delete('delete/{materia}/{cargo}/{user}', [ModuloProfesorController::class, 'destroy'])->name(
         'modulo_profesor.destroy'
@@ -412,26 +438,34 @@ Route::prefix('personal')->group(function () {
  */
 
 Route::prefix('proceso-modular')->group(function () {
-    Route::get('/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}',
-        [ProcesoModularController::class, 'listado'])->name(
+    Route::get(
+        '/listado/{materia}/{ciclo_lectivo?}/{cargo_id?}',
+        [ProcesoModularController::class, 'listado']
+    )->name(
         'proceso_modular.list'
     );
-    Route::get('/tabs_cargo/{cargo_id}/{materia_id}/{ciclo_lectivo}',
+    Route::get(
+        '/tabs_cargo/{cargo_id}/{materia_id}/{ciclo_lectivo}',
         [ProcesoModularController::class, 'cargaTabsCargo']
     )->name('proceso_modular.carga_tabs_cargo');
 
-    Route::get('/procesaPonderacionModular/{materia}',
+    Route::get(
+        '/procesaPonderacionModular/{materia}',
         [ProcesoModularController::class, 'procesaPonderacionModular']
     )->name('proceso_modular.procesa_ponderacion_modular');
-    Route::get('/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}',
+    Route::get(
+        '/procesaEstados/{materia}/{ciclo_lectivo}/{cargo_id?}',
         [ProcesoModularController::class, 'procesaEstadosModular']
     )->name('proceso_modular.procesa_estados_modular');
-    Route::get('/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}',
+    Route::get(
+        '/procesaNotaModular/{materia}/{proceso_id}/{cargo_id?}',
         [ProcesoModularController::class, 'procesaNotaModular']
     )->name('proceso_modular.procesa_notas_modular');
-    Route::get('/procesaNotaModularProcesp/{materia}/{proceso_id}/proceso/{cargo_id?}',
+    Route::get(
+        '/procesaNotaModularProcesp/{materia}/{proceso_id}/proceso/{cargo_id?}',
         [ProcesoModularController::class, 'procesaNotaModularProceso']
     )->name('proceso_modular.procesa_notas_modular_proceso');
+    Route::post('cambia/cierre_modular', [ProcesoModularController::class, 'cambiaCierreModular'])->name('proceso.cambiaCierreModular');
 });
 
 /**
@@ -460,7 +494,7 @@ Route::prefix('sedes')->group(function () {
     Route::post('editar-sede/{id}', [SedeController::class, 'editar'])->name('editar_sede');
     Route::get('eliminar-sede/{id}', [SedeController::class, 'eliminar'])->name('eliminar_sede');
     Route::get('/selectCarreraSede/{id}', [SedeController::class, 'selectCarreraSede'])->name('select_carrera_sede');
-    Route::get('/getSedes', [SedeController::class, 'getSedes']);
+    Route::get('/getSedes', [SedeController::class, 'getAllSedes']);
 });
 
 Route::prefix('usuario_cargo')->group(function () {
@@ -486,6 +520,7 @@ Route::prefix('usuario_materia')->group(function () {
 
 //Ruta de Roles
 Route::resource('roles', RolController::class);
+Route::get('cambiarEstado/{rol_id}', [RolController::class, 'cambiarEstado'])->name('rol.cambiarEstado');
 
 // Rutas de carreras/materia
 Route::prefix('carreras/materias')->group(function () {
@@ -516,7 +551,8 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('/form/terminado/{carrera_id}', [PreinscripcionController::class, 'vista_inscripto'])->name(
         'pre.inscripto'
     );
-
+    Route::get('files/{id}/{timecheck}', [PreinscripcionController::class, 'vista_edit_files'])->name('pre.files');
+    Route::post('uploadFiles/{id}/{timecheck}', [PreinscripcionController::class, 'subir_articulo7mo'])->name('pre.filesUpload');
     Route::get('/form/editada/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editado'])->name('pre.editado');
     Route::get('eliminada', [PreinscripcionController::class, 'vista_eliminado'])->name('pre.eliminado');
     Route::get('/admin/datos/{id}', [PreinscripcionController::class, 'vista_detalle'])->name('pre.detalle');
@@ -553,27 +589,32 @@ Route::prefix('preinscripcion')->group(function () {
 Route::prefix('proceso')->group(function () {
     // Vistas
     Route::get('/admin/{alumno_id}/{carrera_id}/{ciclo_lectivo}', [ProcesoController::class, 'vista_admin'])->name('proceso.admin');
+    Route::get('/admin-alumno/{carrera_id}/{year}', [ProcesoController::class, 'vista_admin_alumnos'])->name('proceso.admin_alumno');
+
     Route::get('inscribir/{id}', [ProcesoController::class, 'vista_inscribir'])->name('proceso.inscribir');
 
     Route::get('detalle/{id}', [ProcesoController::class, 'vista_detalle'])->name('proceso.detalle');
 
     // Vista Alumno
     Route::get('/mis_procesos/{id}/{carrera}/{year}', [AlumnoProcesoController::class, 'vista_procesos'])->name('proceso.alumno');
-    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])->name('proceso.alumnoCarrera');
+    Route::get('/mis_procesos_carrera/{idAlumno}/{idCarrera}/{cohorte}', [AlumnoProcesoController::class, 'vistaProcesosPorCarrera'])
+        ->name('proceso.alumnoCarrera');
 
     // Acciones
     Route::get('inscribir_proceso/{alumno_id}/{materia_id}', [ProcesoController::class, 'inscribir'])->name(
         'inscribir_proceso'
     );
-    Route::get('inscribir/{alumno_id}/{materia_id}/{ciclo_lectivo}', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
+    Route::post('inscribir', [ProcesoController::class, 'inscribir'])->name('proceso.inscribirAlumno');
     Route::get('delete/{proceso_id}', [ProcesoController::class, 'eliminar']);
     Route::get('eliminar/{id}/{alumno_id}', [ProcesoController::class, 'delete']);
     Route::get('listado/{materia_id}/{ciclo_lectivo}/{comision_id?}', [ProcesoController::class, 'vista_listado'])->name(
         'proceso.listado'
     );
+    Route::get('libres/{materia_id}', [ProcesoController::class, 'vista_libres'])->name('proceso.libres');
     Route::get('/{id}', [ProcesoController::class, 'getProceso']);
 
-    Route::get('listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
+    Route::get(
+        'listado-cargo/{materia_id}/{cargo_id}/{ciclo_lectivo?}/{comision_id?}',
         [ProcesoController::class, 'vista_listadoCargo']
     )->name(
         'proceso.listadoCargo'
@@ -591,6 +632,7 @@ Route::prefix('proceso')->group(function () {
     );
     Route::post('cambia/estado', [ProcesoController::class, 'cambiaEstado'])->name('proceso.cambiaEstado');
     Route::post('cambia/cierre', [ProcesoController::class, 'cambiaCierre'])->name('proceso.cambiaCierre');
+    Route::post('cambia/simular_cierre', [ProcesoController::class, 'simularCierre'])->name('proceso.simularCierre');
     Route::get(
         'cambia/cierre-general/{materia_id}/{cargo_id?}/{comision_id?}/{cierre_coordinador?}',
         [ProcesoController::class, 'cambiaCierreGeneral']
@@ -601,7 +643,6 @@ Route::prefix('proceso')->group(function () {
     Route::post('cambia/nota_global', [ProcesoController::class, 'cambia_nota_global'])->name('proceso.nota_global');
     Route::post('calcularPorcentaje', [ProcesoCalificacionController::class, 'calcularPorcentaje']);
     Route::get('procesosCalificaciones/{proceso_id}', [ProcesoCalificacionController::class, 'show']);
-
 });
 
 // Rutas de Asistencia
@@ -645,8 +686,7 @@ Route::prefix('parciales')->group(function () {
 });
 
 // Ruta AlumnoParcial
-Route::prefix('alumno/parci')->group(function () {
-});
+Route::prefix('alumno/parci')->group(function () {});
 
 //Rutas de Mesas
 Route::prefix('mesas')->group(function () {
@@ -670,7 +710,7 @@ Route::prefix('mesas')->group(function () {
     Route::post('/crear_instancia', [InstanciaController::class, 'crear'])->name('crear_instancia');
     Route::post('/editar_instancia/{id}', [InstanciaController::class, 'editar'])->name('editar_instancia');
     Route::get('/estado/{estado}/{id}', [InstanciaController::class, 'cambiar_estado']);
-    Route::get('/cierre/{cierre}/{id}', [InstanciaController::class, 'cambiar_cierre']);
+    Route::post('/cierre/{id}', [InstanciaController::class, 'cambiar_cierre'])->name('instancia.cierres');
     Route::post('/alumno/crear', [AlumnoMesaController::class, 'materias'])->name('mesas.materias');
     Route::post('/mesa_inscripcion/{instancia_id?}', [AlumnoMesaController::class, 'inscripcion'])->name('insc_mesa');
     Route::get('/bajar_mesa/{id}/{instancia_id?}', [AlumnoMesaController::class, 'bajar_mesa'])->name('mesa.baja');
@@ -684,7 +724,9 @@ Route::prefix('mesas')->group(function () {
 
 
     Route::get('/editar_mesa/{dni}/{id}/{sede_id}', [AlumnoMesaController::class, 'email_session'])->name('edit.mesa');
-    Route::get('/descargar_excel/{id}/{instancia_id}/{llamado?}', [InstanciaController::class, 'descargar_excel']
+    Route::get(
+        '/descargar_excel/{id}/{instancia_id}/{llamado?}',
+        [InstanciaController::class, 'descargar_excel']
     )->name('mesa.descargar');
     Route::get('/descargar_tribunal/{id}/{instancia_id}', [InstanciaController::class, 'descargar_tribunal'])->name(
         'mesa.tribunal'
@@ -705,6 +747,13 @@ Route::prefix('mesas')->group(function () {
     )->name(
         'generar_pdf_acta_volante'
     );
+
+    Route::get(
+        'mostrar-pdf-acta-volante/{mesa}/{llamado}/{folio}',
+        [MesaController::class, 'mostrar_pdf_acta_volante']
+    )->name(
+        'mostrar_pdf_acta_volante'
+    );
     Route::get('/resumen/{instancia_id}', [ActaVolanteController::class, 'resumenInstancia'])->name('mesas.resumen');
 
     Route::post('/updateLibroFolio/{id}', [MesaController::class, 'updateLibroFolio'])->name('mesa.librofolio');
@@ -716,7 +765,7 @@ Route::prefix('mesas')->group(function () {
 
 Route::resource('actasVolantes', ActaVolanteController::class);
 Route::prefix('actasVolantes')->group(function () {
-    Route::get('/anteriores/{materia_id}/{alumno_id}/', [ActaVolanteController::class, 'notasAnteriores'])->name(
+    Route::get('/anteriores/{materia_id}/{alumno_id}/{cohorte?}', [ActaVolanteController::class, 'notasAnteriores'])->name(
         'acta-volante.anteriores-notas'
     );
 });
@@ -739,7 +788,7 @@ Route::prefix('matriculacion')->group(function () {
     Route::get('/email_check/{timecheck}/{carrera_id}/{year}', [MatriculacionController::class, 'email_check'])->name(
         'matriculacion.checked'
     );
-    Route::get('finalizada', function () {
+    Route::get('finalizada', static function () {
         return view('matriculacion.card_email_check');
     });
     Route::post('/carrera/{id}/{year}', [MatriculacionController::class, 'store'])->name('matriculacion.store');
@@ -874,7 +923,7 @@ Route::prefix('usuarios')->group(function () {
 Route::get('api-docs/condicion_materias', [CondicionMateriaApiDocsApiDocsController::class, 'index'])
     ->name('api-docs.condicion_materias.condicion_materia.index');
 
-Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [AgrupadaMateriasController::class, 'index'])
         ->name('agrupada_materias.agrupada_materia.index');
     Route::get('/create', [AgrupadaMateriasController::class, 'create'])
@@ -900,7 +949,7 @@ Route::group(['prefix' => 'agrupada_materias', 'middleware' => ['auth']], functi
 });
 
 
-Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [CondicionCarrerasController::class, 'index'])
         ->name('condicion_carreras.condicion_carrera.index');
     Route::get('/create', [CondicionCarrerasController::class, 'create'])
@@ -917,7 +966,7 @@ Route::group(['prefix' => 'condicion_carreras', 'middleware' => ['auth']], funct
         ->name('condicion_carreras.condicion_carrera.destroy')->where('id', '[0-9]+');
 });
 
-Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [CondicionMateriasController::class, 'index'])
         ->name('condicion_materias.condicion_materia.index');
     Route::get('/create', [CondicionMateriasController::class, 'create'])
@@ -934,7 +983,7 @@ Route::group(['prefix' => 'condicion_materias', 'middleware' => ['auth']], funct
         ->name('condicion_materias.condicion_materia.destroy');
 });
 
-Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']], static function () {
     Route::get('/', [CorrelatividadAgrupadasController::class, 'index'])
         ->name('correlatividad_agrupadas.correlatividad_agrupada.index');
     Route::get('/create', [CorrelatividadAgrupadasController::class, 'create'])
@@ -951,7 +1000,7 @@ Route::group(['prefix' => 'correlatividad_agrupadas', 'middleware' => ['auth']],
         ->name('correlatividad_agrupadas.correlatividad_agrupada.destroy');
 });
 
-Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [EstadoCarrerasController::class, 'index'])
         ->name('estado_carreras.estado_carrera.index');
     Route::get('/create', [EstadoCarrerasController::class, 'create'])
@@ -968,7 +1017,7 @@ Route::group(['prefix' => 'estado_carreras', 'middleware' => ['auth']], function
         ->name('estado_carreras.estado_carrera.destroy');
 });
 
-Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], function () {
+Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], static function () {
     Route::get('/', [EstadoResolucionesController::class, 'index'])
         ->name('estado_resoluciones.estado_resoluciones.index');
     Route::get('/create', [EstadoResolucionesController::class, 'create'])
@@ -985,7 +1034,88 @@ Route::group(['prefix' => 'estado_resoluciones', 'middleware' => ['auth'],], fun
         ->name('estado_resoluciones.estado_resoluciones.destroy');
 });
 
-Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'folio_notas', 'middleware' => ['auth']], static function () {
+    Route::get('/', [FolioNotasController::class, 'index'])
+        ->name('folio_notas.folio_nota.index');
+    Route::get('/create', [FolioNotasController::class, 'create'])
+        ->name('folio_notas.folio_nota.create');
+    Route::get('/show/{folioNota}', [FolioNotasController::class, 'show'])
+        ->name('folio_notas.folio_nota.show');
+    Route::get('/{folioNota}/edit', [FolioNotasController::class, 'edit'])
+        ->name('folio_notas.folio_nota.edit');
+    Route::post('/', [FolioNotasController::class, 'store'])
+        ->name('folio_notas.folio_nota.store');
+    Route::put('folio_nota/{folioNota}', [FolioNotasController::class, 'update'])
+        ->name('folio_notas.folio_nota.update');
+    Route::delete('/folio_nota/{folioNota}', [FolioNotasController::class, 'destroy'])
+        ->name('folio_notas.folio_nota.destroy');
+});
+
+Route::group(['prefix' => 'libros', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibrosController::class, 'index'])
+        ->name('libros.libros.index');
+    Route::get('/create', [LibrosController::class, 'create'])
+        ->name('libros.libros.create');
+    Route::get('/show/{libros}', [LibrosController::class, 'show'])
+        ->name('libros.libros.show');
+    Route::get('/{libros}/edit', [LibrosController::class, 'edit'])
+        ->name('libros.libros.edit');
+    Route::post('/', [LibrosController::class, 'store'])
+        ->name('libros.libros.store');
+    Route::put('libros/{libros}', [LibrosController::class, 'update'])
+        ->name('libros.libros.update');
+    Route::delete('/libros/{libros}', [LibrosController::class, 'destroy'])
+        ->name('libros.libros.destroy');
+});
+
+Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibrosDigitalesController::class, 'index'])
+        ->name('libros_digitales.libro_digital.index');
+    Route::get('/libro/sede', [LibrosDigitalesController::class, 'indexSede'])
+        ->name('libros_digitales.libro_digital.index_sede');
+    Route::get('/libro/carrera', [LibrosDigitalesController::class, 'indexCarrera'])
+        ->name('libros_digitales.libro_digital.index_carrera');
+    Route::get('/create', [LibrosDigitalesController::class, 'create'])
+        ->name('libros_digitales.libro_digital.create');
+    Route::get('/create-sede/{sede_id}', [LibrosDigitalesController::class, 'createBySede'])
+        ->name('libros_digitales.libro_digital.create_sede');
+    Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
+        ->name('libros_digitales.libro_digital.show');
+    Route::get('/showFolios/{libroDigital}', [LibrosDigitalesController::class, 'showFolios'])
+        ->name('libros_digitales.libro_digital.showFolios');
+    Route::get('/{libroDigital}/edit', [LibrosDigitalesController::class, 'edit'])
+        ->name('libros_digitales.libro_digital.edit');
+    Route::post('/', [LibrosDigitalesController::class, 'store'])
+        ->name('libros_digitales.libro_digital.store');
+    Route::put('libro_digital/{libroDigital}', [LibrosDigitalesController::class, 'update'])
+        ->name('libros_digitales.libro_digital.update');
+    Route::delete('/libro_digital/{libroDigital}', [LibrosDigitalesController::class, 'destroy'])
+        ->name('libros_digitales.libro_digital.destroy');
+});
+
+Route::group(['prefix' => 'libro_papel', 'middleware' => ['auth']], static function () {
+    Route::get('/', [LibroPapelController::class, 'index'])
+        ->name('libro_papel.libro_papel.index');
+    Route::get('/create', [LibroPapelController::class, 'create'])
+        ->name('libro_papel.libro_papel.create');
+    Route::get('/show/{libroPapel}', [LibroPapelController::class, 'show'])
+        ->name('libro_papel.libro_papel.show');
+    Route::get('/{libroPapel}/edit', [LibroPapelController::class, 'edit'])
+        ->name('libro_papel.libro_papel.edit');
+    Route::post('/', [LibroPapelController::class, 'store'])
+        ->name('libro_papel.libro_papel.store');
+    Route::put('libro_papel/{libroPapel}', [LibroPapelController::class, 'update'])
+        ->name('libro_papel.libro_papel.update');
+    Route::delete('/libro_papel/{libroPapel}', [LibroPapelController::class, 'destroy'])
+        ->name('libro_papel.libro_papel.destroy');
+});
+
+Route::group(['prefix' => 'manager_libros', 'middleware' => ['auth']], static function () {
+    Route::get('/', [ManagerBookController::class, 'index'])
+        ->name('manager_libros.libros.index');
+});
+
+Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['auth']], static function () {
     Route::get('/', [MateriasCorrelativasCursadosController::class, 'index'])
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.index');
     Route::get('/create', [MateriasCorrelativasCursadosController::class, 'create'])
@@ -1002,7 +1132,7 @@ Route::group(['prefix' => 'materias_correlativas_cursados', 'middleware' => ['au
         ->name('materias_correlativas_cursados.materias_correlativas_cursado.destroy');
 });
 
-Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], static function () {
     Route::get('/', [MasterMateriasController::class, 'index'])
         ->name('master_materias.master_materia.index');
     Route::get('/create', [MasterMateriasController::class, 'create'])
@@ -1019,7 +1149,26 @@ Route::group(['prefix' => 'master_materias', 'middleware' => ['auth']], function
         ->name('master_materias.master_materia.destroy');
 });
 
-Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], static function () {
+    Route::get('/', [MesaFoliosController::class, 'index'])
+        ->name('mesa_folios.mesa_folio.index');
+    Route::get('/create', [MesaFoliosController::class, 'create'])
+        ->name('mesa_folios.mesa_folio.create');
+    Route::get('/create/{libroDigital}', [MesaFoliosController::class, 'createByLibro'])
+        ->name('mesa_folios.mesa_folio.create_by_libro');
+    Route::get('/show/{mesaFolio}', [MesaFoliosController::class, 'show'])
+        ->name('mesa_folios.mesa_folio.show');
+    Route::get('/{mesaFolio}/edit', [MesaFoliosController::class, 'edit'])
+        ->name('mesa_folios.mesa_folio.edit');
+    Route::post('/', [MesaFoliosController::class, 'store'])
+        ->name('mesa_folios.mesa_folio.store');
+    Route::put('mesa_folio/{mesaFolio}', [MesaFoliosController::class, 'update'])
+        ->name('mesa_folios.mesa_folio.update');
+    Route::delete('/mesa_folio/{mesaFolio}', [MesaFoliosController::class, 'destroy'])
+        ->name('mesa_folios.mesa_folio.destroy');
+});
+
+Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], static function () {
     Route::get('/', [RegimensController::class, 'index'])
         ->name('regimens.regimen.index');
     Route::get('/create', [RegimensController::class, 'create'])
@@ -1036,7 +1185,7 @@ Route::group(['prefix' => 'regimens', 'middleware' => ['auth']], function () {
         ->name('regimens.regimen.destroy');
 });
 
-Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], static function () {
     Route::get('/', [ResolucionesController::class, 'index'])
         ->name('resoluciones.resoluciones.index');
     Route::get('/create', [ResolucionesController::class, 'create'])
@@ -1053,10 +1202,24 @@ Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], function ()
         ->name('resoluciones.resoluciones.destroy');
 });
 
-Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
-})->middleware('app.roles:admin');
+Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {})->middleware('app.roles:admin');
 
-Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], function () {
+Route::get('test/updateActasVolantes', static function () {
+    $actasVolantes = ActaVolante::where('inscripcion_id', null)->get();
+
+    foreach ($actasVolantes as $actaVolante) {
+        $inscripcion = AlumnoCarrera::where('alumno_id', $actaVolante->alumno_id)->latest()->first();
+
+        if ($actaVolante->created_at->format('Y') < $inscripcion->cohorte) {
+            $actaVolante->inscripcion_id = $inscripcion->id;
+            $actaVolante->update();
+        }
+    }
+});
+
+Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
+
+Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], static function () {
     Route::get('/', [TipoCarrerasController::class, 'index'])
         ->name('tipo_carreras.tipo_carrera.index');
     Route::get('/create', [TipoCarrerasController::class, 'create'])
@@ -1139,62 +1302,33 @@ Route::resource('derivaciones_tickets',DerivacionTicketController::class);
 Route::resource('asignaciones_tickets',AsignacionTicketController::class);
 Route::resource('respuestas_tickets',RespuestaTicketController::class);
 Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
+    ->middleware('app.roles:admin');
+Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeNegativos'])->name('z_test.corrige-negativos')
+    ->middleware('app.roles:admin');
 
-Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], function () {
-    Route::get('/', [LibrariesAdminController::class, 'index'])
-         ->name('admin-libraries.library.index');
-    Route::get('/create', [LibrariesAdminController::class, 'create'])
-         ->name('admin-libraries.library.create');
-    Route::get('/show/{library}',[LibrariesAdminController::class, 'show'])
-         ->name('admin-libraries.library.show');
-    Route::get('/{library}/edit',[LibrariesAdminController::class, 'edit'])
-         ->name('admin-libraries.library.edit');
-    Route::post('/', [LibrariesAdminController::class, 'store'])
-         ->name('admin-libraries.library.store');
-    Route::put('library/{library}', [LibrariesAdminController::class, 'update'])
-         ->name('admin-libraries.library.update');
-    Route::delete('/library/{library}',[LibrariesAdminController::class, 'destroy'])
-         ->name('admin-libraries.library.destroy');
-});
+//Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
+//    ->middleware('app.roles:admin');
 
 
 
 
 
 Route::group([
-    'prefix' => 'libros',
+    'prefix' => 'tipo_instancias',
 ], function () {
-    Route::get('/', [LibrosController::class, 'index'])
-         ->name('libros.libros.index');
-    Route::get('/create', [LibrosController::class, 'create'])
-         ->name('libros.libros.create');
-    Route::get('/show/{libros}',[LibrosController::class, 'show'])
-         ->name('libros.libros.show');
-    Route::get('/{libros}/edit',[LibrosController::class, 'edit'])
-         ->name('libros.libros.edit');
-    Route::post('/', [LibrosController::class, 'store'])
-         ->name('libros.libros.store');
-    Route::put('libros/{libros}', [LibrosController::class, 'update'])
-         ->name('libros.libros.update');
-    Route::delete('/libros/{libros}',[LibrosController::class, 'destroy'])
-         ->name('libros.libros.destroy');
+    Route::get('/', [TipoInstanciasController::class, 'index'])
+         ->name('tipo_instancias.tipo_instancia.index');
+    Route::get('/create', [TipoInstanciasController::class, 'create'])
+         ->name('tipo_instancias.tipo_instancia.create');
+    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
+         ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
+    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
+         ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
+    Route::post('/', [TipoInstanciasController::class, 'store'])
+         ->name('tipo_instancias.tipo_instancia.store');
+    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
+         ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
+    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
+         ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
 });
-
-Route::group(['prefix' => 'old_libros', 'middleware' => ['auth']], function () {
-    Route::get('/', [OldLibrosController::class, 'index'])
-         ->name('old_libros.old_libros.index');
-    Route::get('/create', [OldLibrosController::class, 'create'])
-         ->name('old_libros.old_libros.create');
-    Route::get('/show/{oldLibros}',[OldLibrosController::class, 'show'])
-         ->name('old_libros.old_libros.show');
-    Route::get('/{oldLibros}/edit',[OldLibrosController::class, 'edit'])
-         ->name('old_libros.old_libros.edit');
-    Route::post('/', [OldLibrosController::class, 'store'])
-         ->name('old_libros.old_libros.store');
-    Route::put('old_libros/{oldLibros}', [OldLibrosController::class, 'update'])
-         ->name('old_libros.old_libros.update');
-    Route::delete('/old_libros/{oldLibros}',[OldLibrosController::class, 'destroy'])
-         ->name('old_libros.old_libros.destroy');
-});
-
-

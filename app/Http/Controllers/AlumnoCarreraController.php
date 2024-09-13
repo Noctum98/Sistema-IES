@@ -28,6 +28,12 @@ class AlumnoCarreraController extends Controller
 
         $request['año'] = $request['year'];
         $inscripcion = AlumnoCarrera::find($inscripcion_id);
+
+        if($request['cohorte'] > $inscripcion->ciclo_lectivo)
+        {
+            return redirect()->back()->with(['alert_danger'=>'La cohorte no puede ser mayor al ciclo lectivo de la inscripción.']);
+        }
+
         $inscripcion->update($request->all());
 
 

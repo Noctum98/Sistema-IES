@@ -3,16 +3,16 @@
 namespace App\Models;
 
 
+use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
 
 class MasterMateria extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, UuidTrait;
 
     /**
      * The database table used by the model.
@@ -56,14 +56,7 @@ class MasterMateria extends Model
     protected $casts = [];
 
 
-    protected static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string) Uuid::uuid4();
-        });
-    }
 
     public function resoluciones(): BelongsTo
     {
@@ -75,13 +68,24 @@ class MasterMateria extends Model
         return $this->belongsTo(Regimen::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function agrupadaMaterias(): HasMany
     {
         return $this->hasMany(AgrupadaMateria::class, 'master_materia_id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function materias(): HasMany
     {
         return $this->hasMany(Materia::class, 'master_materia_id');
+    }
+
+    public function tipo_unidad_curricular(): BelongsTo
+    {
+        return $this->belongsTo(TipoMateria::class,'tipo_unidad_curricular_id');
     }
 }

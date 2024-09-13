@@ -321,7 +321,7 @@
 	</div>
 	<div class="form-group">
 		<label for="comprobante_file">
-			Comprobante de pago:
+			Comprobante de pago: (Si aún no has realizado el pago, tienes toda la información en el siguiente <a href="https://iesvu.edu.ar/ingreso/como-realizo-mi-aporte-de-cooperadora/" target="__blank">enlace</a>) 
 		</label>
 		<input type="file" id="comprobante_file" name="comprobante_file" class=" @error('comprobante_file') is-invalid @enderror" value="{{ old('comprobante_file') }}">
 
@@ -336,7 +336,7 @@
 	<hr>
 	<div class="form-group">
 		<label for="certificado_archivo_file">
-			Certificación de Nivel Secundario Frente (Si aún no has finalizado el Nivel Medio debes adjuntar constancia. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes)
+			Certificación de Nivel Secundario Frente (De no contar con certificado analítico de Educación Secundaria completo, deberá presentar certificado en el que se manifiesten los espacios aprobados y los adeudados. Recuerda que debe ser legible y claro los datos que figura en el documento digital que adjuntes)
 		</label>
 		<input type="file" id="certificado_archivo_file" name="certificado_archivo_file" class=" @error('certificado_archivo_file') is-invalid @enderror" value="{{ old('certificado_archivo_file') }}">
 
@@ -362,7 +362,7 @@
 		<br>
 		<h4 class="text-secondary">Artículo 7mo</h4>
 		<div class="alert alert-warning">
-			Estás realizando tu preinscripción por Artículo 7, cuyos requisitos son:
+			Estás realizando tu preinscripción por Artículo 7mo, cuyos requisitos son:
 			ser mayor de 25 años, tener secundario incompleto, certificar que trabajás o has
 			trabajado en un empleo relacionado con la carrera elegida.
 		</div>
@@ -371,57 +371,6 @@
 			<label class="form-check-label" for="articulo_septimo">
 				Confirmo mi preinscripción por Artículo 7
 			</label>
-		</div>
-		<hr>
-		<div class="d-none" id="archivos_articulo_septimo">
-			<div class="form-group">
-				<label for="primario_file">
-					Título de Nivel Primario:
-				</label>
-				<input type="file" id="primario_file" name="primario_file" class="@error('primario_file') is-invalid @enderror" value="{{ old('primario_file') }}">
-
-				@error('primario_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-			<div class="form-group">
-				<label for="ctrabajo_file">
-					Certificado de Trabajo con firma y sello de quien lo emite
-				</label>
-				<input type="file" id="ctrabajo_file" name="ctrabajo_file" class="@error('ctrabajo_file') is-invalid @enderror" value="{{ old('ctrabajo_file') }}">
-
-				@error('ctrabajo_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-			<div class="form-group">
-				<label for="curriculum_file">
-					Currículum Vitae (en formato PDF)
-				</label>
-				<input type="file" id="curriculum_file" name="curriculum_file" class="@error('curriculum_file') is-invalid @enderror" value="{{ old('curriculum_file') }}">
-
-				@error('curriculum_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
-			<div class="form-group">
-				<label for="nota_file">
-					Nota al Rector (en PDF)
-				</label>
-				<input type="file" id="nota_file" name="nota_file" class="@error('nota_file') is-invalid @enderror" value="{{ old('nota_file') }}">
-
-				@error('nota_file')
-				<span class="invalid-feedback d-block" role="alert">
-					<strong>{{ $message }}</strong>
-				</span>
-				@enderror
-			</div>
 		</div>
 	</div>
 

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso\EtapaCampo;
+use App\Services\CicloLectivoService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +14,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\HigherOrderCollectionProxy;
 
 /**
@@ -57,7 +60,8 @@ class Proceso extends Model
         'ciclo_lectivo',
         'habilitado_campo',
         'final_asistencia',
-        'inscripcion_id'
+        'inscripcion_id',
+        'condicion_materia_id'
     ];
 
     //Relations
@@ -82,7 +86,7 @@ class Proceso extends Model
 
     public function inscripcionCarrera(): BelongsTo
     {
-        return $this->belongsTo(AlumnoCarrera::class,'inscripcion_id');
+        return $this->belongsTo(AlumnoCarrera::class, 'inscripcion_id');
     }
 
     public function estadoRegularidad()
@@ -91,7 +95,7 @@ class Proceso extends Model
         if (!$estado) {
             return 'No registrado';
         }
-        return $estado->regularidad;
+        return $estado->nombre;
     }
 
     public function etapaCampo(): HasOne
@@ -111,6 +115,33 @@ class Proceso extends Model
 
 
     // Functions
+    public function habilitadoCierre($materia_cierre = false)
+    {
+        $pase = false;
+
+        if ($materia_cierre) {
+            if (Session::has('admin')) {
+                $pase = true;
+            }
+
+            if(!$this->cierre)
+            {
+                $this->cierre = true;
+                $this->update();
+            }
+            
+        } else {
+            if ($this->cierre) {
+                if (Session::has('admin') || Session::has('coordinador')) {
+                    $pase = true;
+                }
+            } else if (!$this->cierre) {
+                $pase = true;
+            }
+        }
+
+        return $pase;
+    }
     public function asistencia()
     {
         return Asistencia::where('proceso_id', $this->id)->first();
@@ -229,4 +260,24 @@ class Proceso extends Model
     }
 
 
+    public function getCicloLectivo()
+    {
+        return CicloLectivo::find($this->ciclo_lectivo);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCloseFinal(): bool
+    {
+     if($this->cierre_final)
+     {
+         return true;
+     }
+
+     $cicloLectivoService = new CicloLectivoService();
+
+     return $cicloLectivoService->getCierreBoolean($this->materia()->first(), $this->ciclo_lectivo, now());
+
+    }
 }

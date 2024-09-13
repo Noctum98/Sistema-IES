@@ -2,9 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Materia;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\HigherOrderCollectionProxy;
+
 class CicloLectivoService
 {
     const CICLO_LECTIVO_INICIAL = 2022;
+    const DATES_CIERRE = 180;
 
 
     /**
@@ -20,4 +26,55 @@ class CicloLectivoService
         return array($last, $ahora);
     }
 
+    /**
+     * @param Materia $materia
+     * @param $ciclo_lectivo
+     * @param int|null $dates
+     * @return Carbon
+     */
+    public function getCierreDate(Materia $materia, $ciclo_lectivo, int $dates = null): Carbon
+    {
+
+        $days = self::DATES_CIERRE;
+
+        if ($dates) {
+            $days = $dates;
+        }
+        $cierre = null;
+
+        //dd($ciclo_lectivo);
+
+        if ($materia->getCierre($ciclo_lectivo)) {
+            $cierre = Carbon::createFromFormat('Y-m-d', $materia->getCierre($ciclo_lectivo));
+            $cierre = $cierre->addDays($days);
+        }
+
+        if (!$cierre) {
+            $now = Carbon::now();
+            $cierre = $now->subMinutes(10);
+            Session::flash('alert_danger', 'Planilla bloqueada: Cargar la fecha de cierre del ciclo lectivo (Diferido).');
+        }
+
+        return $cierre;
+    }
+
+
+    /**
+     * @param Materia $materia
+     * @param $ciclo_lectivo
+     * @param Carbon $dates
+     * @param int|null $daysTop
+     * @return bool
+     */
+    public function getCierreBoolean(Materia $materia, $ciclo_lectivo, Carbon $dates, int $daysTop = null): bool
+    {
+
+        if (!$daysTop) {
+            $daysTop = self::DATES_CIERRE;
+        }
+        $fechaFin = $this->getCierreDate($materia, $ciclo_lectivo, $daysTop);
+
+
+        return $dates->gte($fechaFin);
+    }
 }

@@ -61,33 +61,25 @@ class ProcesoCalificacionController extends Controller
         ]);
 
         if (!$validate->fails()) {
-            $procesoCalificacion = ProcesoCalificacion::where([
-                'proceso_id' => $request['proceso_id'],
-                'calificacion_id' => $request['calificacion_id'],
-            ])->first();
-
             $calificacion = Calificacion::find($request['calificacion_id']);
 
+            $values = [
+                'porcentaje' => $ausente ? -1 : $request['porcentaje'],
+                'nota' => $ausente ? -1 : $this->calcularNota((int)$request['porcentaje'], $calificacion->ciclo_lectivo),
+            ];
 
-            if ($procesoCalificacion) {
-                if (!$ausente) {
-                    $procesoCalificacion->porcentaje = $request['porcentaje'];
-                    $procesoCalificacion->nota = $this->calcularNota((int)$request['porcentaje'], $calificacion->ciclo_lectivo);
-                } else {
-                    $procesoCalificacion->porcentaje = -1;
-                    $procesoCalificacion->nota = -1;
-                }
-                $procesoCalificacion->update();
-            } else {
-                $request['nota'] = $ausente ? $request['porcentaje'] : $this->calcularNota((int)$request['porcentaje']);
-
-                if ($ausente) {
-                    $request['porcentaje'] = -1;
-                    $request['nota'] = -1;
-                }
-
-                $procesoCalificacion = ProcesoCalificacion::create($request->all());
+            if ($ausente) {
+                $values['porcentaje'] = -1;
+                $values['nota'] = -1;
             }
+
+            $procesoCalificacion = ProcesoCalificacion::updateOrCreate(
+                [
+                    'proceso_id' => $request['proceso_id'],
+                    'calificacion_id' => $request['calificacion_id'],
+                ],
+                $values
+            );
 
             $proceso = Proceso::find($procesoCalificacion->proceso_id);
 
@@ -104,8 +96,7 @@ class ProcesoCalificacionController extends Controller
             }
             $user = Auth::user();
 
-            if($procesoCalificacion->calificacion()->first()->cargo_id)
-            {
+            if ($procesoCalificacion->calificacion()->first()->cargo_id) {
                 $this->cargoProcesoService->grabaCalificacion(
                     $procesoCalificacion->calificacion()->first()->cargo_id,
                     $calificacion->ciclo_lectivo,
@@ -198,50 +189,50 @@ class ProcesoCalificacionController extends Controller
     private function calcularNota($porcentaje, $year =  null)
     {
 
-//        if ($porcentaje == 0) {
-//            $nota = 0;
-//        } else {
-//            if ($porcentaje >= 1 && $porcentaje <= 19) {
-//                $nota = 1;
-//            } else {
-//                if ($porcentaje >= 20 && $porcentaje <= 39) {
-//                    $nota = 2;
-//                } else {
-//                    if ($porcentaje >= 40 && $porcentaje <= 59) {
-//                        $nota = 3;
-//                    } else {
-//                        if ($porcentaje >= 60 && $porcentaje <= 65) {
-//                            $nota = 4;
-//                        } else {
-//                            if ($porcentaje >= 66 && $porcentaje <= 71) {
-//                                $nota = 5;
-//                            } else {
-//                                if ($porcentaje >= 72 && $porcentaje <= 77) {
-//                                    $nota = 6;
-//                                } else {
-//                                    if ($porcentaje >= 78 && $porcentaje <= 83) {
-//                                        $nota = 7;
-//                                    } else {
-//                                        if ($porcentaje >= 84 && $porcentaje <= 89) {
-//                                            $nota = 8;
-//                                        } else {
-//                                            if ($porcentaje >= 90 && $porcentaje <= 95) {
-//                                                $nota = 9;
-//                                            } else {
-//                                                if ($porcentaje >= 96 && $porcentaje <= 100) {
-//                                                    $nota = 10;
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-            $nota = $this->calificacionService->getNotaByPorcentaje($porcentaje, $year);
+        //        if ($porcentaje == 0) {
+        //            $nota = 0;
+        //        } else {
+        //            if ($porcentaje >= 1 && $porcentaje <= 19) {
+        //                $nota = 1;
+        //            } else {
+        //                if ($porcentaje >= 20 && $porcentaje <= 39) {
+        //                    $nota = 2;
+        //                } else {
+        //                    if ($porcentaje >= 40 && $porcentaje <= 59) {
+        //                        $nota = 3;
+        //                    } else {
+        //                        if ($porcentaje >= 60 && $porcentaje <= 65) {
+        //                            $nota = 4;
+        //                        } else {
+        //                            if ($porcentaje >= 66 && $porcentaje <= 71) {
+        //                                $nota = 5;
+        //                            } else {
+        //                                if ($porcentaje >= 72 && $porcentaje <= 77) {
+        //                                    $nota = 6;
+        //                                } else {
+        //                                    if ($porcentaje >= 78 && $porcentaje <= 83) {
+        //                                        $nota = 7;
+        //                                    } else {
+        //                                        if ($porcentaje >= 84 && $porcentaje <= 89) {
+        //                                            $nota = 8;
+        //                                        } else {
+        //                                            if ($porcentaje >= 90 && $porcentaje <= 95) {
+        //                                                $nota = 9;
+        //                                            } else {
+        //                                                if ($porcentaje >= 96 && $porcentaje <= 100) {
+        //                                                    $nota = 10;
+        //                                                }
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        $nota = $this->calificacionService->getNotaByPorcentaje($porcentaje, $year);
         return $nota;
     }
 

@@ -11,6 +11,7 @@ use App\Models\Asistencia;
 use App\Models\Calificacion;
 use App\Models\Carrera;
 use App\Models\MailCheck;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
 use App\Models\ProcesoCalificacion;
 use App\Models\User;
@@ -99,6 +100,7 @@ class MatriculacionController extends Controller
     {
         $alumno = Alumno::find($alumno_id);
         $carrera = Carrera::find($carrera_id);
+        $ciclo_lectivo = CicloLectivo::latest()->first();
 
         if (!$carrera->matriculacion_habilitada) {
             if(!Session::has('admin') && !Session::has('coordinador') && !Session::has('regente') && !Session::has('seccionAlumnos') ){
@@ -106,9 +108,9 @@ class MatriculacionController extends Controller
             }
         }
 
-        $inscripcion = $alumno->lastProcesoCarrera($carrera->id);
+        $inscripcion = $alumno->lastProcesoCarrera($carrera->id,$ciclo_lectivo->year);
         
-        if (!$inscripcion->aprobado || !Session::has('alumno')) {
+        if (!$inscripcion || !$inscripcion->aprobado || !Session::has('alumno')) {
             if (!$año) {
                 $alumno_carrera = AlumnoCarrera::where([
                     'alumno_id' => $alumno_id,
@@ -124,7 +126,8 @@ class MatriculacionController extends Controller
         return view('matriculacion.edit', [
             'matriculacion' => $alumno,
             'carrera' => $carrera,
-            'año'     => $año
+            'año'     => $año,
+            'ciclo_lectivo' => $ciclo_lectivo
         ]);
     }
 
@@ -238,8 +241,13 @@ class MatriculacionController extends Controller
             'año'   => $año,
             'ciclo_lectivo' => date('Y'),
             'regularidad' => $request['regularidad'],
-            'año' => $año
+            'año' => $año,
         ];
+
+        if($request['regularidad'] == 'reinscripto_primero')
+        {
+            $datos['cohorte'] = $datos['ciclo_lectivo']; 
+        }
 
         if (!$alumno_carrera) {
             $alumno_carrera = AlumnoCarrera::create($datos);

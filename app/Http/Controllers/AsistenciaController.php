@@ -53,12 +53,12 @@ class AsistenciaController extends Controller
         // Log::info($user->cargo_materia()->get());
 
         $cargos_materia = [];
-        if(count($user->cargo_materia()->get()) > 0){
-            foreach($user->cargo_materia()->get() as $cargo_materia){
+        if (count($user->cargo_materia()->get()) > 0) {
+            foreach ($user->cargo_materia()->get() as $cargo_materia) {
                 $cargos_materia[] = $cargo_materia->cargo->id;
             }
         }
-        $cargos = $user->cargos->whereNotIn('id',$cargos_materia);
+        $cargos = $user->cargos->whereNotIn('id', $cargos_materia);
 
         return view('asistencia.home', [
             'materias' => $materias,
@@ -76,9 +76,9 @@ class AsistenciaController extends Controller
      * @param null $cargo_id <b>id</b> del cargo.
      * @return Application|Factory|View
      */
-    public function vista_admin(Request $request, int $id,$ciclo_lectivo = null, $cargo_id = null)
+    public function vista_admin(Request $request, int $id, $ciclo_lectivo = null, $cargo_id = null)
     {
-        if(!$ciclo_lectivo){
+        if (!$ciclo_lectivo) {
             $ciclo_lectivo = date('Y');
         }
 
@@ -88,7 +88,12 @@ class AsistenciaController extends Controller
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
             ->where('procesos.materia_id', $materia->id)
             ->where('procesos.ciclo_lectivo', $ciclo_lectivo)
-        ;
+            ->where(function ($query) {
+                $query->whereNull('procesos.condicion_materia_id')
+                    ->orWhereDoesntHave('condicionMateria', function ($query) {
+                        $query->where('identificador', 'libre');
+                    });
+            });
 
         if ($comision_id) {
             $procesos = $procesos->whereHas('alumno', function ($query) use ($comision_id) {
@@ -119,7 +124,8 @@ class AsistenciaController extends Controller
         $datos['comision_id'] = $comision_id;
 
 
-        return view('asistencia.admin',
+        return view(
+            'asistencia.admin',
             $datos
         );
     }
@@ -188,13 +194,12 @@ class AsistenciaController extends Controller
 
         $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
 
-        if($porcentaje_final > 100)
-        {
+        if ($porcentaje_final > 100) {
             $response = [
                 'message' => 'Error',
-                'errors' =>[
+                'errors' => [
                     "porcentaje_presencial" => [
-                      0 => "La suma de las asistencias no debe ser mayor a 100"
+                        0 => "La suma de las asistencias no debe ser mayor a 100"
                     ]
                 ]
             ];
@@ -270,13 +275,12 @@ class AsistenciaController extends Controller
 
         $porcentaje_final = $request['porcentaje_virtual'] + $request['porcentaje_presencial'];
 
-        if($porcentaje_final > 100)
-        {
+        if ($porcentaje_final > 100) {
             $response = [
                 'message' => 'Error',
-                'errors' =>[
+                'errors' => [
                     "porcentaje_presencial" => [
-                      0 => "La suma de las asistencias no debe ser mayor a 100"
+                        0 => "La suma de las asistencias no debe ser mayor a 100"
                     ]
                 ]
             ];

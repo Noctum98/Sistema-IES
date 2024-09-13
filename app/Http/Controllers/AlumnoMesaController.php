@@ -20,8 +20,10 @@ use App\Models\AlumnoCarrera;
 use App\Models\Materia;
 use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
+use App\Services\Mesas\InstanciaService;
 use App\Services\Mesas\MesaAlumnoService;
 use App\Services\MesaService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -30,15 +32,17 @@ class AlumnoMesaController extends Controller
 {
     protected $mesaService;
     protected $mesaAlumnoService;
+    protected $instanciaService;
 
     public function __construct(
         MesaService $mesaService,
-        MesaAlumnoService $mesaAlumnoService
-    )
-    {
+        MesaAlumnoService $mesaAlumnoService,
+        InstanciaService $instanciaService
+    ) {
         $this->middleware('app.auth');
         $this->mesaService = $mesaService;
         $this->mesaAlumnoService = $mesaAlumnoService;
+        $this->instanciaService = $instanciaService;
     }
     // Vistas
     public function vista_home($id)
@@ -64,15 +68,27 @@ class AlumnoMesaController extends Controller
      */
     public function vista_instancias()
     {
-        $instancias = Instancia::where('estado', 'activa')->get();
+        // Fecha actual y fecha límite de hace 2 meses
+        $fechaActual = Carbon::now()->format('Y-m-d'); // Formateamos como Y-m-d
+        $dosMesesAntes = Carbon::now()->subMonths(2)->format('Y-m-d'); // Fecha de hace 2 meses también en Y-m-d
+
+
+        // Ajustamos la consulta
+        $instanciasV = Instancia::whereDate('fecha_habilitacion', '<=', $fechaActual) // Fecha habilitación <= actual
+            ->whereDate('fecha_habilitacion', '>=', $dosMesesAntes) // Fecha habilitación >= hace 2 meses
+            ->get();
+        foreach ($instanciasV as $instancia) {
+            $this->instanciaService->verifyCierres($instancia);
+        }
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $inscripciones = MesaAlumno::where([
             'dni' => $alumno->dni,
         ])
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
-        
-        
+
+        $instancias = Instancia::where('estado', 'activa')->get();
+
         return view('mesa.instancias', [
             'instancias' => $instancias,
             'inscripciones' => $inscripciones
@@ -83,12 +99,13 @@ class AlumnoMesaController extends Controller
     {
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
-        $lastCicloLectivo = CicloLectivo::orderBy('created_at','desc')->first();
-        $alumnoCarreras = AlumnoCarrera::where(['alumno_id'=>$alumno->id,'ciclo_lectivo'=>$lastCicloLectivo->year])->get(); 
+        $lastCicloLectivo = CicloLectivo::orderBy('created_at', 'desc')->first();
+        $alumnoCarreras = AlumnoCarrera::where(['alumno_id' => $alumno->id, 'ciclo_lectivo' => $lastCicloLectivo->year])->get();
         $carreras = [];
-        
-        foreach($alumnoCarreras as $inscripcionCarrera)
-        {
+
+        $instancia = $this->instanciaService->verifyCierres($instancia);
+
+        foreach ($alumnoCarreras as $inscripcionCarrera) {
             $carreras[] = $inscripcionCarrera->carrera;
         }
 
@@ -103,8 +120,8 @@ class AlumnoMesaController extends Controller
             if ($instancia->tipo == 0) {
                 $inscripciones = MesaAlumno::where([
                     'dni' => $alumno['dni'],
-                ])->whereHas('mesa',function($query) use ($instancia){
-                    return $query->where('instancia_id',$instancia->id);
+                ])->whereHas('mesa', function ($query) use ($instancia) {
+                    return $query->where('instancia_id', $instancia->id);
                 })->get();
             } else {
                 $inscripciones = MesaAlumno::where([
@@ -127,14 +144,16 @@ class AlumnoMesaController extends Controller
         $materia = Materia::find($materia_id);
         $mesa = null;
 
-        $inscripciones = $this->mesaAlumnoService->obtenerInscripciones($instancia->id,$materia_id,0);    
-        $inscripciones_baja = $this->mesaAlumnoService->obtenerInscripciones($instancia->id,$materia_id,1);
+        $inscripciones = $this->mesaAlumnoService->obtenerInscripciones($instancia->id, $materia_id, 0);
+        $inscripciones_baja = $this->mesaAlumnoService->obtenerInscripciones($instancia->id, $materia_id, 1);
 
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+            ->join('alumno_carrera', 'alumno_carrera.id', 'procesos.inscripcion_id')
+            ->where('procesos.materia_id', $materia_id)
+            ->where('alumno_carrera.aprobado', 1)->orderBy('alumnos.apellidos')->get();
 
-        $verificacion = $this->mesaService->verificarInscripcionesEspeciales($inscripciones,$materia,$instancia);
+        $verificacion = $this->mesaService->verificarInscripcionesEspeciales($inscripciones, $materia, $instancia);
 
         $data = [
             'inscripciones' => $inscripciones,
@@ -146,16 +165,15 @@ class AlumnoMesaController extends Controller
             'comisiones' => $verificacion['comisiones']
         ];
 
-        if($verificacion['mesa'])
-        {
+        if ($verificacion['mesa']) {
             $cierres = [
                 'cierre_primer_llamado' => false,
                 'cierre_segundo_llamado' => false
             ];
-            
-            $data = array_merge($cierres,$data);
-        }        
-        return view('mesa.inscripciones_especial',$data);
+
+            $data = array_merge($cierres, $data);
+        }
+        return view('mesa.inscripciones_especial', $data);
     }
 
     public function materias(Request $request)
@@ -191,8 +209,8 @@ class AlumnoMesaController extends Controller
         } else {
             $mesas_alumnos = MesaAlumno::where([
                 'dni' => $alumno['dni'],
-            ])->whereHas('mesa',function($query) use ($instancia){
-                return $query->where('instancia_id',$instancia->id);
+            ])->whereHas('mesa', function ($query) use ($instancia) {
+                return $query->where('instancia_id', $instancia->id);
             })->get();
         }
 
@@ -206,10 +224,10 @@ class AlumnoMesaController extends Controller
             unset($datos['_token']);
             foreach ($datos as $dato) {
 
-                if($instancia->tipo == 0){
+                if ($instancia->tipo == 0) {
                     $mesa = Mesa::find($dato);
                     $materia = $mesa->materia;
-                }else{
+                } else {
                     $materia = Materia::find($dato);
                 }
                 $inscripcionCarrera = $alumno->lastProcesoCarrera($materia->carrera_id);
@@ -286,10 +304,9 @@ class AlumnoMesaController extends Controller
         }
         $inscripcion_id = $alumno->lastProcesoCarrera($materia->carrera_id);
 
-        if(!$inscripcion_id)
-        {
+        if (!$inscripcion_id) {
             $mensaje = ['alert_danger' => 'El alumno no está inscripto a la carrera.'];
-        }else{
+        } else {
             if (!$inscripcion) {
                 $request['nombres'] = $alumno->nombres;
                 $request['apellidos'] = $alumno->apellidos;
@@ -299,13 +316,13 @@ class AlumnoMesaController extends Controller
                 $request['segundo_llamado'] = $request['llamado'];
                 $request['inscripcion_id'] = $inscripcion_id->id;
                 $inscripcion = MesaAlumno::create($request->all());
-    
+
                 $mensaje = ['alert_success' => 'El alumno ha sido inscripto.'];
             } else {
                 $mensaje = ['alert_danger' => 'El alumno ya esta inscripto a este llamado.'];
             }
         }
-        
+
 
         return redirect()->back()->with($mensaje);
     }
@@ -346,7 +363,7 @@ class AlumnoMesaController extends Controller
         $inscripcion->motivo_baja = 'Baja del alumno';
         $inscripcion->update();
 
-        ActaVolante::where('mesa_alumno_id',$inscripcion->id)->delete();
+        ActaVolante::where('mesa_alumno_id', $inscripcion->id)->delete();
 
         return redirect()->back();
     }
@@ -408,7 +425,7 @@ class AlumnoMesaController extends Controller
             $id = $inscripcion->materia_id;
         }
 
-        ActaVolante::where('mesa_alumno_id',$inscripcion->id)->delete();
+        ActaVolante::where('mesa_alumno_id', $inscripcion->id)->delete();
 
         return redirect()->back()->with([
             'alert_warning' => 'Se ha dado de baja la inscripción correctamente'
@@ -428,8 +445,8 @@ class AlumnoMesaController extends Controller
         } else {
             $inscripciones = MesaAlumno::where([
                 'dni' => $dni,
-            ])->whereHas('mesa',function($query) use ($instancia){
-                return $query->where('instancia_id',$instancia->id);
+            ])->whereHas('mesa', function ($query) use ($instancia) {
+                return $query->where('instancia_id', $instancia->id);
             })->get();
         }
 
@@ -505,14 +522,14 @@ class AlumnoMesaController extends Controller
         $inscripcion->segundo_llamado = false;
         $inscripcion->update();
 
-        return redirect()->back()->with(['alert_success','Mesa asignada correctamente.']);
+        return redirect()->back()->with(['alert_success', 'Mesa asignada correctamente.']);
     }
 
-    public function verificarInscripcion(Request $request,$mesa_alumno_id,$materia_id)
+    public function verificarInscripcion(Request $request, $mesa_alumno_id, $materia_id)
     {
-        $datos = $this->mesaAlumnoService->condicionesRendir($mesa_alumno_id,$materia_id);
+        $datos = $this->mesaAlumnoService->condicionesRendir($mesa_alumno_id, $materia_id);
 
-        return response()->json($datos,200);
+        return response()->json($datos, 200);
     }
 
     // Funciones privadas

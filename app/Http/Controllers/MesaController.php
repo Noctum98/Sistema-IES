@@ -16,6 +16,7 @@ use App\Models\Materia;
 use App\Models\Mesa;
 use App\Models\MesaAlumno;
 use App\Models\Parameters\Calendario;
+use App\Models\Parameters\CicloLectivo;
 use App\Models\Proceso;
 use App\Services\MesaService;
 use Carbon\Carbon;
@@ -50,9 +51,14 @@ class MesaController extends Controller
         $segundo_llamado = [];
         $segundo_llamado_bajas = [];
 
-        $procesos = $procesos = Proceso::select('procesos.*')
+        $ciclo_lectivo = CicloLectivo::latest()->first();
+
+        $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->where('procesos.materia_id', $materia_id)->orderBy('alumnos.apellidos')->get();
+            ->join('alumno_carrera','alumno_carrera.id','procesos.inscripcion_id')
+            ->where('procesos.materia_id', $materia_id)
+            ->where('alumno_carrera.aprobado',1)
+            ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo->year)->orderBy('alumnos.apellidos')->get();
 
         $dataQuery = [
             'instancia_id' => $instancia_id,
@@ -308,6 +314,43 @@ class MesaController extends Controller
         return $pdf->download('Acta Volante: '.$materia->nombre .'-'.$instancia->nombre.'.pdf');
     }
 
+    public function mostrar_pdf_acta_volante(
+        Mesa $mesa, int $llamado, int $folio
+    ) {
+
+        $texto_llamado = 'Primer llamado';
+
+        if ($llamado === 2) {
+            $texto_llamado = 'Segundo llamado';
+        }
+
+        /** @var Libro $libro */
+        $libro = $mesa->getLibroPorFolio($llamado, $folio);
+
+$desglose = $libro->getResultadosActasVolantes();
+
+//dd(count($mesa->getLibroPorFolio($llamado, $folio)->actasVolantes()->get()));
+
+
+        $data = [
+            'instancia' => $mesa->instancia_id,
+            'carrera' => $mesa->materia()->first()->carrera()->first(),
+            'texto_llamado' => $texto_llamado,
+            'llamado' => $llamado,
+            'materia' => $mesa->materia()->first(),
+            'mesa' => $mesa,
+            'libro' => $libro,
+            'orden' => $libro->orden,
+            'desglose' => $desglose
+        ];
+
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('pdfs.mostrar_acta_volante_pdf', $data);
+
+        return $pdf->download('Acta Volante: '.$mesa->materia()->first()->nombre .'-'.$mesa->instancia->nombre.'.pdf');
+    }
+
     public function mesaByComision(Request $request, $materia_id, $instancia_id, $comision_id = null)
     {
         $datos = ['materia_id' => $materia_id, 'instancia_id' => $instancia_id];
@@ -327,10 +370,10 @@ class MesaController extends Controller
             )
             ->first();
         if($mesa)
-        { 
+        {
             $cierres = $this->mesaService->fechaBloqueo($mesa,1);
             $admin = Session::has('admin') ? 1 : 0;
-            
+
             $datos = [
                 'status'=>'success',
                 'admin' => $admin,

@@ -27,7 +27,7 @@
 			<td>{{ explode("_",ucwords($alumno->regularidad))[0] }}</td>
 			<td>
 				@foreach($alumno->procesos_date($ciclo_lectivo) as $proceso)
-					| {{ $proceso->materia->nombre }} 
+					| {{ $proceso->materia ? $proceso->materia->nombre :'' }} 
 				@endforeach
 			</td>
 			<td>{{ $alumno->lastProceso->first() ? $alumno->lastProceso->first()->created_at : 'No tiene materias asignadas' }}</td>
