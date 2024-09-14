@@ -146,8 +146,8 @@
                         Mesas de Exámenes
                     </a>
                 @endif
-                @if(Session::has('admin')|| Session::has('regente')
-                    || Session::has('mesas')||Session::has('admin_alumnos')||Session::has('coordinador'))
+                @if(Session::has('admin')|| Session::has('regente'))
+{{--                    || Session::has('mesas')||Session::has('admin_alumnos')||Session::has('coordinador'))--}}
                         <div class="sb-sidenav-menu-heading">Lbros</div>
                         <a class="nav-link" href="{{ route('libros_digitales.libro_digital.index_sede') }}">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-book-bookmark"></i></div>
