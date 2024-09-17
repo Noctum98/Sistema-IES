@@ -40,6 +40,7 @@ class FolioNota extends Model
         'acta_volante_id',
         'mesa_folio_id',
         'alumno_id',
+        'cohorte'
     ];
 
     /**
@@ -47,7 +48,7 @@ class FolioNota extends Model
      */
     public function operador(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'operador_id', 'id' );
+        return $this->belongsTo(User::class, 'operador_id', 'id');
     }
 
 
@@ -64,10 +65,8 @@ class FolioNota extends Model
      */
     public function mesaFolio(): BelongsTo
     {
-        return $this->belongsTo(MesaFolio::class, 'mesa_folio_id','id');
+        return $this->belongsTo(MesaFolio::class, 'mesa_folio_id', 'id');
     }
-
-
 
 
     public function alumno(): BelongsTo
@@ -81,7 +80,7 @@ class FolioNota extends Model
      */
     public function actasVolante(): BelongsTo
     {
-        return $this->belongsTo(ActaVolante::class,'acta_volante_id','id');
+        return $this->belongsTo(ActaVolante::class, 'acta_volante_id', 'id');
     }
 
     /**
@@ -103,12 +102,11 @@ class FolioNota extends Model
      */
     public function getDeletedAtAttribute(string $value = null): ?string
     {
-        if(!$value) {
+        if (!$value) {
             return $value;
         }
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
-
 
 
     /**
@@ -120,6 +118,26 @@ class FolioNota extends Model
     public function getUpdatedAtAttribute(string $value): string
     {
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
+    }
+
+    public function getCohorte()
+    {
+        $cohorte = $this->cohorte;
+
+        if (!$cohorte) {
+            $actaVolante = ActaVolante::find($this->actasVolante());
+            if ($actaVolante) {
+                $cohorte = $actaVolante->inscripcionCarrera->cohorte;
+            }else{
+                $cohorte = $this->alumno()->first()->cohorte;
+            }
+            if($cohorte) {
+                $this->cohorte = $cohorte;
+                $this->save();
+            }
+        }
+
+        return $cohorte;
     }
 
 
