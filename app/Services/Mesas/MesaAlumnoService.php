@@ -31,12 +31,14 @@ class MesaAlumnoService
 
         $data['legajo_completo'] = 0;
         $data['correlativas_incompletas'] = [];
+        $data['actas_incompletas'] = [];
         $data['regularidad'] = 0;
         $data['inscripcion'] = $mesa_alumno;
         $inscripcionCarrera = $mesa_alumno->alumno->lastProcesoCarrera($materia->carrera_id);
         $regularidad_identificadores = [1, 3, 4, 7];
 
         if ($inscripcionCarrera->cohorte) {
+
             $procesoRegular = Proceso::where(['materia_id' => $materia->id, 'alumno_id' => $mesa_alumno->alumno_id])->where('ciclo_lectivo', '>=', $inscripcionCarrera->cohorte)->whereHas('estado', function ($query) use ($regularidad_identificadores) {
                 return $query->whereIn('identificador', $regularidad_identificadores);
             })->with('estado')->first();
@@ -53,13 +55,13 @@ class MesaAlumnoService
 
             $mesa_fecha = $mesa_alumno->mesa ? date('Y', strtotime($mesa_alumno->mesa->fecha)) : date('Y', strtotime($mesa_alumno->created_at));
 
-
             $notas_aprobado = Nota::select('valor', 'year')->where('min', 60)->get();
 
             $correlativas = $materia->materiasCorrelativas;
 
 
             $data = $this->verifyCorrelativasByActaVolante($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
+            $data = $this->verifyCorrelativasByFolioNota($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
 
 
         } else {
@@ -126,14 +128,30 @@ class MesaAlumnoService
      */
     public function verifyCorrelativasByFolioNota($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, array $data): array
     {
+
         foreach ($correlativas as $correlativa) {
+            $actas_volantes = ActaVolante::where(['alumno_id' => $mesa_alumno->alumno_id, 'materia_id' => $correlativa->id])->whereHas('inscripcionCarrera', function ($query) use ($mesa_fecha) {
+                return $query->where('cohorte', '<=', $mesa_fecha);
+            })->orderBy('created_at', 'DESC')
+                ->get();
+            $repoFolio = new FolioNotaRepository();
+            foreach ($actas_volantes as $av){
+                /** @var ActaVolante $av */
+                $folio = $repoFolio->getFolioByActaVolante($av->id);
+                if(!$folio){
+                    $data['actas_incompletas'][] = [
+                        'id'=>$av->id,
+                        'fecha' => $av->mesa()->first()->fecha,
+                        'materia' => $av->materia()->first()->nombre
+                    ];
+                }
+            }
 
             $materia = Materia::find($correlativa->id);
-            $repoFolio = new FolioNotaRepository();
+
 
             $folios = $repoFolio->getFoliosNotaForAlumnoByMateria(
                 $mesa_alumno->alumno_id, $materia, $mesa_fecha);
-
 
             if (count($folios) > 0) {
                 foreach ($actas_volantes as $acta_volante) {

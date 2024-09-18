@@ -32,6 +32,12 @@
 
                         </ul>
                     </div>
+                    <div class="alert" id="actas">
+                        <strong>Actas volantes no cargadas: <span id="resultado_actas_incompletas"></span></strong>
+                        <ul id="actas_incompletas">
+
+                        </ul>
+                    </div>
                     <button class="btn btn-success" id="confirmarButton">Inscribir</button>
                     <button class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 
