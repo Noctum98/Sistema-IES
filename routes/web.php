@@ -1200,16 +1200,8 @@ Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], static func
 Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {})->middleware('app.roles:admin');
 
 Route::get('test/updateActasVolantes', static function () {
-    $actasVolantes = ActaVolante::where('inscripcion_id', null)->get();
-
-    foreach ($actasVolantes as $actaVolante) {
-        $inscripcion = AlumnoCarrera::where('alumno_id', $actaVolante->alumno_id)->latest()->first();
-
-        if ($actaVolante->created_at->format('Y') < $inscripcion->cohorte) {
-            $actaVolante->inscripcion_id = $inscripcion->id;
-            $actaVolante->update();
-        }
-    }
+    $preinscripciones = Preinscripcion::where(['articulo_septimo'=>1,'condicion_s'=>'secundario completo'])->update(['articulo_septimo'=>0]);
+    echo 'Preinscripciones Actualizadas';
 });
 
 Route::get('test/updateRegimenes', [ZTestController::class, 'updateRegimenes'])->name('z_test.updateRegimenes');
