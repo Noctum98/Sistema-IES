@@ -77,6 +77,7 @@ use App\Http\Controllers\MesaFoliosController;
 use App\Http\Controllers\FolioNotasController;
 use App\Models\ActaVolante;
 use App\Models\AlumnoCarrera;
+use App\Models\Preinscripcion;
 use App\Http\Controllers\TipoInstanciasController;
 
 /*
