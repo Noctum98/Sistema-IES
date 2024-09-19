@@ -27,6 +27,7 @@ use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use App\Http\Controllers\ZTestController;
+use App\Models\Preinscripcion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -75,8 +76,6 @@ use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
 use App\Http\Controllers\MesaFoliosController;
 use App\Http\Controllers\FolioNotasController;
-use App\Models\ActaVolante;
-use App\Models\AlumnoCarrera;
 use App\Http\Controllers\TipoInstanciasController;
 
 /*
@@ -681,7 +680,8 @@ Route::prefix('parciales')->group(function () {
 });
 
 // Ruta AlumnoParcial
-Route::prefix('alumno/parci')->group(function () {});
+Route::prefix('alumno/parci')->group(function () {
+});
 
 //Rutas de Mesas
 Route::prefix('mesas')->group(function () {
@@ -1200,10 +1200,11 @@ Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], static func
         ->name('resoluciones.resoluciones.destroy');
 });
 
-Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {})->middleware('app.roles:admin');
+Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
+})->middleware('app.roles:admin');
 
 Route::get('test/updateActasVolantes', static function () {
-    $preinscripciones = Preinscripcion::where(['articulo_septimo'=>1,'condicion_s'=>'secundario completo'])->update(['articulo_septimo'=>0]);
+    $preinscripciones = Preinscripcion::where(['articulo_septimo' => 1, 'condicion_s' => 'secundario completo'])->update(['articulo_septimo' => 0]);
     echo 'Preinscripciones Actualizadas';
 });
 
@@ -1226,6 +1227,23 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], static fun
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
 
+Route::group(['prefix' => 'tipo_instancias', 'middleware' => ['auth']], static function () {
+    Route::get('/', [TipoInstanciasController::class, 'index'])
+        ->name('tipo_instancias.tipo_instancia.index');
+    Route::get('/create', [TipoInstanciasController::class, 'create'])
+        ->name('tipo_instancias.tipo_instancia.create');
+    Route::get('/show/{tipoInstancia}', [TipoInstanciasController::class, 'show'])
+        ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
+    Route::get('/{tipoInstancia}/edit', [TipoInstanciasController::class, 'edit'])
+        ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
+    Route::post('/', [TipoInstanciasController::class, 'store'])
+        ->name('tipo_instancias.tipo_instancia.store');
+    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
+        ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
+    Route::delete('/tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'destroy'])
+        ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
+});
+
 
 Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
     ->middleware('app.roles:admin');
@@ -1236,24 +1254,3 @@ Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeN
 //    ->middleware('app.roles:admin');
 
 
-
-
-
-Route::group([
-    'prefix' => 'tipo_instancias',
-], function () {
-    Route::get('/', [TipoInstanciasController::class, 'index'])
-         ->name('tipo_instancias.tipo_instancia.index');
-    Route::get('/create', [TipoInstanciasController::class, 'create'])
-         ->name('tipo_instancias.tipo_instancia.create');
-    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
-         ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
-    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
-         ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
-    Route::post('/', [TipoInstanciasController::class, 'store'])
-         ->name('tipo_instancias.tipo_instancia.store');
-    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
-         ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
-    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
-         ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
-});

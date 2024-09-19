@@ -6,9 +6,9 @@
                     {{ old('mesa_id', optional($mesaFolio)->mesa_id ?: '') == '' ? 'selected' : '' }} disabled selected>
                 Seleccione mesa
             </option>
-            @foreach ($Mesas as $key => $Mesa)
-                <option value="{{ $key }}" {{ old('mesa_id', optional($mesaFolio)->mesa_id) == $key ? 'selected' : '' }}>
-                    {{ $Mesa }}
+            @foreach ($Mesas as $Mesa)
+                <option value="{{ $Mesa->id }}" {{ old('mesa_id', optional($mesaFolio)->mesa_id) == $Mesa->id ? 'selected' : '' }}>
+                    {{ @carbon\carbon::parse($Mesa->fecha)->format('d/m/Y') }} - {{ $Mesa->materia->nombre }}
                 </option>
             @endforeach
         </select>
@@ -88,7 +88,8 @@
                     selected>Seleccione presidente
             </option>
             @foreach ($Users as $User)
-                <option value="{{ $User->id }}" {{ old('presidente_id', optional($mesaFolio)->presidente_id) == $Users->id ? 'selected' : '' }}>
+                <option value="{{ $User->id }}"
+                    {{ old('presidente_id', optional($mesaFolio)->presidente_id) == $User->id ? 'selected' : '' }}>
                     {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
@@ -117,9 +118,10 @@
                     {{ old('vocal_1_id', optional($mesaFolio)->vocal_1_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione vocal 1
             </option>
-            @foreach ($Users as $key => $User)
-                <option value="{{ $key }}" {{ old('vocal_1_id', optional($mesaFolio)->vocal_1_id) == $key ? 'selected' : '' }}>
-                    {{ $User }}
+            @foreach ($Users as $User)
+                <option value="{{ $User->id }}"
+                 {{ old('vocal_1_id', optional($mesaFolio)->vocal_1_id) == $User->id ? 'selected' : '' }}>
+                    {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
         </select>
@@ -137,9 +139,9 @@
                     {{ old('vocal_2_id', optional($mesaFolio)->vocal_2_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Seleccione vocal 2
             </option>
-            @foreach ($Users as $key => $User)
-                <option value="{{ $key }}" {{ old('vocal_2_id', optional($mesaFolio)->vocal_2_id) == $key ? 'selected' : '' }}>
-                    {{ $User }}
+            @foreach ($Users as $User)
+                <option value="{{ $User->id }}" {{ old('vocal_2_id', optional($mesaFolio)->vocal_2_id) == $User->id ? 'selected' : '' }}>
+                    {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
         </select>
@@ -187,9 +189,9 @@
                     {{ old('coordinador_id', optional($mesaFolio)->coordinador_id ?: '') == '' ? 'selected' : '' }} disabled
                     selected>Select coordinador
             </option>
-            @foreach ($Users as $key => $User)
-                <option value="{{ $key }}" {{ old('coordinador_id', optional($mesaFolio)->coordinador_id) == $key ? 'selected' : '' }}>
-                    {{ $User }}
+            @foreach ($Users as $User)
+                <option value="{{ $User->id }}" {{ old('coordinador_id', optional($mesaFolio)->coordinador_id) == $User->id ? 'selected' : '' }}>
+                    {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
         </select>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrera;
 use App\Models\LibroDigital;
 use App\Models\MasterMateria;
 use App\Models\Mesa;
@@ -56,8 +57,19 @@ class MesaFoliosController extends Controller
     {
 
         $LibrosDigitales = [$libroDigital];
-        $MasterMaterias = MasterMateria::pluck('name', 'id')->all();
-        $Mesas = Mesa::pluck('cierre', 'id')->all();
+        $MasterMaterias = MasterMateria::where('resoluciones_id', $libroDigital->resoluciones_id)
+            ->get()
+            ->pluck('name', 'id');
+
+        $carrera = Carrera::where('resolucion_id', $libroDigital->resoluciones_id)
+            ->where('sede_id', $libroDigital->sede_id)
+            ->first();
+
+
+        $materias = $carrera->materias()->get()->pluck('name', 'id');
+
+        $Mesas = Mesa::whereIn('materia_id', $materias->keys())
+            ->get();
 
         $sede = $this->getSedes();
 
@@ -119,12 +131,12 @@ class MesaFoliosController extends Controller
                 ->with('alert_danger', 'El número de folio para el Libro Digital ya existe.');
         }
 
-        $mesaFolio =MesaFolio::create($data);
+        $mesaFolio = MesaFolio::create($data);
 
         return redirect()->route('libros_digitales.libro_digital.showFolios', [
             'libroDigital' => $mesaFolio->libro_digital_id,
             'page' => $mesaFolio->folio
-            ])
+        ])
             ->with('success_message', 'Folio ha sido guardado correctamente.');
     }
 
@@ -149,7 +161,7 @@ class MesaFoliosController extends Controller
      *
      * @return View
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
         $mesaFolio = MesaFolio::findOrFail($id);
         $Users = User::pluck('activo', 'id')->all();

@@ -120,7 +120,7 @@ class MesaAlumnoService
 
     /**
      * @param $mesa_alumno
-     * @param $correlativa
+     * @param $correlativas
      * @param $mesa_fecha
      * @param $notas_aprobado
      * @param array $data
@@ -135,6 +135,7 @@ class MesaAlumnoService
             })->orderBy('created_at', 'DESC')
                 ->get();
             $repoFolio = new FolioNotaRepository();
+
             foreach ($actas_volantes as $av){
                 /** @var ActaVolante $av */
                 $folio = $repoFolio->getFolioByActaVolante($av->id);
@@ -145,13 +146,13 @@ class MesaAlumnoService
                         'materia' => $av->materia()->first()->nombre
                     ];
                 }
+
             }
-
             $materia = Materia::find($correlativa->id);
-
 
             $folios = $repoFolio->getFoliosNotaForAlumnoByMateria(
                 $mesa_alumno->alumno_id, $materia, $mesa_fecha);
+            dd($folios);
 
             if (count($folios) > 0) {
                 foreach ($actas_volantes as $acta_volante) {

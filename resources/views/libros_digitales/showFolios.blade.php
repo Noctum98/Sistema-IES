@@ -42,6 +42,38 @@
             </h4>
         </div>
         @forelse($folios as $folio)
+            <div id="addFolioNotaForm" style="display: none;" class="row">
+                <form method="POST" class="col-sm-12 mb-3">
+                    @csrf
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="orden">Orden:</label>
+                            <input type="number" class="form-control" id="orden" name="orden" required>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="alumno">Alumno:</label><br/>
+                            <select class="form-control select2" id="alumno" name="alumno" required>
+                                <!-- Aquí puedes iterar sobre un conjunto de alumnos -->
+                                <!-- <option value="id_del_alumno">Nombre del alumno</option> -->
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="escrito">Escrito:</label>
+                            <input type="number" class="form-control" id="escrito" name="escrito" required>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="oral">Oral:</label>
+                            <input type="number" class="form-control" id="oral" name="oral" required>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="definitiva">Definitiva:</label>
+                            <input type="number" class="form-control" id="definitiva" name="definitiva" required>
+                        </div>
+                    </div>
+                    <input type="hidden" id="folioId" name="folioId" value="{{ $folio->id }}">
+                    <button id="submitFolioNota" type="button" class="btn btn-primary mt-3">Guardar</button>
+                </form>
+            </div>
             <div class="card-body col-sm-12">
 
                 <div class="card">
@@ -155,38 +187,7 @@
     </div>
 
     <!-- Modal para agregar folioNota -->
-    <div id="addFolioNotaForm" style="display: none;" class="row">
-        <form method="POST" class="col-sm-12 mb-3">
-            @csrf
-            <div class="form-row">
-                <div class="form-group col-sm-2">
-                    <label for="orden">Orden:</label>
-                    <input type="number" class="form-control" id="orden" name="orden" required>
-                </div>
-                <div class="form-group col-sm-4">
-                    <label for="alumno">Alumno:</label><br/>
-                    <select class="form-control select2" id="alumno" name="alumno" required>
-                        <!-- Aquí puedes iterar sobre un conjunto de alumnos -->
-                        <!-- <option value="id_del_alumno">Nombre del alumno</option> -->
-                    </select>
-                </div>
-                <div class="form-group col-sm-2">
-                    <label for="escrito">Escrito:</label>
-                    <input type="number" class="form-control" id="escrito" name="escrito" required>
-                </div>
-                <div class="form-group col-sm-2">
-                    <label for="oral">Oral:</label>
-                    <input type="number" class="form-control" id="oral" name="oral" required>
-                </div>
-                <div class="form-group col-sm-2">
-                    <label for="definitiva">Definitiva:</label>
-                    <input type="number" class="form-control" id="definitiva" name="definitiva" required>
-                </div>
-            </div>
-            <input type="hidden" id="folioId" name="folioId" value="{{ $folio->id }}">
-            <button id="submitFolioNota" type="button" class="btn btn-primary mt-3">Guardar</button>
-        </form>
-    </div>
+
 
 @endsection
 @section('scripts')
