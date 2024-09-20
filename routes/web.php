@@ -1223,6 +1223,23 @@ Route::group(['prefix' => 'tipo_carreras', 'middleware' => ['auth']], static fun
         ->name('tipo_carreras.tipo_carrera.destroy');
 });
 
+Route::group(['prefix' => 'tipo_instancias', 'middleware' => ['auth']], static function () {
+    Route::get('/', [TipoInstanciasController::class, 'index'])
+        ->name('tipo_instancias.tipo_instancia.index');
+    Route::get('/create', [TipoInstanciasController::class, 'create'])
+        ->name('tipo_instancias.tipo_instancia.create');
+    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
+        ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
+    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
+        ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
+    Route::post('/', [TipoInstanciasController::class, 'store'])
+        ->name('tipo_instancias.tipo_instancia.store');
+    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
+        ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
+    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
+        ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
+});
+
 
 Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
     ->middleware('app.roles:admin');
@@ -1232,25 +1249,3 @@ Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeN
 //Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
 //    ->middleware('app.roles:admin');
 
-
-
-
-
-Route::group([
-    'prefix' => 'tipo_instancias',
-], function () {
-    Route::get('/', [TipoInstanciasController::class, 'index'])
-         ->name('tipo_instancias.tipo_instancia.index');
-    Route::get('/create', [TipoInstanciasController::class, 'create'])
-         ->name('tipo_instancias.tipo_instancia.create');
-    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
-         ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
-    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
-         ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
-    Route::post('/', [TipoInstanciasController::class, 'store'])
-         ->name('tipo_instancias.tipo_instancia.store');
-    Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
-         ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
-    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
-         ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
-});
