@@ -53,6 +53,7 @@ class MesaFolio extends Model
         'turno',
         'vocal_1_id',
         'vocal_2_id',
+        'year_nota'
     ];
 
     /**
@@ -131,7 +132,7 @@ class MesaFolio extends Model
     public function getFechaAttribute(string $value): string
     {
 
-            return $value;
+        return $value;
 
 //        return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y');
     }
@@ -156,12 +157,11 @@ class MesaFolio extends Model
      */
     public function getDeletedAtAttribute(string $value = null): ?string
     {
-        if(!$value) {
+        if (!$value) {
             return $value;
         }
         return DateTime::createFromFormat($this->getDateFormat(), $value)->format('d/m/Y H:i:s');
     }
-
 
 
     /**
@@ -195,12 +195,12 @@ class MesaFolio extends Model
         return $this->belongsTo(User::class, 'coordinador_id');
     }
 
-    public function libroRomanos():string
+    public function libroRomanos(): string
     {
         return $this->LibroDigital()->first()->romanos;
     }
 
-    public function libroNumber():string
+    public function libroNumber(): string
     {
         return $this->LibroDigital()->first()->number;
     }
@@ -209,6 +209,29 @@ class MesaFolio extends Model
     public function folioNotas(): HasMany
     {
         return $this->hasMany(FolioNota::class, 'mesa_folio_id')->orderBy('orden');
+    }
+
+    /**
+     * @return int|mixed|string
+     */
+    public function getYearNota()
+    {
+        $yearNota = $this->year_nota;
+        if ($yearNota) {
+            return $yearNota;
+        }
+        $yearNota = $this->mesa->instancia->year_nota ?? null;
+
+        if (!$yearNota && $this->fecha >= '2024-05-01') {
+            $yearNota = '2024';
+        }
+        $this->year_nota = $yearNota??2021;
+        $this->save();
+
+
+        return $this->year_nota;
+
+
     }
 
 }

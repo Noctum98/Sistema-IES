@@ -32,6 +32,13 @@
 
                         </ul>
                     </div>
+
+                    <div class="alert" id="correlativas_folios">
+                        <strong>Correlativas Aprobadas(libros): <span id="resultado_correlativas_folios"></span></strong>
+                        <ul id="lista_correlativas_folios">
+
+                        </ul>
+                    </div>
                     <div class="alert" id="actas">
                         <strong>Actas volantes no cargadas: <span id="resultado_actas_incompletas"></span></strong>
                         <ul id="actas_incompletas">

@@ -10,6 +10,7 @@ $(document).ready(function () {
         inscripcion_id = $(this).data('inscripcion_id');
         materia_id = $(this).data('materia_id');
         $("#lista_correlativas").html("");
+        $("#lista_correlativas_folios").html("");
         $("#actas_incompletas").html("");
         $("#inscripcion_id_modal").val(inscripcion_id);
 
@@ -77,6 +78,22 @@ $(document).ready(function () {
 
                         response.correlativas_incompletas.forEach(element => {
                             $("#lista_correlativas").append('<li>' + element.nombre + '</li>')
+                        });
+                    }
+
+                     let correlativas_folios = $("#correlativas_folios");
+
+                    if (response.correlativas_incompletas_folios.length === 0) {
+                        correlativas_folios.removeClass('alert-danger')
+                        correlativas_folios.addClass('alert-success')
+                        $("#resultado_correlativas_folios").html("SI");
+                    } else {
+                        correlativas_folios.removeClass('alert-success')
+                        correlativas_folios.addClass('alert-danger')
+                        $("#resultado_correlativas_folios").html("NO");
+
+                        response.correlativas_incompletas_folios.forEach(element => {
+                            $("#lista_correlativas_folios").append('<li>' + element.nombre + '</li>')
                         });
                     }
 
