@@ -1254,7 +1254,6 @@ Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeN
 //    ->middleware('app.roles:admin');
 
 
-
 Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
     ->middleware('app.roles:admin');
 Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeNegativos'])->name('z_test.corrige-negativos')
@@ -1262,5 +1261,3 @@ Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeN
 
 //Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
 //    ->middleware('app.roles:admin');
-
-

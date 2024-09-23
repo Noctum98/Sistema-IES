@@ -136,13 +136,17 @@ class MesaAlumnoService
                 ->get();
             $repoFolio = new FolioNotaRepository();
 
-            foreach ($actas_volantes as $av){
+            foreach ($actas_volantes as $av) {
                 /** @var ActaVolante $av */
                 $folio = $repoFolio->getFolioByActaVolante($av->id);
-                if(!$folio){
+
+                $fecha = $av->mesa->fecha ?? $av->mesaAlumno->mesa->fecha;
+
+
+                if (!$folio) {
                     $data['actas_incompletas'][] = [
-                        'id'=>$av->id,
-                        'fecha' => $av->mesa()->first()->fecha,
+                        'id' => $av->id,
+                        'fecha' => $fecha,
                         'materia' => $av->materia()->first()->nombre
                     ];
                 }
@@ -152,10 +156,9 @@ class MesaAlumnoService
 
             $folios = $repoFolio->getFoliosNotaForAlumnoByMateria(
                 $mesa_alumno->alumno_id, $materia, $mesa_fecha);
-            dd($folios);
 
             if (count($folios) > 0) {
-                foreach ($actas_volantes as $acta_volante) {
+                foreach ($folios as $folio) {
                     if ($acta_volante->inscripcion && $acta_volante->inscripcion->mesa && $acta_volante->inscripcion->mesa->instancia) {
                         $nota_aprobado = $notas_aprobado->where('year', $acta_volante->inscripcion->mesa->instancia->year_nota)->first();
 

@@ -82,6 +82,8 @@
                             Folio {{ $folio->folio }}
                             <i class="fas fa-calendar-alt ms-5"></i> {{ date_format(new DateTime($folio->fecha ), 'd-m-Y') }}
                             <i class="far fa-bookmark ms-5"></i> {{ $folio->masterMateria->name }}
+                            <small style="font-size: 0.75em"><sup>{{ $folio->masterMateria->year }}° año</sup></small>
+
                             <span class="info" data-bs-toggle="tooltip"
                                   data-bs-placement="top"
                                   title="{{ $folio->llamado }}° Llamado">
@@ -149,6 +151,9 @@
                             </span>
                                 <span class="col-sm-5">
                                 {{$folioNota->alumno->getApellidosNombresAttribute()}}
+                                    <span style="font-size: 0.75em">
+                                        {{$folioNota->alumno->dni}}
+                                    </span>
                             </span>
                                 <span class="col-sm-2">
                                 Escrito: {{$folioNota->escrito === -1 ? 'A' :  $folioNota->escrito??'-'}}
