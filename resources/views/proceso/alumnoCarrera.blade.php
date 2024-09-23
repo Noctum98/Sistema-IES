@@ -54,6 +54,7 @@
     }
 </style>
 <div class="container">
+    @if(Session::has('coordinador') || Session::has('admin') || Session::has('regente'))
     <div class="dropdown mb-2">
         <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1"
             data-bs-toggle="dropdown">
@@ -71,6 +72,7 @@
             @endforeach
         </ul>
     </div>
+    @endif
     <div class="card">
         <div class="row">
             <div class="card-body col-sm-6 mx-auto">
