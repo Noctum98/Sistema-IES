@@ -76,6 +76,8 @@ class MesaController extends Controller
             $contador_segundo_llamado = 0;
             $contador_primer_llamado = 0;
             foreach ($mesa->mesa_inscriptos_total as $inscripcion) {
+
+
                 if ($inscripcion->segundo_llamado) {
                     if ($inscripcion->estado_baja) {
                         $segundo_llamado_bajas[] = $inscripcion;

@@ -42,6 +42,7 @@ class FolioNotasController extends Controller
     public function create()
     {
 
+
         $sedesId = $this->getSedes();
 
         $sedeRepository = new SedeRepository;
@@ -98,7 +99,7 @@ class FolioNotasController extends Controller
         $mesaFolios = $folioRepository->getFoliosByLibrosDigitales($librosDigitales->pluck('id')->toArray());
 
 
-        dd($mesaFolios);
+
 
 //        $MesaFolios = MesaFolio::pluck('numero', 'id')->all();
 
@@ -123,6 +124,8 @@ class FolioNotasController extends Controller
      */
     public function store(Request $request)
     {
+
+        dd($request->all());
 
         $data = $this->getData($request);
 
