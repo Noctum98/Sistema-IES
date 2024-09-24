@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="alert" id="correlativas_folios">
-                        <strong>Correlativas Aprobadas(libros): <span id="resultado_correlativas_folios"></span></strong>
+                        <strong>Correlativas Aprobadas (libros): <span id="resultado_correlativas_folios"></span></strong>
                         <ul id="lista_correlativas_folios">
 
                         </ul>
