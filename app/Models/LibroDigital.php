@@ -90,4 +90,15 @@ class LibroDigital extends Model
     {
         return MesaFolio::where('libro_digital_id', $this->id)->get();
     }
+
+    /**
+     * @return Carrera
+     */
+    public function getCarrera(): Carrera
+    {
+        return Carrera::where([
+            'sede_id' => $this->sede_id,
+            'resolucion_id' => $this->resoluciones_id
+        ])->first();
+    }
 }

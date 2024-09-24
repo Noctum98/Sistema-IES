@@ -2,6 +2,20 @@
 
 @section('content')
     <x-style_libro_digital/>
+    <style>
+
+        .select2 .select2-selection {
+            padding: 6px 12px; /* Ajusta estos valores como sea necesario */
+            height: 38px; /* Asegúrate de que esto coincide con la altura de tus otros campos de entrada */
+        }
+    </style>
+    @if(Session::has('success_message'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {!! session('success_message') !!}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="card text-bg-theme">
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0 alert alert-info mx-auto">
@@ -28,6 +42,38 @@
             </h4>
         </div>
         @forelse($folios as $folio)
+            <div id="addFolioNotaForm" style="display: none;" class="row">
+                <form method="POST" class="col-sm-12 mb-3">
+                    @csrf
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="orden">Orden:</label>
+                            <input type="number" class="form-control" id="orden" name="orden" required>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="alumno">Alumno:</label><br/>
+                            <select class="form-control select2" id="alumno" name="alumno" required>
+                                <!-- Aquí puedes iterar sobre un conjunto de alumnos -->
+                                <!-- <option value="id_del_alumno">Nombre del alumno</option> -->
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="escrito">Escrito:</label>
+                            <input type="number" class="form-control" id="escrito" name="escrito" required>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="oral">Oral:</label>
+                            <input type="number" class="form-control" id="oral" name="oral" required>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="definitiva">Definitiva:</label>
+                            <input type="number" class="form-control" id="definitiva" name="definitiva" required>
+                        </div>
+                    </div>
+                    <input type="hidden" id="folioId" name="folioId" value="{{ $folio->id }}">
+                    <button id="submitFolioNota" type="button" class="btn btn-primary mt-3">Guardar</button>
+                </form>
+            </div>
             <div class="card-body col-sm-12">
 
                 <div class="card">
@@ -36,19 +82,24 @@
                             Folio {{ $folio->folio }}
                             <i class="fas fa-calendar-alt ms-5"></i> {{ date_format(new DateTime($folio->fecha ), 'd-m-Y') }}
                             <i class="far fa-bookmark ms-5"></i> {{ $folio->masterMateria->name }}
+                            <small style="font-size: 0.75em"><sup>{{ $folio->masterMateria->year }}° año</sup></small>
+
                             <span class="info" data-bs-toggle="tooltip"
                                   data-bs-placement="top"
                                   title="{{ $folio->llamado }}° Llamado">
                             <i class="fas fa-user-clock ms-5"></i> {{ $folio->llamado }}
                             </span>
-                            <a href="{{route('mostrar_pdf_acta_volante',
+                            @if($folio->mesa && $folio->llamado && $folio->folio)
+                                <a href="{{route('mostrar_pdf_acta_volante',
 ['mesa' => $folio->mesa_id, 'llamado'=>$folio->llamado, 'folio' => $folio->folio])}}"
-                               target="_blank" class="btn btn-sm btn-primary">
-                                <i class="fas fa-file-pdf"></i> Ver acta volante
-                            </a>
+                                   target="_blank" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-file-pdf"></i> Ver acta volante
+                                </a>
+                            @endif
+
                         </h5>
                         <span class="ms-4">
-                <a href="{{ route('mesa_folios.mesa_folio.create_by_libro', ['libroDigital'=>$libroDigital->id] ) }}"
+                <a href="{{ route('mesa_folios.mesa_folio.create_by_libro_from_libro', ['libroDigital'=>$libroDigital->id] ) }}"
                    class="btn btn-primary" title="Agregar folio"
                    data-bs-toggle="tooltip" data-bs-placement="top"
                 >
@@ -58,7 +109,7 @@
                 </span>
                     </div>
                     <div class="card-body row">
-                        <h5 class="card-text col-sm-3 ml-5 pl-5">
+                        <h5 class="card-text col-sm-2 ml-5 pl-5">
                             Aprobados: <br/>
                             Desaprobados: <br/>
                             Ausentes: <br/>
@@ -71,7 +122,7 @@
                             {{ $folio->turno??'-' }}
                         </h5>
 
-                        <h6 class="card-text col-sm-5 ml-5">
+                        <h6 class="card-text col-sm-4 ml-5">
                             Coordinador: <i
                                 class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
                             Operador: <i
@@ -85,6 +136,11 @@
                             Vocal 2: <i
                                 class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
                         </h6>
+                        <h6 class="card-text col-sm-2 ml-5">
+                            <button id="showAddFolioNota" type="button" class="btn btn-primary">
+                                Agregar Alumno
+                            </button>
+                        </h6>
                     </div>
                     <div class="card-footer text-left container">
                         @foreach($folio->folioNotas()->get() as $folioNota)
@@ -95,6 +151,9 @@
                             </span>
                                 <span class="col-sm-5">
                                 {{$folioNota->alumno->getApellidosNombresAttribute()}}
+                                    <span style="font-size: 0.75em">
+                                        {{$folioNota->alumno->dni}}
+                                    </span>
                             </span>
                                 <span class="col-sm-2">
                                 Escrito: {{$folioNota->escrito === -1 ? 'A' :  $folioNota->escrito??'-'}}
@@ -132,4 +191,64 @@
         </div>
     </div>
 
+    <!-- Modal para agregar folioNota -->
+
+
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%',
+                theme: "classic",
+                minimumInputLength: 4,  // Se realizará una búsqueda AJAX después de que el usuario haya escrito 4 caracteres
+                ajax: {
+                    data: function (params) {
+                        return {
+                            q: params.term, // Valor ingresado en el campo de selección
+                            libroId: '{{ $libroDigital->id }}'
+                        };
+                    },
+                    url: '/alumnos/searchAlumnos/documento',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        };
+                    },
+                    cache: false
+                }
+
+            });
+
+            $('#showAddFolioNota').click(function () {
+                $('#addFolioNotaForm').show();  // Muestra el formulario
+            });
+
+            $('#submitFolioNota').click(function (e) {
+                e.preventDefault();
+                console.log('click');
+
+                // Recuperar datos del formulario
+                var data = {
+                    // Asegúrate de cambiar esto para que coincida con tus campos de formulario
+                    // Ejemplo: 'campo': $('#id_del_campo').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/folio_notas',  // Asegúrate de cambiar esto a tu ruta de Laravel
+                    data: data,
+                    success: function (response) {
+                        // Manejar respuesta aquí. Puedes actualizar la vista sin recargar la página.
+                        $('#addFolioNotaForm').hide();  // Oculta el formulario
+                    },
+                    error: function (error) {
+                        // Manejar error aquí. Podría ser útil mostrar un mensaje de error.
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

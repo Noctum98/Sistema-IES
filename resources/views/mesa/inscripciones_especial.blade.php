@@ -1,10 +1,16 @@
 @extends('layouts.app-prueba')
 @section('content')
 <div class="container">
-    <h2 class="h1 text-info">
+
+    <h4 class="text-info">
         Inscripciones en {{$materia->nombre}}
-    </h2>
-    
+        <small><br/>
+            ({{ $materia->año }}° año -
+            {{ $materia->carrera->nombre }} -
+            {{ $materia->carrera->sede->nombre }})
+        </small>
+    </h4>
+
 
     <hr>
     @if(@session('baja_exitosa'))
@@ -118,7 +124,7 @@
 
                         <button class="{{$inscripcion->confirmado ? 'd-none' : '' }} inscripcion_id btn btn-sm btn-info" data-inscripcion_id="{{ $inscripcion->id }}" data-materia_id="{{ $materia->id }}" data-bs-toggle="modal" data-bs-target="#confirmar_alumno">Verificar Inscripción
                     </button>
-                   
+
                         @if($inscripcion->confirmado)
                         <button class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i>Confirmado</button>
                         @endif

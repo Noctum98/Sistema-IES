@@ -1,23 +1,4 @@
 <div class="mb-3 row">
-    <label for="mesa_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Mesa</label>
-    <div class="col-lg-10 col-xl-9">
-        <select class="form-select{{ $errors->has('mesa_id') ? ' is-invalid' : '' }}" id="mesa_id" name="mesa_id">
-            <option value="" style="display: none;"
-                    {{ old('mesa_id', optional($mesaFolio)->mesa_id ?: '') == '' ? 'selected' : '' }} disabled selected>
-                Seleccione mesa
-            </option>
-            @foreach ($Mesas as $Mesa)
-                <option value="{{ $Mesa->id }}" {{ old('mesa_id', optional($mesaFolio)->mesa_id) == $Mesa->id ? 'selected' : '' }}>
-                    {{ @carbon\carbon::parse($Mesa->fecha)->format('d/m/Y') }} - {{ $Mesa->materia->nombre }}
-                </option>
-            @endforeach
-        </select>
-
-        {!! $errors->first('mesa_id', '<div class="invalid-feedback">:message</div>') !!}
-    </div>
-</div>
-
-<div class="mb-3 row">
     <label for="fecha" class="col-form-label text-lg-end col-lg-2 col-xl-3">Fecha</label>
     <div class="col-lg-10 col-xl-9">
         <input class="form-control{{ $errors->has('fecha') ? ' is-invalid' : '' }}" name="fecha" type="date" id="fecha"
@@ -27,26 +8,7 @@
     </div>
 </div>
 
-<div class="mb-3 row">
-    <label for="libro_digital_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Libro Digital</label>
-    <div class="col-lg-10 col-xl-9">
-        <select class="form-select{{ $errors->has('libro_digital_id') ? ' is-invalid' : '' }}" id="libro_digital_id"
-                name="libro_digital_id" required="required">
-            <option value="" style="display: none;"
-                    {{ old('libro_digital_id', optional($mesaFolio)->libro_digital_id ?: '') == '' ? 'selected' : '' }} disabled
-                    selected>Seleccione libro digital
-            </option>
-            @foreach ($LibrosDigitales as  $LibrosDigital)
-                <option value="{{ $LibrosDigital->id }}"
-                    {{ old('libro_digital_id', optional($mesaFolio)->libro_digital_id) == $LibrosDigital->id ? 'selected' : '' }}>
-                    {{ $LibrosDigital->romanos }} - {{ $LibrosDigital->sede->nombre }}
-                </option>
-            @endforeach
-        </select>
-
-        {!! $errors->first('libro_digital_id', '<div class="invalid-feedback">:message</div>') !!}
-    </div>
-</div>
+<input type="hidden" name="libro_digital_id" value="{{ $libroDigital->id }}">
 
 <div class="mb-3 row">
     <label for="master_materia_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Master Materia</label>
@@ -58,7 +20,8 @@
                     selected>Selecciones master materia
             </option>
             @foreach ($MasterMaterias as $key => $MasterMaterium)
-                <option value="{{ $key }}" {{ old('master_materia_id', optional($mesaFolio)->master_materia_id) == $key ? 'selected' : '' }}>
+                <option
+                    value="{{ $key }}" {{ old('master_materia_id', optional($mesaFolio)->master_materia_id) == $key ? 'selected' : '' }}>
                     {{ $MasterMaterium }}
                 </option>
             @endforeach
@@ -79,27 +42,6 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="presidente_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Presidente</label>
-    <div class="col-lg-10 col-xl-9">
-        <select class="form-select{{ $errors->has('presidente_id') ? ' is-invalid' : '' }}" id="presidente_id"
-                name="presidente_id">
-            <option value="" style="display: none;"
-                    {{ old('presidente_id', optional($mesaFolio)->presidente_id ?: '') == '' ? 'selected' : '' }} disabled
-                    selected>Seleccione presidente
-            </option>
-            @foreach ($Users as $User)
-                <option value="{{ $User->id }}"
-                    {{ old('presidente_id', optional($mesaFolio)->presidente_id) == $User->id ? 'selected' : '' }}>
-                    {{ $User->getApellidoNombre() }}
-                </option>
-            @endforeach
-        </select>
-
-        {!! $errors->first('presidente_id', '<div class="invalid-feedback">:message</div>') !!}
-    </div>
-</div>
-
-<div class="mb-3 row">
     <label for="turno" class="col-form-label text-lg-end col-lg-2 col-xl-3">Turno</label>
     <div class="col-lg-10 col-xl-9">
         <input class="form-control{{ $errors->has('turno') ? ' is-invalid' : '' }}" name="turno" type="text" id="turno"
@@ -110,17 +52,44 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="vocal_1_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Vocal 1</label>
+    <label for="presidente_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Presidente</label>
     <div class="col-lg-10 col-xl-9">
+        <input type="text" id="presidenteSearch" placeholder="Buscar...">
+        <select class="form-select{{ $errors->has('presidente_id') ? ' is-invalid' : '' }}" id="presidente_id"
+                name="presidente_id">
+            <option value="" style="display: none;"
+                    {{ old('presidente_id', optional($mesaFolio)->presidente_id ?: '') == '' ? 'selected' : '' }} disabled
+                    selected>Seleccione presidente
+            </option>
+            @foreach ($Users as $User)
+                <option value="{{ $User->id }}"
+                        {{ old('presidente_id', optional($mesaFolio)->presidente_id) == $User->id ? 'selected' : '' }}
+                        data-user-name="{{ $User->getApellidoNombre() }}">
+                    <!-- Añadimos un atributo de datos para facilitar la búsqueda -->
+                    {{ $User->getApellidoNombre() }}
+                </option>
+            @endforeach
+        </select>
+
+        {!! $errors->first('presidente_id', '<div class="invalid-feedback">:message</div>') !!}
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label for="vocal_1_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">1° Vocal </label>
+    <div class="col-lg-10 col-xl-9">
+        <input type="text" id="vocal_1Search" placeholder="Buscar...">
         <select class="form-select{{ $errors->has('vocal_1_id') ? ' is-invalid' : '' }}" id="vocal_1_id"
                 name="vocal_1_id">
             <option value="" style="display: none;"
                     {{ old('vocal_1_id', optional($mesaFolio)->vocal_1_id ?: '') == '' ? 'selected' : '' }} disabled
-                    selected>Seleccione vocal 1
+                    selected>Seleccione 1° Vocal
             </option>
             @foreach ($Users as $User)
                 <option value="{{ $User->id }}"
-                 {{ old('vocal_1_id', optional($mesaFolio)->vocal_1_id) == $User->id ? 'selected' : '' }}>
+                        {{ old('vocal_1_id', optional($mesaFolio)->vocal_1_id) == $User->id ? 'selected' : '' }}
+                        data-user-name="{{ $User->getApellidoNombre() }}">
+                    <!-- Añadimos un atributo de datos para facilitar la búsqueda -->
                     {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
@@ -131,16 +100,20 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="vocal_2_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Vocal 2</label>
+    <label for="vocal_2_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">2° Vocal </label>
     <div class="col-lg-10 col-xl-9">
+        <input type="text" id="vocal_2Search" placeholder="Buscar...">
         <select class="form-select{{ $errors->has('vocal_2_id') ? ' is-invalid' : '' }}" id="vocal_2_id"
                 name="vocal_2_id">
             <option value="" style="display: none;"
                     {{ old('vocal_2_id', optional($mesaFolio)->vocal_2_id ?: '') == '' ? 'selected' : '' }} disabled
-                    selected>Seleccione vocal 2
+                    selected>Seleccione 2° Vocal
             </option>
             @foreach ($Users as $User)
-                <option value="{{ $User->id }}" {{ old('vocal_2_id', optional($mesaFolio)->vocal_2_id) == $User->id ? 'selected' : '' }}>
+                <option value="{{ $User->id }}"
+                        {{ old('vocal_2_id', optional($mesaFolio)->vocal_2_id) == $User->id ? 'selected' : '' }}
+                        data-user-name="{{ $User->getApellidoNombre() }}">
+                    <!-- Añadimos un atributo de datos para facilitar la búsqueda -->
                     {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
@@ -181,16 +154,20 @@
 </div>
 
 <div class="mb-3 row">
-    <label for="coordinador_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Coordinador</label>
+    <label for="coordinador_id" class="col-form-label text-lg-end col-lg-2 col-xl-3">Coordinador </label>
     <div class="col-lg-10 col-xl-9">
+        <input type="text" id="coordinadorSearch" placeholder="Buscar...">
         <select class="form-select{{ $errors->has('coordinador_id') ? ' is-invalid' : '' }}" id="coordinador_id"
                 name="coordinador_id">
             <option value="" style="display: none;"
                     {{ old('coordinador_id', optional($mesaFolio)->coordinador_id ?: '') == '' ? 'selected' : '' }} disabled
-                    selected>Select coordinador
+                    selected>Seleccione Coordinador
             </option>
             @foreach ($Users as $User)
-                <option value="{{ $User->id }}" {{ old('coordinador_id', optional($mesaFolio)->coordinador_id) == $User->id ? 'selected' : '' }}>
+                <option value="{{ $User->id }}"
+                        {{ old('coordiandor_id', optional($mesaFolio)->coordinador_id) == $User->id ? 'selected' : '' }}
+                        data-user-name="{{ $User->getApellidoNombre() }}">
+                    <!-- Añadimos un atributo de datos para facilitar la búsqueda -->
                     {{ $User->getApellidoNombre() }}
                 </option>
             @endforeach
@@ -244,6 +221,30 @@
             theme: "classic",
             placeholder: "Seleccione profesor",
             allowClear: true
+        });
+
+        function buscarUsuario(inputId, selectId) {
+            const inputValue = $(`#${inputId}`).val();
+            $.ajax({
+                url: '/usuarios/buscar_usuario',
+                data: {
+                    'nombre': inputValue
+                },
+                success: function(data) {
+                    $(`#${selectId}`).empty();
+                    $.each(data, function(key, user) {
+                        $(`#${selectId}`).append($('<option></option>')
+                            .attr('value', user.id)
+                            .text(user.apellido + ', '+ user.nombre));
+                    });
+                }
+            });
+        }
+
+        $('#presidenteSearch, #vocal_1Search, #vocal_2Search, #coordinadorSearch').on('keyup', function() {
+            const inputId = this.id;
+            const selectId = inputId.replace('Search', '_id');
+            buscarUsuario(inputId, selectId);
         });
 
     });

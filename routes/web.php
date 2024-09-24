@@ -27,6 +27,7 @@ use App\Http\Controllers\Trianual\ObservacionesTrianualController;
 use App\Http\Controllers\Trianual\TrianualController;
 use App\Http\Controllers\UserCargoController;
 use App\Http\Controllers\ZTestController;
+use App\Models\Preinscripcion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SedeController;
@@ -75,9 +76,6 @@ use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
 use App\Http\Controllers\MesaFoliosController;
 use App\Http\Controllers\FolioNotasController;
-use App\Models\ActaVolante;
-use App\Models\AlumnoCarrera;
-use App\Models\Preinscripcion;
 use App\Http\Controllers\TipoInstanciasController;
 
 /*
@@ -226,6 +224,7 @@ Route::prefix('alumnos')->group(function () {
     Route::get('ver-imagen/{foto}', [AlumnoController::class, 'ver_foto'])->name('ver_imagen');
     Route::get('descargar/{nombre}/{dni?}/{id}', [AlumnoController::class, 'descargar_archivo'])->name('descargar_archivo');
     Route::get('descargar-ficha/{id}', [AlumnoController::class, 'descargar_ficha'])->name('descargar_ficha');
+    Route::get('searchAlumnos/documento', [AlumnoController::class, 'searchAlumnos'])->name('alumno.alumnos-search');
     Route::patch('/modifica/{id}/cohorte', [AlumnoController::class, 'updateCohorte'])->name('alumno.cohorte-update');
 });
 
@@ -681,7 +680,8 @@ Route::prefix('parciales')->group(function () {
 });
 
 // Ruta AlumnoParcial
-Route::prefix('alumno/parci')->group(function () {});
+Route::prefix('alumno/parci')->group(function () {
+});
 
 //Rutas de Mesas
 Route::prefix('mesas')->group(function () {
@@ -913,6 +913,7 @@ Route::prefix('usuarios')->group(function () {
     );
     Route::get('reestablecer_password/{id}', [UserController::class, 'regenerar_contra']);
     Route::get('activarDesactivar/{id}', [UserController::class, 'activarDesactivar']);
+    Route::get('buscar_usuario', [UserController::class, 'buscarUsuario'])->name('user.buscar-usuario');
 });
 
 
@@ -1152,6 +1153,8 @@ Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], static funct
         ->name('mesa_folios.mesa_folio.create');
     Route::get('/create/{libroDigital}', [MesaFoliosController::class, 'createByLibro'])
         ->name('mesa_folios.mesa_folio.create_by_libro');
+    Route::get('/create/{libroDigital}/from_libro', [MesaFoliosController::class, 'createByLibroFromLibro'])
+        ->name('mesa_folios.mesa_folio.create_by_libro_from_libro');
     Route::get('/show/{mesaFolio}', [MesaFoliosController::class, 'show'])
         ->name('mesa_folios.mesa_folio.show');
     Route::get('/{mesaFolio}/edit', [MesaFoliosController::class, 'edit'])
@@ -1198,10 +1201,11 @@ Route::group(['prefix' => 'resoluciones', 'middleware' => ['auth']], static func
         ->name('resoluciones.resoluciones.destroy');
 });
 
-Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {})->middleware('app.roles:admin');
+Route::get('/ruta_funcionalidades/{sede_id}/{}', function ($instancia_id) {
+})->middleware('app.roles:admin');
 
 Route::get('test/updateActasVolantes', static function () {
-    $preinscripciones = Preinscripcion::where(['articulo_septimo'=>1,'condicion_s'=>'secundario completo'])->update(['articulo_septimo'=>0]);
+    $preinscripciones = Preinscripcion::where(['articulo_septimo' => 1, 'condicion_s' => 'secundario completo'])->update(['articulo_septimo' => 0]);
     echo 'Preinscripciones Actualizadas';
 });
 
@@ -1229,15 +1233,15 @@ Route::group(['prefix' => 'tipo_instancias', 'middleware' => ['auth']], static f
         ->name('tipo_instancias.tipo_instancia.index');
     Route::get('/create', [TipoInstanciasController::class, 'create'])
         ->name('tipo_instancias.tipo_instancia.create');
-    Route::get('/show/{tipoInstancia}',[TipoInstanciasController::class, 'show'])
+    Route::get('/show/{tipoInstancia}', [TipoInstanciasController::class, 'show'])
         ->name('tipo_instancias.tipo_instancia.show')->where('id', '[0-9]+');
-    Route::get('/{tipoInstancia}/edit',[TipoInstanciasController::class, 'edit'])
+    Route::get('/{tipoInstancia}/edit', [TipoInstanciasController::class, 'edit'])
         ->name('tipo_instancias.tipo_instancia.edit')->where('id', '[0-9]+');
     Route::post('/', [TipoInstanciasController::class, 'store'])
         ->name('tipo_instancias.tipo_instancia.store');
     Route::put('tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'update'])
         ->name('tipo_instancias.tipo_instancia.update')->where('id', '[0-9]+');
-    Route::delete('/tipo_instancia/{tipoInstancia}',[TipoInstanciasController::class, 'destroy'])
+    Route::delete('/tipo_instancia/{tipoInstancia}', [TipoInstanciasController::class, 'destroy'])
         ->name('tipo_instancias.tipo_instancia.destroy')->where('id', '[0-9]+');
 });
 
@@ -1250,3 +1254,11 @@ Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeN
 //Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
 //    ->middleware('app.roles:admin');
 
+
+Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
+    ->middleware('app.roles:admin');
+Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeNegativos'])->name('z_test.corrige-negativos')
+    ->middleware('app.roles:admin');
+
+//Route::get('z_test/carga_master_materias/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions')
+//    ->middleware('app.roles:admin');

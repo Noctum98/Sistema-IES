@@ -6,6 +6,8 @@ use App\Models\Alumno;
 use App\Models\Alumno\EncuestaSocioeconomica;
 use App\Models\AlumnoCarrera;
 use App\Models\Carrera;
+use App\Models\Libro;
+use App\Models\LibroDigital;
 use App\Models\Parameters\CicloLectivo;
 use App\Models\Preinscripcion;
 use App\Models\Sede;
@@ -18,6 +20,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use JsonException;
 use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -185,7 +188,7 @@ class AlumnoController extends Controller
                 ->orderBy('ciclo_lectivo', 'desc')
                 ->orderBy('created_at', 'desc') // En caso de empate, ordenar por fecha de creación
                 ->first();
-        
+
             if (!in_array($datoActual, $inscripciones)) {
                 array_push($inscripciones, $datoActual);
             }
@@ -436,5 +439,27 @@ class AlumnoController extends Controller
         $alumno->save();
 
         return response()->json(['new_cohorte' => $alumno->cohorte]);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function searchAlumnos(Request $request)
+    {
+
+        $libro = $request->get('libroId');
+        $libroDigital = LibroDigital::find($libro);
+
+
+        $alumnos = $this->alumnoService->buscarAlumnoParcial($request->get('q'), $libroDigital->getCarrera()->id);
+
+
+        $formatted = array_map(function($alumno) {
+            return ["id" => $alumno['id'], "text" => $alumno['apellidos'] . ',  ' . $alumno['nombres']];
+        }, $alumnos->toArray());
+
+        return json_encode(["results" => $formatted], JSON_THROW_ON_ERROR);
+
+
     }
 }
