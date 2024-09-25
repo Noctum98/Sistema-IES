@@ -23,7 +23,7 @@ class CreateDerivacionesTicketsTable extends Migration
             $table->unsignedInteger('carrera_id');
             $table->boolean('general')->default(false);
             $table->boolean('activa')->default(true);
-            $table->foreign('rol_id')->references('id')->on('roles');
+            //$table->foreign('rol_id')->references('id')->on('roles');
             $table->foreign('operador_id')->references('id')->on('users');
             $table->foreign('sede_id')->references('id')->on('sedes');
             $table->foreign('carrera_id')->references('id')->on('carreras');
