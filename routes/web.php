@@ -69,9 +69,15 @@ use App\Http\Controllers\RegimensController;
 use App\Http\Controllers\ResolucionesController;
 use App\Http\Controllers\MasterMateriasController;
 use App\Http\Controllers\EstadoResolucionesController;
+use App\Http\Controllers\Ticket\EstadoTicketsController;
+use App\Http\Controllers\Ticket\TicketsController;
 use App\Http\Controllers\EstadoCarrerasController;
+use App\Http\Controllers\Ticket\CategoriasTicketsController;
 use App\Http\Controllers\CorrelatividadAgrupadasController;
 use App\Http\Controllers\AgrupadaMateriasController;
+use App\Http\Controllers\Ticket\AsignacionTicketController;
+use App\Http\Controllers\Ticket\DerivacionTicketController;
+use App\Http\Controllers\Ticket\RespuestaTicketController;
 use App\Http\Controllers\LibrariesController;
 use App\Http\Controllers\LibroPapelController;
 use App\Http\Controllers\MesaFoliosController;
@@ -1246,6 +1252,71 @@ Route::group(['prefix' => 'tipo_instancias', 'middleware' => ['auth']], static f
 });
 
 
+Route::group([
+    'prefix' => 'estado_tickets',
+], function () {
+    Route::get('/', [EstadoTicketsController::class, 'index'])
+         ->name('estado_tickets.estado_ticket.index');
+    Route::get('/create', [EstadoTicketsController::class, 'create'])
+         ->name('estado_tickets.estado_ticket.create');
+    Route::get('/show/{estadoTicket}',[EstadoTicketsController::class, 'show'])
+         ->name('estado_tickets.estado_ticket.show')->where('id', '[0-9]+');
+    Route::get('/{estadoTicket}/edit',[EstadoTicketsController::class, 'edit'])
+         ->name('estado_tickets.estado_ticket.edit')->where('id', '[0-9]+');
+    Route::post('/', [EstadoTicketsController::class, 'store'])
+         ->name('estado_tickets.estado_ticket.store');
+    Route::put('estado_ticket/{estadoTicket}', [EstadoTicketsController::class, 'update'])
+         ->name('estado_tickets.estado_ticket.update')->where('id', '[0-9]+');
+    Route::delete('/estado_ticket/{estadoTicket}',[EstadoTicketsController::class, 'destroy'])
+         ->name('estado_tickets.estado_ticket.destroy')->where('id', '[0-9]+');
+});
+
+Route::group([
+    'prefix' => 'tickets',
+], function () {
+    Route::get('/', [TicketsController::class, 'index'])
+         ->name('tickets.ticket.index');
+    Route::get('/create', [TicketsController::class, 'create'])
+         ->name('tickets.ticket.create');
+    Route::get('/show/{ticket}',[TicketsController::class, 'show'])
+         ->name('tickets.ticket.show')->where('id', '[0-9]+');
+    Route::get('/{ticket}/edit',[TicketsController::class, 'edit'])
+         ->name('tickets.ticket.edit')->where('id', '[0-9]+');
+    Route::get('/{ticket_id}/captura',[TicketsController::class,'showCaptura'])
+          ->name('tickets.captura');
+    Route::post('/', [TicketsController::class, 'store'])
+         ->name('tickets.ticket.store');
+    Route::put('ticket/{ticket}', [TicketsController::class, 'update'])
+         ->name('tickets.ticket.update')->where('id', '[0-9]+');
+    Route::put('changeEstado/{ticket_id}',[TicketsController::class,'changeEstado'])->name('tickets.changeEstado');
+    Route::delete('/ticket/{ticket}',[TicketsController::class, 'destroy'])
+         ->name('tickets.ticket.destroy')->where('id', '[0-9]+');
+});
+
+Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
+Route::group([
+    'prefix' => 'categorias_tickets',
+], function () {
+    Route::get('/', [CategoriasTicketsController::class, 'index'])
+         ->name('categorias_tickets.categorias_tickets.index');
+    Route::get('/create', [CategoriasTicketsController::class, 'create'])
+         ->name('categorias_tickets.categorias_tickets.create');
+    Route::get('/show/{categoriasTickets}',[CategoriasTicketsController::class, 'show'])
+         ->name('categorias_tickets.categorias_tickets.show')->where('id', '[0-9]+');
+    Route::get('/{categoriasTickets}/edit',[CategoriasTicketsController::class, 'edit'])
+         ->name('categorias_tickets.categorias_tickets.edit')->where('id', '[0-9]+');
+    Route::post('/', [CategoriasTicketsController::class, 'store'])
+         ->name('categorias_tickets.categorias_tickets.store');
+    Route::put('categorias_tickets/{categoriasTickets}', [CategoriasTicketsController::class, 'update'])
+         ->name('categorias_tickets.categorias_tickets.update')->where('id', '[0-9]+');
+    Route::delete('/categorias_tickets/{categoriasTickets}',[CategoriasTicketsController::class, 'destroy'])
+         ->name('categorias_tickets.categorias_tickets.destroy')->where('id', '[0-9]+');
+});
+
+Route::resource('derivaciones_tickets',DerivacionTicketController::class);
+Route::resource('asignaciones_tickets',AsignacionTicketController::class);
+Route::resource('respuestas_tickets',RespuestaTicketController::class);
+Route::get('z_test/{id_resolucion}', [ZTestController::class, 'getActions'])->name('z_test.get-actions');
 Route::get('z_test/carga_libros/{sede}', [ZTestController::class, 'cargaLibros'])->name('z_test.carga-libros')
     ->middleware('app.roles:admin');
 Route::get('z_test/corrige_negativos/{sede}', [ZTestController::class, 'corrigeNegativos'])->name('z_test.corrige-negativos')

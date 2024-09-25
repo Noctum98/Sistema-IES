@@ -15,22 +15,22 @@
 
                     <a href="{{ route('estado_resoluciones.estado_resoluciones.edit', $estadoResoluciones->id ) }}"
                        class="btn btn-primary" title="Editar Estado Resoluciones">
-                        <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
+                        <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
                     </a>
 
                     <button type="submit" class="btn btn-danger" title="Borrar Estado Resoluciones"
                             onclick="return confirm(&quot;Click Ok para borrar Estado Resoluciones.?&quot;)">
-                        <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
+                        <span class="fa-regular fa-trash-can" aria-hidden="true"></span> Eliminar
                     </button>
 
                     <a href="{{ route('estado_resoluciones.estado_resoluciones.index') }}" class="btn btn-primary"
                        title="Listado Estados Resoluciones">
-                        <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+                        <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
                     </a>
 
                     <a href="{{ route('estado_resoluciones.estado_resoluciones.create') }}" class="btn btn-secondary"
                        title="Agregar Estado Resoluciones">
-                        <span class="fa-solid fa-plus" aria-hidden="true"></span>
+                        <span class="fa-solid fa-plus" aria-hidden="true"></span> Agregar
                     </a>
 
                 </form>

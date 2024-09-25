@@ -15,23 +15,30 @@ use App\Models\Regimen;
 use App\Models\Resoluciones;
 use App\Models\Sede;
 use App\Models\User;
+use App\Services\GenericService;
+use App\Services\Trianual\LibroDigitalService;
 use Illuminate\Http\JsonResponse;
 
 class ZTestController extends Controller
 {
 
     private GenericHandler $handler;
+    private LibroDigitalService $libroDigitalService;
+    private GenericService $genService;
 
     /**
      * @param GenericHandler $handler
+     * @param LibroDigitalService $libroDigitalService
      */
-    public function __construct(GenericHandler $handler)
+    public function __construct(GenericHandler $handler, LibroDigitalService $libroDigitalService)
     {
         $this->middleware('app.auth');
         $this->middleware('app.roles:admin');
 
 
         $this->handler = $handler;
+        $this->libroDigitalService = $libroDigitalService;
+        $this->genService = new GenericService();
     }
 
     public function getActions(string $name)
@@ -170,58 +177,28 @@ class ZTestController extends Controller
                 if (!$mesaFolio) {
                     $desglose = $libro->getResultadosActasVolantes();
 
-                    $fecha = $mesa->fecha;
-
-                    $presidente = $mesa->presidente_id;
-                    $vocal_1 = $mesa->primer_vocal_id;
-                    $vocal_2 = $mesa->segundo_vocal_id;
-
-                    if ($libro->llamado > 2) {
-
-                        $fecha = $mesa->fecha_segundo;
-                        $presidente = $mesa->presidente_segundo_id;
-                        $vocal_1 = $mesa->primer_vocal_segundo_id;
-                        $vocal_2 = $mesa->segundo_vocal_segundo_id;
-                    }
+                    [$presidente, $vocal_1, $vocal_2] = $this->libroDigitalService->getDataMesa($mesa, $libro);
 
                     $existPresidente = true;
                     $exist1 = true;
                     $exist2 = true;
-                    if($presidente !== null){
+                    if ($presidente !== null) {
                         $existPresidente = User::where('id', $presidente)->first();
                     }
-                    if($vocal_1 !== null){
+                    if ($vocal_1 !== null) {
                         $exist1 = User::where('id', $vocal_1)->first();
                     }
-                    if($vocal_2 !== null){
+                    if ($vocal_2 !== null) {
                         $exist2 = User::where('id', $vocal_2)->first();
                     }
-
-
-
 
                     if (!$existPresidente || !$exist1 || !$exist2) {
                         dd($mesa, $presidente, $vocal_1, $vocal_2);
                     }
 
+                    $mesaFolio = $this->libroDigitalService
+                        ->setMesaFolio($desglose, $libroDigital, $mesa, $libro);
 
-                    $mesaFolio = MesaFolio::create([
-                        'aprobados' => $desglose['aprobados'],
-                        'ausentes' => $desglose['ausentes'],
-                        'desaprobados' => $desglose['desaprobados'],
-                        'coordinador_id' => null,
-                        'fecha' => date('Y-m-d', strtotime($fecha)),
-                        'libro_digital_id' => $libroDigital->id,
-                        'master_materia_id' => $mesa->materia->master_materia_id,
-                        'mesa_id' => $mesa->id,
-                        'folio' => $libro->folio,
-                        'operador_id' => null,
-                        'presidente_id' => $presidente,
-                        'turno' => null,
-                        'llamado' => $libro->llamado,
-                        'vocal_1_id' => $vocal_1,
-                        'vocal_2_id' => $vocal_2,
-                    ]);
                 }
 
                 $actas = $libro->getActasVolantes();
@@ -243,7 +220,7 @@ class ZTestController extends Controller
                         $oral = $this->findNumber($acta->nota_oral);
                         $definitiva = $this->findNumber($acta->promedio);
 
-                        $folioNota = FolioNota::create([
+                        FolioNota::create([
                             'orden' => $orden,
                             'permiso' => null,
                             'escrito' => $escrito,
@@ -293,11 +270,11 @@ class ZTestController extends Controller
                     ->orWhere('promedio', -1);
             }])
             ->get();
-        foreach($resultados as $libroDigital) {
-            foreach($libroDigital->mesaFolios as $mesaFolio) {
-                foreach($mesaFolio->folioNotas as $folioNota) {
+        foreach ($resultados as $libroDigital) {
+            foreach ($libroDigital->mesaFolios as $mesaFolio) {
+                foreach ($mesaFolio->folioNotas as $folioNota) {
                     $actaVolante = $folioNota->actaVolante;
-                    if($actaVolante) {
+                    if ($actaVolante) {
                         $folioNota->update([
                             'escrito' => $this->findNumber($actaVolante->nota_escrito),
                             'oral' => $this->findNumber($actaVolante->nota_oral),
@@ -314,7 +291,7 @@ class ZTestController extends Controller
 
         return response()->json([
             'sede' => $sede->nombre,
-            'tiempo'=>$tiempo
+            'tiempo' => $tiempo
         ]);
 
     }
@@ -323,13 +300,10 @@ class ZTestController extends Controller
      * @param $str
      * @return string|null
      */
-    private function findNumber($str): ?string
+    public function findNumber($str): ?string
     {
-        if ($str === '-') {
-            return null;
-        }
-        preg_match('/(^-?\d+)|(\d+)/', $str, $matches);
-        return $matches[0] ?? null;
+        return $this->genService->findNumber($str);
     }
+
 
 }
