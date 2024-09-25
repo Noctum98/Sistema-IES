@@ -9,66 +9,51 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Nonstandard\Uuid;
 
 class DerivacionTicket extends Model
 {
     use HasFactory;
-
     protected $table = 'derivaciones_tickets';
-
-    protected $fillable = [
-        'ticket_id', 'operador_id', 'rol_id', 'sede_id', 'carrera_id', 'general', 'activa'
-    ];
-
-    
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-   
-    protected $casts = [
-        'id' => 'string',
-    ];
+    protected $fillable = ['ticket_id','operador_id','rol_id','sede_id','carrera_id','general','activa'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) Uuid::uuid4();
-            }
+            $model->{$model->getKeyName()} = (string) Uuid::uuid4()->toString();
         });
     }
 
     public function ticket(): BelongsTo
     {
-        return $this->belongsTo(Ticket::class, 'ticket_id');
+        return $this->belongsTo(Ticket::class,'ticket_id');
     }
-
+    
     public function rol(): BelongsTo
     {
-        return $this->belongsTo(Rol::class, 'rol_id');
+        return $this->belongsTo(Rol::class,'rol_id');
     }
 
     public function operador(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'operador_id');
+        return $this->belongsTo(User::class,'operador_id');
     }
 
     public function sede(): BelongsTo
     {
-        return $this->belongsTo(Sede::class, 'sede_id');
+        return $this->belongsTo(Sede::class,'sede_id');
     }
 
     public function carrera(): BelongsTo
     {
-        return $this->belongsTo(Carrera::class, 'carrera_id');
+        return $this->belongsTo(Carrera::class,'carrera_id');
     }
 
     public function asignaciones(): HasMany
     {
-        return $this->hasMany(AsignacionTicket::class, 'derivacion_id')->orderBy('responsable', 'desc');
+        return $this->hasMany(AsignacionTicket::class,'derivacion_id')->orderBy('responsable','desc');
     }
 
     public function responsable(): HasOne
