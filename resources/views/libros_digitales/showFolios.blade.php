@@ -26,7 +26,8 @@
                    class="alert alert-info" data-bs-toggle="tooltip" data-bs-placement="top"
                    title="Clic para ver todos los libros de la sede {{$libroDigital->resoluciones->name??'Resolució́n'}}"
                 >
-                    <small><i class="fas fa-book-open"></i> </small> <i>{{$libroDigital->resoluciones->name??''}}</i>
+                    <small style="font-size: 0.75em"><i class="fas fa-book-open"></i> </small>
+                    <i>{{$libroDigital->resoluciones->name??''}} <small style="font-size: 0.75em"> {{$libroDigital->resoluciones->resolution}}</small></i>
                 </a>
 
                 -
