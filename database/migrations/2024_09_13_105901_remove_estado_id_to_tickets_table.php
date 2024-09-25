@@ -14,7 +14,10 @@ class RemoveEstadoIdToTicketsTable extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->dropColumn('estado_id');
+            $table->dropForeign(['estado_id']); // Aquí se elimina la restricción de la clave foránea
+    
+            // Luego eliminamos la columna
+            $table->dropColumn('estado_id');        
         });
     }
 
