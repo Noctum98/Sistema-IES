@@ -139,6 +139,7 @@ class AlumnoMesaController extends Controller
 
     public function vista_inscriptos($materia_id, $instancia_id)
     {
+
         $instancia = $instancia_id ? Instancia::find($instancia_id) : session('instancia');
         $materia = Materia::find($materia_id);
         $mesa = null;
@@ -172,6 +173,8 @@ class AlumnoMesaController extends Controller
 
             $data = array_merge($cierres, $data);
         }
+
+
         return view('mesa.inscripciones_especial', $data);
     }
 
