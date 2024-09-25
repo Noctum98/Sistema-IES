@@ -13,6 +13,7 @@ use App\Models\RolUser;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -531,5 +532,15 @@ class UserController extends Controller
     {
 
         return response()->json($this->userService->buscadorUsuario($busqueda), 200);
+    }
+
+
+    public function buscarUsuario(Request $request): JsonResponse
+    {
+        $usuarios = User::whereRaw('LOWER(apellido) LIKE ?', ['%'.strtolower($request->nombre).'%'])
+            ->orWhereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($request->nombre).'%'])
+            ->get();
+
+        return response()->json($usuarios);
     }
 }

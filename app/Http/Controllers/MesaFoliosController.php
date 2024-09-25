@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrera;
 use App\Models\LibroDigital;
 use App\Models\MasterMateria;
 use App\Models\Mesa;
@@ -49,19 +50,26 @@ class MesaFoliosController extends Controller
     /**
      * Show the form for creating a new mesa folio.
      *
+     * @param LibroDigital $libroDigital
      * @return View
      */
     public function createByLibro(LibroDigital $libroDigital): View
     {
 
         $LibrosDigitales = [$libroDigital];
+        $MasterMaterias = MasterMateria::where('resoluciones_id', $libroDigital->resoluciones_id)
+            ->get()
+            ->pluck('name', 'id');
 
-        $sede = $libroDigital->sede()->first();
-//        $sede->;
+        $carrera = Carrera::where('resolucion_id', $libroDigital->resoluciones_id)
+            ->where('sede_id', $libroDigital->sede_id)
+            ->first();
 
 
-        $MasterMaterias = MasterMateria::pluck('name', 'id')->all();
-        $Mesas = Mesa::pluck('cierre', 'id')->all();
+        $materias = $carrera->materias()->get()->pluck('name', 'id');
+
+        $Mesas = Mesa::whereIn('materia_id', $materias->keys())
+            ->get();
 
         $sede = $this->getSedes();
 
@@ -69,11 +77,32 @@ class MesaFoliosController extends Controller
 
 //        $Users = $sedeRepository->getUsersSehpdes($sede);
         $Users = User::all();
-        dd($Users);
 //        dd($Users);
 
 
         return view('mesa_folios.create', compact('Users', 'LibrosDigitales', 'MasterMaterias', 'Mesas', 'Users'));
+    }
+
+    /**
+     * Show the form for creating a new mesa folio.
+     *
+     * @param LibroDigital $libroDigital
+     * @return View
+     */
+    public function createByLibroFromLibro(LibroDigital $libroDigital): View
+    {
+
+        $MasterMaterias = MasterMateria::
+        where('resoluciones_id', $libroDigital->resoluciones_id)
+            ->orderBy('name')
+            ->get()
+            ->pluck('name', 'id');
+
+        $sedeRepository = new SedeRepository();
+
+        $Users = $sedeRepository->getProfesoresSede([$libroDigital->sede_id]);
+
+        return view('mesa_folios.create_from_libro', compact('Users', 'libroDigital', 'MasterMaterias', 'Users'));
     }
 
     /**
@@ -83,14 +112,31 @@ class MesaFoliosController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
+
 
         $data = $this->getData($request);
 
-        MesaFolio::create($data);
+        $user = auth()->user();
+        $data['user_id'] = $user->id;
 
-        return redirect()->route('mesa_folios.mesa_folio.index')
+        $mesaFolio = MesaFolio::where([
+            'libro_digital_id' => $data['libro_digital_id'],
+            'folio' => $data['folio']
+        ]);
+
+        if ($mesaFolio->exists()) {
+            return redirect()->back()
+                ->with('alert_danger', 'El número de folio para el Libro Digital ya existe.');
+        }
+
+        $mesaFolio = MesaFolio::create($data);
+
+        return redirect()->route('libros_digitales.libro_digital.showFolios', [
+            'libroDigital' => $mesaFolio->libro_digital_id,
+            'page' => $mesaFolio->folio
+        ])
             ->with('success_message', 'Folio ha sido guardado correctamente.');
     }
 
@@ -115,7 +161,7 @@ class MesaFoliosController extends Controller
      *
      * @return View
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
         $mesaFolio = MesaFolio::findOrFail($id);
         $Users = User::pluck('activo', 'id')->all();
@@ -178,15 +224,15 @@ class MesaFoliosController extends Controller
     protected function getData(Request $request)
     {
         $rules = [
-            'aprobados' => 'nullable|numeric|min:-2147483648|max:2147483647',
-            'ausentes' => 'nullable|numeric|min:-2147483648|max:2147483647',
+            'aprobados' => 'nullable|numeric|min:0|max:26',
+            'ausentes' => 'nullable|numeric|min:0|max:26',
             'coordinador_id' => 'nullable',
-            'desaprobados' => 'nullable|numeric|min:-2147483648|max:2147483647',
-            'fecha' => 'required|date_format:j/n/Y g:i A',
+            'desaprobados' => 'nullable|numeric|min:0|max:26',
+            'fecha' => 'required|date_format:Y-m-d',
             'libro_digital_id' => 'required',
             'master_materia_id' => 'required',
             'mesa_id' => 'nullable',
-            'folio' => 'required|numeric|min:0|max:2147483647',
+            'folio' => 'required|numeric|min:1|max:250',
             'operador_id' => 'nullable',
             'presidente_id' => 'nullable',
             'turno' => 'nullable|string|min:0|max:191',

@@ -19,7 +19,7 @@ class AlumnoService
 
         $alumnos = new Alumno();
 
-        if ($request['busqueda'] and trim($request['busqueda']) != '' ) {
+        if ($request['busqueda'] and trim($request['busqueda']) != '') {
             $alumnos = $alumnos->where(function ($query) use ($request) {
                 $query->whereRaw(" CONCAT(nombres,' ',apellidos  ) like '" . $request['busqueda'] . "'")
                     ->orWhere('dni', 'LIKE', '%' . $request['busqueda'] . '%')
@@ -60,20 +60,20 @@ class AlumnoService
         return $procesos;
     }
 
-    public function buscarAlumno($busqueda, $carrera_id = null,$ciclo_lectivo=null)
+    public function buscarAlumno($busqueda, $carrera_id = null, $ciclo_lectivo = null)
     {
         $alumno = Alumno::where([
             'dni' => $busqueda
         ])->first();
 
         $alumnoCarrera = AlumnoCarrera::where([
-            'alumno_id'=>$alumno->id,
+            'alumno_id' => $alumno->id,
             'carrera_id' => $carrera_id,
             'aprobado' => true
         ]);
 
-        if($ciclo_lectivo){
-            $alumnoCarrera = $alumnoCarrera->where('ciclo_lectivo',$ciclo_lectivo->year);
+        if ($ciclo_lectivo) {
+            $alumnoCarrera = $alumnoCarrera->where('ciclo_lectivo', $ciclo_lectivo->year);
         }
 
         $alumnoCarrera = $alumnoCarrera->first();
@@ -85,25 +85,44 @@ class AlumnoService
         }
     }
 
-    public function cambiarSituacion($inscrpcion,$año,$regularidad)
+    public function buscarAlumnoParcial(int $search, int $carrera_id)
     {
-        if($año == 1)
-        {
-            $regularidad = str_replace(['_primero','_tercero','_segundo'],'_primero',$regularidad);
+        $alumno = Alumno::select('id',  'apellidos', 'nombres')
+        ->where(
+            'dni', 'like', '%' . $search . '%'
+        )->get();
+
+        $alumnoCarrera = AlumnoCarrera::where([
+            'carrera_id' => $carrera_id,
+            'aprobado' => true
+        ])
+            ->whereIn('alumno_id', $alumno->pluck('id')->toArray())
+            ->get();
+
+
+        if ($alumno && count($alumnoCarrera) > 0) {
+            return $alumno;
+        }
+        return null;
+
+    }
+
+    public function cambiarSituacion($inscrpcion, $año, $regularidad)
+    {
+        if ($año == 1) {
+            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_primero', $regularidad);
 
         }
 
-        if($año == 2)
-        {
-            $regularidad = str_replace(['_primero','_tercero','_segundo'],'_segundo',$regularidad);
+        if ($año == 2) {
+            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_segundo', $regularidad);
         }
 
-        if($año == 3)
-        {
-            $regularidad = str_replace(['_primero','_tercero','_segundo'],'_tercero',$regularidad);
+        if ($año == 3) {
+            $regularidad = str_replace(['_primero', '_tercero', '_segundo'], '_tercero', $regularidad);
         }
 
-        $inscrpcion->update(['regularidad'=>$regularidad]);
+        $inscrpcion->update(['regularidad' => $regularidad]);
     }
 
     public function getMaterias($idAlumno)

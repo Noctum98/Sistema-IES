@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Mail\BajaMesaMotivos;
 use App\Models\Instancia;
 use App\Models\Sede;
-use App\Models\Carrera;
 use App\Models\MesaAlumno;
 use App\Models\Mesa;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Mail\MesaEnrolled;
 use App\Mail\MesaUnsubscribe;
@@ -25,7 +25,6 @@ use App\Services\Mesas\MesaAlumnoService;
 use App\Services\MesaService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AlumnoMesaController extends Controller
@@ -193,7 +192,7 @@ class AlumnoMesaController extends Controller
         return redirect()->route('mesa.mate');
     }
 
-    // Funcionalidade
+    // Funcionalidad
     public function inscripcion(Request $request, $instancia_id = null)
     {
         $alumno = Auth::user() ? Auth::user()->alumno() : session('alumno');
@@ -387,7 +386,6 @@ class AlumnoMesaController extends Controller
         $inscripcion = MesaAlumno::find($id);
         $mesa_id = $inscripcion->mesa_id;
 
-        //dd($request->all());
         $inscripcion->user_id = Auth::user()->id;
 
         if ($instancia->tipo == 1) {
@@ -525,7 +523,12 @@ class AlumnoMesaController extends Controller
         return redirect()->back()->with(['alert_success', 'Mesa asignada correctamente.']);
     }
 
-    public function verificarInscripcion(Request $request, $mesa_alumno_id, $materia_id)
+    /**
+     * @param $mesa_alumno_id
+     * @param $materia_id
+     * @return JsonResponse
+     */
+    public function verificarInscripcion($mesa_alumno_id, $materia_id): JsonResponse
     {
         $datos = $this->mesaAlumnoService->condicionesRendir($mesa_alumno_id, $materia_id);
 
@@ -535,7 +538,6 @@ class AlumnoMesaController extends Controller
     // Funciones privadas
     private function comprobacionInscripcion($mesas_alumnos, $instancia, $dato)
     {
-        //dd($mesas_alumnos,$dato);
         foreach ($mesas_alumnos as $inscripcion) {
             if ($instancia->tipo == 1) {
 
