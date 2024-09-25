@@ -83,7 +83,6 @@ use App\Http\Controllers\LibroPapelController;
 use App\Http\Controllers\MesaFoliosController;
 use App\Http\Controllers\FolioNotasController;
 use App\Http\Controllers\TipoInstanciasController;
-use App\Models\Preinscripcion;
 
 /*
 |--------------------------------------------------------------------------
