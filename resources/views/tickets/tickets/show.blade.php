@@ -89,7 +89,7 @@
         <div class="d-flex justify-content-end align-items-center p-3 flex-row">
 
             <div class="d-flex">
-                {{ $ticket->last_derivacion }}
+                
                 @if($ticket->derivaciones->count() > 0 && !$ticket->responsable)
                 <form action="{{ route('asignaciones_tickets.store') }}" method="POST" class="mr-2">
                     <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
