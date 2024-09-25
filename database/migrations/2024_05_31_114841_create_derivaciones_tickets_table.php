@@ -19,13 +19,14 @@ class CreateDerivacionesTicketsTable extends Migration
             $table->foreignUuid('ticket_id')->constrained('tickets');
             $table->unsignedInteger('rol_id');
             $table->unsignedInteger('operador_id');
-            $table->foreignId('sede_id')->nullable()->constrained('sedes');
-            $table->foreignId('carrera_id')->nullable()->constrained('carreras');
+            $table->unsignedInteger('sede_id');
+            $table->unsignedInteger('carrera_id');
             $table->boolean('general')->default(false);
             $table->boolean('activa')->default(true);
             $table->foreign('rol_id')->references('id')->on('roles');
             $table->foreign('operador_id')->references('id')->on('users');
-
+            $table->foreign('sede_id')->references('id')->on('sedes');
+            $table->foreign('carrera_id')->references('id')->on('carreras');
             $table->timestamps();
         });
     }
