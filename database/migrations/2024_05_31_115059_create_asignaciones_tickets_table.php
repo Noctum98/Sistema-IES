@@ -16,10 +16,11 @@ class CreateAsignacionesTicketsTable extends Migration
         Schema::create('asignaciones_tickets', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->foreignId('user_id')->constrained('users');
+            $table->unsignedInteger('user_id');
             $table->foreignUuid('derivacion_id')->constrained('tickets');
             $table->foreignUuid('ticket_id')->constrained('tickets');
             $table->boolean('responsable')->default(false);
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

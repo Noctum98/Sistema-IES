@@ -18,7 +18,8 @@ class CreateTicketEstadoTicketTable extends Migration
             $table->foreignUuid('ticket_id')->constrained('tickets');
             $table->foreignUuid('from_estado_ticket_id')->constrained('estado_tickets');
             $table->foreignUuid('to_estado_ticket_id')->constrained('estado_tickets');
-            $table->foreignId('user_id')->constrained('users'); 
+            $table->unsignedInteger('user_id'); 
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
