@@ -99,7 +99,7 @@ class Ticket extends Model
 
     public function derivaciones(): HasMany
     {
-        return $this->hasMany(DerivacionTicket::class);
+        return $this->hasMany(DerivacionTi::class);
     }
 
     public function last_derivacion(): HasOne
