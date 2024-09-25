@@ -26,7 +26,7 @@ class CreateDerivacionesTicketsTable extends Migration
             //$table->foreign('rol_id')->references('id')->on('roles');
             $table->foreign('operador_id')->references('id')->on('users');
             $table->foreign('sede_id')->references('id')->on('sedes');
-            $table->foreign('carrera_id')->references('id')->on('carreras');
+            //$table->foreign('carrera_id')->references('id')->on('carreras');
             $table->timestamps();
         });
     }
