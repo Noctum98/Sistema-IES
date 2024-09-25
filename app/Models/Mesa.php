@@ -15,6 +15,7 @@ class Mesa extends Model
     use HasFactory;
     use SoftDeletes;
 
+
     protected $fillable = [
         'instancia_id',
         'materia_id',

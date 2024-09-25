@@ -9,13 +9,15 @@
                     Volver
                 </button>
             </a>
-            <h4 class="text-info">
-                Inscripciones en {{$mesa->materia->nombre}}
-                <small><br/>
+            <h4 class="text-primary">
+                Inscripciones en {{$mesa->materia->nombre}} <br/>
+                <span class="text-secondary ml-2">{{ $mesa->instancia->nombre }}</span>
+                <small class="text-secondary"><br/>
                     ({{ $mesa->materia->año }}° año -
                     {{ $mesa->materia->carrera->nombre }} -
                     {{ $mesa->materia->carrera->sede->nombre }})
                 </small>
+
             </h4>
             @if(time() < $mesa->cierre || (time() > strtotime($mesa->fecha) && time() < $mesa->cierre_segundo))
                 <span class="text-success font-weight-bold">

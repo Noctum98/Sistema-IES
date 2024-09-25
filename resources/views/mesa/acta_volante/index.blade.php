@@ -4,8 +4,8 @@
     <h2 class="h1 text-info">
         Mesas de Examen asignadas
     </h2>
-    <b><i>Selecciona la mesa y coloca notas a tus alumnos.</i></b></br>
-    <b><i>Solo aparecerán las mesas en las cuales eres presidente.</b></i>
+    <b><i>Selecciona la mesa y coloca notas a tus alumnos.</i></b><br />
+    <b><i>Solo aparecerán las mesas en las cuales eres presidente.</i></b>
     <hr>
     <div class="table-responsive">
         <table class="table mt-2">

@@ -4,12 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Libro;
 use App\Models\MasterMateria;
+use App\Services\Trianual\LibroDigitalService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LibrosController extends Controller
 {
+
+    private LibroDigitalService $libroDigitalService;
+
+    /**
+     * @param LibroDigitalService $libroDigitalService
+     */
+    public function __construct(LibroDigitalService $libroDigitalService)
+    {
+        $this->libroDigitalService = $libroDigitalService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -40,22 +53,20 @@ class LibrosController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        $validation = Validator::make($request->all(), [
             'mesa_id' => ['required'],
             'llamado' => ['required'],
         ]);
 
-        if(!$validation->fails())
-        {
+        if (!$validation->fails()) {
             //dd($request['folios']);
-            foreach($request['folios'] as $folio)
-            {
-                $numero_folio = explode('-',$folio);
+            foreach ($request['folios'] as $folio) {
+                $numero_folio = explode('-', $folio);
                 $request['folio'] = $numero_folio[0];
                 $request['orden'] = $numero_folio[1];
 
@@ -66,15 +77,22 @@ class LibrosController extends Controller
                 ])->first();
 
 
-                if($libro)
-                {
-                   $libroExist = $libro->update($request->all());
-
-                }else{
+                $libroExist = null;
+                $libroAnterior = null;
+                if ($libro) {
+                    $libroAnterior = clone $libro;
+                    $libroExist = $libro->update($request->all());
+                } else {
                     $libro = Libro::create($request->all());
                 }
 
                 $this->setLibroActasVolantes($libro);
+                if (!$libroExist) {
+                    $this->libroDigitalService->cargaLibroDigitaByLibro($libro, Auth::user());
+                } else {
+                    $this->libroDigitalService->actualizaLibroDigitaByLibro($libroAnterior, $libro, Auth::user());
+                }
+
 
             }
 
@@ -82,20 +100,20 @@ class LibrosController extends Controller
                 'status' => 'success',
                 'data' => 'Libros creados!'
             ];
-        }else{
+        } else {
             $data = [
                 'status' => 'error',
                 'data' => $validation->errors()
             ];
         }
 
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -106,7 +124,7 @@ class LibrosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -117,8 +135,8 @@ class LibrosController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -129,7 +147,7 @@ class LibrosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -141,19 +159,16 @@ class LibrosController extends Controller
     {
         $mesa = $libro->mesa;
 
-        if($libro->llamado == 1)
-        {
+        if ($libro->llamado == 1) {
             $inscripciones = $mesa->mesa_inscriptos_primero($libro->orden);
-        }elseif($libro->llamado == 2){
+        } elseif ($libro->llamado == 2) {
             $inscripciones = $mesa->mesa_inscriptos_segundo($libro->orden);
-        }else{
+        } else {
             $inscripciones = $mesa->mesa_inscriptos();
         }
-        foreach($inscripciones as $inscripcion)
-        {
+        foreach ($inscripciones as $inscripcion) {
             $acta_volante = $inscripcion->acta_volante ?? null;
-            if($acta_volante)
-            {
+            if ($acta_volante) {
                 $acta_volante->libro_id = $libro->id;
                 $acta_volante->update();
             }
