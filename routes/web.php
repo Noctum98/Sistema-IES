@@ -84,6 +84,7 @@ use App\Http\Controllers\FolioNotasController;
 use App\Models\ActaVolante;
 use App\Models\AlumnoCarrera;
 use App\Http\Controllers\TipoInstanciasController;
+use App\Models\Preinscripcion;
 
 /*
 |--------------------------------------------------------------------------

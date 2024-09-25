@@ -21,7 +21,7 @@
                         <div class="col-md-12 form-group">
                             <div class="form-check ">
                                 <input class="form-check-input" name="general" type="checkbox" value="1" id="derivacionGeneral">
-                                <label class="form-check-label" for="flexCheckChecked">
+                                <label class="form-check-label" for="derivacionGeneral">
                                     Derivación General
                                 </label>
                             </div>

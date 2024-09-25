@@ -38,11 +38,17 @@ class TicketsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::with('user', 'estado')->paginate(25);
-
-        return view('tickets.tickets.index', compact('tickets'));
+        $user = Auth::user();
+        $mis_roles = Auth::user()->roles->pluck('id');
+        $misTickets = $this->ticketService->getTickets($request,$user,$mis_roles,'mis_tickets');
+        $derivados = $this->ticketService->getTickets($request,$user,$mis_roles,'derivados');
+        $asignados = $this->ticketService->getTickets($request,$user,$mis_roles,'asignados');
+        $todos = $this->ticketService->getTickets($request,$user,$mis_roles,'todos');
+        $estados = EstadoTicket::all();
+        $categorias = CategoriaTicket::all();
+        return view('tickets.tickets.index', compact('misTickets','asignados','derivados','estados','categorias','todos','request'));
     }
 
     /**
@@ -70,15 +76,23 @@ class TicketsController extends Controller
     {
         $estado = EstadoTicket::where('identificador','abierto')->first();
         $request['user_id'] = Auth::user()->id;
-        $request['estado_id'] = $estado->id;
-        $fileName = $this->fileService->store('tickets',$request['image']);
-        $request['captura'] = $fileName;
+
+
         $data = $this->getData($request);
 
-        Ticket::create($data);
+        if($request['image'])
+        {
+            $fileName = $this->fileService->store('tickets',$request['image']);
+            $data['captura'] = $fileName;
+        }
+        $ticket = Ticket::updateOrCreate($data);
+        $this->ticketService->cambiarEstadoticket($ticket,$estado->id,$estado->id);
+
+        
+  
 
         return redirect()->route('tickets.ticket.index')
-            ->with('success_message', 'Ticket was successfully added.');
+            ->with('success_message', 'Ticket creado correctamente.');
     }
 
     /**
@@ -90,7 +104,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = Ticket::with('user', 'estado')->findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
         $estados = EstadoTicket::pluck('nombre', 'id')->all();
         $roles = Rol::where('tipo',0)->pluck('descripcion','id')->all();
         $sedes = Sede::pluck('nombre','id')->all();
@@ -128,13 +142,11 @@ class TicketsController extends Controller
     public function update($id, Request $request)
     {
 
-        $data = $this->getData($request);
-
         $ticket = Ticket::findOrFail($id);
-        $ticket->update($data);
+        $ticket->update($request->all());
 
         return redirect()->route('tickets.ticket.index')
-            ->with('success_message', 'Ticket was successfully updated.');
+            ->with('success_message', 'Ticket actualizado correctamente.');
     }
 
     /**
@@ -148,6 +160,7 @@ class TicketsController extends Controller
     {
         try {
             $ticket = Ticket::findOrFail($id);
+            $this->fileService->delete('tickets',$ticket->captura);
             $ticket->delete();
 
             return redirect()->route('tickets.ticket.index')
@@ -183,12 +196,11 @@ class TicketsController extends Controller
     {
         $ticket = Ticket::findOrFail($ticket_id);
 
-        $ticket->update($request->all());
+        $ticket_estado_ticket = $this->ticketService->cambiarEstadoticket($ticket,$ticket->last_estado_ticket->id,$request['estado_id']);
 
         return redirect()->back()->with(['alert_success'=>'Estado del ticket actualizado.']);
     }
-
-
+    
     /**
      * Get the request's data from the request.
      *
@@ -199,12 +211,11 @@ class TicketsController extends Controller
     {
         $rules = [
             'user_id' => 'required',
-            'estado_id' => 'required',
             'categoria_id' => 'required',
             'asunto' => 'required|string|min:1|max:191',
             'descripcion' => 'required',
-            'captura' => 'required|string|min:1|max:191',
-            'url' => 'string|min:1|max:191',
+            'captura' => 'file|mimes:jpg,jpeg,png,pdf|max:5000',
+            'url' => 'nullable|string'
         ];
 
 

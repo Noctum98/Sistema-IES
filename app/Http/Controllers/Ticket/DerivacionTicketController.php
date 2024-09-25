@@ -27,7 +27,6 @@ class DerivacionTicketController extends Controller
         
         $derivacionAnterior = DerivacionTicket::where('ticket_id',$data['ticket_id'])->update(['activa'=>false]);
         $responsables = AsignacionTicket::where('ticket_id',$data['ticket_id'])->update(['responsable'=>false]);
-
         $derivacionTicket = DerivacionTicket::create($data);
 
         return redirect()->back()->with(['alert_success'=>'Se ha derivado el ticket correctamente.']);
@@ -39,6 +38,7 @@ class DerivacionTicketController extends Controller
             'operador_id' => 'required',
             'ticket_id' => 'required',
             'rol_id' => 'required',
+            'general' => 'boolean'
         ];
 
         if(!$request['general'])

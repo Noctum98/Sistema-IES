@@ -38,12 +38,11 @@ $(document).ready(function () {
                     asignaciones = 'Asignaciones: <br> <ul>';
                     element.asignaciones.forEach(element => {
                         if (element.responsable == 1) {
-                            asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido+" (ACTUAL RESPONSABLE)";
+                            asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido+" (RESPONSABLE)";
                         }else{
                             asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido;
                         }
                     })
-
                     asignaciones = asignaciones + "</ul>";
                 }
 

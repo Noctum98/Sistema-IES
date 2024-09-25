@@ -17,6 +17,7 @@
 
     <div class="card-header d-flex justify-content-between align-items-center p-3">
         <h4 class="m-0">{{ isset($title) ? $title : 'Ticket' }}</h4>
+        @if($admin)
         <div>
             <form method="POST" action="{!! route('tickets.ticket.destroy', $ticket->id) !!}" accept-charset="UTF-8">
                 <input name="_method" value="DELETE" type="hidden">
@@ -26,9 +27,11 @@
                     <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
                 </a>
 
+                @if(Session::has('admin'))
                 <button type="submit" class="btn btn-danger" title="Delete Ticket" onclick="return confirm(&quot;Click Ok to delete Ticket.?&quot;)">
                     <span class="fa-regular fa-trash-can" aria-hidden="true"></span> Eliminar
                 </button>
+                @endif
 
                 <a href="{{ route('tickets.ticket.index') }}" class="btn btn-primary" title="Show All Ticket">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span> Listado
@@ -45,14 +48,17 @@
                 @endif
             </form>
         </div>
+        @endif
     </div>
 
     <div class="card-body">
         <dl class="row">
             <dt class="text-lg-end col-lg-2 col-xl-3">Creador:</dt>
             <dd class="col-lg-10 col-xl-9">{{ optional($ticket->user)->nombre.' '.optional($ticket->user)->apellido }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Responsable:</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $ticket->responsable ? $ticket->responsable->user->nombre.' '.$ticket->responsable->user->apellido : 'Sin asignar' }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Estado:</dt>
-            <dd class="col-lg-10 col-xl-9">@include('componentes.tickets.colorEstado',['estado'=>$ticket->estado])</dd>
+            <dd class="col-lg-10 col-xl-9">@include('componentes.tickets.colorEstado',['estado'=>$ticket->last_estado_ticket])</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Asunto:</dt>
             <dd class="col-lg-10 col-xl-9">{{ $ticket->asunto }}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Descripcion:</dt>
@@ -73,11 +79,20 @@
         <div class="d-flex justify-content-end align-items-center p-3 flex-row">
 
             <div class="d-flex">
+                @if($ticket->derivaciones->count() > 0 && !$ticket->responsable)
                 <form action="{{ route('asignaciones_tickets.store') }}" method="POST" class="mr-2">
                     <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                    <input type="hidden" name="derivacion_id" value="{{ $ticket->derivacion->id }}">
+                    <input type="hidden" name="derivacion_id" value="{{ $ticket->last_derivacion->id }}">
                     <button type="submit" class="btn btn-primary">Tomar ticket</button>
                 </form>
+                @endif
+                @if($ticket->derivaciones->count() > 0 && $ticket->responsable && $ticket->responsable->user_id  != Auth::user()->id)
+                <form action="{{ route('asignaciones_tickets.store') }}" method="POST" class="mr-2">
+                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                    <input type="hidden" name="derivacion_id" value="{{ $ticket->last_derivacion->id }}">
+                    <button type="submit" class="btn btn-primary">Tomar ticket</button>
+                </form>
+                @endif
                 <button class="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#derivarTicket">Derivar ticket</button>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -100,8 +115,11 @@
         @endif
     </div>
 </div>
+
 <div class="card text-bg-theme mt-3">
     <div class="card-body">
+        @if(count($ticket->respuestas) > 0)
+
         <dl class="row">
             @foreach($ticket->respuestas as $respuesta)
 
@@ -112,8 +130,9 @@
             @endforeach
         </dl>
 
+        @endif
 
-        @if($ticket->estado->identificador != 'cerrado' && $respuesta)
+        @if($ticket->last_estado_ticket->identificador != 'cerrado' && $respuesta)
         <form action="{{ route('respuestas_tickets.store') }}" method="POST">
             <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
             <div class="mb-3 row">
@@ -131,7 +150,6 @@
         @endif
     </div>
 </div>
-
 <script>
     Simditor.locale = 'es-AR';
     let editor = new Simditor({

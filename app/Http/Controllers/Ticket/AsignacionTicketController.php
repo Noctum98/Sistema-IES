@@ -61,9 +61,11 @@ class AsignacionTicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($ticket_id)
     {
-        //
+        $asignacionesTicket = AsignacionTicket::where('ticket_id',$ticket_id)->with(['user','derivacion','ticket'])->get();
+
+        return response()->json($asignacionesTicket,200);
     }
 
     /**

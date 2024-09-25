@@ -15,9 +15,19 @@ class FileService
         return $filename;
     }
 
+    public function delete($disk, $filename)
+    {
+        if (Storage::disk($disk)->exists($filename)) {
+            Storage::disk($disk)->delete($filename);
+            return true; 
+        }
+
+        return false;
+    }
+
     public function show($disk, $file)
     {
-        $rutaArchivo = $disk. '/' . $file;
+        $rutaArchivo = $disk . '/' . $file;
 
         $rutaCompleta = storage_path("app/{$rutaArchivo}");
 

@@ -4,6 +4,8 @@ namespace App\Models\Ticket;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,10 +23,10 @@ class Ticket extends Model
     protected $table = 'tickets';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
@@ -45,14 +47,15 @@ class Ticket extends Model
      * @var array
      */
     protected $fillable = [
-                  'user_id',
-                  'estado_id',
-                  'categoria_id',
-                  'asunto',
-                  'descripcion',
-                  'captura',
-                  'url'
-              ];
+        'user_id',
+        'estado_id',
+        'categoria_id',
+        'asunto',
+        'descripcion',
+        'captura',
+        'url',
+        'last_estado_ticket_id'
+    ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -60,14 +63,14 @@ class Ticket extends Model
      * @var array
      */
     protected $dates = [];
-    
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
+
     /**
      * Get the user for this model.
      *
@@ -75,27 +78,33 @@ class Ticket extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Get the estado for this model.
-     *
-     * @return App\Models\Estado
-     */
-    public function estado()
+    public function categoria(): BelongsTo
     {
-        return $this->belongsTo(EstadoTicket::class,'estado_id');
+        return $this->belongsTo(CategoriaTicket::class, 'categoria_id');
     }
+
+    public function estados_ticket(): HasMany
+    {
+        return $this->hasMany(TicketEstadoTicket::class, 'ticket_id')->orderBy('created_at', 'desc');
+    }
+
+    public function last_estado_ticket(): BelongsTo
+    {
+        return $this->belongsTo(EstadoTicket::class,'last_estado_ticket_id');
+    }
+
 
     public function derivaciones(): HasMany
     {
         return $this->hasMany(DerivacionTicket::class);
     }
 
-    public function derivacion(): HasOne
+    public function last_derivacion(): HasOne
     {
-        return $this->hasOne(DerivacionTicket::class);
+        return $this->hasOne(DerivacionTicket::class)->latest();
     }
 
     public function asignaciones(): HasMany
@@ -110,7 +119,6 @@ class Ticket extends Model
 
     public function respuestas(): HasMany
     {
-        return $this->hasMany(RespuestaTicket::class,'ticket_id');
+        return $this->hasMany(RespuestaTicket::class, 'ticket_id');
     }
-
 }
