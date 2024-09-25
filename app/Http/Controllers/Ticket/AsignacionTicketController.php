@@ -50,6 +50,8 @@ class AsignacionTicketController extends Controller
 
         $data['responsable'] = true;
 
+        dd($data);
+        
         $asignacionTicket = AsignacionTicket::create($data);
 
         return redirect()->back()->with(['alert_success'=>'Has tomado el ticket correctamente.']);
