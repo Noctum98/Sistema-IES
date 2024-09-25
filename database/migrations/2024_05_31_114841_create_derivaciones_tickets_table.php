@@ -17,7 +17,7 @@ class CreateDerivacionesTicketsTable extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->foreignUuid('ticket_id')->constrained('tickets');
-            $table->unsignedBigInteger('rol_id');
+            $table->bigInteger('rol_id');
             $table->unsignedInteger('operador_id');
             $table->unsignedInteger('sede_id');
             $table->unsignedInteger('carrera_id');
