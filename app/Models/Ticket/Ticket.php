@@ -104,7 +104,7 @@ class Ticket extends Model
 
     public function last_derivacion(): HasOne
     {
-        return $this->hasOne(DerivacionTicket::class)->latest();
+        return $this->hasOne(DerivacionTicket::class)->latest('created_at');
     }
 
     public function asignaciones(): HasMany
