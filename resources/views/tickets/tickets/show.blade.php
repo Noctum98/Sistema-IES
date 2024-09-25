@@ -65,7 +65,11 @@
             <dd class="col-lg-10 col-xl-9">{!! $ticket->descripcion !!}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Captura:</dt>
             <dd class="col-lg-10 col-xl-9">
+                @if($ticket->captura)
                 <a class="btn btn-sm btn-primary" href="{{ route('tickets.captura',$ticket->id) }}" target="_blank">Ver captura</a>
+                @else
+                Sin captura
+                @endif
             </dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Url:</dt>
             <dd class="col-lg-10 col-xl-9"><a href="{{ $ticket->url }}" target="_blank" rel="noopener noreferrer">{{ $ticket->url }}</a></dd>
