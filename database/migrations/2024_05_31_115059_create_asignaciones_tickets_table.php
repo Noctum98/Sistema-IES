@@ -17,7 +17,7 @@ class CreateAsignacionesTicketsTable extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->unsignedInteger('user_id');
-            $table->foreignUuid('derivacion_id')->constrained('tickets');
+            $table->foreignUuid('derivacion_id')->constrained('derivaciones');
             $table->foreignUuid('ticket_id')->constrained('tickets');
             $table->boolean('responsable')->default(false);
             $table->foreign('user_id')->references('id')->on('users');
