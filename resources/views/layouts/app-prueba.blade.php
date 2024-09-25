@@ -72,6 +72,13 @@
                             Mi Perfil
                         </a>
                     </li>
+                    @if(Session::has('admin') || Session::has('avisos'))
+                    <li>
+                        <a class="dropdown-item" href="{{ route('tickets.ticket.index') }}">
+                            Tickets
+                        </a>
+                    </li>
+                    @endif
                     <hr class="dropdown-divider" />
             </li>
             <li>

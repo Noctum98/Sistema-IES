@@ -40,9 +40,38 @@
         "table-name": "estados_resoluciones"
     },
     {
+        "model-name": "Ticket\\EstadoTicket",
+        "resource-file": "ticket\\_estado_tickets.json",
+        "table-name": "ticket\\_estado_tickets"
+    },
+    {
+        "model-name": "EstadoTicket",
+        "resource-file": "estado_tickets.json",
+        "table-name": "estado_tickets"
+    },
+    {
+        "model-name": "Ticket",
+        "resource-file": "tickets.json",
+        "table-name": "tickets"
+    },
+    {
         "model-name": "estado_carreras",
         "resource-file": "estado_carreras.json",
         "table-name": "estado_carreras"
+    },
+    {
+        "model-name": "Categor\u00ediaTicket",
+        "resource-file": "categor\u00edia_tickets.json",
+        "table-name": "categor\u00edia_tickets"
+    },
+    {
+        "model-name": "CategoriasTickets",
+        "resource-file": "categorias_tickets.json",
+        "table-name": "categorias_tickets"
+    },{
+        "model-name": "correlatividad_agrupadas",
+        "resource-file": "correlatividad_agrupadas.json",
+        "table-name": "correlatividad_agrupadas"
     },
     {
         "model-name": "agrupada_materias",
