@@ -16,10 +16,11 @@ class CreateRespuestasTicketsTable extends Migration
         Schema::create('respuestas_tickets', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');            
-            $table->foreignId('user_id')->constrained('users');
+            $table->unsignedInteger('user_id');
             $table->foreignUuid('ticket_id')->constrained('tickets');
             $table->text('contenido');
             $table->text('imagen')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
