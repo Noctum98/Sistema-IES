@@ -4,30 +4,37 @@ namespace App\Http\Controllers;
 
 
 use App\Handler\GenericHandler;
+use App\Models\Libro;
 use App\Models\LibroDigital;
 use App\Models\MesaFolio;
 use App\Models\Sede;
 use App\Repository\Carrera\CarreraRepository;
 use App\Repository\LibroDigital\LibroDigitalRepository;
 use App\Repository\Sede\SedeRepository;
+use App\Services\Trianual\LibroDigitalService;
+
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class LibrosDigitalesController extends Controller
 {
 
     private GenericHandler $handler;
+    private LibroDigitalService $libroDigitalService;
 
     /**
      * @param GenericHandler $handler
+     * @param LibroDigitalService $libroDigitalService
      */
-    public function __construct(GenericHandler $handler)
+    public function __construct(GenericHandler $handler, LibroDigitalService $libroDigitalService)
     {
         $this->handler = $handler;
+        $this->libroDigitalService = $libroDigitalService;
     }
 
     /**
@@ -280,6 +287,15 @@ class LibrosDigitalesController extends Controller
             return back()->withInput()
                 ->withErrors(['unexpected_error' => 'Ha sucedido un error mientras procesaba su petición.']);
         }
+    }
+
+    public function cargarLibro(Libro $libro)
+    {
+        $user = Auth::user();
+        $libroDigital = $this->libroDigitalService->cargaLibroDigitaByLibro($libro, $user);
+
+
+        return view('libros_digitales.verLibroDigital', compact('libroDigital', 'libro'));
     }
 
 

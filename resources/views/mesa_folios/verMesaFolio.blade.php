@@ -48,7 +48,7 @@
                 <dt class="text-lg-end col-lg-2 col-xl-3">Master Materia</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->MasterMateria)->name }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Mesa</dt>
-                <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->Mesa)->cierre }}</dd>
+                <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->Mesa)->cierre ? date_format(new DateTime( $mesaFolio->Mesa->fecha ), 'd-m-Y') : '' }}</td>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Turno</dt>
                 <dd class="col-lg-10 col-xl-9">{{ $mesaFolio->turno }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Folio</dt>
@@ -80,6 +80,12 @@
                     <dd class="col-lg-10 col-xl-9">{{ $mesaFolio->deleted_at }}</dd>
                 @endif
             </dl>
+
+            <a href="{{ route('folio_notas.folio_nota.carga_actas-volantes', [
+    'mesaFolio'=> $mesaFolio->id, 'libro' => $libro->id
+]) }}" class="btn btn-primary"
+            >Cargar Notas de Actas Volantes
+            </a>
 
         </div>
     </div>

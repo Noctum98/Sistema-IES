@@ -35,6 +35,23 @@ class Libro extends Model
 
     }
 
+    public function obtenerActasVolantes()
+    {
+        $actasVolantes = $this->actasVolantes;
+        if($actasVolantes->isEmpty()){
+            $mesa = $this->mesa;
+            $actasVolantes = $mesa->actasVolantes;
+            foreach ($actasVolantes as $acta) {
+                $acta->libro_id = $this->id;
+                $acta->save();
+            }
+        }
+
+        return $actasVolantes;
+    }
+
+
+
 
     /**
      * Devuelve un array con los resultados de las actas volantes.

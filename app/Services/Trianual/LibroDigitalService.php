@@ -17,6 +17,8 @@ class LibroDigitalService
 
     private GenericHandler $handler;
     private GenericService $genericService;
+    private MesaFolioService $mesaFolioService;
+    private FolioNotasService $folioNotasService;
 
     /**
      * @param GenericHandler $handler
@@ -26,14 +28,17 @@ class LibroDigitalService
     {
         $this->handler = $handler;
         $this->genericService = $genericService;
+        $this->mesaFolioService = new MesaFolioService($this);
+        $this->folioNotasService = new FolioNotasService($this);
+        $this->folioNotasService = new FolioNotasService($this);
     }
 
     /**
      * @param Libro $libro
      * @param $user
-     * @return void
+     * @return null|LibroDigital
      */
-    public function cargaLibroDigitaByLibro(Libro $libro, $user): void
+    public function cargaLibroDigitaByLibro(Libro $libro, $user): ?LibroDigital
     {
         /** @var Mesa $mesa */
         $mesa = $libro->mesa()->first();
@@ -43,7 +48,7 @@ class LibroDigitalService
                 "El libro $libro->id - $libro->numero - $libro->folio
                 no tiene mesa cargada. Por favor verifique los datos cargados"
             );
-            return;
+            return null;
         }
 
         if (!$mesa->materia->master_materia_id) {
@@ -51,7 +56,7 @@ class LibroDigitalService
                 'error',
                 "La materia {$mesa->materia->nombre}  no tiene MasterMateria cargada. Por favor avise al Equipo Data"
             );
-            return;
+            return null;
         }
 
         $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
@@ -66,7 +71,7 @@ class LibroDigitalService
         )->first();
 
         if (!$libroDigital) {
-            $romano = $mesa->libro ?? $this->handler->convertirNumberToRoman($numero);
+            $romano = $mesa->libro ?? $this->getHandler()->convertirNumberToRoman($numero);
 
             $libroDigital = LibroDigital::create([
                     'acta_inicio' => null,
@@ -97,52 +102,18 @@ class LibroDigitalService
 
         if (!$mesaFolio) {
             $desglose = $libro->getResultadosActasVolantes();
-
-            $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro);
+            $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
         }
 
-        $actas = $libro->getActasVolantes();
+        $this->cargaNotas($libro, $mesaFolio, $user);
 
-        $orden = 0;
-        foreach ($actas as $acta) {
-            /** @var ActaVolante $acta */
-            $orden++;
-
-            $folioNota = FolioNota::where([
-                    'alumno_id' => $acta->alumno_id,
-                    'acta_volante_id' => $acta->id,
-                    'mesa_folio_id' => $mesaFolio->id
-                ]
-            )->first();
-
-            if (!$folioNota) {
-                $escrito = $this->genericService->findNumber($acta->nota_escrito);
-                $oral = $this->genericService->findNumber($acta->nota_oral);
-                $definitiva = $this->genericService->findNumber($acta->promedio);
-
-                $folioNota = FolioNota::create([
-                    'orden' => $orden,
-                    'permiso' => null,
-                    'escrito' => $escrito,
-                    'oral' => $oral,
-                    'definitiva' => $definitiva,
-                    'operador_id' => $user->id,
-                    'acta_volante_id' => $acta->id,
-                    'mesa_folio_id' => $mesaFolio->id,
-                    'alumno_id' => $acta->alumno_id,
-                ]);
-            }
-
-
-        }
+        return $libroDigital;
 
 
     }
 
     public function actualizaLibroDigitaByLibro(Libro $libroAnterior, Libro $libro, $user): void
     {
-
-
         /** @var Mesa $mesa */
         $mesa = $libro->mesa()->first();
         if (!$mesa) {
@@ -217,7 +188,7 @@ class LibroDigitalService
         if ($mesaFolio) {
             $this->updateMesaFolio($desglose, $mesaFolio, $mesa, $libro);
         }else{
-            $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro);
+            $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
         }
 
         $actas = $libro->getActasVolantes();
@@ -264,29 +235,12 @@ class LibroDigitalService
      * @param LibroDigital $libroDigital
      * @param Mesa $mesa
      * @param Libro $libro
+     * @param $user
      * @return MesaFolio
      */
-    public function setMesaFolio(array $desglose, LibroDigital $libroDigital, Mesa $mesa, Libro $libro): MesaFolio
+    public function setMesaFolio(array $desglose, LibroDigital $libroDigital, Mesa $mesa, Libro $libro, $user): MesaFolio
     {
-        [$fecha, $presidente, $vocal_1, $vocal_2] = $this->getDataMesa($mesa, $libro);
-
-        return MesaFolio::create([
-            'aprobados' => $desglose['aprobados'],
-            'ausentes' => $desglose['ausentes'],
-            'desaprobados' => $desglose['desaprobados'],
-            'coordinador_id' => null,
-            'fecha' => date('Y-m-d', strtotime($fecha)),
-            'libro_digital_id' => $libroDigital->id,
-            'master_materia_id' => $mesa->materia->master_materia_id,
-            'mesa_id' => $mesa->id,
-            'folio' => $libro->folio,
-            'operador_id' => null,
-            'presidente_id' => $presidente,
-            'turno' => null,
-            'llamado' => $libro->llamado,
-            'vocal_1_id' => $vocal_1,
-            'vocal_2_id' => $vocal_2,
-        ]);
+        return $this->mesaFolioService->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
     }
 
     /**
@@ -336,6 +290,33 @@ class LibroDigitalService
             $vocal_2 = $mesa->segundo_vocal_segundo_id;
         }
         return array($fecha, $presidente, $vocal_1, $vocal_2);
+    }
+
+    /**
+     * @return GenericHandler
+     */
+    public function getHandler(): GenericHandler
+    {
+        return $this->handler;
+    }
+
+    /**
+     * @return GenericService
+     */
+    public function getGenericService(): GenericService
+    {
+        return $this->genericService;
+    }
+
+    /**
+     * @param Libro $libro
+     * @param MesaFolio $mesaFolio
+     * @param $user
+     * @return void
+     */
+    public function cargaNotas(Libro $libro, MesaFolio $mesaFolio, $user): void
+    {
+        $this->folioNotasService->cargaNotas($libro, $mesaFolio, $user);
     }
 
 }
