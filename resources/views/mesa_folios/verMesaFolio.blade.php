@@ -48,7 +48,7 @@
                 <dt class="text-lg-end col-lg-2 col-xl-3">Master Materia</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->MasterMateria)->name }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Mesa</dt>
-                <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->Mesa)->cierre ? date_format(new DateTime( $mesaFolio->Mesa->fecha ), 'd-m-Y') : '' }}</td>
+                <dd class="col-lg-10 col-xl-9">{{ optional($mesaFolio->Mesa)->cierre ? date_format(new DateTime( $mesaFolio->Mesa->fecha ), 'd-m-Y') : '' }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Turno</dt>
                 <dd class="col-lg-10 col-xl-9">{{ $mesaFolio->turno }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Folio</dt>
