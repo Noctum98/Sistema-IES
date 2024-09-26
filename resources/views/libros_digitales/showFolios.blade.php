@@ -17,21 +17,31 @@
         </div>
     @endif
     <div class="card text-bg-theme">
-        <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0 alert alert-info mx-auto">
-                <small> <i class="fa fa-book"></i> </small> <i>{{ $libroDigital->romanos ?? 'Libro Digital' }}</i>
-                -
+        <div class="card-header d-flex justify-content-between align-items-center p-3 row  alert alert-info m-0">
+
+            <div class="col-sm-2 text-center">
+                <h4
+                    data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="Libro {{$libroDigital->romanos??'Libro Digital'}}"
+                >
+                    <small> <i class="fa fa-book"></i> </small> <i>{{ $libroDigital->romanos ?? 'Libro Digital' }}</i>
+                </h4>
+            </div>
+            <div class="col-sm-6 text-center">
                 <a href="{{ route('libros_digitales.libro_digital.index_carrera',
                     ['sede' => $libroDigital->sede->id, 'resolution' => $libroDigital->resoluciones->id]) }}"
-                   class="alert alert-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                   data-bs-toggle="tooltip" data-bs-placement="top"
                    title="Clic para ver todos los libros de la sede {{$libroDigital->resoluciones->name??'Resolució́n'}}"
                 >
-                    <small><i class="fas fa-book-open"></i> </small> <i>{{$libroDigital->resoluciones->name??''}}</i>
-                </a>
+                    <small style="font-size: 0.75em"><i class="fas fa-book-open"></i> </small>
+                    <i>{{$libroDigital->resoluciones->name??''}}</i>
 
-                -
+                </a><br/>
+                <small style="font-size: 0.75em"> {{$libroDigital->resoluciones->resolution}}</small>
+            </div>
+            <div class="col-sm-4 text-center">
+
                 <a href="{{ route('libros_digitales.libro_digital.index_sede', ['sede_id' => $libroDigital->sede->nombre]) }}"
-                   class="alert alert-info"
                    data-bs-toggle="tooltip"
                    data-bs-placement="top"
                    title="Clic para ver todos los libros de la sede {{$libroDigital->sede->nombre??'Sede'}}"
@@ -39,7 +49,8 @@
                     <small><i class="fas fa-building"></i></small>
                     <i>{{$libroDigital->sede->nombre??'Sede'}}</i>
                 </a>
-            </h4>
+            </div>
+
         </div>
         @forelse($folios as $folio)
             <div id="addFolioNotaForm" style="display: none;" class="row">
@@ -124,17 +135,17 @@
 
                         <h6 class="card-text col-sm-4 ml-5">
                             Coordinador: <i
-                                class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
+                                    class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
                             Operador: <i
-                                class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
+                                    class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
                             <br>
                             Presidente: <i
-                                class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
+                                    class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
                             <br>
                             Vocal 1: <i
-                                class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
+                                    class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
                             Vocal 2: <i
-                                class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
+                                    class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
                         </h6>
                         <h6 class="card-text col-sm-2 ml-5">
                             <button id="showAddFolioNota" type="button" class="btn btn-primary">
@@ -145,7 +156,7 @@
                     <div class="card-footer text-left container">
                         @foreach($folio->folioNotas()->get() as $folioNota)
                             <div
-                                class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
+                                    class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
                             <span class="col-sm-1">
                                 {{$folioNota->orden}}
                             </span>
@@ -192,7 +203,6 @@
     </div>
 
     <!-- Modal para agregar folioNota -->
-
 
 @endsection
 @section('scripts')

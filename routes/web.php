@@ -1042,6 +1042,8 @@ Route::group(['prefix' => 'folio_notas', 'middleware' => ['auth']], static funct
         ->name('folio_notas.folio_nota.index');
     Route::get('/create', [FolioNotasController::class, 'create'])
         ->name('folio_notas.folio_nota.create');
+    Route::get('/carga-actas_volantes/{mesaFolio}/{libro}', [FolioNotasController::class, 'cargaActasVolantesByLibro'])
+        ->name('folio_notas.folio_nota.carga_actas-volantes');
     Route::get('/show/{folioNota}', [FolioNotasController::class, 'show'])
         ->name('folio_notas.folio_nota.show');
     Route::get('/{folioNota}/edit', [FolioNotasController::class, 'edit'])
@@ -1082,6 +1084,8 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static 
         ->name('libros_digitales.libro_digital.create');
     Route::get('/create-sede/{sede_id}', [LibrosDigitalesController::class, 'createBySede'])
         ->name('libros_digitales.libro_digital.create_sede');
+    Route::get('/cargar-libro/{libro}', [LibrosDigitalesController::class, 'cargarLibro'])
+        ->name('libros_digitales.libro_digital.cargar_libro');
     Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
         ->name('libros_digitales.libro_digital.show');
     Route::get('/showFolios/{libroDigital}', [LibrosDigitalesController::class, 'showFolios'])
@@ -1161,6 +1165,8 @@ Route::group(['prefix' => 'mesa_folios', 'middleware' => ['auth']], static funct
         ->name('mesa_folios.mesa_folio.create_by_libro');
     Route::get('/create/{libroDigital}/from_libro', [MesaFoliosController::class, 'createByLibroFromLibro'])
         ->name('mesa_folios.mesa_folio.create_by_libro_from_libro');
+    Route::get('/carga-folio/{libroDigital}/{mesa}/{libro}', [MesaFoliosController::class, 'cargaFolioByLibro'])
+        ->name('mesa_folios.mesa_folio.carga_folio_by_libro');
     Route::get('/show/{mesaFolio}', [MesaFoliosController::class, 'show'])
         ->name('mesa_folios.mesa_folio.show');
     Route::get('/{mesaFolio}/edit', [MesaFoliosController::class, 'edit'])

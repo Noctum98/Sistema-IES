@@ -45,7 +45,9 @@
                 <dt class="text-lg-end col-lg-2 col-xl-3">Número</dt>
                 <dd class="col-lg-10 col-xl-9">{{ $libroDigital->number }} / {{ $libroDigital->romanos }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Resolución</dt>
-                <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->Resolucione)->name }}</dd>
+                <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->resoluciones)->name }}</dd>
+                    <dt class="text-lg-end col-lg-2 col-xl-3">N°</dt>
+                <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->resoluciones)->resolution }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Libro Papel (físico)</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->LibrosPapele)->name }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Fecha Inicio</dt>
@@ -68,6 +70,12 @@
                 @endif
             </dl>
 
+
+            <a href="{{ route('mesa_folios.mesa_folio.carga_folio_by_libro', [
+    'libroDigital'=> $libroDigital->id,'mesa' => $libro->mesa, 'libro' => $libro->id
+]) }}" class="btn btn-primary"
+            >Cargar Folio
+            </a>
         </div>
     </div>
 
