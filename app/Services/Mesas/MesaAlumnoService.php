@@ -166,9 +166,9 @@ class MesaAlumnoService
                 foreach ($folios as $folio) {
                     /** @var FolioNota $folio */
 
-                    $nota_aprobado = $notas_aprobado->where('year', $folio->mesaFolio->getYearNota());
+                    $nota_aprobado = $notas_aprobado->where('year', $folio->mesaFolio->getYearNota())->first();
 
-                    if ($folio->definitiva >= $nota_aprobado->first()->valor) {
+                    if ($folio->definitiva >= $nota_aprobado->valor) {
                         if (in_array($correlativa, $data['correlativas_incompletas_folios'], true)) {
                             $data['correlativas_incompletas_folios'] = array_diff($data['correlativas_incompletas_folios'], [$correlativa]);
                         }
