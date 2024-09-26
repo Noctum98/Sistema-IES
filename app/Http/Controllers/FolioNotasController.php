@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\ActaVolante;
 use App\Models\Alumno;
 use App\Models\FolioNota;
+use App\Models\Libro;
 use App\Models\MesaFolio;
 use App\Models\User;
 use App\Repository\FolioRepository;
 use App\Repository\Sede\SedeRepository;
+use App\Services\Trianual\FolioNotasService;
+use App\Services\Trianual\MesaFolioService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
@@ -18,6 +21,17 @@ use Illuminate\View\View;
 
 class FolioNotasController extends Controller
 {
+
+    private FolioNotasService $folioNotasService;
+
+
+    /**
+     * @param FolioNotasService $folioNotasService
+     */
+    public function __construct(FolioNotasService $folioNotasService)
+    {
+        $this->folioNotasService = $folioNotasService;
+    }
 
     /**
      * Display a listing of the folio notas.
@@ -49,7 +63,7 @@ class FolioNotasController extends Controller
 
         $librosDigitales = $sedeRepository->getLibrosDigitalesSedes($sedesId);
 
-        if(!count($librosDigitales)) {
+        if (!count($librosDigitales)) {
             return $this->returnIndex('No existen libros digitales en sus sedes', 'error_message');
         }
 
@@ -63,9 +77,6 @@ class FolioNotasController extends Controller
 //        $MesaFolios = MesaFolio::pluck('numero', 'id')->all();
 
 
-
-
-
         $ActasVolantes = ActaVolante::pluck('id', 'id')->all();
         $Alumnos = Alumno::pluck('apellidos', 'id')->all();
 
@@ -73,7 +84,6 @@ class FolioNotasController extends Controller
         return view(
             'folio_notas.create', compact('ActasVolantes', 'Alumnos', 'MesaFolios', 'librosDigitales'));
     }
-
 
 
     /**
@@ -90,7 +100,7 @@ class FolioNotasController extends Controller
 
         $librosDigitales = $sedeRepository->getLibrosDigitalesSedes($sedesId);
 
-        if(!count($librosDigitales)) {
+        if (!count($librosDigitales)) {
             return $this->returnIndex('No existen libros digitales en sus sedes', 'error_message');
         }
 
@@ -99,12 +109,7 @@ class FolioNotasController extends Controller
         $mesaFolios = $folioRepository->getFoliosByLibrosDigitales($librosDigitales->pluck('id')->toArray());
 
 
-
-
 //        $MesaFolios = MesaFolio::pluck('numero', 'id')->all();
-
-
-
 
 
         $ActasVolantes = ActaVolante::pluck('id', 'id')->all();
@@ -238,6 +243,16 @@ class FolioNotasController extends Controller
             $type,
             $message
         );
+
+    }
+
+    public function cargaActasVolantesByLibro(MesaFolio $mesaFolio, Libro $libro)
+    {
+         $this->folioNotasService->cargaNotas($libro, $mesaFolio, auth()->user());
+
+         $folio = MesaFolio::find($mesaFolio->id);
+
+        return view('folio_notas.verFolioNotas', compact('folio'));
 
     }
 

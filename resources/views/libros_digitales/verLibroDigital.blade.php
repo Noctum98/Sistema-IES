@@ -68,6 +68,12 @@
                 @endif
             </dl>
 
+
+            <a href="{{ route('mesa_folios.mesa_folio.carga_folio_by_libro', [
+    'libroDigital'=> $libroDigital->id,'mesa' => $libro->mesa, 'libro' => $libro->id
+]) }}" class="btn btn-primary"
+            >Cargar Folio
+            </a>
         </div>
     </div>
 

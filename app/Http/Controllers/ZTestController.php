@@ -197,7 +197,7 @@ class ZTestController extends Controller
                     }
 
                     $mesaFolio = $this->libroDigitalService
-                        ->setMesaFolio($desglose, $libroDigital, $mesa, $libro);
+                        ->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
 
                 }
 

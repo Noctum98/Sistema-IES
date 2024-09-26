@@ -4,20 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrera;
+use App\Models\Libro;
 use App\Models\LibroDigital;
 use App\Models\MasterMateria;
 use App\Models\Mesa;
 use App\Models\MesaFolio;
 use App\Models\User;
 use App\Repository\Sede\SedeRepository;
+use App\Services\Trianual\MesaFolioService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class MesaFoliosController extends Controller
 {
+
+    private MesaFolioService $mesaFolioService;
+
+    /**
+     * @param MesaFolioService $mesaFolioService
+     */
+    public function __construct(MesaFolioService $mesaFolioService)
+    {
+        $this->mesaFolioService = $mesaFolioService;
+    }
 
     /**
      * Display a listing of the mesa folios.
@@ -212,6 +225,17 @@ class MesaFoliosController extends Controller
             return back()->withInput()
                 ->withErrors(['unexpected_error' => 'Ha ocurrido un error inesperado. ' . $exception->getMessage() . ' (' . $exception->getCode() . ')']);
         }
+    }
+
+    public function cargaFolioByLibro(LibroDigital $libroDigital, Mesa $mesa, Libro $libro)
+    {
+        $user = Auth::user();
+
+        $mesaFolio = $this->mesaFolioService->cargaMesaFolioByLibroDigitalMesaLibroFolio($libroDigital, $mesa, $libro, $user);
+
+        return view('mesa_folios.verMesaFolio', compact('mesaFolio', 'libro'));
+
+
     }
 
 
