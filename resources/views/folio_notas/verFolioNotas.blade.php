@@ -68,7 +68,9 @@
 
                 @endforeach
             </div>
-
+            <a href="{{ route('admin.tools.libros_sin_actas_volantes') }}" class="btn btn-primary">
+                Ver libros sin cargar
+            </a>
         </div>
     </div>
 
