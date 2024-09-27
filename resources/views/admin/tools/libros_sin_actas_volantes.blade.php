@@ -41,7 +41,8 @@
                         @foreach($libros as $libro)
                             <tr>
                                 <td class="align-middle">{{ $libro->id }}</td>
-                                <td class="align-middle">{{ $libro->mesa->fecha}} - {{$libro->mesa->materia->nombre}}</td>
+                                <td class="align-middle">{{ $libro->mesa->fecha}}
+                                    - {{$libro->mesa->materia->nombre}}</td>
                                 <td class="align-middle">{{ $libro->mesa->materia->carrera->nombre}}
                                     - {{$libro->mesa->materia->carrera->sede->nombre}}</td>
                                 <td class="align-middle">{{ $libro->llamado}}</td>
@@ -50,8 +51,17 @@
                                 <td class="align-middle">{{ $libro->orden}}</td>
                                 <td class="align-middle">{{ $libro->updated_at}}</td>
                                 <td class="text-center">
-                                    <a href="{{route('libros_digitales.libro_digital.cargar_libro', ['libro' => $libro->id])}}">
+                                    <a href="{{route('libros_digitales.libro_digital.cargar_libro',
+                                                ['libro' => $libro->id])}}"
+                                       class="btn btn-sm btn-primary"
+                                    >
                                         Cargar actas volantes
+                                    </a>
+                                    <a href="{{route('libros_digitales.libro_digital.cargar_libro_inscripciones',
+                                        ['libro' => $libro->id])}}"
+                                       class="btn btn-sm btn-secondary"
+                                    >
+                                        Cargar 2° opción
                                     </a>
                                 </td>
                             </tr>

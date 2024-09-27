@@ -30,7 +30,6 @@ class LibroDigitalService
         $this->genericService = $genericService;
         $this->mesaFolioService = new MesaFolioService($this);
         $this->folioNotasService = new FolioNotasService($this);
-        $this->folioNotasService = new FolioNotasService($this);
     }
 
     /**
@@ -106,6 +105,86 @@ class LibroDigitalService
         }
 
         $this->cargaNotas($libro, $mesaFolio, $user);
+
+        return $libroDigital;
+
+
+    }
+
+
+    /**
+     * @param Libro $libro
+     * @param $user
+     * @return null|LibroDigital
+     */
+    public function cargaLibroDigitaByLibroByMesaAlumno(Libro $libro, $user): ?LibroDigital
+    {
+        /** @var Mesa $mesa */
+        $mesa = $libro->mesa()->first();
+        if (!$mesa) {
+            session()->flash(
+                'error',
+                "El libro $libro->id - $libro->numero - $libro->folio
+                no tiene mesa cargada. Por favor verifique los datos cargados"
+            );
+            return null;
+        }
+
+        if (!$mesa->materia->master_materia_id) {
+            session()->flash(
+                'error',
+                "La materia {$mesa->materia->nombre}  no tiene MasterMateria cargada. Por favor avise al Equipo Data"
+            );
+            return null;
+        }
+
+        $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
+        $numero = $libro->numero;
+        $sede = $mesa->materia->carrera->sede;
+        $libroDigital = LibroDigital::where(
+            [
+                'resoluciones_id' => $resolucion_id,
+                'number' => $numero,
+                'sede_id' => $sede->id,
+            ]
+        )->first();
+
+        if (!$libroDigital) {
+            $romano = $mesa->libro ?? $this->getHandler()->convertirNumberToRoman($numero);
+
+            $libroDigital = LibroDigital::create([
+                    'acta_inicio' => null,
+                    'number' => $numero,
+                    'romanos' => $romano,
+                    'resoluciones_id' => $resolucion_id,
+                    'sede_id' => $sede->id,
+                    'libros_papeles_id' => null,
+                    'observaciones' => '',
+                    'operador_id' => null,
+                    'user_id' => $user->id]
+            );
+        }
+
+
+        if ($libro->folio === "1") {
+            $fechaInicio = date('Y-m-d', strtotime($mesa->fecha));
+            $libroDigital->fecha_inicio = $fechaInicio;
+            $libroDigital->save();
+        }
+
+
+        $mesaFolio = MesaFolio::where([
+            'libro_digital_id' => $libroDigital->id,
+            'mesa_id' => $libro->mesa_id,
+            'folio' => $libro->folio,
+        ])->first();
+
+        if (!$mesaFolio) {
+            $desglose = $libro->getResultadosActasVolantes(true);
+            $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
+        }
+
+        $this->cargaNotasByMesaAlumno($libro, $mesaFolio, $user);
 
         return $libroDigital;
 
@@ -317,6 +396,11 @@ class LibroDigitalService
     public function cargaNotas(Libro $libro, MesaFolio $mesaFolio, $user): void
     {
         $this->folioNotasService->cargaNotas($libro, $mesaFolio, $user);
+    }
+
+    public function cargaNotasByMesaAlumno(Libro $libro, MesaFolio $mesaFolio, $user): void
+    {
+        $this->folioNotasService->cargaNotasByMesaAlumno($libro, $mesaFolio, $user);
     }
 
 }
