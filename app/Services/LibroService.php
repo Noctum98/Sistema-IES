@@ -17,6 +17,7 @@ class LibroService
 
     /**
      * @param Libro $libro
+     * @param bool $inscripciones
      * @return array
      *
      *
@@ -41,9 +42,6 @@ class LibroService
         }else{
             $libro->obtenerActasVolantes();
         }
-
-
-
 
         // Contar las actas volantes con promedio >= nota aprobado
         // y agregarlo al desglose
