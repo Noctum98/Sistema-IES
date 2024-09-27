@@ -11,14 +11,18 @@ class RespuestaResponsable extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $ticket;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($ticket)
     {
-        //
+        $this->ticket = $ticket;
+        $this->subject("DATA IESVU: TICKET N° ".$this->ticket->id);
+
     }
 
     /**
@@ -28,6 +32,6 @@ class RespuestaResponsable extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->view('mail.tickets.respuestaResponsable',['ticket',$this->ticket]);
     }
 }
