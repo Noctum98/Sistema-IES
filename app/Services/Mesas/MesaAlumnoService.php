@@ -144,10 +144,17 @@ class MesaAlumnoService
                 /** @var ActaVolante $av */
                 $folio = $repoFolio->getFolioByActaVolante($av->id);
 
-                $fecha = $av->mesa ? $av->mesa->fecha : $av->mesaAlumno->mesa->fecha;
+                $fecha = null;
 
+                if($av->mesa){
+                    $fecha = $av->mesa->fecha;
+                }
 
-                if (!$folio) {
+                if(!$av->mesa && $av->mesaAlumno->mesa){
+                    $fecha = $av->mesaAlumno->mesa->fecha;
+                }
+
+                if (!$folio && $fecha) {
                     $data['actas_incompletas'][] = [
                         'id' => $av->id,
                         'fecha' => $fecha,
