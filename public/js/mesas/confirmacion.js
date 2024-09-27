@@ -83,33 +83,33 @@ $(document).ready(function () {
 
                      let correlativas_folios = $("#correlativas_folios");
 
-                    if (response.correlativas_incompletas_folios.length === 0) {
-                        correlativas_folios.removeClass('alert-danger')
-                        correlativas_folios.addClass('alert-success')
-                        $("#resultado_correlativas_folios").html("SI");
-                    } else {
-                        correlativas_folios.removeClass('alert-success')
-                        correlativas_folios.addClass('alert-danger')
-                        $("#resultado_correlativas_folios").html("NO");
-
-                        response.correlativas_incompletas_folios.forEach(element => {
-                            $("#lista_correlativas_folios").append('<li>' + element.nombre + '</li>')
-                        });
-                    }
-
-                    if (response.actas_incompletas.length == 0) {
-                        $("#actas").removeClass('alert-danger')
-                        $("#actas").addClass('alert-success')
-                        $("#resultado_actas_incompletas").html("NO");
-                    } else {
-                        $("#actas").removeClass('alert-success')
-                        $("#actas").addClass('alert-danger')
-                        $("#resultado_actas_incompletas").html("SI");
-
-                        response.actas_incompletas.forEach(element => {
-                            $("#actas_incompletas").append('<li>' + convierteFecha(element.fecha) + ' ' + element.materia + '</li>')
-                        });
-                    }
+                    // if (response.correlativas_incompletas_folios.length === 0) {
+                    //     correlativas_folios.removeClass('alert-danger')
+                    //     correlativas_folios.addClass('alert-success')
+                    //     $("#resultado_correlativas_folios").html("SI");
+                    // } else {
+                    //     correlativas_folios.removeClass('alert-success')
+                    //     correlativas_folios.addClass('alert-danger')
+                    //     $("#resultado_correlativas_folios").html("NO");
+                    //
+                    //     response.correlativas_incompletas_folios.forEach(element => {
+                    //         $("#lista_correlativas_folios").append('<li>' + element.nombre + '</li>')
+                    //     });
+                    // }
+                    //
+                    // if (response.actas_incompletas.length == 0) {
+                    //     $("#actas").removeClass('alert-danger')
+                    //     $("#actas").addClass('alert-success')
+                    //     $("#resultado_actas_incompletas").html("NO");
+                    // } else {
+                    //     $("#actas").removeClass('alert-success')
+                    //     $("#actas").addClass('alert-danger')
+                    //     $("#resultado_actas_incompletas").html("SI");
+                    //
+                    //     response.actas_incompletas.forEach(element => {
+                    //         $("#actas_incompletas").append('<li>' + convierteFecha(element.fecha) + ' ' + element.materia + '</li>')
+                    //     });
+                    // }
 
                 }
 
