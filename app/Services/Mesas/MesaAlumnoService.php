@@ -144,7 +144,7 @@ class MesaAlumnoService
                 /** @var ActaVolante $av */
                 $folio = $repoFolio->getFolioByActaVolante($av->id);
 
-                $fecha = $av->mesa ? $av->mesa->fecha ? $av->mesaAlumno->mesa->fecha;
+                $fecha = $av->mesa ? $av->mesa->fecha : $av->mesaAlumno->mesa->fecha;
 
 
                 if (!$folio) {
