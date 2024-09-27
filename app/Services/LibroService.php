@@ -17,6 +17,7 @@ class LibroService
 
     /**
      * @param Libro $libro
+     * @param bool $inscripciones
      * @return array
      *
      *
@@ -27,7 +28,7 @@ class LibroService
      *
      * La función devuelve una matriz con el recuento de actos volantes aprobados, desaprobados y ausentes.
      */
-    public function getDesgloseAprobados(Libro $libro): array
+    public function getDesgloseAprobados(Libro $libro, bool $inscripciones = false): array
     {
         $desgloseAprobados = [];
 
@@ -36,9 +37,11 @@ class LibroService
             ->where('min', '60')->first();
 
 //        // Obtener todas las actas volantes para la mesa actual
-        $libro->obtenerActasVolantes();
-
-
+        if($inscripciones === true){
+            $libro->obtenerActasVolantesByMesaAlumno();
+        }else{
+            $libro->obtenerActasVolantes();
+        }
 
         // Contar las actas volantes con promedio >= nota aprobado
         // y agregarlo al desglose

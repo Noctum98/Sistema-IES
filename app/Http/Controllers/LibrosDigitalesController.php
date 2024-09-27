@@ -298,6 +298,13 @@ class LibrosDigitalesController extends Controller
         return view('libros_digitales.verLibroDigital', compact('libroDigital', 'libro'));
     }
 
+    public function cargarLibroByMesaAlumno(Libro $libro)
+    {
+        $user = Auth::user();
+        $libroDigital = $this->libroDigitalService->cargaLibroDigitaByLibroByMesaAlumno($libro, $user);
+        return view('libros_digitales.verLibroDigital', compact('libroDigital', 'libro'));
+    }
+
 
     /**
      * Get the request's data from the request.

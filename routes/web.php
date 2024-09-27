@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ActaVolanteAdminController;
 use App\Http\Controllers\Admin\AdminManagersController;
 use App\Http\Controllers\Admin\LibrariesAdminController;
 use App\Http\Controllers\Admin\TipoMateriasController;
+use App\Http\Controllers\Admin\ToolsController;
 use App\Http\Controllers\Alumno\EncuestaSocioeconomicaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlumnoProcesoController;
@@ -169,7 +170,6 @@ Route::group(['prefix' => 'admin/libraries', 'middleware' => ['auth']], static f
         ->name('admin-libraries.library.destroy');
 });
 
-
 Route::group(['prefix' => 'admin/managers', 'middleware' => ['auth']], static function () {
     Route::get('/', [AdminManagersController::class, 'index'])
         ->name('admin_managers.admin_manager.index');
@@ -204,6 +204,11 @@ Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], stat
         ->name('tipo_materias.tipo_materia.update');
     Route::delete('/tipo_materia/{tipoMateria}', [TipoMateriasController::class, 'destroy'])
         ->name('tipo_materias.tipo_materia.destroy');
+});
+
+Route::group(['prefix' => 'admin/tools', 'middleware' => ['auth']], static function () {
+    Route::get('/libros-sin-actas-volantes', [ToolsController::class, 'librosSinActasVolantes'])
+        ->name('admin.tools.libros_sin_actas_volantes');
 });
 
 
@@ -1086,6 +1091,8 @@ Route::group(['prefix' => 'libros_digitales', 'middleware' => ['auth']], static 
         ->name('libros_digitales.libro_digital.create_sede');
     Route::get('/cargar-libro/{libro}', [LibrosDigitalesController::class, 'cargarLibro'])
         ->name('libros_digitales.libro_digital.cargar_libro');
+    Route::get('/cargar-libro-inscripciones/{libro}', [LibrosDigitalesController::class, 'cargarLibroByMesaAlumno'])
+        ->name('libros_digitales.libro_digital.cargar_libro_inscripciones');
     Route::get('/show/{libroDigital}', [LibrosDigitalesController::class, 'show'])
         ->name('libros_digitales.libro_digital.show');
     Route::get('/showFolios/{libroDigital}', [LibrosDigitalesController::class, 'showFolios'])
