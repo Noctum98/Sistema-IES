@@ -54,7 +54,6 @@ class Libro extends Model
     {
         $actasVolantes = $this->actasVolantes;
         if($actasVolantes->isEmpty()){
-            $mesa = $this->mesa;
             $llamado = $this->llamado;
 
             $segundoLlamado = false;
@@ -86,11 +85,10 @@ class Libro extends Model
     }
 
 
-
-
     /**
      * Devuelve un array con los resultados de las actas volantes.
      * Array asociativo con claves 'aprobados', 'desaprobados', 'ausentes'
+     * @param bool $inscripciones
      * @return array
      */
     public function getResultadosActasVolantes(bool $inscripciones = false): array

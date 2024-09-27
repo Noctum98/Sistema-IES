@@ -55,10 +55,10 @@ class MesaController extends Controller
 
         $procesos = Proceso::select('procesos.*')
             ->join('alumnos', 'alumnos.id', 'procesos.alumno_id')
-            ->join('alumno_carrera','alumno_carrera.id','procesos.inscripcion_id')
+            ->join('alumno_carrera', 'alumno_carrera.id', 'procesos.inscripcion_id')
             ->where('procesos.materia_id', $materia_id)
-            ->where('alumno_carrera.aprobado',1)
-            ->where('alumno_carrera.ciclo_lectivo',$ciclo_lectivo->year)->orderBy('alumnos.apellidos')->get();
+            ->where('alumno_carrera.aprobado', 1)
+            ->where('alumno_carrera.ciclo_lectivo', $ciclo_lectivo->year)->orderBy('alumnos.apellidos')->get();
 
         $dataQuery = [
             'instancia_id' => $instancia_id,
@@ -97,14 +97,12 @@ class MesaController extends Controller
 
             $folios_segundo = 1;
             $folios = 1;
-            if($contador_primer_llamado > 26)
-            {
+            if ($contador_primer_llamado > 26) {
                 $division_primero = $contador_primer_llamado / 26;
                 $folios = ceil($division_primero);
             }
 
-            if($contador_segundo_llamado > 26)
-            {
+            if ($contador_segundo_llamado > 26) {
                 $division_segundo = $contador_segundo_llamado / 26;
                 $folios_segundo = ceil($division_segundo);
             }
@@ -128,7 +126,6 @@ class MesaController extends Controller
     }
 
 
-
     // Funcionalidades
     public function crear(Request $request, $materia_id, $instancia_id)
     {
@@ -140,21 +137,21 @@ class MesaController extends Controller
         $materia = Materia::find($materia_id);
         $instancia = Instancia::find($instancia_id);
         $feriados = Calendario::all();
-        $this->feriados = $this->mesaService->limpiarFeriados($feriados,$instancia);
+        $this->feriados = $this->mesaService->limpiarFeriados($feriados, $instancia);
 
         $fecha_dia = date("d-n-Y", strtotime($request['fecha']));
         $fecha_dia_segundo = date("d-n-Y", strtotime($request['fecha_segundo']));
 
-        $comp_primer_llamado = $this->mesaService->isHabil($fecha_dia,$this->feriados);
-        $comp_segundo_llamado = $this->mesaService->isHabil($fecha_dia_segundo,$this->feriados);
+        $comp_primer_llamado = $this->mesaService->isHabil($fecha_dia, $this->feriados);
+        $comp_segundo_llamado = $this->mesaService->isHabil($fecha_dia_segundo, $this->feriados);
 
         if (!$comp_primer_llamado && !$comp_segundo_llamado) {
             if (!$comp_primer_llamado && !$comp_segundo_llamado) {
-                $mensaje = "Las fechas ".$fecha_dia." y ".$fecha_dia_segundo." están bloqueadas introduce otra fecha.";
+                $mensaje = "Las fechas " . $fecha_dia . " y " . $fecha_dia_segundo . " están bloqueadas introduce otra fecha.";
             } elseif (!$comp_primer_llamado && $comp_segundo_llamado) {
-                $mensaje = "La fecha ".$fecha_dia." está bloqueada, prueba con otra.";
+                $mensaje = "La fecha " . $fecha_dia . " está bloqueada, prueba con otra.";
             } else {
-                $mensaje = "La fecha ".$fecha_dia_segundo." está bloqueada, prueba con otra.";
+                $mensaje = "La fecha " . $fecha_dia_segundo . " está bloqueada, prueba con otra.";
             }
 
             return redirect()->back()->with([
@@ -176,9 +173,9 @@ class MesaController extends Controller
         $request['instancia_id'] = $instancia->id;
         $request['materia_id'] = $materia->id;
 
-        $request['cierre'] = $this->mesaService->setCierreMesa($request['fecha'],$materia,$this->feriados);
+        $request['cierre'] = $this->mesaService->setCierreMesa($request['fecha'], $materia, $this->feriados);
         if ($request['fecha_segundo']) {
-            $request['cierre_segundo'] = $this->mesaService->setCierreMesa($request['fecha_segundo'],$materia,$this->feriados);
+            $request['cierre_segundo'] = $this->mesaService->setCierreMesa($request['fecha_segundo'], $materia, $this->feriados);
         } else {
             $request['cierre_segundo'] = null;
         }
@@ -190,29 +187,28 @@ class MesaController extends Controller
             $mesa = Mesa::create($request->all());
         }
         return redirect()->back()->with([
-            'message_success' => 'Mesa '.$materia->nombre.' configurada correctamente',
+            'message_success' => 'Mesa ' . $materia->nombre . ' configurada correctamente',
         ]);
     }
 
-    public function delete(Request $request,$id)
+    public function delete(Request $request, $id)
     {
         $mesa = Mesa::find($id);
 
-        if($mesa)
-        {
+        if ($mesa) {
             $carrera_id = $mesa->materia->carrera_id;
             $instancia_id = $mesa->instancia_id;
-            MesaAlumno::where('mesa_id',$mesa->id)->delete();
-            ActaVolante::where('mesa_id',$mesa->id)->delete();
+            MesaAlumno::where('mesa_id', $mesa->id)->delete();
+            ActaVolante::where('mesa_id', $mesa->id)->delete();
 
             $mesa->delete();
 
-            return redirect()->route('mesa.mesas',[
+            return redirect()->route('mesa.mesas', [
                 'id' => $carrera_id,
                 'instancia_id' => $instancia_id
-            ])->with(['alert_success'=>'Mesa eliminada correctamente.']);
-        }else{
-            return redirect()->back()->with(['alert_danger'=>'No existe la mesa.']);
+            ])->with(['alert_success' => 'Mesa eliminada correctamente.']);
+        } else {
+            return redirect()->back()->with(['alert_danger' => 'No existe la mesa.']);
         }
     }
 
@@ -239,7 +235,7 @@ class MesaController extends Controller
         $etiqueta_espacio = 'Espacio Curricular';
         $etiquetas_espacios = 'Espacios Curriculares';
 
-        if($carrera->tipo == 'modular' || $carrera->tipo == 'modular2'){
+        if ($carrera->tipo == 'modular' || $carrera->tipo == 'modular2') {
             $etiqueta_espacio = 'Módulo';
             $etiquetas_espacios = 'Módulos';
         }
@@ -258,17 +254,18 @@ class MesaController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_generar_pdf ', $data);
 
-        return $pdf->download('Tribunal Mesa '.$carrera->sede->nombre.'-'.$carrera->nombre.'-'.$carrera->resolucion.'-'.$llamado.'-'. $instancia->nombre.'.pdf');
+        return $pdf->download('Tribunal Mesa ' . $carrera->sede->nombre . '-' . $carrera->nombre . '-' . $carrera->resolucion . '-' . $llamado . '-' . $instancia->nombre . '.pdf');
     }
 
     public function generar_pdf_acta_volante(
         Instancia $instancia,
-        Carrera $carrera,
-        Materia $materia,
-        int $llamado,
-        int $orden,
-        Comision $comision = null
-    ) {
+        Carrera   $carrera,
+        Materia   $materia,
+        int       $llamado,
+        int       $orden,
+        Comision  $comision = null
+    )
+    {
 
 
         $texto_llamado = 'Primer llamado';
@@ -290,7 +287,7 @@ class MesaController extends Controller
             throw new HttpResponseException(new Response('No se encontró la instancia correspondiente'));
         }
 
-        $libro = Libro::where(['mesa_id'=>$mesa->id,'orden'=>$orden,'llamado'=>$llamado])->first();
+        $libro = Libro::where(['mesa_id' => $mesa->id, 'orden' => $orden, 'llamado' => $llamado])->first();
 
         // Log::info('MesaController - acta_volante');
         // Log::info($mesa);
@@ -313,13 +310,17 @@ class MesaController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mesa_acta_volante_pdf', $data);
 
-        return $pdf->download('Acta Volante: '.$materia->nombre .'-'.$instancia->nombre.'.pdf');
+        return $pdf->download('Acta Volante: ' . $materia->nombre . '-' . $instancia->nombre . '.pdf');
     }
 
-    public function mostrar_pdf_acta_volante(
-        Mesa $mesa, int $llamado, int $folio
-    ) {
-
+    /**
+     * @param Mesa $mesa
+     * @param int $llamado
+     * @param int $folio
+     * @return mixed
+     */
+    public function mostrar_pdf_acta_volante(Mesa $mesa, int $llamado, int $folio)
+    {
         $texto_llamado = 'Primer llamado';
 
         if ($llamado === 2) {
@@ -329,7 +330,7 @@ class MesaController extends Controller
         /** @var Libro $libro */
         $libro = $mesa->getLibroPorFolio($llamado, $folio);
 
-$desglose = $libro->getResultadosActasVolantes();
+        $desglose = $libro->getResultadosActasVolantes(true);
 
 //dd(count($mesa->getLibroPorFolio($llamado, $folio)->actasVolantes()->get()));
 
@@ -350,7 +351,7 @@ $desglose = $libro->getResultadosActasVolantes();
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('pdfs.mostrar_acta_volante_pdf', $data);
 
-        return $pdf->download('Acta Volante: '.$mesa->materia()->first()->nombre .'-'.$mesa->instancia->nombre.'.pdf');
+        return $pdf->download('Acta Volante: ' . $mesa->materia()->first()->nombre . '-' . $mesa->instancia->nombre . '.pdf');
     }
 
     public function mesaByComision(Request $request, $materia_id, $instancia_id, $comision_id = null)
@@ -371,62 +372,59 @@ $desglose = $libro->getResultadosActasVolantes();
                 'segundo_vocal_segundo_mesa'
             )
             ->first();
-        if($mesa)
-        {
-            $cierres = $this->mesaService->fechaBloqueo($mesa,1);
+        if ($mesa) {
+            $cierres = $this->mesaService->fechaBloqueo($mesa, 1);
             $admin = Session::has('admin') ? 1 : 0;
 
             $datos = [
-                'status'=>'success',
+                'status' => 'success',
                 'admin' => $admin,
                 'mesa' => $mesa
             ];
 
-            $datos = array_merge($datos,$cierres);
-        }else{
+            $datos = array_merge($datos, $cierres);
+        } else {
             $datos = [
-                'status'=>'error',
+                'status' => 'error',
                 'mesa' => 'No existe una mesa creada'
             ];
         }
 
-        return response()->json($datos,200);
+        return response()->json($datos, 200);
     }
 
-    public function cierreProfesor(Request $request,$id)
+    public function cierreProfesor(Request $request, $id)
     {
         $mesa = Mesa::find($id);
 
-        if($request['llamado'] == "1")
-        {
+        if ($request['llamado'] == "1") {
             $mesa->cierre_profesor = true;
             $mesa->fecha_cierre_profesor = Carbon::now();
-        }else{
+        } else {
             $mesa->cierre_profesor_segundo = true;
             $mesa->fecha_cierre_profesor_segundo = Carbon::now();
         }
 
         $mesa->update();
 
-        return redirect()->back()->with(['alert_success'=>'El acta volante se ha cerrado correctamente.']);
+        return redirect()->back()->with(['alert_success' => 'El acta volante se ha cerrado correctamente.']);
     }
 
-    public function abrirProfesor(Request $request,$id)
+    public function abrirProfesor(Request $request, $id)
     {
         $mesa = Mesa::find($id);
 
-        if($request['llamado'] == "1")
-        {
+        if ($request['llamado'] == "1") {
             $mesa->cierre_profesor = false;
             $mesa->fecha_cierre_profesor = null;
-        }else{
+        } else {
             $mesa->cierre_profesor_segundo = false;
             $mesa->fecha_cierre_profesor_segundo = null;
         }
 
         $mesa->update();
 
-        return redirect()->back()->with(['alert_success'=>'El acta volante se ha abierto correctamente.']);
+        return redirect()->back()->with(['alert_success' => 'El acta volante se ha abierto correctamente.']);
     }
 
 
