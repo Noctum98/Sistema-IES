@@ -50,17 +50,50 @@ class Libro extends Model
         return $actasVolantes;
     }
 
+    public function obtenerActasVolantesByMesaAlumno()
+    {
+        $actasVolantes = $this->actasVolantes;
+        if($actasVolantes->isEmpty()){
+            $llamado = $this->llamado;
 
+            $segundoLlamado = false;
+            if($llamado === 2){
+                $segundoLlamado = true;
+            }
+
+            $mesaAlumno = MesaAlumno::where([
+                'mesa_id' => $this->mesa->id,
+                'segundo_llamado' => $segundoLlamado
+            ])->pluck('id');
+
+
+
+            $actasVolantes = ActaVolante::whereIn('mesa_alumno_id', $mesaAlumno)->get()
+                ->sortBy(function ($acta, $key) {
+                    return $acta->alumno->apellidos . ' ' . $acta->alumno->nombre;
+                })
+            ;
+
+
+            foreach ($actasVolantes as $acta) {
+                $acta->libro_id = $this->id;
+                $acta->save();
+            }
+        }
+
+        return $actasVolantes;
+    }
 
 
     /**
      * Devuelve un array con los resultados de las actas volantes.
      * Array asociativo con claves 'aprobados', 'desaprobados', 'ausentes'
+     * @param bool $inscripciones
      * @return array
      */
-    public function getResultadosActasVolantes(): array
+    public function getResultadosActasVolantes(bool $inscripciones = false): array
     {
-        return (new LibroService())->getDesgloseAprobados($this);
+        return (new LibroService())->getDesgloseAprobados($this, $inscripciones);
     }
 
 }
