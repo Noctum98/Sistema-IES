@@ -64,8 +64,8 @@ class MesaAlumnoService
             $correlativas = $materia->materiasCorrelativas;
 
 
-            $data = $this->verifyCorrelativasByActaVolante($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
-            $data = $this->verifyCorrelativasByFolioNota($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
+            // $data = $this->verifyCorrelativasByActaVolante($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
+            // $data = $this->verifyCorrelativasByFolioNota($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
 
 
         } else {
