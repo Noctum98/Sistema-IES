@@ -36,7 +36,7 @@ class PreinscripcionController extends Controller
         PreinscripcionService $preinscripcionService
     ) {
         $this->middleware('app.auth', ['only' => ['vista_admin']]);
-        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all','vista_verificadas','vista_verificadas']]);
+        $this->middleware('app.roles:admin-areaSocial-regente', ['only' => ['vista_admin', 'vista_all', 'vista_verificadas', 'vista_verificadas']]);
         $this->disk = Storage::disk('temp');
         $this->mailService = $mailService;
         $this->preinscripcionService = $preinscripcionService;
@@ -69,18 +69,16 @@ class PreinscripcionController extends Controller
         $carrera = Carrera::find($id);
         $error = '';
 
-        if($carrera)
-        {
+        if ($carrera) {
             if (!$carrera->preinscripcion_habilitada && !Session::has('preinscripciones')) {
                 $carrera = null;
                 $error = 'Página deshabilitada';
             }
-    
-        }else{
+        } else {
             $carrera = null;
             $error = 'Página deshabilitada';
         }
-        
+
         /*
         if (!Auth::user() && !Session::has('admin')) {
            
@@ -109,11 +107,10 @@ class PreinscripcionController extends Controller
             } else if (!$preinscripcion) {
                 $ruta = 'error.error';
                 $datos = ['mensaje' => 'Error en la página'];
-            }else if(!$preinscripcion->carrera->preinscripcion_habilitada){
+            } else if (!$preinscripcion->carrera->preinscripcion_habilitada) {
                 $ruta = 'error.error';
                 $datos = ['mensaje' => 'Ya no es posible editar el formulario'];
-            } 
-            else {
+            } else {
                 $ruta = 'alumno.edit_pre_enroll';
                 $datos =  ['preinscripcion'    =>  $preinscripcion];
             }
@@ -121,7 +118,7 @@ class PreinscripcionController extends Controller
 
         return view($ruta, $datos);
     }
-    public function vista_inscripto(Request $request,$carrera_id)
+    public function vista_inscripto(Request $request, $carrera_id)
     {
         $carrera = Carrera::find($carrera_id);
         $title = "Preinscripción enviada.";
@@ -159,25 +156,25 @@ class PreinscripcionController extends Controller
         $carreras_id = [];
 
         if (!empty($busqueda)) {
-            $preinscripciones = Preinscripcion::where(function($query) use ($busqueda){
+            $preinscripciones = Preinscripcion::where(function ($query) use ($busqueda) {
                 return $query->where('dni', 'LIKE', '%' . $busqueda . '%')
-                ->orWhere('nombres', 'LIKE', '%' . $busqueda . '%')
-                ->orWhere('apellidos', 'LIKE', '%' . $busqueda . '%')
-                ->orWhere('email', 'LIKE', '%' . $busqueda . '%');
+                    ->orWhere('nombres', 'LIKE', '%' . $busqueda . '%')
+                    ->orWhere('apellidos', 'LIKE', '%' . $busqueda . '%')
+                    ->orWhere('email', 'LIKE', '%' . $busqueda . '%');
             });
 
             if (Session::has('coordinador') || Session::has('seccionAlumnos')) {
                 foreach (Auth::user()->carreras as $carrera) {
-                    array_push($carreras_id,$carrera->id);
+                    array_push($carreras_id, $carrera->id);
                 }
 
-                $preinscripciones = $preinscripciones->whereIn('carrera_id',$carreras_id);
+                $preinscripciones = $preinscripciones->whereIn('carrera_id', $carreras_id);
             }
 
             $preinscripciones = $preinscripciones->get();
         } else {
             if (Session::has('admin') || Session::has('regente') || Session::has('areaSocial')) {
-                $carreras = Carrera::where('estado',0)->orderBy('sede_id','ASC')->get();
+                $carreras = Carrera::where('estado', 0)->orderBy('sede_id', 'ASC')->get();
             } else {
                 $carreras = Auth::user()->carreras;
             }
@@ -245,7 +242,7 @@ class PreinscripcionController extends Controller
 
     public function vista_articulo()
     {
-        $preinscripciones = Preinscripcion::where('articulo_septimo',1)->get();
+        $preinscripciones = Preinscripcion::where('articulo_septimo', 1)->get();
 
         return view('preinscripcion.article', [
             'preinscripciones' => $preinscripciones
@@ -268,36 +265,21 @@ class PreinscripcionController extends Controller
         ]);
     }
 
-    public function vista_edit_files(Request $request,$id,$timecheck)
+    public function vista_edit_files(Request $request, $id, $timecheck)
     {
         $preinscripcion = Preinscripcion::where([
             'id' => $id,
             'timecheck' => $timecheck
         ])->first();
 
-        if(!$preinscripcion)
-        {
+        if (!$preinscripcion) {
             abort(404);
         }
 
-        if ($preinscripcion && $preinscripcion->estado == 'verificado') {
-            $ruta = 'error.error';
-            $datos = ['mensaje' => 'Tu preinscripción ya fue verificada'];
-        } else if (!$preinscripcion) {
-            $ruta = 'error.error';
-            $datos = ['mensaje' => 'Error en la página'];
-        }else if(!$preinscripcion->carrera->preinscripcion_habilitada){
-            $ruta = 'error.error';
-            $datos = ['mensaje' => 'Ya no es posible editar el formulario'];
-        } 
-        else {
-            $ruta = 'preinscripcion.edit_files';
-            $datos =  ['preinscripcion'    =>  $preinscripcion];
-        }
+        $ruta = 'preinscripcion.edit_files';
+        $datos =  ['preinscripcion'    =>  $preinscripcion];
 
-        
-
-        return view($ruta,$datos);
+        return view($ruta, $datos);
     }
 
     // Funcionalidades
@@ -339,14 +321,14 @@ class PreinscripcionController extends Controller
                 return redirect()->route('alumno.pre', [
                     'id' => $carrera_id
                 ])->with([
-                    'error_carrera' => 'Ya estas inscripto a la carrera '.$carrera->nombre.' - '.$carrera->sede->nombre
+                    'error_carrera' => 'Ya estas inscripto a la carrera ' . $carrera->nombre . ' - ' . $carrera->sede->nombre
                 ]);
             }
         }
         $request['carrera_id'] = $carrera_id;
 
         $data = $this->preinscripcionService->guardarArchivosTemporales($request);
-        
+
         return redirect()->route('pre.inscripto', [
             'carrera_id' => $carrera->id,
         ]);
@@ -385,7 +367,7 @@ class PreinscripcionController extends Controller
 
         $preinscripcion = Preinscripcion::find($id);
 
-        $data = $this->preinscripcionService->guardarArchivosTemporales($request,$preinscripcion);                
+        $data = $this->preinscripcionService->guardarArchivosTemporales($request, $preinscripcion);
 
         return redirect()->route('pre.editado', [
             'timecheck' => $preinscripcion->timecheck,
@@ -427,15 +409,15 @@ class PreinscripcionController extends Controller
         ]);
     }
 
-    public function subir_articulo7mo(Request $request,$id,$timecheck)
+    public function subir_articulo7mo(Request $request, $id, $timecheck)
     {
-        $this->validate($request,[
-            'primario_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'ctrabajo_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'curriculum_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'nota_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'partida_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
-            'cuil_file' => ['required','file', 'mimes:jpg,jpeg,png,pdf', 'max:5000']
+        $this->validate($request, [
+            'primario_file' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'ctrabajo_file' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'curriculum_file' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'nota_file' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'partida_file' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000'],
+            'cuil_file' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5000']
         ]);
 
         $preinscripcion = Preinscripcion::where([
@@ -443,14 +425,13 @@ class PreinscripcionController extends Controller
             'timecheck' => $timecheck
         ])->first();
 
-        if(!$preinscripcion)
-        {
+        if (!$preinscripcion) {
             abort(404);
         }
 
-        $data = $this->preinscripcionService->guardarArchivos7mo($request,$preinscripcion);
+        $data = $this->preinscripcionService->guardarArchivos7mo($request, $preinscripcion);
 
-        return redirect()->back()->with(['alert_success'=>'Los archivos se subieron correctamente']);
+        return redirect()->back()->with(['alert_success' => 'Los archivos se subieron correctamente']);
     }
 
     public function cambiar_estado(int $id)
@@ -463,7 +444,7 @@ class PreinscripcionController extends Controller
             $data = [
                 'dni' => $preinscripcion->dni
             ];
-            dispatch(new PreinscripcionGoogleDriveJob($data,$preinscripcion));
+            dispatch(new PreinscripcionGoogleDriveJob($data, $preinscripcion));
         } else {
             $preinscripcion->estado = 'sin verificar';
         }
