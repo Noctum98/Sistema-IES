@@ -13,6 +13,8 @@ $(document).ready(function () {
         if($(this).is(':checked'))
             {
                 $("#sede_id").prop('disabled',true);
+                $("#sede_id").val('');
+                $("#carrera_id").prop('disabled',true)
             }
     });
 
