@@ -45,6 +45,10 @@
                             </small>
                         </div>
                         @endif
+
+                        @if(!$mesa->fecha && !$mesa->fecha_segundo)
+                        -
+                        @endif
                     </td>
                     <td>
                         <a href="{{ route('actasVolantes.show',$mesa->id) }}" class="btn btn-sm btn-secondary">
