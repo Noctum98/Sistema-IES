@@ -43,7 +43,7 @@ class TicketService
             $permisos['respuesta'] = true;
         }
 
-        if ($ticket->responsable && $ticket->responsable->id == $user->id) {
+        if ($ticket->responsable && $ticket->responsable->user_id == $user->id) {
             $permisos['respuesta'] = true;
         }
 

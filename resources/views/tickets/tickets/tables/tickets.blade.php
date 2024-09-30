@@ -57,6 +57,7 @@
                 <th>Estado</th>
                 <th>Categoría</th>
                 <th>Asunto</th>
+                <th>Responsable</th>
                 <th></th>
             </tr>
         </thead>
@@ -68,7 +69,7 @@
                 <td class="align-middle">@include('componentes.tickets.colorEstado',['estado'=>$ticket->last_estado_ticket])</td>
                 <td class="align-middle">{{ $ticket->categoria->nombre }}</td>
                 <td class="align-middle">{{ $ticket->asunto }}</td>
-
+                <dd class="align-middle">{{ $ticket->responsable ? $ticket->responsable->user->nombre.' '.$ticket->responsable->user->apellido : 'Sin asignar' }}</dd>
                 <td class="text-end">
 
                     <form method="POST" action="{!! route('tickets.ticket.destroy', $ticket->id) !!}" accept-charset="UTF-8">
