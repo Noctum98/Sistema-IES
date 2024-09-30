@@ -119,7 +119,7 @@ class TicketService
         if ($estado_id) {
             $tickets = $tickets->where('last_estado_ticket_id', $estado_id);
         }
-        $tickets = $tickets->paginate(20, ['*'], $seccion);
+        $tickets = $tickets->orderBy('created_at', 'desc')->paginate(20, ['*'], $seccion);
 
         return $tickets;
     }
