@@ -64,8 +64,8 @@ class MesaAlumnoService
             $correlativas = $materia->materiasCorrelativas;
 
 
-            $data = $this->verifyCorrelativasByActaVolante($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
-            $data = $this->verifyCorrelativasByFolioNota($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
+            // $data = $this->verifyCorrelativasByActaVolante($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
+            // $data = $this->verifyCorrelativasByFolioNota($mesa_alumno, $correlativas, $mesa_fecha, $notas_aprobado, $data);
 
 
         } else {
@@ -144,10 +144,17 @@ class MesaAlumnoService
                 /** @var ActaVolante $av */
                 $folio = $repoFolio->getFolioByActaVolante($av->id);
 
-                $fecha = $av->mesa->fecha ?? $av->mesaAlumno->mesa->fecha;
+                $fecha = null;
 
+                if($av->mesa){
+                    $fecha = $av->mesa->fecha;
+                }
 
-                if (!$folio) {
+                if(!$av->mesa && $av->mesaAlumno->mesa){
+                    $fecha = $av->mesaAlumno->mesa->fecha;
+                }
+
+                if (!$folio && $fecha) {
                     $data['actas_incompletas'][] = [
                         'id' => $av->id,
                         'fecha' => $fecha,

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\EnviarCorreoJob;
 use App\Models\Ticket\RespuestaTicket;
+use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,7 +48,12 @@ class RespuestaTicketController extends Controller
 
         $data = $this->getData($request);
 
+        $ticket = Ticket::findOrFail($data['ticket_id']);
+
         $respuesta = RespuestaTicket::create($data);
+        $data['ticket'] = $ticket;
+
+        EnviarCorreoJob::dispatch($ticket->user->email,$data);
 
         return redirect()->back()->with('success_message', 'Respuesta enviada con éxito.');
     }
