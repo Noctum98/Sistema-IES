@@ -191,10 +191,16 @@ class LibroDigitalService
 
     }
 
-    public function actualizaLibroDigitaByLibro(Libro $libroAnterior, Libro $libro, $user): void
+    /**
+     * @param Libro $libroAnterior
+     * @param Libro $libro
+     * @param $user
+     * @param Mesa|null $mesa
+     * @return void
+     */
+    public function actualizaLibroDigitaByLibro(Libro $libroAnterior, Libro $libro, $user, Mesa $mesa = null): void
     {
-        /** @var Mesa $mesa */
-        $mesa = $libro->mesa()->first();
+
         if (!$mesa) {
             session()->flash(
                 'error',
@@ -205,8 +211,6 @@ class LibroDigitalService
             return;
         }
 
-
-
         if (!$mesa->materia->master_materia_id) {
             session()->flash(
                 'error',
@@ -215,12 +219,9 @@ class LibroDigitalService
             return;
         }
 
-
-
         $resolucion_id = $mesa->materia->masterMateria->resoluciones->id;
         $numero = $libroAnterior->numero;
         $sede = $mesa->materia->carrera->sede;
-
 
         $libroDigital = LibroDigital::where(
             [
@@ -229,50 +230,57 @@ class LibroDigitalService
                 'sede_id' => $sede->id,
             ]
         )->first();
-
-
-        if (!$libroDigital) {
-            session()->flash(
-                'error',
-                "El libro $libro->id - $libroAnterior->numero - $libroAnterior->folio
-                no pudo actualizar el libro de actas. Por favor verifique los datos cargados"
-            );
-            return;
-        }
-
-        $romano = $this->handler->convertirNumberToRoman($libro->numero);
         $fechaInicio = null;
         if ($libro->folio === "1") {
             $fechaInicio = date('Y-m-d', strtotime($mesa->fecha));
         }
-        /** @var User $user */
-        $libroDigital->update([
+
+        if ($libroDigital) {
+            $romano = $this->handler->convertirNumberToRoman($libro->numero);
+
+            /** @var User $user */
+            $libroDigital->update([
+                    'number' => $libro->numero,
+                    'romanos' => $romano,
+                    'observaciones' => $libroDigital->observaciones . ' - Edición libro/folio ' . $user->getApellidoNombre(),
+                    'user_id' => $user->id,
+                    'fecha_inicio' => $fechaInicio
+                ]
+            );
+        } else {
+            $libroDigital = LibroDigital::create([
+                'acta_inicio' => null,
                 'number' => $libro->numero,
-                'romanos' => $romano,
-                'observaciones' => $libroDigital->observaciones . ' - Edición libro/folio ' . $user->getApellidoNombre(),
+                'romanos' => $this->handler->convertirNumberToRoman($libro->numero),
+                'resoluciones_id' => $resolucion_id,
+                'sede_id' => $sede->id,
+                'libros_papeles_id' => null,
+                'observaciones' => '',
+                'operador_id' => null,
                 'user_id' => $user->id,
                 'fecha_inicio' => $fechaInicio
-            ]
-        );
+            ]);
+        }
 
 
         $mesaFolio = MesaFolio::where([
             'libro_digital_id' => $libroDigital->id,
-            'mesa_id' => $libro->mesa_id,
+            'mesa_id' => $mesa->id,
             'folio' => $libroAnterior->folio,
         ])->first();
 
         $desglose = $libro->getResultadosActasVolantes();
 
         if ($mesaFolio) {
-            $this->updateMesaFolio($desglose, $mesaFolio, $mesa, $libro);
-        }else{
+            $this->updateMesaFolio($desglose, $mesaFolio, $mesa, $libro, $user);
+        } else {
             $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
         }
 
-        $actas = $libro->getActasVolantes();
 
+        $actas = $libro->obtenerActasVolantes();
         $orden = 0;
+
         foreach ($actas as $acta) {
             /** @var ActaVolante $acta */
             $orden++;
@@ -289,7 +297,7 @@ class LibroDigitalService
                 $oral = $this->genericService->findNumber($acta->nota_oral);
                 $definitiva = $this->genericService->findNumber($acta->promedio);
 
-                $folioNota = FolioNota::create([
+                FolioNota::create([
                     'orden' => $orden,
                     'permiso' => null,
                     'escrito' => $escrito,
@@ -301,11 +309,7 @@ class LibroDigitalService
                     'alumno_id' => $acta->alumno_id,
                 ]);
             }
-
-
         }
-
-
     }
 
 
@@ -327,13 +331,14 @@ class LibroDigitalService
      * @param MesaFolio $mesaFolio
      * @param Mesa $mesa
      * @param Libro $libro
+     * @param $user
      * @return MesaFolio
      */
-    public function updateMesaFolio(array $desglose, MesaFolio $mesaFolio,Mesa $mesa, Libro $libro): MesaFolio
+    public function updateMesaFolio(array $desglose, MesaFolio $mesaFolio, Mesa $mesa, Libro $libro, $user): MesaFolio
     {
         [$fecha, $presidente, $vocal_1, $vocal_2] = $this->getDataMesa($mesa, $libro);
 
-         $mesaFolio->update([
+        $mesaFolio->update([
             'aprobados' => $desglose['aprobados'],
             'ausentes' => $desglose['ausentes'],
             'desaprobados' => $desglose['desaprobados'],
@@ -343,9 +348,10 @@ class LibroDigitalService
             'llamado' => $libro->llamado,
             'vocal_1_id' => $vocal_1,
             'vocal_2_id' => $vocal_2,
+            'operador_id' => $user->id,
         ]);
 
-         return $mesaFolio;
+        return $mesaFolio;
     }
 
     /**
