@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Libro;
 use App\Models\MasterMateria;
+use App\Models\Mesa;
 use App\Services\Trianual\LibroDigitalService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -54,7 +56,7 @@ class LibrosController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -63,43 +65,52 @@ class LibrosController extends Controller
             'llamado' => ['required'],
         ]);
 
+
         if (!$validation->fails()) {
             //dd($request['folios']);
-            foreach ($request['folios'] as $folio) {
-                $numero_folio = explode('-', $folio);
-                $request['folio'] = $numero_folio[0];
-                $request['orden'] = $numero_folio[1];
+            try {
+                foreach ($request['folios'] as $folio) {
 
-                $libro = Libro::where([
-                    'mesa_id' => $request['mesa_id'],
-                    'llamado' => $request['llamado'],
-                    'orden' => $request['orden']
-                ])->first();
+                    $numero_folio = explode('-', $folio);
+                    $request['folio'] = $numero_folio[0];
+                    $request['orden'] = $numero_folio[1];
+
+                    $libro = Libro::where([
+                        'mesa_id' => $request['mesa_id'],
+                        'llamado' => $request['llamado'],
+                        'orden' => $request['orden']
+                    ])->first();
+
+                    $mesa = Mesa::find($request['mesa_id']);
+                    $libroExist = null;
+                    $libroAnterior = null;
+                    if ($libro) {
+                        $libroAnterior = clone $libro;
+                        $libroExist = $libro->update($request->all());
+                    } else {
+                        $libro = Libro::create($request->all());
+                    }
+
+                    $this->setLibroActasVolantes($libro);
+                    if (!$libroExist) {
+                        $this->libroDigitalService->cargaLibroDigitaByLibro($libro, Auth::user());
+                    } else {
+                        $this->libroDigitalService->actualizaLibroDigitaByLibro($libroAnterior, $libro, Auth::user(), $mesa);
+                    }
 
 
-                $libroExist = null;
-                $libroAnterior = null;
-                if ($libro) {
-                    $libroAnterior = clone $libro;
-                    $libroExist = $libro->update($request->all());
-                } else {
-                    $libro = Libro::create($request->all());
                 }
-
-                $this->setLibroActasVolantes($libro);
-                if (!$libroExist) {
-                    $this->libroDigitalService->cargaLibroDigitaByLibro($libro, Auth::user());
-                } else {
-                    $this->libroDigitalService->actualizaLibroDigitaByLibro($libroAnterior, $libro, Auth::user());
-                }
-
-
+                $data = [
+                    'status' => 'success',
+                    'data' => 'Libros creados!'
+                ];
+            } catch (Exception $e) {
+                $data = [
+                    'status' => 'error',
+                    'data' => $e->getMessage()
+                ];
             }
 
-            $data = [
-                'status' => 'success',
-                'data' => 'Libros creados!'
-            ];
         } else {
             $data = [
                 'status' => 'error',
@@ -107,7 +118,7 @@ class LibrosController extends Controller
             ];
         }
 
-        return response()->json($data, 200);
+        return response()->json($data);
     }
 
     /**
