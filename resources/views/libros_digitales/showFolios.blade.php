@@ -91,18 +91,24 @@
                     <div class="card-header d-flex justify-content-between align-items-center   ">
                         <h5 class="card-title alert alert-primary mx-auto">
                             Folio {{ $folio->folio }}
-                            <i class="fas fa-calendar-alt ms-5"></i> {{ date_format(new DateTime($folio->fecha ), 'd-m-Y') }}
-                            <i class="far fa-bookmark ms-5"></i> {{ $folio->masterMateria->name }}
+                            <i class="fas fa-calendar-alt ms-4"></i> {{ date_format(new DateTime($folio->fecha ), 'd-m-Y') }}
+                            @if(session()->has('admin'))
+                                <small style="font-size: 0.50em">
+                                    <sub>{{ $folio->mesa_id }}</sub>
+                                </small>
+                            @endif
+
+                            <i class="far fa-bookmark ms-4"></i> {{ $folio->masterMateria->name }}
                             <small style="font-size: 0.75em"><sup>{{ $folio->masterMateria->year }}° año</sup></small>
 
                             <span class="info" data-bs-toggle="tooltip"
                                   data-bs-placement="top"
                                   title="{{ $folio->llamado }}° Llamado">
-                            <i class="fas fa-user-clock ms-5"></i> {{ $folio->llamado }}
+                            <i class="fas fa-user-clock ms-4"></i> {{ $folio->llamado }}
                             </span>
                             @if($folio->mesa && $folio->llamado && $folio->folio)
                                 <a href="{{route('mostrar_pdf_acta_volante',
-['mesa' => $folio->mesa_id, 'llamado'=>$folio->llamado, 'folio' => $folio->folio])}}"
+                                   ['mesa' => $folio->mesa_id, 'llamado'=>$folio->llamado, 'folio' => $folio->folio])}}"
                                    target="_blank" class="btn btn-sm btn-primary">
                                     <i class="fas fa-file-pdf"></i> Ver acta volante
                                 </a>
@@ -135,17 +141,17 @@
 
                         <h6 class="card-text col-sm-4 ml-5">
                             Coordinador: <i
-                                    class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
+                                class="text-primary">{{ optional($folio->coordinador)->getApellidoNombre()??'-' }} </i><br>
                             Operador: <i
-                                    class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
+                                class="text-primary">{{ optional($folio->operador)->getApellidoNombre()??'-' }}</i>
                             <br>
                             Presidente: <i
-                                    class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
+                                class="text-primary">{{ optional($folio->presidente)->getApellidoNombre() }}</i>
                             <br>
                             Vocal 1: <i
-                                    class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
+                                class="text-primary">{{ optional($folio->vocal1)->getApellidoNombre() ??  $folio->vocal_id }} </i><br>
                             Vocal 2: <i
-                                    class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
+                                class="text-primary">{{ optional($folio->vocal2)->getApellidoNombre() ??  $folio->vocal_2_id }} </i><br>
                         </h6>
                         <h6 class="card-text col-sm-2 ml-5">
                             <button id="showAddFolioNota" type="button" class="btn btn-primary">
@@ -156,7 +162,7 @@
                     <div class="card-footer text-left container">
                         @foreach($folio->folioNotas()->get() as $folioNota)
                             <div
-                                    class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
+                                class="row col-sm-12 border border-dark border-1 border-top-0 hover-effect zoom-effect">
                             <span class="col-sm-1">
                                 {{$folioNota->orden}}
                             </span>

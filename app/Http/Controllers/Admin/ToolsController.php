@@ -69,7 +69,7 @@ class ToolsController extends Controller
             ->get();
 
         $message = "El libro tiene una mesa registrada";
-        if (count($librosRepetidos) > 1) {
+        if (count($librosRepetidos) > 1 && $libro->actasVolantes()->count() === 0) {
             $libro->delete();
             $message = "Libro eliminado correctamente";
         }
