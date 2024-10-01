@@ -27,8 +27,6 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Mesa</th>
-                            <th>Carrera - Sede</th>
                             <th>Llamado</th>
                             <th>Número</th>
                             <th>Folio</th>
@@ -41,14 +39,6 @@
                         @foreach($libros as $libro)
                             <tr>
                                 <td class="align-middle">{{ $libro->id }}</td>
-                                <td class="align-middle">
-                                    <small style="font-size:0.75em">
-                                        {{$libro->mesa->id}}
-                                    </small> -
-                                    {{ $libro->mesa->fecha}}
-                                    - {{$libro->mesa->materia->nombre}}</td>
-                                <td class="align-middle">{{ $libro->mesa->materia->carrera->nombre}}
-                                    - {{$libro->mesa->materia->carrera->sede->nombre}}</td>
                                 <td class="align-middle">{{ $libro->llamado}}</td>
                                 <td class="align-middle">{{ $libro->numero}}</td>
                                 <td class="align-middle">{{ $libro->folio}}</td>
@@ -61,18 +51,12 @@
                                     {{--                                    >--}}
                                     {{--                                        Cargar actas volantes--}}
                                     {{--                                    </a>--}}
-                                    <a href="{{route('libros_digitales.libro_digital.cargar_libro_inscripciones',
-                                        ['libro' => $libro->id])}}"
-                                       class="btn btn-sm btn-primary"
-                                    >
-                                        Cargar actas volantes
-                                    </a>
-                                    <a href="{{route('admin.tools.borrar_libros_sin_mesas',
-                                        ['libro' => $libro->id])}}"
-                                       class="btn btn-sm btn-danger"
-                                    >
-                                        Borrar libro
-                                    </a>
+{{--                                    <a href="{{route('libros_digitales.libro_digital.cargar_libro_inscripciones',--}}
+{{--                                        ['libro' => $libro->id])}}"--}}
+{{--                                       class="btn btn-sm btn-primary"--}}
+{{--                                    >--}}
+{{--                                        Cargar actas volantes--}}
+{{--                                    </a>--}}
                                 </td>
                             </tr>
                         @endforeach
