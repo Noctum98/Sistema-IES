@@ -209,6 +209,12 @@ Route::group(['prefix' => 'admin/tipo_materias', 'middleware' => ['auth']], stat
 Route::group(['prefix' => 'admin/tools', 'middleware' => ['auth']], static function () {
     Route::get('/libros-sin-actas-volantes', [ToolsController::class, 'librosSinActasVolantes'])
         ->name('admin.tools.libros_sin_actas_volantes');
+    Route::get('/libros-sin-mesas', [ToolsController::class, 'librosSinMesas'])
+        ->name('admin.tools.libros_sin_mesas');
+    Route::get('/borrar-libros-duplicados', [ToolsController::class, 'librosDuplicados'])
+        ->name('admin.tools.borrar_libros_duplicados');
+    Route::get('/borrar-libros-sin-actas/{libro}', [ToolsController::class, 'deleteLibrosSinActasVolantes'])
+        ->name('admin.tools.borrar_libros_sin_mesas');
 });
 
 
@@ -568,7 +574,7 @@ Route::prefix('preinscripcion')->group(function () {
     Route::get('/admin/preinscripcion/eliminadas', [PreinscripcionController::class, 'vista_eliminadas'])->name(
         'pre.eliminadas'
     );
-    
+
     Route::get('/admin/erroneas/{id}', [PreinscripcionController::class, 'vista_sincorregir'])->name('pre.sincorregir');
     Route::get('/editar/{timecheck}/{id}', [PreinscripcionController::class, 'vista_editar'])->name('pre.editar');
     Route::get('/admin/articulo/septimo', [PreinscripcionController::class, 'vista_articulo'])->name('pre.articulo');
