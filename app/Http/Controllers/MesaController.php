@@ -374,7 +374,7 @@ class MesaController extends Controller
             ->first();
         if ($mesa) {
             $cierres = $this->mesaService->fechaBloqueo($mesa, 1);
-            $admin = Session::has('admin') ? 1 : 0;
+            $admin = Session::has('admin') || Session::has('coordinador') ? 1 : 0;
 
             $datos = [
                 'status' => 'success',
