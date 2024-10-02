@@ -67,7 +67,6 @@ class LibrosController extends Controller
 
 
         if (!$validation->fails()) {
-            //dd($request['folios']);
             try {
                 foreach ($request['folios'] as $folio) {
 
