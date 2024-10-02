@@ -109,9 +109,6 @@ class LibrosDigitalesController extends Controller
         $librosDigitales = $librosRepository->getLibrosBySedeResolution($sede, $resolution_id);
 
 
-
-
-
         return view('libros_digitales.index_carrera',
             compact('librosDigitales', 'sedes', 'resolutions', 'sede', 'resolution_id'));
     }
@@ -168,12 +165,12 @@ class LibrosDigitalesController extends Controller
         $data['user_id'] = $user->id;
 
         $librosDigital = LibroDigital::where([
-           'sede_id' => $data['sede_id'],
-           'resoluciones_id' => $data['resoluciones_id'],
+            'sede_id' => $data['sede_id'],
+            'resoluciones_id' => $data['resoluciones_id'],
             'number' => $data['number']
         ]);
 
-        if($librosDigital->exists()){
+        if ($librosDigital->exists()) {
             return redirect()->back()
                 ->with('alert_danger', 'Libro Digital ya existe.');
         }
@@ -219,8 +216,6 @@ class LibrosDigitalesController extends Controller
             ->paginate(1);
 
 
-
-
         return view('libros_digitales.showFolios', compact('libroDigital', 'folios'));
     }
 
@@ -259,8 +254,13 @@ class LibrosDigitalesController extends Controller
     {
 
         $data = $this->getData($request);
-
         $librosDigitales = LibroDigital::findOrFail($id);
+
+        if (!$data['romanos']) {
+            $data['romanos'] = $this->handler->convertirNumberToRoman($data['number']);
+        }
+
+
         $librosDigitales->update($data);
 
         return redirect()->route('libros_digitales.libro_digital.index')
@@ -315,8 +315,8 @@ class LibrosDigitalesController extends Controller
     protected function getData(Request $request): array
     {
         $rules = [
-
             'number' => 'required|numeric|min:0|max:4294967295',
+            'romanos' => 'nullable|string|min:1|max:10',
             'resoluciones_id' => 'required',
             'fecha_inicio' => 'nullable|string|min:0',
             'sede_id' => 'required',

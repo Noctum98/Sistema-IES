@@ -46,6 +46,8 @@ class RespuestaTicketController extends Controller
     {
         $request['user_id'] = Auth::user()->id;
 
+        $request['contenido'] = $request->input('contenido', false);
+
         $data = $this->getData($request);
 
         $ticket = Ticket::findOrFail($data['ticket_id']);
@@ -53,7 +55,10 @@ class RespuestaTicketController extends Controller
         $respuesta = RespuestaTicket::create($data);
         $data['ticket'] = $ticket;
 
-        EnviarCorreoJob::dispatch($ticket->user->email,$data);
+        if($ticket->responsable->user_id == $request['user_id'])
+        {
+            EnviarCorreoJob::dispatch($ticket->user->email,$data);
+        }
 
         return redirect()->back()->with('success_message', 'Respuesta enviada con éxito.');
     }
