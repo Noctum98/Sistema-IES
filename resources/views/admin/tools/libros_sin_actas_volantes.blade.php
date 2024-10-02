@@ -48,7 +48,10 @@
                                     {{ $libro->mesa->fecha}}
                                     - {{$libro->mesa->materia->nombre}}</td>
                                 <td class="align-middle">{{ $libro->mesa->materia->carrera->nombre}}
-                                    - {{$libro->mesa->materia->carrera->sede->nombre}}</td>
+                                    - {{$libro->mesa->materia->carrera->sede->nombre}}
+                                    <small style="font-size:0.75em">{{$libro->mesa->materia->carrera->resolucion}}</small>
+
+                                </td>
                                 <td class="align-middle">{{ $libro->llamado}}</td>
                                 <td class="align-middle">{{ $libro->numero}}</td>
                                 <td class="align-middle">{{ $libro->folio}}</td>
