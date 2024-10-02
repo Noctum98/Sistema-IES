@@ -191,9 +191,9 @@ class LibrosDigitalesController extends Controller
      */
     public function show(string $id): View
     {
-        $librosDigitales = LibroDigital::with('resoluciones', 'sede', 'user', 'user')->findOrFail($id);
+        $libroDigital = LibroDigital::with('resoluciones', 'sede', 'user', 'user')->findOrFail($id);
 
-        return view('libros_digitales.show', compact('librosDigitales'));
+        return view('libros_digitales.show', compact('libroDigital'));
     }
 
     /**
@@ -302,7 +302,16 @@ class LibrosDigitalesController extends Controller
     {
         $user = Auth::user();
         $libroDigital = $this->libroDigitalService->cargaLibroDigitaByLibroByMesaAlumno($libro, $user);
-        return view('libros_digitales.verLibroDigital', compact('libroDigital', 'libro'));
+        if(!$libroDigital){
+            return redirect()->back()
+                ->with('alert_danger', 'Libro Digital no encontrado.');
+        }
+        $mesaFolio = MesaFolio::where([
+            'libro_digital_id' => $libroDigital->id,
+            'folio' => $libro->folio
+        ])->first();
+
+        return view('libros_digitales.verLibroDigital', compact('libroDigital', 'libro', 'mesaFolio'));
     }
 
 

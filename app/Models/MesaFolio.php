@@ -195,6 +195,11 @@ class MesaFolio extends Model
         return $this->belongsTo(User::class, 'coordinador_id');
     }
 
+    public function operador(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'operador_id');
+    }
+
     public function libroRomanos(): string
     {
         return $this->LibroDigital()->first()->romanos;
