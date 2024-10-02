@@ -67,6 +67,11 @@
                     <dd class="col-lg-10 col-xl-9">{{ $libroDigital->deleted_at }}</dd>
                 @endif
             </dl>
+            <a href="{{ route('mesa_folios.mesa_folio.create_by_libro', $libroDigital->id ) }}"
+               class="btn btn-primary" title="Editar Libro Digital">
+                <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
+                Agregar folio
+            </a>
 
         </div>
     </div>

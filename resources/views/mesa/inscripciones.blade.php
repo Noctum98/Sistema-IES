@@ -90,9 +90,9 @@
 
             @endif
         @else
-            <h2 class="h1 text-info">
+            <h4 class="text-info">
                 La mesa no esta configurada.
-            </h2>
+            </h4>
         @endif
     </div>
 @endsection
