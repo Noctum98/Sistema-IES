@@ -25,7 +25,7 @@
     @endif
     Fecha: {{ optional($mesaFolio->mesa)->fecha ? date_format(new DateTime( $mesaFolio->mesa->fecha ), 'd-m-Y') : '' }}
     <br/>
-    Cierre:{{ optional($mesaFolio->mesa)->cierre ? date_format(new DateTime( $mesaFolio->mesa->cierre ), 'd-m-Y') : '' }}
+    Cierre: {{ optional($mesaFolio->mesa)->cierre ? date('d-m-Y', $mesaFolio->mesa->cierre) : ''}}
 </dd>
 
 <dt class="text-lg-end col-lg-2 col-xl-3">Turno</dt>
