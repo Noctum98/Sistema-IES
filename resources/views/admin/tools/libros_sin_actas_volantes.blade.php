@@ -47,7 +47,7 @@
                                     </small> -
                                     {{ $libro->mesa->fecha}}
                                     - {{$libro->mesa->materia->nombre}}
-                                    <small style="font-size:0.75em">{{$libro->mesa->materia->año}} / {{$libro->mesa->materia->id}}</small>
+                                    <small style="font-size:0.75em">{{$libro->mesa->materia->año}}° / ID: {{$libro->mesa->materia->id}}</small>
 
                                 </td>
                                 <td class="align-middle">{{ $libro->mesa->materia->carrera->nombre}}
