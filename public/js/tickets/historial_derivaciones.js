@@ -37,10 +37,16 @@ $(document).ready(function () {
                 if (element.asignaciones.length > 0) {
                     asignaciones = 'Asignaciones: <br> <ul>';
                     element.asignaciones.forEach(element => {
+                        let asignante = '';
+                        if(element.asignante && element.asignante.id != element.user.id)
+                        {
+                            console.log(element);
+                            asignante = ': Asignado por '+element.asignante.nombre+' '+element.asignante.apellido;
+                        }
                         if (element.responsable == 1) {
-                            asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido+" (RESPONSABLE)";
+                            asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido+" (RESPONSABLE)" + asignante;
                         }else{
-                            asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido;
+                            asignaciones = asignaciones + "<li>"+element.user.nombre+" "+element.user.apellido + asignante;
                         }
                     })
                     asignaciones = asignaciones + "</ul>";

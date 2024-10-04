@@ -89,20 +89,9 @@
         <div class="d-flex justify-content-end align-items-center p-3 flex-row">
 
             <div class="d-flex">
-                
-                @if($ticket->derivaciones->count() > 0 && !$ticket->responsable)
-                <form action="{{ route('asignaciones_tickets.store') }}" method="POST" class="mr-2">
-                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                    <input type="hidden" name="derivacion_id" value="{{ $ticket->last_derivacion->id }}">
-                    <button type="submit" class="btn btn-primary">Tomar ticket</button>
-                </form>
-                @endif
-                @if($ticket->derivaciones->count() > 0 && $ticket->responsable && $ticket->responsable->user_id  != Auth::user()->id)
-                <form action="{{ route('asignaciones_tickets.store') }}" method="POST" class="mr-2">
-                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                    <input type="hidden" name="derivacion_id" value="{{ $ticket->last_derivacion->id }}">
-                    <button type="submit" class="btn btn-primary">Tomar ticket</button>
-                </form>
+
+                @if($ticket->derivaciones->count() > 0)
+                <button class="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#asignarTicket">Asignar ticket</button>
                 @endif
                 <button class="btn btn-primary mr-2" data-bs-toggle="modal" data-bs-target="#derivarTicket">Derivar ticket</button>
                 <div class="btn-group">
@@ -161,6 +150,9 @@
         @endif
     </div>
 </div>
+@include('tickets.tickets.modals.derivar_ticket')
+@include('tickets.tickets.modals.asignar_ticket')
+@include('tickets.tickets.modals.historial_derivaciones')
 <script>
     Simditor.locale = 'es-AR';
     let editor = new Simditor({
@@ -184,21 +176,21 @@
         ]
     });
 
-    /*
-    $(document).ready(function () {
+
+    $(document).ready(function() {
 
 
-        $('#role_destinatario').select2({
-            width: "50%",
-            placeholder: "Seleccione roles para el mensaje"
-
+        $('#user_id').select2({
+            placeholder: "Seleccione el usuario a asignar",
+            dropdownParent: $('#asignarTicket'),
+            placeholder: 'Seleccione carrera',
+            theme: "default",
+            width: "100%",
+            allowClear: true
         });
 
-    });*/
+    });
 </script>
-@include('tickets.tickets.modals.derivar_ticket')
-@include('tickets.tickets.modals.historial_derivaciones')
-
 @endsection
 @section('scripts')
 <script src="{{ asset('js/tickets/ticket.js') }}"></script>

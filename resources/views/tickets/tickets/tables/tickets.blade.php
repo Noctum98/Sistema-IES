@@ -1,4 +1,8 @@
-<form method="GET" action="{{ route('tickets.ticket.index') }}" class="mt-3">
+
+<div class="alert alert-info mt-3">
+    {{$mensaje}}
+</div>
+<form method="GET" action="{{ route('tickets.ticket.index') }}" class="mt-1">
     <input type="hidden" value="{{ $seccion }}" name="seccion">
     <div class="row">
         <!-- Input de búsqueda -->

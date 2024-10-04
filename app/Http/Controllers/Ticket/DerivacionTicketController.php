@@ -16,7 +16,7 @@ class DerivacionTicketController extends Controller
 
     public function show(Request $request,$ticket_id)
     {
-        $derivaciones = DerivacionTicket::where('ticket_id',$ticket_id)->with(['operador','rol','ticket','sede','carrera','asignaciones','asignaciones.user'])->orderBy('activa','desc')->get();
+        $derivaciones = DerivacionTicket::where('ticket_id',$ticket_id)->with(['operador','rol','ticket','sede','carrera','asignaciones','asignaciones.user','asignaciones.asignante'])->orderBy('activa','desc')->get();
 
         return response()->json($derivaciones,200);
     }

@@ -75,7 +75,7 @@
 <div class="mb-3 row">
     <label for="url" class="col-form-label text-lg-end col-lg-2 col-xl-3">Url (Opcional)</label>
     <div class="col-lg-10 col-xl-9">
-        <input class="form-control {{ $errors->has('url') ? ' is-invalid' : '' }}" name="url" type="text" id="url" value="{{ old('url', optional($ticket)->url) }}" minlength="1" maxlength="191" placeholder="Ingresa la url del error...">
+        <input class="form-control {{ $errors->has('url') ? ' is-invalid' : '' }}" name="url" type="text" id="url" value="{{ old('url', optional($ticket)->url) }}" minlength="1" maxlength="191" placeholder="ej: https://data-iesvu.iesvu.edu.ar/mesas/administrar">
         {!! $errors->first('url', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>

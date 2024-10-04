@@ -12,7 +12,7 @@ class AsignacionTicket extends Model
 {
     use HasFactory;
     protected $table = 'asignaciones_tickets';
-    protected $fillable = ['user_id','derivacion_id','ticket_id','responsable'];
+    protected $fillable = ['user_id','derivacion_id','ticket_id','responsable','asignante_id'];
 
     protected static function boot()
     {
@@ -29,6 +29,11 @@ class AsignacionTicket extends Model
     }
 
     public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function asignante(): BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');
     }
