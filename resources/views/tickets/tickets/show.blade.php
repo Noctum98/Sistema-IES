@@ -154,6 +154,21 @@
 @include('tickets.tickets.modals.asignar_ticket')
 @include('tickets.tickets.modals.historial_derivaciones')
 <script>
+
+$(document).ready(function() {
+
+
+$('#user_id').select2({
+    placeholder: "Seleccione el usuario a asignar",
+    dropdownParent: $('#asignarTicket'),
+    placeholder: 'Seleccione carrera',
+    theme: "default",
+    width: "100%",
+    allowClear: true
+});
+
+});
+
     Simditor.locale = 'es-AR';
     let editor = new Simditor({
         textarea: $('#contenido'),
@@ -174,21 +189,6 @@
             'indent',
             'outdent'
         ]
-    });
-
-
-    $(document).ready(function() {
-
-
-        $('#user_id').select2({
-            placeholder: "Seleccione el usuario a asignar",
-            dropdownParent: $('#asignarTicket'),
-            placeholder: 'Seleccione carrera',
-            theme: "default",
-            width: "100%",
-            allowClear: true
-        });
-
     });
 </script>
 @endsection
