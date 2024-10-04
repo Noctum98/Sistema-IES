@@ -35,7 +35,7 @@ class AsignacionTicket extends Model
 
     public function asignante(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'asignante_id');
     }
 
     public function derivacion(): BelongsTo
