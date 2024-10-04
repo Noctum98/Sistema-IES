@@ -46,7 +46,7 @@
                 <dd class="col-lg-10 col-xl-9">{{ $libroDigital->number }} / {{ $libroDigital->romanos }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Resolución</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->resoluciones)->name }}</dd>
-                    <dt class="text-lg-end col-lg-2 col-xl-3">N°</dt>
+                <dt class="text-lg-end col-lg-2 col-xl-3">N°</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->resoluciones)->resolution }}</dd>
                 <dt class="text-lg-end col-lg-2 col-xl-3">Libro Papel (físico)</dt>
                 <dd class="col-lg-10 col-xl-9">{{ optional($libroDigital->LibrosPapele)->name }}</dd>
@@ -70,12 +70,35 @@
                 @endif
             </dl>
 
+            @if($mesaFolio)
+                <div class="card-body col-8 mx-auto bg-light">
+                    <h4>Folio
+                        <a href="{{ route('mesa_folios.mesa_folio.edit', $mesaFolio->id ) }}" class="btn btn-primary float-end mr-5"
+                           title="Editar Folio">
+                            <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span> Editar
+                        </a>
+                    </h4>
+                    <dl class="row">
+                        <x-dl-mesa-folio :mesaFolio="$mesaFolio"/>
+                    </dl>
 
-            <a href="{{ route('mesa_folios.mesa_folio.carga_folio_by_libro', [
-    'libroDigital'=> $libroDigital->id,'mesa' => $libro->mesa, 'libro' => $libro->id
-]) }}" class="btn btn-primary"
-            >Cargar Folio
-            </a>
+                    {{--                        <a href="{{ route('folio_notas.folio_nota.carga_actas-volantes', [--}}
+                    {{--    'mesaFolio'=> $mesaFolio->id, 'libro' => $libro->id--}}
+                    {{--]) }}" class="btn btn-primary"--}}
+                    {{--                        >Cargar Notas de Actas Volantes--}}
+                    {{--                        </a>--}}
+
+                </div>
+
+            @else
+                <a href="{{ route('mesa_folios.mesa_folio.carga_folio_by_libro', [
+                    'libroDigital'=> $libroDigital->id,'mesa' => $libro->mesa, 'libro' => $libro->id
+                    ]) }}" class="btn btn-primary">
+                    Cargar Folio
+                </a>
+            @endif
+
+
         </div>
     </div>
 
