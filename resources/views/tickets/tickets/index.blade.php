@@ -26,13 +26,14 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $request['seccion'] == 'mis_tickets' || !$request['seccion'] ? 'active' : '' }}" id="home-tab" data-bs-toggle="tab" data-bs-target="#mis_tickets" type="button" role="tab" aria-controls="mis_tickets" aria-selected="true" title="{{ $mensajes['mis_tickets'] }}">Mis tickets</button>
             </li>
+            @if(Session::has('admin') || Session::has('avisos'))
+
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $request['seccion'] == 'asignados' ? 'active' : '' }}" id="profile-tab" data-bs-toggle="tab" data-bs-target="#asignados" type="button" role="tab" aria-controls="asignados" aria-selected="false" title="{{ $mensajes['asignados'] }}">Asignados a mi</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $request['seccion'] == 'derivados' ? 'active' : '' }}" id="derivados-tab" data-bs-toggle="tab" data-bs-target="#derivados" type="button" role="tab" aria-controls="derivados" aria-selected="false" title="{{ $mensajes['derivados'] }}">Derivados a mi sección</button>
             </li>
-            @if(Session::has('admin') || Session::has('avisos'))
             <li class="nav-item" role="presentation">
                 <button class="nav-link {{ $request['seccion'] == 'todos' ? 'active' : '' }}" id="todos-tab" data-bs-toggle="tab" data-bs-target="#todos" type="button" role="tab" aria-controls="todos" aria-selected="false" title="{{ $mensajes['todos'] }}">Todos</button>
             </li>
@@ -44,6 +45,7 @@
                     @include('tickets.tickets.tables.tickets',['tickets'=>$misTickets,'seccion'=>'mis_tickets','mensaje'=>$mensajes['mis_tickets']])
                 </div>
             </div>
+            @if(Session::has('avisos'))
             <div class="tab-pane fade {{ $request['seccion'] == 'asignados' ? 'show active' : '' }}" id="asignados" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="list-group">
                     @include('tickets.tickets.tables.tickets',['tickets'=>$asignados,'seccion'=>'asignados','mensaje'=>$mensajes['asignados']])
@@ -59,6 +61,7 @@
                     @include('tickets.tickets.tables.tickets',['tickets'=>$todos,'seccion'=>'todos','mensaje'=>$mensajes['todos']])
                 </div>
             </div>
+            @endif
         </div>
     </div>
 
