@@ -151,7 +151,9 @@
     </div>
 </div>
 @include('tickets.tickets.modals.derivar_ticket')
-@include('tickets.tickets.modals.asignar_ticket')
+@if($ticket->derivaciones->count() > 0)
+    @include('tickets.tickets.modals.asignar_ticket')
+@endif
 @include('tickets.tickets.modals.historial_derivaciones')
 <script>
 
