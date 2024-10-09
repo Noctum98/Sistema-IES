@@ -58,7 +58,7 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         // $active_sheet->getRowDimension('3')->setRowHeight(40);
         // $active_sheet->getRowDimension('4')->setRowHeight(40);
 
-        foreach(range(1,9) as $rowID)
+        foreach(range(1,10) as $rowID)
         {
             $active_sheet->getStyle('A'.$rowID)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('fbbc04');
             $active_sheet->getStyle('A'.$rowID)->getBorders()
