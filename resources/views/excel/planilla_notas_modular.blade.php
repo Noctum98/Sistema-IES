@@ -20,19 +20,6 @@
             <th colspan="7"><b>ESPACIO CURRICULAR: {{ $materia->nombre }} </b></th>
         </tr>
         <tr>
-            <th colspan="7"><b>Docentes:
-                    @foreach($cargos as $cargo)
-                    @foreach($cargo->users as $key => $user)
-                    {{ mb_strtoupper($user->apellido).' '.ucwords($user->nombre) }}
-                    @if (!$loop->last)
-                    -
-                    @endif
-                    @endforeach
-                    @endforeach
-                </b></th>
-        </tr>
-
-        <tr>
             <th colspan="7"> <b>MODALIDAD: {{ $materia->carrera->modalidad }} </b></th>
         </tr>
         <tr>

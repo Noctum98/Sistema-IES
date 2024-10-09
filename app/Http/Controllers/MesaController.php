@@ -409,6 +409,11 @@ class MesaController extends Controller
         ->get();
         
 
+        if(count($mesa_alumnos) > 0)
+        {
+            return redirect()->back()->with(['alert_danger'=>'Hay notas sin colocar en la planilla.']);
+        }
+
         if ($request['llamado'] == "1") {
             $mesa->cierre_profesor = true;
             $mesa->fecha_cierre_profesor = Carbon::now();
