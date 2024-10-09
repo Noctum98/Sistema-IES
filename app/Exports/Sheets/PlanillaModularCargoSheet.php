@@ -43,7 +43,7 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
         $active_sheet = $event->sheet->getDelegate();
         $active_sheet->getColumnDimension('A')->setAutoSize(true);
 
-        foreach (range('B', 'G') as $columnID) {
+        foreach (range('B', 'H') as $columnID) {
 
             $active_sheet->getColumnDimension($columnID)
                 ->setWidth('25');
@@ -65,8 +65,8 @@ class PlanillaModularCargoSheet implements FromView, WithTitle, WithEvents
             ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         }
 
-        $active_sheet->getStyle('A11:G11')->getBorders()
+        $active_sheet->getStyle('A10:H10')->getBorders()
         ->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $active_sheet->getStyle('A11:G11')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
+        $active_sheet->getStyle('A10:H10')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('46bdc6');
     }
 }

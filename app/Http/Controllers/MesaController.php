@@ -397,6 +397,23 @@ class MesaController extends Controller
     {
         $mesa = Mesa::find($id);
 
+        $segundo_llamado = $request['llamado'] == 1 ? 0 : 1;
+
+        $mesa_alumnos = MesaAlumno::where([
+            'mesa_id' => $mesa->id,
+            'segundo_llamado' => $segundo_llamado,
+            'estado_baja' => 0,
+            'confirmado' => 1
+        ])
+        ->whereDoesntHave('acta_volante') 
+        ->get();
+        
+
+        if(count($mesa_alumnos) > 0)
+        {
+            return redirect()->back()->with(['alert_danger'=>'Hay notas sin colocar en la planilla.']);
+        }
+
         if ($request['llamado'] == "1") {
             $mesa->cierre_profesor = true;
             $mesa->fecha_cierre_profesor = Carbon::now();

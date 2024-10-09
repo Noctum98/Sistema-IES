@@ -42,13 +42,20 @@ class TicketsController extends Controller
     {
         $user = Auth::user();
         $mis_roles = Auth::user()->roles->pluck('id');
+        $mensajes = [
+            'mis_tickets' => 'Se visualizan los tickets que he creado.',
+            'derivados' => 'Se visualizan los tickets que corresponden a mi sección o al rol que desempeño.',
+            'asignados' => 'Se visualizan los tickets que me asignan, o los que me asigno para resolver.',
+            'todos' => 'Se visualizan todos los tickets creados, asignados y derivados.'
+        ];
+
         $misTickets = $this->ticketService->getTickets($request,$user,$mis_roles,'mis_tickets');
         $derivados = $this->ticketService->getTickets($request,$user,$mis_roles,'derivados');
         $asignados = $this->ticketService->getTickets($request,$user,$mis_roles,'asignados');
         $todos = $this->ticketService->getTickets($request,$user,$mis_roles,'todos');
         $estados = EstadoTicket::all();
         $categorias = CategoriaTicket::all();
-        return view('tickets.tickets.index', compact('misTickets','asignados','derivados','estados','categorias','todos','request'));
+        return view('tickets.tickets.index', compact('misTickets','asignados','derivados','estados','categorias','todos','request','mensajes'));
     }
 
     /**
@@ -108,11 +115,21 @@ class TicketsController extends Controller
         $estados = EstadoTicket::pluck('nombre', 'id')->all();
         $roles = Rol::where('tipo',0)->pluck('descripcion','id')->all();
         $sedes = Sede::pluck('nombre','id')->all();
+        $rol = $ticket->last_derivacion ? $ticket->last_derivacion->rol_id : null;
+        $users = null;
+
+        if($rol)
+        {
+            $users = User::whereHas('roles',function($query) use ($rol){
+                return $query->where('roles.id',$rol);
+            })->get();
+        }
+
         $permisos = $this->ticketService->permisosTicket($ticket);
         $admin = $permisos['admin'];
         $respuesta = $permisos['respuesta'];
 
-        return view('tickets.tickets.show', compact('ticket','estados','roles','sedes','admin','respuesta'));
+        return view('tickets.tickets.show', compact('ticket','estados','roles','sedes','admin','respuesta','users'));
     }
 
     /**

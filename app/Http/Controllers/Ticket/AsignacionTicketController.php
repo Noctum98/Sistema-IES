@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket\AsignacionTicket;
+use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,8 +44,14 @@ class AsignacionTicketController extends Controller
      */
     public function store(Request $request)
     {
-        $request['user_id'] = Auth::user()->id;
+        $request['asignante_id'] = Auth::user()->id;
+        $ticket = Ticket::find($request['ticket_id']);
         $data = $this->getData($request);
+
+        if($ticket->responsable && $ticket->responsable->user->id == $request['user_id'])
+        {
+            return redirect()->back()->with(['alert_danger'=>'El usuario indicado ya es el reponsable del ticket.']);
+        }
 
         $responsables = AsignacionTicket::where('ticket_id',$data['ticket_id'])->update(['responsable'=>false]);
 
@@ -63,7 +70,7 @@ class AsignacionTicketController extends Controller
      */
     public function show($ticket_id)
     {
-        $asignacionesTicket = AsignacionTicket::where('ticket_id',$ticket_id)->with(['user','derivacion','ticket'])->get();
+        $asignacionesTicket = AsignacionTicket::where('ticket_id',$ticket_id)->with(['user','derivacion','ticket','asignante'])->get();
 
         return response()->json($asignacionesTicket,200);
     }
@@ -107,7 +114,8 @@ class AsignacionTicketController extends Controller
         $rules = [
             'user_id' => 'required',
             'derivacion_id' => 'required',
-            'ticket_id' => 'required'
+            'ticket_id' => 'required',
+            'asignante_id' => 'required'
         ];
 
         $data = $request->validate($rules);

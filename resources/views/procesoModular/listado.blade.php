@@ -89,11 +89,6 @@
                         <p>Año: {{$materia->año}}° - Carrera: {{$materia->carrera->nombre}}</p>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="blockquote blockquote-footer mt-1 mb-0">
-                        Prof.: {{$materia->getProfesoresModulares()}}
-                    </div>
-                </div>
             </div>
         </div>
         <div class="row">

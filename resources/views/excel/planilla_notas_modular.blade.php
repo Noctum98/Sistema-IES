@@ -1,45 +1,32 @@
 <table>
     <thead>
         <tr>
-            <th colspan="7" style="text-align: center;"><b>PLANILLA DE CALIFICACIONES</b></th>
+            <th colspan="8" style="text-align: center;"><b>PLANILLA DE CALIFICACIONES</b></th>
         </tr>
         <tr>
-            <th colspan="7" style="text-align: center;" valign="middle">
+            <th colspan="8" style="text-align: center;" valign="middle">
             </th>
         </tr>
         <tr>
-            <th colspan="7"><b>INSTITUTO DE EDUCACION SUPERIOR 9-015 VALLE DE UCO</b></th>
+            <th colspan="8"><b>INSTITUTO DE EDUCACION SUPERIOR 9-015 VALLE DE UCO</b></th>
         </tr>
         <tr>
-            <th colspan="7"><b>UNIDAD ACADEMICA: {{$materia->carrera->sede->nombre}}</b></th>
+            <th colspan="8"><b>UNIDAD ACADEMICA: {{$materia->carrera->sede->nombre}}</b></th>
         </tr>
         <tr>
-            <th colspan="7"><b>CARRERA: {{ $materia->carrera->nombre.' ( '.ucwords($materia->carrera->turno).' )' }} </b></th>
+            <th colspan="8"><b>CARRERA: {{ $materia->carrera->nombre.' ( '.ucwords($materia->carrera->turno).' )' }} </b></th>
         </tr>
         <tr>
-            <th colspan="7"><b>ESPACIO CURRICULAR: {{ $materia->nombre }} </b></th>
+            <th colspan="8"><b>ESPACIO CURRICULAR: {{ $materia->nombre }} </b></th>
         </tr>
         <tr>
-            <th colspan="7"><b>Docentes:
-                    @foreach($cargos as $cargo)
-                    @foreach($cargo->users as $key => $user)
-                    {{ mb_strtoupper($user->apellido).' '.ucwords($user->nombre) }}
-                    @if (!$loop->last)
-                    -
-                    @endif
-                    @endforeach
-                    @endforeach
-                </b></th>
-        </tr>
-
-        <tr>
-            <th colspan="7"> <b>MODALIDAD: {{ $materia->carrera->modalidad }} </b></th>
+            <th colspan="8"> <b>MODALIDAD: {{ $materia->carrera->modalidad }} </b></th>
         </tr>
         <tr>
-            <th style="text-align: left;" colspan="7"><b>Ciclo Lectivo: {{ $ciclo_lectivo }} </b></th>
+            <th style="text-align: left;" colspan="8"><b>Ciclo Lectivo: {{ $ciclo_lectivo }} </b></th>
         </tr>
         <tr>
-            <th colspan="7"><b>AÑO: {{ $materia->año }} </b></th>
+            <th colspan="8"><b>AÑO: {{ $materia->año }} </b></th>
         </tr>
 
         <tr>
