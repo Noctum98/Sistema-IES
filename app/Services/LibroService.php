@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\ActaVolante;
 use App\Models\Libro;
-use App\Models\Mesa;
 use App\Models\Nota;
 
 class LibroService
@@ -37,40 +36,39 @@ class LibroService
             ->where('min', '60')->first();
 
 //        // Obtener todas las actas volantes para la mesa actual
-        if($inscripciones === true){
+        if ($inscripciones === true) {
             $libro->obtenerActasVolantesByMesaAlumno();
-        }else{
+        } else {
             $libro->obtenerActasVolantes();
         }
 
-        // Contar las actas volantes con promedio >= nota aprobado
-        // y agregarlo al desglose
-        $desgloseAprobados['aprobados'] = ActaVolante::where(
+//        Si hay actas volantes hago el desglose
+        if (count($libro->actasVolantes) > 0) {
 
-            'promedio', '>=', (int)$notaAprobado->valor)
-            ->where('libro_id', '=', $libro->id)
-            ->count();
+            // Contar las actas volantes con promedio >= nota aprobado
+            // y agregarlo al desglose
+            $desgloseAprobados['aprobados'] = ActaVolante::where(
 
+                'promedio', '>=', (int)$notaAprobado->valor)
+                ->where('libro_id', '=', $libro->id)
+                ->count();
 
-        // Contar las actas volantes con promedio entre 0 y la nota aprobada
-        // y agregarlo al desglose
-        $desgloseAprobados['desaprobados'] = ActaVolante::whereBetween(
-//        $desgloseAprobados['desaprobados'] = $actasVolantes->whereBetween(
-            'promedio', [0, (int)$notaAprobado->valor - 1])
-            ->where('libro_id', '=', $libro->id)
-            ->count();
+            // Contar las actas volantes con promedio entre 0 y la nota aprobada
+            // y agregarlo al desglose
+            $desgloseAprobados['desaprobados'] = ActaVolante::whereBetween(
+                'promedio', [0, (int)$notaAprobado->valor - 1])
+                ->where('libro_id', '=', $libro->id)
+                ->count();
 
+            // Contar las actas volantes con promedio = -1 (ausentes)
+            // y agregarlo al desglose
+            $desgloseAprobados['ausentes'] = ActaVolante::where(
+                'promedio', '=', -1)
+                ->where('libro_id', '=', $libro->id)
+                ->count();
 
-        // Contar las actas volantes con promedio = -1 (ausentes)
-        // y agregarlo al desglose
-        $desgloseAprobados['ausentes'] = ActaVolante::where(
-//        $desgloseAprobados['ausentes'] = $actasVolantes->where(
-            'promedio', '=', -1)
-            ->where('libro_id', '=', $libro->id)
-            ->count();
-
-
-        $desgloseAprobados['total'] = $desgloseAprobados['aprobados'] + $desgloseAprobados['desaprobados'] + $desgloseAprobados['ausentes'];
+            $desgloseAprobados['total'] = $desgloseAprobados['aprobados'] + $desgloseAprobados['desaprobados'] + $desgloseAprobados['ausentes'];
+        }
 
         return $desgloseAprobados;
     }

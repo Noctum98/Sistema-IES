@@ -269,16 +269,18 @@ class LibroDigitalService
             'folio' => $libroAnterior->folio,
         ])->first();
 
-        $desglose = $libro->getResultadosActasVolantes();
+        $desglose = $libro->getResultadosActasVolantes(true);
 
-        if ($mesaFolio) {
-            $this->updateMesaFolio($desglose, $mesaFolio, $mesa, $libro, $user);
-        } else {
-            $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
+        if ($desglose) {
+            if ($mesaFolio) {
+                $this->updateMesaFolio($desglose, $mesaFolio, $mesa, $libro, $user);
+            } else {
+                $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
+            }
         }
 
+        $actas = $libro->obtenerActasVolantesByMesaAlumno();
 
-        $actas = $libro->obtenerActasVolantes();
         $orden = 0;
 
         foreach ($actas as $acta) {
