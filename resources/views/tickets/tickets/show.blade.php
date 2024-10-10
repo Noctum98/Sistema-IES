@@ -68,7 +68,8 @@
                 @if($ticket->captura && $ticket->last_estado_ticket->identificador != 'cerrado')
                 <a class="btn btn-sm btn-primary" href="{{ route('tickets.captura',$ticket->id) }}" target="_blank">Ver captura</a>
                 @else
-                -
+                                    <a href="#" class="disabled" target="_blank" rel="noopener noreferrer">{{ $ticket->url }}</a>
+
                 @endif
             </dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Url:</dt>
@@ -76,7 +77,7 @@
                 @if($ticket->url)
                 <a href="{{ $ticket->url }}" target="_blank" rel="noopener noreferrer">{{ $ticket->url }}</a>
                 @else
-                    <a href="#" class="disabled" target="_blank" rel="noopener noreferrer">{{ $ticket->url }}</a>
+                -
                 @endif
             </dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Creado:</dt>
