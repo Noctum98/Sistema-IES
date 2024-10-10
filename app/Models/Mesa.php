@@ -86,6 +86,20 @@ class Mesa extends Model
         return $inscriptos->orderBy('apellidos', 'ASC')->get();
     }
 
+
+    public function mesa_inscriptos_by_llamado(int $orden, bool $segundo): Collection
+    {
+        $take = 26;
+        $skip = $take * ($orden - 1);
+        $inscriptos = $this->hasMany(MesaAlumno::class)
+            ->where(['estado_baja' => false, 'segundo_llamado' => $segundo]);
+
+        $inscriptos = $inscriptos->skip($skip)
+            ->take($take);
+
+        return $inscriptos->orderBy('apellidos', 'ASC')->get();
+    }
+
     /**
      * @param int $orden
      * @param bool $all
@@ -325,8 +339,5 @@ class Mesa extends Model
     {
         return (new MesaService())->getDesgloseAprobados($this);
     }
-
-
-
 
 }

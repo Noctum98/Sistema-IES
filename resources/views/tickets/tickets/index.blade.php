@@ -45,7 +45,7 @@
                     @include('tickets.tickets.tables.tickets',['tickets'=>$misTickets,'seccion'=>'mis_tickets','mensaje'=>$mensajes['mis_tickets']])
                 </div>
             </div>
-            @if(Session::has('avisos'))
+            @if(Session::has('avisos') || Session::has('admin'))
             <div class="tab-pane fade {{ $request['seccion'] == 'asignados' ? 'show active' : '' }}" id="asignados" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="list-group">
                     @include('tickets.tickets.tables.tickets',['tickets'=>$asignados,'seccion'=>'asignados','mensaje'=>$mensajes['asignados']])
