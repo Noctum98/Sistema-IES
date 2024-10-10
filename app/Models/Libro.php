@@ -57,7 +57,7 @@ class Libro extends Model
             $llamado = $this->llamado;
 
             $segundoLlamado = false;
-            if($llamado === 2){
+            if($llamado === "2"){
                 $segundoLlamado = true;
             }
 
@@ -66,14 +66,11 @@ class Libro extends Model
                 'segundo_llamado' => $segundoLlamado
             ])->pluck('id');
 
-
-
             $actasVolantes = ActaVolante::whereIn('mesa_alumno_id', $mesaAlumno)->get()
                 ->sortBy(function ($acta, $key) {
                     return $acta->alumno->apellidos . ' ' . $acta->alumno->nombre;
                 })
             ;
-
 
             foreach ($actasVolantes as $acta) {
                 $acta->libro_id = $this->id;
