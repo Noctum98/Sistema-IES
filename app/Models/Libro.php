@@ -54,10 +54,9 @@ class Libro extends Model
     {
         $actasVolantes = $this->actasVolantes;
         if($actasVolantes->isEmpty()){
-            $llamado = $this->llamado;
-
+            $llamado = (int) $this->llamado;
             $segundoLlamado = false;
-            if($llamado === "2"){
+            if($llamado === 2){
                 $segundoLlamado = true;
             }
 
