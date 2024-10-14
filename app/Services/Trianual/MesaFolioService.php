@@ -25,7 +25,7 @@ class MesaFolioService
 
         if (!$mesaFolio) {
             $desglose = $libro->getResultadosActasVolantes();
-            dd($desglose);
+
 
             $mesaFolio = $this->setMesaFolio($desglose, $libroDigital, $mesa, $libro, $user);
         }

@@ -37,13 +37,14 @@ class LibroService
 
 //        // Obtener todas las actas volantes para la mesa actual
         if ($inscripciones === true) {
-            $libro->obtenerActasVolantesByMesaAlumno();
+            $actasVolantes = $libro->obtenerActasVolantesByMesaAlumno();
+
         } else {
-            $libro->obtenerActasVolantes();
+            $actasVolantes =$libro->obtenerActasVolantes();
         }
 
 //        Si hay actas volantes hago el desglose
-        if (count($libro->actasVolantes) > 0) {
+        if (count($actasVolantes) > 0) {
 
             // Contar las actas volantes con promedio >= nota aprobado
             // y agregarlo al desglose
