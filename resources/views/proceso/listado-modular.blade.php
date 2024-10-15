@@ -67,9 +67,11 @@
                         Correspondiente al módulo <i>{{$materia->nombre}}</i> <br/>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="blockquote blockquote-footer mt-1 mb-0">Prof.: {{$cargo->profesores()}}</div>
-                </div>
+{{--                <div class="card-footer">--}}
+{{--                    <div class="blockquote blockquote-footer mt-1 mb-0">--}}
+{{--                        Prof.: {{$cargo->profesores()}}--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
         </div>
 

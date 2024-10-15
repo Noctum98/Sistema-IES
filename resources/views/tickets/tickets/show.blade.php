@@ -65,10 +65,10 @@
             <dd class="col-lg-10 col-xl-9">{!! $ticket->descripcion !!}</dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Captura:</dt>
             <dd class="col-lg-10 col-xl-9">
-                @if($ticket->captura)
+                @if($ticket->captura && $ticket->last_estado_ticket->identificador != 'cerrado')
                 <a class="btn btn-sm btn-primary" href="{{ route('tickets.captura',$ticket->id) }}" target="_blank">Ver captura</a>
                 @else
-                -
+                    <a href="#" class="btn btn-sm btn-primary disabled" target="_blank" rel="noopener noreferrer">Ver captura</a>
                 @endif
             </dd>
             <dt class="text-lg-end col-lg-2 col-xl-3">Url:</dt>
