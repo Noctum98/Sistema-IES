@@ -39,7 +39,7 @@ class AlumnoProcesoController extends Controller
      * @param int $year
      * @return Application|Factory|View|RedirectResponse
      */
-    public function vista_procesos(int $id, Carrera $carrera, int $year)
+    public function vista_procesos(int $id, Carrera $carrera, int $year,$cohorte)
     {
         $alumno = Alumno::find($id);
 
@@ -66,11 +66,13 @@ class AlumnoProcesoController extends Controller
             }
         }
 
+
         return view('proceso.alumno', [
             'alumno' => $alumno,
             'procesos' => $procesos,
             'carrera' => $carrera,
-            'year' => $year
+            'year' => $year,
+            'cohorte' => $cohorte
         ]);
     }
 

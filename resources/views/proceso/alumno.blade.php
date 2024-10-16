@@ -19,7 +19,7 @@
                     {{$carrera->nombre}}  {{$year}} año
                     <br/>
                     <small>
-                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id])}}"
+                        <a href="{{route('proceso.alumnoCarrera', ['idAlumno'=>$alumno->id, 'idCarrera' => $carrera->id,'cohorte'=>$cohorte])}}"
                            class="btn btn-sm btn-light "
                         >
                             Volver a la libreta

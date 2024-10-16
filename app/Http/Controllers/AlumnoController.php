@@ -186,7 +186,7 @@ class AlumnoController extends Controller
                 'alumno_id' => $alumno->id
                 ])
                 ->orderBy('ciclo_lectivo', 'desc')
-                ->orderBy('created_at', 'desc') // En caso de empate, ordenar por fecha de creación
+                ->orderBy('created_at', 'desc')
                 ->first();
 
             if (!in_array($datoActual, $inscripciones)) {
