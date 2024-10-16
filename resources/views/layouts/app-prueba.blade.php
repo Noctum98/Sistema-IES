@@ -72,7 +72,7 @@
                             Mi Perfil
                         </a>
                     </li>
-                    @if(Session::has('admin') || Session::has('avisos'))
+                    @if(Session::has('coordinador') || Session::has('admin') || Session::has('seccionAlumnos') || Session::has('avisos') || Session::has('regente') || Session::has('areaSocial'))
                     <li>
                         <a class="dropdown-item" href="{{ route('tickets.ticket.index') }}">
                             Tickets
