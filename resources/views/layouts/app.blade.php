@@ -2,23 +2,23 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>DATA IESVU</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="{{asset('css/simple-datatables_style.css')}}" rel="stylesheet" />
-    <link href="{{asset('css/font-awesome/6.5.2/css/all.css')}}" rel="stylesheet" />
-    <link href="{{asset('css/font-awesome/6.5.2/css/v5-font-face.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('css/font-awesome/6.5.2/css/v4-shims.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('css/simple-datatables_style.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/font-awesome/6.5.2/css/all.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/font-awesome/6.5.2/css/v5-font-face.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/font-awesome/6.5.2/css/v4-shims.min.css')}}" rel="stylesheet"/>
 
 
     <script src="{{ asset('js/main.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
     <script src="{{asset('js/jquery_1.11.3.js')}}"></script>
-    <script src="{{asset('js/bootstrap.bundle.js')}}" ></script>
+    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
     <script src="{{ asset('vendors/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('vendors/select2/js/i18n/es.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -35,7 +35,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/select2/css/select2.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/styless.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/styless.css') }}"/>
 
 </head>
 
@@ -47,7 +47,8 @@
     </a>
     <!-- Sidebar Toggle-->
     @if(Auth::user())
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
     @endif
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
 
@@ -63,7 +64,8 @@
             @endif
         @else
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
                     {{ Auth::user()->nombre.' '.Auth::user()->apellido }}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -72,7 +74,15 @@
                             Mi Perfil
                         </a>
                     </li>
-                    <hr class="dropdown-divider" />
+                    @if(Session::has('coordinador') || Session::has('admin') || Session::has('seccionAlumnos') || Session::has('avisos') || Session::has('regente') || Session::has('areaSocial'))
+                        <li>
+                            <a class="dropdown-item" href="{{ route('tickets.ticket.index') }}">
+                                Tickets
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+                <hr class="dropdown-divider"/>
             </li>
             <li>
                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -101,11 +111,11 @@
         </main>
     </div>
 </div>
-<script src="{{asset('vendors/font-awesome/5.15.3/js/all.js')}}" ></script>
+<script src="{{asset('vendors/font-awesome/5.15.3/js/all.js')}}"></script>
 @if(!Auth::user())
     <script>
-        if($( window ).width() > 1000){
-            $('#layoutSidenav_content').css('padding-left',0);
+        if ($(window).width() > 1000) {
+            $('#layoutSidenav_content').css('padding-left', 0);
         }
     </script>
 @endif
