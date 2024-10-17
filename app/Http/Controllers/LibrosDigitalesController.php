@@ -62,6 +62,61 @@ class LibrosDigitalesController extends Controller
      * @param Request $request
      * @return View
      */
+    public function search(Request $request): View
+    {
+        $sedes = $this->getSedes(true);
+
+        $sede_id = $request->has('sede_id') ? $request->get('sede_id') : reset($sedes);
+
+        $sede = Sede::where('nombre', $sede_id)->get()->pluck('id')->toArray();
+
+        $librosDigitales = LibroDigital::with(
+            'sede',
+        )
+            ->whereIn('sede_id', $sede)
+            ->orderBy('sede_id')
+            ->orderBy('resoluciones_id')
+            ->orderBy('number')
+            ->paginate(25);
+
+
+        return view('libros_digitales.search', compact('librosDigitales', 'sedes', 'sede_id'));
+    }
+
+    /**
+     * Display a listing of the libros digitales.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function searchSede(Request $request)
+    {
+        $sede_id = $request->has('sede_id') ? $request->get('sede_id'):null;
+        if(!$sede_id){
+            return redirect()->route('libros_digitales.libro_digital.search')->with('alert_danger', 'No se encontró la sede');
+        }
+
+        $sede = Sede::where('nombre', $sede_id)->get()->pluck('id')->toArray();
+
+        $librosDigitales = LibroDigital::with(
+            'sede',
+        )
+            ->whereIn('sede_id', $sede)
+            ->orderBy('sede_id')
+            ->orderBy('resoluciones_id')
+            ->orderBy('number')
+            ->paginate(25);
+
+
+        return view('libros_digitales.searchSede', compact('librosDigitales', 'sedes', 'sede_id'));
+    }
+
+    /**
+     * Display a listing of the libros digitales.
+     *
+     * @param Request $request
+     * @return View
+     */
     public function indexSede(Request $request): View
     {
         $sedes = $this->getSedes(true);
