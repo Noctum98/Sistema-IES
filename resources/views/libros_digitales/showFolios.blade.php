@@ -167,9 +167,9 @@
                                 {{$folioNota->orden}}
                             </span>
                                 <span class="col-sm-5">
-                                {{$folioNota->alumno->getApellidosNombresAttribute()}}
+                                    {{$folioNota->alumno()->withTrashed()->first()->getApellidosNombresAttribute()}}
                                     <span style="font-size: 0.75em">
-                                        {{$folioNota->alumno->dni}}
+                                        {{$folioNota->alumno()->withTrashed()->first()->dni}}
                                     </span>
                             </span>
                                 <span class="col-sm-2">
