@@ -8,6 +8,7 @@ use App\Models\Libro;
 use App\Models\LibroDigital;
 use App\Models\MesaFolio;
 use App\Models\Sede;
+use App\Models\User;
 use App\Repository\Carrera\CarreraRepository;
 use App\Repository\LibroDigital\LibroDigitalRepository;
 use App\Repository\Sede\SedeRepository;
@@ -91,24 +92,33 @@ class LibrosDigitalesController extends Controller
      */
     public function searchSede(Request $request)
     {
-        $sede_id = $request->has('sede_id') ? $request->get('sede_id'):null;
-        if(!$sede_id){
-            return redirect()->route('libros_digitales.libro_digital.search')->with('alert_danger', 'No se encontró la sede');
+        $sede_id = $request->has('sede_id') ? $request->get('sede_id') : null;
+        if (!$sede_id) {
+            return redirect()->route('libros_digitales.libro_digital.search')
+                ->with('alert_danger', 'No se encontró la sede');
         }
 
-        $sede = Sede::where('nombre', $sede_id)->get()->pluck('id')->toArray();
+        $sede = Sede::where('nombre', $sede_id)->first();
 
-        $librosDigitales = LibroDigital::with(
-            'sede',
-        )
-            ->whereIn('sede_id', $sede)
-            ->orderBy('sede_id')
-            ->orderBy('resoluciones_id')
-            ->orderBy('number')
-            ->paginate(25);
+        if (!$sede) {
+            return redirect()->route('libros_digitales.libro_digital.search')
+                ->with('alert_danger', 'No se encontró la sede');
+        }
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        if(!$user->hasSede($sede->id)){
+            return redirect()->route('libros_digitales.libro_digital.search')
+                ->with('alert_danger', 'No tiene la sede asignada');
+        }
+
+$carreras = $sede->carreras;
 
 
-        return view('libros_digitales.searchSede', compact('librosDigitales', 'sedes', 'sede_id'));
+
+
+        return view('libros_digitales.searchSede', compact('carreras'));
     }
 
     /**
@@ -357,7 +367,7 @@ class LibrosDigitalesController extends Controller
     {
         $user = Auth::user();
         $libroDigital = $this->libroDigitalService->cargaLibroDigitaByLibroByMesaAlumno($libro, $user);
-        if(!$libroDigital){
+        if (!$libroDigital) {
             return redirect()->back()
                 ->with('alert_danger', 'Libro Digital no encontrado.');
         }

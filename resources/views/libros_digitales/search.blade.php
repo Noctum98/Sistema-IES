@@ -22,7 +22,7 @@
                     @foreach($sedes as $sede)
                         <li class="page-item rounded {{ $sede === $sede_id ? 'active' : '' }} px-2">
                             <a class="page-link"
-                               href="{{ route('libros_digitales.libro_digital.index_sede', ['sede_id' => $sede]) }}">
+                               href="{{ route('libros_digitales.libro_digital.search_sede', ['sede_id' => $sede]) }}">
                                 {{ $sede }}
                             </a>
                         </li>

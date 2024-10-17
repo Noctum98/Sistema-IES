@@ -48,7 +48,8 @@
                             <div class="card-header d-flex justify-content-between align-items-center mx-0 my-2">
                                 <h4 class="card-title">Sede: {{$libroDigital->sede->nombre}}</h4>
                                 <span class="ms-4 mr-5">
-                                    <a href="{{ route('libros_digitales.libro_digital.create_sede', ['sede_id'=> $libroDigital->sede_id]) }}" class="btn btn-secondary"
+                                    <a href="{{ route('libros_digitales.libro_digital.create_sede', ['sede_id'=> $libroDigital->sede_id]) }}"
+                                       class="btn btn-secondary"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar Libro Digital">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span> Agregar
                 </a>

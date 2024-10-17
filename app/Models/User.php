@@ -85,7 +85,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Sede::class)->withTimestamps();
     }
 
-    public function hasSede($sede)
+    /**
+     * @param $sede
+     * @return bool
+     */
+    public function hasSede($sede): bool
     {
 
         if ($this->sedes->where('id', $sede)->first()) {
