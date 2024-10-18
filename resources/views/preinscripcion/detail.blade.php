@@ -178,6 +178,11 @@
 		<a href="{{route('pre.editar',['timecheck'=>$alumno->timecheck,'id'=>$alumno->id])}}" class="btn btn-warning">
 			Editar datos
 		</a>
+		@if($alumno->articulo_septimo)
+		<a href="{{route('pre.quitar7mo',$alumno->id)}}" class="btn btn-secondary">
+			Quitar Articulo 7mo
+		</a>
+		@endif
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-bs-labelledby="exampleModalLabel" aria-bs-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">

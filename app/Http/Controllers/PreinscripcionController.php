@@ -249,6 +249,8 @@ class PreinscripcionController extends Controller
         ]);
     }
 
+    
+
     public function vista_eliminadas()
     {
         $preinscripciones = Preinscripcion::withTrashed()->get();
@@ -432,6 +434,14 @@ class PreinscripcionController extends Controller
         $data = $this->preinscripcionService->guardarArchivos7mo($request, $preinscripcion);
 
         return redirect()->back()->with(['alert_success' => 'Los archivos se subieron correctamente']);
+    }
+
+    public function quitar_articulo7mo(Request $request,$id){
+        $preinscripcion = Preinscripcion::find($id);
+
+        $preinscripcion->update(['articulo_septimo'=>0]);
+
+        return redirect()->back()->with(['alert_success'=>'Se ha quitado de Articulo Séptimo correctamente.']);
     }
 
     public function cambiar_estado(int $id)

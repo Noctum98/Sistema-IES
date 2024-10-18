@@ -595,6 +595,7 @@ Route::prefix('preinscripcion')->group(function () {
     );
     Route::get('/admin/estado/{id}', [PreinscripcionController::class, 'cambiar_estado'])->name('pre_estado');
     Route::post('/error/{id}', [PreinscripcionController::class, 'email_archivo_error'])->name('pre.error');
+    Route::get('/quitar/articulo7mo/{id}',[PreinscripcionController::class,'quitar_articulo7mo'])->name('pre.quitar7mo');
 });
 
 // Rutas de Proceso
