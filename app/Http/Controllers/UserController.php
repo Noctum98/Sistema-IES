@@ -142,17 +142,7 @@ class UserController extends Controller
                 ->get();
         }
 
-        if (Session::has('coordinador') && !Session::has('admin')) {
-            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')
-                ->where('nombre', 'profesor')
-                ->orWhere('nombre', 'planillas')
-                ->get();
-
-            $roles_secundarios = null;
-        } else {
-            $roles_primarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 0)->get();
-            $roles_secundarios = Rol::select('nombre', 'id', 'descripcion')->where('tipo', 1)->get();
-        }
+        //dd($user->roles_primarios);
 
         return view('user.detail', [
             'user' => $user,
@@ -195,6 +185,11 @@ class UserController extends Controller
         return view('user.edit', [
             'user' => $user,
         ]);
+    }
+
+    public function vista_roles($id)
+    {
+        $user = User::find()
     }
 
     public function editar(Request $request): RedirectResponse
@@ -375,6 +370,17 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = $request->roles;
+        $rol_id = $request['rol_id'];
+        $carrera_id = $request['carrera_id'];
+        $materia_id = $request['materia_id'];
+
+        $user->roles()->syncWithoutDetaching([
+            $rol_id => ['carrera_id' => $carrera_id, 'materia_id' => $materia_id]
+        ]);
+
+        $rol = Rol::find($rol_id);
+
+        session([$rol->nombre => $rol->nombre]);
 
         // Verifico los roles que vienen desmarcados del form para borrarlos
         foreach ($user->roles as $rol_user) {

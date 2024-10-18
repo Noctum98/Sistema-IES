@@ -135,4 +135,5 @@
 @section('scripts')
     <script src="{{ asset('js/user/carreras.js') }}"></script>
     <script src="{{ asset('js/user/cargos.js') }}"></script>
+    <script src="{{ asset('js/user/roles.js') }}"></script>
 @endsection

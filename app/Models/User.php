@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function alumnoOne(): HasOne
     {
-        return $this->hasOne(Alumno::class,'user_id');
+        return $this->hasOne(Alumno::class, 'user_id');
     }
 
     public function alumno()
@@ -125,16 +125,21 @@ class User extends Authenticatable
     //============================= ROLES ===================================//
     public function roles()
     {
-        return $this->belongsToMany(Rol::class)->where('activo',true)->withTimestamps();
+        return $this->belongsToMany(Rol::class)->where('activo', true)->withTimestamps();
     }
+
+    public function roles_primarios()
+    {
+        return $this->hasMany(RolUser::class,'user_id');
+    }
+
     public function authorizeRoles($roles)
     {
-        if($this->hasAnyRole($roles)){
+        if ($this->hasAnyRole($roles)) {
             return true;
-        }else{
+        } else {
             return false;
         }
-
     }
     public function hasAnyRole($roles)
     {
@@ -146,7 +151,7 @@ class User extends Authenticatable
             }
         } else {
             if ($this->hasRole($roles)) {
-                 return true;
+                return true;
             }
         }
         return false;
@@ -161,7 +166,8 @@ class User extends Authenticatable
         return false;
     }
     //============================= CARGOS ===================================//
-    public function cargos(){
+    public function cargos()
+    {
         return $this->belongsToMany(Cargo::class)->withTimestamps()->orderBy('updated_at', 'DESC');
     }
     public function hasCargo($cargo)
@@ -184,8 +190,9 @@ class User extends Authenticatable
     }
 
     //=========================Comisiones=======================//
-    public function comisiones(){
-        return $this->belongsToMany(Comision::class,'comision_profesor','profesor_id','comision_id')->withTimestamps();
+    public function comisiones()
+    {
+        return $this->belongsToMany(Comision::class, 'comision_profesor', 'profesor_id', 'comision_id')->withTimestamps();
     }
     public function hasComision($comision)
     {
@@ -206,6 +213,6 @@ class User extends Authenticatable
 
     public function getApellidoNombre(): string
     {
-        return mb_strtoupper($this->getAttribute('apellido')). ', '. ucwords($this->getAttribute('nombre'));
+        return mb_strtoupper($this->getAttribute('apellido')) . ', ' . ucwords($this->getAttribute('nombre'));
     }
 }
